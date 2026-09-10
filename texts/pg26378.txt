@@ -1,0 +1,3820 @@
+The Project Gutenberg eBook of The Care of Books
+    
+This eBook is for the use of anyone anywhere in the United States and
+most other parts of the world at no cost and with almost no restrictions
+whatsoever. You may copy it, give it away or re-use it under the terms
+of the Project Gutenberg License included with this eBook or online
+at www.gutenberg.org. If you are not located in the United States,
+you will have to check the laws of the country where you are located
+before using this eBook.
+
+Title: The Care of Books
+
+Author: John Willis Clark
+
+
+        
+Release date: August 20, 2008 [eBook #26378]
+                Most recently updated: January 4, 2021
+
+Language: English
+
+Other information and formats: www.gutenberg.org/ebooks/26378
+
+Credits: Produced by Sigal Alon, Christine D. and the Online
+        Distributed Proofreading Team at https://www.pgdp.net (This
+        file was produced from images generously made available
+        by The Internet Archive/Canadian Libraries)
+
+
+*** START OF THE PROJECT GUTENBERG EBOOK THE CARE OF BOOKS ***
+
+
+
+
+Produced by Sigal Alon, Christine D. and the Online
+Distributed Proofreading Team at https://www.pgdp.net (This
+file was produced from images generously made available
+by The Internet Archive/Canadian Libraries)
+
+
+
+
+
+
+
+
+
+
+  THE
+  CARE OF BOOKS
+
+
+  London: C. J. CLAY AND SONS,
+  CAMBRIDGE UNIVERSITY PRESS WAREHOUSE,
+  AVE MARIA LANE,
+  Glasgow: 50, WELLINGTON STREET.
+
+[Illustration]
+
+  Leipzig: F. A. BROCKHAUS.
+  New York: THE MACMILLAN COMPANY.
+  Bombay: E. SEYMOUR HALE.
+
+[_All Rights reserved._]
+
+
+
+
+  THE
+  CARE OF BOOKS
+
+  An Essay on the
+  Development of Libraries and
+  their Fittings, from the earliest times to
+  the end of the Eighteenth Century
+
+  By
+
+  JOHN WILLIS CLARK, M.A., F.S.A.
+
+  Registrary of the University
+  and formerly Fellow of Trinity College, Cambridge
+
+  CAMBRIDGE
+  at the University Press
+  1901
+
+
+  Cambridge:
+
+  PRINTED BY J. AND C. F. CLAY,
+  AT THE UNIVERSITY PRESS.
+
+
+  FRANCISCO AIDANO GASQUET
+  MONACHO BENEDICTINO
+  D.D.
+  MAGISTRO DISCIPULUS
+
+
+
+
+PREFACE.
+
+
+When engaged in editing and completing _The Architectural History of the
+University and Colleges of Cambridge_, I devoted much time and attention
+to the essay called _The Library_. The subject was entirely new; and the
+more I looked into it, the more convinced did I become that it would well
+repay fuller investigation than was then possible. For instance, I felt
+certain that the Customs affecting monastic libraries would, if one could
+only discover them, throw considerable light on collegiate statutes
+relating to the same subject.
+
+The _Architectural History_ having been published, I had leisure to study
+libraries from my new point of view; and, while thus engaged, I
+fortunately met with the admirable paper by Dom Gasquet which he modestly
+calls _Some Notes on Medieval Monastic Libraries_. This brief essay--it
+occupies only 20 pages--opened my eyes to the possibilities that lay
+before me, and I gladly place on record here the debt I owe to the
+historian to whom I have dedicated this book.
+
+When I had the honour of delivering the Rede Lecture before the University
+of Cambridge in June 1894, I attempted a reconstruction of the monastic
+library, shewing its relationship, through its fittings, to the
+collegiate libraries of Oxford and Cambridge; and I was also able,
+following the example set by Dom Gasquet in the above-mentioned essay, to
+indicate the value of illuminated manuscripts as illustrating the life of
+a medieval student or scribe. In my lectures as Sandars Reader in
+Bibliography, delivered before the University of Cambridge in 1900, I
+developed the subject still further, extending the scope of my enquiries
+so as to include the libraries of Greece and Rome.
+
+In writing my present book I have availed myself freely of the three works
+above mentioned. At the same time I have incorporated much fresh material;
+and I am glad to take this opportunity of stating, that, with the single
+exception of the Escorial, I have personally examined and measured every
+building which I have had occasion to describe; and many of the
+illustrations are from my own sketches.
+
+I call my book an _Essay_, because I wish to indicate that it is only an
+attempt to deal, in a summary fashion, with an extremely wide and
+interesting subject--a subject, too, which might easily be subdivided into
+separate heads each capable of more elaborate treatment. For instance,
+with regard to libraries in Religious Houses, I hope to see a book
+written, dealing not merely with the way in which the books were cared
+for, but with the subjects most generally studied, as indicated to us by
+the catalogues which have survived.
+
+A research such as I have had to undertake has naturally involved the
+co-operation of numerous librarians and others both in England and on the
+Continent. From all these officials I have experienced unfailing courtesy
+and kindness, and I beg them to accept this collective expression of my
+gratitude. To some, however, I am under such particular obligations, that
+I wish to mention them by name.
+
+In the first place I have to thank my friends Dr Jackson of Trinity
+College, Dr Sandys of S. John's College, Dr James of King's College, and
+F. J. H. Jenkinson, M.A., University Librarian, for their kind help in
+reading proofs and making suggestions. Dr Sandys devoted much time to the
+revision of the first chapter. As my work deals largely with monastic
+institutions it is almost needless to say that I have consulted and
+received efficient help from my old friend W. H. St John Hope, M.A.,
+Assistant Secretary to the Society of Antiquaries.
+
+My researches in Rome were made easy to me by the unfailing kindness and
+ready help accorded on every occasion by Father C. J. Ehrle, S.J., Prefect
+of the Vatican Library. My best thanks are also due to Signor Rodolfo
+Lanciani, to Professor Petersen of the German Archeological Institute,
+Rome, and to Signor Guido Biagi of the Biblioteca Laurenziana, Florence.
+At Milan Monsignor Ceriani of the Ambrosian Library was so kind as to have
+the library photographed for my use.
+
+The courteous officials who administer the great libraries of Paris with
+so much ability, have assisted me in all my researches. I wish specially
+to thank in this place M. Leopold Delisle and M. Leon Dorez of the
+Bibliotheque Nationale; M. A. Franklin of the Bibliotheque Mazarine; M. H.
+Martin of the Bibliotheque de l'Arsenal; and M. A. Perate,
+Sous-Conservateur du Chateau de Versailles.
+
+I have also to thank Senor Ricardo Velasquez for his beautiful elevation
+of the bookcases in the Escorial Library; Father J. van den Gheyn, S.J.,
+of the Royal Library, Brussels, for his trouble in shewing me, and
+allowing me to have photographed, several MSS. from the library under his
+charge; my friends Mr T. G. Jackson, R.A., Architect, for lending me his
+section of Bishop Cobham's library at Oxford; E. W. B. Nicholson, M.A.,
+Librarian, and Falconer Madan, M.A., Sub-Librarian, in the Bodleian
+Library, for information respecting the building and its contents; Mr F.
+E. Bickley of the British Museum for much help in finding and examining
+MSS.; and Lionel Cust, M.A., Director of the National Portrait Gallery,
+for general direction and encouragement.
+
+Messrs Macmillan have allowed me to use three illustrations which appear
+in the first chapter; Mr Murray has given the same permission for the
+woodcut of the carrells at Gloucester; and Messrs Blades for the
+representation of James Leaver's book-press.
+
+Lastly I wish to thank the staff of the University Press for using their
+best efforts to produce the work rapidly and well, and for many acts of
+personal kindness to myself.
+
+                                                     JOHN WILLIS CLARK.
+
+  SCROOPE HOUSE,
+    CAMBRIDGE,
+      _September 23rd, 1901._
+
+
+
+
+  CONTENTS.
+
+
+  CHAPTER I.
+
+  Introduction. Assyrian Record-Rooms. Libraries in Greece, Alexandria,
+  Pergamon, Rome. Their size, use, contents, and fittings. Armaria or
+  presses. The Vatican Library of Sixtus V. a type of an ancient
+  Roman library                                                           1
+
+
+  CHAPTER II.
+
+  Christian libraries connected with churches. Use of the apse. Monastic
+  communities. S. Pachomius. S. Benedict and his successors. Each
+  House had a library. Annual audit of books. Loan on security. Modes
+  of protection. Curses. Prayers for donors. Endowment of libraries.
+  Use of the cloister. Development of Cistercian book-room. Common
+  press. Carrells                                                        61
+
+
+  CHAPTER III.
+
+  Increase of monastic collections. S. Riquier, Bobbio, Durham, Canterbury.
+  Books kept in other places than the cloister. Expedients for housing
+  them at Durham, Citeaux, and elsewhere. Separate libraries built in
+  fifteenth century at Durham, S. Albans, Citeaux, Clairvaux, etc.
+  Gradual extension of library at S. Germain des Pres. Libraries
+  attached to Cathedrals. Lincoln, Salisbury, Wells, Noyon, Rouen,
+  etc.                                                                  101
+
+
+  CHAPTER IV.
+
+  The fittings of monastic libraries and of collegiate libraries probably
+  identical. Analysis of some library-statutes. Monastic influence at
+  the Universities. Number of books owned by Colleges. The collegiate
+  library. Bishop Cobham's library at Oxford. Library at
+  Queens' College, Cambridge. At Zutphen. The lectern-system.
+  Chaining of books. Further examples and illustrations                 131
+
+
+  CHAPTER V.
+
+  Recapitulation. Invention of the stall-system. Library of Corpus Christi
+  College, Oxford, taken as a type. System of chaining in Hereford
+  Cathedral. Libraries of Merton College, Oxford, and Clare College,
+  Cambridge. The stall-system copied at Westminster Abbey, Wells,
+  and Durham Cathedrals. This system possibly monastic. Libraries
+  at Canterbury, Dover Priory, Clairvaux                                171
+
+
+  CHAPTER VI.
+
+  The lectern-system in Italy. Libraries at Cesena, at the Convent of
+  S. Mark, Florence, and at Monte Oliveto. Vatican Library of Sixtus IV.
+  Ducal Library at Urbino. Medicean Library, Florence. System of
+  chaining there used. Characteristics of medieval libraries            199
+
+
+  CHAPTER VII.
+
+  Contrast between the fifteenth and sixteenth centuries. Suppression of
+  the Monasteries. Commissioners of Edward VI. Subsequent changes in
+  library fittings. S. John's College, and University Library, Cambridge.
+  Queen's College, Oxford. Libraries attached to churches and schools.
+  Chaining in recent times. Chains taken off                            245
+
+
+  CHAPTER VIII.
+
+  The wall-system. This began on the Continent. Library of the Escorial.
+  Ambrosian Library at Milan. Library of Cardinal Mazarin. Bodleian
+  Library at Oxford. Works and influence of Wren. French conventual
+  libraries of the seventeenth century                                  267
+
+
+  CHAPTER IX.
+
+  Private libraries. Abbat Simon and his book-chest. Library of Charles V.
+  of France. Illustrations of this library from illuminated manuscripts.
+  Book-lectern used in private houses. Book-desks revolving round a
+  central screw. Desks attached to chairs. Wall-cupboards. A scholar's
+  room in the fifteenth century. Study of the Duke of Urbino. Library
+  of Margaret of Austria. Library of Montaigne. Conclusion              291
+
+
+
+
+  LIST OF ILLUSTRATIONS
+
+  FIG.                                                                 PAGE
+
+  1. Plan of the Record-Rooms in the Palace of Assur-bani-pal, King of
+     Nineveh                                                              2
+
+  2. Plan of the temple and precinct of Athena, Pergamon; with that of the
+     Library and adjacent buildings                                       9
+
+  3. Plan of the Porticus Octaviae, Rome. From _Formae Urbis Romae
+     Antiguae_, Berlin, 1896                                              13
+
+  4. Plan of the Forum of Trajan; after Nibby. From Middleton's
+     _Remains of Ancient Rome_                                           15
+
+  5. Plan of the Stoa of Hadrian, at Athens. From Miss Harrison's
+     _Mythology and Monuments of Ancient Athens_                         17
+
+  6. Elevation of a single compartment of the wall of the Library
+     discovered in Rome, 1883. From notes and measurements made by
+     Signor Lanciani and Prof. Middleton                                 23
+
+  7. Plan of the Record-House of Vespasian, with the adjoining
+     structures. From Middleton's _Remains of Ancient Rome_              26
+
+  8. Part of the internal wall of the Record-House of Vespasian. Reduced
+     from a sketch taken in the 16th century by Pirro Ligorio. From
+     _Commissione Archeologica Comunale di Roma_                         26
+
+  9. A reader with a roll: from a fresco at Pompeii                      28
+
+  10. Book-box or capsa                                                  30
+
+  11. A Roman taking down a roll from its place in a Library             35
+
+  12. Desk to support a roll while it is being read                      36
+
+  13. A Roman reading a roll in front of a press (_armarium_).
+      From a photograph of a sarcophagus in the garden of the Villa
+      Balestra, Rome _To face_                                           38
+
+  14. Press containing the four Gospels. From a mosaic above the tomb of
+      the Empress Galla Placidia at Ravenna                              39
+
+  15. Ezra writing the Law. Frontispiece to the _Codex Amiatinus_.
+      In the background is a press with open doors. The picture was
+      probably drawn in the middle of the sixth century A.D.
+                                                             _Frontispiece_
+
+  16. Great Hall of the Vatican Library, looking west
+      _To face_                                                          47
+
+  17. A single press in the Vatican Library, open. From a photograph
+      _To face_                                                          48
+
+  18. Rough ground-plan of the Great Hall of the Vatican Library,
+      to illustrate the account of the decoration _To face_              60
+
+  19. Press in the cloister at the Cistercian Abbey of Fossa Nuova       83
+
+  20. Ground-plan and elevation of the book-recesses in the cloister of
+      Worcester Cathedral                                                84
+
+  21. Ground-plan of part of the Abbey of Fossa Nuova. To shew the
+      book-room and book-press, and their relations to adjoining
+      structures: partly from Enlart's _Origines Francaises de
+      l'Architecture Gothique en Italie_, partly from my own
+      measurements                                                       85
+
+  22. Ground-plan of part of Kirkstall Abbey, Yorkshire                  86
+
+  23. Ground-plan of part of Furness Abbey. From Mr W. H. St J. Hope's
+      plan                                                               88
+
+  24. Arches in south wall of Church at Beaulieu Abbey, Hampshire, once
+      possibly used as book-presses                  _To face_           89
+
+  25. The cloister, Westminster Abbey. From Mr Micklethwaite's plan of
+      the buildings                                                      91
+
+  26. Part of the ancient press in Bayeux Cathedral, called _Le
+      Chartrier de Bayeux_. From a photograph       _To face_            94
+
+  27. Press in the church at Obazine, Central France. From a photograph
+      _To face_                                                          95
+
+  28. Ground-plan of one of the windows in the cloister of Durham
+      Cathedral                                                          96
+
+  29. Range of carrells in the south cloister at Gloucester Cathedral.
+      From Mr Murray's _Handbook to the Western Cathedrals_              97
+
+  30. A single carrell, Gloucester Cathedral     _To face_               98
+
+  31. Library at Durham, built by Prior Wessyngton about 1446           107
+
+  32. Library of the Grey Friars House, London, commonly called Christ's
+      Hospital. From Trollope's _History of Christ's Hospital_
+      _To face_                                                         109
+
+  33. Bird's-eye view of part of the Monastery of Citeaux. From a drawing
+      dated 1718                                                        110
+
+  34. Ground-plan of part of the Monastery of Citeaux. From a plan dated
+      1718                                                              111
+
+  35. Ground-plan of the Library at Citeaux                             111
+
+  36. Part of the Abbey of S. Germain des Pres, Paris. From a print dated
+      1687; reproduced in _Les Anciennes Bibliotheques de Paris_, par
+      Alf. Franklin, Vol. I. p. 126                                     115
+
+  37. Part of the Abbey of S. Germain des Pres, Paris. From a print in
+      _Histoire de l'Abbaye Royale de Saint Germain des Prez_, par Dom
+      Jacques Bouillart, fol. Paris, 1724, lettered "l'Abbaye ... telle
+      qu'elle est presentement"                                         116
+
+  38. Plan of the Old Library, Lincoln Cathedral                        119
+
+  39. Interior of the Old Library, Lincoln Cathedral _To face_          118
+
+  40. Plan of the Cloister, etc., Lincoln Cathedral                     120
+
+  41. Exterior of the Library at Salisbury Cathedral, looking north-east
+      _To face_                                                         122
+
+  42. Plan of the Library in Wells Cathedral                            122
+
+  43. Plan of the Library at Lichfield Cathedral. From _History and
+      Antiquities of Staffordshire_, by Stebbing Shaw, fol. Lond.
+      1798, Vol. II. P. 244                                             123
+
+  44. Chapter-Library at Noyon, France             _To face_            124
+
+  45. A single pillar of the cloister beneath the Chapter-Library
+      at Noyon.                                                         125
+
+  46. Plan of the Library at the south-east angle of the south transept
+      of the Cathedral at Troyes                                        126
+
+  47. Interior of the _Cour des Libraires_, Rouen, shewing the
+      gate of entrance from the street, and the Library    _To face_    130
+
+  48. Pembroke College, Cambridge, reduced from Loggan's print, taken
+      about 1688                                                        149
+
+  49. Long Section of Old Congregation House and Library, Oxford, looking
+      south. From _The Church of S. Mary the Virgin, Oxford_, by
+      T. G. Jackson, Architect                                          150
+
+  50. Ground-plan of the Library at Queens' College, Cambridge          152
+
+  51. Elevation of book-desk in Library of Queens' College, Cambridge   152
+
+  52. Ground-plan of the Library at Zutphen                             154
+
+  53. General view of the north side of the Library attached to the
+      church of S. Walburga at Zutphen                   _To face_      155
+
+  54. Desk and reader on the south side of the Library at Zutphen. From
+      a photograph                                                      155
+
+  55. Elevations of (A) one of the bookcases in the Library at Zutphen;
+      (B) one of those in the Library at Queens' College, Cambridge     156
+
+  56. End of iron bar: Zutphen                                          156
+
+  57. End of one of the desks on the north side of the Library:
+      Zutphen.                                                          157
+
+  58. Piece of chain, shewing the ring attached to the bar, the swivel,
+      and one of the links, actual size: Guildford                      158
+
+  59. Piece of the iron bar, with chain: Zutphen                        159
+
+  60. Chained book, from a Dominican House at Bamberg, South Germany    159
+
+  61. Single desk in the Old Library: Lincoln Cathedral                 161
+
+  62. Elevations of (A) one of the bookcases in the Library at Zutphen;
+      (B) one of those in the Library at Queens' College, Cambridge;
+      (C) one of those in the Library of Lincoln Cathedral              163
+
+  63. Interior of a Library. From a MS. of a French translation of the
+      first book of the _Consolation of Philosophy_ by Boethius,
+      written in Flanders towards the end of the fifteenth century      164
+
+  64. Library of the College de Navarre, Paris, now destroyed
+      _To face_                                                         165
+
+  65. General view of the Library at Trinity Hall, Cambridge
+      _To face_                                                         169
+
+  66. Elevation of a book-desk and seat in the Library of Trinity Hall,
+      Cambridge                                                         168
+
+  67. Lock at end of book-desk: Trinity Hall                            169
+
+  68. A French Library of 1480. From MS. 164 in the Fitzwilliam Museum,
+      Cambridge                                        _To face_        169
+
+  69. The interior of the Library of the University of Leyden. From a
+      print by Jan Cornelis Woudanus, dated 1610       _To follow_      170
+
+  70. Bookcases and seat in the Library at Corpus Christi College,
+      Oxford. From a photograph taken in 1894          _To face_        173
+
+  71. Elevation of one bookcase in the Library of Corpus Christi College,
+      Oxford                                                            173
+
+  72. Bookcase in the Chapter Library, Hereford Cathedral. From a sketch
+      taken in 1876                                                     175
+
+  73. Part of a bookcase in the Chapter Library, Hereford    _To face_  175
+
+  74. Part of a single volume, shewing the clasp, the ring for the chain,
+      and the mode of attaching it: Hereford                            175
+
+  75. A single volume, standing on the shelf, with the chain attached to
+      the iron bar: Hereford                                            176
+
+  76. Iron bar and socket, closed to prevent removal of the bar:
+      Hereford                                                          176
+
+  77. Iron bar, with part of the iron plate or hasp which is secured by
+      the lock and keeps the bar in place: Hereford                     177
+
+  78. Piece of chain, shewing the swivel: Hereford                      178
+
+  79. Hook to hold up the desk: Bodleian Library, Oxford                179
+
+  80. Exterior of the Library at Merton College, Oxford, as seen from
+      'Mob Quadrangle.' From a photograph by H. W. Taunt, 1899
+      _To face_                                                         179
+
+  81. Ground-plan of the Library at Merton College, Oxford              180
+
+  82. Interior of the West Library at Merton College, Oxford. From a
+      photograph by H. W. Taunt, 1899                  _To face_        181
+
+  83. Bookcase in the West Library of Merton College, Oxford. From a
+      photograph by H. W. Taunt, 1899                  _To face_        181
+
+  84. Elevation of a bookcase and seat in the West Library at Merton
+      College, Oxford. Measured and drawn by T. D. Atkinson, Architect  182
+
+  85. Stall-end in the Library of Clare College, Cambridge              187
+
+  86. Ring for attachment of chain, Wells                               189
+
+  87. Bookcases in the Library of Durham Cathedral. From a photograph
+      _To face_                                                         189
+
+  88. Conjectural plan of the Library over the Prior's Chapel at Christ
+      Church, Canterbury                                                191
+
+  89. Sketch of the probable appearance of a bookcase, and a reader's
+      seat, in the Library at Christ Church, Canterbury                 193
+
+  90, 91. Ground-plan and section of Library at Cesena                  200
+
+  92. General view of the Library at Cesena. From a photograph
+      _To face_                                                         201
+
+  93. Bookcases at west end of south side of Library, Cesena            201
+
+  94. Part of a bookcase, at Cesena to shew the system of chaining      202
+
+  95. Piece of a chain, Cesena                                          203
+
+  96. Chained book at Ghent                                             204
+
+  97. Ground-plan of part of the Vatican Palace, shewing the building of
+      Nicholas V., as arranged for library purposes by Sixtus IV., and
+      its relation to the surrounding structures. From Letarouilly, _Le
+      Vatican_, fol. Paris, 1882, as reproduced by M. Fabre             210
+
+  98. Ground-plan of the rooms in the Vatican Palace fitted up for
+      library-purpose by Sixtus IV                  _To follow_         208
+
+  99. Interior of the Library of Sixtus IV., as shewn in a fresco in the
+      Ospedale di Santo Spirito, Rome. From a photograph taken by
+      Danesi                                          _To face_         225
+
+  100. The library-settles (_spalliere_) once used in the Vatican
+       Library of Sixtus IV., and now in the Appartamento Borgia. From a
+       photograph                                     _To face_         228
+
+  101. Bookcases in the Medicean Library, Florence                      235
+
+  102. Copy, slightly reduced, of a sketch by Michelangelo for one of the
+       bookcases in the Medicean Library, Florence                      236
+
+  103. Elevation of desks at Cesena                                     237
+
+  104. Elevation of desks in the Medicean Library: Florence             237
+
+  105. A book in the Medicean Library, to shew attachment of chain      238
+
+  106. Piece of chain in the Medicean Library, of the actual size       238
+
+  107. Diagram to explain the ironwork at the Medicean Library          239
+
+  108. Outline of bolt forming part of ironwork                         239
+
+  109. West oriel of the Library at S. John's College, Cambridge        249
+
+  110. Bookcases in the Library of S. John's College, Cambridge         250
+
+  111. Bookcases in the Library of Peterhouse, Cambridge                252
+
+  112. Bookcases in the south room of the University Library, Cambridge.
+       _To face_                                                        253
+
+  113. Bookcase in the old Library of King's College, Cambridge, made
+       with the bequest of Nicholas Hobart, 1659                        255
+
+  114. Ground-plan of Library, Grantham, Lincolnshire                   257
+
+  115. Ring and link of chain: Wimborne Minster                         261
+
+  116. Bookpress in the school at Bolton, Lancashire. From
+       _Bibliographical Miscellanies_ by William Blades
+       _To face_                                                        264
+
+  117. General view of the Library of the Escorial, looking north
+       _To face_                                                        269
+
+  118. Bookcases in the Library of the Escorial on an enlarged scale    268
+
+  119. Elevation of a bookcase, and section of a desk, in the Library
+       of the Escorial                                                  270
+
+  120. Ground-plan of the Ambrosian Library at Milan                    271
+
+  121. Interior of the Ambrosian Library at Milan. From a photograph
+       taken in 1899                                 _To face_          271
+
+  122. Bookcases, in the Bibliotheque Mazarine, Paris. From a photograph
+       by Dujardin, 1898                             _To face_          273
+
+  123. Elevation of a bookcase and section of a desk in the Bibliotheque
+       Mazarine, Paris                                                  274
+
+  124. A portion of the bookcases set up in the eastern wing of the
+       Bodleian Library, Oxford, built 1610-1612. From Loggan's _Oxonia
+       Illustrata_, 1675                                                275
+
+  125. Entrance to Wren's Library at Lincoln Cathedral, with part of
+       the bookcase which lines the north wall      _To face_           277
+
+  126. Part of Wren's elevation of the east side of the Library of
+       Trinity College, Cambridge, with a section of the north range
+       of Nevile's Court, shewing the door to the Library from the
+       first floor                                                      278
+
+  127. Elevation of one bay on the east side of the Library of Trinity
+       College, Cambridge, drawn to scale from the existing building    279
+
+  128. Interior of the north-east corner of the Library of Trinity
+       College, Cambridge, shewing the bookcases, table, desk and
+       stools, as designed by Sir Christopher Wren                      281
+
+  129. Ground-plan of Library and adjacent parts of S. Paul's Cathedral,
+       London. Designed by Sir Christopher Wren                         283
+
+  130. Sir Christopher Wren's Library at S. Paul's Cathedral, London,
+       looking north-east                            _To face_          282
+
+  131. Bookcase in the north room of the University Library, Cambridge,
+       designed by James Essex, 1731-1734                               286
+
+  132. Interior of the Library of the Jesuits at Rheims, now the
+       _Lingerie de l'Hopital General_           _To face_              287
+
+  133. Ground-plan of the Library of the Jesuits at Rheims              288
+
+  134. Simon, Abbat of S. Albans (1167-1183), seated at his book-chest.
+       From MSS. Cotton                                                 293
+
+  135. Two men in a library. From a MS. of _Les cas des malheureux
+       nobles hommes et femmes_ in the British Museum                   295
+
+  136. A Carmelite in his study. From a MS. of Le Miroir Historial in
+       the British Museum                             _To face_         296
+
+  137. Three musicians in a Library. From a MS. of a French translation
+       of _Valerius Maximus_, in the British Museum                     297
+
+  138. A bibliomaniac at his desk. From the _Ship of Fools_             298
+
+  139. S. John writing his Gospel. From a MS. _Hours_ in the
+       Fitzwilliam Museum, Cambridge                                    303
+
+  140. S. Jerome writing. From an oil painting by Benedetto Bonfigli,
+       in the Church of S. Peter at Perugia         _To face_           304
+
+  141. Circular book-desk. From a MS. of _Fais et Gestes du Roi
+       Alexandre_, in the British Museum                                304
+
+  142. S. Luke writing his Gospel. From the Dunois _Horae_, a MS. in
+       the possession of H. Y. Thompson, Esq.                           305
+
+  143. A lady seated in her chair reading. From a MS. written in France,
+       early in the fifteenth century                                   306
+
+  144. Screw-desk. From a fifteenth century MS. in the Bibliotheque de
+       l'Arsenal, Paris                                                 307
+
+  145. Hexagonal desk, with central spike, probably for a candle. From a
+       French MS. of _Le Miroir Historial_                              307
+
+  146. A lecturer addressing an audience. From a MS. of _Livre des cas
+       des malheureux nobles hommes et femmes_, written in France at
+       end of fifteenth century                      _To face_          308
+
+  147. S. Mark writing his Gospel. From a MS. _Hours_ written in
+       France in the fifteenth century                                  309
+
+  148. The author of _The Chronicles of Hainault_ in his study
+       (1446) _To face_                                                 309
+
+  149. S. Jerome in his study. From _Les Miracles de Nostre Dame_,
+       written at the Hague in 1456                   _To face_         310
+
+  150. A writer with his desk and table. From a MS. of _Le Livre des
+       Proprietes des Choses_ in the British Museum  _To face_          309
+
+  151. S. Luke writing his Gospel. MSS. Douce, Bodl. Lib. Oxf.,
+       No. 381                                                          311
+
+  152. S. Augustine at his desk. From a painting by Fra Filippo Lippi at
+       Florence                                                         312
+
+  153. S. Jerome reading. From an oil painting by Catena, in the National
+       Gallery, London                               _To face_          313
+
+  154. A writer at work. From a French translation of Valerius Maximus,
+       written and illuminated in Flanders in 1479, for King Edward IV.
+       _To face_                                                        313
+
+  155. A scholar's room in the fifteenth century. From a MS. in the Royal
+       Library at Brussels                           _To face_          314
+
+  156. Dean Boys in his Library, 1622                                   317
+
+
+
+
+THE CARE OF BOOKS.
+
+
+
+
+CHAPTER I.
+
+    INTRODUCTION. ASSYRIAN RECORD-ROOMS. LIBRARIES IN
+    GREECE, ALEXANDRIA, PERGAMON, ROME. THEIR SIZE, USE,
+    CONTEXTS, AND FITTINGS. ARMARIA OR PRESSES. THE VATICAN
+    LIBRARY OF SIXTUS V. A TYPE OF AN ANCIENT ROMAN LIBRARY.
+
+I propose, in the following Essay, to trace the methods adopted by man in
+different ages and countries to preserve, to use, and to make accessible
+to others, those objects, of whatever material, on which he has recorded
+his thoughts. In this investigation I shall include the position, the
+size, and the arrangement, of the rooms in which these treasures were
+deposited, with the progressive development of fittings, catalogues, and
+other appliances, whether defensive, or to facilitate use. But, though I
+shall have to trace out these matters in some detail, I shall try to
+eschew mere antiquarianism, and to impart human interest, so far as
+possible, to a research which might otherwise exhaust the patience of my
+readers. Bibliography, it must be understood, will be wholly excluded.
+From my special point of view books are simply things to be taken care of:
+even their external features concern me only so far as they modify the
+methods adopted for arrangement and preservation. I must dismiss the
+subject-matter of the volumes which filled the libraries of former days
+with a brevity of which I deeply regret the necessity. I shall point out
+the pains taken to sort the books under various comprehensive heads; but I
+shall not enumerate the authors which fall under this or that division.
+
+The earliest repositories of books were connected with temples or palaces,
+either because priests under all civilisations have been _par excellence_
+the learned class, while despots have patronised art and literature; or
+because such a position was thought to offer greater security.
+
+[Illustration: Fig. 1. Plan of the Record-Rooms in the Palace of
+Assur-bani-pal, King of Nineveh.]
+
+I will begin with Assyria, where the record-rooms, or we might almost say
+the library, in the palace of Assur-bani-pal, King of Nineveh, were
+discovered by Mr Layard in 1850 at Kouyunjik, on the Tigris, opposite
+Mosul. The plan (fig. 1), taken from Mr Layard's work[1], will shew,
+better than a long description, the position of these rooms, and their
+relation to the rest of the building--which is believed to date from about
+700 B.C. The long passage (No. XLIX) is one of the entrances to the
+palace. Passing thence along the narrower passage (No. XLII) the explorers
+soon reached a doorway (E), which led them into a large hall (No. XXIX),
+whence a second doorway (F) brought them into a chamber (No. XXXVIII). On
+the north side of this room were two doorways (G. G), each "formed by two
+colossal bas-reliefs of Dagon, the fish-god." "The first doorway," says Mr
+Layard, "guarded by the fish-gods, led into two small chambers opening
+into each other, and once panelled with bas-reliefs, the greater part of
+which had been destroyed. I shall call these chambers 'the chambers of
+records,' for, like 'the house of the rolls' or records, which Darius
+ordered to be searched for the decree of Cyrus concerning the building of
+the Temple of Jerusalem[2], they appear to have contained the decrees of
+the Assyrian kings, as well as the archives of the empire."
+
+Mr Layard was led to this conclusion by finding, in these rooms, enormous
+quantities of inscribed tablets and cylinders of baked clay. "To a height
+of a foot or more from the floor they were entirely filled with them; some
+entire, but the greater part broken into many fragments, probably by the
+falling in of the upper part of the building.... These documents appear to
+be of various kinds. Many are historical records of wars, and distant
+expeditions undertaken by the Assyrians; some seem to be royal decrees,
+and are stamped with the name of a king, the son of Esarhaddon; others
+again ... contain lists of the gods, and probably a register of offerings
+made in their temples[3]."
+
+So far Mr Layard. Subsequent researches have shewn that these two small
+rooms--they were 27 feet and 23 feet long respectively, with a uniform
+breadth of 20 feet--contained the literature as well as the official
+documents of Assyria. The tablets have been sorted under the following
+heads: History; Law; Science; Magic; Dogma; Legends: and it has been shewn
+(1) that there was a special functionary to take charge of them; (2) that
+they were arranged in series, with special precautions for keeping the
+tablets forming a particular series in their proper sequence; (3) that
+there was a general catalogue, and probably a class-catalogue as well[4].
+
+Excavations in other parts of Assyria have added valuable information to
+Layard's first discovery. Dr Wallis Budge, of the British Museum, whom I
+have to thank for much kind assistance, tells me that "Kouyunjik is hardly
+a good example of a Mesopotamian library, for it is certain that the
+tablets were thrown about out of their proper places when the city was
+captured by the Medes about B.C. 609. The tablets were kept on shelves....
+When I was digging at Derr some years ago we found the what I call 'Record
+Chamber,' and we saw the tablets lying _in situ_ on slate shelves. There
+were, however, not many literary tablets there, for the chamber was meant
+to hold the commercial documents relating to the local temple...." Dr
+Budge concludes his letter with this very important sentence: "We have no
+definite proof of what I am going to say now, but I believe that the
+bilingual[5] lists, which Assur-bani-pal had drawn up for his library at
+Nineveh, were intended 'for the use of students.'"
+
+To this suggestion I would add the following. Does not the position of
+these two rooms, easily accessible from the entrance to the palace, shew
+that their contents might be consulted by persons who were denied
+admission to the more private apartments? And further, does not the
+presence of the god Dagon at the entrance indicate that the library was
+under the protection of the deity as well as of the sovereign?
+
+As a pendant to these Assyrian discoveries I may mention the vague rumour
+echoed by Athenaeus of extensive libraries collected in the sixth century
+before our era by Polycrates[6], tyrant of Samos, and Peisistratus,
+tyrant of Athens, the latter collection, according to Aulus Gellius[7],
+having been accessible to all who cared to use it. It must be admitted
+that these stories are of doubtful authenticity; and further, that we have
+no details of the way in which books were cared for in Greece during the
+golden age of her literature. This dearth of information is the more
+tantalizing as it is obvious that private libraries must have existed in a
+city so cultivated as Athens; and we do, in fact, find a few notices which
+tell us that such was the case. Xenophon[8], for instance, speaks of the
+number of volumes in the possession of Euthydemus, a follower of Socrates;
+and Athenaeus records, in the passage to which I have already alluded, the
+names of several book-collectors, among whom are Euripides and Aristotle.
+
+An allusion to the poet's bibliographical tastes has been detected in the
+scene of _The Frogs_ of Aristophanes, where AEschylus and Euripides are
+weighing verses against each other in the presence of Dionysus. AEschylus
+exclaims:
+
+  [Greek: kai meket' emoige kat' epos, all' es ton stathmon
+  autos ta paidi', he gyne, kephisophon,
+  embas kathestho syllabon ta biblia,
+  ego de dy' epe ton emon ero monon.]
+
+  Come, no more single lines--let him bring all,
+  His wife, his children, his Cephisophon,
+  His books and everything, himself to boot--
+  I'll counterpoise them with a couple of lines[9].
+
+With regard to Aristotle Strabo has preserved a tradition that he "was the
+first who made a collection of books, and taught the kings of Egypt how to
+arrange a library[10]"--words which may be taken to mean that Aristotle
+was the first to work out the arrangement of books on a definite system
+which was afterwards adopted by the Ptolemies at Alexandria.
+
+These notices are extremely disappointing. They merely serve to shew that
+collections of books did exist in Greece; but they give us no indication
+of either their extent or their arrangement. It was left to the Emperor
+Hadrian to build the first public library at Athens, to which, as it was
+naturally constructed on a Roman design, I shall return after I have
+described those from which it was in all probability imitated.
+
+But, if what may be termed Greece in Europe declines to give us
+information, that other Greece which extended itself to Asia Minor and to
+Egypt--Greater Greece it would be called in modern times--supplies us with
+a type of library-organisation which has been of far-reaching influence.
+
+After the death of Alexander the Great (B.C. 323) a Greek dynasty, that of
+the Ptolemies, established itself at Alexandria, and another Greek dynasty
+at Pergamon. Both were distinguished--like Italian despots of the
+Renaissance--for the splendour and the culture of their courts, and they
+rivalled one another in the extent and richness of their libraries; but,
+if we are to believe Strabo, the library at Pergamon was not begun until
+the reign of Eumenes II. (B.C. 197-159), or 126 years after that at
+Alexandria[11].
+
+The libraries at Alexandria (for there were two)--though far more
+celebrated and more extensive than the library at Pergamon--need not, from
+my point of view, detain us for more than a moment, for we are told very
+little about their position, and nothing about their arrangement. The site
+of the earliest, the foundation of which is ascribed to Ptolemy the Second
+(B.C. 285-247), must undoubtedly be sought for within the circuit of the
+royal palace, which was in the fashionable quarter of the city called
+Brucheion. This palace was a vast enceinte, not a separate building, and,
+as Strabo, who visited Alexandria 24 B.C., says,
+
+    Within the precincts of the palace is the Museum. It has
+    a colonnade, a lecture-room, and a vast establishment
+    where the men of letters who share the use of the Museum
+    take their meals together. This College has a common
+    revenue; and is managed by a priest who is over the
+    Museum, an officer formerly appointed by the kings of
+    Egypt, but, at the present time, by the Emperor[12].
+
+That the older of the two libraries must have been in some way connected
+with these buildings seems to me certain from two considerations. First, a
+ruler who took so keen an interest in books as Ptolemy, would assuredly
+have kept his treasures under his own eye; and, secondly, he would hardly
+have placed them at a distance from the spot where the learned men of
+Alexandria held their meetings[13].
+
+At some period subsequent to the foundation of Ptolemy's first library, a
+second, called the daughter of the first[14], was established in connexion
+with the Temple of Serapis, a magnificent structure in the quarter
+Rhacotis, adorned so lavishly with colonnades, statuary, and other
+architectural enrichments, that the historian Ammianus Marcellinus
+declares that nothing in the world could equal it, except the Roman
+Capitol[15].
+
+This brief notice of the libraries of Alexandria shews that the earlier of
+the two, besides being in a building dedicated to the Muses, was also
+connected in all probability with a palace, and the second with a temple.
+If we now turn to Pergamon, we shall find the library associated with the
+temple and [Greek: temenos] of Athena.
+
+The founder selected for the site of his city a lofty and precipitous
+hill, about a thousand feet above the sea-level. The rocky plateau which
+forms the summit is divided into three gigantic steps or terraces. On the
+highest, which occupies the northern end of the hill, the royal palace is
+believed to have been built. On the next terrace, to the south, was the
+temple of Athena; and on the third, the altar of Zeus. External to those
+three groups of buildings, partly on the edge of the hill, partly on its
+sides, were the rest of the public buildings. The lower slopes were
+probably occupied in ancient times, as at present, by the houses of the
+citizens.
+
+These magnificent structures, which won for Pergamon the distinction of
+being "by far the noblest city in Asia minor[16]," were in the main due to
+Eumenes the Second, who, during his reign of nearly forty years (B.C.
+197-159), was enabled, by the wise policy of supporting the Romans, to
+transform his petty state into a powerful monarchy. The construction of a
+library is especially referred to him by Strabo[17], and from the
+statement of Vitruvius that it was built for the delight of the world at
+large (_in communem delectationem_), we may infer that it was intended to
+be public[18]. That he was an energetic book-collector, under whose
+direction a large staff of scribes was perpetually at work, may be
+gathered from the well-known story that his bibliographical rival at
+Alexandria, exasperated by his activity and success, conceived the
+ingenious device of crippling his endeavours by forbidding the exportation
+of papyrus. Eumenes, however, says the chronicler, was equal to the
+occasion, and defeated the scheme by inventing parchment[19]. It is
+probable that Eumenes not only began but completed the library, for in
+less than a quarter of a century after his death (B.C. 133) the last of
+his descendants bequeathed the city and state of Pergamon to the Romans.
+It is improbable that they would do much to increase the library, though
+they evidently took care of it, for ninety years later, when Mark Antony
+is said to have given it to Cleopatra, the number of works in it amounted
+to two hundred thousand[20].
+
+[Illustration: Fig. 2. Plan of the temple and precinct of Athena,
+Pergamon; with that of the Library and adjacent buildings.]
+
+The site of the acropolis of Pergamon was thoroughly explored between 1878
+and 1886 at the expense of the German Government; and in the course of
+their researches the archeologists employed discovered certain rooms which
+they believe to have been originally appropriated to the library. I have
+had the accompanying ground-plan (fig. 2) reduced from one of their
+plates, and have condensed my description of the locality from that given
+in their work[21]. I have also derived much valuable information from a
+paper published by Alexander Conze in 1884[22].
+
+Of the temple of Athena only the foundations remain, but its extent and
+position can be readily ascertained. The enclosure, paved with slabs of
+marble, was entered at the south-east corner. It was open to the west and
+to the south, where the ground falls away precipitously, but on the east
+and north it was bounded by a cloister in two floors. The pillars of this
+cloister were Doric on the ground-floor, Ionic above. The height of those
+in the lower range, measured from base to top of capital, was about 16
+feet, of those in the upper range about 9 feet.
+
+This enclosure had a mean length of about 240 feet, with a mean breadth of
+162 feet[23]. The north cloister was 37 feet broad, and was divided down
+the centre by a row of columns. The east cloister was of about half this
+width, and was undivided.
+
+On the north side of the north cloister, the German explorers found four
+rooms, which they believe to have been assigned to library purposes. The
+platform of rock on which these chambers stood was nearly 20 feet above
+the level of the floor of the enclosure, and they could only be entered
+from the upper cloister. Of these rooms the easternmost is the largest,
+being 42 feet long, by 49 feet broad. Westward of it are three others,
+somewhat narrower, having a uniform width of 39 feet. The easternmost of
+these three rooms is also the smallest, being only 23 feet long; while the
+two next have a uniform length of about 33 feet.
+
+At the south-west corner of this building, but on a lower level, and not
+accessible from it, other rooms were found, the use of which is uncertain.
+
+We will now return to the eastern room. The foundations of a narrow
+platform or bench extended along the eastern, northern, and western sides,
+and in the centre of the northern side there was a mass of stone-work
+which had evidently formed the base for a statue (fig. 2, A). The
+discovery of a torso of a statue of Athena[24] in this very room indicated
+what statue had occupied this commanding position, and also what had
+probably been the use of the room.
+
+This theory was confirmed by the discovery in the north wall of two rows
+of holes in the stone-work, one above the other, which had evidently been
+made for the reception of brackets, or battens, or other supports for
+shelves[25], or some piece of furniture. The lower of these two rows was
+carried along the east wall as well as along the north wall. Further,
+stones were found bearing the names of Herodotus, Alcaeus, Timotheus of
+Miletus, and Homer, evidently the designations of portrait-busts or
+portrait-medallions; and also, two titles of comedies.
+
+Lastly, the very position of these rooms in connexion with the colonnade
+indicates their use. It will be observed that the colonnade on the north
+side of the area is twice as wide as that on the east side--a peculiarity
+which is sufficient of itself to prove that it must have been intended for
+some other purpose than as a mere covered way. But, if it be remembered
+that libraries in the ancient world were usually connected with colonnades
+(as was probably the case at the Serapeum at Alexandria, and was certainly
+the case at Rome, as I shall proceed to shew) a reason is found for this
+dignified construction, and a strong confirmation is afforded for the
+theory that the rooms beyond it once contained the famous library.
+
+When the Romans had taken possession of Pergamon, those who had charge of
+the city would become familiar with the library; and it seems to me almost
+certain that, when the necessity for establishing a public library at Rome
+had been recognised, the splendid structure at Pergamon would be turned to
+as a model. But, if I mistake not, Roman architecture had received an
+influence from Pergamon long before this event occurred. What this was I
+will mention presently.
+
+No public library was established in Rome until the reign of Augustus.
+Julius Caesar had intended to build one on the largest possible scale, and
+had gone so far as to commission Varro to collect books for it[26]; but it
+was reserved for C. Asinius Pollio, general, lawyer, orator, poet, the
+friend of Virgil and Horace, to devote to this purpose the spoils he had
+obtained in his Illyrian campaign, B.C. 39. In the striking words of Pliny
+"he was the first to make men's talents public property (_ingenia hominum
+rem publicam fecit_)" The same writer tells us that he also introduced the
+fashion of decorating libraries with busts of departed authors, and that
+Varro was the only living writer whose portrait was admitted[27]. Pollio
+is further credited, by Suetonius, with having built an _atrium
+libertatis_[28], in which Isidore, a writer of the seventh century,
+probably quoting a lost work of Suetonius, places the library, with the
+additional information, that the collection contained Greek as well as
+Latin books[29].
+
+The work of Pollio is recorded among the acts of generosity which Augustus
+suggested to others. But before long the emperor turned his own attention
+to libraries, and enriched his capital with two splendid structures which
+may be taken as types of Roman libraries,--the library of Apollo on the
+Palatine Hill, and that in the Campus Martius called after Octavia, sister
+to the emperor. I will take the latter first.
+
+The _Porticus Octaviae_, or, as it was sometimes called, the _Opera
+Octaviae_, must have been one of the most magnificent structures in Rome
+(fig. 3). It stood in the Campus Martius, near the Theatre of Marcellus,
+between the Capitoline Hill and the Tiber. A double colonnade surrounded
+an area which measured 443 feet by 377 feet, with _Jani_, or four-faced
+archways, at the four corners, and on the side next the Tiber a double
+hexastyle porch, which, with a few fragments of the colonnade, still
+exists in a fairly good state of preservation[30]. Within this space were
+two temples, one of Jupiter, the other of Juno, a _curia_ or hall, in
+which the Senate frequently met, a _schola_ or "Conversation Hall[31],"
+and two libraries, the one of Greek, the other of Latin books. The area
+and buildings were crowded with masterpieces in bronze and marble.
+
+[Illustration: Fig. 3. Plan of the Porticus Octaviae, Rome. From _Formae
+Urbis Romae Antiqua_, Berlin, 1896.]
+
+This structure was originally built by Quintus Metellus, about 146
+B.C.[32]. One of the temples was due to his own liberality, the other had
+been erected by Domitius Lepidus, B.C. 179. Now twenty years before,
+Metellus had fought in a successful campaign against Perseus king of
+Macedonia, in which the Romans had been assisted by Eumenes II.: and in
+B.C. 148, as Praetor, he received Macedonia as his province. Is it not
+possible that on one or other of these occasions he may have visited
+Pergamon, and, when designing his buildings in Rome, have copied what he
+had seen there? Again, in B.C. 157, Crates of Mallus, a distinguished
+grammarian, was sent from Pergamon as ambassador to Rome, and, being laid
+up there by an accident, gave lectures on grammar, in the course of which
+he could hardly have failed to mention the new library[33].
+
+The buildings of Metellus were altered, if not entirely rebuilt, by
+Augustus, B.C. 33, out of the proceeds of his victorious campaign against
+the Dalmatians; with the additional structures above enumerated. The
+_schola_ is believed to have stood behind the temples, and the libraries
+behind the _schola_, with the _curia_ between them[34]. Thus the
+colonnades, which Metellus had restricted to the two temples, came at last
+to serve the double purpose for which they were originally intended in
+connexion with a library as well as with a temple.
+
+The temple and area of Apollo on the Palatine Hill, which Augustus began
+B.C. 36 and dedicated B.C. 28, exhibit an arrangement precisely similar to
+that of the Porticus Octaviae. The size was nearly the same[35], and the
+structures included in the area were intended to serve the same purposes.
+The temple stood in the middle of a large open peristyle, connected with
+which were two libraries, one for Greek, the other for Latin books; and
+between them, used perhaps as a reading-room or vestibule, was a hall in
+which Augustus occasionally convened the Senate. It contained a colossal
+statue of Apollo, made of gilt bronze; and on its walls were
+portrait-reliefs of celebrated writers, in the form of medallions, in the
+same material[36].
+
+Of the other public libraries of Rome--of which there are said to have
+been in all twenty-six--I need mention only three as possessing some
+peculiarity to which I shall have to draw attention. Of these the first
+was established by Tiberius in his palace, at no great distance from the
+library of Apollo; the second and third by Vespasian and Trajan in their
+Fora, connected in the one with the temple of Peace, and in the other with
+the temple dedicated in honour of Trajan himself.
+
+[Illustration: Fig. 4. Plan of the Forum of Trajan; after Nibby.]
+
+Of the first two of these libraries we have no information; but in the
+case of the third we are more fortunate. The Forum of Trajan (fig. 4) was
+excavated by order of Napoleon I., and the extent of its buildings, with
+their relation to one another, is therefore known with approximate
+accuracy. The Greek and Latin libraries stood to the right and left of the
+small court between the _Basilica Ulpia_ and the _Templum Divi Trajani_,
+the centre of which was marked by the existing Column. They were entered
+from this court, each through a portico of five inter-columniations. The
+rooms, measured internally, were about 60 feet long, by 45 feet broad.
+
+At this point I must mention, parenthetically, the library built by
+Hadrian at Athens. Pausanias records it in the following passage:
+
+    Hadrian also built for the Athenians a temple of Hera
+    and Panhellenian Zeus, and a sanctuary common to all the
+    gods. But most splendid of all are one hundred columns;
+    walls and colonnades alike are made of Phrygian marble.
+    Here, too, is a building adorned with a gilded roof and
+    alabaster and also with statues and paintings: books are
+    stored in it. There is also a gymnasium named after
+    Hadrian; it too has one hundred columns from the
+    quarries of Libya[37].
+
+A building called the Stoa of Hadrian, a ground-plan of which (fig. 5) I
+borrow from Miss Harrison's _Mythology and Monuments of Ancient Athens_,
+has been identified with part at least of that which Pausanias describes
+in the above passage. A lofty wall, built of large square blocks of
+Pentelic marble, faced on the west side by a row of Corinthian columns,
+enclosed a quadrangular court, measuring 328 feet from east to west, by
+250 feet from north to south. This court, entered through a sort of
+propylaea on the west side (N), was surrounded by a cloister or colonnade
+27 feet wide, and containing 100 columns. None of those columns are
+standing, but their number can be accurately calculated from the marks of
+the bases still to be seen on the eastern side of the quadrangle.
+
+Within this area are the remains of a building of uncertain use, and at
+present only partially excavated.
+
+On the east side a row of five chambers, of which that in the centre was
+the largest, opened off from the colonnade[38].
+
+[Illustration: Fig. 5. Plan of the Stoa of Hadrian, at Athens.
+
+  AE, KI. Pier-arcade of the medieval church of the Panagia.
+  B. North-east angle of this church, of Roman work.
+  B, C, D, F. Portions of the Roman building which preceded the church.
+  L, M. Reservoirs.
+  N. Propylaea through which the court was entered.
+
+]
+
+If the ground plan of this structure (fig. 5) be compared with that of the
+precinct of Athena and library at Pergamon (fig. 2), a striking similarity
+between them will at once be recognised; and, whatever may have been the
+destination of the building within the cloistered area, there can, I
+think, be little doubt that the library was contained in the five rooms
+beyond its limits to the east. They must have been entered from the
+cloister, much as those at Pergamon were. It is possible that Hadrian may
+himself have visited Pergamon, for Trajan had built an imperial residence
+there; but, even if he did not do this, he would accept the type from the
+great libraries built at Rome by Augustus. It should be mentioned that S.
+Jerome specially commemorates this library among Hadrian's works at
+Athens, and says that it was of remarkable construction (_miri
+operis_)[39].
+
+From this brief digression I return to the public libraries of Rome. In
+the first place those built by Augustus had a regular organisation. There
+appears to have been a general director called _Procurator Bibliothecarum
+Augusti_[40]; and subordinate officers for each division: that is to say,
+one for the Greek books, one for the Latin books. These facts are derived
+from inscriptions found in _Columbaria_. Secondly, it may be concluded
+that they were used not merely for reading and reference, but as
+meeting-places for literary men.
+
+The Palatine libraries evidently contained a large collection of old and
+new books; and I think it is quite certain that new books, as soon as
+published, were placed there, unless there was some special reason to the
+contrary. Otherwise there would be no point in the lines in which Ovid
+makes his book--sent from Pontus after his banishment--deplore its
+exclusion. The book is supposed to climb from the Forum to the temple of
+Apollo:
+
+  Signa peregrinis ubi sunt alterna columnis
+    Belides et stricto barbarus ense pater
+  Quaeque viri docto veteres coepere novique
+    Pectore lecturis inspicienda patent.
+  Quaerebam fratres exceptis scilicet illis
+    Quos suus optaret non genuisse parens;
+  Quaerentem frustra custos e sedibus illis
+    Praepositus sancto iussit abire loco[41].
+
+    Where, set between each pair of columns from some
+    foreign quarry, are statues of the Danaids, and their
+    barbarous father with drawn sword; and where whatever
+    the minds of men of old or men of to-day have imagined,
+    is laid open for a reader's use. I sought my brethren,
+    save those of course whom their father would fain have
+    never begotten; and, while I was seeking for them in
+    vain, he who was set over the room bade me leave that
+    holy ground.
+
+The second couplet can only mean that old books and new books were alike
+to be found there. The general nature of the collection, and its extent,
+may be further gathered from the advice which Horace gives to his friend
+Celsus:
+
+  Quid mihi Celsus agit? monitus multumque monendus
+  Privatas ut quaerat opes, et tangere vitet
+  Scripta Palatinus quaecunque recepit Apollo[42].
+
+    What is my friend Celsus about? he who has been
+    reminded, and must still be reminded again and again,
+    that he should draw upon his own resources, and be
+    careful to avoid the multifarious writings which
+    Palatine Apollo has taken under his charge.
+
+A man might say now-a-days, "Trust to your own wits, and don't go so often
+to the library of the British Museum."
+
+Aulus Gellius, who lived A.D. 117-180, speaks of "sitting with a party of
+friends in the library of the palace of Tiberius, when a book happened to
+be taken down with the title M. Catonis Nepotis," and they began asking
+one another who this M. Cato Nepos might be[43]. This library contained
+also public records[44].
+
+The same writer tells a story of a grammatical difficulty which was to be
+settled by reference to a book _in templo Pacis_, in the forum of
+Vespasian; and again, when a particular book was wanted, "we hunted for it
+diligently," he says, "and, when we had found it in the temple of Peace,
+we read it[45]."
+
+The library in the forum of Trajan, often called _Bibliotheca Ulpia_, was
+apparently the Public Record Office of Rome. Aulus Gellius mentions that
+some decrees of former praetors had fallen in his way there when he was
+looking for something else, and that he had been allowed to read them[46];
+and a statement of Vopiscus is still more conclusive as to the nature of
+its contents. It tells us, moreover, something about the arrangement. In
+his life of the Emperor Tacitus (Sept. A.D. 275--Apr. 276) Vopiscus says:
+
+    And lest anybody should think that I have given too
+    hasty a credence to a Greek or Latin author, the Ulpian
+    Library has in its sixth press (_armarium_) an ivory
+    volume (_librum elephantinum_) in which the following
+    decree of the Senate, signed by Tacitus with his own
+    hand, is recorded, etc.[47]
+
+Again, in his life of the Emperor Aurelian, the same writer records how
+his friend Junius Tiberianus, prefect of the city, had urged him to
+undertake the task, and had assured him that: "even the linen-books
+(_libri lintei_) shall be brought out of the Ulpian library for your
+use[48]."
+
+Books could occasionally be borrowed from a public library, but whether
+from one of those in the city of Rome, I cannot say. The scene of the
+story which proves this is laid by Aulus Gellius at Tibur (Tivoli), where
+the library was in the temple of Hercules--another instance of the care of
+a library being entrusted to a temple. Aulus Gellius and some friends of
+his were assembled in a rich man's villa there at the hottest season of
+the year. They were drinking melted snow, a proceeding against which one
+of the party, a peripatetic philosopher, vehemently protested, urging
+against the practice the authority of numerous physicians and of Aristotle
+himself. But none the less the party went on drinking snow-water.
+Whereupon "he fetched a treatise by Aristotle out of the library of Tibur,
+which was then very conveniently accommodated in the temple of Hercules,
+and brought it to us, saying----[49]." But I need not finish the
+quotation, as it has no bearing on my special subject.
+
+It is probable that numerous collections of books had been got together by
+individuals in Rome, before it occurred to Augustus and his friends to
+erect public libraries. One such library, that belonging to the rich and
+luxurious Lucullus, has been noticed as follows by Plutarch[50]:
+
+    His procedure in regard to books was interesting and
+    remarkable. He collected fine copies in large numbers;
+    and if he was splendid in their acquisition, he was more
+    so in their use. His libraries were accessible to all,
+    and the adjoining colonnades and reading-rooms were
+    freely open to Greeks, who, gladly escaping from the
+    routine of business, resorted thither for familiar
+    converse, as to a shelter presided over by the Muses.
+
+The Romans were not slow in following the example set by Lucullus; and a
+library presently became indispensable in every house, whether the owner
+cared for reading or not. This fashionable craze is denounced by Seneca
+(writing about A.D. 49) in a vehement outburst of indignation, which
+contains so many valuable facts about library arrangement, that I will
+give a free translation of it.
+
+    Outlay upon studies, best of all outlays, is reasonable
+    so long only as it is kept within certain limits. What
+    is the use of books and libraries innumerable, if scarce
+    in a lifetime the master reads the titles? A student is
+    burdened by a crowd of authors, not instructed; and it
+    is far better to devote yourself to a few, than to lose
+    your way among a multitude.
+
+    Forty thousand books were burnt at Alexandria. I leave
+    others to praise this splendid monument of royal
+    opulence, as for example Livy, who regards it as "a
+    noble work of royal taste and royal thoughtfulness." It
+    was not taste, it was not thoughtfulness, it was learned
+    extravagance--nay not even learned, for they had bought
+    their books for the sake of show, not for the sake of
+    learning--just as with many who are ignorant even of the
+    lowest branches of learning books are not instruments of
+    study, but ornaments of dining-rooms. Procure then as
+    many books as will suffice for use; but not a single one
+    for show. You will reply: "Outlay on such objects is
+    preferable to extravagance on plate or paintings."
+    Excess in all directions is bad. Why should you excuse a
+    man who wishes to possess book-presses inlaid with
+    _arbor-vitae_ wood or ivory: who gathers together masses
+    of authors either unknown or discredited; who yawns
+    among his thousands of books; and who derives his chief
+    delight from their edges and their tickets?
+
+    You will find then in the libraries of the most arrant
+    idlers all that orators or historians have
+    written--book-cases built up as high as the ceiling.
+    Nowadays a library takes rank with a bathroom as a
+    necessary ornament of a house. I could forgive such
+    ideas, if they were due to extravagant desire for
+    learning. As it is, these productions of men whose
+    genius we revere, paid for at a high price, with their
+    portraits ranged in line above them, are got together to
+    adorn and beautify a wall[51].
+
+A library was discovered in Rome by Signor Lanciani in 1883 while
+excavating a house of the 4th century on the Esquiline in the modern Via
+dello Statuto. I will narrate the discovery in his own words.
+
+    I was struck, one afternoon, with the appearance of a
+    rather spacious hall [it was about 23 feet long by 15
+    feet broad], the walls of which were plain and
+    unornamented up to a certain height, but beautifully
+    decorated above in stucco-work. The decoration consisted
+    of fluted pilasters, five feet apart from centre to
+    centre, enclosing a plain square surface, in the middle
+    of which there were medallions, also in stucco-work, two
+    feet in diameter. As always happens in these cases, the
+    frame was the only well-preserved portion of the
+    medallions. Of the images surrounded by the frames, of
+    the medallions themselves, absolutely nothing was left
+    _in situ_, except a few fragments piled up at the foot
+    of the wall, which, however, could be identified as
+    having been representations of human faces. My hope
+    that, at last, after fifteen years of excavations, I had
+    succeeded in discovering a library, was confirmed beyond
+    any doubt by a legend, written, or rather painted, in
+    bright red colour on one of the frames. There was but
+    one name POLONIVS THYAN ..., but this name told more
+    plainly the purpose of the apartment than if I had
+    discovered there the actual bookshelves and their
+    contents[52].
+
+When I had the pleasure of meeting Signor Lanciani in Rome in April, 1898,
+he most kindly gave me his own sketch of the pilasters and medallion,
+taken at the moment of discovery. I am therefore able to reproduce exactly
+(fig. 6) one compartment of the wall of the library above described. The
+height of the blank wall below the stucco-work, against which the
+furniture containing the books stood, has been laid down as about 3 feet 6
+inches, on the authority of Professor Middleton[53]. The remains of the
+medallion are still to be seen in the Museo del Orto Botanico, Rome. The
+person commemorated is obviously Apollonius Tyaneus, a Pythagorean
+philosopher and wonderworker, said to have been born about four years
+before the Christian era.
+
+[Illustration: Fig. 6. Elevation of a single compartment of the wall of
+the Library discovered in Rome, 1883.
+
+From notes and measurements made by Signor Lanciani and Prof. Middleton.]
+
+A similar room was discovered at Herculaneum in 1754. A full account of
+the discovery was drawn up at once by Signor Paderni, keeper of the
+Herculaneum Museum, and addressed to Thomas Hollis, Esq., by whom it was
+submitted to the Royal Society. I will extract, from this and subsequent
+letters, the passages that bear upon my subject.
+
+
+                                   _Naples, 27 April, 1754._
+
+    ... The place where they are digging, at present, is
+    under _Il Bosco di Sant' Agostino_.... All the buildings
+    discover'd in this site are noble; ... in one there has
+    been found an entire library, compos'd of volumes of the
+    Egyptian Papyrus, of which there have been taken out
+    about 250....[54]
+
+                   _To the same._
+
+                                         _18 October, 1754._
+
+    ... As yet we have only entered into one room, the floor
+    of which is formed of mosaic work, not unelegant. It
+    appears to have been a library, adorned with presses,
+    inlaid with different sorts of wood, disposed in rows;
+    at the top of which were cornices, as in our own times.
+
+    I was buried in this spot more than twelve days, to
+    carry off the volumes found there; many of which were so
+    perished, that it was impossible to remove them. Those
+    which I took away amounted to the number of three
+    hundred and thirty-seven, all of them at present
+    uncapable of being opened. These are all written in
+    Greek characters. While I was busy in this work I
+    observed a large bundle, which, from the size, I
+    imagined must contain more than a single volume. I tried
+    with the utmost care to get it out, but could not, from
+    the damp and weight of it. However I perceived that it
+    consisted of about 18 volumes, each of which was in
+    length a palm and three Neapolitan inches, being the
+    largest hitherto discovered. They were wrapped about
+    with the bark of a tree and covered at each end with a
+    piece of wood. All these were written in Latin, as
+    appears by a few words which broke off from them. I was
+    in hopes to have got something out of them, but they are
+    in a worse condition than the Greek[55]....
+
+                   _From Sir J. Gray, Bart._
+
+                                         _29 October, 1754._
+
+    ... They have lately met with more rolls of Papyri of
+    different lengths and sizes, some with the _Umbilicus_
+    remaining in them: the greater part are Greek in small
+    capitals.... The Epicurean Philosophy is the subject of
+    another fragment.
+
+    A small bust of Epicurus, with his name in Greek
+    characters, was found in the same room, and was possibly
+    the ornament of that part of the library where the
+    writings in favour of his principles were kept; and it
+    may also be supposed that some other heads of
+    philosophers found in the same room were placed with the
+    same taste and propriety[56].
+
+Between 1758 and 1763, the place was visited by Winckelmann, who wrote
+long letters in Italian, describing what he saw, to Consigliere Bianconi,
+Physician to the King of Saxony. One of these, dated 1762, gives the
+following account of the library:
+
+    Ii luogo in cui per la prima volta caddero sott' occhio,
+    fu una piccola stanza nella villa d'Ercolano di cui
+    parlammo sopra, la cui lunghezza due uomini colle
+    braccia distese potevano misurare. Tutto all' intorno
+    del muro vi erano degli scaffali quali si vedono
+    ordinariamente negli archivi ad altezza d' uomo, e nel
+    mezzo della stanza v' era un altro scaffale simile o
+    tavola per tenervi scritture, e tale da potervi girare
+    intorno. Il legno di questa tavola era ridotto a
+    carboni, e cadde, come e facile ad imaginarselo, tutta
+    in pezzi quando si tocco. Alcuni di questi rotoli di
+    papiri si trovarono involti insieme con carta piu
+    grossolana, di quella qualita che gli antichi chiamavano
+    _emporetica_, e questi probabilmente formavano le parti
+    ed i libri d' un' opera intiera[57]....
+
+    The place in which they [the rolls] were first seen was
+    a small room in the villa at Herculaneum of which we
+    spoke above, the length of which could be covered by two
+    men with their arms extended. All round the wall there
+    were book-cases such as are commonly seen in
+    record-rooms, of a man's height, and in the middle of
+    the room there was another similar book-case or table to
+    hold writings, of such a size that one could go round
+    it. The wood of this table was reduced to charcoal, and,
+    as may easily be imagined, fell all to pieces when it
+    was touched. Some of these papyrus rolls were found
+    fastened together with paper of coarser texture, of that
+    quality which the ancients called _emporetica_, and
+    these probably formed the parts and books of an entire
+    work.
+
+The information which these observers have given us amounts to this: the
+room was about 12 feet long, with a floor of mosaic. Against the walls
+stood presses, of a man's height, inlaid with different sorts of wood,
+disposed in rows, with cornices at the top; and there was also a table, or
+press, in the centre of the room. Most of the rolls were separate, but a
+bundle of eighteen was found "wrapped about with the bark of a tree, and
+covered at each end with a piece of wood." A room so small as this could
+hardly have been intended for study. It must rather have been the place
+where the books were put away after they had been read elsewhere.
+
+Before I quit this part of my subject, I should like to mention one other
+building, as its arrangements throw light on the question of fitting up
+libraries and record-offices. I allude to the structure built by
+Vespasian, A.D. 78, to contain the documents relating to his restoration of
+the city of Rome. It stood at the south-west corner of the Forum of Peace,
+and what now exists of it is known as the Church of SS. Cosma e Damiano.
+
+The general arrangement and relation to adjoining structures will be
+understood from the plan (fig. 7). The room was about 125 feet long by 65
+feet broad, with two entrances, one on the north-west, from the _Forum
+Pacis_, through a hexastyle portico (fig. 7. 2), the other on the
+north-east, through a square-headed doorway of travertine which still
+exists (_ibid._ 1) together with a considerable portion of a massive wall
+of Vespasian's time. After a restoration by Caracalla the building came to
+be called _Templum Sacrae Urbis_. It was first consecrated as a church by
+pope Felix IV. (526-530), but he did little more than connect it with the
+_Heroon Romuli_ (_ibid._ 5), and build the apse (_ibid._ 4).
+
+[Illustration: Fig. 7. Plan of the Record-House of Vespasian, with the
+adjoining structures.]
+
+[Illustration: Fig. 8. Part of the internal wall of the Record-House of
+Vespasian.
+
+Reduced from a sketch taken in the 16th century by Pirro Ligorio.]
+
+The whole building was mercilessly mutilated by pope Urban VIII. in 1632;
+but fortunately a drawing of the interior had been made by Pirro Ligorio
+in the second half of the sixteenth century, when the original treatment
+of the walls was practically intact. I give a reduced copy of a small
+portion of this drawing (fig. 8). As Lanciani says:
+
+    The walls were divided into three horizontal bands by
+    finely cut cornices. The upper band was occupied by the
+    windows; the lower was simply lined with marble slabs
+    covered by the bookcases ... which contained the ...
+    records ...; the middle one was incrusted with
+    tarsia-work of the rarest kinds of marble with panels
+    representing panoplies, the wolf with the infant
+    founders of Rome, and other allegorical scenes[58].
+
+I explained at the beginning of this chapter that my subject is the care
+of books, not books themselves; but, at the point which we have now
+reached in regard to Roman libraries, it is necessary to make a few
+remarks about their contents. It must be remembered, in the first place,
+that those who fitted them up had to deal with rolls (_volumina_),
+probably of papyrus, but possibly of parchment; and that a book, as we
+understand the word, the Latin equivalent for which was _codex_, did not
+come into general use until long after the Christian era. Some points
+about these rolls require notice.
+
+The length and the width of the roll depended on the taste or convenience
+of the writer[59]. The contents were written in columns, the lines of
+which ran parallel to the long dimension[60], and the reader, holding the
+roll in both hands, rolled up the part he had finished with his left hand,
+and unrolled the unread portion with his right. This way of dealing with
+the roll is well shewn in the accompanying illustration (fig. 9) reduced
+from a fresco at Pompeii[61]. In most examples the two halves of the roll
+are turned inwards, as for instance in the well-known statue of
+Demosthenes in the Vatican[62]. The end of the roll was fastened to a
+stick (usually referred to as _umbilicus_ or _umbilici_). It is obvious
+that this word ought properly to denote the ends of the stick only, but it
+was constantly applied to the whole stick, and not to a part of it, as for
+instance in the following lines:
+
+    ... deus nam me vetat
+  Inceptos olim promissum carmen iambos
+    Ad umbilicum adducere[63].
+
+    ... for heaven forbids me to cover the scroll down to
+    the stick with the iambic lines I had begun a song
+    promised long ago to the world.
+
+[Illustration: Fig. 9. A reader with a roll: from a fresco at Pompeii.]
+
+These sticks were sometimes painted or gilt, and furnished with projecting
+knobs (_cornua_) similarly decorated, intended to serve both as an
+ornament, and as a contrivance to keep the ends of the roll even, while it
+was being rolled up. The sides of the long dimension of the roll
+(_frontes_) were carefully cut, so as to be perfectly symmetrical, and
+afterwards smoothed with pumice-stone and coloured. A ticket (_index_ or
+_titulus_, in Greek [Greek: sillubos] or [Greek: sittubos]), made of a
+piece of papyrus or parchment, was fastened to the edge of the roll in
+such a way that it hung out over one or other of the ends. As Ovid says:
+
+  Cetera turba palam titulos ostendet apertos
+    Et sua detecta nomina fronte geret[64].
+
+    The others will flaunt their titles openly, and carry
+    their names on an uncovered edge.
+
+The roll was kept closed by strings or straps (_lora_), usually of some
+bright colour[65]; and if it was specially precious, an envelope which the
+Greeks called a jacket ([Greek: diphthera][66]), made of parchment or some
+other substance, was provided. Says Martial:
+
+  Perfer Atestinae nondum vulgata Sabinae
+    Carmina, purpurea sed modo culta toga[67].
+
+    Convey to Sabina at Ateste these verses. They have not
+    yet been published, and have been but lately dressed in
+    a purple garment.
+
+Martial has combined in a single epigram most of the ornaments with which
+rolls could be decorated. This I will quote next, premising that the oil
+of cedar, or _arbor-vitae_, mentioned in the second line not only imparted
+an agreeable yellow colour, but was held to be an antiseptic[68].
+
+  Faustini fugis in sinum? sapisti.
+  Cedro nunc licet ambules perunctus
+  Et frontis gemino decens honore
+  Pictis luxurieris umbilicis,
+  Et te purpura delicata velet,
+  Et cocco rubeat superbus index[69].
+
+His book had selected the bibliomaniac Faustinus as a patron. Now, says
+the poet, you shall be anointed with oil of cedar; you shall revel in the
+decoration of both your sets of edges; your sticks shall be painted; your
+covering shall be purple, and your ticket scarlet.
+
+When a number of rolls had to be carried from one place to another, they
+were put into a box (_scrinium_ or _capsa_). This receptacle was
+cylindrical in shape, not unlike a modern hat-box[70]. It was carried by a
+flexible handle, attached to a ring on each side; and the lid was held
+down by what looks very like a modern lock. The eighteen rolls, found in a
+bundle at Herculaneum, had doubtless been kept in a similar receptacle.
+
+My illustration (fig. 10) is from a fresco at Herculaneum. It will be
+noticed that each roll is furnished with a ticket (_titulus_). At the feet
+of the statue of Demosthenes already referred to, and of that of
+Sophocles, are _capsae_, both of which show the flexible handles.
+
+[Illustration: Fig. 10. Book-box or capsa.]
+
+I will next collect the information available respecting the fittings used
+in Roman libraries. I admit that it is scattered and imperfect; but
+legitimate deductions may, I think, be arrived at from it, which will give
+us tolerably certain ideas of the appearance of one of those collections.
+
+The words used to designate such fittings are: _nidus_; _forulus_, or more
+usually _foruli_; _loculamenta_; _pluteus_; _pegmata_.
+
+_Nidus_ needs no explanation. It can only mean a pigeon-hole. Martial uses
+it of a bookseller, at whose shop his own poems may be bought.
+
+  De primo dabit alterove _nido_
+  Rasum pumice purpuraque cultum
+  Denaris tibi quinque Martialem[71].
+
+    Out of his first or second pigeon-hole, polished with
+    pumice stone, and smart with a purple covering, for five
+    denarii he will give you Martial.
+
+In a subsequent epigram the word occurs with reference to a private
+library, to which the poet is sending a copy of his works.
+
+  Ruris bibliotheca delicati,
+  Vicinam videt unde lector urbem,
+  Inter carmina sanctiora si quis
+  Lascivae fuerit locus Thaliae,
+  Hos _nido_ licet inseras vel imo
+  Septem quos tibi misimus libellos[72].
+
+    O library of that well-appointed villa whence a reader
+    can see the City near at hand--if among more serious
+    poems there be any room for the wanton Muse of Comedy,
+    you may place these seven little books I send you even
+    in your lowest pigeon-hole.
+
+_Forulus_ or _foruli_ occurs in the following passages. Suetonius, after
+describing the building of the temple of the Palatine Apollo by Augustus,
+adds, "he placed the Sibylline books in two gilt receptacles (_forulis_)
+under the base of the statue of Palatine Apollo"[73]; and Juvenal,
+enumerating the gifts that a rich man is sure to receive if burnt out of
+house and home, says,
+
+  Hic libros dabit, et _forulos_, mediamque Minervam[74].
+
+The word is of uncertain derivation, but _forus_, of which it is clearly
+the diminutive, is used by Virgil for the cells of bees:
+
+  Complebuntque _foros_ et floribus horrea texent[75].
+
+The above-quoted passage of Juvenal may therefore be rendered: "Another
+will give books, and cells to put them in, and a statue of Minerva for the
+middle of the room."
+
+The word _loculamentum_ is explained in a passage of Columella, in which
+he gives directions for the making of dovecotes:
+
+    Let small stakes be placed close together, with planks
+    laid across them to carry cells (_loculamenta_) for the
+    birds to build their nests in, or sets of pigeon-holes
+    made of earthenware[76].
+
+In a second passage he uses the same word for a beehive[77]; Vegetius, a
+writer on veterinary surgery, uses it for the socket of a horse's
+tooth[78]; and Vitruvius, in a more general way, for a case to contain a
+small piece of machinery[79]. Generally, the word may be taken to signify
+a long narrow box, open at one end, and, like _nidus_ and _forulus_, may
+be translated "pigeon-hole." Seneca, again, applies the word to books in
+the passage I have already translated, and in a singularly instructive
+manner. "You will find," he says, "in the libraries of the most arrant
+idlers all that orators or historians have written--bookcases
+(_loculamenta_) built up as high as the ceiling[80]."
+
+_Pegmata_, for the word generally occurs in the plural, are, as the name
+implies, things fixed together, usually planks of wood framed into a
+platform, and used in theatres to carry pieces of scenery or performers up
+and down. As applied to books "shelves" are probably meant: an
+interpretation borne out by the _Digest_, in which it is stated that
+"window-frames and _pegmata_ are included in the purchase of a house[81]."
+They were therefore what we should call "fixtures."
+
+A _pluteus_ was a machine used by infantry for protection in the field:
+and hence the word is applied to any fence, or boarding to form the limit
+or edge of anything, as a table or a bed. _Plutei_ were not attached so
+closely to the walls as _pegmata_, for in the _Digest_ they are classed
+with nets to keep out birds, mats, awnings, and the like, and are not to
+be regarded as part and parcel of a house[82]. Juvenal uses the word for
+a shelf in his second Satire, where he is denouncing pretenders to
+knowledge:
+
+
+  Indocti primum, quamquam plena omnia gypso
+  Chrysippi invenias, nam perfectissimus horum est
+  Si quis Aristotelem similem vel Pittacon emit
+  Et iubet archetypos pluteum servare Cleanthas[83].
+
+    In the first place they are dunces, though you find
+    their houses full of plaster figures of Chrysippus: for
+    a man of this sort is not fully equipped until he buys a
+    likeness of Aristotle or Pittacus, and bids a shelf take
+    care of original portraits of Cleanthes.
+
+This investigation has shewn that three of the words applied to the
+preservation of books, namely, _nidus_, _forulus_, and _loculamentum_, may
+be rendered by the English "pigeon-hole"; and that _pegma_ and _pluteus_
+mean contrivances of wood which may be rendered by the English "shelving."
+It is quite clear that _pegmata_ could be run up with great rapidity, from
+a very graphic account in Cicero's letters of the rearrangement of his
+library. He begins by writing to his friend Atticus as follows:
+
+    I wish you would send me any two fellows out of your
+    library, for Tyrannio to make use of as pasters, and
+    assistants in other matters. Remind them to bring some
+    vellum with them to make those titles (_indices_) which
+    you Greeks, I believe, call [Greek: silluboi]. You are
+    not to do this if it is inconvenient to you[84]....
+
+In the next letter he says:
+
+    Your men have made my library gay with their
+    carpentry-work and their titles (_constructione et
+    sillybis_). I wish you would commend them[85].
+
+When all is completed he writes:
+
+    Now that Tyrannio has arranged my books, a new spirit
+    has been infused into my house. In this matter the help
+    of your men Dionysius and Menophilus has been
+    invaluable. Nothing could look neater than those shelves
+    of yours (_illa tua pegmata_), since they smartened up
+    my books with their titles[86].
+
+No other words than those I have been discussing are, so far as I know,
+applied by the best writers to the storage of books; and, after a careful
+study of the passages in which they occur, I conclude that, so long as
+rolls only had to be accommodated, private libraries in Rome were fitted
+with rows of shelves standing against the walls (_plutei_), or fixed to
+them (_pegmata_). The space between these horizontal shelves was
+subdivided by vertical divisions into pigeon-holes (_nidi_, _foruli_,
+_loculamenta_), and it may be conjectured that the width of these
+pigeon-holes would vary in accordance with the number of rolls included in
+a single work. That such receptacles were the common furniture of a
+library is proved, I think, by such evidence as the epigram of Martial
+quoted above, in which he tells his friend that if he will accept his
+poems, he may "put them even in the lowest pigeon-hole (_nido vel imo_),"
+as we should say, "on the bottom shelf"; and by the language of Seneca
+when he sneers at the "pigeon-holes (_loculamenta_) carried up to the
+ceiling."
+
+The height of the woodwork varied, of course, with individual taste. In
+the library on the Esquiline the height was only three feet six inches; at
+Herculaneum about six feet.
+
+I can find no hint of any doors, or curtains, in front of the
+pigeon-holes. That the ends of the rolls (_frontes_) were visible, is, I
+think, quite clear from what Cicero says of his own library after the
+construction of his shelves (_pegmata_); and the various devices for
+making rolls attractive seem to me to prove that they were intended to be
+seen.
+
+A representation of rolls arranged on the system which I have attempted to
+describe, occurs on a piece of sculpture (fig. 11) found at Neumagen near
+Treves in the seventeenth century, among the ruins of a fortified camp
+attributed to Constantine the Great[87]. Two divisions, full of rolls, are
+shewn, from which a man, presumably the librarian, is selecting one. The
+ends of the rolls are furnished with tickets.
+
+[Illustration: Fig. 11. A Roman taking down a roll from its place in a
+library.]
+
+The system of pigeon-holes terminated, in all probability, in a cornice.
+The explorers of Herculaneum depose to the discovery of such an ornament
+there.
+
+The wall-space above the book-cases was decorated with the likenesses of
+celebrated authors--either philosophers, if the owner of the library
+wished to bring into prominence his adhesion to one of the fashionable
+systems--or authors, dead and living, or personal friends. This obvious
+form of decoration was, in all probability, used at Pergamon[88]; Pollio,
+as we have seen, introduced it into Rome: and Pliny, who calls it a
+novelty (_novitium inventum_), deposes to its general adoption[89]. We are
+not told how these portraits were commonly treated--whether they were
+busts standing clear of the wall on the book-cases; or bracketed against
+the wall; or forming part of its decoration, in plaster-work or distemper.
+A suitable inscription accompanied them. Martial has preserved for us a
+charming specimen of one of these complimentary stanzas--for such they
+undoubtedly would be in the case of a contemporary--to be placed beneath
+his own portrait in a friend's library:
+
+  Hoc tibi sub nostra breve carmen imagine vivat
+    Quam non obscuris iungis, Avite, viris:
+  _Ille ego sum nulli nugarum laude secundus,
+    Quem non miraris, sed puto, lector, amas.
+  Maiores maiora sonent: mihi parva locuto
+    Sufficit in vestras saepe redire manus_[90].
+
+  Placed, with my betters, on your study-wall
+  Let these few lines, Avitus, me recall:
+  _To foremost rank in trifles I was raised;
+  I think men loved me, though they never praised.
+  Let greater poets greater themes profess:
+  My modest lines seek but the hand's caress
+  That tells me, reader, of thy tenderness._
+
+The beautiful alto-relievo in the Lateran Museum, Rome, representing an
+actor selecting a mask, contains a contrivance for reading a roll (fig.
+12) which may have been usual in libraries and elsewhere, though I have
+not met with another instance of it. A vertical support attached to the
+table on which two masks and a MS. are lying, carries a desk with a rim
+along its lower edge and one of its sides. The roll is partially opened,
+the closed portion lying towards the left side of the desk, next the rim.
+The roll may be supposed to contain the actor's part[91].
+
+It is much to be regretted that we have no definite information as to the
+way in which the great public libraries built by Augustus were fitted up;
+but I see no reason for supposing that their fittings differed from those
+of private libraries.
+
+[Illustration: Fig. 12. Desk to support a roll while it is being read.]
+
+When books (_codices_), of a shape similar to that with which modern
+librarians have to deal, had to be accommodated as well as rolls, it is
+manifest that rectangular spaces not more than a few inches wide would be
+singularly inconvenient. They were therefore discarded in favour of a
+press (_armarium_), a piece of furniture which would hold rolls
+(_volumina_) as well as books (_codices_), and was in fact, as I shall
+shew, used for both purposes. The word (_armarium_) occurs commonly in
+Cicero, and other writers of the best period, for a piece of furniture in
+which valuables of all kinds, and household gear, were stowed away; and
+Vitruvius[92] uses it for a book-case. A critic, he says, "produced from
+certain presses an infinite number of rolls." In later Latin writers--that
+is from the middle of the first century A.D.--no other word, speaking
+generally, occurs.
+
+The jurist Ulpian, who died A.D. 228, in a discussion as to what is
+comprised under the term _liber_, decides in favour of including all rolls
+(_volumina_) of whatever material, and then considers the question whether
+_codices_ come under the same category or not--thereby shewing that in his
+day both forms of books were in use. Again, when a library (_bibliotheca_)
+has been bequeathed, it is questioned whether the bequest includes merely
+the press or presses (_armarium vel armaria_), or the books as well[93].
+
+The Ulpian Library, or rather Libraries, in Trajan's Forum, built about
+114 A.D.[94], were fitted up with presses, as we learn from the passage in
+Vopiscus which I have already quoted; and when the ruins of the section of
+that library which stood next to the Quirinal Hill were excavated by the
+French, a very interesting trace of one of these presses was discovered.
+Nibby, the Roman antiquary, thus describes it:
+
+    Beyond the above-mentioned bases [of the columns in the
+    portico] some remains of the inside of the room became
+    visible on the right. They consisted of a piece of
+    curtain-wall, admirably constructed of brick, part of
+    the side-wall, with a rectangular niche of large size in
+    the form of a press (_in foggia di armadio_). One
+    ascended to this by three steps, with a landing-place in
+    front of them, on which it was possible to stand with
+    ease. On the sides of this niche there still exist
+    traces of the hinges, on which the panels and the
+    wickets, probably of bronze, rested[95].
+
+It seems to me that we have here an early instance, perhaps the earliest,
+of those presses in the thickness of the wall which were so common
+afterwards in the monasteries and in private libraries also. A similar
+press, on a smaller scale, is described by the younger Pliny: "My
+bedroom," he says, "has a press let into the wall which does duty as a
+library, and holds books not merely to be read, but read over and over
+again[96]."
+
+It must not, however, be supposed that cupboards were always, or even
+usually, sunk into the wall in Roman times. They were detached pieces of
+furniture, not unlike the wardrobes in which ladies hang their dresses at
+the present day, except that they were fitted with a certain number of
+horizontal shelves, and were used for various purposes according to the
+requirements of their owners. For instance, there is a sarcophagus in the
+Museo Nazionale at Rome, on which is represented a shoemaker at work. In
+front of him is a cupboard, exactly like those I am about to describe, on
+the top of which several pairs of shoes are set out.
+
+I can, however, produce three representations of such presses being used
+by the Romans to contain books.
+
+The first occurs on a marble sarcophagus (fig. 13), now in the garden of
+the Villa Balestra, Rome, where I had the good fortune to find it in
+1898[97]; and Professor Petersen, of the German Archaeological School, was
+so kind as to have it photographed for me. He assigns the work to about
+200 A.D.
+
+[Illustration: Fig. 13. A Roman reading a roll in front of a press
+(_armarium_).
+
+From a photograph of a sarcophagus in the garden of the Villa Balestra.
+Rome.]
+
+In the central portion, 21 in. high, by 15 1/2 in. wide, is a seated
+figure, reading a roll. In front of him is a cupboard, the doors of which
+are open. It is fitted with two shelves, on the uppermost of which are
+eight rolls, the ends of which are turned to the spectator. On the next
+shelf is something which looks like a dish or shallow cup. The lower part
+of the press is solid. Perhaps a second cupboard is intended. Above, it is
+finished off with a cornice, on which rests a very puzzling object. There
+are a few faint lines on the marble, which Professor Petersen believes are
+intended to represent surgical instruments, and so to indicate the
+profession of the seated figure[98]. There is a Greek inscription on the
+sarcophagus, but it merely warns posterity not to disturb the bones of the
+deceased[99].
+
+The second representation (fig. 14) is from the tomb of Galla Placidia, at
+Ravenna. It occurs in a mosaic on the wall of the chapel in which she was
+buried, A.D. 449[100]; and was presumably executed before that date. The
+press closely resembles the one on the Roman sarcophagus, but it is
+evidently intended to indicate a taller piece of furniture, and it
+terminates in a pediment. There are two shelves, on which lie the four
+Gospels, each as a separate _codex_, indicated by the name of the
+Evangelist above it. This press rests upon a stout frame, the legs of
+which are kept in position by a cross-piece nearly as thick as themselves.
+
+[Illustration: Fig. 14. Press containing the four Gospels.
+
+From a mosaic above the tomb of the Empress Galla Placidia at Ravenna.]
+
+The third representation of an _armarium_ (fig. 15) occurs in the
+manuscript of the Vulgate now in the Laurentian Library at Florence, known
+as the _Codex Amiatinus_, from the Cistercian convent of Monte Amiata in
+Tuscany, where it was preserved for several centuries[101]. The thorough
+investigation to which this manuscript has lately been subjected shews
+that it was written in England, at Wearmouth or Jarrow, but possibly by an
+Italian scribe, before A.D. 716, in which year it was taken to Rome, as a
+present to the Pope. The first quaternion, however, on one of the leaves
+of which the above representation occurs, is probably older; and it may
+have belonged to a certain _Codex grandior_ mentioned by Cassiodorus, and
+possibly written under his direction[102].
+
+The picture (fig. 15), which appears as the frontispiece to this work,
+shews Ezra writing the law. On the margin of the vellum, in a hand which
+is considered to be later than that of the MS., are the words:
+
+    CODICIBUS SACRIS HOSTILI CLADE PERVSTIS
+    ESDRA DEO FERVENS HOC REPARAVIT OPUS.
+
+Behind him is a press (_armarium_) with open doors. The lower portion,
+below these doors, is filled in with panels which are either inlaid or
+painted, so that the frame on which it is supported is not visible, as in
+the Ravenna example. The bottom of the press proper is used as a shelf, on
+which lie a volume and two objects, one of which probably represents a
+case for pens, while the other is certainly an inkhorn. Above this are
+four shelves, on each of which lie two volumes. These volumes have their
+titles written on their backs, but they are difficult to make out, and my
+artist has not cared to risk mistakes by attempting to reproduce them. The
+words, beginning at the left hand corner of the top-shelf, are:
+
+  OCT.[103] LIB.     REG.
+  HIST. LIB.       PSALM. LIB.
+  SALOMON.         PROPH.
+  EVANG. IIII.     EPIST. XXI.
+  ACT. APOSTOL.
+
+The frame-work of the press above the doors is ornamented in the same
+style as the panels below, and the whole is surmounted by a low pyramid,
+on the side of which facing the spectator is a cross, beneath which are
+two peacocks drinking from a water-trough.
+
+I regret that I could not place this remarkable drawing before my readers
+in the rich colouring of the original. The press is of a reddish brown:
+the books are bound in crimson. Ezra is clad in green, with a crimson
+robe. The background is gold. The border is blue, between an inner and
+outer band of silver. The outermost band of all is vermilion.
+
+I formerly thought that this book-press might represent those in use in
+England at the beginning of the eighth century; but, if the above
+attribution to Cassiodorus be accurate, it must be accounted another
+Italian example. It bears a general similarity to the Ravenna book-press,
+as might be expected, when it is remembered that Cassiodorus held office
+under Theodoric and his successors, and resided at Ravenna till he was
+nearly seventy years old.
+
+The foundation of Christianity did not alter what I may call the Roman
+conception of a library in any essential particular. The philosophers and
+authors of Greece and Rome may have occasionally found themselves in
+company with, or even supplanted by, the doctors of the Church; but in
+other respects, for the first seven centuries, at least, of our era, the
+learned furnished their libraries according to the old fashion, though
+with an ever increasing luxury of material. Boethius, whose _Consolation
+of Philosophy_ was written A.D. 525, makes Philosophy speak of the "walls
+of a library adorned with ivory and glass[104]"; and Isidore, Bishop of
+Seville A.D. 600-636, records that "the best architects object to gilded
+ceilings in libraries, and to any other marble than _cipollino_ for the
+floor, because the glitter of gold is hurtful to the eyes, while the green
+of _cipollino_ is restful to them[105]."
+
+A few examples of such libraries may be cited; but, before doing so, I
+must mention the Record-Office (_Archivum_), erected by Pope Damasus
+(366-384). It was connected with the Basilica of S. Lawrence, which
+Damasus built in the Campus Martius, near the theatre of Pompey. On the
+front of the Basilica, over the main entrance, was an inscription, which
+ended with the three following lines:
+
+    ARCHIVIS FATEOR VOLUI NOVA CONDERE TECTA ADDERE PRAETEREA
+    DEXTRA LAEVAQUE COLUMNAS QUAE DAMASI TENEANT PROPRIUM PER
+    SAECULA NOMEN.
+
+    I confess that I have wished to build a new abode for
+    Archives; and to add columns on the right and left to
+    preserve the name of Damasus for ever.
+
+These enigmatical verses contain all that we know, or are ever likely to
+know, respecting this building, which is called _chartarium ecclesiae
+Romanae_ by S. Jerome[106], and unquestionably held the official documents
+of the Latin Church until they were removed to the Lateran in the seventh
+century. The whole building, or group of buildings, was destroyed in 1486
+by Cardinal Raphael Riario, the dissolute nephew of Sixtus IV., to make
+room for his new palace, now called Palazzo della Cancelleria, and the
+church was rebuilt on a new site. The connexion with Pope Damasus is
+maintained by the name, S. Lorenzo in Damaso. No plan of the old
+buildings, or contemporary record of their arrangement, appears to exist.
+My only reason for drawing attention to a structure which has no real
+connexion with my subject is that the illustrious De Rossi considers that
+in the second line of the above quotation the word column signifies
+colonnades; and that Damasus took as his model one of the great pagan
+libraries of Rome which, in its turn, had been derived from the typical
+library at Pergamon[107]. According to this view he began by building, in
+the centre of the area selected, a basilica, or hall of basilican type,
+dedicated to S. Lawrence; and then added, on the north and south sides, a
+colonnade or loggia from which the rooms occupied by the records would be
+readily accessible. This opinion is also held by Signor Lanciani, who
+follows De Rossi without hesitation. I am unwilling to accept a theory
+which seems to me to have no facts to support it; and find it safer to
+believe that the line in question refers either to the aisles of the
+basilica, or to such a portico in front of it as may be seen at San
+Clemente and other early churches.
+
+A letter to Eucherius, Bishop of Lyons in A.D. 441, from a correspondent
+named Rusticus, gives a charming picture of a library which he had visited
+in his young days, say about A.D. 400:
+
+    I am reminded of what I read years ago, hastily, as a
+    boy does, in the library of a man who was learned in
+    secular literature. There were there portraits of
+    Orators and also of Poets worked in mosaic, or in wax of
+    different colours, or in plaster, and under each the
+    master of the house had placed inscriptions noting their
+    characteristics; but, when he came to a poet of
+    acknowledged merit, as for instance, Virgil, he began as
+    follows:
+
+  Virgilium vatem melius sua carmina laudant;
+  In freta dum fluvii current, dum montibus umbrae
+  Lustrabunt convexa, polus dum sidera pascet,
+  Semper honos nomenque tuum laudesque manebunt.
+
+  Virgil's own lines most fitly Virgil praise:
+  As long as rivers run into the deep,
+  As long as shadows o'er the hillside sweep,
+  As long as stars in heaven's fair pastures graze,
+  So long shall live your honour, name, and praise.[108]
+
+
+Agapetus, who was chosen Pope in 535, and lived for barely a year, had
+intended, in conjunction with Cassiodorus, to found a college for teachers
+of Christian doctrine. He selected for this purpose a house on the Caelian
+Hill, afterwards occupied by S. Gregory, and by him turned into a
+monastery. Agapetus had made some progress with the scheme, so far as the
+library attached to the house was concerned, for the author of the
+Einsiedlen MS., who visited Rome in the ninth century, saw the following
+inscription "in the library of S. Gregory"--i.e. in the library attached
+to the Church of San Gregorio Magno.
+
+  SANCTORVM VENERANDA COHORS SEDET ORDINE LONGO
+    DIVINAE LEGIS MYSTICA DICTA DOCENS
+  HOS INTER RESIDENS AGAPETVS IVRE SACERDOS
+    CODICIBVS PVLCHRVM CONDIDIT ARTE LOCVM
+  GRATIA PAR CVNCTIS SANCTVS LABOR OMNIBVS VNVS
+    DISSONA VERBA QVIDEM SED TAMEN VNA FIDES
+
+  Here sits in long array a reverend troop
+  Teaching the mystic truths of law divine:
+  'Mid these by right takes Agapetus place
+  Who built to guard his books this fair abode.
+  All toil alike, all equal grace enjoy--
+  Their words are different, but their faith the same.
+
+These lines undoubtedly imply that there was on the walls a long series of
+portraits of the Fathers of the Church, including that of Agapetus
+himself, who had won his right to a place among them by building a
+sumptuous home for their works[109].
+
+The design of Agapetus, interrupted by death, was carried forward by his
+friend Cassiodorus, at a place in South Italy called Vivarium, near his
+own native town Squillace. Shortly after his final retirement from court,
+A.D. 538, Cassiodorus established there a brotherhood, which, for a time at
+least, must have been a formidable rival to that of S. Benedict. A library
+held a prominent place in his conception of what was needed for their
+common life. He says little about its size or composition, but much
+rhetoric is expended on the contrivances by which its usefulness and
+attractiveness were to be increased. A staff of bookbinders was to clothe
+the manuscripts in decorous attire; self-supplying lamps were to light
+nocturnal workers; sundials by day, and water-clocks by night, enabled
+them to regulate their hours. Here also was a _scriptorium_, and it
+appears probable that between the exertions of Cassiodorus and his friend
+Eugippius, South Italy was well supplied with manuscripts[110].
+
+These attempts to snatch from oblivion libraries which, though probably
+according to our ideas insignificant, were centres of culture in the
+darkest of dark ages, will be illustrated by the fuller information that
+has come down to us respecting the library of Isidore, Bishop of Seville
+600-636. The "verses composed by himself for his own presses," to quote
+the oldest manuscript containing them[111], have been preserved, with the
+names of the writers under whose portraits they were inscribed.
+
+There were fourteen presses, arranged as follows:
+
+  I.       Origen.
+  II.      Hilary.
+  III.     Ambrose.
+  IV.      Augustine.
+  V.       Jerome.
+  VI.      Chrysostom.
+  VII.     Cyprian.
+  VIII.    Prudentius.
+  IX.      Avitus, Juvencus, Sedulius.
+  X.       Eusebius, Orosius.
+  XI.      Gregory.
+  XII.     Leander.
+  XIII.    Theodosius, Paulus, Gaius.
+  XIV.     Cosmas, Damian, Hippocrates, Galen.
+
+These writers are probably those whom Isidore specially admired, or had
+some particular reason for commemorating. The first seven are obvious
+types of theologians, and the presses over which they presided were
+doubtless filled not merely with their own works, but with bibles,
+commentaries, and works on Divinity in general. Eusebius and Orosius are
+types of ecclesiastical historians; Theodosius, Paulus, and Gaius, of
+jurists; Cosmas, Damian, etc. of physicians. But the Christian poets
+Prudentius to Sedulius could hardly have needed two presses to contain
+their works; nor Gregory the Great the whole of one. Lastly, Leander,
+Isidore's elder brother, could only owe his place in the series to
+fraternal affection. I conjecture that these portraits were simply
+commemorative; and that the presses beneath them contained the books on
+subjects not suggested by the rest of the portraits, as for example,
+secular literature, in which Isidore was a proficient.
+
+The sets of verses[112] begin with three elegiac couplets headed _Titulus
+Bibliothece_, probably placed over the door of entrance.
+
+  Sunt hic plura sacra, sunt hic mundalia plura:
+    Ex his si qua placent carmina, tolle, lege.
+  Prata vides, plena spinis, et copia florum;
+    Si non vis spinas sumere, sume rosas.
+  Hic geminae radiant veneranda volumina legis;
+    Condita sunt pariter hic nova cum veteri.
+
+  Here sacred books with worldly books combine;
+  If poets please you, read them; they are thine.
+  My meads are full of thorns, but flowers are there;
+  If thorns displease, let roses be your share.
+  Here both the Laws in tomes revered behold;
+  Here what is new is stored, and what is old.
+
+The authors selected are disposed of either in a single couplet, or in
+several couplets, according to the writer's taste. I will quote the lines
+on S. Augustine:
+
+  Mentitur qui [te] totum legisse fatetur:
+    An quis cuneta tua lector habere potest?
+  Namque voluminibus mille, Augustine, refulges,
+    Testantur libri, quod loquor ipse, tui.
+  Quamvis multorum placeat prudentia libris,
+    Si Augustinus adest, sufficit ipse tibi.
+
+  They lie who to have read thee through profess;
+  Could any reader all thy works possess?
+  A thousand scrolls thy ample gifts display;
+  Thy own books prove, Augustine, what I say.
+  Though other writers charm with varied lore,
+  Who hath Augustine need have nothing more.
+
+The series concludes with some lines "To an Intruder (_ad
+Interventorem_)," the last couplet of which is too good to be omitted:
+
+  Non patitur quenquam coram se scriba loquentem;
+    Non est hic quod agas, garrule, perge foras.
+
+  A writer and a talker can't agree:
+  Hence, idle chatterer; 'tis no place for thee.
+
+[Illustration: Fig. 16. Great Hall of the Vatican Library, looking west.]
+
+With these three examples I conclude the section of my work which deals
+with what may be called the pagan conception of a library in the fulness
+of its later development. Unfortunately, no enthusiast of those distant
+times has handed down to us a complete description of his library, and we
+are obliged to take a detail from one account, and a detail from another,
+and so piece the picture together for ourselves. What I may call "the
+pigeon-hole system," suitable for rolls only, was replaced by presses
+which could contain rolls if required, and certainly did (as shewn (fig.
+13) on the sarcophagus of the Villa Balestra), but which were specially
+designed for _codices_. These presses were sometimes plain, sometimes
+richly ornamented, according to the taste or the means of the owner. With
+the same limitations the floor, the walls, and possibly the roof also were
+decorated. Further, it was evidently intended that the room selected for
+books should be used for no other purpose; and, as the books were hidden
+from view in their presses, the library-note, if I may be allowed the
+expression, was struck by numerous inscriptions, and by portraits in
+various materials, representing either authors whose works were on the
+shelves, or men distinguished in other ways, or friends and relations of
+the owner of the house.
+
+The Roman conception of a library was realised by Pope Sixtus V., in
+1587[113], when the present Vatican Library was commenced from the design
+of the architect Fontana. I am not aware that there is any contemporary
+record to prove that either the Pope or his advisers contemplated this
+direct imitation; but it is evident, from the most cursory inspection of
+the large room (fig. 16), that the main features of a Roman library are
+before us[114]; and perhaps, having regard to the tendency of the
+Renaissance, especially in Italy, it would be unreasonable to expect a
+different design in such a place, and at such a period.
+
+This noble hall--probably the most splendid apartment ever assigned to
+library-purposes--spans the Cortile del Belvedere from east to west, and
+is entered at each end from the galleries connecting the Belvedere with
+the Vatican palace. It is 184 feet long, and 57 feet wide, divided into
+two by six piers, on which rest simple quadripartite vaults. The north and
+south walls are each pierced with seven large windows. No books are
+visible. They are contained in plain wooden presses 7 feet high and 2 feet
+deep, set round the piers, and against the walls between the windows. The
+arrangement of these presses will be understood from the general view
+(fig. 16), and from the view of a single press open (fig. 17).
+
+In the decoration, with which every portion of the walls and vaults is
+covered, Roman methods are reproduced, but with a difference. The great
+writers of antiquity are conspicuous by their absence; but the
+development of the human race is commemorated by the presence of those
+to whom the invention of letters is traditionally ascribed; the walls
+are covered with frescoes representing the foundation of the great
+libraries which instructed the world, and the assemblies of the Councils
+which established the Church; the vaults record the benefits conferred
+on Rome by Sixtus V., in a series of historical views, one above each
+window; and over these again are stately figures, each embodying some
+sacred abstraction--"Thrones, dominations, princedoms, virtues,
+powers"--with angels swinging censers, and graceful nymphs, and laughing
+satyrs--a strange combination of paganism and Christianity--amid wreaths
+of flowers, and arabesques twining round the groups and over every
+vacant space, partly framing, partly hiding, the heraldic devices which
+commemorate Sixtus and his family:--a web of lovely forms and brilliant
+colours, combined in an intricate and yet orderly confusion.
+
+It may be questioned whether such a room as this was ever intended for
+study. The marble floor, the gorgeous decoration, the absence of all
+appliances for work in the shape of desks, tables, chairs, suggest a place
+for show rather than for use. The great libraries of the Augustan age, on
+the other hand, seem, so far as we can judge, to have been used as
+meeting-places and reading-rooms for learned and unlearned alike. In
+general arrangement and appearance, however, the Vatican Library must
+closely resemble its imperial predecessors.
+
+[Illustration: Fig. 17. A single press in the Vatican Library, open.
+
+From a photograph.]
+
+
+FOOTNOTES:
+
+[1] _Discoveries in the Ruins of Nineveh and Babylon_, 2 vols., 8vo. Lond.
+1853. Vol. II., p. 343.
+
+[2] Ezra, vi. I.
+
+[3] Mr Layard gives a view of the interior of one of these rooms (p. 345)
+after it had been cleared of rubbish.
+
+[4] _La Bibliotheque du Palais de Ninive_, par M. Joachim Menant. 8vo.
+Paris, 1880, p. 32.
+
+[5] The two languages are the ancient Sumerian and the more modern
+Assyrian.
+
+[6] Athenaeus, Book 1., Chap. 4.
+
+[7] _Noct. Att._ Book VII., Chap. 17. Libros Athenis disciplinarum
+liberalium publice ad legendum praebendos primus posuisse dicitur
+Pisistratus tyrannus.
+
+[8] Xenophon, _Memorabilia_, Book IV., Chap. 2.
+
+[9] Aristoph. _Ranae_, 1407-1410, translated by J. H. Frere. The passage
+has been quoted by Castellani, _Biblioteche nell' Antichita_, 8vo.,
+Bologna, 1884, pp. 7, 8, and many others.
+
+[10] Strabo, ed. Kramer, Berlin, 8vo., 1852, Book XIII., Chap. I, Sec. 54.
+[Greek: protos hon hismen synagagon biblia, kai didaxas tous en Aigypto
+basileas bibliothekes syntaxin.]
+
+[11] Book XIII., Chap. 4, Sec. 2.
+
+[12] Book XVII., Chap. 1, Sec. 8. [Greek: ton de basileion meros esti kai to
+Mouseion, echon peripaton kai exedran kai oikon megan, en ps to sussition
+ton metechonton tou Mouseion philologon andron esti de te sunodo taute kai
+chremata koina kai iereus o epi to Monseio, tetagmenos tote men upo ton
+Basileon nun d upo Kaisaros.]
+
+[13] One of the anonymous lives of Apollonius Rhodius states that he
+presided over the Museum Libraries ([Greek: ton bibliothekon ton
+Mouseion]).
+
+[14] Epiphanius, De Pond. et Mens., Chap. 12. [Greek: eti de usteron kai
+etera egeneto bibliotheke en to Serateio, mikrotera tes protes, etis
+thugater onomasthe autes.]
+
+[15] Ammianus Marcellinus, Book XXII., Chap. 16, Sec. 12. Atriis columnariis
+amplissimis et spirantibus signorum figmentis ita est exornatum, ut post
+Capitolium quo se venerabilis Roma in aeternum attollit, nihil orbis
+terrarum ambitiosius cernat. See also Aphthonius, _Progymn._ C. XII. ed.
+Walz, _Rhetores Graeci_, i. 106.
+
+[16] Pliny, _Hist. Nat._, Book V., Chap. 30. Longeque clarissimum Asiae
+Pergamum.
+
+[17] Strabo, Book XIII., Chap. 4, Sec. 2. After recounting the successful
+policy of Eumenes II. towards the Romans, he proceeds: [Greek: kateskenase
+de ontos ten polin, kai to Nikephorion alsei katephuteuse, kai anathemata
+kai bibliothekas kai ten epi tosonde katoikian tou Pergamon ten nun ousan
+ekeinos prosephilokalese].
+
+[18] _De Architectura_, Book VII., Praefatio. The passage is quoted in the
+next note.
+
+[19] Pliny, _Hist. Nat._, Book XIII., Chap. 11. Mox aemulatione circa
+bibliothecas regum Ptolemaei et Eumenis, supprimente chartas Ptolemaeo, idem
+Varro membranas Pergami tradidit repertas. Vitruvius, on the other hand
+(_ut supra_) makes Ptolemy found the library at Alexandria as a rival to
+that at Pergamon. Reges Attalici magnis philologiae dulcedinibus inducti
+cum egregiam bibliothecam Pergami ad communem delectationem instituissent,
+tune item Ptolemaeus, infinito zelo cupiditatisque incitatus studio, non
+minoribus industriis ad eundem modum contenderat Alexandriae comparare.
+
+[20] Plutarch, _Antonius_, Chap. 57. To a list of accusations against
+Antony for his subservience to Cleopatra, is added the fact: [Greek:
+charisasthai men aute tas ek Pergamon bibliothekas, en ais eikosi muriades
+biblon aplon esan].
+
+[21] _Altertuemer von Pergamon_, Fol., Berlin, 1885, Band 11. Das Heiligtum
+der Athena Polias Nikephoros, von Richard Bohn. The ground-plan (fig. 2)
+is reduced from Plate III. in that volume.
+
+[22] _Die Pergamenische Bibliothek._ Sitzungsberichte der Koenigl. Preuss.
+Akad. der Wiss. zu Berlin, 1884, II. 1259-1270.
+
+[23] In my first lecture as Sandars Reader at Cambridge in the Lent Term,
+1900, I pointed out that this enclosure was of about the same size as
+Nevile's Court at Trinity College, if to the central area there we add the
+width of one of the cloisters; and that the temple of Athena was of
+exactly the same width as the Hall, but about 15 feet shorter. Nevile's
+Court is 230 feet long from the inside of the pillars supporting the
+Library to the wall of the Hall; and it has a mean breadth of 137 feet. If
+the width of the cloister, 20 feet, be added to this, we get 157 feet in
+lieu of the 162 feet at Pergamon.
+
+[24] Now in the Royal Museum, Berlin.
+
+[25] Similar sockets have been discovered in the walls of the chambers
+connected with the Stoa of King Attalus at Athens. These chambers are
+thought to have been shops, and the sockets to have supported shelves on
+which wares were exposed for sale. Conze, ut supra, p. 1260; Adler, _Die
+Stoa des Koenigs Attalos zu Athen_, Berlin, 1874; Murray's _Handbook for
+Greece_, ed. 1884, 1. p. 255.
+
+[26] Suetonius, _Caesar_, Chap. 44.
+
+[27] Pliny, _Nat. Hist._, Book VII., Chap. 30; Book XXXV., Chap. 2.
+
+[28] Suetonius, _Augustus_, Chap. 29.
+
+[29] Isidore, _Origines_, Book VI., Chap. 5.
+
+[30] Lanciani, _Ruins and Excavations of Ancient Rome_, ed. 1897, p. 471.
+Middleton, Ancient Rome, 1892, II. 204, 205.
+
+[31] Nibby, _Roma Antica_, p. 601. [Augusto] vi aggiunse un luogo per
+conversare chiamato _Schola_.
+
+[32] Vell. Pat., Book 1., Chap. II. Hic est Metellus Macedonicus qui
+porticus quae fuere circumdatae duabus aedibus sine inscriptione positis, quae
+nunc Octaviae porticibus ambiuntur, fecerat.
+
+[33] Suet. _De Illustr. Gramm._ c. 2.
+
+[34] Middleton, _Ancient Rome_, 1892, II. 205.
+
+[35] I have taken these dimensions from Middleton's Plan of the Palatine
+Hill (_ut supra_, p. 156), but until the site has been excavated they must
+be more or less conjectural.
+
+[36] Middleton, _Ibid._, I. 185-188. The evidence for the portraits rests
+on the following passage in the _Annals_ of Tacitus ii. 37, where he is
+relating how Hortalus, grandson of the orator Hortensius, being reduced to
+poverty, came with his four children to the Senate: "igitur quatuor filiis
+ante limen curiae adstantibus, loco sententiae, cum in Palatio senatus
+haberetur, modo Hortensii inter oratores sitam imaginem, modo Augusti,
+intuens, ad hunc modum coepit."
+
+[37] Pausanias, _Attica_, Book I., Chap. 18, Sec. 9, ed. J. G. Frazer, Vol.
+I., p. 26.
+
+[38] The above description is derived from Miss Harrison's book, _ut
+supra_, pp. 195-198; Pausanias, ed. J. G. Frazer, Vol. II., pp. 184, 185.
+
+[39] Eusebius, _Chronicon_, ed. Schoene, Vol. II., p. 167.
+
+[40] Middleton, _Ancient Rome_, I. 186.
+
+[41] _Tristia_, III. 59.
+
+[42] _Epist._, I. 3. 17.
+
+[43] _Noctes Atticae_, V. 21. 9.
+
+[44] Vopiscus, _Hist. Aug. Script._, II. 637.
+
+[45] Aulus Gellius, _ut supra_, XVI. 8. 2.
+
+[46] _Ibid._, XI. 17. 1.
+
+[47] Flavii Vopisci _Tacitus_, c. 8.
+
+[48] Id., _Aurelianus_, c. 1.
+
+[49] _Noctes Atticae_, XIX. 5.
+
+[50] Plutarch, _Lucullus_, Chap. XLII. [Greek: Spondes d' axia kai logoy
+ta peri ten ton biblion kataskeuen. kai gar polla, kai gegrammena kalos,
+sunege, e te chresis en philotimotera tes kteseos, aneimenon pasi ton
+bibliothekon, kai ton peri autas peripaton kai scholaoterlon akolutos
+upodechomenon tous Ellenas, osper eis Mouson ti katagogion ekeise
+phoitontas kai sundiemereuontas allelois, apo ton allon chreion asmenos
+apotrechontas].
+
+[51] _De Tranquillitate Animi_, Chap. IX. Studiorum quoque quae
+liberalissima impensa est, tamdiu rationem habet quamdiu modum. Quo
+innumerabiles libros et bibliothecas quarum dominus vix tota vita indices
+perlegit? onerat discentem turba, non instruit, multoque satius est paucis
+te auctoribus tradere, quam errare per multos. Quadraginta milia librorum
+Alexandriae arserunt: pulcherrimum regiae opulentiae monumentum alius
+laudaverit, sicut et Livius, qui _elegantiae regum curaeque egregium id
+opus_ ait _fuisse_: non fuit elegantia illud aut cura, sed studiosa
+luxuria, immo ne studiosa quidem, quoniam non in studium sed in
+spectaculum comparaverant sicut plerisque ignaris etiam servilium
+literarum libri non studiorum instrumenta sed coenationum ornamenta sunt.
+Paretur itaque librorum quantum satis sit, nihil in adparatum. "Honestius"
+inquis "hoc impensis quas in Corinthia pictasque tabulas effuderim."
+Vitiosum est ubique quod nimium est. Quid habes cur ignoscas homini
+armaria citro atque ebore captanti, corpora conquirenti aut ignotorum
+auctorum aut improbatorum et inter tot milia librorum oscitanti, cui
+voluminum suorum frontes maxime placent titulique? Apud desidiosissimos
+ergo videbis quicquid orationum historiarumque est, tecto tenus exstructa
+loculamenta. Iam enim inter balnearia et thermas bibliotheca quoque ut
+necessarium domus ornamentum expolitur. Ignoscerem plane, si studiorum
+nimia cupidine oriretur: nunc ista conquisita, cum imaginibus suis
+descripta, sacrorum opera ingeniorum in speciem et cultum parietum
+comparantur. With this passage may be compared Lucian's tract: [Greek:
+Eros apaideuton kai polla biblia onoumenon.] My friend Mr F. Darwin in
+informs me that the Latin citrus, or Greek [Greek: kedros], is the
+coniferous tree called _Thuia articulata = Callitris quadrivalvis_. See
+Helm, _Kulturpflanzen_, Berl. 1894. Engl. Trans, p. 431.
+
+[52] Lanciani, _Ancient Rome_, 8vo. 1888, p. 193.
+
+[53] _Ancient Rome_, ed. 1892, ii. 254.
+
+[54] _Phil. Trans._, Vol. XLVIII., Pt 2, p. 634.
+
+[55] _Ibid._, p. 821.
+
+[56] _Ibid._, p. 825.
+
+[57] _Opere di G. G. Winckelmann_, Prato, 1831, VII. 197.
+
+[58] Lanciani, _Ruins of Ancient Rome_, pp. 213-217. He describes and
+figures Ligorio's elevation, from MS. Vat. 3439, in _Commissione
+Archeologica Comunale di Roma_, Ann. X. Ser. II., 1882. pp. 29-54. See
+also Middleton, _Ancient Rome_, 1892, II. 15-19. The plan of Rome called
+the Capitoline Plan, because it is now preserved in the Museum of the
+Capitol, was fixed to the north-east wall (fig. 7. 3).
+
+[59] The average length of a roll may be taken at 20-30 ft.; the width at
+9-11 in. See _The Palaeography of Greek Papyri_, by F. G. Kenyon, Oxf.
+1899, Chap. II.
+
+[60] The breadth of these columns from left to right was not great, and
+their length was considerably shorter than the width of the roll, as a
+margin was left at the top and bottom.
+
+[61] _Antichita di Ercolano_, Fol. Napoli, 1779. Vol. V., Tavola 55, p.
+243.
+
+[62] In this statue the roll is a restoration, but a perfectly correct
+one. It is original, and slightly different, in the replica of the statue
+at Knowle Park, Sevenoaks, Kent. See a paper on this statue by J. E.
+Sandys. Litt.D. in _Melanges Weil_, 1898. pp. 423-428.
+
+[63] Horace, _Epodes_, XIV. 5-8. Comp. Martial, _Epigrams_, IV. 89. Ohe!
+libelle, Iam pervenimus usque ad umbilicos.
+
+[64] _Tristia_, I. i. 109.
+
+[65] Catullus (XXII. 7) says of a roll which had been got up with special
+smartness:
+
+  Novi umbilici, lora rubra, membrana
+  Directa plumbo, et pumice omnia aequata.
+
+[66] Lucian, _Adv. Indoct._, Chap. 16.
+
+[67] _Epigrams_, X. 93.
+
+[68] My friend M. R. James, Litt.D., of King's College, has kindly given
+me the following note: In the apocryphal Assumption of Moses Joshua is
+told to 'cedar' Moses' words (= rolls), and to lay them up in Jerusalem:
+"quos ordinabis et chedriabis et repones in vasis fictilibus in loco quem
+fecit [Deus] ab initio creaturae orbis terrarum." Assump. Mos., ed.
+Charles, I. 17. See also Dueange, s.v. Cedria. Vitruvius (II. ix. 13)
+says: "ex cedro oleum quod cedreum dicitur nascitur, quo reliquae res cum
+sint unctae, uti etiam libri, a tineis et earie non laeduntur." See above,
+p. 22.
+
+[69] _Epigrams_, III. ii. 6.
+
+[70] Ovid (_Tristia_, I. i. 105) addressing his book, says:
+
+  Cum tamen in nostrum fueris penetrale receptus
+    Contigerisque tuam, scrinia curva, domum.
+
+
+[71] _Epigrams_, I. 117.
+
+[72] _Epigrams_, VII. 17.
+
+[73] Suet. _Aug._ 31. Libros Sibyllinos condidit duobus _forulis_ auratis
+sub Palatini Apollinis basi.
+
+[74] _Sat._ III. 219.
+
+[75] _Georg._ IV. 250.
+
+[76] _De Re Rustica_, VIII. 8. Paxillis adactis tabulae superponantur; quae
+vel loculamenta quibus nidificent aves, vel fictilia columbaria,
+recipiant.
+
+[77] _Ibid._, IX. 12. 2. The writer, having described bees swarming,
+proceeds: protinus custos novum loculamentum in hoc praeparatum perlinat
+intrinsecus praedictis herbis ... tum manibus aut etiam trulla congregatas
+apes recondat, atque ... diligenter compositum et illitum vas ... patiatur
+in eodem loco esse dum advesperascat. Primo deinde crepusculo transferat
+et reponat in ordinem reliquarum alvorum.
+
+[78] Vegetius, _Art. Vet._, III. 32. Si iumento loculamenta dentium vel
+dentes doluerint.
+
+[79] Vitruvius, _De Arch._, ed. Schneider, X. 9. Insuper autem ad capsum
+redae loculamentum firmiter figatur habens tympanum versatile in cultro
+collocatum, etc.
+
+[80] Dr. Sandys, in his edition of Aristotle's _Constitution of Athens_,
+1893, p. 174, has shewn that in the office of the public clerk a similar
+contrivance was used, called [Greek: epistulion]: "a shelf supporting a
+series of pigeon-holes, and itself supported by wooden pedestals."
+
+[81] Ulpian, _Digest_, 33. 7. 12. In emptionem domus et specularia et
+pegmata cedere solent, sive in aediticiis sint posita, sive ad tempus
+detracta.
+
+[82] _Ibid._, 29. 1. 17. Reticuli circa columnas, plutei circa parietes,
+item cilicia, vela, aedium non sunt.
+
+[83] _Sat._ II. 4. I do not think that these lines refer to a library. The
+whole house, not a single room in it, is full of plaster busts of
+philosophers.
+
+[84] _Ep._ cv. (ed. Billerbeck); _Ad Att._ IV. 4, p. 2.
+
+[85] _Ep._ cvi. (_ibid._); _Ad Att._ IV. 5.
+
+[86] _Ep._ cxi. (_ibid._); _Ad Att._ IV. 8.
+
+[87] This cut is given in _Antiquitatum et Annalium Trevirensium libri_
+XXV. Auctoribus RR. PP. Soc. Jesu P. Christophoro Browero, et P. Jacobo
+Masenio. 2 v. fol. Leodii, 1670. It is headed: Schema voluminum in
+bibliothecam (sic) ordine olim digestorum Noviomagi in loco Castrorum
+Constantini M. hodiedum in lapide reperto excisum. See also C. G. Schwarz,
+_De Ornamentis Librorum_, 4to, Lips. 1756, pp. 86, 172, 231, and Tab. II.,
+fig. 4. I learnt this reference from Sir E. M. Thompson's _Handbook of
+Greek and Latin Palaeography_, ed. 2, 1894, p. 57, _note_. The Director of
+the Museum at Treves informs me that all the antiquities discovered at
+Neumagen were destroyed in the seventeenth century.
+
+[88] See above, p. 11.
+
+[89] _Ibid._, p. 12.
+
+[90] _Epigrams_, Lib. IX. _Introduction_.
+
+[91] The whole relief is figured in Seyffert, _Dictionary of Classical
+Antiquities_, ed. Nettleship and Sandys, p. 649.
+
+[92] _De Architectura_, Lib. VII, Pref. [Aristophanes] e certis amiariis
+infinita volumina eduxit.
+
+[93] _Digesta Justiniani Augusti_, ed. Mommsen. 8vo. Berlin, 1870. Vol.
+II. p. 88. Book XXXII. 52.
+
+[94] This is the date of the _Columna cochlis_. Middleton's Rome, II. 24
+note.
+
+[95] Nibby, _Roma Antica_, 8vo. Roma, 1839, p. 188.
+
+[96] _Epist._ II. 17. 8. Parieti eius [cubiculi mei] in bibliothecae
+speciem armarium insertum est quod non legendos libros sed lectitandos
+capit.
+
+[97] I should not have known of the existence of this sarcophagus had it
+not been figured, accurately enough on the whole, in _Le Palais de
+Scaurus_, by Mazois, published at Paris in 1822. The sarcophagus had
+passed through the hands of several collectors since Mazois figured it,
+and I had a long and amusing search for it.
+
+[98] _Mittheilungen des K. D. Archaeologischen Instituts Rom_, 1900, Band
+XV. p. 171. Der Sarkophag eines Arztes.
+
+[99] The inscription is printed in full in _Antike Bilderwerke in Rom ...
+beschrieben von Friedrich Matz., und F. von Duhn_, 3 vols., 8vo. Leipzig,
+1881, Vol. II. p. 346, No. 3127^*.
+
+[100] Garrucci, _Arte Christiana_, Vol. IV. p. 39. It would appear from
+some curious drawings on glass figured by Garrucci, _ut supra_ Pl. 490,
+that the Jews used presses of similar design in their synagogues to
+contain the rolls of the law.
+
+[101] The original of this picture is 18 in. high by 9-3/4 in. broad,
+including the border. It could not be photographed, and therefore, through
+the kind offices of Miss G. Dixon, and Signor Biagi, Librarian of the
+Laurentian Library, the services of a thoroughly capable artist, Professor
+Attilio Formilli, were secured to make an exact copy in water colours.
+This he has done with singular taste and skill. My figure has been reduced
+from this copy. The press has also been figured in outline by Garrucci,
+_Arte Christiana_, Vol. III., Pl. 126.
+
+[102] The romantic story of the _Codex Amiatinus_ is fully narrated by Mr
+H. J. White in _Studia Biblica et Ecclesiastica_, 8vo. Oxf. 1890, II. pp.
+273-308.
+
+[103] The _Octateuch_, or, the five books of Moses, with the addition of
+Joshua, Judges, and Ruth.
+
+[104] _Consol. Philosoph._, Book I. Ch. 5. Nec bibliothecae potius comptos
+ebore ac vitro parietes quam tuae mentis sedem requiro.
+
+[105] _Origines_, Book VI. Ch. ii. Cum peritiores architecti neque aurea
+lacunaria ponenda in bibliothecis putent neque pavimenta alia quam a
+Carysteo marmore, quod auri fulgor hebetat et Carystei viriditas reficiat
+oculos.
+
+[106] _Apol. adv. Rufinum_, ii. 20: Opera, ed. Vallarsi, II. 549.
+
+[107] _De Origine Historia Indicibus scrinii et bibliothecae Sedis
+Apostolicae commentatio Ioannis Baptistae de Rossi...._ 4to. Romae, 1886,
+Chapter V. A brief, but accurate, summary of his account will be found in
+Lanciani's _Ancient Rome_, 8vo. 1888, pp. 187-190. Father C. J. Ehrle has
+given me much help on this difficult question.
+
+[108] _Sidonii Apollinaris Opera_, ed. Sirmondi. 4to. Paris, 1652. Notes,
+p. 33. The words of this letter, which I have translated very freely, are
+as follows:
+
+Sed dum haec tacitus mecum revolvo, occurrit mihi quod in Bibliotheca
+studiosi saecularium litterarum puer quondam, ut se aetatis illius
+curiositas habet, praetereundo legissem. Nam cum supra memoratae aedis
+ordinator ac dominus, inter expressas lapillis aut ceris discoloribus,
+formatasque effigies vel Oratorum vel etiam Poetarum specialia singulorum
+autotypis epigrammata subdidisset; ubi ad praeiudicati eloquii venit
+poetam, hoc modo orsus est.
+
+The last three lines of the inscription are from the _AEneid_, Book I. 607.
+I owe the most important part of the translation of Rusticus to Lanciani,
+_ut supra_, p. 196: that of Virgil is by Professor Conington.
+
+[109] I have taken the text of the inscription, and my account of Agapetus
+and his work, from De Rossi, _ut supra_, Chap. VIII. p. lv.
+
+[110] Cassiodorus, _De Inst. Div. Litt._ Chap. XXX. pp. 1145, 46. Ed.
+Migne. De Rossi, _ut supra_.
+
+[111] Versus qui scripti sunt in armaria sua ab ipso [Isidoro] compositi.
+_Cod. Vat. Pal._ 1877, a MS. which came from Lorch in Germany. De Rossi,
+_ut supra_. Chap. VII.
+
+[112] _Isidori Opera Omnia_, 410. Rome, 1803. Vol. VII. p. 179.
+
+[113] See Hen. Stevenson, _Topografia e Monumenti di Roma nelle Pitture a
+fresco di Sisto V. della Biblioteca Vaticana_, p. 7; in _Al Sommo
+Pontefice Leone XIII. Omaggio Giubilare della Biblioteca Vaticana_, Fol.
+Rome, 1881.
+
+[114] Signor Lanciani (_Ancient Rome_, p. 195) was the first to suggest a
+comparison between the Vatican Library and those of ancient Rome.
+
+
+
+
+APPENDIX TO CHAPTER I.
+
+DECORATION OF THE VATICAN LIBRARY.
+
+
+The system of decoration carried out in this Library, of which I have just
+given a summary description, is so interesting, and bears evidence of so
+much care and thought, that I subjoin a detailed account of it, which, by
+the kindness of Father Ehrle, prefect of the Library, I was enabled to
+draw up during my late visits to Rome. The diagrammatic ground-plan (fig.
+18) which accompanies this description, if studied in conjunction with the
+general view (fig. 16), will make the relation of the subjects to each
+other perfectly clear. The visitor is supposed to enter the Library from
+the vestibule at the east end; and the notation of the piers, windows,
+wall-frescoes, etc., begins from the same end. Further, the visitor is
+supposed to examine the east face of each pier first, and then to turn to
+the left.
+
+I will begin with the figures on the central piers and half-piers. These
+figures are painted in fresco, of heroic size: and over their heads are
+the letters which they are supposed to have invented.
+
+1. PILASTER AGAINST EAST WALL.
+
+  ADAM.
+
+  A tall stalwart figure dressed in short chiton. He holds an apple in his
+  left hand, and a mattock in his right.
+
+  Adam divinitus edoctus primus scientiarum et litterarum inventor.
+
+2. FIRST PIER.
+
+  (_a_) ABRAHAM.
+
+  Abraham Syras et Chaldaicas litteras invenit.
+
+  (_b_) THE SONS OF SETH.
+
+  Filii Seth columnis duabus rerum coelestium disciplinam inscribunt.
+
+  (_c_) ESDRAS.
+
+  Esdras novas Hebraeorum litteras invenit.
+
+  (_d_) MOSES.
+
+  Moyses antiquas Hebraicas litteras invenit.
+
+On the cornice of the presses round this pier are the following
+inscriptions:
+
+  (_a_) Doctrina bona dabit gratiam. Prov. xiii. 15.
+  (_b_) Volo vos sapientes esse in bono. Rom. xvi. 19.
+  (_c_) Impius ignorat scientiam. Prov. xxix. 7.
+  (_d_) Cor sapientis quaerit doctrinam. Prov. xv. 14.
+
+3. SECOND PIER.
+
+  (_a_) MERCURY.
+
+  Mercurius Thovt AEgyptiis sacras litteras conscripsit.
+
+  (_b_) ISIS.
+
+  Isis regina AEgyptiarum litterarum inventrix.
+
+  (_c_) MENON.
+
+  Menon Phoroneo aequalis litteras in AEgypto invenit.
+
+  (_d_) HERCULES.
+
+  Hercules aegyptius Phrygias litteras invenit.
+
+  On the cornice of the presses:
+
+  (_a_) Recedere a malo intelligentia. Job xxviii. 28.
+  (_b_) Timere Deum ipsa est sapientia. Job xxviii. 22.
+  (_c_) Faciendi plures libros nullus est finis. Eccl. xii. 12.
+  (_d_) Dat scientiam intelligentibus disciplinam. Dan. xi. 12.
+
+4. THIRD PIER.
+
+  (_a_) PHOENIX.
+
+  Phoenix litteras Phoenicibus tradidit.
+
+  (_b_) CECROPS.
+
+  Cecrops Diphyes primus Atheniensium rex Graecarum litterarum auctor.
+
+  (_c_) LINUS.
+
+  Linus Thebanus litterarum Graecarum inventor.
+
+  (_d_) CADMUS.
+
+  Cadmus Phoenicis frater litteras xvi in Graeciam intulit.
+
+  On the cornice of the presses:
+
+  (_a_) In malevolam animam non introibit sapientia. Sap. i. 4.
+  (_b_) Habentes solatio sanctos libros. 1 Mach. xii. 9.
+  (_c_) Cor rectum inquirit scientiam. Prov. xxvii. 12.
+  (_d_) Sapientiam qui abiicit infelix est. Sap. iii. 14.
+
+5. FOURTH PIER.
+
+  (_a_) PYTHAGORAS.
+
+  Pythagoras. Y. litteram ad humanae vitae exemplum invenit.
+
+  (_b_) PALAMEDES.
+
+  Palamedes bello Troiano Graecis litteris quattuor adiecit.
+
+  (_c_) SIMONIDES.
+
+  Simonides Melicus quattuor Graecarum litterarum inventor.
+
+  (_d_) EPICHARMUS.
+
+  Epicharmus Siculus duas Graecas addidit litteras.
+
+  On the cornice of the presses:
+
+  (_a_) Qui evitat discere incidet in mala. Prov. vii. 16.
+  (_b_) Non glorietur sapiens in sapientia sua. Ier. ix. 23.
+  (_c_) Si quis indiget sapientia postulet a Deo. Iac. i. 15.
+  (_d_) Melior est sapientia cunctis pretiosissimis. Prov. viii. 11.
+
+6. FIFTH PIER.
+
+  (_a_) EVANDER.
+
+  Evander Carment. F. aborigines litteras docuit.
+
+  (_b_) NICOSTRATA.
+
+  Nicostrata Carmenta latinarum litterarum inventrix.
+
+  (_c_) DEMARATUS.
+
+  Demaratus Corinthius etruscarum litterarum auctor.
+
+  (_d_) CLAUDIUS.
+
+  Claudius imperator tres novas litteras adinvenit.
+
+  On the cornice of the presses:
+
+  (_a_) Non erudietur qui non est sapiens in bono. Eccl. xxi. 24.
+  (_b_) Viri intelligentes loquantur mihi. Iac. xxxiv. 34.
+  (_c_) Non peribit consilium a sapienti. Ier. xviii. 18.
+  (_d_) Sapientiam atque doctrinam stulti despiciunt. Prov. i. 17.
+
+7. SIXTH PIER.
+
+  (_a_) CHRYSOSTOM.
+
+  S. Io. Chrysostomus litterarum Armenicarum auctor.
+
+  (_b_) VLPHILAS.
+
+  Vlphilas Episcopus Gothorum litteras invenit.
+
+  (_c_) CYRIL.
+
+  S. Cyrillus aliarum Illyricarum litterarum auctor.
+
+  (_d_) JEROME.
+
+  S. Hieronymus litterarum Illyricarum inventor.
+
+  On the cornice of the presses:
+
+  (_a_) Scientia inflat charitas vero aedificat. Cor. viii. 1.
+  (_b_) Sapere ad sobrietatem. Rom. xii. 3.
+  (_c_) Vir sapiens fortis et vir doctus robustus. Prov. xxiv. 5.
+  (_d_) Ubi non est scientia animae non est bonum. Prov. xix. 2.
+
+8. PILASTER AGAINST WEST WALL.
+
+  CHRIST.
+
+  Our Lord is seated. Over His Head [Greek: Alpha], [Greek: Omega]; in His
+  Hand an open book: Ego sum [Greek: Alpha] et [Greek: Omega]; principium
+  et finis. At His Feet: Iesus Christus summus magister, caelestis doctrinae
+  auctor.
+
+  On Christ's right hand is a POPE, standing, with triple cross and tiara.
+
+  Christi Domini vicarius.
+
+  On Christ's left hand is an EMPEROR, also standing, with crown, sword,
+  blue mantle.
+
+  Ecclesiae defensor.
+
+I will now pass to the decoration of the walls. On the south wall, between
+the windows, are representations of famous libraries; on the north wall,
+of the eight general Councils of the Church. Each space is ornamented with
+a broad border, like a picture-frame. In the centre above is the general
+title of the subject or subjects below: e.g. _Bibliotheca Romanorum_; and
+beneath each picture is an inscription describing the special subject.
+Above each window, on the vault, is a large picture, to commemorate the
+benefits conferred by Sixtus V. on Rome and on the world. I will describe
+the libraries first, beginning as before at the east end of the room.
+
+
+I. SIXTUS V. AND THE ARCHITECT FONTANA.
+
+(Right of Entrance.)
+
+    Sixtus V. Pont. M. Bibliothecae Vaticanae aedificationem
+    prescribit.
+
+The Pope is seated. Fontana, a pair of compasses in his right hand, is on
+one knee, exhibiting the plan of the intended library.
+
+
+II. MOSES ENTRUSTS THE TABLES OF THE LAW TO THE LEVITES.
+
+(Left of Entrance.)
+
+    Moyses librum legis Levitis in tabernaculo reponendum
+    tradit.
+
+Moses hands a large folio to a Levite, behind whom more Levites are
+standing. Soldiers, etc., stand behind Moses. Tents in background.
+
+
+III. BIBLIOTHECA HEBRAEA.
+
+(On first wall-space south side.)
+
+    Esdras sacerdos et scriba Bibliothecam sacram restituit.
+
+Ezra, attired in a costume that is almost Roman, stands in the centre of
+the picture, his back half turned to the spectator. An official is
+pointing to a press full of books. Porters are bringing in others.
+
+
+IV. BIBLIOTHECA BABYLONICA.
+
+(Two pictures.)
+
+(_a_) _The education of Daniel in Babylon._
+
+    Daniel et socii linguam scientiamque Chaldaeorum
+    ediscunt.
+
+Daniel and other young men are writing and reading at a table on the right
+of the picture. A group of elderly men in front of them to the left.
+Behind these is a lofty chair and desk, beneath which is a table at which
+a group of boys are reading and writing. In the background a set of
+book-shelves with a desk, quite modern in style.
+
+(_b_) _The search for the decree of Cyrus._
+
+    Cyri decretum de templi restauratione Darii iussu
+    perquiritur.
+
+Darius, crowned, his back half turned to the spectator, is giving orders
+to several young men, who are taking books out of an _armarium_--evidently
+copied from one of the Vatican book-cupboards.
+
+
+V. BIBLIOTHECA ATHENIENSIS.
+
+(Two pictures.)
+
+(_a_) _Pisistratus arranges a library at Athens._
+
+    Pisistratus primus apud Graecos publicam bibliothecam
+    instituit.
+
+Pisistratus, in armour, over which is a blue mantle, is giving orders to
+an old man who kneels before him, holding an open book. Behind the old man
+attendants are placing books on desks--others are reading. Behind
+Pisistratus is a group of officers, and behind them again a book-press
+without doors, and a row of open books on the top.
+
+(_b_) _Restoration of the library by Seleucus._
+
+    Seleucus bibliothecam a Xerxe asportatam referendam
+    curat.
+
+Servants are bringing in books which are being hastily packed into cases.
+In the background is seen the sea, with a ship; and the door of the
+palace. A picture full of life and movement.
+
+
+VI. BIBLIOTHECA ALEXANDRINA.
+
+(Two pictures.)
+
+(_a_) _Ptolemy organises the library at Alexandria._
+
+    Ptolemaeus ingenti bibliotheca instructa Hebreorum libros
+    concupiscit.
+
+Ptolemy, a dignified figure in a royal habit, stands in the centre. He is
+addressing an elderly man who stands on his right. Behind him are three
+porches, within which are seen desks and readers. In the central porch are
+closed presses, with rows of folios on the top. Below are desks, at which
+readers are seated, their backs turned to the presses.
+
+(_b_) _The Seventy Translators bring their work to Ptolemy._
+
+    LXXII interpretes ab Eleazaro missi sacros libros
+    Ptolemaeo reddunt.
+
+Ptolemy is seated on a throne to right of spectator with courtiers on his
+right and left. The messengers kneel before him, and hand him volumes.
+
+
+VII. BIBLIOTHECA ROMANORUM.
+
+(_a_) _Tarquin receives the Sibylline Books._
+
+    Tarquinius Superbus libros Sibyllinos tres aliis a
+    muliere incensis tantidem emit.
+
+Tarquin, seated in the centre of the picture, receives three volumes from
+an aged and dignified woman. In front a lighted brazier in which the other
+books are burning.
+
+
+(_b_) _Augustus opens the Palatine library._
+
+    Augustus Caes. Palatina Bibliotheca magnifice ornata
+    viros litteratos fovet.
+
+Augustus, in armour, with imperial mantle, crown and sceptre, stands left
+of centre. An old man seated at his feet is writing from his dictation.
+Left of the Emperor are five desks; with five closed books lying on the
+top of each. These desks are very probably intended to represent those of
+the Vatican Library as arranged by Sixtus IV. Two men, crowned with
+laurel, are standing behind the last desk, conversing. Behind them again
+is a book-case of three shelves between a pair of columns. Books are lying
+on their sides on these shelves. Beneath the shelves is a desk, with books
+open upon it, and others on their sides beneath it.
+
+
+VIII. BIBLIOTHECA HIEROSOLIMITANA.
+
+_Alexander, Bishop and Martyr, collects a library at Jerusalem._
+
+    S. Alexander Episc. et Mart. Decio Imp. in magna
+    temporum acerbitate sacrorum scriptorum libros
+    Hierosolymis congregat.
+
+A picture full of movement, occupying the whole space between two windows.
+The saint is in the centre of the picture, seated. Young men are bringing
+in the books, and placing them on shelves.
+
+
+IX. BIBLIOTHECA CAESARIENSIS.
+
+_Pamphilus, Priest and Martyr, collects a library at Caesarea._
+
+    S. Pamphilus Presb. et Mart. admirandae sanctitatis et
+    doctrinae Caesareae sacram bibliothecam conficit multos
+    libros sua manu describit.
+
+Pamphilus, in centre of picture, is giving orders to porters who are
+bringing in a basket of books. On his left a large table at which a scribe
+is writing. S. Jerome, seated in right corner of picture, is apparently
+dictating to the scribe. Behind them is a large book-case on the shelves
+of which books lie on their sides; others are being laid on the top by a
+man standing on a ladder. In the left of the picture is a table covered
+with a green cloth, on which book-binders are at work. In front of this
+table a carpenter is preparing boards. In background, seen through a large
+window, is a view of Caesarea.
+
+
+X. BIBLIOTHECA APOSTOLORUM.
+
+_S. Peter orders the safe-keeping of books._
+
+    S. Petrus sacrorum librorum thesaurum in Romana ecclesia
+    perpetuo asservari jubet.
+
+S. Peter is standing before an altar on which are books and a cross. In
+front doctors are writing at a low table.
+
+[A small picture between window and west wall.]
+
+
+XI. BIBLIOTHECA PONTIFICUM.
+
+_The successors of S. Peter carry on the library-tradition._
+
+    Romani pontifices apostolicam bibliothecam magno studio
+    amplificant atque illustrant.
+
+A pope, his left hand resting on a book, is earnestly conversing with a
+cardinal, whose back is half turned to the spectator. Another pope, with
+three aged men, in background.
+
+[A small picture on west wall.]
+
+We will now return to the east end of the room, and take the
+representations of Councils, painted on the east and north walls, in
+chronological order.
+
+
+I. II. CONCILIUM NICAENUM I.
+
+(On east wall.)
+
+_The first Council held at Nicaea_, A.D. 325.
+
+    S. Silvestro PP. Constantino Mag. imp. Christus dei
+    Filius patri consubstantialis declaratur Arii impietas
+    condemnatur.
+
+_The burning of the books of Arius._
+
+    Ex decreto concilii Constantinus Imp. libros Arianorum
+    comburi iubet.
+
+
+III. CONCILIUM CONSTANTINOPOLITANUM I.
+
+_The first Council held at Constantinople_, A.D. 381.
+
+    S. Damaso PP. et Theodosio sen. imp. Spiritus Sancti
+    divinitas propugnatur nefaria Macedonii haeresis
+    extinguitur.
+
+
+IV. CONCILIUM EPHESINUM.
+
+_The Council held at Ephesus_, A.D. 431.
+
+    S. Caelestino PP. et Theodosio Jun. Imp. Nestorius
+    Christum dividens damnatur, B. Maria Virgo dei genetrix
+    praedicatur.
+
+
+V. CONCILIUM CHALCEDONENSE.
+
+_The Council held at Chalcedon_, A.D. 451.
+
+    S. Leone magno PP. et Marciano Imp. infelix Eutyches
+    vnam tantum in Christo post incarnationem naturam
+    asserens confutatur.
+
+
+VI. CONCILIUM CONSTANTINOPOLITANUM II.
+
+_The second Council held at Constantinople_, A.D. 553.
+
+    Vigilio Papa et Iustiniano Imp. contentiones de tribus
+    capitibus sedantur Origenis errores refelluntur.
+
+
+VII. CONCILIUM CONSTANTINOPOLITANUM III.
+
+_The third Council held at Constantinople_, A.D. 680.
+
+    S. Agathone Papa Constantino pogonato Imp. monothelitae
+    haeretici vnam tantum in Christo voluntatem docentes
+    exploduntur.
+
+
+VIII. CONCILIUM NICAENUM II.
+
+_The second Council held at Nicaea_, A.D. 787.
+
+    Hadriano papa Constantino Irenes F. imp. impii
+    iconomachi reiiciuntur sacrarum imaginum veneratio
+    confirmatur.
+
+
+IX. X. CONCILIUM CONSTANTINOPOLITANUM IV.
+
+_The fourth Council held at Constantinople_, A.D. 869.
+
+    Hadriano papa et Basilio imp. S. Ignatius patriarcha
+    Constant. in suam sedem pulso Photio restituitur.
+
+_The burning of the books of Photius._
+
+    Ex decreto concilii Basilius Imp. chirographa Photii et
+    conciliab. acta comburi iubet.
+
+
+In conclusion I will enumerate the series of eighteen large pictures on
+the side-walls and in the lunettes at each end of the room, representing,
+with some few exceptions, the benefits conferred on Rome by Sixtus. The
+most important of these pictures are above the windows (fig. 16), of which
+there are seven on each side-wall. A Latin couplet above the picture
+records the subject, and allegorical figures of heroic size, one on each
+side, further indicate the idea which it is intended to convey.
+
+The series begins at the east end of the room, over the door.
+
+
+I. _Procession of Sixtus to his coronation._
+
+  Hic tria Sixte tuo capiti diademata dantur
+  Sed quantum in coelis te diadema manet.
+
+  ELECTIO SACRA.          MANIFESTATIO.
+
+On the left of this, over the First Nicene Council, is
+
+
+II. _Coronation of Sixtus, with facade of old S. Peter's._
+
+  Ad templum antipodes Sixtum comitantur euntem
+    Jamque novus Pastor pascit ovile novum.
+
+  HONOR.          DIGNITAS.
+
+With the following picture the series on the south wall begins, above the
+windows:
+
+
+III. _An allegorical tableau. A lion with a human face, and a thunder-bolt
+in his right paw, stands on a green hill. A flock of sheep is feeding
+around._
+
+  Alcides partem Italiae praedone redemit
+    Sed totam Sixtus: dic mihi major uter.
+
+  JUSTITIA.          CASTIGATIO.
+
+
+IV. _The obelisk in front of old S. Peter's. The dome rising behind._
+
+  Dum stabit motus nullis Obeliscus ab Euris
+    Sixte tuum stabit nomen honosque tuus.
+
+  RELIGIO.          MUNIFICENTIA.
+
+
+V. _An allegorical tableau. A tree loaded with fruits, up which a lion is
+trying to climb. A flock of sheep beneath._
+
+  Temporibus Sixti redeunt Saturnia regna
+    Et pleno cornu copia fundit opes.
+
+  CHARITAS.          LIBERALITAS.
+
+
+VI. _A Columna Cochlis surmounted by a statue._
+
+  Ut vinclis tenuit Petrum sic alta columna
+    Sustinet; hinc decus est dedecus unde fuit.
+
+  SUBLIMATIO.          MUTATIO.
+
+
+VII. _A crowd assembled in front of a church._
+
+  Sixtus regnum iniens indicit publica vota
+    Ponderis o quanti vota fuisse vides.
+
+  SALUS GENERIS HUMANI.          PIETAS RELIGIONIS.
+
+
+VIII. _The Lateran Palace, with the Baptistery and Obelisk._
+
+  Quintus restituit Laterana palatia Sixtus
+    Atque obelum medias transtulit ante foras.
+
+  SANATIO.          PURGATIO.
+
+
+IX. _A fountain erected by Sixtus._
+
+  Fons felix celebri notus super aethera versu
+    Romulea passim jugis in urbe fuit.
+
+  MISERATIO.          BENIGNITAS.
+
+
+The next two pictures are above the arches leading from the west end of
+the library into the corridor:
+
+X. _Panorama of Rome as altered by Sixtus._
+
+  Dum rectas ad templa vias sanctissima pandit
+    Ipse sibi Sixtus pandit ad astra viam.
+
+  LAETIFICATIO.          NOBILITAS.
+
+
+XI. _An allegorical representation of the Tiara, with adoring
+worshippers._
+
+  Virgo intacta manet nec vivit adultera conjux
+    Castaque nunc Roma est quae fuit ante salax.
+
+  CASTITAS.          DEFENSIO.
+
+
+With the following picture the series on the north wall begins:
+
+
+XII. _Section of S. Peter's, with the dome._
+
+  Virginis absistit mirari templa Dianae;
+    Qui fanum hoc intrat Virgo Maria tuum.
+
+  AEQUIPARATIO.          POTESTAS.
+
+
+XIII. _The Obelisk in the Circus of Nero._
+
+  Maximus est obelus circus quem maximus olim
+    Condidit et Sixtus maximus inde trahit.
+
+  REAEDIFICATIO.          COGNITO VERI DEI.
+
+
+XIV. _The Tiber, with the Ponte Sisto, and the Ospedale di Santo Spirito._
+
+  Quaeris cur tota non sit mendicus in Urbe:
+    Tecta parat Sixtus suppeditatque cibos.
+
+  CLEMENTIA.          OPERATIO BONA.
+
+
+XV. _A similar view._
+
+  Jure Antoninum paulo vis Sixte subesse
+    Nam vere hic pius est impius ille pius.
+
+  ELECTIO SACRA.          VERA GLORIA.
+
+
+XVI. _A similar view, with the Obelisk._
+
+  Transfers Sixte pium transferre an dignior alter
+    Transferri an vero dignior alter erat.
+
+  RECOGNITIO.          GRATITUDO.
+
+
+XVII. _The Obelisk, now in front of S. Peter's, before it was removed._
+
+  Qui Regum tumulis obeliscus serviit olim
+    Ad cunas Christi tu pie Sixte locas.
+
+  OBLATIO.          DEVOTIO.
+
+
+XVIII. _A fleet at sea._
+
+  Instruit hic Sixtus classes quibus aequora purget
+    Et Solymos victos sub sua jura trahat.
+
+  PROVIDENTIA.          SECURITAS.
+
+
+[Illustration: Fig. 18. Rough groundplan of the great hall of the Vatican
+Library, to illustrate the account of the decoration.]
+
+
+
+
+CHAPTER II.
+
+CHRISTIAN LIBRARIES CONNECTED WITH CHURCHES. USE OF THE APSE. MONASTIC
+COMMUNITIES. S. PACHOMIUS. S. BENEDICT AND HIS SUCCESSORS. EACH HOUSE HAD
+A LIBRARY. ANNUAL AUDIT OF BOOKS. LOAN ON SECURITY. MODES OF PROTECTION.
+CURSES. PRAYERS FOR DONORS. ENDOWMENT OF LIBRARIES. USE OF THE CLOISTER.
+DEVELOPMENT OF CISTERCIAN BOOK-ROOM. COMMON PRESS. CARRELLS. GLASS.
+
+
+The evidence collected in the last chapter shews that what I have there
+called the Roman conception of a library was maintained, even by Christian
+ecclesiastics, during many centuries of our era. I have next to trace the
+beginning and the development of another class of libraries, directly
+connected with Christianity. We shall find that the books intended for the
+use of the new communities were stored in or near the places where they
+met for service, just as in the most ancient times the safe-keeping of
+similar treasures had been entrusted to temples.
+
+It is easy to see how this came about. The necessary service-books would
+be placed in the hands of the ecclesiastic who had charge of the building
+in which the congregation assembled. To these volumes--which at first were
+doubtless regarded in the same light as vestments or sacred
+vessels--treatises intended for edification or instruction would be
+gradually added, and so the nucleus of a library would be formed.
+
+The existence of such libraries does not rest on inference only. There are
+numerous allusions to them in the Fathers and other writers; S. Jerome,
+for instance, advises a correspondent to consult church-libraries, as
+though every church possessed one[115]. As however the allusions to them
+are general, and say nothing about extent or arrangement, this part of my
+subject need not detain us long[116].
+
+The earliest collection of which I have discovered any record is that got
+together at Jerusalem, by Bishop Alexander, who died A.D. 250. Eusebius,
+when writing his Ecclesiastical History some eighty years later, describes
+this library as a storehouse of historical records, which he had himself
+used with advantage in the composition of his work[117]. A still more
+important collection existed at Caesarea in Palestine. S. Jerome says
+distinctly that it was founded by Pamphilus, "a man who in zeal for the
+acquisition of a library wished to take rank with Demetrius Phalereus and
+Pisistratus[118]." As Pamphilus suffered martyrdom in A.D. 309, this
+library must have been got together soon after that at Jerusalem. It is
+described as not only extensive, but remarkable for the importance of the
+manuscripts it contained. Here was the supposed Hebrew original of S.
+Matthew's Gospel[119], and most of the works of Origen, got together by
+the pious care of Pamphilus, who had been his pupil and devoted admirer.
+S. Jerome himself worked in this library, and collated there the
+manuscripts which Origen had used when preparing his Hexapla[120]. At
+Cirta the church and the library were evidently in the same building,
+from the way in which they are spoken of in the account of the persecution
+of A.D. 303-304. "The officers," we are told, "went into the building
+(_domus_) where the Christians were in the habit of meeting." There they
+took an inventory of the plate and vestments. "But," proceeds the
+narrative, "when they came to the library, the presses there were found
+empty[121]." Augustine, on his deathbed, A.D. 430, gave directions that
+"the library of the church [at Hippo], and all the manuscripts, should be
+carefully preserved by those who came after him[122]."
+
+Further, there appears to be good reason for believing that when a church
+had a triple apse, the lateral apses were separated off by a curtain or a
+door, the one to contain the sacred vessels, the other the books. This
+view, which has been elaborated by De Rossi in explanation of three
+recesses in the thickness of the wall of the apse of a small private
+oratory discovered in Rome in 1876[123], is chiefly supported by the
+language of Paulinus, Bishop of Nola, who lived from about A.D. 353 to
+A.D. 431. He describes a basilica erected by himself at Nola in honour of
+S. Felix, martyr, as having "an apse divided into three (_apsidem
+trichoram_)[124]"; and in a subsequent passage, after stating that there
+are to be two recesses, one to the right, the other to the left of the
+apse, he adds, "these verses indicate the use of each[125]," and gives the
+following couplets, with their headings:
+
+_On the right of the Apse._
+
+  Hic locus est veneranda penus qua conditur, et qua
+  Ponitur alma sacri pompa ministerii.
+
+  Here are the sacred vessels stored, and here
+  The peaceful trappings of our holy rites.
+
+_On the left of the same._
+
+  Si quem sancta tenet meditandi in lege voluntas
+  Hic poterit residens sacris intendere libris.
+
+  Here he whose thoughts are on the laws of God
+  May sit and ponder over holy books.
+
+As De Rossi explains, the first of the two niches was intended to contain
+the vessels and furniture of the altar; the second was reserved for the
+safe-keeping of the sacred books. The word _trichora_, in Greek [Greek:
+tricho], is used by later writers to designate a three-fold division of
+any object--as for instance, by Dioscorides, of the seed-pod of the
+acacia[126].
+
+Whether this theory of the use of the apse be accurate or fanciful, the
+purely Christian libraries to which I have alluded were undoubtedly
+connected, more or less closely, with churches; and I submit that the
+libraries which in the Middle Ages were connected with cathedrals and
+collegiate churches are their lineal descendants.
+
+I have next to consider the libraries formed by monastic communities, the
+origin of which may be traced to very early times. Among the Christians of
+the first three centuries there were enthusiasts who, discontented with
+the luxurious life they led in the populous cities along the coasts of
+Africa and Syria, fled into the Egyptian deserts, there to lead a life of
+rigorous self-denial and religious contemplation. These hermits were
+presently joined by other hermits, and small communities were gradually
+formed, with a regular organization that foreshadowed the Rules and
+Customs of the later monastic life. Those who governed these primitive
+monasteries soon realised the fact that without books their inmates would
+relapse into barbarism, and libraries were got together. The Rule of S.
+Pachomius (A.D. 292-345), whose monastery was at Tabennisi near Denderah
+in Upper Egypt, provides that the books of the House are to be kept in a
+cupboard (_fenestra_) in the thickness of the wall. Any brother who wanted
+a book might have one for a week, at the end of which he was bound to
+return it. No brother might leave a book open when he went to church or
+to meals. In the evening the officer called "the Second," that is, the
+second in command, was to take charge of the books, count them, and lock
+them up.[127]
+
+These provisions, insisted upon at a very early date, form a suitable
+introduction to the most important section of my subject--the care of
+books by the Monastic Orders. With them book-preserving and book-producing
+were reduced to a system, and in their libraries--the public libraries of
+the Middle Ages--literature found a home, until the invention of printing
+handed over to the world at large the duties which had been so well
+discharged by special communities. This investigation is full of
+difficulty; and, though I hope to arrive at some definite conclusions
+respecting the position, size, dimensions, and fittings of monastic
+libraries, I must admit that my results depend to a certain extent on
+analogy and inference. It should be remembered that in England the
+monasteries were swept away more than three centuries ago by a sudden
+catastrophe, and that those who destroyed them were far too busy with
+their own affairs to place on record the aspect or the plan of what they
+were wrecking. In France again, though little more than a century has
+elapsed since her monasteries were overwhelmed by the Revolution, and
+though descriptions and views of many of her great religious houses have
+been preserved, and much has been done in the way of editing catalogues of
+their manuscripts, there is still a lamentable dearth of information on my
+particular subject.
+
+I shall begin by quoting some passages from the Rules and Customs of the
+different Orders, which shew (1) that reading was encouraged and enforced
+by S. Benedict himself, with whom the monastic life, as we conceive it,
+may be said to have originated; (2) that subsequently, as Order after
+Order was founded, a steady development of feeling with regard to books,
+and an ever-increasing care for their safe-keeping, can be traced.
+
+The Rule of S. Benedict was made public early in the sixth century; and
+the later Orders were but offshoots of the Benedictine tree, either using
+his Rule or basing their own statutes upon it. It will therefore be
+desirable to begin this research by examining what S. Benedict said on the
+subject of study, and I will translate a few lines from the 48th chapter
+of his Rule, _Of daily manual labour_.
+
+    Idleness is the enemy of the soul; hence brethren ought,
+    at certain seasons, to occupy themselves with manual
+    labour, and again, at certain hours, with holy
+    reading....
+
+    Between Easter and the calends of October let them apply
+    themselves to reading from the fourth hour till near the
+    sixth hour.
+
+    From the calends of October to the beginning of Lent let
+    them apply themselves to reading until the second
+    hour.... During Lent, let them apply themselves to
+    reading from morning until the end of the third hour ...
+    and, in these days of Lent, let them receive a book
+    apiece from the library, and read it straight through.
+    These books are to be given out at the beginning of
+    Lent[128].
+
+In this passage the _library_--by which a book-press is probably to be
+understood--is specially mentioned. In other words, at that early date the
+formation of a collection of books was contemplated, large enough to
+supply the community with a volume apiece, without counting the
+service-books required for use in the church.
+
+The Benedictine Order flourished and increased abundantly for more than
+four centuries, until, about A.D. 912, the order of Cluni was established.
+It was so called from the celebrated abbey near Macon in Burgundy, which,
+though not the first house of the Order in point of date, became
+subsequently the first in extent, wealth, and reputation. As a stricter
+observance of the Rule of S. Benedict was the main object which the
+founder of this Order had in view, the Benedictine directions respecting
+study are maintained and developed. The Customs prescribe the following
+regulations for books:
+
+    On the second day of Lent the only passage of the Rule
+    to be read in Chapter is that concerning the observance
+    of Lent.
+
+    Then shall be read aloud a note (_brevis_) of the books
+    which a year before had been given out to brethren for
+    their reading. When a brother's name is called, he
+    rises, and returns the book that had been given to him;
+    and if it should happen that he has not read it through,
+    he is to ask forgiveness for his want of diligence.
+
+    A carpet on which those books are to be laid out is to
+    be put down in the Chapter-House; and the titles of
+    those which are distributed to brethren afresh are to be
+    noted, for which purpose a tablet is to be made of
+    somewhat larger size than usual[129].
+
+In a subsequent chapter it is directed that the books are to be entrusted
+to the official "who is called Precentor and _Armarius_, because he
+usually has charge of the library, which is also called the _armarium_
+(press)[130]. This arrangement shews that up to this date all the books,
+whether service-books or not, were regarded as belonging to the church.
+
+I come next to the decrees given to the English Benedictines by Archbishop
+Lanfranc in or about 1070. "We send you" he says "the Customs of our Order
+in writing, selected from the Customs of those houses (_coenobia_) which
+are in our day of the highest authority in the monastic order[131]." The
+section relating to books is so interesting that I will translate it.
+
+    On the Monday after the first Sunday in Lent ... before
+    the brethren go in to Chapter, the librarian (_custos
+    librorum_) ought to have all the books brought together
+    into the Chapter-House and laid out on a carpet, except
+    those which had been given out for reading during the
+    past year: these the brethren ought to bring with them
+    as they come into Chapter, each carrying his book in his
+    hand. Of this they ought to have had notice given to
+    them by the aforesaid librarian on the preceding day in
+    Chapter. Then let the passage in the Rule of S. Benedict
+    about the observance of Lent be read, and a discourse be
+    preached upon it. Next let the librarian read a document
+    (_breve_) setting forth the names of the brethren who
+    have had books during the past year; and let each
+    brother, when he hears his own name pronounced, return
+    the book which had been entrusted to him for reading;
+    and let him who is conscious of not having read the book
+    through which he had received, fall down on his face,
+    confess his fault, and pray for forgiveness.
+
+    Then let the aforesaid librarian hand to each brother
+    another book for reading; and when the books have been
+    distributed in order, let the aforesaid librarian in the
+    same Chapter put on record the names of the books, and
+    of those who receive them[132].
+
+It is, I think, certain that when Lanfranc was writing this passage the
+Cluniac Customs must have been before him[133]. It should be noted that
+the librarian is not defined otherwise than as "keeper of the books," but
+we learn from the Customs of Benedictine houses subsequent to Lanfranc's
+time that this duty was discharged by the Precentor, as in the Cluniac
+Customs. For instance, in the Customs of the Benedictine house at
+Abingdon, in Berkshire, drawn up near the end of the twelfth century, we
+read:
+
+    The precentor shall keep clean the presses belonging to
+    the boys and the novices, and all others in which the
+    books of the convent are stored, repair them when they
+    are broken, provide coverings for the books in the
+    library, and make good any damage done to them[134].
+
+    The precentor cannot sell, or give away, or pledge any
+    books; nor can he lend any except on deposit of a
+    pledge, of equal or greater value than the book itself.
+    It is safer to fall back on a pledge, than to proceed
+    against an individual. Moreover he may not lend except
+    to neighbouring churches, or to persons of conspicuous
+    worth[135].
+
+The Customs of the Abbey of Evesham in Worcestershire give the same
+directions in a slightly different form.
+
+    It is part of the precentor's duty to entrust to the
+    younger monks the care of the presses, and to keep them
+    in repair: whenever the convent is sitting in cloister,
+    he is to go round the cloister as soon as the bell has
+    sounded, and replace the books, in case any brother
+    through carelessness should have forgotten to do so.
+
+    He is to take charge of all the books in the monastery,
+    and have them in his keeping, provided his carefulness
+    and knowledge be such that they may be entrusted to him.
+    No one is to take a book out unless it be entered on his
+    roll: nor is any book to be lent to any one without a
+    proper and sufficient voucher, and this too is to be set
+    down on his roll[136].
+
+The Carthusians--the second offshoot of the Benedictine tree (1084)--also
+preserved the primitive tradition of study. They not only read themselves,
+but were actively employed in writing books for others. In the chapter of
+their statutes which deals with the furniture allowed to each "tenant of a
+cell (_incola celle_)"--(for in this community each brother lived apart,
+with his sitting-room, bed-room, and plot of garden-ground)--all the
+articles needful for writing are enumerated, "for nearly all those whom we
+adopt we teach, if possible, to write," and then the writer passes on to
+books.
+
+    Moreover he--[the tenant of the cell]--receives two
+    books out of the press for reading. He is admonished to
+    take the utmost care and pains that they be not soiled
+    by smoke or dust or dirt of any kind; for it is our wish
+    that books, as being the perpetual food of our souls,
+    should be most jealously guarded, and most carefully
+    produced, that we, who cannot preach the word of God
+    with our lips, may preach it with our hands[137].
+
+They did, however, on occasion lend books, for it is provided that when
+books are lent no one shall retain them contrary to the will of the
+lenders[138]. It would be interesting to know how this rule was enforced.
+
+The Cistercian Order--founded 1128--adopted the Benedictine Rule, and with
+it the obligation of study and writing. Moreover, in their anxiety to take
+due care of their books, they went further than their predecessors; for
+they entrusted them to a special officer, instead of to the precentor, and
+they admitted a special room to contain them into the ground-plan of their
+houses.
+
+At a later point I shall return to the interesting subject of the
+Cistercian book-room. For the present I must content myself with
+translating from their Customs the passage relating to books. It occurs in
+Chapter CXV., _Of the precentor and his assistant_. After describing his
+various duties, the writer proceeds:
+
+    With regard to the production and safe-keeping of
+    charters and books, the abbat is to consider to whom he
+    shall entrust this duty.
+
+    The officer so appointed may go as far as the doors of
+    the writing-rooms when he wants to hand in or to take
+    out a book, but he may not go inside. In the same way
+    for books in common use, as for instance antiphoners,
+    hymnals, graduals, lectionaries [etc.], and those which
+    are read in the Prater and at Collation, he may go as
+    far as the door of the novices, and of the sick, and of
+    the writers, and then ask for what he wants by a sign,
+    but he may not go further unless he have been commanded
+    by the abbat. When Collation is over it is his duty to
+    close the press, and during the period of labour, of
+    sleep, and of meals, and while vespers are being sung,
+    to keep it locked[139].
+
+The Customs of the Augustinian Order are exceedingly full on the subject
+of books. I will translate part of the 14th chapter of the Customs in use
+at Barnwell[140], near Cambridge. It is headed: _Of the safe keeping of
+the books, and of the office of Librarian (armarius)._ As the passage
+occurs also in the Customs as observed in France and in Belgium, it may be
+taken, I presume, to represent the general practice of the Order.
+
+    The Librarian, who is called also Precentor, is to take
+    charge of the books of the church; all which he ought to
+    keep and to know under their separate titles; and he
+    should frequently examine them carefully to prevent any
+    damage or injury from insects or decay. He ought also,
+    at the beginning of Lent, in each year, to shew them to
+    the convent in Chapter, when the souls of those who have
+    given them to the church, or of the brethren who have
+    written them, and laboured over them, ought to be
+    absolved, and a service in convent be held over them. He
+    ought also to hand to the brethren the books which they
+    see occasion to use, and to enter on his roll the titles
+    of the books, and the names of those who receive them.
+    These, when required, are bound to give surety for the
+    volumes they receive; nor may they lend them to others,
+    whether known or unknown, without having first obtained
+    permission from the Librarian. Nor ought the Librarian
+    himself to lend books unless he receive a pledge of
+    equal value; and then he ought to enter on his roll the
+    name of the borrower, the title of the book lent, and
+    the pledge taken. The larger and more valuable books he
+    ought not to lend to anyone, known or unknown, without
+    permission of the Prelate....
+
+    Books which are to be kept at hand for daily use,
+    whether for singing or reading, ought to be in some
+    common place, to which all the brethren can have easy
+    access for inspection, and selection of anything which
+    seems to them suitable. The books, therefore, ought not
+    to be carried away into chambers, or into corners
+    outside the Cloister or the Church. The Librarian ought
+    frequently to dust the books carefully, to repair them,
+    and to point them, lest brethren should find any error
+    or hindrance in the daily service of the church, whether
+    in singing or in reading. No other brother ought to
+    erase or change anything in the books unless he have
+    obtained the consent of the Librarian....
+
+    The press in which the books are kept ought to be lined
+    inside with wood, that the damp of the walls may not
+    moisten or stain the books. This press should be divided
+    vertically as well as horizontally by sundry shelves on
+    which the books may be ranged so as to be separated from
+    one another; for fear they be packed so close as

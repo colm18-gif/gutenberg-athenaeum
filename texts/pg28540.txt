@@ -1,0 +1,3524 @@
+The Project Gutenberg eBook of Bibliomania; or Book-Madness
+    
+This eBook is for the use of anyone anywhere in the United States and
+most other parts of the world at no cost and with almost no restrictions
+whatsoever. You may copy it, give it away or re-use it under the terms
+of the Project Gutenberg License included with this eBook or online
+at www.gutenberg.org. If you are not located in the United States,
+you will have to check the laws of the country where you are located
+before using this eBook.
+
+Title: Bibliomania; or Book-Madness
+
+Author: Thomas Frognall Dibdin
+
+
+        
+Release date: April 8, 2009 [eBook #28540]
+                Most recently updated: January 4, 2021
+
+Language: English
+
+Other information and formats: www.gutenberg.org/ebooks/28540
+
+Credits: E-text prepared by Suzanne Lybarger, Brian Janes, Linda Cantoni, and the Project Gutenberg Online Distributed Proofreading Team
+
+
+*** START OF THE PROJECT GUTENBERG EBOOK BIBLIOMANIA; OR BOOK-MADNESS ***
+
+
+E-text prepared by Suzanne Lybarger, Brian Janes, Linda Cantoni, and the
+Project Gutenberg Online Distributed Proofreading Team
+(https://www.pgdp.net)
+
+
+
+Note: Project Gutenberg also has an HTML version of this
+      file which includes the original illustrations.
+      See 28540-h.htm or 28540-h.zip:
+      (https://www.gutenberg.org/dirs/2/8/5/4/28540/28540-h/28540-h.htm)
+      or
+      (https://www.gutenberg.org/dirs/2/8/5/4/28540/28540-h.zip)
+
+
+Transcriber's Note:
+
+      Thomas Frognall Dibdin's _Bibliomania_ was originally published
+      in 1809 and was re-issued in several editions, including one
+      published by Chatto & Windus in 1876. This e-book was prepared
+      from a reprint of the 1876 edition, published by Thoemmes Press
+      and Kinokuniya Company Ltd. in 1997. Where the reprint was
+      unclear, the transcriber consulted a copy of the actual 1876
+      edition.
+
+      Footnotes
+
+         The original contains numerous footnotes, denoted by numbers
+         prior to Part I, and by symbols in the remainder of the book.
+         All of the footnotes are consecutively numbered in this
+         e-book; footnotes within footnotes are lettered.
+
+         Some of the footnotes contain lengthy book catalogues with
+         descriptions and prices. For ease of reading, in this e-book
+         these catalogues have been formatted as lists rather than
+         tables.
+
+      Text that in the original was rendered in blackletter is
+      enclosed between equal signs (=bold face=).
+
+      Letters with macrons are enclosed in brackets and preceded by
+      an equal sign, e.g. [=a].
+
+      Spelling and typographical errors are retained as they appear
+      in the original, with a [Transcriber's Note] containing the
+      correct spelling. Minor obvious punctuation and font errors
+      have been corrected without note. Inconsistent diacriticals and
+      hyphenation have been retained as they appear in the original.
+
+      There are frequent inconsistencies in the spelling of certain
+      proper names. These have been retained as they appear in the
+      original, for example:
+
+         Bibliothèque/Bibliothéque
+         Boccaccio/Bocaccio/Boccacio
+         De Foe/Defoe
+         Français/François
+         Loménie/Lomenie
+         Montfauçon/Montfaucon
+         Roxburgh/Roxburghe
+         Shakspeare/Shakespeare
+         Spenser/Spencer
+         Tewrdannckhs/Tewrdranckhs/Teurdanckhs (and other variations)
+         Vallière/Valliere
+
+
+
+
+
+BIBLIOMANIA.
+
+[Illustration]
+
+     _Libri quosdam ad Scientiam, quosdam AD INSANIAM, deduxêre._
+       GEYLER: Navis Stultifera: sign. B. iiij. rev.
+
+
+BIBLIOMANIA;
+
+OR
+
+=Book-Madness;=
+
+A BIBLIOGRAPHICAL ROMANCE.
+
+ILLUSTRATED WITH CUTS.
+
+BY THOMAS FROGNALL DIBDIN, D.D.
+
+=New and improved Edition,=
+
+TO WHICH ARE ADDED
+PRELIMINARY OBSERVATIONS, AND A SUPPLEMENT INCLUDING A KEY
+TO THE ASSUMED CHARACTERS IN THE DRAMA.
+
+
+
+
+
+
+
+[Illustration: _Engraved by S. Freeman._]
+
+
+=London:=
+Chatto & Windus, Piccadilly.
+MDCCCLXXVI.
+
+
+[Illustration: T.F. DIBDIN, D.D.
+
+_Engraved by James Thomson from the Original Painting by T. Phillips,
+Esqr. R.A._
+
+Published by the Proprietors (for the New Edition) of the Rev. Dr.
+Dibdins Bibliomania 1840.]
+
+
+
+
+[Illustration]
+
+TO
+
+THE RIGHT HONOURABLE
+
+THE EARL OF POWIS,
+
+PRESIDENT OF
+
+=The Roxburgh Club,=
+
+THIS
+
+NEW EDITION
+
+OF
+
+BIBLIOMANIA
+
+IS
+
+RESPECTFULLY DEDICATED BY
+
+THE AUTHOR.
+
+
+
+
+[Illustration]
+
+ADVERTISEMENT.
+
+
+_The public may not be altogether unprepared for the re-appearance of
+the BIBLIOMANIA in a more attractive garb than heretofore;--and, in
+consequence, more in uniformity with the previous publications of the
+Author._
+
+_More than thirty years have elapsed since the last edition; an
+edition, which has become so scarce that there seemed to be no
+reasonable objection why the possessors of the_ other _works of the
+Author should be deprived of an opportunity of adding the_ present
+_to the number: and although this re-impression may, on first glance,
+appear something like a violation of contract with the public, yet,
+when the length of time which has elapsed, and the smallness of the
+price of the preceding impression, be considered, there does not
+appear to be any very serious obstacle to the present republication;
+the more so, as the number of copies is limited to five hundred._
+
+_Another consideration deeply impressed itself upon the mind of the
+Author. The course of thirty years has necessarily brought changes and
+alterations amongst "men and things." The dart of death has been so
+busy during this period that, of the Bibliomaniacs so plentifully
+recorded in the previous work, scarcely_ three,_--including the
+Author--have survived. This has furnished a monitory theme for the
+APPENDIX; which, to the friends both of the dead and the living,
+cannot be perused without sympathising emotions--_
+
+     _"A sigh the absent claim, the DEAD a tear."_
+
+_The changes and alterations in "things,"--that is to say in the_
+=Bibliomania= _itself--have been equally capricious and unaccountable:
+our countrymen being, in_ these _days, to the full as fond of novelty
+and variety as in those of Henry the Eighth. Dr. Board, who wrote his_
+Introduction of Knowledge _in the year 1542, and dedicated it to the
+Princess Mary, thus observes of our countrymen:_
+
+     _I am an Englishman, and naked do I stand here,
+     Musing in my mind what raiment I shall wear;
+     For now I will wear_ this, _and now I will wear_ that,
+     _Now I will wear--I cannot tell what._
+
+_This highly curious and illustrative work was reprinted, with all its
+wood-cut embellishments, by Mr. Upcott. A copy of the original and
+most scarce edition is among the Selden books in the Bodleian library,
+and in the Chetham Collection at Manchester. See the_ Typographical
+Antiquities, _vol._ iii. _p._ 158-60.
+
+_But I apprehend the general apathy of Bibliomaniacs to be in a great
+measure attributable to the vast influx of BOOKS, of every
+description, from the Continent--owing to the long continuance of
+peace; and yet, in the appearance of what are called_ English
+Rarities, _the market seems to be almost as barren as ever. The
+wounds, inflicted in the HEBERIAN contest, have gradually healed, and
+are subsiding into forgetfulness; excepting where, from_ collateral
+_causes, there are too many_ striking _reasons to remember their
+existence._
+
+_Another motive may be humbly, yet confidently, assigned for the
+re-appearance of this Work. It was thought, by its late
+proprietor,--MR. EDWARD WALMSLEY[1]--to whose cost and liberality this
+edition owes its appearance--to be a volume, in itself, of pleasant
+and profitable perusal; composed perhaps in a quaint and original
+style, but in accordance with the characters of the_ Dramatis Personæ.
+_Be this as it may, it is a work divested of all acrimonious
+feeling--is applicable to all classes of society, to whom harmless
+enthusiasm cannot be offensive--and is based upon a foundation not
+likely to be speedily undermined._
+
+_T.F. DIBDIN._
+
+_May_ 1, 1842.
+
+     [Footnote 1: _Mr. EDWARD WALMSLEY, who died in 1841, at an
+     advanced age, had been long known to me. He had latterly
+     extensive calico-printing works at Mitcham, and devoted much
+     of his time to the production of beautiful patterns in that
+     fabrication; his taste, in almost every thing which he
+     undertook, leant towards the fine arts. His body was in the
+     counting-house; but his spirit was abroad, in the studio of
+     the painter or engraver. Had his natural talents, which were
+     strong and elastic, been cultivated in early life, he would,
+     in all probability, have attained a considerable reputation.
+     How he loved to embellish--almost to satiety--a favourite
+     work, may be seen by consulting a subsequent page towards
+     the end of this volume. He planned and published the_
+     Physiognomical Portraits, _a performance not divested of
+     interest--but failing in general success, from the prints
+     being, in many instances, a repetition of their precursors.
+     The thought, however, was a good one; and many of the heads
+     are powerfully executed. He took also a lively interest in
+     Mr. Major's splendid edition of Walpole's_ Anecdotes of
+     Painting in England, _a work, which can never want a reader
+     while taste has an abiding-place in one British bosom._
+
+     _Mr. Walmsley possessed a brave and generous spirit; and I
+     scarcely knew a man more disposed to bury the remembrance of
+     men's errors in that of their attainments and good
+     qualities._]
+
+
+
+
+THE BIBLIOMANIA;
+
+OR
+
+=Book-Madness;=
+
+CONTAINING SOME ACCOUNT OF THE
+
+HISTORY, SYMPTOMS, AND CURE OF THIS FATAL DISEASE.
+
+IN AN EPISTLE ADDRESSED TO
+
+RICHARD HEBER, ESQ.
+
+BY THE
+
+REV. THOMAS FROGNALL DIBDIN, F.S.A.
+
+
+     Styll am I besy bokes assemblynge,
+     For to have plenty it is a pleasaunt thynge
+     In my conceyt, and to have them ay in honde:
+     But what they mene I do nat understonde.
+
+     =Pynson's Ship of Fools.= Edit. 1509.
+
+
+LONDON
+
+REPRINTED FROM THE FIRST EDITION, PUBLISHED IN 1809.
+
+
+
+
+=Advertisement.=
+
+
+_In laying before the public the following brief and superficial
+account of a disease, which, till it arrested the attention of Dr.
+Ferriar, had entirely escaped the sagacity of all ancient and modern
+physicians, it has been my object to touch chiefly on its leading
+characteristics; and to present the reader (in the language of my old
+friend Francis Quarles) with an "honest pennyworth" of information,
+which may, in the end, either suppress or soften the ravages of so
+destructive a malady. I might easily have swelled the size of this
+treatise by the introduction of much additional, and not incurious,
+matter; but I thought it most prudent to wait the issue of the present
+"recipe," at once simple in its composition and gentle in its
+effects._
+
+_Some apology is due to the amiable and accomplished character to whom
+my epistle is addressed, as well as to the public, for the apparently
+confused and indigested manner in which the notes are attached to the
+first part of this treatise; but, unless I had thrown them to the end
+(a plan which modern custom does not seem to warrant), it will be
+obvious that a different arrangement could not have been adopted; and
+equally so that the perusal, first of the text, and afterwards of the
+notes, will be the better mode of passing judgment upon both._
+
+T.F.D.
+
+_Kensington, June_ 5, 1809.
+
+
+
+
+[Illustration]
+
+TO THE READER.
+
+
+_A short time after the publication of the first edition of this work,
+a very worthy and shrewd Bibliomaniac, accidentally meeting me,
+exclaimed that "the book_ would do, _but that there was not_ gall
+_enough in it." As he was himself a_ Book-Auction-loving Bibliomaniac,
+_I was resolved, in a future edition, to gratify him and similar
+Collectors by writing_ PART III. _of the present impression; the motto
+of which may probably meet their approbation._
+
+_It will be evident, on a slight inspection of the present edition,
+that it is so much altered and enlarged as to assume the character of
+a new_ work. _This has not been done without mature reflection; and a
+long-cherished hope of making it permanently useful to a large class
+of General Readers, as well as to Book-Collectors and Bibliographers._
+
+_It appeared to me that notices of such truly valuable, and oftentimes
+curious and rare, books, as the ensuing pages describe; but more
+especially a_ Personal History of Literature, _in the characters of_
+Collectors of Books; _had long been a desideratum even with classical
+students: and in adopting the present form of publication, my chief
+object was to relieve the dryness of a didactic style by the
+introduction of_ Dramatis Personæ.
+
+_The worthy Gentlemen, by whom the_ Drama _is conducted, may be
+called, by some, merely wooden machines or_ pegs _to hang notes upon;
+but I shall not be disposed to quarrel with any criticism which may be
+passed upon their acting, so long as the greater part of the
+information, to which their dialogue gives rise, may be thought
+serviceable to the real interests of_ Literature _and_ Bibliography.
+
+_If I had chosen to assume a more imposing air with the public, by
+spinning out the contents of this closely-printed book into two or
+more volumes--which might have been done without violating the
+customary mode of publication--the expenses of the purchaser, and the
+profits of the author, would have equally increased: but I was
+resolved to bring forward as much matter as I could impart, in a
+convenient and not inelegantly executed form; and, if my own
+emoluments are less, I honestly hope the reader's advantage is
+greater._
+
+_The_ Engraved Ornaments of Portraits, Vignettes, and Borders, _were
+introduced, as well to gratify the eyes of tasteful Bibliomaniacs, as
+to impress, upon the minds of readers in general, a more vivid
+recollection of some of those truly illustrious characters by whom
+the_ HISTORY OF BRITISH LITERATURE _has been preserved._
+
+_It remains only to add that the present work was undertaken to
+relieve, in a great measure, the anguish of mind arising from a severe
+domestic affliction; and if the voice of those whom we tenderly loved,
+whether parent or_ child, _could be heard from the_ grave, _I trust it
+would convey the sound of approbation for thus having filled a part of
+the measure of that time which, every hour, brings us nearer to those
+from whom we are separated._
+
+_And now_, BENEVOLENT READER, _in promising thee as much amusement and
+instruction as ever were offered in a single volume, of a nature like
+to the present, I bid thee farewell in the language of_ Vogt,[2] _who
+thus praises the subject of which we are about to treat:--"Quis non_
+AMABILEM _eam laudabit_ INSANIAM, _quæ universæ rei litterariæ non
+obfuit, sed profuit; historiæ litterariæ doctrinam insigniter
+locupletavit; ingentemque exercitum voluminum, quibus alias aut in
+remotiora Bibliothecarum publicarum scrinia commigrandum erat, aut
+plane pereundum, a carceribus et interitu vindicavit, exoptatissimæque
+luci et eruditorum usui multiplici felicitur restituit?"_
+
+T.F.D.
+
+_Kensington, March_ 25, 1811.
+
+     [Footnote 2: Catalogus Librorum Rariorum, præf. ix. edit.
+     1793.]
+
+
+
+
+[Illustration]
+
+CONTENTS.
+
+
+PART I. THE EVENING WALK.
+_On the right uses of Literature_                             p. 3-20.
+
+II. THE CABINET.
+_Outline of Foreign and Domestic Bibliography_               p. 23-92.
+
+III. THE AUCTION-ROOM.
+_Character of Orlando. Of ancient Prices of Books,
+and of Book-Binding. Book-Auction Bibliomaniacs_           p. 103-139.
+
+IV. THE LIBRARY.
+_Dr. Henry's History of Great Britain. A Game at
+Chess. Of Monachism and Chivalry. Dinner at Lorenzo's.
+Some Account of Book Collectors in England_                p. 143-207.
+
+V. THE DRAWING ROOM.
+_History of the Bibliomania, or Account of Book
+Collectors, concluded_                                     p. 211-463.
+
+VI. THE ALCOVE.
+_Symptoms of the Disease called the Bibliomania.
+Probable Means of its Cure_                                p. 467-565.
+
+SUPPLEMENT.
+
+CHRONOLOGICAL INDEX.
+
+BIBLIOGRAPHICAL INDEX.
+
+GENERAL INDEX.
+
+
+
+
+[Illustration: LUTHER.]
+
+[Illustration: MELANCTHON.]
+
+PUBLISHED BY THE PROPRIETOR (FOR THE NEW EDITION) OF THE REV. Dr.
+DIBDINS BIBLIOMANIA, 1840.
+
+
+
+
+[Illustration]
+
+=The Bibliomania.=
+
+
+MY DEAR SIR,
+
+When the poetical Epistle of Dr. Ferriar, under the popular title of
+"THE BIBLIOMANIA," was announced for publication, I honestly confess
+that, in common with many of my book-loving acquaintance, a strong
+sensation of fear and of hope possessed me: of fear, that I might have
+been accused, however indirectly, of having contributed towards the
+increase of this Mania; and of hope, that the true object of
+book-collecting, and literary pursuits, might have been fully and
+fairly developed. The perusal of this elegant epistle dissipated alike
+my fears and my hopes; for, instead of caustic verses, and satirical
+notes,[3] I found a smooth, melodious, and persuasive panegyric;
+unmixed, however, with any rules for the choice of books, or the
+regulation of study.
+
+     [Footnote 3: There are, nevertheless, some satirical
+     allusions which one could have wished had been suppressed.
+     For instance:
+
+          He turns where PYBUS rears his atlas-head
+          Or MADOC'S mass conceals its veins of lead;
+
+     What has Mr. Pybus's gorgeous book in praise of the late
+     Russian Emperor Paul I. (which some have called the
+     chef-d'oeuvre of Bensley's press[A]) to do with Mr.
+     Southey's fine Poem of Madoc?--in which, if there are "veins
+     of lead," there are not a few "of silver and gold." Of the
+     extraordinary talents of Mr. Southey, the indefatigable
+     student in ancient lore, and especially in all that regards
+     Spanish Literature and Old English Romances, this is not the
+     place to make mention. His "_Remains of Henry Kirk White_,"
+     the sweetest specimen of modern biography, has sunk into
+     every heart, and received an eulogy from every tongue. Yet
+     is his own life
+
+          "The more endearing song."
+
+     Dr. Ferriar's next satirical verses are levelled at Mr.
+     THOMAS HOPE.
+
+          "The lettered fop now takes a larger scope,
+          With classic furniture, design'd by HOPE.
+          (HOPE, whom upholsterers eye with mute despair,
+          The doughty pedant of an elbow chair.")
+
+     It has appeared to me that Mr. Hope's magnificent volume on
+     "_Household Furniture_" has been generally misunderstood,
+     and, in a few instances, criticised upon false
+     principles.--The first question is, does the _subject_ admit
+     of illustration? and if so, has Mr. Hope illustrated it
+     properly? I believe there is no canon of criticism which
+     forbids the treating of such a subject; and, while we are
+     amused with archæological discussions on Roman tiles and
+     tesselated pavements, there seems to be no absurdity in
+     making the decorations of our sitting rooms, including
+     something more than the floor we walk upon, a subject at
+     least of temperate and classical disquisition. Suppose we
+     had found such a treatise in the volumes of Gronovius and
+     Montfaucon? (and are there not a few, apparently, as
+     unimportant and confined in these rich volumes of the
+     Treasures of Antiquity?) or suppose something similar to Mr.
+     Hope's work had been found among the ruins of Herculaneum?
+     Or, lastly, let us suppose the author had printed it only as
+     a _private_ book, to be circulated as a present! In each of
+     these instances, should we have heard the harsh censures
+     which have been thrown out against it? On the contrary, is
+     it not very probable that a wish might have been expressed
+     that "so valuable a work ought to be made public."
+
+     Upon what principle, _a priori_, are we to ridicule and
+     condemn it? I know of none. We admit Vitruvius, Inigo Jones,
+     Gibbs, and Chambers, into our libraries: and why not Mr.
+     Hope's book? Is decoration to be confined only to the
+     exterior? and, if so, are works, which treat of these only,
+     to be read and applauded? Is the delicate bas-relief, and
+     beautifully carved column, to be thrust from the cabinet and
+     drawing room, to perish on the outside of a smoke-dried
+     portico? Or, is not _that_ the most deserving of
+     commendation which produces the most numerous and pleasing
+     associations of ideas? I recollect, when in company with the
+     excellent DR. JENNER,
+
+          ----[clarum et venerabile nomen
+          Gentibus, et multum nostræ quod proderat urbi]
+
+     and a half dozen more friends, we visited the splendid
+     apartments in Duchess Street, Portland Place, we were not
+     only struck with the appropriate arrangement of every thing,
+     but, on our leaving them, and coming out into the dull foggy
+     atmosphere of London, we acknowledged that the effect
+     produced upon our minds was something like that which might
+     have arisen had we been regaling ourselves on the silken
+     couches, and within the illuminated chambers, of some of the
+     enchanted palaces described in the Arabian Nights'
+     Entertainments. I suspect that those who have criticised Mr.
+     Hope's work with asperity have never seen his house.
+
+     These sentiments are not the result of partiality or
+     prejudice, for I am wholly unacquainted with Mr. Hope. They
+     are delivered with zeal, but with deference. It is quite
+     consolatory to find a gentleman of large fortune, of
+     respectable ancestry, and of classical attainments, devoting
+     a great portion of that leisure time which hangs like a
+     leaden weight upon the generality of fashionable people, to
+     the service of the Fine Arts, and in the patronage of merit
+     and ingenuity. How much the world will again be indebted to
+     Mr. Hope's taste and liberality may be anticipated from the
+     "_Costume of the Ancients_," a work which has recently been
+     published under his particular superintendence.]
+
+     [Footnote A: This book is beautifully executed, undoubtedly,
+     but being little more than a thin folio pamphlet devoid of
+     _typographical_ embellishment--it has been thought by some
+     hardly fair to say this of a press which brought out so many
+     works characterized by magnitude and various elegance. B.B.]
+
+To say that I was not gratified by the perusal of it would be a
+confession contrary to the truth; but to say how ardently I
+anticipated an amplification of the subject, how eagerly I looked
+forward to a number of curious, apposite, and amusing anecdotes, and
+found them not therein, is an avowal of which I need not fear the
+rashness, when the known talents of the detector of Stern's
+plagiarisms[4] are considered. I will not, however, disguise to you
+that I read it with uniform delight, and that I rose from the perusal
+with a keener appetite for
+
+     "The small, rare volume, black with tarnished gold."
+
+     _Dr. Ferriar's Ep._ v. 138.
+
+     [Footnote 4: In the fourth volume of the Transactions of the
+     Manchester Literary Society, part iv., p. 45-87, will be
+     found a most ingenious and amusing Essay, entitled
+     "_Comments on Sterne_," which excited a good deal of
+     interest at the time of its publication. This discovery may
+     be considered, in some measure, as the result of the
+     BIBLIOMANIA. In my edition of Sir Thomas More's Utopia, a
+     suggestion is thrown out that even Burton may have been an
+     imitator of Boisatuau [Transcriber's Note: Boiastuau]: see
+     vol. II. 143.]
+
+Whoever undertakes to write down the follies which grow out of an
+excessive attachment to any particular pursuit, be that pursuit
+horses,[5] hawks, dogs, guns, snuff boxes,[6] old china, coins, or
+rusty armour, may be thought to have little consulted the best means
+of ensuring success for his labours, when he adopts the dull vehicle
+of _Prose_ for the commnication [Transcriber's Note: communication] of
+his ideas not considering that from _Poetry_ ten thousand bright
+scintillations are struck off, which please and convince while they
+attract and astonish. Thus when Pope talks of allotting for
+
+     "Pembroke[7] Statues, dirty Gods and Coins;
+     Rare monkish manuscripts for Hearne[8] alone;
+     And books to Mead[9] and butterflies to Sloane,"[10]
+
+when he says that
+
+     These Aldus[11] printed, those Du S[=u]eil has bound[12]
+
+moreover that
+
+     For Locke or Milton[13] 'tis in vain to look;
+     These shelves admit not any modern book;
+
+he not only seems to illustrate the propriety of the foregoing
+remark, by shewing the immense superiority of verse to prose, in
+ridiculing reigning absurdities, but he seems to have had a pretty
+strong foresight of the BIBLIOMANIA which rages at the present day.
+However, as the ancients tell us that a Poet cannot be a
+_manufactured_ creature, and as I have not the smallest pretensions
+to the "rhyming art," [although in former times[14] I did venture to
+dabble with it] I must of necessity have recourse to _Prose_; and, at
+the same time, to your candour and forbearance in perusing the pages
+which ensue.
+
+     [Footnote 5: It may be taken for granted that the first book
+     in this country which excited a passion for the _Sports of
+     the field_ was Dame Juliana Berners, or Barnes's, work, on
+     _Hunting and Hawking_, printed at St. Alban's, in the year
+     1486; of which Lord Spencer's copy is, I believe, the only
+     perfect one known. It was formerly the Poet Mason's, and is
+     mentioned in the quarto edition of Hoccleve's Poems, p. 19,
+     1786. See too Bibl. Mason. Pt. iv. No. 153. Whether the
+     forementioned worthy lady was really the author of the work
+     has been questioned. Her book was reprinted by Wynkyn de
+     Worde in 1497, with an additional Treatise on _Fishing_. The
+     following specimen, from this latter edition, ascertains the
+     general usage of the French language with our huntsmen in
+     the 15th century.
+
+          Beasts of Venery.
+
+          Where so ever ye fare by frith or by fell,
+          My dear child, take heed how Trystram do you tell.
+          How many manner beasts of Venery there were:
+          Listen to your dame and she shall you _lere_.
+          Four manner beasts of Venery there are.
+          The first of them is the _Hart_; the second is the _Hare_;
+          The _Horse_ is one of them; the _Wolf_; and not one _mo_.
+
+          Beasts of the Chace.
+
+          And where that ye come in plain or in place
+          I shall tell you which be beasts of enchace.
+          One of them is the _Buck_; another is the _Doe_;
+          The _Fox_; and the _Marteron_, and the wild _Roe_;
+          And ye shall see, my dear child, other beastes all:
+          Where so ye them find _Rascal_ ye shall them call.
+
+          Of the hunting of the Hare.
+
+          How to speke of the haare how all shall be wrought:
+          When she shall with houndes be founden and sought.
+          The fyrst worde to the ho[=u]dis that the hunter shall
+            out pit
+          Is at the kenell doore whan he openeth it.
+          That all maye hym here: he shall say "_Arere!_"
+          For his houndes would come to hastily.
+          That is the firste worde my sone of Venery.
+          And when he hath couplyed his houndes echoon
+          And is forth wyth theym to the felde goon,
+          And whan he hath of caste his couples at wyll
+          Thenne he shall speke and saye his houndes tyll
+          "_Hors de couple avant, sa avant!_" twyse soo:
+          And then "_So ho, so ho!_" thryes, and no moo.
+
+     And then say "_Sacy avaunt, so how_," I thou praye, etc. The
+     following are a few more specimens--"_Ha cy touz cy est
+     yll_--_Venez ares sa how sa_--_La douce la eit a venuz_--_Ho
+     ho ore, swet a lay, douce a luy_--_So how, so how, venez
+     acoupler!!!_"
+
+     Whoever wishes to see these subjects brought down to later
+     times, and handled with considerable dexterity, may consult
+     the last numbers of the Censura Literaria, with the
+     signature J.H. affixed to them. Those who are anxious to
+     procure the rare books mentioned in these bibliographical
+     treatises, may be pretty safely taxed with being infected by
+     the BIBLIOMANIA. What apology my friend Mr. Haslewood, the
+     author of them, has to offer in extenuation of the mischief
+     committed, it is _his_ business, and not mine, to consider;
+     and what the public will say to his curious forthcoming
+     reprint of the ancient edition of Wynkyn De Worde _on
+     Hunting, Hawking, and Fishing_, 1497 (with wood cuts), I
+     will not pretend to divine!
+
+     In regard to Hawking, I believe the enterprising Colonel
+     Thornton in [Transcriber's Note: is] the only gentleman of
+     the present day who keeps up this custom of "good old
+     times."
+
+     The Sultans of the East seem not to have been insensible to
+     the charms of Falconry, if we are to judge from the evidence
+     of Tippoo Saib having a work of this kind in his library;
+     which is thus described from the Catalogue of it just
+     published in a fine quarto volume, of which only 250 copies
+     are printed.
+
+     "_Sh[=a]bb[=a]r N[=a]meh_, 4to. a Treatise on Falcony;
+     containing Instructions for selecting the best species of
+     Hawks, and the method of teaching them; describing their
+     different qualities; also the disorders they are subject to,
+     and method of cure. Author unknown."--Oriental Library of
+     Tippoo Saib, 1809, p. 96.]
+
+     [Footnote 6: Of _Snuff boxes_ every one knows what a
+     collection the great Frederick, King of Prussia, had--many
+     of them studded with precious stones, and decorated with
+     enamelled portraits. Dr. C. of G----, has been represented
+     to be the most successful rival of Frederick, in this "line
+     of collection," as it is called; some of his boxes are of
+     uncommon curiosity. It may gratify a Bibliographer to find
+     that there are other MANIAS besides that of the book; and
+     that even physicians are not exempt from these diseases.
+
+     Of _Old China_, _Coins_, and _Rusty Armour_, the names of
+     hundreds present themselves in these departments; but to the
+     more commonly-known ones of Rawle and Grose, let me add that
+     of the late Mr. John White, of Newgate-Street; a catalogue
+     of whose curiosities [including some very uncommon books]
+     was published in the year 1788, in three parts, 8vo. Dr.
+     Burney tells us that Mr. White "was in possession of a
+     valuable collection of ancient rarities, as well as natural
+     productions, of the most curious and extraordinary kind; no
+     one of which however was more remarkable than the obliging
+     manner in which he allowed them to be viewed and examined by
+     his friends."--_History of Music_, vol. II. 539, note.]
+
+     [Footnote 7: The reader will find an animated eulogy on this
+     great nobleman in Walpole's _Anecdotes of Painters_, vol.
+     iv. 227: part of which was transcribed by Joseph Warton for
+     his Variorum edition of Pope's Works, and thence copied into
+     the recent edition of the same by the Rev. W.L. Bowles. But
+     PEMBROKE deserved a more particular notice. Exclusively of
+     his fine statues, and architectural decorations, the Earl
+     contrived to procure a number of curious and rare books; and
+     the testimonies of Maittaire [who speaks indeed of him with
+     a sort of rapture!] and Palmer shew that the productions of
+     Jenson and Caxton were no strangers to his library. _Annales
+     Typographici_, vol. I. 13. edit. 1719. _History of
+     Printing_, p. v. "There is nothing that so surely proves the
+     pre-eminence of virtue more than the universal admiration of
+     mankind, and the respect paid it even by persons in opposite
+     interests; and more than this, it is a sparkling gem which
+     even time does not destroy: it is hung up in the Temple of
+     Fame, and respected for ever." _Continuation of Granger_,
+     vol. I. 37, &c. "He raised, continues Mr. Noble, a
+     collection of Antiques that were unrivalled by any subject.
+     His learning made him a fit companion for the literati.
+     Wilton will ever be a monument of his extensive knowledge;
+     and the princely presents it contains, of the high
+     estimation in which he was held by foreign potentates, as
+     well as by the many monarchs he saw and served at home. He
+     lived rather as a primitive christian; in his behaviour,
+     meek: in his dress, plain: rather retired, conversing but
+     little." Burnet, in the _History of his own Times_, has
+     spoken of the Earl with spirit and propriety.]
+
+     [Footnote 8: In the recent Variorum Edition of Pope's Works,
+     all that is annexed to Hearne's name, as above introduced by
+     the Poet, is, "well known as an Antiquarian."
+
+     ALAS, POOR HEARNE!
+
+     thy merits, which are now fully appreciated, deserve an
+     ampler notice! In spite of Gibbon's unmerciful critique
+     [_Posthumous Works_, vol. II. 711.], the productions of this
+     modest, erudite, and indefatigable antiquary are rising in
+     price proportionably to their worth. If he had only edited
+     the _Collectanea_ and _Itinerary_ of his favourite Leland,
+     he would have stood on high ground in the department of
+     literature and antiquities; but his other and numerous works
+     place him on a much loftier eminence. Of these, the present
+     is not the place to make mention; suffice it to say that,
+     for copies of his works, on LARGE PAPER, which the author
+     used to advertise as selling for 7_s._ or 10_s._, or about
+     which placards, to the same effect, used to be stuck on the
+     walls of the colleges,--these very copies are now sometimes
+     sold for more than the like number of guineas! It is amusing
+     to observe that the lapse of a few years only has caused
+     such a rise in the article of HEARNE; and that the Peter
+     Langtoft on large paper, which at Rowe Mores's sale [Bibl.
+     Mores. No. 2191.] was purchased for £1. 2_s._ produced at
+     a late sale, [A.D. 1808] £37! A complete list of Hearne's
+     Pieces will be found at the end of his Life, printed with
+     Leland's, &c., at the Clarendon Press, in 1772, 8vo. Of
+     these the "_Acta Apostolorum_, Gr. Lat;" and "_Aluredi
+     Beverlacensis Annales_," are, I believe, the scarcest. It is
+     wonderful to think how this amiable and excellent man
+     persevered "through evil report and good report," in
+     illustrating the antiquities of his country. To the very
+     last he appears to have been molested; and among his
+     persecutors, the learned editor of Josephus and Dionysius
+     Halicarnasseus, Dr. Hudson, must be ranked, to the disgrace
+     of himself and the party which he espoused. "Hearne was
+     buried in the church yard of St. Peter's (at Oxford) in the
+     East, where is erected over his remains, a tomb, with an
+     inscription written by himself,
+
+          Amicitiæ Ergo.
+          Here lyeth the Body of
+          THOMAS HEARNE, M.A.
+          Who studied and preserved
+          Antiquities.
+          He dyed June 10, 1735.
+          Aged 57 years.
+          Deut. xxxii: 7.
+          Remember the days of old;
+          consider the years
+          of many generations;
+          ask thy Father
+          and he will shew thee;
+          thy elders
+          and they will tell thee.
+          Job. viii. 8, 9, 10.
+          Enquire I pray thee."
+
+          _Life of Hearne_, p. 34.]
+
+     [Footnote 9: Of Dr. MEAD and his Library a particular
+     account is given in the following pages.]
+
+     [Footnote 10: For this distinguished character consult
+     Nichols's _Anecdotes of Bowyer_, 550, note*; which, however,
+     relates entirely to his ordinary habits and modes of life.
+     His magnificent collection of Natural Curiosities and MSS.
+     is now in the British Museum.]
+
+     [Footnote 11: The annals of the Aldine Press have had ample
+     justice done to them in the beautiful and accurate work
+     published by Renouard, under the title of "_Annales de
+     L'Imprimerie des Alde_," in two vols., 8vo. 1804. One is
+     rather surprised at not finding any reference to this
+     masterly piece of bibliography in the last edition of Mr.
+     Roscoe's Leo X., where there is a pleasing account of the
+     establishment of the Aldine Press.]
+
+     [Footnote 12: I do not recollect having seen any book bound
+     by this binder. Of Padaloup, De Rome, and Baumgarten, where
+     is the fine collection that does not boast of a few
+     specimens? We will speak "anon" of the Roger Paynes,
+     Kalthoebers, Herrings, Stagemiers, and in Macklays of the
+     day!]
+
+     [Footnote 13: This is not the reproach of the age we live
+     in; for reprints of Bacon, Locke, and Milton have been
+     published with complete success. It would be ridiculous
+     indeed for a man of sense, and especially a University man,
+     to give £5 or £6 for "_Gosson's School of Abuse, against
+     Pipers and Players_," or £3. 3_s._ for a clean copy of
+     "_Recreation for Ingenious Head Pieces_, or a _Pleasant
+     Grove for their Wits to walk in,"_ and grudge the like sum
+     for a dozen handsome octavo volumes of the finest writers of
+     his country.]
+
+     [Footnote 14: About twelve years ago I was rash enough to
+     publish a small volume of Poems, with my name affixed. They
+     were the productions of my juvenile years; and I need hardly
+     say, at this period, how ashamed I am of their author-ship.
+     The monthly and Analytical Reviews did me the kindness of
+     just tolerating them, and of warning me not to commit any
+     future trespass upon the premises of Parnassus. I struck off
+     500 copies, and was glad to get rid of half of them as waste
+     paper; the remaining half has been partly destroyed by my
+     own hands, and has partly mouldered away in oblivion amidst
+     the dust of Booksellers' shelves. My only consolation is
+     that the volume is _exceedingly rare_!]
+
+If ever there was a country upon the face of the globe--from the days
+of Nimrod the beast, to Bagford[15] the book-hunter--distinguished for
+the variety, the justness, and magnanimity of its views; if ever there
+was a nation which really and unceasingly "felt for another's woe" [I
+call to witness our Infirmaries, Hospitals, Asylums, and other public
+and private Institutions of a charitable nature, that, like so many
+belts of adamant, unite and strengthen us in the great cause of
+HUMANITY]; if ever there was a country and a set of human beings
+pre-eminently distinguished for all the social virtues which soften
+and animate the soul of man, surely OLD ENGLAND and ENGLISHMEN ARE
+THEY! The common cant, it may be urged, of all writers in favour of
+the country where they chance to live! And what, you will say, has
+this to do with Book Collectors and Books?--Much, every way: a nation
+thus glorious is, at this present eventful moment, afflicted not only
+with the Dog[16], but the BOOK, disease--
+
+     Fire in each eye, and paper in each hand
+     They rave, recite,----
+
+     [Footnote 15: "JOHN BAGFORD, by profession a bookseller,
+     frequently travelled into Holland and other parts, in search
+     of scarce books and valuable prints, and brought a vast
+     number into this kingdom, the greatest part of which were
+     purchased by the Earl of Oxford. He had been in his younger
+     days a shoemaker; and, for the many curiosities wherewith he
+     enriched the famous library of Dr. John Moore, Bishop of
+     Ely, his Lordship got him admitted into the Charter House.
+     He died in 1706, aged 65: after his death Lord Oxford
+     purchased all his collections and papers, for his library:
+     these are now in the Harleian collection in the British
+     Museum. In 1707 were published, in the Philosophical
+     Transactions, his Proposals for a General History of
+     Printing."--Bowyer and Nichols's _Origin of Printing_, p.
+     164, 189, note.
+
+     It has been my fortune (whether good or bad remains to be
+     proved) not only to transcribe the slender memorial of
+     Printing in the Philosophical Transactions, drawn up by
+     Wanley for Bagford, but to wade through _forty-two_ folio
+     volumes, in which Bagford's materials for a History of
+     Printing are incorporated, in the British Museum: and from
+     these, I think I have furnished myself with a pretty fair
+     idea of the said Bagford. He was the most hungry and
+     rapacious of all book and print collectors; and, in his
+     ravages, spared neither the most delicate nor costly
+     specimens. His eyes and his mouth seem to have been always
+     open to express his astonishment at, sometimes, the most
+     common and contemptible productions; and his paper in the
+     Philosophical Transactions betrays such simplicity and
+     ignorance that one is astonished how my Lord Oxford and the
+     learned Bishop of Ely could have employed so credulous a
+     bibliographical forager. A modern collector and lover of
+     _perfect_ copies will witness, with shuddering, among
+     Bagford's immense collection of Title Pages, in the Museum,
+     the frontispieces of the Complutensian Polyglot, and
+     Chauncy's History of Hertfordshire, torn out to illustrate a
+     History of Printing. His enthusiasm, however, carried him
+     through a great deal of laborious toil; and he supplied, in
+     some measure, by this qualification, the want of other
+     attainments. His whole mind was devoted to book-hunting; and
+     his integrity and diligence probably made his employers
+     overlook his many failings. His hand-writing is scarcely
+     legible, and his orthography is still more wretched; but if
+     he was ignorant, he was humble, zealous, and grateful; and
+     he has certainly done something towards the accomplishment
+     of that desirable object, an accurate General History of
+     Printing. In my edition of _Ames's Typographical
+     Antiquities_, I shall give an analysis of Bagford's papers,
+     with a specimen or two of his composition.]
+
+     [Footnote 16: For an eloquent account of this disorder
+     consult the letters of Dr. Mosely inserted in the Morning
+     Herald of last year. I have always been surprised, and a
+     little vexed, that these animated pieces of composition
+     should be relished and praised by every one--but _the
+     Faculty_!]
+
+Let us enquire, therefore, into the origin and tendency of the
+BIBLIOMANIA.
+
+In this enquiry I purpose considering the subject under three points
+of view: I. THE HISTORY OF THE DISEASE; or an account of the eminent
+men who have fallen victims to it: II. THE NATURE, OR SYMPTOMS OF THE
+DISEASE: and III. THE PROBABLE MEANS OF ITS CURE. We are to consider,
+then,
+
+1. THE HISTORY OF THE DISEASE. In treating of the history of this
+disease, it will be found to have been attended with this remarkable
+circumstance; namely, that it has almost uniformly confined its
+attacks to the _male_ sex, and, among these, to people in the higher
+and middling classes of society, while the artificer, labourer, and
+peasant have escaped wholly uninjured. It has raged chiefly in
+palaces, castles, halls, and gay mansions; and those things which in
+general are supposed not to be inimical to health, such as
+cleanliness, spaciousness, and splendour, are only so many inducements
+towards the introduction and propagation of the BIBLIOMANIA! What
+renders it particularly formidable is that it rages in all seasons of
+the year, and at all periods of human existence. The emotions of
+friendship or of love are weakened or subdued as old age advances; but
+the influence of this passion, or rather disease, admits of no
+mitigation: "it grows with our growth, and strengthens with our
+strength;" and is oft-times
+
+     ----The ruling passion strong in death.[17]
+
+     [Footnote 17: The writings of the Roman philologers seem to
+     bear evidence of this fact. Seneca, when an old man, says
+     that, "if you are fond of books, you will escape the ennui
+     of life; you will neither sigh for evening, disgusted with
+     the occupations of the day--nor will you live dissatisfied
+     with yourself, or unprofitable to others." _De
+     Tranquilitate_, ch. 3. Cicero has positively told us that
+     "study is the food of youth, and the amusement of old age."
+     _Orat. pro Archia_. The younger Pliny was a downright
+     Bibliomaniac. "I am quite transported and comforted," says
+     he, "in the midst of my books: they give a zest to the
+     happiest, and assuage the anguish of the bitterest, moments
+     of existence! Therefore, whether distracted by the cares or
+     the losses of my family, or my friends, I fly to my library
+     as the only refuge in distress: here I learn to bear
+     adversity with fortitude." _Epist._ lib. viii. cap. 19. But
+     consult Cicero _De Senectute_. All these treatises afford
+     abundant proof of the hopelessness of cure in cases of the
+     Bibliomania.]
+
+We will now, my dear Sir, begin "making out the catalogue" of victims
+to the BIBLIOMANIA! The first eminent character who appears to have
+been infected with this disease was RICHARD DE BURY, one of the tutors
+of Edward III., and afterwards Bishop of Durham; a man who has been
+uniformly praised for the variety of his erudition, and the
+intenseness of his ardour in book-collecting.[18] I discover no other
+notorious example of the fatality of the BIBLIOMANIA until the time of
+Henry VII.; when the monarch himself may be considered as having added
+to the number. Although our venerable typographer, Caxton, lauds and
+magnifies, with equal sincerity, the whole line of British Kings, from
+Edward IV. to Henry VII. [under whose patronage he would seem, in some
+measure, to have carried on his printing business], yet, of all these
+monarchs, the latter alone was so unfortunate as to fall a victim to
+this disease. His library must have been a magnificent one, if we may
+judge from the splendid specimens of it which now remain.[19] It would
+appear, too, that, about this time, the BIBLIOMANIA was increased by
+the introduction of foreign printed books; and it is not very
+improbable that a portion of Henry's immense wealth was devoted
+towards the purchase of VELLUM copies, which were now beginning to be
+published by the great typographical triumvirate, Verard, Eustace, and
+Pigouchet.
+
+     [Footnote 18: It may be expected that I should notice a few
+     book-lovers, and probably BIBLIOMANIACS, previously to the
+     time of Richard De Bury; but so little is known with
+     accuracy of Johannes Scotus Erigena, and his patron Charles
+     the Bald, King of France, or of the book tête-a-têtes they
+     used to have together--so little, also, of Nennius, Bede,
+     and Alfred [although the monasteries at this period, from
+     the evidence of Sir William Dugdale, in the first volume of
+     the Monasticon were "opulently endowed,"--inter alia, I
+     should hope, with magnificent MSS. on vellum, bound in
+     velvet, and embossed with gold and silver], or the
+     illustrious writers in the Norman period, and the fine books
+     which were in the abbey of Croyland--so little is known of
+     book-collectors, previously to the 14th century, that I
+     thought it the most prudent and safe way to begin with the
+     above excellent prelate.
+
+     RICHARD DE BURY was the friend and correspondent of
+     Petrarch; and is said by Mons. de Sade, in his Memoires pour
+     la vie de Petrarque, "to have done in England what Petrarch
+     did all his life in France, Italy, and Germany, towards the
+     discovery of MSS. of the best ancient writers, and making
+     copies of them under his own superintendence." His passion
+     for book-collecting was unbounded ["vir ardentis ingenii,"
+     says Petrarch of him]; and in order to excite the same
+     ardour in his countrymen, or rather to propagate the disease
+     of the BIBLIOMANIA with all his might, he composed a
+     bibliographical work under the title of _Philobiblion_;
+     concerning the first edition of which, printed at Spires in
+     1483, Clement (tom. v. 142) has a long gossiping account;
+     and Morhof tells us that it is "rarissima et in paucorum
+     manibus versatur." It was reprinted in Paris in 1500, 4to.,
+     by the elder Ascensius, and frequently in the subsequent
+     century, but the best editions of it are those by Goldastus
+     in 1674, 8vo., and Hummius in 1703. Morhof observes that,
+     "however De Bury's work savours of the rudeness of the age,
+     it is rather elegantly written, and many things are well
+     said in it relating to Bibliothecism." _Polyhist. Literar._
+     vol. i. 187, edit. 1747.
+
+     For further particulars concerning De Bury, read Bale,
+     Wharton, Cave, and Godwin's Episcopal Biography. He left
+     behind him a fine library of MSS. which he bequeathed to
+     Durham, now Trinity, College, Oxford.
+
+     It may be worth the antiquary's notice, that, in consequence
+     (I suppose) of this amiable prelate's exertions, "in every
+     convent was a noble library and a great: and every friar,
+     that had state in school, such as they be now, hath AN HUGH
+     LIBRARY." See the curious Sermon of the Archbishop of
+     Armagh, Nov. 8, 1387, in Trevisa's works among the _Harleian
+     MSS._ No. 1900. Whether these Friars, thus affected with
+     the frensy of book-collecting, ever visited the "old
+     chapelle at the Est End of the church of S. Saink
+     [Berkshire], whither of late time resorted in pilgrimage
+     many folkes for the disease of _madness_," [see Leland's
+     _Itinerary_, vol. ii. 29, edit. 1770] I have not been able,
+     after the most diligent investigation, to ascertain.]
+
+     [Footnote 19: The British Museum contains a great number of
+     books which bear the royal stamp of Henry VII.'s arms. Some
+     of these printed by Verard, UPON VELLUM, are magnificent
+     memorials of a library, the dispersion of which is for ever
+     to be regretted. As Henry VIII. knew nothing of, and cared
+     less for, fine books, it is not very improbable that some of
+     the choicest volumes belonging to the late king were
+     presented to Cardinal Wolsey.]
+
+During the reign of Henry VIII., I should suppose that the Earl of
+Surrey[20] and Sir Thomas Wyatt were a little attached to
+book-collecting; and that Dean Colet[21] and his friend Sir Thomas
+More and Erasmus were downright Bibliomaniacs. There can be little
+doubt but that neither the great LELAND[22] nor his Biographer
+Bale,[23] were able to escape the contagion; and that, in the ensuing
+period, Rogar [Transcriber's Note: Roger] Ascham became notorious for
+the Book-disease. He purchased probably, during his travels
+abroad[24] many a fine copy of the Greek and Latin Classics, from
+which he read to his illustrious pupils, Lady Jane Grey, and Queen
+Elizabeth: but whether he made use of an _Editio Princeps_, or a
+_Large paper copy_, I have hitherto not been lucky enough to discover.
+This learned character died in the vigour of life, and in the bloom
+of reputation: and, as I suspect, in consequence of the
+BIBLIOMANIA--for he was always collecting books, and always studying
+them. His "Schoolmaster" is a work which can only perish with our
+language.
+
+     [Footnote 20: The EARL of SURREY and SIR THOMAS WYATT were
+     among the first who taught their countrymen to be charmed
+     with the elegance and copiousness of their own language. How
+     effectually they accomplished this laudable object, will be
+     seen from the forthcoming beautiful and complete edition of
+     their works by the Rev. Dr. Nott.[B]]
+
+     [Footnote B: It fell to the lot of the printer of this
+     volume, during his apprenticeship to his father, to correct
+     the press of nearly the whole of Dr. Nott's labours, which
+     were completed, after several years of toil, when in the
+     extensive conflagration of the printing-office at Bolt
+     Court, Fleet-street, in 1819, all but _two_ copies were
+     totally destroyed!]
+
+     [Footnote 21: COLET, MORE, and ERASMUS [considering the
+     latter when he was in England] were _here_ undoubtedly the
+     great literary triumvirate of the early part of the 16th
+     century. The lives of More and Erasmus are generally read
+     and known; but of DEAN COLET it may not be so generally
+     known that his ardour for books and for classical literature
+     was keen, and insatiable; that, in the foundation of ST.
+     PAUL'S SCHOOL, he has left behind a name which entitles him
+     to rank in the foremost of those who have fallen victims to
+     the BIBLIOMANIA. How anxiously does he seem to have watched
+     the progress, and pushed the sale, of his friend Erasmus's
+     first edition of the Greek Testament! "Quod scribis de Novo
+     Testamento intelligo. Et libri _novæ editionis tuæ hic avide
+     emuntur et passim leguntur_!" The entire epistle (which may
+     be seen in Dr. Knight's dry Life of Colet, p. 315) is
+     devoted to an account of Erasmus's publications. "I am
+     really astonished, my dear Erasmus [does he exclaim], at the
+     fruitfulness of your talents; that, without any fixed
+     residence, and with a precarious and limited income, you
+     contrive to publish so many and such excellent works."
+     Adverting to the distracted state of Germany at this period,
+     and to the wish of his friend to live secluded and
+     unmolested, he observes--"As to the tranquil retirement
+     which you sigh for, be assured that you have my sincere
+     wishes for its rendering you as happy and composed as you
+     can wish it. Your age and erudition entitle you to such a
+     retreat. I fondly hope, indeed, that you will choose this
+     country for it, and come and live amongst us, whose
+     disposition you know, and whose friendship you have proved."
+
+     There is hardly a more curious picture of the custom of the
+     times, relating to the education of boys, than the Dean's
+     own Statutes for the regulation of St. Paul's School, which
+     he had founded. These shew, too, the _popular books_ then
+     read by the learned. "The children shall come unto the
+     School in the morning at seven of the clock, both winter and
+     summer, and tarry there until eleven; and return against one
+     of the clock, and depart at five, &c. In the school, no time
+     in the year, they shall use tallow candle in no wise, but
+     _only wax candle_, at the costs of their friends. Also I
+     will they bring no meat nor drink, nor bottle, nor use in
+     the school no breakfasts, nor drinkings, in the time of
+     learning, in no wise, &c. I will they use no cockfightings,
+     nor riding about of victory, nor disputing at Saint
+     Bartholomew, which is but foolish babbling and loss of
+     time." The master is then restricted, under the penalty of
+     40 shillings, from granting the boys a holiday, or "remedy,"
+     [play-day,] as it is here called "except the King, an
+     Archbishop, or a Bishop, present in his own person in the
+     school, desire it." The studies for the lads were,
+     "Erasmus's Copia & Institutum Christiani Hominis (composed
+     at the Dean's request) Lactantius, Prudentius, Juvencus,
+     Proba and Sedulius, and Baptista Mantuanus, and such other
+     as shall be thought convenient and most to purpose unto the
+     true Latin speech: all barbary, all corruption, all Latin
+     adulterate, which ignorant blind fools brought into this
+     world, and with the same hath distained and poisoned the old
+     Latin speech, and the _veray_ Roman tongue, which in the
+     time of Tully and Sallust and Virgil and Terence was used--I
+     say that filthiness, and all such abusion, which the later
+     blind world brought in, which more rather may be called
+     _Bloterature_ that [Transcriber's Note: than] _Literature_,
+     I utterly banish and exclude out of this school." _Life of
+     Knight's Colet_, 362-4.
+
+     What was to be expected, but that boys, thus educated, would
+     hereafter fall victims to the BIBLIOMANIA?]
+
+     [Footnote 22: The history of this great men [Transcriber's
+     Note: man], and of his literary labours, is most
+     interesting. He was a pupil of William Lilly, the first
+     head-master of St. Paul's School; and, by the kindness and
+     liberality of a Mr. Myles, he afterwards received the
+     advantage of a College education, and was supplied with
+     money in order to travel abroad, and make such collections
+     as he should deem necessary for the great work which even
+     then seemed to dawn upon his young and ardent mind. Leland
+     endeavoured to requite the kindness of his benefactor by an
+     elegant copy of Latin verses, in which he warmly expatiates
+     on the generosity of his patron, and acknowledges that his
+     acquaintance with the _Almæ Matres_ [for he was of both
+     Universities] was entirely the result of such beneficence.
+     While he resided on the continent, he was admitted into the
+     society of the most eminent Greek and Latin Scholars, and
+     could probably number among his correspondents the
+     illustrious names of Budæus, Erasmus, the Stephani, Faber
+     and Turnebus. Here, too, he cultivated his natural taste for
+     poetry; and from inspecting the fine BOOKS which the Italian
+     and French presses had produced, as well as fired by the
+     love of Grecian learning, which had fled, on the sacking of
+     Constantinople, to take shelter in the academic bowers of
+     the Medici, he seems to have matured his plans for carrying
+     into effect the great work which had now taken full
+     possession of his mind. He returned to England, resolved to
+     institute an inquiry into the state of the LIBRARIES,
+     Antiquities, Records and Writings then in existence. Having
+     entered into holy orders, and obtained preferment at the
+     express interposition of the King, (Henry VIII.), he was
+     appointed his Antiquary and Library Keeper, and a royal
+     commission was issued in which Leland was directed to search
+     after "ENGLAND'S ANTIQUITIES, and peruse the LIBRARIES of
+     all Cathedrals, Abbies, Priories, Colleges, etc., as also
+     all the places wherein Records, Writings, and Secrets of
+     Antiquity were reposited." "Before Leland's time," says
+     Hearne, in the Preface to the Itinerary, "all the literary
+     monuments of Antiquity were totally disregarded; and
+     Students of Germany, apprised of this culpable indifference,
+     were suffered to enter our libraries unmolested, and to cut
+     out of the books deposited there whatever passages they
+     thought proper--which they afterwards published as relics of
+     the ancient literature of their own country."
+
+     Leland was occupied, without intermission, in this immense
+     undertaking, for the space of six years; and, on its
+     completion, he hastened to the metropolis to lay at the feet
+     of his Sovereign the result of his researches. This was
+     presented to Henry under the title of A NEW YEAR'S GIFT; and
+     was first published by Bale in 1549, 8vo. "Being inflamed,"
+     says the author, "with a love to see thoroughly all those
+     parts of your opulent and ample realm, in so much that all
+     my other occupations intermitted, I have so travelled in
+     your dominions, both by the sea coasts and the middle parts,
+     sparing neither labour nor costs, by the space of six years
+     past, that there is neither cape nor bay, haven, creek, or
+     pier, river, or confluence of rivers, breeches, wastes,
+     lakes, moors, fenny waters, mountains, vallies, heaths,
+     forests, chases, woods, cities, burghes, castles, principal
+     manor places, monasteries and colleges, but I have seen
+     them; and noted, in so doing, a whole world of things very
+     memorable." Leland moreover tells his Majesty--that "By his
+     laborious journey and costly enterprise, he had conserved
+     many good authors, the which otherwise had been like to have
+     perished; of the which, part remained in the royal palaces,
+     part also in his own custody, &c."
+
+     As Leland was engaged six years in this literary tour, so he
+     was occupied for a no less period of time in digesting and
+     arranging the prodigious number of MSS. he had collected.
+     But he sunk beneath the immensity of the task! The want of
+     amanuenses, and of other attentions and comforts, seems to
+     have deeply affected him; in this melancholy state, he wrote
+     to Archbishop Cranmer a Latin epistle, in verse, of which
+     the following is the commencement--very forcibly describing
+     his situation and anguish of mind.
+
+          Est congesta mihi domi supellex
+          Ingens, aurea, nobilis, venusta
+          Qua totus studeo Britanniarum
+          Vero reddere gloriam nitori.
+          Sed fortuna meis noverca coeptis
+          Jam felicibus invidet maligna.
+          Quare, ne pereant brevi vel hora
+          Multarum mihi noctium labores
+          Omnes----
+          CRANMERE, eximium decus piorum!
+          Implorare tuam benignitatem
+          Cogor.
+
+     The result was that Leland lost his senses; and, after
+     lingering two years in a state of total derangement, he died
+     on the 18th of April, 1552. "Prôh tristes rerum humanarum
+     vices! prôh viri optimi deplorandam infelicissimamque
+     sortem!" exclaims Dr. Smith, in his preface to Camden's
+     Life, 1691, 4to.
+
+     The precious and voluminous MSS. of Leland were doomed to
+     suffer a fate scarcely less pitiable than that of their
+     owner. After being pilfered by some, and garbled by others,
+     they served to replenish the pages of Stow, Lambard, Camden,
+     Burton, Dugdale, and many other antiquaries and historians.
+     Polydore Virgil, who had stolen from them pretty freely, had
+     the insolence to abuse Leland's memory--calling him "a vain
+     glorious man;" but what shall we say to this flippant
+     egotist? who, according to Caius's testimony [_De Antiq.
+     Cantab. head. lib._ 1.] "to prevent a discovery of the many
+     errors of his own History of England, collected and burnt a
+     greater number of ancient histories and manuscripts than
+     would have loaded a waggon." The imperfect remains of
+     Leland's MSS. are now deposited in the Bodleian Library, and
+     in the British Museum.
+
+     Upon the whole, it must be acknowledged that Leland is a
+     melancholy, as well as illustrious, example of the influence
+     of the BIBLIOMANIA!]
+
+     [Footnote 23: In spite of BALE'S coarseness, positiveness,
+     and severity, he has done much towards the cause of
+     learning; and, perhaps, towards the propagation of the
+     disease under discussion. His regard for Leland does him
+     great honour; and although his plays are miserably dull,
+     notwithstanding the high prices which the original editions
+     of them bear, (vide ex. gr. Cat. Steevens, No. 1221;
+     which was sold for £12 12_s._ See also the reprints in the
+     Harleian Miscellany) the lover of literary antiquities must
+     not forget that his "_Scriptores Britanniæ_" are yet quoted
+     with satisfaction by some of the most respectable writers of
+     the day. That he wanted delicacy of feeling, and
+     impartiality of investigation, must be admitted; but a
+     certain rough honesty and prompt benevolence which he had
+     about him compensated for a multitude of offences. The
+     abhorrence with which he speaks of the dilapidation of some
+     of our old libraries must endear his memory to every honest
+     bibliographer: "Never (says he) had we been offended for the
+     loss of our LIBRARIES, being so many in number, and in so
+     desolate places for the more part, if the chief monuments
+     and most notable works of our excellent writers had been
+     reserved. If there had been in every shire of England, but
+     one SOLEMPNE LIBRARY, to the preservation of those noble
+     works, and preferment of good learning in our posterity, it
+     had been yet somewhat. But to destroy all without
+     consideration, is, and will be, unto England for ever, a
+     most horrible infamy among the grave seniors of other
+     nations. A great number of them which purchased those
+     superstitious mansions, reserved of those library-books,
+     some to serve the _jakes_, some to scour their candlesticks,
+     and some to rub their boots: some they sold to the grocers
+     and soap-sellers; some they sent over sea to the
+     book-binders, not in small number, but at times whole ships
+     full, to the wondering of the foreign nations. Yea, the
+     Universities of this realm are not all clear of this
+     detestable fact. But cursed is that belly which seeketh to
+     be fed with such ungodly gain, and shameth his natural
+     country. I know a merchant man, which shall at this time be
+     nameless, that _bought the contents of two noble libraries
+     for forty shillings price_; a shame it is to be spoken! This
+     stuff hath he occupied in the stead of grey paper, by the
+     space of more than ten years, and yet he hath store enough
+     for as many year to come!" Bale's Preface to Leland's
+     "_Laboryouse journey_, &c." Emprented at London by John
+     Bale. Anno M.D. xlix. 8vo.
+
+     After this, who shall doubt the story of the Alexandrian
+     Library supplying the hot baths of Alexandria with fuel for
+     six months! See Gibbon on the latter subject; vol. ix. 440.]
+
+     [Footnote 24: ASCHAM'S English letter, written when he was
+     abroad, will be found at the end of Bennet's edition of his
+     works, in 4to. They are curious and amusing. What relates to
+     the BIBLIOMANIA I here select from similar specimens. "Oct.
+     4. At afternoon I went about the town [of Bruxelles]. I went
+     to the frier [Transcriber's Note: friar] Carmelites house,
+     and heard their even song: after, I desired to see the
+     LIBRARY. A frier [Transcriber's Note: friar] was sent to me,
+     and led me into it. There was not one good book but _Lyra_.
+     The friar was learned, spoke Latin readily, entered into
+     Greek, having a very good wit, and a greater desire to
+     learning. He was gentle and honest, &c." p. 370-1. "Oct. 20.
+     to Spira: a good city. Here I first saw _Sturmius de
+     periodis_. I also found here _Ajax_, _Electra_, and
+     _Antigone Sophocles_, excellently, by my good judgment,
+     translated into verse, and fair printed this summer by
+     Gryphius. Your stationers do ill, that at least do 'not
+     provide you the register of all books, especially of old
+     authors, &c.'" p. 372. Again: "Hieronimus Wolfius, that
+     translated Demosthenes and Isocrates, is in this town. I am
+     well acquainted with him, and have brought him twice to my
+     Lord's to dinner. He looks very simple. He telleth me that
+     one Borrheus, that hath written well upon Aristot. priorum,
+     &c., even now is printing goodly commentaries upon
+     Aristotle's Rhetoric. But Sturmius will obscure them all."
+     p. 381.
+
+     It is impossible to read these extracts without being
+     convinced that Roger Ascham was a book-hunter, and infected
+     with the BIBLIOMANIA!]
+
+If we are to judge from the beautiful Missal lying open before Lady
+Jane Grey, in Mr. Copley's elegant picture now exhibiting at the
+British Institution, it would seem rational to infer that this amiable
+and learned female was slightly attacked by the disease. It is to be
+taken for granted that Queen Elizabeth was not exempt from it; and
+that her great Secretary,[25] Cecil, sympathised with her! In regard
+to Elizabeth, her _Prayer-Book_[26] is quite evidence sufficient for
+me that she found the BIBLIOMANIA irresistible! During her reign, how
+vast and how frightful were the ravages of the Book-madness! If we are
+to credit Laneham's celebrated Letter, it had extended far into the
+country, and infected some of the worthy inhabitants of Coventry; for
+one "Captain Cox,[27] by profession a mason, and that right skilful,"
+had "as fair a library of sciences, and as many goodly monuments both
+in Prose and Poetry, and at afternoon could talk as much without book,
+as any Innholder betwixt Brentford and Bagshot, what degree soever he
+be!"
+
+     [Footnote 25: It is a question which requires more time for
+     the solution than I am able to spare, whether CECIL'S name
+     stands more frequently at the head of a Dedication, in a
+     printed book, or of State Papers and other political
+     documents in MS. He was a wonderful man; but a little
+     infected--as I suspect--with the BOOK-DISEASE.
+
+          ----Famous Cicill, treasurer of the land,
+          Whose wisedom, counsell, skill of Princes state
+          The world admires----
+          The house itselfe doth shewe the owners wit,
+          And may for bewtie, state, and every thing,
+          Compared be with most within the land.
+
+          _Tale of Two Swannes_, 1590. 4_to._
+
+     I have never yet been able to ascertain whether the owner's
+     attachment towards VELLUM, or LARGE PAPER, Copies was the
+     more vehement!]
+
+     [Footnote 26: Perhaps this conclusion is too precipitate.
+     But whoever looks at Elizabeth's portrait, on her bended
+     knees, struck off on the reverse of the title page to her
+     prayer book (first printed in 1565) may suppose that the
+     Queen thought the addition of her own portrait would be no
+     mean decoration to the work. Every page is adorned with
+     borders, engraved on wood, of the most spirited execution:
+     representing, amongst other subjects, "The Dance of Death."
+     My copy is the reprint of 1608--in high preservation. I have
+     no doubt that there was a _presentation_ copy printed UPON
+     VELLUM; but in what cabinet does this precious gem now
+     slumber?]
+
+     [Footnote 27: Laneham gives a splendid list of Romances and
+     Old Ballads possessed by this said CAPTAIN COX; and tells
+     us, moreover, that "he had them all at his fingers ends."
+     Among the ballads we find "Broom broom on Hil; So Wo is me
+     begon twlly lo; Over a Whinny Meg; Hey ding a ding; Bony
+     lass upon Green; My bony on gave me a bek; By a bank as I
+     lay; and two more he had fair wrapt up in parchment, and
+     bound with a whip cord." Edit. 1784, p. 36-7-8. Ritson, in
+     his Historical Essay on _Scottish Song_, speaks of some of
+     these, with a zest, as if he longed to untie the "whip-cord"
+     packet.]
+
+While the country was thus giving proofs of the prevalence of this
+disorder, the two Harringtons (especially the younger)[28] and the
+illustrious Spenser[29] were unfortunately seized with it in the
+metropolis.
+
+     [Footnote 28: SIR JOHN HARRINGTON, knt. Sir John, and his
+     father John Harrington, were very considerable literary
+     characters in the 16th century; and whoever has been
+     fortunate enough to read through Mr. Park's new edition of
+     the _Nugæ Antiquæ_, 1804, 8vo., will meet with numerous
+     instances in which the son displays considerable
+     bibliographical knowledge--especially in _Italian_
+     literature; Harrington and Spenser seem to have been the
+     Matthias and Roscoe of the day. I make no doubt but that the
+     former was as thoroughly acquainted with the _vera edizione_
+     of the Giuntæ edition of Boccaccio's Decamerone, 1527, 4to.,
+     as either Haym, Orlandi, or Bandini. Paterson, with all his
+     skill, was mistaken in this article when he catalogued
+     Croft's books. See Bibl. Crofts. No. 3976: his true
+     edition was knocked down for 6_s._!!!]
+
+     [Footnote 29: Spenser's general acquaintance with Italian
+     literature has received the best illustration in Mr. Todd's
+     Variorum edition of the poet's works; where the reader will
+     find, in the notes, a constant succession of anecdotes of,
+     and references to, the state of anterior and contemporaneous
+     literature, foreign and domestic.]
+
+In the seventeenth century, from the death of Elizabeth to the
+commencement of Anne's reign, it seems to have made considerable
+havoc; yet, such was our blindness to it that we scrupled not to
+engage in overtures for the purchase of Isaac Vossius's[30] fine
+library, enriched with many treasures from the Queen of Sweden's,
+which this versatile genius scrupled not to pillage without confession
+or apology. During this century our great reasoners and philosophers
+began to be in motion; and, like the fumes of tobacco, which drive the
+concealed and clotted insects from the interior to the extremity of
+the leaves, the infectious particles of the BIBLIOMANIA set a thousand
+busy brains a-thinking, and produced ten thousand capricious works,
+which, over-shadowed by the majestic remains of Bacon, Locke, and
+Boyle, perished for want of air, and warmth, and moisture.
+
+     [Footnote 30: "The story is extant, and written in very
+     choice _French_." Consult Chauffepié's _Supplement to
+     Bayle's Dictionary_, vol. iv. p. 621. note Q. Vossius's
+     library was magnificent and extensive. The University of
+     Leyden offered not less than 36,000 florins for it. _Idem._
+     p. 631.]
+
+The reign of Queen Anne was not exempt from the influence of this
+disease; for during this period, Maittaire[31] began to lay the
+foundation of his extensive library, and to publish some
+bibliographical works which may be thought to have rather increased,
+than diminished, its force. Meanwhile, Harley[32] Earl of Oxford
+watched its progress with an anxious eye; and although he might have
+learnt experience from the fatal examples of R. Smith,[33] and T.
+Baker,[34] and the more recent ones of Thomas Rawlinson,[35]
+Bridges,[36] and Collins,[37] yet he seemed resolved to brave and to
+baffle it; but, like his predecessors, he was suddenly crushed within
+the gripe of the demon, and fell one of the most splendid of his
+victims. Even the unrivalled medical skill of Mead[38] could save
+neither his friend nor himself. The Doctor survived his Lordship about
+twelve years; dying of the complaint called the BIBLIOMANIA! He left
+behind an illustrious character; sufficient to flatter and soothe
+those who may tread in his footsteps, and fall victims to a similar
+disorder.
+
+     [Footnote 31: Of MICHAEL MAITTAIRE I have given a brief
+     sketch in my Introduction to the _Greek and Latin Classics_,
+     vol. I, 148. Mr. Beloe, in the 3rd vol. of his _Anecdotes of
+     Literature_, p. ix., has described his merits with justice.
+     The principal value of Maittaire's _Annales Typographici_
+     consists in a great deal of curious matter detailed in the
+     notes; but the absence of the "lucidus ordo" renders the
+     perusal of these fatiguing and dissatisfactory. The author
+     brought a full and well-informed mind to the task he
+     undertook--but he wanted taste and precision in the
+     arrangement of his materials. The eye wanders over a vast
+     indigested mass; and information, when it is to be acquired
+     with excessive toil, is, comparatively, seldom acquired.
+     Panzer has adopted an infinitely better plan, on the model
+     of Orlandi; and, if his materials had been _printed_ with
+     the same beauty with which they appear to have been
+     composed, and his annals had descended to as late a period
+     as those of Maittaire, his work must have made us,
+     eventually, forget that of his predecessor. The
+     bibliographer is, no doubt, aware that of Maittaire's first
+     volume there are two editions. Why the author did not
+     reprint, in the second edition (1733), the facsimile of the
+     epigram and epistle of LASCAR prefixed to the edition of the
+     Anthology 1496, and the disquisition concerning the ancient
+     editions of Quintilian (both of which were in the first
+     edition of 1719), is absolutely inexplicable. Maittaire was
+     sharply attacked for this absurdity, in the "Catalogus
+     Auctorum," of the "_Annus Tertius Sæcularis Inv. Art.
+     Topog._" Harlem, 1741, 8vo. p. 11. "Rara certe Librum
+     augendi methodus (exclaims the author)! Satis patet auctorem
+     hoc eo fecisse consilio, ut et primæ et secundæ Libri sive
+     editioni pretium suum constaret, et una æque ac altera
+     Lectoribus necessaria esset."
+
+     The catalogue of Maittaire's library [1748, 2 parts, 8vo.],
+     which affords ample proof of the BIBLIOMANIA of its
+     collector, is exceedingly scarce. A good copy of it, even
+     unpriced, is worth a guinea: it was originally sold for 4
+     shillings; and was drawn up by Maittaire himself.]
+
+     [Footnote 32: In a periodical publication called "_The
+     Director_," to which I contributed under the article of
+     "_Bibliographiana_" (and of which the printer of this work,
+     Mr. William Savage, is now the sole publisher), there was
+     rather a minute analysis of the famous library of HARLEY,
+     EARL OF OXFORD: a library which seems not only to have
+     revived, but eclipsed, the splendour of the Roman one formed
+     by Lucullus. The following is an abridgement of this
+     analysis:
+
+                                                          VOLUMES.
+
+     1. Divinity: _Greek, Latin, French and Italian_--about 2000
+        ----      _English_                                 2500
+     2. History and Antiquities                             4000
+     3. Books of Prints, Sculpture, and Drawings--
+          _Twenty Thousand Drawings and Prints._
+          _Ten Thousand Portraits._
+     4. Philosophy, Chemistry, Medicine, &c.                2500
+     5. Geography, Chronology, General History               600
+     6. Voyages and Travels                                  800
+     7. Law                                                  800
+     8. Sculpture and Architecture                           900
+     9. Greek and Latin Classics                            2400
+     10. Books printed UPON VELLUM                           220
+     11. English Poetry, Romances, &c.                      1000
+     12. French and Spanish do.                              700
+     13. Parliamentary Affairs                               400
+     14. Trade and Commerce                                  300
+     15. Miscellaneous Subjects                             4000
+     16. Pamphlets--_Four Hundred Thousand_!
+
+     Mr. Gough says, these books "filled thirteen handsome
+     chambers, and two long galleries." Osborne the bookseller
+     purchased them for £13,000: a sum little more than two
+     thirds of the price of the binding, as paid by Lord Oxford.
+     The bookseller was accused of injustice and parsimony; but
+     the low prices which he afterwards affixed to the articles,
+     and the tardiness of their sale, are sufficient refutations
+     of this charge. Osborne opened his shop for the inspection
+     of the books on Tuesday the 14th of February, 1744; for fear
+     "of the curiosity of the spectators, before the sale,
+     producing disorder in the disposition of the books." The
+     dispersion of the HARLEIAN COLLECTION is a blot in the
+     literary annals of our country: had there then been such a
+     Speaker, and such a spirit in the House of Commons, as we
+     now possess, the volumes of Harley would have been reposing
+     with the MARBLES OF TOWNLEY!]
+
+     [Footnote 33: "BIBLIOTHECA SMITHIANA: sive Catalogus
+     Librorum in quavis facultate insigniorum, quos in usum suum
+     et Bibliothecæ ornamentum multo ære sibi comparavit vir
+     clarissimus doctissimusque D. RICHARDUS SMITH, &c., Londini,
+     1682," 4to. I recommend the collector of curious and
+     valuable catalogues to lay hold upon the present one (of
+     which a more particular description will be given in another
+     work) whenever it comes in his way. The address "To the
+     Reader," in which we are told that "this so much celebrated,
+     so often desired, so long expected, library is now exposed
+     to sale," gives a very interesting account of the owner.
+     Inter alia, we are informed that Mr. Smith "was as
+     constantly known every day to walk his rounds through the
+     shops, as to sit down to his meals, &c.;" and that "while
+     others were forming arms, and new-modelling kingdoms, _his_
+     great ambition was to become master of a good book."
+
+     The catalogue itself justifies every thing said in
+     commendation of the collector of the library. The
+     arrangement is good; the books, in almost all departments of
+     literature, foreign and domestic, valuable and curious; and
+     among the English ones I have found some of the rarest
+     Caxtons to refer to in my edition of Ames. What would Mr.
+     Bindley, or Mr. Malone, or Mr. Douce, give to have the
+     _creaming_ of such a collection of "Bundles of Stitcht Books
+     and Pamphlets," as extends from page 370 to 395 of this
+     catalogue! But alas! while the Bibliographer exults in, or
+     hopes for, the possession of such treasures, the
+     physiologist discovers therein fresh causes of disease, and
+     the philanthropist mourns over the ravages of the
+     BIBLIOMANIA!]
+
+     [Footnote 34: Consult Masters's "_Memoirs of the Life and
+     Writings of the late Rev._ THOMAS BAKER," Camb. 1864, 8vo.
+     Let any person examine the catalogue of _Forty-two_ folio
+     volumes of "MS. collections by Mr. Baker," (as given at the
+     end of this piece of biography) and reconcile himself, if he
+     can, to the supposition that the said Mr. Baker did not fall
+     a victim to the _Book-disease_! For some cause, I do not now
+     recollect what, Baker took his name off the books of St.
+     John's College, Cambridge, to which he belonged; but such
+     was his attachment to the place, and more especially to the
+     library, that he spent a great portion of the ensuing twenty
+     years of his life within the precincts of the same:
+     frequently comforted and refreshed, no doubt, by the sight
+     of the magnificent LARGE PAPER copies of Walton and Castell,
+     and of Cranmer's Bible UPON VELLUM!]
+
+     [Footnote 35: This THOMAS RAWLINSON, who is introduced in
+     the Tatler under the name _Tom Folio_, was a very
+     extraordinary character, and most desperately addicted to
+     book-hunting. Because his own house was not large enough, he
+     hired _London House_, in Aldersgate Street, for the
+     reception of his library; and here he used to regale himself
+     with the sight and the scent of innumerable black letter
+     volumes, arranged in "sable garb," and stowed perhaps "three
+     deep," from the bottom to the top of his house. He died in
+     1725; and Catalogues of his books for sale continued, for
+     nine succeeding years, to meet the public eye. The following
+     is a list of all the parts which I have ever met with; taken
+     from copies in Mr. Heber's possession.
+
+     _Part_ 1. _A Catalogue of choice and valuable Books in most
+     Faculties and Languages_: being the sixth part of the
+     collection made by THOS. RAWLINSON, Esq., &c., to be sold on
+     Thursday, the 2d day of March, 1726; beginning every evening
+     at 5 of the clock, by Charles Davis, Bookseller. Qui non
+     credit, eras credat. Ex Autog. T.R.
+
+     2. _Bibliotheca Rawlinsoniana_; sive Delectus Librorum in
+     omni ferè Linguâ et Facultate præstantium--to be sold on
+     Wednesday 26th April, [1726] by Charles Davis, Bookseller.
+     2600 Numbers.
+
+     3. _The Same_: January 1727-8. By Thomas Ballard,
+     Bookseller, 3520 Numbers.
+
+     4. _The Same_: March, 1727-8. By the same. 3840 Numbers.
+
+     5. _The Same_: October, 1728. By the same. 3200 Numbers.
+
+     6. _The Same_: November, 1728. By the same. 3520 Numbers.
+
+     7. _The Same_: April, 1729. By the same. 4161 Numbers.
+
+     8. _The Same_: November, 1729. By the same. 2700 Numbers.
+
+     9. _The Same_: [Of Rawlinson's MANUSCRIPTS] By the same.
+     March 1733-4. 800 Numbers.
+
+     10. _Picturæ Rawlinsonianæ._ April, 1734. 117 Articles.
+
+     At the end, it would seem that a catalogue of his prints,
+     and MSS. missing in the last sale, were to be published the
+     ensuing winter.
+
+     N.B. The black-letter books are catalogued in the Gothic
+     letter.]
+
+     [Footnote 36: "BIBLIOTHECÆ BRIDGESIANÆ CATALOGUS: or, A
+     Catalogue of the Entire Library of JOHN BRIDGES, late of
+     _Lincoln's Inn_, Esq., &c., which will begin to be sold, by
+     Auction, on Monday the seventh day of February, 1725-6, at
+     his chambers in _Lincoln's Inn_, No. 6."
+
+     From a priced copy of this sale catalogue, in my possession,
+     once belonging to Nourse, the bookseller in the Strand, I
+     find that the following was the produce of the sale:
+
+     The Amount of the books         £3730  0  0
+     Prints and books of Prints        394 17  6
+                                     -----------
+     Total Amount of the Sale        £4124 17  6
+
+     Two different catalogues of this valuable collection of
+     books were printed. The one was analysed, or a _catalogue
+     raisonné_; to which was prefixed a print of a Grecian
+     portico, &c., with ornaments and statues: the other
+     (expressly for the sale) was an indigested and extremely
+     confused one--to which was prefixed a print, designed and
+     engraved by A. Motte, of an oak felled, with a number of men
+     cutting down and carrying away its branches; illustrative of
+     the following Greek motto inscribed on a scroll
+     above--[Greek: Dryos pesousês pas anêr xyleuetai]: "An
+     affecting memento (says Mr. Nichols, very justly, in his
+     _Anecdotes of Bowyer_, p. 557) to the collectors of great
+     libraries, who cannot, or do not, leave them to some public
+     accessible repository."]
+
+     [Footnote 37: In the year 1730-1, there was sold by auction,
+     at St. Paul's Coffee-house, in St. Paul's Church-yard
+     (beginning every evening at five o'clock), the library of
+     the celebrated Free-Thinker,
+
+     ANTHONY COLLINS, ESQ.
+
+     "Containing a collection of several thousand volumes in
+     Greek, Latin, English, French, and Spanish; in divinity,
+     history, antiquity, philosophy, husbandry, and all polite
+     literature: and especially many curious travels and voyages;
+     and many rare and valuable pamphlets." This collection,
+     which is divided into _two parts_ (the first containing 3451
+     articles, the second 3442), is well worthy of being
+     consulted by the theologian, who is writing upon any
+     controverted point of divinity: there are articles in it of
+     the rarest occurrence. The singular character of its owner
+     and of his works is well known: he was at once the friend
+     and the opponent of Locke and Clarke, who were both anxious
+     for the conversion of a character of such strong, but
+     misguided, talents. The former, on his death-bed, wrote
+     Collins a letter to be delivered to him, after his decease,
+     which was full of affection and good advice.]
+
+     [Footnote 38: It is almost impossible to dwell on the memory
+     of this GREAT MAN without emotions of delight--whether we
+     consider him as an eminent physician, a friend to
+     literature, or a collector of books, pictures, and coins.
+     Benevolence, magnanimity, and erudition were the striking
+     features of his character: his house was the general
+     receptacle of men of genius and talent, and of every thing
+     beautiful, precious, or rare. His curiosities, whether
+     books, or coins, or pictures, were freely laid open to the
+     public; and the enterprising student, and experienced
+     antiquary, alike found amusement and a courteous reception.
+     He was known to all foreigners of intellectual distinction,
+     and corresponded both with the artisan and the potentate.
+     The great patron of literature, and the leader of his
+     profession (which he practised with a success unknown
+     before), it was hardly possible for unbefriended merit, if
+     properly introduced to him, to depart unrewarded. The
+     clergy, and in general, all men of learning, received his
+     advice _gratuitously_: and his doors were open every morning
+     to the _most indigent_, whom he frequently assisted with
+     money. Although his income, from his professional practice,
+     was very considerable, he died by no means a rich man--so
+     large were the sums which he devoted to the encouragement of
+     literature and the fine arts!
+
+     The sale of Dr. Mead's _books_ commenced on the 18th of
+     November, 1754, and again on the 7th of April, 1755: lasting
+     together 57 days. The sale of the _prints_ and _drawings_
+     continued 14 nights. The _gems_, _bronzes_, _busts_, and
+     _antiquities_, 8 days.
+
+     His books produced          £5496  15  0
+       Pictures                   3417  11  0
+       Prints and drawings        1908  14  0
+       Coins and medals           1977  17  0
+       Antiquities                3246  15  0
+                               --------------
+     Amount of all the sales   £16,047  12  0
+
+     It would be difficult to mention, within a moderate compass,
+     all the rare and curious articles which his library
+     contained--but the following are too conspicuous to be
+     passed over. The _Spira Virgil_ of 1470, _Pfintzing's
+     Tewrkdrancs_, 1527, _Brandt's Stultifera Navis_, 1498, and
+     the _Aldine Petrarch_ of 1501, ALL UPON VELLUM. The large
+     paper _Olivet's Cicero_ was purchased by Dr. Askew for £14
+     14_s._ and was sold again at his sale for £36 15_s._ The
+     King of France bought the editio princeps of _Pliny Senr._
+     for £11 11_s._; and Mr. Willock, a bookseller, bought the
+     magnificently illuminated _Pliny by Jenson_ of 1472, for £18
+     18_s._: of which Maittaire has said so many fine things. The
+     _French_ books, and all the works upon the _Fine Arts_, were
+     of the first rarity, and value, and bound in a sumptuous
+     manner. Winstanley's _Prospects of Audley End_ brought £50.
+     An amusing account of some of the pictures will be found in
+     Mr. Beloe's "_Anecdotes of Literature and Scarce Books_,"
+     vol. i. 166. 71. But consult also _Nichol's Anecdotes of
+     Bowyer_, p. 225, &c. Of the catalogue of Dr. Mead's books
+     there were only six copies printed on LARGE PAPER. See Bibl.
+     Lort, no. 1149.]
+
+The years 1755-6 were singularly remarkable for the mortality excited
+by the BIBLIOMANIA; and the well known names of Folkes,[39] and
+Rawlinson,[40] might have supplied a modern Holbein a hint for the
+introduction of a new subject in the "_Dance of Death_." The close of
+George the Second's reign witnessed another instance of the fatality
+of this disease. Henley[41] "bawled till he was hoarse" against the
+cruelty of its attack; while his library has informed posterity how
+severely and how mortally he suffered from it.
+
+     [Footnote 39: "A Catalogue of the entire and valuable
+     library of MARTIN FOLKES, ESQ., President of the Royal
+     Society, and member of the Royal Academy of Sciences at
+     Paris, lately deceased; which will be sold by auction by
+     Samuel Baker, at his house, in York Street, Covent Garden.
+     To begin on Monday, February 2, 1756, and to continue for
+     forty days successively (Sundays excepted). Catalogues to be
+     had at most of the considerable places in Europe, and all
+     the booksellers of Great Britain and Ireland, Price
+     Sixpence."
+
+     This collection was an exceedingly fine one; enriched with
+     many books of the choicest description, which Mr. Folkes had
+     acquired in his travels in Italy and Germany. The works on
+     natural history, coins, medals, and inscriptions, and on the
+     fine arts in general, formed the most valuable
+     department--those in the Greek, Latin and English classics,
+     were comparatively of inferior importance. It is a great
+     pity the catalogue was not better digested; or the books
+     classed according to the nature of their contents.
+
+     The following prices, for some of the more rare and
+     interesting articles, will amuse a bibliographer of the
+     present day. The chronicles of Fabian, Hall, and Grafton,
+     did not altogether bring quite £2: though the copies are
+     described as perfect and fair. There seems to have been a
+     fine set of Sir Wm. Dugdale's Works (Nos. 3074-81) in 13
+     vols. which, collectively, produced about 30 guineas.
+
+     In _Spanish literature_, the history of South America, By
+     Don Juan and Ant. di Ulloa, Madr. fol. in 5 vols., was sold
+     for £5: a fine large paper copy of the description of the
+     Monastery of St. Lorenzo, and the Escorial, Madr. 1657,
+     brought £1 2_s._: de Lastanosa's Spanish Medals, Huesca,
+     fol. 1645, £2 2_s._
+
+     In _English_, the first edition of Shakespeare, 1623, which
+     is now what a French bibliographer would say "presque
+     introuvable," produced the sum of £3 3_s._; and Fuller's
+     Worthies, 18_s._!
+
+     _Fine Arts, Antiquities, and Voyages._ Sandrart's works, in
+     9 folio volumes (of which a fine perfect copy is now rarely
+     to be met with, and of very great value) were sold for £13
+     13_s._ only: Desgodetz Roman edifices, Paris, 1682, £4
+     10_s._: Galleria Giustiniano, 2 vols., fol. £13 13_s._ Le
+     Brun's Voyages in Muscovy, &c., in large paper, £4 4_s._ De
+     Rossi's Raccolta de Statue, &c. Rom. 1704, £6 10_s._
+     Medailles du Regne de Louis le Grand, de l'imp. Roy. 1. p.
+     fol. 1702, £5 15_s._ 6_d._
+
+     The works on _Natural History_ brought still higher prices;
+     but the whole, from the present depreciation of specie, and
+     increased rarity of the articles, would now bring thrice the
+     sums then given.
+
+     Of the _Greek and Latin Classics_, the Pliny of 1469 and
+     1472 were sold to Dr. Askew for £11 11_s._ and £7 17_s._
+     6_d._ At the Doctor's sale they brought £43 and £23:
+     although the first was lately sold (A.D. 1805) among some
+     duplicates of books belonging to the British Museum, at a
+     much lower price: the copy was, in fact, neither large nor
+     beautiful. Those in the Hunter and Cracherode collections
+     are greatly superior, and would each bring more than double
+     the price.
+
+     From a priced copy of the sale catalogue, in my possession,
+     I find that the amount of the sale, consisting of 5126
+     articles, was £3091 5_s._
+
+     The _Prints and Drawings_ of Mr. Folkes occupied a sale of 8
+     days; and his _pictures_, _gems_, _coins_, and _mathematical
+     instruments_, of five days.
+
+     Mr. MARTIN FOLKES may justly be ranked among the most
+     useful, as well as splendid, literary characters of which
+     this country can boast. He appears to have imbibed, at a
+     very early age, an extreme passion for science and
+     literature; and to have distinguished himself so much at the
+     University of Cambridge, under the able tuition of Dr.
+     Laughton, that, in his 23rd year, he was admitted a Fellow
+     of the Royal Society. About two years afterwards he was
+     chosen one of the council, and rose, in gradual succession,
+     to the chair of the presidentship, which he filled with a
+     credit and celebrity that has since never been surpassed. On
+     this occasion he was told by Dr. Jurin, the Secretary, who
+     dedicated to him the 34th vol. of the Transactions, that
+     "the greatest man that ever lived (Sir Isaac Newton) singled
+     him out to fill the chair, and to preside in the society,
+     when he himself was so frequently prevented by
+     indisposition: and that it was sufficient to say of him that
+     he was _Sir Isaac's friend_."
+
+     Within a few years after this, he was elected President of
+     the Society of Antiquaries. Two situations, the filling of
+     which may be considered as the _ne plus ultra_ of literary
+     distinction. Mr. Folkes travelled abroad, with his family,
+     about two years and a half, visiting the cities of Rome,
+     Florence, and Venice--where he was noticed by almost every
+     person of rank and reputation, and whence he brought away
+     many a valuable article to enrich his own collection. He was
+     born in the year 1690, and died of a second stroke of the
+     palsy, under which he languished for three years, in 1754.
+     Dr. Birch has drawn a very just and interesting character of
+     this eminent man, which may be found in Nichol's _Anecdotes
+     of Bowyer_, 562. 7. Mr. Edwards, the late ornithologist, has
+     described him in a simple, but appropriate, manner. "He
+     seemed," says he, "to have attained to universal knowledge;
+     for, in the many opportunities I have had of being in his
+     company, almost every part of science has happened to be the
+     subject of discourse, all of which he handled as an adept.
+     He was a man of great politeness in his manners, free from
+     all pedantry and pride, and, in every respect, the real
+     unaffected fine gentleman."]
+
+     [Footnote 40: "BIBLIOTHECA RAWLINSONIANA, sive Catalogus
+     Librorum Richardi Rawlinson, LL.D. Qui prostabunt Venales
+     sub hasta, Apud Samuelem Baker. In Vico dicto _York Street,
+     Covent Garden Londini, Die Lunæ_, 22 Martii MDCCLVI."
+
+     This valuable library must have contained about 20,000
+     volumes; for the number of Articles amounted to 9405. On
+     examining a priced catalogue of it, which now lies before
+     me, I have not found any higher sum offered for a work than
+     £4 1_s._ for a collection of fine prints, by Aldegrave (No.
+     9405). The Greek and Latin classics, of which there were few
+     _Editiones Principes_, or on _large paper_, brought the
+     usual sums given at that period. The old English
+     black-lettered books, which were pretty thickly scattered
+     throughout the collection, were sold for exceedingly low
+     prices--if the copies were perfect. Witness the following:
+
+                                                       £  _s._ _d._
+
+     The Newe Testament in English, 1530               0   2    9
+     The Ymage of both Churches, after the Revelation
+       of St. John, by Bale, 1550                      0   1    6
+     The boke called the Pype or Tonne of Perfection,
+       by Richard Whytforde, 1532                      0   1    9
+     The Visions of Pierce Plowman, 1561               0   2    0
+     The Creede of Pierce Plowman, 1553                0   1    6
+     The Bookes of Moses, in English, 1530             0   3    9
+     Bale's Actes of Englishe Votaryes, 1550           0   1    3
+     The Boke of Chivalrie, by Caxton                  0  11    0
+     The Boke of St. Albans, by W. de Worde            1   1    0
+
+     These are only very few of the rare articles in English
+     literature, of the whole of which (perhaps upwards of 200 in
+     number) I believe, the 'Boke of St. Albans,' brought the
+     highest sum. Hence it will be seen that this was not the age
+     of curious research into the productions of our ancestors.
+     Shakspeare had not then appeared in a proper _Variorum
+     edition_. Theobald, and Pope, and Warburton, had not
+     investigated the black-letter lore of ancient English
+     writers, for the illustration of their favourite author.
+     This was reserved for Farmer, for Steevens, for Malone, for
+     Chalmers, Reed and Douce: and it is expressly to these
+     latter gentlemen (for Johnson and Hanmer were very sparing,
+     or very shy, of the black letter), that we are indebted for
+     the present spirit of research into the works of our
+     ancestors.
+
+     The sale of the books lasted 50 days. There was a second
+     sale of pamphlets, books of prints, &c., in the following
+     year, which lasted 10 days; and this was immediately
+     succeeded by a sale of the Doctor's single prints and
+     drawings, which continued 8 days.]
+
+     [Footnote 41: This gentleman's library, not so remarkable
+     for the black letter as for whimsical publications, was sold
+     by auction, by Samuel Paterson, [the earliest sale in which
+     I find this well known book-auctioneer engaged] in June,
+     1759, and the three ensuing evenings. The title of the Sale
+     Catalogue is as follows:
+
+     "A Catalogue of the original MSS. and manuscript collections
+     of the late Reverend Mr. JOHN HENLEY, A.M., Independent
+     Minister of the Oratory, &c., in which are included sundry
+     collections of the late Mons. des Maizeaux, the learned
+     editor of Bayle, &c., Mr. Lowndes, author of the Report for
+     the Amendment of Silver Coins, &c., Dr. Patrick Blair,
+     Physician at Boston, and F.R.S. &c., together with original
+     letters and papers of State, addressed to Henry d'Avenant,
+     Esq., her Britannic Majesty's Envoy at Francfort, from 1703
+     to 1708 inclusive."
+
+     Few libraries have contained more curious and remarkable
+     publications than did this. The following articles, given as
+     notable specimens, remind us somewhat of Addison's Memoranda
+     for the Spectator, which the waiter at the coffee-house
+     picked up and read aloud for the amusement of the company.
+
+     No. 166. God's Manifestation by a Star to the Dutch. A
+     mortifying Fast Diet at Court. On the Birth Day of the first
+     and oldest young gentleman. All corrupt: none good: no not
+     one.
+
+     No. 168. General Thumbissimo. The Spring reversed, or the
+     Flanderkin's Opera and Dutch Pickle Herrings. The Creolean
+     Fillip, or Royal Mishap. A Martial Telescope, &c., England's
+     Passion Sunday, and April Changelings.
+
+     No. 170. Speech upon Speech. A Telescope for Tournay. No
+     Battle, but worse, and the True Meaning of it. An Army
+     Beaten and interred.
+
+     No. 174. Signs when the P. will come. Was Captain Sw----n a
+     Prisoner on Parole, to be catechised? David's Opinion of
+     like Times. The Seeds of the plot may rise, though the
+     leaves fall. A Perspective, from the Blair of Athol, the
+     Pretender's Popery. Murder! Fire! Where! Where!
+
+     No. 178. Taking Carlisle, catching an eel by the tail.
+     Address of a Bishop, Dean and Clergy. Swearing to the
+     P----r, &c., Anathema denounced against those Parents,
+     Masters, and Magistrates, that do not punish the Sin at
+     Stokesley. A Speech, &c. A parallel between the Rebels to K.
+     Charles I. and those to his Successor. _Jane Cameron_ looked
+     killing at _Falkirk_.
+
+     No. 179. Let stocks be knighted, write, Sir Banks, &c. the
+     Ramhead Month. A Proof that the Writers against Popery fear
+     it will be established in this Kingdom. A Scheme, wisely
+     blabbed to root and branch the Highlanders. Let St. Patrick
+     have fair play, &c.
+
+     Of ORATOR HENLEY I have not been able to collect any
+     biographical details more interesting than those which are
+     to be found in Warburton's notes to Pope's Dunciad.]
+
+We are now, my dear Sir, descending rapidly to our own times; and, in
+a manner sufficiently rough, have traced the _History of the
+Bibliomania_ to the commencement of the present illustrious reign:
+when we discover, among its victims, a General, who had probably
+faced many a cannon, and stormed many a rampart, uninjured. The name
+of Dormer[42] will remind you of the small but choice library which
+affords such a melancholy proof of its owners' fate; while the more
+splendid examples of Smith[43] and West[44] serve to shew the
+increased ravages of a disease, which seemed to threaten the lives of
+all, into whose ears (like those of "Visto,") some demon had
+"whispered" the sound of "TASTE." These three striking instances of
+the fatality of the Bibliomania occurred--the first in the year 1764;
+and the latter in 1773. The following year witnessed the sale of the
+Fletewode[45] library; so that nothing but despair and havoc appeared
+to move in the train of this pestiferous malady. In the year 1775 died
+the famous Dr. Anthony Askew, another illustrious victim to the
+Bibliomania. Those who recollect the zeal and scholarship of this
+great book-collector, and the precious gems with which his library[46]
+was stored from the cabinets of De Boze and Gaignat, as well as of
+Mead and Folkes, cannot but sigh with grief of heart on the thought
+of such a victim! How ardently, and how kindly [as I remember to have
+heard his friend Dr. Burges say], would Askew unfold his glittering
+stores--open the magnificent folio, or the shining duodecimo, UPON
+VELLUM, embossed and fast held together with golden knobs and silver
+clasps! How carefully would he unroll the curious MS.--decipher the
+half effaced characters--and then, casting an eye of ecstacy over the
+shelves upon which similar treasures were lodged, exult in the
+glittering prospect before him! But death--who, as Horace tells us,
+raps equally at the palaces of kings and cottages of peasants, made
+no scruple to exercise the knocker of the Doctor's door, and sent, as
+his avant-courier, THIS DEPLORABLE MANIA! It appeared; and even Askew,
+with all his skill in medicine and books, fell lifeless before
+it--bewailed, as he was beloved and respected!
+
+     [Footnote 42: "A Catalogue of the genuine and elegant
+     Library of the late Sir C.C. DORMER, collected by
+     Lieutenant-General James Dormer, which will be sold, &c., by
+     Samuel Baker, at his house in York Street, Covent Garden; to
+     begin on Monday, February the 20th, 1764, and to continue
+     the nineteen following evenings." At the end of the
+     catalogue we are told that the books were "in general of the
+     best editions, and in the finest condition, many of them in
+     _large paper_, bound in morocco, gilt leaves, &c."
+
+     This was a very choice collection of books, consisting
+     almost entirely of Greek, Latin, Italian, Spanish and
+     French. The number of articles did not exceed 3082, and of
+     volumes, probably not 7000. The catalogue is neatly printed,
+     and copies of it on _large paper_ are exceedingly scarce.
+     Among the most curious and valuable articles were those
+     numbered 599, 604, 2249, 2590; from no. 2680, to the end,
+     was a choice collection of Italian and Spanish books.]
+
+     [Footnote 43: In the year 1755 was published at Venice,
+     printed by J.B. Pasquali, a catalogue of the books of JOSEPH
+     SMITH, Esq., Consul at Venice.
+
+     The catalogue was published under the following Latin title:
+     "Bibliotheca Smitheana, seu Catalogus Librorum D. Josephi
+     Smithii, Angli, per Cognomina Authorum dispositus, Venetiis,
+     typis Jo. Baptistæ Pasquali, M,DCCLV.;" in quarto; with the
+     arms of Consul Smith. The title page is succeeded by a Latin
+     preface of Pasquali, and an alphabetical list of 43 pages of
+     the authors mentioned in the catalogue: then follow the
+     books arranged alphabetically, without any regard to size,
+     language, or subject. These occupy 519 pages, marked with
+     the Roman numerals; after which are 66 pages, numbered in
+     the same manner, of "addenda et corrigenda." The most
+     valuable part of the volume is "The Prefaces and Epistles
+     prefixed to those works in the Library which were printed in
+     the 15th century:" these occupy 348 pages. A Catalogue, (in
+     three pages) of the Names of the illustrious Men mentioned
+     in these prefaces, &c., closes the book.
+
+     It would be superfluous to mention to bibliographers the
+     rare articles contained in this collection, which are so
+     generally known and so justly appreciated. They consist
+     chiefly of early editions of _Italian_, _Greek_, and _Latin
+     classics_; and of many copies of both printed UPON VELLUM.
+     The library, so rich in these articles, was, however,
+     defective in English Literature and Antiquities. There was
+     scarcely any thing of Shakspeare or Dugdale.
+
+     On the death of Mr. Smith in 1772, his collection was sold
+     in 1773, 8vo., by Baker and Leigh; and the books were
+     announced to the public, as being "in the finest
+     preservation, and consisting of the very best and scarcest
+     editions of the Latin, Italian, and French authors, from the
+     invention of printing; with manuscripts and missals, upon
+     vellum, finely illuminated." A glance upon the prices for
+     which most of these fine books were sold made Mr. Cuthell
+     exclaim, in my hearing, that "_they were given away_." On
+     these occasions, one cannot help now and then wishing, with
+     father Evander,
+
+          "O mihi præteritos referat si Jupiter annos!"
+
+     On comparing Pasquali's, with the sale, catalogue, it will
+     be obvious that a great number of rare and valuable articles
+     was disposed of before the books came to public auction.
+     Indeed it is known that his present MAJESTY enriched his
+     magnificent collection with many of the Consul's _first
+     editions_, and _vellum copies_, during the life of the
+     latter. The sale continued thirteen days only; and on the
+     last day were sold all the English books in the
+     _black-letter_. Some of these are rather curious.
+
+     Of CONSUL SMITH I am unable to present the lover of VIRTU
+     with any particulars more acceptable than the following.
+     Pasquali (whose Latin preface is curious enough--abounding
+     with as many interrogatories as Hamlet's soliloquies) has
+     told us that "as the Consul himself was distinguished for
+     his politeness, talents, and prudence, so was his house for
+     splendid and elegant decorations. You might there view, says
+     he, the most beautifully painted pictures, and exquisite
+     ornaments, whether gems, vases, or engravings. In short, the
+     whole furniture was so brilliant and classical that you
+     admired at once the magnificence and judgment of the owner."
+     He tells us, a little further, that he had frequently
+     solicited the Consul to print a catalogue of his books;
+     which proposition his modesty at first induced him to
+     reject; but, afterwards, his liberality, to comply with. He
+     then observes that, "in the compilation of the catalogue, he
+     has studied brevity as much as it was consistent with
+     perspicuity; and that he was once desirous of stating the
+     _value_ and _price_ of the books, but was dissuaded from it
+     by the advice of the more experienced, and by the singular
+     modesty of the Collector."
+
+     It must be confessed that Pasquali has executed his task
+     well, and that the catalogue ranks among the most valuable,
+     as well as rare, books of the kind.]
+
+     [Footnote 44: "BIBLIOTHECA WESTIANA; A catalogue of the
+     curious and truly valuable library of the late James West,
+     Esq., President of the Royal Society, deceased, &c.
+     Including the works of CAXTON, LETTOU, MACHLINIA, the
+     anonymous ST. ALBANS SCHOOLMASTE [Transcriber's Note:
+     Schoolmaster], WYNKYN DE WORDE, PYNSON, and the rest of the
+     old English typographers. Digested by Samuel Paterson,"
+     1773, 8vo.
+
+     ANALYSIS OF THE CATALOGUE.
+
+     1. _Volumes of Miscellaneous Tracts._
+
+     These volumes extend from No. 148 to 200, from 915 to
+     992, from 1201 to 1330, and from No. 1401 to 1480.
+
+     2. _Divinity._
+
+     In the whole, 560 articles; probably about 1200 volumes;
+     some of them exceedingly scarce and valuable.
+
+     3. _Education, Languages, Criticism, Classics, Dictionaries,
+     Catalogues of Libraries, &c._
+
+     There were about 700 volumes in these departments. The
+     catalogues of English books, from that of Maunsell, in 1595,
+     to the latest before Mr. West's time, were very complete.
+     The treatises on education and translations of the ancient
+     classics comprehended a curious and uncommon collection. The
+     Greek and Latin classics were rather select than rare.
+
+     4. _English Poetry, Romance, and Miscellanies._
+
+     This interesting part of the collection comprehended about
+     355 articles, or probably about 750 volumes: and if the
+     singularly rare and curious books which may be found _under
+     these heads alone_ were now concentrated in one library, the
+     owner of them might safely demand 4000 guineas for such a
+     treasure.
+
+     5. _Philosophy, Mathematics, Inventions, Agriculture and
+     Horticulture, Medicine, Cookery, Surgery, etc._
+
+     Two hundred and forty articles, or about 560 volumes.
+
+     6. _Chemistry, Natural History, Astrology, Sorcery,
+     Gigantology._
+
+     Probably not more than 100 volumes.
+
+     7. _History and Antiquities._
+
+     This comprehended a great number of curious and valuable
+     productions, relating both to foreign and domestic
+     transactions.
+
+     8. _Heraldry and Genealogy._
+
+     A great number of curious and scarce articles may be found
+     under these heads.
+
+     9. _Ancient Legends and Chronicles._
+
+     To the English antiquary, few departments of literature are
+     more interesting that these. Mr. West seems to have paid
+     particular attention to them, and to have enriched his
+     library with many articles of this description, of the
+     rarest occurrence. The lovers of Caxton, Fabian, Hardyng,
+     Hall, Grafton, and Holinshed, may be highly gratified by
+     inspecting the various editions of these old chroniclers. I
+     entreat the diligent bibliographer to examine the first
+     eight articles of page 209 of the catalogue. Alas, when will
+     all these again come under the hammer at one sale?!
+
+     10. _Topography._
+
+     Even to a veteran, like the late Mr. GOUGH, such a
+     collection as may be found from p. 217 to p. 239 of this
+     catalogue, would be considered a first-rate acquisition. I
+     am aware that the gothic wainscot, and stained glass
+     windows, of _Enfield Study_ enshrined a still more exquisite
+     topographical collection! But we are improved since the days
+     of Mr. West; and every body knows to _whom_ these
+     improvements are, in a great measure, to be attributed. When
+     I call to mind the author of '_British Topography_' and
+     '_Sepulchral Monuments_,' I am not insensible to the taste,
+     diligence, and erudition of the "par nobile fratrum," who
+     have gratified us with the '_Environs of London_,' '_Roman
+     Remains_,' and the first two volumes of '_Magna Britannia_!'
+
+     The preceding is to be considered as a very general, and
+     therefore superficial, analysis of the catalogue of Mr.
+     West's library; copies of it, with the sums for which the
+     books were sold, are now found with difficulty, and bring a
+     considerable price. I never saw or heard of one on LARGE
+     PAPER!]
+
+     [Footnote 45: "A catalogue of rare books and tracts in
+     various languages and faculties; including the _Ancient
+     Conventual Library_ of Missenden-Abbey, in Buckinghamshire;
+     together with some choice remains of that of the late
+     eminent Serjeant at law, WILLIAM FLETEWODE, Esq., Recorder
+     of London, in the Reign of Queen Elizabeth; among which are
+     several specimens of the earliest Typography, foreign and
+     English, including CAXTON, WYNKYN DE WORDE, PYNSON, and
+     others; a fine collection of English Poetry, some scarce old
+     law-books, a great number of old English plays, several
+     choice MSS. upon vellum, and other subjects of literary
+     curiosity. Also several of the best editions of the
+     Classics, and modern English and French books. To begin
+     _December_ 5, 1774, and the 17 following evenings, precisely
+     at half an hour after five."
+
+     I am in possession of a _priced Catalogue_ of this
+     collection, which once belonged to Herbert, and which
+     contains all the purchasers' names, as well as the sums
+     given. The purchasers were principally Herbert, Garrick,
+     Dodd, Elmsley, T. Payne, Richardson, Chapman, Wagstaff,
+     Bindley, and Gough. The following is a specimen of some
+     curious and interesting articles contained in this
+     celebrated library, and of the prices for which they once
+     sold!
+
+     No. 172. _Bale's brefe Chronycle relating to Syr Johan
+     Oldecastell_, 1544. The Life off the 70th Archbishopp off
+     Canterbury presentleye sittinge, 1574, &c. Life of Hen.
+     Hills, Printer to O. Cromwell, _with the Relation of what
+     passed between him and the Taylor's Wife in Black Friars_,
+     1688, _&c._ £0 7_s._ 9_d._
+
+     Purchased by Mores.
+
+     Nos. 361 to 367. Upwards of thirty _scarce Theological
+     Tracts_, in Latin and English 1 5 0
+
+     Nos. 746 to 784. A fine collection of early English
+     Translations, in black letter, with some good foreign
+     editions of the classics. Not exceeding, in the whole 10 10 0
+
+     Nos. 837, 838. Two copies of the _first edition_ of Bacon's
+     Essays, 1597! 0 0 6
+
+     The reader will just glance at No. 970, in the catalogue,
+     en passant, to
+
+     Nos. 1082 (£1 2s.) and 1091 (12s.); but more particularly to
+
+     No. 1173. Caxton's _Boke of Tulle of olde age_, &c. 1481.
+     Purchased by the late Mr. T. Payne 8 8 0
+
+     No. 1174. CAXTON'S _Boke which is sayd or called Cathon_,
+     &c. 1483. 5 0 0
+
+     Purchased by Alchorn.
+
+     No. 1256. CAXTON'S _Doctrinal of Sapyence_, 1489 6 6 0
+
+     Purchased by Alchorn.
+
+     No. 1257. CAXTON'S _Cordyal_, 1479 6 12 6
+
+     No. 1258. WYNKYN DE WORDE'S _Ocharde of Syon_, &c. 1519. 1 13 0
+
+     I will, however, only add that there were upwards of 150
+     articles of _Old Plays_, mostly in quarto. See page 73. Of
+     _Antiquities_, _Chronicles_, and _Topography_, it would be
+     difficult to pitch upon the rarest volumes. The collection,
+     including very few MSS., contained 3641 articles, or
+     probably nearly 7000 volumes. The Catalogue is uncommon.]
+
+     [Footnote 46: I am now arrived, pursuing my chronological
+     arrangement, at a very important period in the annals of
+     book-sales. The name and collection of Dr. ASKEW are so well
+     known in the bibliographical world that the reader need not
+     be detained with laboured commendations on either: in the
+     present place, however, it would be a cruel disappointment
+     not to say a word or two by way of _preface_ or _prologue_.
+
+     Dr. ANTHONY ASKEW had eminently distinguished himself by a
+     refined taste, a sound knowledge, and an indefatigable
+     research relating to every thing connected with Grecian and
+     Roman literature. It was to be expected, even during his
+     life, as he was possessed of sufficient means to gratify
+     himself with what was rare, curious, and beautiful in
+     literature and the fine arts, that the public would, one
+     day, be benefited by such pursuits: especially as he had
+     expressed a wish that his treasures might be unreservedly
+     submitted to sale, after his decease. In this wish the
+     Doctor was not singular. Many eminent collectors had
+     indulged it before him: and, to my knowledge, many modern
+     ones still indulge it. Accordingly on the death of Dr.
+     Askew, in 1774, appeared, in the ensuing year, a catalogue
+     of his books for sale, by Messrs. Baker and Leigh, under the
+     following title:
+
+     "BIBLIOTHECA ASKEVIANA, sive Catalogus Librorum Rarissimorum
+     ANTONII ASKEW, M.D., quorum Auctio fiet apud S. Baker et G.
+     Leigh, in Vico dicto _York Street, Covent Garden_, Londini.
+     _Die Lunæ_, 13 _Februarii_, MDCCLXXV, et in undeviginti
+     sequentes dies." A few copies were struck off on large
+     paper.
+
+     We are told by the compiler of the catalogue that it was
+     thought unnecessary to say much with respect to this Library
+     of the late Dr. Anthony Askew, as the Collector and
+     Collection were so well known in almost all parts of Europe.
+     Afterwards it is observed that "The books in general are in
+     very fine condition, many of them bound in morocco, and
+     Russia leather, with gilt leaves." "To give a particular
+     account," continues the Compiler, "of the _many scarce
+     editions_ of books in this Catalogue would be almost
+     endless, therefore the _first editions_ of the Classics, and
+     some _extremely rare books_ are chiefly noticed. The
+     catalogue, without any doubt, contains the best, rarest, and
+     most valuable collection of GREEK and LATIN BOOKS that were
+     ever sold in England." This account is not overcharged. The
+     collection, in regard to Greek and Roman literature, was
+     _unique_ in its day.
+
+     The late worthy and learned Mr. M. CRACHERODE, whose library
+     now forms one of the most splendid acquisitions of the
+     British Museum, and whose _bequest_ of it will immortalize
+     his memory, was also among the "Emptores literarii" at this
+     renowned sale. He had enriched his collection with many
+     _Exemplar Askevianum_; and, in his latter days, used to
+     elevate his hands and eyes, and exclaim against the prices
+     _now_ offered for EDITIONES PRINCIPES!
+
+     The fact is, Dr. Askew's sale has been considered a sort of
+     _æra_ in bibliography. Since that period, rare and curious
+     books in Greek and Latin literature have been greedily
+     sought after, and obtained at most extravagant prices. It is
+     very well for a veteran in bibliography, as was Mr.
+     Cracherode, or as are Mr. Wodhull and Dr. Gosset, whose
+     collections were formed in the days of Gaignat, Askew, Duke
+     de la Valliere, and Lamoignon--it is very well for such
+     gentlemen to declaim against _modern prices_! But what is to
+     be done? Books grow scarcer every day, and the love of
+     literature, and of possessing rare and interesting works,
+     increases in an equal ratio. Hungry bibliographers meet, at
+     sales, with well furnished purses, and are resolved upon
+     sumptuous fare. Thus the hammer _vibrates_, after a bidding
+     of _Forty pounds_, where formerly it used regularly to
+     _fall_ at _Four_!
+
+     But we lose sight of Dr. Askew's _rare editions_, and _large
+     paper copies_. The following, gentle Reader, is but an
+     imperfect specimen!
+
+     No. 168. Chaucer's Works, by PYNSON, no date £7 17_s._ 6_d._
+
+     No. 172. Cicero of Old Age, by Caxton, 1481 13 13 0
+
+     No. 518. Gilles' (Nicole) Annales, &c. de France. Paris,
+     fol. 1520. 2 tom. SUR VELIN 31 10 6
+
+     No. 647. Æginetæ (Pauli) Præcepta Salubria. Paris, quarto,
+     1510. ON VELLUM 11 0 0
+
+     No. 666. Æsopi Fabulæ. EDIT. PRIN. _circ._ 1480 6 6 0
+
+     No. 684. Boccacio, la Teseide _Ferar._ 1475. PRIMA EDIZIONE
+     85 0 0
+
+     No. 1433. Catullus Tibullus, et Propertius, Aldi. 8vo. 1502.
+     IN MEMBRANA 17 10 0
+
+     This copy was purchased by the late Mr. M.C. Cracherode, and
+     is now, with his library, in the British Museum. It is a
+     beautiful book, but cannot be compared with Lord Spencer's
+     Aldine VELLUM Virgil, of the same size.
+
+     No. 1576. Durandi Rationale, &c. 1459. IN MEMBRANA 61 0 0
+
+     The beginning of the 1st chapter was wanting. Lord Spencer
+     has a perfect copy of this rare book on spotless VELLUM!
+
+     No. 2656. Platonis Opera, apud Aldum. 2 vol. fol. 1513.
+     _Edit. Prin._ ON VELLUM 55 13 0
+
+     Purchased by the late Dr. W. Hunter; and is at this moment,
+     in his Museum at _Glasgow_. The reader who has not seen them
+     can have no idea of the beauty of these vellum leaves. The
+     ink is of the finest lustre, and the whole typographical
+     arrangement may be considered a master-piece of printing.
+     Lord Oxford told Dr. Mead that he gave 100 guineas for this
+     very copy.]
+
+After this melancholy event, one would have thought that future
+_Virtuosi_ would have barricadoed their doors, and fumigated their
+chambers, to keep out such a pest;--but how few are they who profit by
+experience, even when dearly obtained! The subsequent history of the
+disease is a striking proof of the truth of this remark; for the
+madness of book-collecting rather increased--and the work of death
+still went on. In the year 1776 died John Ratcliffe[47] another, and
+a very singular, instance of the fatality of the BIBLIOMANIA. If he
+had contented himself with his former occupation, and frequented the
+butter and cheese, instead of the book, market--if he could have
+_fancied himself_ in a brown peruke, and Russian apron, instead of an
+embroidered waistcoat, velvet breeches, and flowing perriwig, he
+might, perhaps, have enjoyed greater longevity; but, infatuated by the
+Caxtons and Wynkyn De Wordes of Fletewode and of West, he fell into
+the snare; and the more he struggled to disentangle himself, the more
+certainly did he become a prey to the disease.
+
+     [Footnote 47: BIBLIOTHECA RATCLIFFIANA; or, "A Catalogue of
+     the elegant and truly valuable Library of JOHN RATCLIFFE,
+     Esq. late of Bermondsey, deceased. The whole collected with
+     great judgment and expense, during the last thirty years of
+     his life: comprehending a large and most choice collection
+     of the rare old English _black-letter_, in fine
+     preservation, and in elegant bindings, printed by CAXTON,
+     LETTOU, MACHLINIA, the anonymous St. Albans Schoolmaster,
+     Wynkyn de Worde, Pynson, Berthelet, Grafton, Day, Newberie,
+     Marshe, Jugge, Whytchurch, Wyer, Rastell, Coplande, and the
+     rest of the _Old English Typographers_: several missals and
+     MSS., and two Pedigrees on vellum, finely illuminated." The
+     title page then sets forth a specimen of these
+     black-lettered gems; among which our eyes are dazzled with a
+     galaxy of Caxtons, Wynkyn de Wordes, Pynsons, &c. &c. The
+     sale took place on March 27, 1776.
+
+     If ever there was a _unique_ collection, this was one--the
+     very essence of Old Divinity, Poetry, Romances, and
+     Chronicles! The articles were only 1675 in number, but their
+     intrinsic value amply compensated for their paucity.
+
+     The following is but an inadequate specimen.
+
+     No. 1315. Horace's Arte of Poetrie, Pistles and Satyres, by
+     Drant. 1567, _first English edition_ £0 16_s._ 6_d._
+
+     No. 1321. The Sheparde's Calender, 1579. Whetstone's Castle
+     of Delight, 1576 1 2 0
+
+     No. 1392. The Pastyme of the People, printed by Rastell.
+     Curious wood cuts. A copy of this book is not now to be
+     procured. I have known £40 offered for it, and rejected with
+     disdain 7 7 0
+
+     No. 1403. Barclay's Shyp of Folys, printed by Pynson, 1508,
+     _first edit._ fine copy 2 10 0
+
+     No. 1426. The Doctrinal of Sapyence, printed by CAXTON, 1489
+     8 8 0
+
+     No. 1427. The Boke, called Cathon, DITTO, 1483. _Purchased
+     by Dr. Hunter_, and now in his Museum 5 5 0
+
+     No. 1428. The Polytyque Boke, named Tullius de Senectute, in
+     Englishe, by CAXTON, 1481. _Purchased for his Majesty_ 14 0 0
+
+     No. 1429. The Game of Chesse Playe. 1474 16 0 0
+
+     No. 1665. The Boke of Jason, printed by CAXTON 5 10 0
+
+     No. 1669. The Polychronicon of Ranulph Higden, printed by
+     CAXTON, 1482. _Purchased by Dr. Hunter_ 5 15 6
+
+     No. 1670. Legenda Aurea, or the Golden Legende 1483 9 15 0
+
+     No. 1674. Mr. Ratcliffe's MS. Catalogues of the _rare old
+     black letter_, and other curious and uncommon books, 4 vols.
+     7 15 0
+
+     This would have been the most delicious article to _my_
+     palate. If the present owner of it were disposed to part
+     with it, I could not find it in my heart to refuse him
+     _compound interest_ for his money. As is the wooden
+     frame-work to the bricklayer in the construction of his
+     arch, so might Mr. Ratcliffe's MS. Catalogues be to me in
+     the compilation of a certain _magnum opus_!
+
+     The memory of such a man ought to be dear to the
+     "_black-lettered dogs_" of the present day; for he had
+     [mirabile dictu!] _upwards of_ THIRTY CAXTONS!
+
+     If I might hazard a comparison between Mr. James West's and
+     Mr. John Ratcliffe's collections, I should say that the
+     former was more extensive, the latter more curious: Mr.
+     West's, like a magnificent _champagne_, executed by the hand
+     of Claude or Both, and enclosing mountains, and meadows, and
+     streams, presented to the eye of the beholder a scene at
+     once extensive, luxuriant, and fruitful: Mr. Ratcliffe's,
+     like one of those delicious pieces of scenery, touched by
+     the pencil of Rysdael or Hobbima, exhibited to the
+     beholder's eye a spot equally interesting, but less varied
+     and extensive. The sweeping foliage and rich pasture of the
+     former could not, perhaps, afford greater gratification than
+     did the thatched cottage, abrupt declivities, and gushing
+     streams of the latter. To change the metaphor--Mr. West's
+     was a magnificent repository, Mr. Ratcliffe's a choice
+     cabinet of gems.]
+
+Thirty years have been considered by Addison (somewhere in his
+Spectator) as a pretty accurate period for the passing away of one
+generation and the coming on of another. We have brought down our
+researches to within a similar period of the present times; but, as
+Addison has not made out the proofs of such assertion, and as many of
+the relatives and friends of those who have fallen victims to the
+BIBLIOMANIA, since the days of Ratcliffe, may yet be alive; moreover,
+as it is the part of humanity not to tear open wounds which have been
+just closed, or awaken painful sensibilities which have been well nigh
+laid to rest; so, my dear Sir, in giving you a further account of this
+fatal disorder, I deem it the most prudent method _not to expatiate_
+upon the subsequent examples of its mortality. We can only mourn over
+such names as BEAUCLERK, CROFTS, PEARSON, LORT, MASON, FARMER,
+STEEVENS, WOODHOUSE, BRAND, and REED! and fondly hope that the list
+may not be increased by those of living characters!
+
+We are, in the SECOND place, to describe the SYMPTOMS OF THE DISEASE.
+
+The ingenious Peignot, in the first volume of his 'Dictionnaire
+Bibliologie,' p. 51, defines the Bibliomania[48] to be "a passion for
+possessing books; not so much to be instructed by them, as to gratify
+the eye by looking on them. He who is affected by this mania knows
+books only by their titles and dates, and is rather seduced by the
+exterior than interior"! This is, perhaps, too general and vague a
+definition to be of much benefit in the knowledge, and consequent
+prevention, of the disease: let us, therefore, describe it more
+certainly and intelligibly.
+
+     [Footnote 48: There is a short, but smart and interesting,
+     article on this head in Mr. D'Israeli's _Curiosities of
+     Literature_, vol. 1. 10. "Bruyere has touched on this mania
+     with humour; of such a collector (one who is fond of superb
+     bindings only) says he, as soon as I enter his house, I am
+     ready to faint on the stair-case from a strong smell of
+     morocco leather. In vain he shows me fine editions, gold
+     leaves, Etruscan bindings, &c.--naming them one after
+     another, as if he were showing a gallery of pictures!"
+     Lucian has composed a biting invective against an ignorant
+     possessor of a vast library. "One who opens his eyes, with
+     an hideous stare, at an old book, and, after turning over
+     the pages, chiefly admires the _date_ of its publication."]
+
+Symptoms of this disease are instantly known by a passion for I.
+_Large Paper Copies_: II. _Uncut Copies_: III. _Illustrated Copies_:
+IV. _Unique Copies_: V. _Copies printed upon Vellum_: VI. _First
+Editions_: VII. _True Editions_: VIII. _A general desire for the Black
+Letter_. We will describe these symptoms more particularly.
+
+I. _Large Paper Copies._ These are a certain set or limited number of
+the work printed in a superior manner, both in regard to ink and press
+work, on paper of a larger size, and better quality, than the ordinary
+copies. Their price is enhanced in proportion to their beauty and
+rarity. In the note below[49] are specified a few works which have
+been published in this manner, that the sober collector may avoid
+approaching them.
+
+     [Footnote 49: 1. _Lord Bacon's Essays_, 1798, 8vo., of which
+     it is said only five copies were struck off on royal folio.
+     In Lord Spencer's and the Cracherode, collection I have seen
+     a copy of this exquisitely printed book; the text of which,
+     surrounded by such an amplitude of margin, in the language
+     of Ernesti [see his Critique on Havercamp's Sallust] "natut
+     velut cymba in oceano."
+
+     2. _Twenty Plays of Shakespeare_ published by Steevens from
+     the old quarto editions, 1766, 8vo. 6 vols. Of this edition
+     there were only twelve copies struck off on large paper. See
+     Bibl. Steevens, No. 1312.
+
+     3. _Dodsley's Collection of Old Plays_, 1780, 8vo., 12 vols.
+     only six copies printed on large paper. See Bibl. Woodhouse,
+     No. 198.
+
+     4. _The Grenville Homer._ Græce, 1800. 4to. 4 vols. Fifty
+     copies with plates were struck off on large paper, in royal
+     quarto. A copy of this kind was purchased at a sale in 1804,
+     for £99 15s.
+
+     5. _Sandford's Genealogical History_, etc. 1707, fol. Mr.
+     Arch of Cornhill purchased a copy of this work on large
+     paper, at the late sale of Baron Smyth's books, for £46. If
+     the largest paper of Clarke's Cæsar be excepted, this is the
+     highest priced single volume on large paper, that I just now
+     recollect.
+
+     6. _Hearne's Works_ on large paper.
+
+     Something relating to Hearne will be found in the note at
+     page 7 ante. Here it will be only necessary to observe that
+     the Hernëan rage for Large Paper is quite of recent growth,
+     but it promises to be giant-like. When the duplicates of a
+     part of Mr. Woodhull's library, in 1803, were sold, there
+     was a fine set of copies of this kind; but the prices,
+     comparatively with those now offered, were extremely
+     moderate. Mr. Otridge, the bookseller, told me an amusing
+     story of his going down to Liverpool, many years ago, and
+     accidentally purchasing from the library of the late Sir
+     Thomas Hanmer, a _magnificent set of Large Paper Hearnes_
+     for about 40 Guineas. Many of these are now in the choice
+     library of his Grace the Duke of Grafton. The copies were
+     catalogued as _small_ paper. Was there ever a more provoking
+     blunder?!]
+
+This[50] symptom of the Bibliomania is, at the present day, both
+general and violent, and threatens to extend still more widely. Even
+modern publications are not exempt from its calamitous influence; and
+when Mr. Miller, the bookseller, told me with what eagerness the large
+paper copies of Lord Valentia's Travels were bespoke, and Mr. Evans
+shewed me that every similar copy of his new edition of "Burnett's
+History of his own Times" was disposed of, I could not help elevating
+my eyes and hands, in token of commiseration at the prevalence of
+this Symptom of the BIBLIOMANIA!
+
+     [Footnote 50: Analogous to Large Paper Copies are _tall
+     Copies_; that is, copies of the work published on the
+     ordinary size paper and not much cut down by the binder. The
+     want of _margin_ is a serious grievance complained of by
+     book-collectors; and when there is a contest of
+     margin-measuring, with books never professedly published on
+     large paper, the anxiety of each party to have the largest
+     copy is better conceived than described! How carefully, and
+     how adroitly, are the golden and silver rules then
+     exercised!]
+
+II. _Uncut Copies._ Of all the symptoms of the Bibliomania, this is
+probably the most extraordinary. It may be defined as a passion to
+possess books of which the edges have never been sheared by the
+binder's tools. And here, my dear Sir, I find myself walking upon
+doubtful ground;--your UNCUT HEARNES rise up in "rough majesty" before
+me, and almost "push me from my stool." Indeed, when I look around in
+my book-lined tub, I cannot but be conscious that this symptom of the
+disorder has reached my own threshold; but when it is known that a few
+of my bibliographical books are left with the edges uncut _merely to
+please my friends_ (as one must sometimes study their tastes and
+appetites as well as one's own), I trust that no very serious
+conclusions will be drawn about the probable fatality of my own case.
+As to uncut copies, although their inconvenience [an uncut lexicon to
+wit!] and deformity must be acknowledged, and although a rational man
+can want for nothing better than a book _once well bound_, yet we find
+that the extraordinary passion for collecting them not only obtains
+with full force, but is attended with very serious consequences to
+those "qui n'ont point des pistoles" (to borrow the language of
+Clement; vol. vi. p. 36). I dare say an uncut _first Shakspeare_, as
+well as an uncut _first Homer_[51] would produce a little annuity!
+
+     [Footnote 51: "Un superbe exemplaire de cette édition
+     _princeps_ a été vendu, chez M. de Cotte, en 1804, la somme
+     de 3601 livres; mais il faut ajouter que cet exemplaire
+     très-precieux est de la plus belle conservation; on dirait
+     qu'il sort dessous presse. De plus, il est peut-être
+     _l'unique dont les marges n'ont pas été rognées ni
+     coupées_!"
+
+     Peignot's _Curiosités Bibliographiques_, lxv-vi.]
+
+III. _Illustrated Copies._ A passion for books illustrated or adorned
+with numerous prints, representing characters or circumstances
+mentioned in the work, is a very general and violent symptom of the
+Bibliomania, which has been known chiefly within the last half
+century. The origin, or first appearance, of this symptom has been
+traced by some to the publication of Granger's "Biographical History
+of England;" but whoever will be at the pains of reading the preface
+of this work will see that Granger sheltered himself under the
+authorities of Evelyn, Ashmole, and others; and that he alone is not
+to be considered as responsible for all the mischief which this
+passion for collecting prints has occasioned. Granger, however, was
+the first who introduced it in the form of a treatise, and surely "in
+an evil hour" was this treatise published--although its amiable author
+must be acquitted of "malice prepense." His History of England[52]
+seems to have sounded the tocsin for a general rummage after, and
+slaughter of, old prints: venerable philosophers and veteran heroes,
+who had long reposed in unmolested dignity within the magnificent
+folio volumes which recorded their achievements, were instantly
+dragged from their peaceful abodes to be inlaid by the side of some
+spruce, modern engraving, within an ILLUSTRATED GRANGER! Nor did the
+madness stop here. Illustration was the order of the day; and
+Shakspeare[53] and Clarendon[54] became the next objects of its
+attack. From these it has glanced off in a variety of directions, to
+adorn the pages of humbler wights; and the passion, or rather this
+symptom of the Bibliomania,[55] yet rages with undiminished force. If
+judiciously[56] treated, it is, of all the symptoms, the least liable
+to mischief. To possess a series of well executed portraits of
+illustrious men, at different periods of their lives, from blooming
+boyhood to phlegmatic old age, is sufficiently amusing[57]; but to
+possess _every_ portrait, _bad, indifferent, and unlike_, betrays
+such a dangerous and alarming symptom as to render the case almost
+incurable!
+
+     [Footnote 52: It was first published in two quarto volumes,
+     1766; and went through several editions in octavo. The last
+     is, I believe, of the date of 1804; to which three
+     additional volumes were published by William Noble, in 1806;
+     the whole seven volumes form what is called an excellent
+     library work.]
+
+     [Footnote 53: About two or three years ago there was an
+     extraordinary set of prints disposed of, for the
+     illustration of Shakspeare, collected by a gentleman in
+     Cornwall, with considerable taste and judgment. Lord
+     Spencer's beautiful octavo illustrated Shakespeare,
+     bequeathed to him by the late Mr. Steevens, has been
+     enriched, since it came into the library of its present
+     noble possessor, with many a rare and many a beauteous
+     specimen of the graphic art.]
+
+     [Footnote 54: I have heard of an illustrated Clarendon
+     (which was recently in the metropolis), that has been valued
+     at 5000 Guineas! "a good round sum!"]
+
+     [Footnote 55: One of the most striking and splendid
+     instances of the present rage for illustration may be seen
+     in Mr. Miller's own copy of the Historical Work of Mr. Fox,
+     in two volumes, imperial quarto. Exclusively of a great
+     variety of Portraits, it is enriched with the original
+     drawing of Mr. Fox's bust from which the print, attached to
+     the publication, is taken; and has also many original notes
+     and letters by its illustrious author. Mr. Walter Scott's
+     edition of Dryden has also received, by the same publisher,
+     a similar illustration. It is on large paper, and most
+     splendidly bound in blue morocco, containing upwards of 650
+     portraits.]
+
+     [Footnote 56: The fine copy of Granger, illustrated by the
+     late Mr. Bull, is now in the library of the Marquis of Bute,
+     at Lutton. It extends to 37 atlas folio volumes, and is a
+     repository of almost every rare and beautiful print, which
+     the diligence of its late, and the skill, taste, and
+     connoisseurship of its present, noble owner have brought
+     together.]
+
+     [Footnote 57: In the Memoirs of Mr. Thomas Hollis there is a
+     series of the portraits of Milton (not executed in the best
+     manner) done in this way; and a like series of Pope's
+     portraits accompanies the recent edition of the poet's works
+     by the Rev. W.L. Bowles.]
+
+There is another mode of illustrating copies by which this symptom of
+the Bibliomania may be known: it consists in bringing together, from
+different works, [by means of the scissors, or otherwise by
+transcription] every page or paragraph which has any connection with
+the character or subject under discussion. This is a useful and
+entertaining mode of illustrating a favourite author; and copies of
+works of this nature, when executed by skilful[58] hands, should be
+preserved in public repositories. I almost ridiculed the idea of an
+ILLUSTRATED CHATTERTON, in this way, till I saw Mr. Haslewood's copy,
+in twenty-one volumes, which rivetted me to my seat!
+
+     [Footnote 58: Numerous are the instances of the peculiar use
+     and value of copies of this kind, especially to those who
+     are engaged in publication, of a similar nature. Oldys's
+     interleaved Langbaine is re-echoed in almost every recent
+     work connected with the belles-lettres of our country. Oldys
+     himself was unrivalled in this method of illustration; if,
+     besides his Langbaine, his copy of 'Fuller's Worthies' [once
+     Mrs. Steevens's, now Mr. Malone's, See Bibl. Steevens,
+     no. 1799] be alone considered! This Oldys was the oddest
+     mortal that ever scribbled for bread. Grose, in his _Olio_,
+     gives an amusing account of his having "a number of small
+     parchment bags inscribed with the names of the persons whose
+     lives he intended to write; into which he put every
+     circumstance and anecdote he could collect, and thence drew
+     up his history." See Noble's _College of Arms_, p. 420.
+
+     Of illustrated copies in this way, the Suidas of Kuster,
+     belonging to the famous D'Orville, is a memorable instance.
+     This is now in the Bodleian library. I should suppose that
+     one Narcissus Luttrell, in Charles the Second's reign, had a
+     number of like illustrated copies. His collection of
+     contemporaneous literature must have been immense, as we may
+     conclude from the account of it in Mr. Walter Scott's
+     Preface to his recent edition of Dryden's works. Luckily for
+     this brilliant poet and editor, a part of Luttrell's
+     collection had found its way into the libraries of Mr.
+     Bindley and Mr. Heber, and thence was doomed to shine, with
+     renewed lustre, by the side of the poetry of Dryden.]
+
+IV. _Unique Copies._ A passion for a book which has any peculiarity
+about it, by either, or both, of the foregoing methods of
+illustration--or which is remarkable for its size, beauty, and
+condition--is indicative of a rage for _unique copies_, and is
+unquestionably a strong prevailing symptom of the Bibliomania. Let me
+therefore urge every sober and cautious collector not to be fascinated
+by the terms "_Matchless, and Unique_;" which, "in slim Italicks" (to
+copy Dr. Ferriar's happy expression) are studiously introduced into
+Bookseller's catalogues to lead the unwary astray. Such a Collector
+may fancy himself proof against the temptation; and will, in
+consequence, _call only to look at_ this unique book, or set of books;
+but, when he views the morocco binding, silk water-tabby lining,
+blazing gilt edges--when he turns over the white and spotless
+leaves--gazes on the amplitude of margin--on a rare and lovely print
+introduced--and is charmed with the soft and coaxing manner in which,
+by the skill of Herring or Mackinlay,[59] "leaf succeeds to leaf"--he
+can no longer bear up against the temptation--and, confessing himself
+vanquished, purchases, and retreats--exclaiming with Virgil's
+shepherd--
+
+     Ut vidi, ut perii--ut me malus abstulit error!
+
+     [Footnote 59: At page 8, note--the reader has been led to
+     expect a few remarks upon the luxuriancy of modern
+     book-binding. Mr. Roscoe, in his Lorenzo de Medici, vol.
+     ii., p. 79., edit. 8vo., has defended the art with so much
+     skill that nothing further need be said in commendation of
+     it. Admitting every degree of merit to our present
+     fashionable binders, and frankly allowing them the
+     superiority over De Rome, Padaloup, and the old school of
+     binding, I cannot but wish to see revived those beautiful
+     portraits, arabesque borders, and sharp angular ornaments,
+     that are often found on the outsides of books bound in the
+     16th century, with calf leather, upon oaken boards. These
+     brilliant decorations almost make us forget the ivory
+     crucifix, guarded with silver doors, which is frequently
+     introduced in the interior of the sides of the binding. Few
+     things are more gratifying to a genuine collector than a
+     fine copy of a book in its _original binding_!]
+
+V. _Copies printed on vellum._ A desire for works printed in this
+manner is an equally strong and general symptom of the Bibliomania;
+but as these works are rarely to be obtained of modern[60] date, the
+collector is obliged to have recourse to specimens, executed three
+centuries ago, in the printing-offices of Aldus, Verard, and the
+Juntæ. Although the Bibliothéque Imperiale, at Paris, and the library
+of Count Macarty, at Toulouse, are said to contain the greatest number
+of books printed upon vellum, yet, those who have been fortunate
+enough to see copies of this kind in the libraries of his Majesty, the
+Duke of Marlborough, Earl Spencer, Mr. Johnes, and the late Mr.
+Cracherode (now in the British Museum), need not travel on the
+Continent for the sake of being convinced of their exquisite beauty
+and splendour. Mr. Edward's _unique_ copy (he will forgive the
+epithet) of the first Livy, upon vellum, is a Library of itself!--and
+the recent discovery of a vellum copy of Wynkyn De Worde's reprint of
+_Juliana Barnes's book_,[61] complete in every respect, [to say
+nothing of his Majesty's similar copy of Caxton's _Doctrinal of
+Sapience_, 1489, in the finest preservation] are, to be sure,
+sufficient demonstrations of the prevalence of this symptom of the
+Bibliomania in the times of our forefathers; so that it cannot be
+said, as some have asserted, to have appeared entirely within the last
+half century.
+
+     [Footnote 60: The modern books, printed upon vellum, have in
+     general not succeeded; whether from the art of preparing the
+     vellum, or of printing upon it, being lost I will not
+     presume to determine. The reader may be amused with the
+     following prices for which a few works, executed in this
+     manner, were sold in the year 1804:
+
+     NO.                                                    £ _s._ _d._
+
+     250. Virgilii Opera, 1789, 4to.                        33 12   0
+     251. Somervile's Chase, 1796, 4to.                     15  4   6
+     252. Poems by Goldsmith and Parnell, 1795, 4to.        15 15   0
+     253. The Gardens, by Abbé Delille, 1798, 4to.          14  3   6
+     254. Castle of Otranto, printed by Bodoni, 1791, 4to.  13  2   6
+     260. La Guirlande Julie, 1784, 8vo.                    37 17   6
+     263. Economy of Human Life, 1795, 8vo.                 15 15   0
+
+     See "_Catalogue of a most splendid and valuable Collection
+     of Books, Superb Missals, &c._," sold by Mr. Christie, on
+     April 24, 1804. But the reader should procure the Catalogue
+     of Mr. Paris's Books, sold in the year 1790, which, for the
+     number of articles, is unrivalled. The eye is struck, in
+     every page, with the most sumptuous copies on VELLUM, AND
+     LARGE PAPER.]
+
+     [Footnote 61: See page 5, ante, for some account of this
+     curious work.]
+
+VI. _First Editions._ From the time of Ancillon[62] to Askew, there
+has been a very strong desire expressed for the possession of original
+or first published editions of works, as they are in general
+superintended and corrected by the author himself; and, like the first
+impressions of prints, are considered more valuable. Whoever is
+possessed with a passion for collecting books of this kind may
+unquestionably be said to exhibit a strong symptom of the Bibliomania;
+but such a case is not quite hopeless, nor is it deserving of severe
+treatment or censure. All bibliographers have dwelt on the importance
+of these editions, for the sake of collation with subsequent ones, and
+detecting, as is frequently the case, the carelessness displayed by
+future[63] editors. Of such importance is the _first edition of
+Shakspeare_[64] considered, that a fac-simile reprint of it has been
+published with success. In regard to the Greek and Latin Classics, the
+possession of these original editions is of the first consequence to
+editors who are anxious to republish the legitimate text of an author.
+Wakefield, I believe always regretted that the first edition of
+Lucretius had not been earlier inspected by him. When he began _his_
+edition, the Editio Princeps was not (as I have understood) in the
+library of Earl Spencer--the storehouse of almost every thing that is
+exquisite and rare in ancient classical literature!
+
+     [Footnote 62: There is a curious and amusing article in
+     Bayle [English edition, vol. i., 672, &c.] about the elder
+     ANCILLON, who frankly confessed that he "was troubled with
+     the BIBLIOMANIA, or disease of buying books." Mr. D'Israeli
+     says "that he always purchased _first editions_, and never
+     waited for second ones,"--but I find it, in the English
+     Bayle, note D, "he chose _the best_ editions." The manner in
+     which Ancillon's library was pillaged by the Ecclesiastics
+     of Metz (where it was considered as the most valuable
+     curiosity in the town) is thus told by Bayle; "Ancillon was
+     obliged to leave Metz: a company of Ecclesiastics, of all
+     orders, came from every part, to lay hands on this fine and
+     copious library, which had been collected with the utmost
+     care during forty years. They took away a great number of
+     the books together, and gave a little money, as they went
+     out, to a young girl, of twelve or thirteen years of age,
+     who looked after them, that they might have it to say they
+     had _paid for them_. Thus Ancillon saw that valuable
+     collection dispersed, in which, as he was wont to say, his
+     chief pleasure and even his heart was placed!"--Edit. 1734.]
+
+     [Footnote 63: An instance of this kind may be adduced from
+     the _first edition_ of Fabian, printed in 1516; of which
+     Messrs. Longman, and Co., have now engaged a very able
+     editor to collate the text with that of the subsequent
+     editions. "The antiquary," says the late Mr. BRAND, "is
+     desired to consult the edition of Fabian, printed by Pynson,
+     in 1516, because there are others, and I remember to have
+     seen one in the Bodleian Library at Oxford, with a
+     continuation to the end of Queen Mary, 1559, in which the
+     _language is much modernised_." Shakespeare, edit. 1803,
+     vol. xviii. p. 85-6.]
+
+     [Footnote 64: A singular story is "extant" about the
+     purchase of the late Duke of Roxburgh's fine copy of the
+     first edition of Shakespeare. A friend was bidding for him
+     in the sale-room: his Grace had retired to a distance, to
+     view the issue of the contest. Twenty guineas and more were
+     offered, from various quarters, for the book: a slip of
+     paper was handed to the Duke, in which he was requested to
+     inform his friend whether he was "to go on bidding"--His
+     Grace took his pencil, and wrote underneath, by way of reply--
+
+          ----lay on Macduff!
+          And d----d be he who first cries, 'Hold, enough!'
+
+     Such a spirit was irresistible, and bore down all
+     opposition. His Grace retired triumphant, with the book
+     under his arm.]
+
+It must not, however, be forgotten that if first editions are, in some
+instances, of great importance, they are in many respects superfluous,
+and an incumbrance to the shelves of a collector; inasmuch as the
+labours of subsequent editors have corrected their errors, and
+superseded, by a great fund of additional matter, the necessity of
+consulting them. Thus, not to mention other instances (which present
+themselves while noticing the present one), all the fine things which
+Colomiés and Remannus have said about the rarity of La Croix du
+Maine's Bibliotheque, published in 1584, are now unnecessary to be
+attended to, since the ample and excellent edition of this work by De
+La Monnoye and Juvigny, in six quarto volumes, 1772, has appeared. Nor
+will any one be tempted to hunt for Gesner's Bibliotheca of 1545-8,
+whatever may be its rarity, who has attended to Morhof's and Vogt's
+recommendation of the last and best edition of 1583.
+
+VII. _True Editions._ Some copies of a work are struck off with
+deviations from the usually received ones, and, though these
+deviations have neither sense nor beauty to recommend them, [and
+indeed are principally _defects_] yet copies of this description are
+eagerly sought after by collectors of a certain class! This particular
+pursuit may therefore be called another, or the seventh, symptom of
+the Bibliomania. The note below [65] will furnish the reader with a
+few anecdotes relating to it.
+
+     [Footnote 65: _Cæsar. Lug. Bat._ 1635, 12mo. _Printed by
+     Elzevir._
+
+     In the Bibliotheca Revickzkiana we are informed that the
+     _true_ Elzevir edition is known by having the plate of a
+     Buffalo's head at the beginning of the preface, and body of
+     the work: also by having the page numbered 153, which
+     _ought_ to have been numbered 149. A further account is
+     given in my Introduction to the Classics, vol. i., 228.
+
+     _Horace_: Londini, 1733, 8vo., 2 vols. Published by Pine.
+
+     The _true_ edition is distinguished by having at page 108,
+     vol ii, the _incorrect_ reading 'Post Est.'--for 'Potest.'
+
+     _Virgil._ Lug. Bat. 1636, 12mo. Printed by Elzevir.
+
+     The _true_ edition is known by having at plate 1, before the
+     Bucolics, the following Latin passage _printed in red ink_.
+     "Ego vero frequentes a te litteras accipi"--Consult De Bure,
+     No. 2684.
+
+     _Idem._ Birmingh. 1763, 4to. Printed by Baskerville.
+
+     A particular account of the _true_ edition will be found in
+     the second volume of my 'Introduction to the Classics' p.
+     337--too long to be here inserted.
+
+     _Boccaccio._ Il Decamerone, Venet. 1527, 4to.
+
+     Consult De Bure, No. 3667: Bandini, vol. ii., 24: (who
+     however is extremely laconic upon this edition, but copious
+     upon the anterior one of 1516) and Haym., vol. iii., p. 8,
+     edit. 1803. Bibl. Paris. No. 408. Clement. (vol. iv., 352,)
+     has abundance of references, as usual, to strengthen his
+     assertion in calling the edition 'fort rare.' The reprint or
+     spurious edition has always struck me as the prettier book
+     of the two.]
+
+VIII. Books printed in the _Black Letter_. Of all symptoms of the
+Bibliomania, this eighth symptom (and the last which I shall notice)
+is at present the most powerful and prevailing. Whether it was not
+imported into this country from Holland, by the subtlety of
+Schelhorn[66] (a knowing writer upon rare and curious books) may be
+shrewdly suspected. Whatever be its origin, certain it is, my dear
+Sir, that books printed in the black letter are now coveted with an
+eagerness unknown to our collectors in the last century. If the
+spirits of West, Ratcliffe, Farmer and Brand, have as yet held any
+intercourse with each other, in that place 'from whose bourne no
+traveller returns,' what must be the surprise of the three former, on
+being told by the latter, of the prices given for some of the books in
+his library, as mentioned below!?[67]
+
+     [Footnote 66: His words are as follow: "Ipsa typorum
+     ruditas, ipsa illa atra crassaque literarum facies _belle
+     tangit sensus, &c._" Was ever the black letter more
+     eloquently described? See his _Amoenitates Literariæ_,
+     vol. i., p. 5.]
+
+     [Footnote 67:
+
+     282. A Boke of Fishing with Hooke and Line, A Boke of
+     Engines and Traps to take Polcats, Buzzards, Rats, Mice, and
+     all other Kinds of Vermine and Beasts whatsoever, with cuts,
+     very rare, 1600 £3 3_s._ 0_d._
+
+     454. A Quip for an upstart Courtier; or, a quaint Dispute
+     between Velvet Breeches and Cloth Breeches, &c. 1620 2 16 0
+
+     475. A Checke, or Reproof of Mr. Howlet's untimely
+     screeching in her Majesty's Ear. _Black letter_ 1581 0 12 0
+
+     As a _striking conclusion_, I subjoin the following.
+
+     6479. Pappe with an Hatchett, _alias_, a Fig for my
+     Godsonne, or crake me this Nutt, or, a Countrie Cuffe, that
+     is a sound Box of the Eare for the Idiot Martin, to hold his
+     Peace: seeing the Patch will take no warning; written by one
+     that dares call a Dog a Dog. _Rare._ Printed by Anoke and
+     Astile 1 8 0]
+
+A perusal of these articles may probably not impress the reader with
+any lofty notions of the superiority of the black letter; but this
+symptom of the Bibliomania is, nevertheless, not to be considered as
+incurable, or wholly unproductive of good. Under a proper spirit of
+modification it has done, and will continue to do, essential service
+to the cause of English literature. It guided the taste, and
+strengthened the judgment, of Tyrwhitt in his researches after
+Chaucerian lore. It stimulated the studies of Farmer and of Steevens,
+and enabled them to twine many a beauteous flower round the brow of
+their beloved Shakespeare. It has since operated, to the same effect,
+in the labours of Mr. Douce,[68] the _Porson_ of old English and
+French literature; and in the editions of Milton and Spenser, by my
+amiable and excellent friend Mr. Todd the public have had a specimen
+of what the _Black Letter_ may perform, when temperately and skilfully
+exercised.
+
+     [Footnote 68: In the criticisms on Mr. Douce's
+     _Illustrations of Shakspeare and Ancient Manners_, it has
+     not, I think, been generally noticed that this work is
+     distinguished; 1. For the singular diffidence and urbanity
+     of criticism, as well as depth of learning, which it
+     evinces: 2. For the happy illustrations, by means of wood
+     cuts: Let any one, for instance, read a laboured
+     disquisition on the punishment of "the boots"--and only
+     glance his eye on the plate representing it [vol. i. p.
+     34.]: from which will he obtain the clearer notions? 3. For
+     the taste, elegance, and general correctness with which it
+     is printed. The only omission I regret is that Mr. Douce did
+     not give us, at the end, a list of the works alphabetically
+     arranged, with their dates which he consulted in the
+     formation of his own. Such a BIBLIOTHECA SHAKSPEARIANA
+     might, however, have been only a fresh stimulus to the
+     increase of the black-letter symptom of the _Bibliomania_.
+     How Bartholomæus and Batman have risen in price since the
+     publication of Mr. Douce's work, let those who have lately
+     smarted for the increase tell!]
+
+I could bring to your recollection other instances; but your own
+copious reading and exact memory will better furnish you with them.
+Let me not however omit remarking that the beautiful pages of the
+_Minstrelsy of the Scottish Border, and Sir Trestrem_, exhibit, in the
+notes [now and then thickly studded with black letter references], a
+proof that the author of "The Lay" and "Marmion" has not disdained to
+enrich his stores of information by such intelligence as black
+lettered books impart. In short, though this be also a strong and
+general symptom of the Bibliomania, it is certainly not attended with
+injurious effects when regulated by prudence and discretion. An
+undistinguishable voracious appetite, to swallow every thing printed
+in the black letter can only bring on inconquerable disease, if not
+death, to the patient!
+
+Having in the two preceding divisions of this letter discoursed
+somewhat largely upon the HISTORY and SYMPTOMS of the Bibliomania, it
+now remains, according to the original plan, to say a few words upon
+the PROBABLE MEANS OF ITS CURE. And, indeed, I am driven to this view
+of the subject from every laudable motive; for it would be highly
+censurable to leave any reflecting mind impressed with melancholy
+emotions concerning the misery and mortality that have been occasioned
+by the abuse of those pursuits, to which the most soothing and
+important considerations ought to be attached. Far from me, and my
+friends, be such a cruel, if not criminal, conduct; let us then, my
+dear Sir, seriously discourse upon the
+
+III. PROBABLE MEANS OF THE CURE of the Bibliomania. _He_ will surely
+be numbered among the philanthropists of his day who has, more
+successfully than myself, traced and described the ravages of this
+disease, and fortified the sufferer with the means of its cure. But,
+as this is a disorder of quite a recent date, and as its
+characteristics, in consequence, cannot be yet fully known or
+described, great candour must be allowed to that physician who offers
+a prescription for so obscure and complicated a case. It is in vain
+that you search the works [ay, even the best editions] of Hippocrates
+and Galen for a description of this malady; nor will you find it
+hinted at in the more philosophical treatises of Sydenham and
+Heberden. It had, till the medical skill of Dr. Ferriar first noticed
+it to the public, escaped the observations of all our pathologists.
+With a trembling hand, and fearful apprehension, therefore, I throw
+out the following suggestions for the cure, or mitigatiou
+[Transcriber's Note: mitigation], of this disorder:
+
+In _the first place_, the disease of the Bibliomania is materially
+softened, or rendered mild, by directing our studies to _useful and
+profitable_ works--whether these be printed upon small or large paper,
+in the gothic, roman, or italic type; To consider purely the
+_intrinsic_ excellence, and not the exterior splendour, or
+adventitious value, of any production, will keep us perhaps wholly
+free from this disease. Let the midnight lamp be burnt to illuminate
+the stores of antiquity--whether they be romances, or chronicles, or
+legends, and whether they be printed by Aldus or by Caxton--if a
+brighter lustre can thence be thrown upon the pages of modern
+learning! To trace genius to its source, or to see how she has been
+influenced or modified, by "the lore of past times" is both a pleasing
+and profitable pursuit. To see how Shakspeare has here and there
+plucked a flower, from some old ballad or popular tale, to enrich his
+own unperishable garland--to follow Spenser and Milton in their
+delightful labyrinths 'midst the splendour of Italian literature--are
+studies which stamp a dignity upon our intellectual characters! But,
+in such a pursuit let us not overlook the wisdom of modern times, nor
+fancy that what is only ancient can be excellent. We must remember
+that Bacon, Boyle, Locke, Taylor, Chillingworth, Robertson, Hume,
+Gibbon, and Paley, are names which always command attention from the
+wise, and remind us of the improved state of reason and acquired
+knowledge during the two last centuries.
+
+In the _second place_, the re-printing of scarce and intrinsically
+valuable works is another means of preventing the propagation of this
+disorder. Amidst all our present sufferings under the BIBLIOMANIA, it
+is some consolation to find discerning and spirited booksellers
+re-publishing the valuable Chronicles of Froissart, Holinshed, and
+Hall,[69] and the collections known by the names of "The Harleïan
+Miscellany," and "Lord Somer's Tracts." These are noble efforts, and
+richly deserve the public patronage.
+
+     [Footnote 69: The re-publication of these chronicles is to
+     be followed by those of Grafton and Fabian. Meanwhile,
+     Hakluyt's Voyages, (projected by Mr. Evans), and Fuller's
+     Worthies (by Messrs. Longman, and Co.) will form admirable
+     acquisitions to these treasures of past times.]
+
+In the _third place_, the editing of our best ancient authors, whether
+in prose or poetry,[70] is another means of effectually counteracting
+the progress of the Bibliomania, as it has been described under its
+several symptoms.
+
+     [Footnote 70: The recent _Variorum_ editions of Shakspeare,
+     of which some yet prefer that of Steevens, 1793, 15 vols.
+     8vo.--Mr. Todd's editions of Milton and Spenser; Mr. G.
+     Chalmers' edition of Sir David Lyndsay's works; Mr.
+     Gifford's edition of Massinger; and Mr. Octavius
+     Gilchrist's, of Bishop Corbett's poems, exemplify the good
+     effects of this _third means of cure_.]
+
+In the _fourth place_, the erecting of Public Institutions[71] is a
+very powerful antidote against the prevalence of several symptoms of
+this disease.
+
+     [Footnote 71: The Royal, London, Surrey, and Russel
+     Institutions have been the means of concentrating, in divers
+     parts of the metropolis, large libraries of _useful_ books;
+     which, it is to be hoped, will eventually suppress the
+     establishment of what are called _Circulating
+     Libraries_--vehicles, too often, of insufferable nonsense,
+     and irremediable mischief!]
+
+In the _fifth place_, the encouragement of the study of
+Bibliography,[72] in its legitimate sense, and towards its true
+object, may be numbered among the most efficacious cures for this
+destructive malady. To place competent Librarians over the several
+departments of a large public Library, or to submit a library, on a
+more confined scale, to one diligent, enthusiastic, well informed,
+well bred, Bibliographer[73] or Librarian, [of which in this
+metropolis we have so many examples] is doing a vast deal towards
+directing the channels of literature to flow in their proper courses.
+
+     [Footnote 72: "UNNE BONNE BIBLIOGRAPHIE," says Marchand,
+     "soit générale soit particulière, soit profane, soit
+     écclésiastique, soit nationale, provinciale, ou locale, soit
+     simplement personnelle, en un mot de quelque autre genre que
+     ce puisse être, n'est pas un ouvrage aussi facile que
+     beaucoup de gens se le pourroient imaginer; mais, elles ne
+     doivent néanmoins nulelment [Transcriber's Note: nullement]
+     prévenir contre celle-ci. Telle qu'elle est, elle ne laisse
+     pas d'être bonne, utile, et digne d'être recherchée par les
+     amateurs, de l'Histoire Littéraire." _Diction. Historique_,
+     vol. i. p. 109.
+
+     "Our nation," says Mr. Bridgman, "has been too inattentive
+     to bibliographical criticisms and enquiries; for generally
+     the English reader is obliged to resort to foreign writers
+     to satisfy his mind as to the value of authors. It behoves
+     us to consider that there is not a more useful or a more
+     desirable branch of education than a _knowledge of books_;
+     which being correctly ascertained and judiciously exercised,
+     will prove the touch-stone of intrinsic merit, and have the
+     effect of saving many spotless pages from prostitution."
+     _Legal Bibliography_, p. v. vi.]
+
+     [Footnote 73: Peignot, in his _Dictionnaire de Bibliologie_,
+     vol. i. 50, has given a very pompous account of what ought
+     to be the talents and duties of a Bibliographer. It would be
+     difficult indeed to find such things united in one person!
+     De Bure, in the eighth volume of his _Bibliographie
+     Instructive_, has prefixed a "Discourse upon the Science of
+     Bibliography and the duties of a Bibliographer" which is
+     worth consulting: but I know of nothing which better
+     describes, in few words, such a character, than the
+     following: "In eo sit multijuga materiarum librorumque
+     notitia, ut saltem potiores eligat et inquirat: fida et
+     sedula apud exteras gentes procuratio, ut eos arcessat;
+     summa patientia ut rarè venalis expectet: peculium semper
+     præsens et paratum, ne, si quando occurrunt, emendi occasio
+     intercidat; prudens denique auri argentique contemptus, ut
+     pecuniis sponte careat quæ in bibliothecam formandam et
+     nutriendam sunt insumendæ. Si fortè vir literatus eo
+     felicitatis pervenit ut talem thesaurum coaceraverit, nec
+     solus illo invidios fruatur, sed usum cum eruditis qui
+     vigilias suas utilitati publicæ devoverunt, liberaliter
+     communicet; &c."--_Bibliotheca Hulsiana_, vol. i. Præfat. p.
+     3, 4.]
+
+Thus briefly and guardedly have I thrown out a few suggestions, which
+may enable us to avoid, or mitigate the severity of, the disease
+called THE BIBLIOMANIA. Happy indeed shall I deem myself, if, in the
+description of its symptoms, and in the recommendation of the means of
+cure, I may have snatched any one from a premature grave, or lightened
+the load of years that are yet to cone [Transcriber's Note: come]!
+
+You, my dear Sir, who, in your observations upon society, as well as
+in your knowledge of ancient times, must have met with numerous
+instances of the miseries which "flesh is heir to," may be disposed
+perhaps to confess that, of all species of afflictions, _the present
+one_ under consideration has the least moral turpitude attached to it.
+True, it may be so: for, in the examples which have been adduced,
+there will be found neither Suicides, nor Gamesters, nor Profligates.
+No woman's heart has been broken from midnight debaucheries: no
+marriage vow has been violated: no child has been compelled to pine in
+poverty or neglect: no patrimony has been wasted, and no ancestor's
+fame tarnished! If men have erred under the influence of this disease,
+their aberrations have been marked with an excess arising from
+intellectual fevour, and not from a desire of baser gratifications.
+
+If, therefore, in the wide survey which a philosopher may take of the
+"Miseries of Human life"[74] the prevalence of this disorder may
+appear to be less mischievous than that of others, and, if some of the
+most amiable and learned of mortals seemed to have been both
+unwilling, as well as unable, to avoid its contagion, you will
+probably feel the less alarmed if symptoms of it should appear within
+the sequestered abode of Hodnet![75] Recollecting that even in remoter
+situations its influence has been felt--and that neither the pure
+atmosphere of Hafod nor of Sledmere[76] has completely subdued its
+power--you will be disposed to exclaim with violence, at the intrusion
+of Bibliomaniacs--
+
+     What walls can guard me, or what shades can hide?
+     They pierce my thickets, through my grot they glide!
+     By land, by water, they renew the charge,
+     They stop the chariot, and they board the barge.[77]
+
+     [Footnote 74: In the ingenious and witty work so entitled, I
+     do not recollect whether the disappointment arising from a
+     _cropt_ or a _dirty_ copy has been classed among "_The
+     Miseries of Human Life_."]
+
+     [Footnote 75: _Hodnet Hall_, Shropshire. The country
+     residence of Mr. Heber.]
+
+     [Footnote 76: _Hafod_, South Wales, the seat of THOS.
+     JOHNES, Esq., M.P., the translator of the Chronicles of
+     Froissart and Monstrelet, and of the Travels of De Broquiere
+     and Joinville. The conflagration of part of his mansion and
+     library, two years ago, which excited such a general
+     sympathy, would have damped any ardour of collection but
+     that of Mr. Johnes--his Library has arisen, Phoenix-like,
+     from the flames!
+
+     _Sledmere_, in Yorkshire, the seat of SIR MARK MASTERMAN
+     SYKES, Bart., M.P. The library of this amiable and tasteful
+     Baronet reflects distinguished credit upon him. It is at
+     once copious and choice.]
+
+     [Footnote 77: Pope's "_Prologue to the Satires_," v. 7-10.]
+
+Upon the whole, therefore, attending closely to the symptoms of this
+disorder as they have been described, and practising such means of
+cure as have been recommended, we may rationally hope that its
+virulence may abate, and the number of its victims annually diminish.
+But if the more discerning part of the community anticipate a
+different result, and the preceding observations appear to have
+presented but a narrow and partial view of the mischiefs of the
+BIBLIOMANIA, my only consolation is that to advance _something_ upon
+the subject is better than to preserve a sullen and invincible
+silence. Let it be the task of more experienced bibliographers to
+correct and amplify the foregoing outline!
+
+Believe me, My dear Sir,
+
+Very sincerely Yours, &c.
+
+THOMAS FROGNALL DIBBIN [Transcriber's Note: DIBDIN].
+
+_Kensington, May_ 16, 1809.
+
+
+
+
+POSTSCRIPT.
+
+
+On re-considering what has been written, it has struck me that a
+SYNOPSIS of this disease, after the manner of BURTON, as prefixed to
+his _Anatomy of Melancholy_, may be useful to some future pathologist.
+The reader is, accordingly, presented with the following one:
+
+
+SYNOPSIS.
+
+                                                                 Page.
+  { I. HISTORY of; or an account of eminent Book
+  { Collectors who have fallen victims to it                        12
+T {
+H { II. SYMPTOMS OF;                { 1. Large Paper Copies         44
+E { being a passion for             { 2. Uncut Copies               46
+  {                                 { 3. Illustrated Copies         47
+B {                                 { 4. Unique Copies              49
+I {                                 { 5. Vellum Copies              51
+B {                                 { 6. First Editions             52
+L {                                 { 7. True Editions              54
+I {                                 { 8. Black Letter Editions      56
+O {
+M { III. CURE OF                    { 1. Reading useful works       56
+A {                                 { 2. Reprints of scarce and
+N {                                 {     valuable works           _ib._
+I {                                 { 3. Editing our best ancient
+A {                                 {     Writers                   60
+. {                                 { 4. Erecting of Public
+  {                                 {     Institutions             _ib._
+  {                                 { 5. Encouragement of
+  {                                 {     Bibliography             _ib._
+
+
+
+
+PART I.
+
+=The Evening Walk.=
+
+ON THE RIGHT USES OF LITERATURE.
+
+
+     Rede well thyselfe that other folke can'st rede.
+
+     CHAUCER'S _Good Counsail_.
+
+
+
+
+[Illustration]
+
+
+
+
+[Illustration]
+
+=The Evening Walk.=
+
+ON THE RIGHT USES OF LITERATURE.
+
+
+It was on a fine autumnal evening, when the sun was setting serenely
+behind a thick copse upon a distant hill, and his warm tints were
+lighting up a magnificent and widely-extended landscape, that,
+sauntering 'midst the fields, I was meditating upon the various
+methods of honourably filling up the measure of our existence; when I
+discovered, towards my left, a messenger running at full speed towards
+me. The abruptness of his appearance, and the velocity of his step,
+somewhat disconcerted me; but on his near approach my apprehensions
+were dissipated.
+
+I knew him to be the servant of my old college friend, whom I chu
