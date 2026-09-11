@@ -627,5 +627,6 @@
     })();
 
     animate();
+    window.__debug={get player(){return player},get scene(){return scene},get focus(){return focus},allowed,themeZoneAt,themeZones,themeRoomKeys,buildThemeRooms,interact:(...a)=>interact(...a)};
   })();
 
