@@ -1,5 +1,5 @@
 (()=>{
-    'use strict';
+    'use strict'Z;
     const $=s=>document.querySelector(s), clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
     const ui={veil:$('#veil'),enter:$('#enter'),reticle:$('#reticle'),prompt:$('#prompt'),notice:$('#notice'),status:$('#status'),time:$('#timeLabel'),weather:$('#weatherLabel'),mute:$('#mute'),actions:$('#bookActions'),reader:$('#reader'),journal:$('#journal'),pause:$('#pause')};
     const touchMode=matchMedia('(hover:none) and (pointer:coarse)').matches||navigator.maxTouchPoints>0;let touchMoveX=0,touchMoveY=0,touchSprint=false;
