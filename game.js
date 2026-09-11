@@ -1,6 +1,5 @@
 (()=>{
-    'use strict'Z;
-    const $=s=>document.querySelector(s), clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+    'use strict';    const $=s=>document.querySelector(s), clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
     const ui={veil:$('#veil'),enter:$('#enter'),reticle:$('#reticle'),prompt:$('#prompt'),notice:$('#notice'),status:$('#status'),time:$('#timeLabel'),weather:$('#weatherLabel'),mute:$('#mute'),actions:$('#bookActions'),reader:$('#reader'),journal:$('#journal'),pause:$('#pause')};
     const touchMode=matchMedia('(hover:none) and (pointer:coarse)').matches||navigator.maxTouchPoints>0;let touchMoveX=0,touchMoveY=0,touchSprint=false;
     if(!window.THREE){ui.veil.querySelector('.crest').innerHTML='<h1>THE DOORS REMAIN CLOSED</h1><p>The library could not load its 3D engine. Check your connection and try again.</p>';return;}
