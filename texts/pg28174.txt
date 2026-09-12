@@ -195,7 +195,7 @@ _Letters_, edited by Peter Cunningham, and Boswell's _Johnson_, edited
 by Birkbeck Hill. These editions contain excellent and workmanlike
 features, such as good arrangement and good indexing, with notes and
 elucidations sufficiently ample. The size too of each volume is not
-extravagant as in certain _éditions de luxe_. Now in order that we may
+extravagant as in certain _editions de luxe_. Now in order that we may
 have good editions, there are, at least, ten people who must work well
 together: (1) the Author, (2) the Publisher, (3) the Printer, (4) the
 Reader, (5) the Compositor, (6) the Pressman, (7) the Paper Maker, (8)
@@ -338,8 +338,8 @@ eye for a good copy of a book, or for a bargain of any kind, only comes
 after years of practice. I admit that if a man begins collecting some
 particular class of books, say Angling books, he may sooner arrive at
 safe judgment alone; but even here he has a pretty wide field to make
-blunders in. When Gabriel Naudé wrote his pamphlet, _Avis pour dresser
-une Bibliothèque_, he laid down his first rule thus:--'The first means
+blunders in. When Gabriel Naude wrote his pamphlet, _Avis pour dresser
+une Bibliotheque_, he laid down his first rule thus:--'The first means
 is to take the counsel and advice of such as are able to give it _viva
 voce_.' This was written more than two hundred years ago, and still no
 better advice could possibly be given to a book collector. By all means
@@ -424,7 +424,7 @@ enjoyment of his library and a good investment as well.
 
 FOOTNOTES:
 
-[5] D. Clement, _Bibliothèque curieuse_.
+[5] D. Clement, _Bibliotheque curieuse_.
 
 [6] Edwards, _Memoirs of Libraries_, ii. 647-649.
 
@@ -455,7 +455,7 @@ open with their thumbs, or cut them with sharp knives which damage the
 margins. It is so difficult to keep paper knives, and ivory paper knives
 are the favourite pasture of some scholars, who bite the edges till the
 weapon resembles a dissipated saw. To avoid this temptation some employ
-mediæval daggers, or skene dhus, but the edges spoil a book. Cigarette
+mediaeval daggers, or skene dhus, but the edges spoil a book. Cigarette
 ashes are very bad for books, so is butter, also marmalade. Dr. Johnson
 and Wordsworth are said to have been very careless with their books. Dr.
 Johnson used to clean his from dust by knocking them together, as Mr.
@@ -505,8 +505,8 @@ gas combustion.'
 Mr. Poole made an experiment in the upper gallery of a library, and
 found that--
 
-'While the temperature of the floor was 65° Fahr., that of the upper
-gallery was found to be 142°. Such a temperature dries up the oil of the
+'While the temperature of the floor was 65 deg. Fahr., that of the upper
+gallery was found to be 142 deg.. Such a temperature dries up the oil of the
 leather, and burns out its life. Books cannot live where men cannot
 live.' Similarly, Mr. Blades wrote in his little manual:
 
@@ -1159,7 +1159,7 @@ afford space for four rows of books, to include octavos, duodecimos, and
 smaller volumes. The shelves should, of course, be shifting. . . . . By
 leaving the top of the bookcase twelve to thirteen inches wide, ample
 space will be allowed for additional small books, porcelain, and
-_bric-à-brac_. It must be borne in mind that tall bookcases, in addition
+_bric-a-brac_. It must be borne in mind that tall bookcases, in addition
 to the inaccessibility of the volumes in the upper shelves, have little,
 if any, space for pictures on the walls above them.'
 
@@ -1434,7 +1434,7 @@ ugliness.
 
 Family papers, autograph letters, and MS. matter of all kinds should be
 placed in the hands of an expert, with instructions to calendar them,
-viz., catalogue them, giving a _précis_ of the contents of each one.
+viz., catalogue them, giving a _precis_ of the contents of each one.
 They should then be mounted and bound up in volumes, with abstract of
 contents in front of the volume. It will be well to consider the
 advisability of having typed copies made of the whole wherever
@@ -1477,7 +1477,7 @@ profitable book hobby than the collecting of Topographical books, but
 each one should confine himself to one County, or at most two, and even
 with discrimination in buying, a single County collection soon becomes
 extensive. What should be aimed at in such a collection is the putting
-together whatever will illustrate the archæology, general history, folk
+together whatever will illustrate the archaeology, general history, folk
 lore, dialect, and natural history, of a district or County, and
 wherever there is a Church and a Manor, there is a history. Each parish
 history is the unit of the history of the nation, and any one
@@ -1504,7 +1504,7 @@ grounds. Dr. Johnson, it may be remembered, expressed a very sound
 commonsense view of this matter to Boswell:
 
 'When I mentioned that I had seen in the King's Library fifty-three
-editions of my favourite _Thomas à Kempis_ . . . . in eight languages
+editions of my favourite _Thomas a Kempis_ . . . . in eight languages
 . . . . Johnson said he thought it unnecessary to collect many editions of
 a book which were all the same except as to paper and print. He would
 have the original, and all the translations, and all editions having
@@ -1906,7 +1906,7 @@ from the backs of the books. Other difficulties which are encountered
 are with anonymous books, and with such authors as used pseudonyms, and,
 in some cases, many pseudonyms. Such was Henri Beyle, whose books bear
 various disguises, such as De Stendhal, Cotonet, Salviati, Viscontini,
-Birkbeck, Strombeck, César Alexandre Bombet. The British Museum Library
+Birkbeck, Strombeck, Cesar Alexandre Bombet. The British Museum Library
 has ninety-one rules of cataloguing, forming, perhaps, the best
 cataloguing code in the world; but for private libraries such
 elaboration and detail is not necessary. The following are the main
@@ -2017,7 +2017,7 @@ upheavals and readjustments will be necessary if any rigid plan is aimed
 at. I would suggest that a separate shelf--or, if necessary, a separate
 case--be reserved for unbound periodicals and for accessions, which are,
 as it were, _sub judice_. Often, too, a separate case is necessary for
-rare and handsome books, and a locked case for _facetiæ_. It is worth
+rare and handsome books, and a locked case for _facetiae_. It is worth
 while to observe that Pepys found that the best way to find his
 numerous books was to number them consecutively throughout the
 library.[40]
@@ -2454,7 +2454,7 @@ repose, and the same absence of library conventionality about. . . . .'
 'Through a door . . . . you reach the second room in the library, to
 which Mr. Gladstone has given the name of the "Humanity room." It is
 arranged on exactly the same plan as the first, and contains secular
-works chiefly. You note Madame de Sévigné's _Letters_ on one shelf, in
+works chiefly. You note Madame de Sevigne's _Letters_ on one shelf, in
 neat and dainty little volumes; and yellow-backed Zola lower down.'[51]
 
 Any one who proposed having a library as a separate building should
@@ -2541,7 +2541,7 @@ library:--
 
 'Adjoining (the main library) was a study, fitted up with inlaid and
 gilded panelling, beneath which . . . . were depicted Minerva with her
-ægis, Apollo with his lyre, and the nine muses, with their appropriate
+aegis, Apollo with his lyre, and the nine muses, with their appropriate
 symbols. A similar small study was fitted up immediately over this one,
 set round with armchairs encircling a table, all mosaicked with _tarsia_,
 . . . while in each compartment of the panelling was the portrait of
@@ -2957,7 +2957,7 @@ There are, I believe, in England twenty-two packs of staghounds, and 182
 packs of foxhounds. As every one of the masters of these packs must be a
 rich man, I should like to know that he at any rate had a sound copy of
 the _History_ of the county where he hunts; that he had in his smoking
-room a good Encyclopædia, with fifty other good reference books, and a
+room a good Encyclopaedia, with fifty other good reference books, and a
 hundred good novels.
 
 The rich men of old combined patronage of learning with the pomp and
@@ -3004,7 +3004,7 @@ the estate of Niccolo was compromised by heavy debts. These debts Cosimo
 cancelled, obtaining in exchange the right to dispose of the library. In
 1441 the hall of the convent was finished. Four hundred of Niccolo's
 MSS. were placed there, with this inscription upon each: _Ex hereditate
-doctissimi viri Nicola de Nicolis de Florentiâ_. Tommasso Parentucelli
+doctissimi viri Nicola de Nicolis de Florentia_. Tommasso Parentucelli
 made a catalogue at Cosimo's request, in which he not only noted the
 titles of Niccoli's books, but also marked the names of others wanting
 to complete the collection. This catalogue afterwards served as a guide
@@ -3151,9 +3151,9 @@ passionately fond of literature, Messer Palla always kept copyists in
 his own house and outside it, of the best who were in Florence, both for
 Greek and Latin books; and all the books he could find he purchased, on
 all subjects, being minded to found a most noble library in Santa
-Trinità, and to erect there a most beautiful building for the purpose.
+Trinita, and to erect there a most beautiful building for the purpose.
 He wished that it should be open to the public, and he chose Santa
-Trinità because it was in the centre of Florence, a site of great
+Trinita because it was in the centre of Florence, a site of great
 convenience to everybody. His disasters supervened and what he had
 designed he could not execute."'[64]
 
@@ -3243,7 +3243,7 @@ the place fittingly set forth in a series of rude hexameters inscribed
 on the cornices. Adjoining was a closet fitted up with inlaid and gilded
 panelling, beneath which Timoteo della Vite, a painter whose excellence
 we shall attest in our thirtieth chapter, depicted Minerva with her
-ægis, Apollo with his lyre, and the nine muses with their appropriate
+aegis, Apollo with his lyre, and the nine muses with their appropriate
 symbols. A similar small study was fitted up immediately over this one,
 set round with arm-chairs encircling a table, all mosaicked with
 _tarsia_, and carved by Maestro Giacomo of Florence, while on each
@@ -3276,4 +3276,1831 @@ Prince made of these acquisitions, let us cite the brief records of his
 studies, preserved in his own Diary. In 1585, "terminated an inspection
 of the whole works of Aristotle, on which I have laboured no less than
 fifteen years, having had them generally read to me by Maestro Cesare
-Benedetti, of Pesaro
+Benedetti, of Pesaro."'[69]
+
+       *       *       *       *       *
+
+'Francesco di Giorgio, in his _Treatise on Architecture_, mentions Duke
+Federigo as holding out inducements for the learned men at his court to
+illustrate the works of classic authors on architecture and sculpture.
+But no testimony to his literary habits can be more satisfactory than
+that of his librarian, Vespasiano, to the following purpose. The Duke
+was a ready Latin scholar, and extremely fond of ancient history. As a
+logician he had attained considerable aptitude, having studied
+Aristotle's _Ethics_ along with Maestro Lazzaro, a famous theologian,
+who became Bishop of Urbino, discussing with him the most intricate
+passages. By the like process he mastered the Stagirite's politics,
+physics, and other treatises; and having acquired more philosophy than
+any contemporary prince, his thirst for new sources of knowledge induced
+him to devote himself to theology with equal zeal. The principal works
+of St. Thomas Aquinas and Duns Scotus were habitually read to him; he
+preferred the former as more clear, but admitted that the latter
+displayed more subtlety in argument. He was well acquainted with the
+Bible, as well as the commentaries of Saints Ambrose, Jerome, Augustine,
+and Gregory; also with the writings of the Greek fathers, such as Saints
+Basil, Chrysostom, Gregory Naziazen, Nicetas, Athanasius, and Cyril.
+Among the classic authors whom he was in the habit of reading or
+listening to were Livy, Sallust, Quintus Curtius, Justin, Caesar,
+Plutarch, AElius Spartianus, AEmylius Protus, Tacitus, Suetonius,
+Eusebius. All men of letters visiting Urbino were hospitably
+entertained, and several were always attached to his court. His
+largesses to such were at all times liberal. He spent above 1500 ducats
+in this way when at Florence, and remitted similar bounties to Rome and
+Naples. He gave 1000 ducats to the learned Campano, professor of
+belles-lettres at Perugia in 1455, who aided him in collecting ancient
+MSS., and became Bishop of Teramo.'[70]
+
+FOOTNOTES:
+
+[66] Dennistoun, _Memoirs of the Dukes of Urbino_, vol. i., p. 155.
+
+[67] _Ibid._, vol. i., pp. 156-7.
+
+[68] _Memoirs of the Dukes of Urbino_, vol. i., pp. 153-5.
+
+[69] _Ibid._, vol. i., p. 154.
+
+
+
+
+_Pieresc._
+
+
+'When any library was to be sold by public outcry, he took care to buy
+the best books, especially if they were of some neat edition that he did
+not already possess. He bound his books in red morocco, with his cypher
+or initials in gold. One binder always lived in the house, and sometimes
+several were employed at once "when the books came rolling in on every
+side."' 'Your house and library' (says the dedication of a book to
+Pieresc) 'are a firmament wherein the stars of learning shine; the desks
+are lit with starlight, and the books are in constellations, and you sit
+like the sun in the midst, embracing and giving light to them all.' 'The
+library is to be open to all the world without the exception of any
+living soul; readers were to be supplied with chairs and writing
+materials, and the attendants will fetch all books required in any
+language or department of learning, and will change them as often as is
+necessary.'[71]
+
+       *       *       *       *       *
+
+'Bouchard states, in his funeral oration on Pieresc, "To this his shop
+and storehouse of wisdom and virtue, Peireskius did not only courteously
+admit all travellers, studious of art and learning, opening to them all
+the treasures of his library, but he would keep them there a long time,
+with free and liberal entertainment; and at their departure, would give
+them books, coins, and other things, which seemed most suitable to their
+studies; also he freely gave them at his own expense, whatever things
+they wanted, most liberally, even as to all other learned men, who were
+absent, and whose names he had only heard of; whatever he had among his
+books or relics of antiquity, which he thought might assist them in
+their writings, he would send it them of his own accord, not only
+without their desiring the same, but many times when they were ignorant
+of such things.'[72]
+
+FOOTNOTES:
+
+[70] _Memoirs of the Dukes of Urbino_, pp. 219, 220.
+
+[71] Elton, _Great Book Collectors_, pp. 180-4.
+
+[72] _The Library_, July, 1895.
+
+
+
+
+_Mr. Ruskin's Advice._
+
+
+'I say first we have despised literature. What do we, as a nation, care
+about books? How much do you think we spend altogether on our libraries,
+public or private, as compared with what we spend on our horses? If a
+man spends lavishly on his library, you call him mad--a biblio-maniac.
+But you never call any one a horse maniac, though men ruin themselves
+every day by their horses, and you do not hear of people ruining
+themselves by their books. Or, to go lower still, how much do you think
+the bookshelves of the United Kingdom, public and private, would fetch,
+as compared with the contents of its wine-cellars? What position would
+its expenditure on literature take as compared with its expenditure on
+luxurious eating? We talk of food for the mind, as of food for the body:
+now a good book contains such food inexhaustibly; it is a provision for
+life, and for the best part of us; yet how long most people would look
+at the best book before they would give the price of a large turbot for
+it!'[73]
+
+'It will be long yet before that comes to pass. Nevertheless, I hope it
+will not be long before royal or national libraries will be founded in
+every considerable city, with a royal series of books in them; the same
+series in every one of them, chosen books, the best in every kind,
+prepared for that national series in the most perfect way possible;
+their text printed all on leaves of equal size, broad of margin, and
+divided into pleasant volumes, light in the hand, beautiful and strong,
+and thorough as examples of binder's work.'[73]
+
+'I could shape for you other plans, for art galleries and for natural
+history galleries, and for many precious, many, it seems to me, needful
+things; but this book plan is the easiest and needfullest, and would
+prove a considerable tonic to what we call our British constitution,
+which has fallen dropsical of late, and has an evil thirst, and evil
+hunger, and wants healthier feeding. You have got its Corn Laws repealed
+for it; try if you cannot get Corn Laws established for it dealing in a
+better bread--bread made of that old enchanted Arabian grain, the
+Sesame, which opens doors, doors, not of robbers', but of kings'
+treasuries.'[74]
+
+       *       *       *       *       *
+
+'Whatever the hold which the aristocracy of England has on the heart of
+England, in that they are still always in front of her battles, this
+hold will not be enough, unless they are also in front of her
+thoughts.'[75]
+
+       *       *       *       *       *
+
+'But it is not gold that you want to gather! What is it? Greenbacks? No;
+not those neither. What is it then--is it ciphers after a capital I?
+Cannot you practise writing ciphers, and write as many as you want?
+Write ciphers for an hour every morning, in a big book, and say every
+evening, I am worth all those noughts more than I was yesterday. Won't
+that do? Well, what in the name of Plutus is it you want? Not gold, not
+greenbacks, not ciphers after a capital I? You will have to answer after
+all, "No; we want, somehow or other, money's _worth_." Well, what is
+that? Let your Goddess of Getting-on discover it, and let her learn to
+stay therein.'[76]
+
+       *       *       *       *       *
+
+'And the entire object of true education is to make people not merely
+_do_ the right things, but _enjoy_ the right things--not merely
+industrious, but to love industry--not merely learned, but to love
+knowledge--not merely pure, but to love purity--not merely just, but to
+hunger and thirst after justice.'[77]
+
+FOOTNOTES:
+
+[73] _Sesame and Lilies._
+
+[74] _Sesame and Lilies._
+
+[75] _Crown of Wild Olive_, p. 87.
+
+[76] _Ibid._, p. 60.
+
+[77] _Ibid._, p. 46.
+
+
+
+
+INDEX
+
+
+  Abbotsford Library Catalogue, printed by Maitland Club, 80
+
+  Abbotsford Library, impressions of, 80
+
+  Accessions, on placing, 89
+
+  Acland, Sir H., the 'Radcliffe' bookcase, 113
+
+  Addison, Essay on 'My Lady's Library,' 50
+
+  Addison's picture of 'Tom Folio,' 79
+
+  Advertisements, which to distrust, 14
+
+  AElius, 148
+
+  AEmylius Protus, 148
+
+  Agabito, librarian to the Duke of Urbino, 119
+
+  Albemarle, Duke of, 78
+
+  Alberti, 142
+
+  Ambrose, St., 148
+
+  American tables, 104
+
+  Angelo, Michael, 142
+
+  Angling books, 10
+
+  Anonymous Literature, how to catalogue, 84, 85
+
+  _Anthrenus varius_, bookboring insect, 23
+
+  Apollo Library, 135
+
+  Appliances for the library, 103
+
+  Aquinas, St. Thomas, 148
+
+  Arcangelo, Don, 138
+
+  _Archaic Dictionary_, 44
+
+  _Architecture_, by Vitruvius, 119
+
+  Aristotle, Inspection of the works of, 147
+
+  Aristotle's _Politics_, 143
+
+  Athanasius, St., 148
+
+  Augustine, St., 148
+
+  Augustus, Emperor, author and booklover, 135
+
+  Austen, J., _Northanger Abbey_, 36
+
+  Author, the, 3
+
+  ---- whims and fancies of, 3
+
+  Autograph letters, how to catalogue, 64
+
+
+  Bacon, Lord, 36
+
+  ---- his retreat at Gorhambury, 107
+
+  Bacon's _Natural History_, 40
+
+  ---- _Organon_, 74
+
+  Baker's _Chronicle_, 72
+
+  Baldi's description of a Florentine palace, 110, 146
+
+  Balfour, Mr., advice on reading, 27
+
+  Barclay, A., _Ship of Fools_, 76
+
+  Basil, St., 148
+
+  Beauchamp, Guy, earl of Warwick, Library of early romances, 71
+
+  Beauclerk, T., 79
+
+  ---- Library of, in Great Russell Street, 107
+
+  Bedford, Duke of, and Charles V.'s Library, 71
+
+  Beecher, H. W., on reading, 30
+
+  Benedetti, B., Book lists of, 147
+
+  ---- librarian to Francesco Maria, 147
+
+  ---- C., of Pesaro, 147
+
+  Beyle, Henri, Pseudonyms used by, 84
+
+  Bianchini's works, 110, 146
+
+  Bible, 148
+
+  Bibliography, Science of, when commenced, 144
+
+  Bibliomaniacs, Great, 71
+
+  Blackie, J. S., on reading, 32
+
+  _Blackwood's Magazine_, Extracts from, 30, 31, 32
+
+  Blades, W., _Enemies of Books_, 7, 21, 100
+
+  ---- on the handling of books, 22
+
+  ---- on the preservation of books, 19, 99
+
+  _Blatta Australasia_, a bookboring cockroach, 23
+
+  Bookbinding, 52
+
+  ---- and the bookbinder, 23
+
+  ---- colour, 49, 54
+
+  ---- Covers, what to choose, 64
+
+  ---- errors of taste, 56
+
+  ---- gilding, 57
+
+  ---- Good, what is fatal to, 97
+
+  ---- leather, kind to choose, 54
+
+  ---- lettering, 58
+
+  ---- marbling, 55
+
+  ---- provincial, 7
+
+  ---- style and colour of, 49
+
+  ---- style, 49, 54
+
+  ---- the, remarks on, 61
+
+  ---- what is good and bad, 5, 6
+
+  Books, accidentally destroyed, 12
+
+  ---- arranging, difficulty of, 17
+
+  ---- care of, 15, 16
+
+  ---- ---- maxims for, 24
+
+  ---- classification of, 87
+
+  ---- commonplace, 38
+
+  ---- contents of, how to master the, 31, 32
+
+  ---- counterfeit, 52
+
+  ---- dusting, 20, 21
+
+  ---- enemies of, 7, 16, 17, 18, 21, 23
+
+  ---- binding, fifteenth-century, 70
+
+  ---- handling, 22
+
+  ---- housing of, 100
+
+  ---- metal bosses on, desks for, 106
+
+  ---- packing, 24, 25
+
+  ---- ------ Rare and handsome, 89
+
+  ---- ------ Reference, 89
+
+  ---- Rare, what constitutes, 11
+
+  ---- ------ Why so called, 12
+
+  ---- How to read, 32
+
+  ---- Recommending, 33
+
+  ---- Reference, 42
+
+  ---- ------ List of good, 44
+
+  ---- ------ On placing, 89
+
+  ---- ------ Uses of, 43
+
+  ---- Repairing, 60, 61
+
+  ---- Restoring, 60, 61
+
+  ---- Ruined, how often, 7
+
+  ---- Shelfmarking, 93
+
+  ---- Sizes of, as decided upon by the Associated Librarians of Great
+    Britain, 98
+
+  ---- Suppressed, 12
+
+  ---- Treatment of, 108
+
+  ---- Valueless, 14
+
+  Bookcase, the 'Radcliffe' iron, 113
+
+  ---- revolving, 105
+
+  Bookcases, 49, 94
+
+  ---- at Trinity College, Cambridge, 102
+
+  ---- beautiful specimens of, 99
+
+  ---- for rare and beautiful books, &c., 99
+
+  ---- glass doors undesirable, 100
+
+  ---- height of, 50, 95
+
+  ---- in bedrooms, 38
+
+  ---- lettering and numbering, 93, 99
+
+  ---- shelves covered with padded leather, 100
+
+  ---- Tonks' patent fittings advisable, 95
+
+  Book-collecting, Revival in, at Florence, 140
+
+  Book collectors, early, 71
+
+  ---- collectors of the eighteenth century, 79
+
+  ---- hobbies, 65
+
+  ---- readers, two classes, 34
+
+  ---- screen, 47
+
+  Bookshelves, 130
+
+  Book support, metal, 106
+
+  ---- values, 9
+
+  ---- ---- how to determine, 9
+
+  Booksellers, Old London, 72
+
+  Bookworm, The, 23
+
+  Bordesley Abbey, and the Earl of Warwick's Library, 71
+
+  Boston Public Library, Roxbury Branch, dimensions of book-room, 113
+
+  Boswell, _Life of Johnson_, 3
+
+  Boudoir bindings, pretty effects of, 48
+
+  ---- libraries, 46
+
+  ---- library catalogue, 50
+
+  Bowen, on _Novel Reading_, 37
+
+  Bracciolini, Poggio, 137
+
+  Bradshaw, H., the Cambridge University Librarian, 117
+
+  Braybrooke, Lord, his collection of county histories, 66
+
+  British Museum Library Catalogue, 85
+
+  Bronte, C., _Jane Eyre_, 37
+
+  Bruni, Lionardo, 137
+
+  Buchanan, G., 117
+
+  Buckram binding, 62
+
+  Buffalo Bug, or Carpet Bug, 23
+
+  Burke, on reading, 31
+
+  Bustle tails, bookboring insects, 23
+
+  Butler's _Hudibras_, 72, 74
+
+
+  Caesar, 148
+
+  _Cambridge University_, _History of_, by Willis and Clark, 120
+
+  Campano, Bishop of Teramo, 149
+
+  Campion, Hanmer and Spencer's History of Ireland, 75
+
+  Care of books, On the, 15
+
+  ---- Maxims to be learned, 24
+
+  Carlyle, on a library catalogue, 81
+
+  Carpet Bug, or Buffalo Bug, 23
+
+  Casaubon, among his books, 72
+
+  Catalogue, a fifteenth-century, 70
+
+  ---- Alphabetical system, advantages of, 86
+
+  ---- Classification of the, 82
+
+  ---- Sectional, Lord Crawford's, 83
+
+  ---- The, 81
+
+  ---- The, alphabetical arrangement of, 81
+
+  ---- The, classified system, advantages of, 86
+
+  ---- The, cross-references, 85
+
+  ---- The, how not to make, 82, 84
+
+  ---- The, expert advice on, 84
+
+  ---- The, rules to be observed, 85
+
+  ---- The, subjects, classification of, 86
+
+  ---- The, preparing titles, 87
+
+  Chairs, Library, 104
+
+  Charles V. of France, library of, 71
+
+  Chaucer, Speght's edition (1602), 75
+
+  Chippendale, bookcase designs by, 99
+
+  Chrysoloras, M., 143
+
+  Chrysostom, St., 148
+
+  _Clarissa Harlowe_, 60
+
+  Clark, J. W., on the position of the library, 119
+
+  ---- Student-life of the past, 72
+
+  Classic authors, list of, 148
+
+  Classics, no suitable edition in England as in France, 1
+
+  Classification, 81
+
+  ---- of books, 87
+
+  Clement XI., Pope, and the eagle lectern, 147
+
+  Clement, D., _Bibliotheque curieuse_, 11
+
+  Clement, D., on degrees of rarity, 11, 13
+
+  Colet, among his books, 72
+
+  Collected editions, how to catalogue, 94
+
+  Commonplace books, 38
+
+  ---- books, simplest form of, 40
+
+  Compositor, the, 3
+
+  Condition, as affecting the price of books, 13, 11
+
+  _Consuelo_, 37
+
+  Consumer, the, 3
+
+  Cosimo's generosity to men of letters, 144
+
+  ---- Medicean library, 138
+
+  ---- plan of the formation of a library, 138
+
+  ---- versatility and comprehensive intellect, 139
+
+  ---- zeal for learning, 139
+
+  Cotton's library, dimensions of, 73
+
+  Counterfeit books, 52
+
+  County collections, what should be aimed at, 66
+
+  ---- Histories, on collecting, 66
+
+  Courthope's edition of Pope, 3
+
+  Crawford, Lord, Ballad catalogue, 83
+
+  ---- Collection of books, pamphlets, ballads, &c., 65
+
+  ---- Sectional catalogue, 83
+
+  Cross-references, when to make, 85
+
+  Cunningham, P., edition of Walpole's letters, 3
+
+  Curiosities, arrangement of, in library, 122
+
+  Cyril, St., 148
+
+
+  Damp, an enemy to books, 17
+
+  De Maistre's _Journey Round my Room_, 47
+
+  Dennistoun's _Memoirs of the Dukes of Urbino_, 110, 145, 147, 149
+
+  Desk, standing, 105
+
+  Dictionaries, use of, 30
+
+  _Dives et Pauper_, 70
+
+  Drawings, safe keeping of, 106
+
+  Duns Scotus, 148
+
+  Dusting of books, 20, 21
+
+
+  Edis' _Decoration and Furniture of Town Houses_, 132
+
+  Editions de luxe, 3
+
+  Education, What is? 45
+
+  Edwards, _Memoirs of Libraries_, 13, 97, 99, 100
+
+  ---- on bookcases, 97, 99
+
+  Elizabethan Poetry, catalogue of, 83
+
+  Ellwanger's _Story of my House_, 9, 104
+
+  Elton, _Great Book Collectors_, 115, 149
+
+  Elwin's edition of Pope, 3
+
+  Enemies of books, 17, 18, 19, 21
+
+  Erasmus, among his books, 72
+
+  Eusebius, 148
+
+  Evelyn's directions for gathering a library, 78
+
+  ---- Letter to Pepys on the Seventeenth Century libraries, 79
+
+  Eversley Rectory armchair, 105
+
+
+  Facetiae, on placing, 89
+
+  Family papers, how to catalogue, 64
+
+  Farnaby, T., _Index Rhetoricus_, 74
+
+  Federigo, Count, famous library of MSS., 110, 146
+
+  ---- Duke, Literary habits of, 148
+
+  Feltrian dukes, MSS., 147
+
+  Fergusson's _Architecture_, 44
+
+  Ficino, Translator of Plato, 142
+
+  Fiction Library, how to arrange, 36
+
+  Fiesole, Abbey of, on building a library at, 138
+
+  Fiesole Abbey, Library of, 138
+
+  Fifteenth Century Library Catalogue, 70
+
+  Fine Copy? What is a, 5, 6
+
+  First Edition Craze, fight against, 14
+
+  Fish Bugs, bookboring insects, 23
+
+  Florence, Revival in learning at, 140
+
+  ---- _Studio Pubblico_, Improvement of the, 143
+
+  Florentine Library, Description of a great, 110
+
+  Floriculture, on collecting books on, 67
+
+  'Foxed' Book, A, 6
+
+  Foxhounds in England, 135
+
+  Francesco Maria's literary pursuits, 147
+
+  Froude, W., The 'Radcliffe' bookcase, 113
+
+  Fuller, T., on memory and note-books, 39
+
+
+  Gas, an enemy to books, 18
+
+  Genealogical books, rise in price of, 66
+
+  Getting-on, Goddess of, 152
+
+  Gibbon, Edward, 1
+
+  ---- library catalogue, 83
+
+  Gilbey, Sir W., sporting books, 67
+
+  Gilding, Advice on, 57
+
+  Giorgio, F. di, _Treatise on Architecture_, 148
+
+  Gladstone, W. E., _Books, and the Housing of them_, 100
+
+  ---- _Gladstone in the Evening of his Days_, 36, 108, 110
+
+  ---- on library shelves, 96
+
+  Gladstone's Temple of Peace, Tables in, 104
+
+  Glastonbury, Treasures at, 69
+
+  'Globe' edition of English classics, 2
+
+  Goldsmith Chair, The, 105
+
+  Good Edition, how to make, 3
+
+  ---- What is a, 1
+
+  Gosse, E., Library Catalogue, 83
+
+  Gregory, St., 148
+
+  Greek Fathers, writings of, 148
+
+  Greenbacks, 152
+
+  Guidobaldo I., Library Rules, 118
+
+
+  Haigh Hall, Ballad Catalogue at, 83
+
+  ---- Library Catalogue, who compiled by, 65
+
+  Hallam's _Literary History_, 41
+
+  Hamerton, Philip G., Advice on reading, 27, 28, 29
+
+  Harding's _Chronicle_, 76
+
+  Hart, Dr. E., on books in bedrooms, 38
+
+  Hawarden Library annexe, 107
+
+  ---- ---- Cost of, 113
+
+  Heat, an enemy to books, 18
+
+  Heppelwhite, Bookcase design by, 99
+
+  Hill, B., Edition of Boswell's Johnson, 3
+
+  Howard, Sir J., Library of, 70
+
+  'Humanity Room' at Hawarden, 109
+
+  Humphrey, Duke, 71
+
+
+  Ireland, History of, 75
+
+  Ink Maker, The, 3
+
+
+  Jerome, St., 148
+
+  Jessopp, Dr., Library annexe of, 107
+
+  ---- on old libraries, 68
+
+  Johnson, Dr., careless with his books, 16
+
+  ---- Life of, 3
+
+  ---- on knowledge, 42
+
+  ---- on the editions of _Thomas a Kempis_, 67
+
+  Johnson's _Dictionary_, 44
+
+  Justin, 148
+
+
+  Kerr's _Gentleman's House_, 120
+
+  Knowledge, On. Extract from the _Spectator_, 42
+
+  ---- Two kinds of, 42
+
+
+  Lady's Library, how arranged, 51
+
+  Lamb, choice of books, 34
+
+  Lampson, L., Rowfant Library Catalogue, 83
+
+  Landino, 142
+
+  Lang, A., remarks on the 'binder,' 61
+
+  ---- on the care of books, 16
+
+  Lapaccini, Fra G., a MS. copyist, 138
+
+  Large-paper copies, 8, 13
+
+  Larousse's _Grand Dictionnaire_, 43
+
+  Leather for binding, 53
+
+  Lectern, an historic eagle, 146
+
+  Leighton, J., _Book-plate Annual_, 15
+
+  ---- Careless handling of books, 16
+
+  Leland, C. G., on _Mending and Repairing_, 61
+
+  ---- Glastonbury treasures, 69
+
+  Leonora's library, how arranged, 51
+
+  _Lepisma Saccharina_, bookboring insects, 23
+
+  _L'Escholle des Filles_, 77
+
+  Librarian, A, 115
+
+  ---- Qualifications of a good, 115, 117
+
+  ---- The motto of a good, 118
+
+  Libraries, Classification of headings of, 94
+
+  ---- in country houses, lamentable condition of, 15
+
+  ---- Old country, 68
+
+  ---- XIIth century, 69
+
+  ---- XIIIth century, 69
+
+  ---- XVIIth century, 72
+
+  ---- Suite of, 121
+
+  ---- Public, Originator of, 143
+
+  _Library, The_ Extract from, 150
+
+  Library, Appliances for the, 103
+
+  ---- The, architecturally, 119
+
+  ---- arrangement, On, 91
+
+  ---- Arrangement of, two plans, 121
+
+  ---- Artistic treatment of the, 122
+
+  ---- Aspect for the, 125
+
+  ---- An economic, 133
+
+  ---- Curiosities in, 22
+
+  ---- Decorations of the, 131
+
+  ---- Enemy of the, 120
+
+  ---- fireplace, 126
+
+  ---- intercommunication, 126
+
+  ---- On heating, 120, 128
+
+  ---- On lighting, 120
+
+  ---- Portable, Composition of a, 46
+
+  ---- Position of the, 119, 124
+
+  ---- rules, 118
+
+  ---- Study attached to the, 127
+
+  ---- Windows in the, 125
+
+  ---- annexe, The, 106
+
+  _Library Association Report_, 1878, 115
+
+  ---- _Journal_, Reference to, 91
+
+  ---- ---- American, 117
+
+  Lionardo, M., translator of Aristotle's _Politics_, 143
+
+  Lippincott's _Biographical Dictionary_, 44
+
+  Livy, 148
+
+  Lockhart, _Life of Sir W. Scott_, 80
+
+  Lorenzo and his literary circle, 142
+
+  Lucullus' vast collection of books, 135
+
+
+  Macaulay, private libraries in 1685, 79
+
+  ---- _State of England in 1685_, 72
+
+  Magazines, How to bind, 63
+
+  Maggliabecchi, Anecdote of, 116
+
+  ---- his abnormal knowledge of books, 115
+
+  Manetti, Giannozzo, 137
+
+  Manuscripts, How to catalogue, 64
+
+  ---- collecting and preserving at Florence, 140
+
+  ---- Collection of ancient, 149
+
+  ---- Famous library of, 110
+
+  ---- of the Feltrian dukes, 147
+
+  ---- Urbino's library of, 146
+
+  Marbling, what to choose, 55
+
+  Marryat, original binding of his novels, 6
+
+  Marsuppini, Carlo, 137
+
+  Maxwell, Sir H., advice on reading, 26
+
+  Medicean Library, 138
+
+  Medici, Cosimo de', on housing of large libraries, 137
+
+  ---- The, and their friends, 137
+
+  ---- Lorenzo de', 137
+
+  Memory and note-books, 39
+
+  Mending and repairing, 61
+
+  Middleton Cheney, Library annexe at, 107
+
+  Mirandola, P. della, 41, 142
+
+  Monastic libraries, Old, 69
+
+  Monmouth rebellion, romances on, 36
+
+  Monreale, Archbishop of, 147
+
+  Morocco leather, kind to choose, 54
+
+  Munificent book-buying, 133
+
+  Murray's _Dictionary_, 59
+
+  ---- _Magazine_, on county histories, 66
+
+  Music, How to bind, 64
+
+
+  Napoleon, on the composition of a portable library, 46
+
+  ---- a lover of small books, 46
+
+  ---- and novel-reading, 38
+
+  Nares' _Glossary_, 44
+
+  Natural history, on collecting books on, 67
+
+  Naude, G., _Avis pour dresser une Bibliotheque_, 10, 79
+
+  Naziazen, St. Gregory, 148
+
+  Niccoli, N. de', Home life and habits of, 141
+
+  ---- literary dictator at Florence, 140
+
+  ---- to whom he bequeathed his library, 137
+
+  Nicetas, 148
+
+  Nicholas V. Pope, Book list of, 139
+
+  _Nineteenth Century_, Extracts from the, 26, 68, 111
+
+  Nordau, millionaires in England, 133
+
+  North, Dr. John, his book-loving habits, 8
+
+  ---- Dr. J., Library of, 73
+
+  ---- Life of, 73
+
+  North's _Lives of the Norths_, 7
+
+  Notes, Suggestions on taking, 41
+
+  Novel-reading, 33
+
+  ---- lecture on, 36, 37
+
+  Novels, how to bind, 62
+
+
+  Octavia Library, 135
+
+  Oldys, W., 79
+
+  Oliveriana Library, 147
+
+  Oxford, Lord, 79
+
+  ---- University of. Duke Humphrey's collection of illuminated
+    treasures, 71
+
+
+  Pamphlets, how to bind, 63
+
+  ---- how to catalogue, 63, 94
+
+  Paper, coloured, 13
+
+  ---- fine, 13
+
+  ---- hand-made, 8
+
+  ---- Japanese vellum, 8
+
+  ---- vellum, 13
+
+  ---- knives, 16
+
+  ---- maker, the, 3
+
+  Parentucelli, T., Catalogue of S. Marco Library, 137
+
+  Parker's _Domestic Architecture_, Reference to, 70
+
+  Paston _Letters_, 70
+
+  Pattison, Mark, a type of a scholar, 134
+
+  Payn, J., on the best hundred books, 30
+
+  Pembroke, Earl of, 79
+
+  Pepys' books, how numbered and titled, 78
+
+  ---- book presses, 75
+
+  ---- book presses at Magdalene College, 75
+
+  ---- Collection of Ballads, &c., 65
+
+  ---- Diary, 43, 59, 74, &c.
+
+  ---- library catalogue, 76
+
+  ---- library catalogue, classification of, 82, 89
+
+  ---- a lover of books, 74
+
+  ---- manuscripts, 77
+
+  ---- single sheets, 77
+
+  Periodicals, Unbound, on placing, 89
+
+  Pesaro, Library of, 138
+
+  Petrarch, project of a public library, 143
+
+  Phillips, W., anecdote of George Sumner, 116
+
+  Pickering, Publications issued by, 4
+
+  Pieresc, and his books, 149
+
+  ---- Funeral oration on, 150
+
+  Plato, Teachings of, 142
+
+  Plato's Works, 143
+
+  Plutarch, 148
+
+  ---- on Lucullus' Library, 135
+
+  Plutarch's _Lives_, 143
+
+  Poetical Concordances, 44
+
+  Poliziano, 142
+
+  Poole, Mr., on enemies to books, 18
+
+  Pope, 'Globe' edition of, 2
+
+  Pope's Works, the edition of Courthope and Elwin, 3
+
+  Preservation of book covers, A recipe for, 20
+
+  Pressman, The, 3
+
+  Priceus, _Defensio Hist. Brit._, 76
+
+  Printer, The, 3
+
+  Prints, safe keeping of, 106
+
+  Private Library, divisions or classification of a, 89
+
+  _Psalms_, French, 74
+
+  Pseudonyms, how to catalogue, 84
+
+  Publisher, The, 3
+
+  Pulci, 142
+
+  Putnam's _Books and their Makers_, 71, 142
+
+  Ptolemy's _Cosmography_, 143
+
+
+  Quintus Curtius, 148
+
+  Quotations, Dictionary of, 44
+
+
+  Radcliffe bookcases, cost of, 114
+
+  Rare books, what constitutes, 12
+
+  ---- why so called, 11
+
+  Rarity as affecting the price of books, 11
+
+  Rawlinson, T., 79
+
+  Reader, The, 3
+
+  Reading, The art of, 25
+
+  ---- ---- literature on, 26
+
+  ---- seat, 96
+
+  Record, unpublished, advisability of typing, 64
+
+  Reference books, 42
+
+  ---- American, 43
+
+  ---- French, 43
+
+  ---- uses of, 43
+
+  Regulations, Book of, of Guidobaldo I, 118
+
+  Renaissance history, 136
+
+  Richardson's _Dictionary_, 44
+
+  Rochester's _Poems_, 78
+
+  Romances, Guy Beauchamp's library of, 71
+
+  _Romola_, 37
+
+  Roscoe, Mr., on book-collecting, 144
+
+  Rowfant Library Catalogue, 83
+
+  Ruddiman, T., 117
+
+  Ruskin, J., advice on book collecting, 150, 151
+
+  ---- choice of books, 34
+
+  ---- his scheme of a Royal series of books, 4
+
+  Ruskin's _Crown of Wild Olive_, 152
+
+  ---- _Sesame and Lilies_, 151, 152
+
+
+  Sachetti, Franco, 137
+
+  Sala, G. A., On common-place books, 39, 40
+
+  Sallust, 148
+
+  Salutati, C. de, On utility of public libraries, 143
+
+  S. Giorgio Maggiore, Library of, 137
+
+  ---- MSS. of, at Florence, 137
+
+  S. Marco, Catalogue of Library of, 138
+
+  Santa Trinita, Proposed public library at, 143
+
+  Scott, R., bill of books supplied to Pepys, 77
+
+  ---- Bookseller of the XVIIth Century, 73
+
+  Scott, Sir W., Life of, 80
+
+  ---- his care of books, 16
+
+  ---- Novels of, original bindings of, 6
+
+  _Seven Champions of Christendom_, 72
+
+  Seventeenth Century Literature, Catalogue of, 83
+
+  Sevigne, Mme. de, Letters of, 109
+
+  Shakespeare, 'Cambridge' Edition of, 2, 53
+
+  'Shannon' Tables, 104
+
+  Shaw, G. B., on an economic library, 133
+
+  Shelf Classification, Difficulty of, 88
+
+  Sheraton, Bookcase designs by, 99
+
+  Silver Fish, bookboring insects, 23
+
+  'Sleepy Hollow,' an armchair at Eversley, 105
+
+  Smith, L. P., Qualifications of a Librarian, 117
+
+  Smith, W., _Greek and Roman Biography_, 44
+
+  Somers, Lord, 79
+
+  Soulsby, Miss Lucy, _Things in Book Clothing_, 28
+
+  Spartianus, 148
+
+  _Spectator_, Extract from, on Knowledge, 42
+
+  Spencer, George, Earl, 79
+
+  ---- Earl, Library at Manchester, 79
+
+  Sport, Reference to, 133
+
+  Sporting books, on collecting, 67
+
+  Staghounds in England, 135
+
+  Stanley, Col., 79
+
+  Steps, Library, 106
+
+  Stevens, _Who spoils our English Books?_ 3, 4
+
+  Stevenson, R. L., Works. 'Edinburgh' Edition, 4
+
+  Strozzi, Palla degli, Greek learning, 142
+
+  ---- originator of public libraries, 143
+
+  Subjects, Short, classification of, 85
+
+  Suetonius, 148
+
+  Sumner, G., Anecdote of, 116
+
+  ---- his knowledge of books, 116
+
+  Sunderland, Charles, Earl of, 79
+
+  Suppressed books, 12
+
+  Symonds, On great literary undertakings, 142
+
+  ---- _Revival of Learning_, 139, 140, 142, 144
+
+
+  Tables, Library, 104
+
+  Tacitus, 148
+
+  Tarleton's _Jests_, 72
+
+  _Tatler_--Addison's Picture of Tom Folio, 79
+
+  Tiberius, Library of, 135
+
+  Title-pages, ruined, 7
+
+  Titles, how to prepare, 87
+
+  Thirlwall, on reading, 31
+
+  _Thomas a Kempis_, Editions of, 68
+
+  Thomas of Saranza, founder of the Vatican Library, 145
+
+  Todd's _Gower and Chaucer_, 72
+
+  ---- _Index Rerum_, 39
+
+  Tonk's Patent Fittings for Bookcases, 95
+
+  Topographical Books, on collecting, 66
+
+  ---- Rise in price of, 66
+
+  Traill, H. D., on book readers, 35
+
+  Trajan, Library of, 135
+
+  Traversari, Ambrogio, 137
+
+
+  _Urbino_, _Dukes of_, 110, 144
+
+  ---- _Memoirs of the_, 119
+
+  ---- book-collecting by, 145
+
+  ---- hospitality to men of letters, 148
+
+  ---- Library of, 138
+
+  ---- his collection of ancient MSS., 149
+
+
+  Valvio, G., Publisher of Plato (1482), 142
+
+  Vespasiano, a MSS. copyist, 138
+
+  ---- on Casimo's plan of forming a library, 138
+
+  ---- on Federigo's literary habits, 148
+
+  ---- on the S. Marco Library Catalogue, 138
+
+  Vitruvius' _Architecture_, 119, 125
+
+
+  Walpole, H., on Beauclerk's library, 107
+
+  Walpole's Letters, edited by Cunningham, 3
+
+  Wanley, H., 79
+
+  Warwick, Earl of, Library of early romances, List of, 71, 72
+
+  Weeding out, 80
+
+  Wheatley, B. R., on library arrangement, 90
+
+  Wheatley, H. B., _Pepys and the World he lived in_, 74, 82, 90
+
+  _Where is it?_ 40
+
+  White Canons, Catalogue of the House of the, 70
+
+  Whittingham, Books printed by, 4
+
+  Whittingham's garden at Chiswick, 4
+
+  Wilberforce, Dr., on knowledge, 42
+
+  Wilkinson's _Ancient Egyptians_, 44
+
+  Willett, Deb., 78
+
+  Willis and Clark, _History of Cambridge University_, 120
+
+  Wordsworth, careless with his books, 16
+
+  Wren, Sir C., bookcases at Trinity College, Cambridge, 102
+
+  Wren, W., on Education, 45
+
+
+  Zola, 110
+
+
+          _London_: STRANGEWAYS, _Printers._
+
+       *       *       *       *       *
+
+Transcriber's Notes:
+
+Obvious punctuation errors repaired.
+
+Page 53, " ssued" changed to "issued" (issued in a separate)
+
+Page 61, "cuttting" changed to "cutting" (even cutting off lines)
+
+Page 64, "callendar" changed to "calendar" (instructions to calendar)
+
+Page 153, "Aelus" changed to "AElius" (AElius, 148)
+
+Page 153, "Aemylius" changed to "AEmylius" (AEmylius Protus, 148)
+
+Page 155, "Lionardi" changed to "Lionardo" (Bruni, Lionardo, 137)
+
+Page 156, Bronte changed to "Bronte" (Bronte, C.,)
+
+Page 158, "Gentlemen's" changed to "Gentleman's" (Kerr's _Gentlemen's
+House_, 120)
+
+Page 158, "Lapaccim" changed to "Lapaccini" (Lapaccini, Fra G., a MS.
+copyist, 138)
+
+Page 158, "bookbinding" changed to "bookboring" (_Lepisma Saccharina_,
+bookboring insects)
+
+Page 158, "Th" changed to "The" (_Library, The_,)
+
+Page 159, "Nazianzen" changed to "Naziazen" (Naziazen, St. Gregory, 148)
+
+Page 162, "MMS." changed to "MSS." (Vespasiano, a MSS.)
+
+Buckram is sometimes capitalized and sometimes not. This was retained.
+
+This book hyphenates or not on a whim. For example: Common-place and
+Commonplace. These were retained.
+
+
+
+
+
+End of Project Gutenberg's The Private Library, by Arthur L. Humphreys
+
+
+
+*** END OF THE PROJECT GUTENBERG EBOOK THE PRIVATE LIBRARY ***
+
+
+    
+
+Updated editions will replace the previous one—the old editions will
+be renamed.
+
+Creating the works from print editions not protected by U.S. copyright
+law means that no one owns a United States copyright in these works,
+so the Foundation (and you!) can copy and distribute it in the United
+States without permission and without paying copyright
+royalties. Special rules, set forth in the General Terms of Use part
+of this license, apply to copying and distributing Project
+Gutenberg™ electronic works to protect the PROJECT GUTENBERG™
+concept and trademark. Project Gutenberg is a registered trademark,
+and may not be used if you charge for an eBook, except by following
+the terms of the trademark license, including paying royalties for use
+of the Project Gutenberg trademark. If you do not charge anything for
+copies of this eBook, complying with the trademark license is very
+easy. You may use this eBook for nearly any purpose such as creation
+of derivative works, reports, performances and research. Project
+Gutenberg eBooks may be modified and printed and given away—you may
+do practically ANYTHING in the United States with eBooks not protected
+by U.S. copyright law. Redistribution is subject to the trademark
+license, especially commercial redistribution.
+
+
+START: FULL LICENSE
+
+THE FULL PROJECT GUTENBERG™ LICENSE
+
+PLEASE READ THIS BEFORE YOU DISTRIBUTE OR USE THIS WORK
+
+To protect the Project Gutenberg™ mission of promoting the free
+distribution of electronic works, by using or distributing this work
+(or any other work associated in any way with the phrase “Project
+Gutenberg”), you agree to comply with all the terms of the Full
+Project Gutenberg License available with this file or online at
+www.gutenberg.org/license.
+
+Section 1. General Terms of Use and Redistributing Project Gutenberg
+electronic works
+
+1.A. By reading or using any part of this Project Gutenberg
+electronic work, you indicate that you have read, understand, agree to
+and accept all the terms of this license and intellectual property
+(trademark/copyright) agreement. If you do not agree to abide by all
+the terms of this agreement, you must cease using and return or
+destroy all copies of Project Gutenberg electronic works in your
+possession. If you paid a fee for obtaining a copy of or access to a
+Project Gutenberg electronic work and you do not agree to be bound
+by the terms of this agreement, you may obtain a refund from the person
+or entity to whom you paid the fee as set forth in paragraph 1.E.8.
+
+1.B. “Project Gutenberg” is a registered trademark. It may only be
+used on or associated in any way with an electronic work by people who
+agree to be bound by the terms of this agreement. There are a few
+things that you can do with most Project Gutenberg electronic works
+even without complying with the full terms of this agreement. See
+paragraph 1.C below. There are a lot of things you can do with Project
+Gutenberg electronic works if you follow the terms of this
+agreement and help preserve free future access to Project Gutenberg
+electronic works. See paragraph 1.E below.
+
+1.C. The Project Gutenberg Literary Archive Foundation (“the
+Foundation” or PGLAF), owns a compilation copyright in the collection
+of Project Gutenberg electronic works. Nearly all the individual
+works in the collection are in the public domain in the United
+States. If an individual work is unprotected by copyright law in the
+United States and you are located in the United States, we do not
+claim a right to prevent you from copying, distributing, performing,
+displaying or creating derivative works based on the work as long as
+all references to Project Gutenberg are removed. Of course, we hope
+that you will support the Project Gutenberg mission of promoting
+free access to electronic works by freely sharing Project Gutenberg
+works in compliance with the terms of this agreement for keeping the
+Project Gutenberg name associated with the work. You can easily
+comply with the terms of this agreement by keeping this work in the
+same format with its attached full Project Gutenberg License when
+you share it without charge with others.
+
+1.D. The copyright laws of the place where you are located also govern
+what you can do with this work. Copyright laws in most countries are
+in a constant state of change. If you are outside the United States,
+check the laws of your country in addition to the terms of this
+agreement before downloading, copying, displaying, performing,
+distributing or creating derivative works based on this work or any
+other Project Gutenberg work. The Foundation makes no
+representations concerning the copyright status of any work in any
+country other than the United States.
+
+1.E. Unless you have removed all references to Project Gutenberg:
+
+1.E.1. The following sentence, with active links to, or other
+immediate access to, the full Project Gutenberg License must appear
+prominently whenever any copy of a Project Gutenberg work (any work
+on which the phrase “Project Gutenberg” appears, or with which the
+phrase “Project Gutenberg” is associated) is accessed, displayed,
+performed, viewed, copied or distributed:
+
+    This eBook is for the use of anyone anywhere in the United States and most
+    other parts of the world at no cost and with almost no restrictions
+    whatsoever. You may copy it, give it away or re-use it under the terms
+    of the Project Gutenberg™ License included with this eBook or online
+    at www.gutenberg.org. If you
+    are not located in the United States, you will have to check the laws
+    of the country where you are located before using this eBook.
+  
+1.E.2. If an individual Project Gutenberg electronic work is
+derived from texts not protected by U.S. copyright law (does not
+contain a notice indicating that it is posted with permission of the
+copyright holder), the work can be copied and distributed to anyone in
+the United States without paying any fees or charges. If you are
+redistributing or providing access to a work with the phrase “Project
+Gutenberg” associated with or appearing on the work, you must comply
+either with the requirements of paragraphs 1.E.1 through 1.E.7 or
+obtain permission for the use of the work and the Project Gutenberg
+trademark as set forth in paragraphs 1.E.8 or 1.E.9.
+
+1.E.3. If an individual Project Gutenberg electronic work is posted
+with the permission of the copyright holder, your use and distribution
+must comply with both paragraphs 1.E.1 through 1.E.7 and any
+additional terms imposed by the copyright holder. Additional terms
+will be linked to the Project Gutenberg License for all works
+posted with the permission of the copyright holder found at the
+beginning of this work.
+
+1.E.4. Do not unlink or detach or remove the full Project Gutenberg
+License terms from this work, or any files containing a part of this
+work or any other work associated with Project Gutenberg.
+
+1.E.5. Do not copy, display, perform, distribute or redistribute this
+electronic work, or any part of this electronic work, without
+prominently displaying the sentence set forth in paragraph 1.E.1 with
+active links or immediate access to the full terms of the Project
+Gutenberg License.
+
+1.E.6. You may convert to and distribute this work in any binary,
+compressed, marked up, nonproprietary or proprietary form, including
+any word processing or hypertext form. However, if you provide access
+to or distribute copies of a Project Gutenberg work in a format
+other than “Plain Vanilla ASCII” or other format used in the official
+version posted on the official Project Gutenberg website
+(www.gutenberg.org), you must, at no additional cost, fee or expense
+to the user, provide a copy, a means of exporting a copy, or a means
+of obtaining a copy upon request, of the work in its original “Plain
+Vanilla ASCII” or other form. Any alternate format must include the
+full Project Gutenberg License as specified in paragraph 1.E.1.
+
+1.E.7. Do not charge a fee for access to, viewing, displaying,
+performing, copying or distributing any Project Gutenberg works
+unless you comply with paragraph 1.E.8 or 1.E.9.
+
+1.E.8. You may charge a reasonable fee for copies of or providing
+access to or distributing Project Gutenberg electronic works
+provided that:
+
+    • You pay a royalty fee of 20% of the gross profits you derive from
+        the use of Project Gutenberg works calculated using the method
+        you already use to calculate your applicable taxes. The fee is owed
+        to the owner of the Project Gutenberg trademark, but he has
+        agreed to donate royalties under this paragraph to the Project
+        Gutenberg Literary Archive Foundation. Royalty payments must be paid
+        within 60 days following each date on which you prepare (or are
+        legally required to prepare) your periodic tax returns. Royalty
+        payments should be clearly marked as such and sent to the Project
+        Gutenberg Literary Archive Foundation at the address specified in
+        Section 4, “Information about donations to the Project Gutenberg
+        Literary Archive Foundation.”
+    
+    • You provide a full refund of any money paid by a user who notifies
+        you in writing (or by e-mail) within 30 days of receipt that s/he
+        does not agree to the terms of the full Project Gutenberg™
+        License. You must require such a user to return or destroy all
+        copies of the works possessed in a physical medium and discontinue
+        all use of and all access to other copies of Project Gutenberg™
+        works.
+    
+    • You provide, in accordance with paragraph 1.F.3, a full refund of
+        any money paid for a work or a replacement copy, if a defect in the
+        electronic work is discovered and reported to you within 90 days of
+        receipt of the work.
+    
+    • You comply with all other terms of this agreement for free
+        distribution of Project Gutenberg™ works.
+    
+
+1.E.9. If you wish to charge a fee or distribute a Project
+Gutenberg™ electronic work or group of works on different terms than
+are set forth in this agreement, you must obtain permission in writing
+from the Project Gutenberg Literary Archive Foundation, the manager of
+the Project Gutenberg™ trademark. Contact the Foundation as set
+forth in Section 3 below.
+
+1.F.
+
+1.F.1. Project Gutenberg volunteers and employees expend considerable
+effort to identify, do copyright research on, transcribe and proofread
+works not protected by U.S. copyright law in creating the Project
+Gutenberg™ collection. Despite these efforts, Project Gutenberg™
+electronic works, and the medium on which they may be stored, may
+contain “Defects,” such as, but not limited to, incomplete, inaccurate
+or corrupt data, transcription errors, a copyright or other
+intellectual property infringement, a defective or damaged disk or
+other medium, a computer virus, or computer codes that damage or
+cannot be read by your equipment.
+
+1.F.2. LIMITED WARRANTY, DISCLAIMER OF DAMAGES - Except for the “Right
+of Replacement or Refund” described in paragraph 1.F.3, the Project
+Gutenberg Literary Archive Foundation, the owner of the Project
+Gutenberg™ trademark, and any other party distributing a Project
+Gutenberg™ electronic work under this agreement, disclaim all
+liability to you for damages, costs and expenses, including legal
+fees. YOU AGREE THAT YOU HAVE NO REMEDIES FOR NEGLIGENCE, STRICT
+LIABILITY, BREACH OF WARRANTY OR BREACH OF CONTRACT EXCEPT THOSE
+PROVIDED IN PARAGRAPH 1.F.3. YOU AGREE THAT THE FOUNDATION, THE
+TRADEMARK OWNER, AND ANY DISTRIBUTOR UNDER THIS AGREEMENT WILL NOT BE
+LIABLE TO YOU FOR ACTUAL, DIRECT, INDIRECT, CONSEQUENTIAL, PUNITIVE OR
+INCIDENTAL DAMAGES EVEN IF YOU GIVE NOTICE OF THE POSSIBILITY OF SUCH
+DAMAGE.
+
+1.F.3. LIMITED RIGHT OF REPLACEMENT OR REFUND - If you discover a
+defect in this electronic work within 90 days of receiving it, you can
+receive a refund of the money (if any) you paid for it by sending a
+written explanation to the person you received the work from. If you
+received the work on a physical medium, you must return the medium
+with your written explanation. The person or entity that provided you
+with the defective work may elect to provide a replacement copy in
+lieu of a refund. If you received the work electronically, the person
+or entity providing it to you may choose to give you a second
+opportunity to receive the work electronically in lieu of a refund. If
+the second copy is also defective, you may demand a refund in writing
+without further opportunities to fix the problem.
+
+1.F.4. Except for the limited right of replacement or refund set forth
+in paragraph 1.F.3, this work is provided to you ‘AS-IS’, WITH NO
+OTHER WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+LIMITED TO WARRANTIES OF MERCHANTABILITY OR FITNESS FOR ANY PURPOSE.
+
+1.F.5. Some states do not allow disclaimers of certain implied
+warranties or the exclusion or limitation of certain types of
+damages. If any disclaimer or limitation set forth in this agreement
+violates the law of the state applicable to this agreement, the
+agreement shall be interpreted to make the maximum disclaimer or
+limitation permitted by the applicable state law. The invalidity or
+unenforceability of any provision of this agreement shall not void the
+remaining provisions.
+
+1.F.6. INDEMNITY - You agree to indemnify and hold the Foundation, the
+trademark owner, any agent or employee of the Foundation, anyone
+providing copies of Project Gutenberg™ electronic works in
+accordance with this agreement, and any volunteers associated with the
+production, promotion and distribution of Project Gutenberg™
+electronic works, harmless from all liability, costs and expenses,
+including legal fees, that arise directly or indirectly from any of
+the following which you do or cause to occur: (a) distribution of this
+or any Project Gutenberg work, (b) alteration, modification, or
+additions or deletions to any Project Gutenberg work, and (c) any
+Defect you cause.
+
+Section 2. Information about the Mission of Project Gutenberg
+
+Project Gutenberg is synonymous with the free distribution of
+electronic works in formats readable by the widest variety of
+computers including obsolete, old, middle-aged and new computers. It
+exists because of the efforts of hundreds of volunteers and donations
+from people in all walks of life.
+
+Volunteers and financial support to provide volunteers with the
+assistance they need are critical to reaching Project Gutenberg’s
+goals and ensuring that the Project Gutenberg collection will
+remain freely available for generations to come. In 2001, the Project
+Gutenberg Literary Archive Foundation was created to provide a secure
+and permanent future for Project Gutenberg and future
+generations. To learn more about the Project Gutenberg Literary
+Archive Foundation and how your efforts and donations can help, see
+Sections 3 and 4 and the Foundation information page at www.gutenberg.org.
+
+Section 3. Information about the Project Gutenberg Literary Archive Foundation
+
+The Project Gutenberg Literary Archive Foundation is a non-profit
+501(c)(3) educational corporation organized under the laws of the
+state of Mississippi and granted tax exempt status by the Internal
+Revenue Service. The Foundation’s EIN or federal tax identification
+number is 64-6221541. Contributions to the Project Gutenberg Literary
+Archive Foundation are tax deductible to the full extent permitted by
+U.S. federal laws and your state’s laws.
+
+The Foundation’s business office is located at 41 Watchung Plaza #516,
+Montclair NJ 07042, USA, +1 (862) 621-9288. Email contact links and up
+to date contact information can be found at the Foundation’s website
+and official page at www.gutenberg.org/contact
+
+Section 4. Information about Donations to the Project Gutenberg
+Literary Archive Foundation
+
+Project Gutenberg™ depends upon and cannot survive without widespread
+public support and donations to carry out its mission of
+increasing the number of public domain and licensed works that can be
+freely distributed in machine-readable form accessible by the widest
+array of equipment including outdated equipment. Many small donations
+($1 to $5,000) are particularly important to maintaining tax exempt
+status with the IRS.
+
+The Foundation is committed to complying with the laws regulating
+charities and charitable donations in all 50 states of the United
+States. Compliance requirements are not uniform and it takes a
+considerable effort, much paperwork and many fees to meet and keep up
+with these requirements. We do not solicit donations in locations
+where we have not received written confirmation of compliance. To SEND
+DONATIONS or determine the status of compliance for any particular state
+visit www.gutenberg.org/donate.
+
+While we cannot and do not solicit contributions from states where we
+have not met the solicitation requirements, we know of no prohibition
+against accepting unsolicited donations from donors in such states who
+approach us with offers to donate.
+
+International donations are gratefully accepted, but we cannot make
+any statements concerning tax treatment of donations received from
+outside the United States. U.S. laws alone swamp our small staff.
+
+Please check the Project Gutenberg web pages for current donation
+methods and addresses. Donations are accepted in a number of other
+ways including checks, online payments and credit card donations. To
+donate, please visit: www.gutenberg.org/donate.
+
+Section 5. General Information About Project Gutenberg electronic works
+
+Professor Michael S. Hart was the originator of the Project
+Gutenberg concept of a library of electronic works that could be
+freely shared with anyone. For forty years, he produced and
+distributed Project Gutenberg eBooks with only a loose network of
+volunteer support.
+
+Project Gutenberg eBooks are often created from several printed
+editions, all of which are confirmed as not protected by copyright in
+the U.S. unless a copyright notice is included. Thus, we do not
+necessarily keep eBooks in compliance with any particular paper
+edition.
+
+Most people start at our website which has the main PG search
+facility: www.gutenberg.org.
+
+This website includes information about Project Gutenberg,
+including how to make donations to the Project Gutenberg Literary
+Archive Foundation, how to help produce our new eBooks, and how to
+subscribe to our email newsletter to hear about new eBooks.
+
+
