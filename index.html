@@ -29,7 +29,7 @@
     <div id="prompt" aria-live="polite"><div class="prompt-title"></div><div class="prompt-by"></div><span class="prompt-key" id="promptKey">E&nbsp;&nbsp; INTERACT</span></div>
     <div id="notice" aria-live="polite"></div>
     <div id="status"><div id="timeLabel">EVENING</div><div><span id="weatherLabel">RAIN</span> beyond the glass</div><div>Mysteries <span id="secretCount">0 / 9</span></div></div>
-    <button id="mute" aria-label="Mute ambience" title="Mute ambience">♪</button>
+    <button id="mute" aria-label="Mute ambience" title="Mute ambience">♪</button><button id="settingsButton" aria-label="Library settings" title="Library settings">⚙</button>
     <div id="hint">WASD / arrows walk &nbsp;·&nbsp; Shift quicken<br>E interact · J journal &nbsp;·&nbsp; R return to entrance</div>
     <div id="touchLook" class="touch-ui"></div>
     <div id="touchMove" class="touch-ui"><div id="touchStick"></div></div>
@@ -40,7 +40,7 @@
     <button id="touchMenu" class="touch-ui" aria-label="Menu">&#9776;</button>
   </div>
   <div id="rotateDevice" role="status"><div><strong>Turn the key sideways</strong>Rotate your device to landscape to explore the library.</div></div>
-  <div id="bookActions" class="hidden"><div class="meta"><strong></strong><em></em></div><button class="primary" id="openBook">Open book</button><button class="ghost" id="askLibrarian">Ask the librarian</button><button class="ghost" id="returnBook">Return</button></div>
+  <div id="bookActions" class="hidden"><div class="meta"><strong></strong><em></em></div><button class="primary" id="openBook">Open book</button><button class="ghost" id="askLibrarian">Ask the librarian</button><button class="ghost" id="leaveBook">Leave at desk</button><button class="ghost" id="returnBook">Return</button></div>
   <div id="reader" class="comfort hidden">
     <div class="book-spread">
       <header class="reader-head"><div><h2 id="readerTitle"></h2><p id="readerAuthor"></p></div><button class="iconbtn" id="closeReader" aria-label="Close reader">×</button></header>
@@ -52,6 +52,7 @@
   </div>
   <div id="journal" class="hidden"><section class="journal-book"><header class="journal-head"><div><h2>THE HIDDEN CATALOGUE</h2><p id="journalProgress">0 of 9 mysteries recorded</p></div><button class="iconbtn" id="closeJournal" aria-label="Close journal">×</button></header><div class="journal-grid"><section><h3>Whispers and passages</h3><div class="mystery-list" id="mysteryList"></div></section><section><h3>Reading desk</h3><div class="collection-list" id="collectionList"></div><h3>The library remembers</h3><p id="journalClue"></p></section></div><footer class="journal-foot">Press J to close. New clues appear when you read, explore, and listen to the cat.</footer></section></div>
   <div id="pause" class="hidden"><div class="panel"><h2>THE LIBRARY WAITS</h2><p>Your place has been kept. Press R anywhere if you lose your way.</p><div class="pause-actions"><button class="primary" id="resume">Return</button><button class="ghost" id="openJournal">Hidden catalogue</button><button class="ghost" id="resetPosition">Return to entrance</button></div></div></div>
+  <div id="settings" class="hidden" role="dialog" aria-modal="true" aria-labelledby="settingsTitle"><section class="settings-card"><header><div><small>THE LIBRARY REMEMBERS</small><h2 id="settingsTitle">Comfort &amp; settings</h2></div><button class="iconbtn" id="closeSettings" aria-label="Close settings">×</button></header><label>Ambience <input id="volumeControl" type="range" min="0" max="100" value="13"></label><label><input id="reducedMotion" type="checkbox"> Reduce motion and weather effects</label><label><input id="lowBandwidth" type="checkbox"> Low-bandwidth mode (do not load cover art)</label><div class="settings-actions"><button class="ghost" id="freshVisit">Start a fresh visit</button><button class="primary" id="saveSettings">Keep these settings</button></div><p class="settings-note">Your settings and reading progress stay only in this browser.</p></section></div>
 
   <div id="conversation" class="hidden" role="dialog" aria-modal="true" aria-labelledby="chatTitle"><section class="conversation-card"><small>VOICES AFTER DARK</small><h2 id="chatTitle">The roving librarian</h2><p id="chatReply" aria-live="polite"></p><div class="chat-options" id="chatOptions"></div><button class="ghost" id="closeChat">Until next time · Esc</button></section></div>
   <script>
