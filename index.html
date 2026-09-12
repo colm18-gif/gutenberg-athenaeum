@@ -63,7 +63,7 @@
     enter.addEventListener('click',async()=>{
       if(loading)return;
       loading=true;window.__ATHENAEUM_ENTERED__=true;enter.disabled=true;enter.textContent='Opening…';if(intro)intro.textContent='Lighting lamps and waking the shelves…';
-      try{await loadScript('https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js');await loadScript('game.js')}
+      try{await loadScript('https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js');await loadScript('content.js');await loadScript('progress.js');await loadScript('game.js')}
       catch(error){loading=false;enter.disabled=false;enter.textContent='Try again';if(intro)intro.textContent='The door stuck. Check your connection and try once more.';console.error(error)}
     });
   })();
