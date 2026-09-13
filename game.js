@@ -230,8 +230,9 @@
     addBox(38,.5,62,MAT.wood,0,-.28,0,false);rug(0,11,11,20);rug(0,-15,13,15);rug(-27,-2,14,15,0x3b1b22);rug(27,-2,14,15,0x3b1b22);
     addBox(38,10,.6,MAT.stone,0,5,-31);addBox(30.4,10,.6,MAT.stone,-3.8,5,31);addBox(1.9,10,.6,MAT.stone,18.05,5,31);
     addBox(18,.45,24,MAT.wood,-28,-.2,-2,false);addBox(18,.45,24,MAT.wood,28,-.2,-2,false);addBox(.5,8,8,MAT.stone,-37,4,-10);addBox(.5,8,10,MAT.stone,-37,4,5);addBox(.5,8,9,MAT.stone,37,4,-9.5);addBox(.5,8,9,MAT.stone,37,4,5.5);addBox(18,8,.5,MAT.stone,-28,4,-14);addBox(18,8,.5,MAT.stone,-28,4,10);addBox(18,8,.5,MAT.stone,28,4,-14);addBox(18,8,.5,MAT.stone,28,4,10);
-    // openings between wings; the eastern upper wall leaves a concealed portrait passage
-    for(const side of [-1,1]){const x=side*19;addBox(.5,10,18,MAT.stone,x,5,-22);if(side<0)addBox(.5,10,18,MAT.stone,x,5,22);else{addBox(.5,10,4,MAT.stone,x,5,15);addBox(.5,10,8,MAT.stone,x,5,27)}trim(x,7.4,0,.7,.5,8);trim(x,3.7,-4,.7,7.4,.5);trim(x,3.7,4,.7,7.4,.5)}
+    // Separate wings are concealed by solid walls; each is revealed only through its own doorway.
+    function wingDoorway(side,title){const x=side*19;addBox(.62,10,10.2,MAT.stone,x,5,-7.9);addBox(.62,10,10.2,MAT.stone,x,5,7.9);trim(x,3.7,-2.18,.9,7.4,.48);trim(x,3.7,2.18,.9,7.4,.48);trim(x,7.35,0,.9,.5,4.85);const a=box(.16,6.7,.92,MAT.darkWood,x-side*.18,3.35,-1.72),b=box(.16,6.7,.92,MAT.darkWood,x-side*.18,3.35,1.72);a.rotation.y=side*Math.PI*.18;b.rotation.y=-side*Math.PI*.18;}
+    wingDoorway(-1,'WEST READING ROOM');wingDoorway(1,'EAST GALLERY');
     // complete roofs and lintels close every seam while preserving intentional entrances
     const roofMat=new THREE.MeshStandardMaterial({color:0x39342e,roughness:.96});box(38,.38,62,roofMat,0,9.62,0,false);box(18,.38,24,roofMat,-28,8.18,-2,false);box(18,.38,24,roofMat,28,8.18,-2,false);box(20,.38,20,roofMat,47,8.18,-2,false);box(14,.38,18,roofMat,-45,7.18,-3,false);box(10,.38,4,roofMat,-57,4.18,-3,false);box(10,.38,10,roofMat,-67,6.18,-3,false);box(9,.38,8,roofMat,23.5,12.18,20,false);
     box(5.7,1,.65,MAT.stone,14.25,9.48,31,false);box(.55,1.8,6,MAT.stone,37,7.08,-2,false);box(.55,.3,6,MAT.darkWood,-37,7.82,-3,false);for(const x of [-37,-19,19,37,57])for(const z of [-14,10])trim(x,8.05,z,.7,.3,.7);
