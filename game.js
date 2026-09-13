@@ -231,7 +231,7 @@
     addBox(38,10,.6,MAT.stone,0,5,-31);addBox(30.4,10,.6,MAT.stone,-3.8,5,31);addBox(1.9,10,.6,MAT.stone,18.05,5,31);
     addBox(18,.45,24,MAT.wood,-28,-.2,-2,false);addBox(18,.45,24,MAT.wood,28,-.2,-2,false);addBox(.5,8,8,MAT.stone,-37,4,-10);addBox(.5,8,10,MAT.stone,-37,4,5);addBox(.5,8,9,MAT.stone,37,4,-9.5);addBox(.5,8,9,MAT.stone,37,4,5.5);addBox(18,8,.5,MAT.stone,-28,4,-14);addBox(18,8,.5,MAT.stone,-28,4,10);addBox(18,8,.5,MAT.stone,28,4,-14);addBox(18,8,.5,MAT.stone,28,4,10);
     // Separate wings are concealed by solid walls; each is revealed only through its own doorway.
-    function wingDoorway(side,title){const x=side*19;addBox(.62,10,11.6,MAT.stone,x,5,-7.2);addBox(.62,10,11.6,MAT.stone,x,5,7.2);trim(x,3.7,-1.5,.9,7.4,.48);trim(x,3.7,1.5,.9,7.4,.48);trim(x,7.35,0,.9,.5,3.5);}
+    function wingDoorway(side,title){const x=side*19;addBox(.62,10,11.6,MAT.wood2,x,5,-7.2);addBox(.62,10,11.6,MAT.wood2,x,5,7.2);trim(x,3.7,-1.5,.9,7.4,.48);trim(x,3.7,1.5,.9,7.4,.48);trim(x,7.35,0,.9,.5,3.5);}
     wingDoorway(-1,'WEST READING ROOM');wingDoorway(1,'EAST GALLERY');
     // complete roofs and lintels close every seam while preserving intentional entrances
     const roofMat=new THREE.MeshStandardMaterial({color:0x39342e,roughness:.96});box(38,.38,62,roofMat,0,9.62,0,false);box(18,.38,24,roofMat,-28,8.18,-2,false);box(18,.38,24,roofMat,28,8.18,-2,false);box(20,.38,20,roofMat,47,8.18,-2,false);box(14,.38,18,roofMat,-45,7.18,-3,false);box(10,.38,4,roofMat,-57,4.18,-3,false);box(10,.38,10,roofMat,-67,6.18,-3,false);box(9,.38,8,roofMat,23.5,12.18,20,false);
