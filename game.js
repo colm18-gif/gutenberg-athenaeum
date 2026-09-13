@@ -157,7 +157,8 @@
     [550,'Silas Marner','George Eliot','Society',65],
     [1257,'The Three Musketeers','Alexandre Dumas','Adventure',65],
     [65238,'The Secret of Chimneys','Agatha Christie','Mystery',65],
-    [13,'The Hunting of the Snark','Lewis Carroll','Wonder',60],[651,'Phantasmagoria and Other Poems','Lewis Carroll','Wonder',35],[4763,'The Game of Logic','Lewis Carroll','Wonder',30],[29042,'A Tangled Tale','Lewis Carroll','Wonder',30]
+    [13,'The Hunting of the Snark','Lewis Carroll','Wonder',60],[651,'Phantasmagoria and Other Poems','Lewis Carroll','Wonder',35],[4763,'The Game of Logic','Lewis Carroll','Wonder',30],[29042,'A Tangled Tale','Lewis Carroll','Wonder',30],
+      [139,'The Lost World','Arthur Conan Doyle','Adventure',70],[3155,'She','H. Rider Haggard','Adventure',55],[2166,"King Solomon's Mines",'H. Rider Haggard','Adventure',65],[1951,'The Coming Race','Edward Bulwer-Lytton','Adventure',30],[1906,'Erewhon','Samuel Butler','Adventure',40]
 ].map((b,i)=>({id:b[0],title:b[1],author:b[2],category:b[3],fame:b[4],textUrl:`https://www.gutenberg.org/cache/epub/${b[0]}/pg${b[0]}.txt`,progress:loadSavedProgress(b[0]),index:i}));
     const offlineExtracts={
       1342:`It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.\n\nHowever little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.\n\n“My dear Mr. Bennet,” said his lady to him one day, “have you heard that Netherfield Park is let at last?”`,

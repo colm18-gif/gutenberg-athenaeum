@@ -104,3 +104,12 @@
 - Silas Marner — George Eliot ([Project Gutenberg](https://www.gutenberg.org/ebooks/550))
 - The Three Musketeers — Alexandre Dumas ([Project Gutenberg](https://www.gutenberg.org/ebooks/1257))
 - The Secret of Chimneys — Agatha Christie ([Project Gutenberg](https://www.gutenberg.org/ebooks/65238))
+
+
+# 5 "lost world / hidden civilization" books (in lieu of Lost Horizon, which is not yet public domain in the US)
+
+- The Lost World — Arthur Conan Doyle ([Project Gutenberg](https://www.gutenberg.org/ebooks/139))
+- She — H. Rider Haggard ([Project Gutenberg](https://www.gutenberg.org/ebooks/3155))
+- King Solomon's Mines — H. Rider Haggard ([Project Gutenberg](https://www.gutenberg.org/ebooks/2166))
+- The Coming Race — Edward Bulwer-Lytton ([Project Gutenberg](https://www.gutenberg.org/ebooks/1951))
+- Erewhon — Samuel Butler ([Project Gutenberg](https://www.gutenberg.org/ebooks/1906))
