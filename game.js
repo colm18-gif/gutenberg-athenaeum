@@ -525,8 +525,8 @@
     function preparePerformanceZone(name,test,isNeeded){const group=new THREE.Group();group.name='deferred-'+name;for(const object of [...scene.children]){if(object!==camera&&test(object))group.add(object)}performanceZones[name]={group,isNeeded,active:false};return group}
     function registerPerformanceZoneObjects(name,existing){const zone=performanceZones[name];if(!zone)return;for(const object of [...scene.children]){if(!existing.has(object)){zone.group.add(object);rememberLights(object)}}scene.add(zone.group);zone.active=true}
     // The two public wings are staged independently, so the central hall is the only large room drawn at entry.
-    preparePerformanceZone('westWing',object=>object.position.x<-19&&object.position.x>=-37.5&&object.position.z>-15&&object.position.z<11,()=>player.pos.x<-11&&player.pos.x>-43);
-    preparePerformanceZone('eastWing',object=>object.position.x>19&&object.position.x<=37.5&&object.position.z>-15&&object.position.z<11,()=>player.pos.x>11&&player.pos.x<43);
+    preparePerformanceZone('westWing',object=>object.position.x<-19&&object.position.x>=-37.5&&object.position.z>-15&&object.position.z<11,()=>player.pos.x<19.5&&player.pos.x>-43);
+    preparePerformanceZone('eastWing',object=>object.position.x>19&&object.position.x<=37.5&&object.position.z>-15&&object.position.z<11,()=>player.pos.x>-19.5&&player.pos.x<43);
     preparePerformanceZone('night',object=>object.position.x<-75,()=>player.pos.x<-75);
     preparePerformanceZone('memory',object=>object.position.x>55&&object.position.z<-8,()=>player.pos.x>55);
     preparePerformanceZone('theme',object=>object.position.x>58&&object.position.z>0,()=>player.pos.x>58&&player.pos.z>-3);
