@@ -37,6 +37,21 @@ test('librarian and Quill can physically guide a visitor',()=>{
   assert.match(game,/looks directly at you/);
 });
 
+test('Quill only meows after direct interaction',()=>{
+  const catUpdate=game.match(/function updateCat\([\s\S]*?function updateLibrarian/)?.[0]||'';
+  assert.doesNotMatch(catUpdate,/meow\(\)/);
+  assert.match(game,/function petCat\([\s\S]*?meow\(\)/);
+});
+
+test('neglected rooms progressively disorder their books',()=>{
+  assert.match(game,/function curatedShelf\(ids,x,z,rot=0,neglect=0\)/);
+  assert.match(game,/fallen=neglect>=2/);
+  assert.match(game,/quiet[^;]*,0,1\)/);
+  assert.match(game,/unread[^;]*,0,2\)/);
+  assert.match(game,/function repositoryRack[\s\S]*fallen=i>=7/);
+  assert.match(game,/if\(fallen\)bm\.position\.y=\.14/);
+});
+
 test('held books stay fully visible above world geometry',()=>{
   assert.match(game,/function setHeldBookRendering/);
   assert.match(game,/material\.depthTest=false/);
