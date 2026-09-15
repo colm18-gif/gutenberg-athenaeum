@@ -12,6 +12,7 @@ terms can be checked before public release.
 | `secret-door.ogg` | `tanweraman-old-door-sound-night-time-505140.mp3` |
 | `cat-meow.ogg` | `dragon-studio-cat-meow-401729.mp3` |
 | `machine-flap.ogg` | `split-flap-display-announcement-pragotron-solariboard-barcelona-airport-crooner.mp3` |
+| `train-rumble-distant.ogg` | `vadim_makes_sound-underground-subway-station-distant-train-rumble-1-546578.mp3` |
 
 Processing: trimmed to the useful action, mono, high-pass filtered where
 appropriate, loudness normalised, faded at clip boundaries, and encoded as Opus
