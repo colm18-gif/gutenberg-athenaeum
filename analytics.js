@@ -1,6 +1,5 @@
-// Paste the site-specific script URL from Plausible's Site Installation screen.
-// An empty URL keeps all third-party analytics disabled until the owner opts in.
-const PLAUSIBLE_SCRIPT_URL = '';
+// Site-specific URL supplied by the owner from Plausible's installation screen.
+const PLAUSIBLE_SCRIPT_URL = 'https://plausible.io/js/pa-nD_g44fQQBbeVFD1ofS4k.js';
 
 (() => {
   const enabled = /^https:\/\/plausible\.io\/js\/pa-[A-Za-z0-9_-]+\.js$/.test(PLAUSIBLE_SCRIPT_URL)
@@ -9,6 +8,14 @@ const PLAUSIBLE_SCRIPT_URL = '';
     window.libraryAnalytics = { track() {} };
     return;
   }
+  // Plausible's current snippet initializes its command queue before loading the script.
+  window.plausible = window.plausible || function () {
+    (window.plausible.q = window.plausible.q || []).push(arguments);
+  };
+  window.plausible.init = window.plausible.init || function (options) {
+    window.plausible.o = options || {};
+  };
+  window.plausible.init();
   const script = document.createElement('script');
   script.async = true;
   script.src = PLAUSIBLE_SCRIPT_URL;

@@ -6,11 +6,10 @@ The site is static HTML/CSS/JavaScript with Three.js loaded when the visitor ent
 
 ## Activate
 
-1. Add `libraryafterdark.space` in your Plausible account, if you choose to use it. This may require a paid subscription; no purchase was made here.
-2. From Plausible's Settings → General → Tracking → Site installation, copy the **site-specific** script URL from its snippet. Set `PLAUSIBLE_SCRIPT_URL` in `analytics.js` to that `https://plausible.io/js/pa-....js` URL. Do not use an account token. Until then, no Plausible request or analytics event is sent. Tracking is restricted to the exact production hostname (not localhost or file previews).
-3. Verify the snippet with Plausible's installation tester and a live pageview, then enter the library and verify an event request in the browser network panel. Register custom event goals for the event names below in Plausible if you want them reported as conversions. Define `room` as a custom property if you want room breakdowns.
-4. Review the site's privacy notice before activating a third-party provider. Plausible custom events count toward billable usage, so monitor volume and costs.
-5. Publish the tested commit from this copy to the GitHub repository or apply the changes to the existing checkout, after checking that its `main` has not advanced. Verify the domain and event requests after publishing. Do not force-push.
+1. The owner supplied the site-specific Plausible URL and initialization snippet; both are now configured in `analytics.js`. No account token or payment details were used. Tracking is restricted to the exact production hostname (not localhost or file previews).
+2. Before publishing, review the site's privacy notice for the third-party analytics connection. Plausible custom events count toward billable usage, so monitor volume and costs.
+3. Publish the tested commit from this copy to the GitHub repository or apply the changes to the existing checkout, after checking that its `main` has not advanced. Do not force-push.
+4. Verify the snippet with Plausible's installation tester and a live pageview, then enter the library and verify an event request in the browser network panel. Register custom event goals for the event names below in Plausible if you want them reported as conversions. Define `room` as a custom property if you want room breakdowns.
 
 ## Measurement definitions
 

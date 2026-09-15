@@ -10,7 +10,7 @@ function run(url, hostname) {
     window: { plausible: (...args) => events.push(args) },
     document: { createElement: () => ({}), head: { appendChild: el => appended.push(el) } }
   };
-  vm.runInNewContext(source.replace("const PLAUSIBLE_SCRIPT_URL = '';", `const PLAUSIBLE_SCRIPT_URL = '${url}';`), context);
+  vm.runInNewContext(source.replace(/const PLAUSIBLE_SCRIPT_URL = '[^']*';/, `const PLAUSIBLE_SCRIPT_URL = '${url}';`), context);
   return { context, appended, events };
 }
 
@@ -24,6 +24,7 @@ const preview = run('https://plausible.io/js/pa-TEST123.js', 'localhost');
 assert.equal(preview.appended.length, 0);
 const active = run('https://plausible.io/js/pa-TEST123.js', 'libraryafterdark.space');
 assert.equal(active.appended.length, 1);
+assert.equal(typeof active.context.window.plausible.init, 'function');
 active.context.window.libraryAnalytics.track('Library Entered'); // Before script load, drop it.
 assert.equal(active.events.length, 0);
 active.appended[0].onload();
