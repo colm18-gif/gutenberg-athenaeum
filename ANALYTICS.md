@@ -7,7 +7,7 @@ The site is static HTML/CSS/JavaScript with Three.js loaded when the visitor ent
 ## Activate
 
 1. The owner supplied the site-specific Plausible URL and initialization snippet; both are now configured in `analytics.js`. No account token or payment details were used. Tracking is restricted to the exact production hostname (not localhost or file previews).
-2. Before publishing, review the site's privacy notice for the third-party analytics connection. Plausible custom events count toward billable usage, so monitor volume and costs.
+2. A concise Plausible disclosure was added in the settings panel. Review it alongside any separate site privacy notice before publishing. Plausible custom events count toward billable usage, so monitor volume and costs.
 3. Publish the tested commit from this copy to the GitHub repository or apply the changes to the existing checkout, after checking that its `main` has not advanced. Do not force-push.
 4. Verify the snippet with Plausible's installation tester and a live pageview, then enter the library and verify an event request in the browser network panel. Register custom event goals for the event names below in Plausible if you want them reported as conversions. Define `room` as a custom property if you want room breakdowns.
 
@@ -19,4 +19,4 @@ No patron/support/checkout/purchase interface exists in this checkout, so no com
 
 Suggested 90-day weekly view: pageviews/unique visitors → Library Entered → Room Explored → Book Picked Up → Book Opened → Reading Started → Engaged 5 Minutes; compare week-over-week once the tracker is active. These are event counts, not necessarily a unique-person funnel without Plausible goal conversion reports. Record the activation date so pre-activation days are not misread as zero activity.
 
-Rollback: revert the analytics commit or restore the clean baseline `ddc63aa`. The original checkout remains untouched.
+Rollback: revert the analytics commits, returning to the current pre-analytics site commit `6a1e1c3`. The earlier baseline `ddc63aa` remains available, but reverting all the way to it would also remove six unrelated site improvements. The original checkout remains untouched.
