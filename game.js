@@ -500,7 +500,7 @@
     const themeRoomKeys=new Set(['gothic','inquiry','chart','drawing','study','garden']);
     const themeArrivals={gothic:'The Gothic Parlour receives you by candlelight.',inquiry:'The Inquiry Room files you neatly among its clues.',chart:'The Chart Room smells faintly of salt and old maps.',drawing:'The Drawing Room offers you a chair, mid-argument.',study:'The Philosopher’s Study closes its door on the noise outside.',garden:'The Garden of Verses opens onto a path that wasn’t there before.',contested:'The Contested Shelf holds every book someone once tried to ban.',mainhall:'The library receives you back into familiar lamplight.'};
     const contestedPlaster=new THREE.MeshStandardMaterial({color:0x3a1620,roughness:.87,map:masonryTex,bumpMap:masonryTex,bumpScale:.07});
-    memoryDoor(-4,20,'contested',[170,0,14],Math.PI,'A door bound in banned pages','Every library has one door like this.');
+    memoryDoor(56.5,-2,'contested',[170,0,14],-Math.PI/2,'A door bound in banned pages','Beyond the restricted catalogue, another shelf waits for the books it tried to hide.');
     // Each Reading Room's whole identity lives in one entry here: wall colour/roughness, rug colour, sign text, its ten books, its reading chair, its light, a themed wall painting (art) and a themed prop (see themeProp). Adding or restyling a room means editing this table, not six separate call sites.
     const themeRoomDefs=[
       {key:'gothic',wall:[0x2a2530,.92],rug:0x241b2c,sign:['THE GOTHIC PARLOUR','Every shadow here has already read the book.',.06],books:[84,345,43,175,768,1260,3268,174,41,209],chair:{title:'A high-backed reading chair',author:'The candlelight makes every shadow move first.',categories:['Gothic','Uncanny','Ghosts','Strange']},light:[0x6a5a8a,13],art:['#1c1420','#5a4a7a'],prop:{kind:'candelabra',title:'A three-branched candelabra',desc:'The wax has pooled here longer than anyone currently living.'}},
@@ -525,7 +525,7 @@
     chair(contested.cx,contested.cz+3,Math.PI,{title:'A chair meant for uncomfortable reading',author:'Every book here argued its way into being burned, banned, or both.',categories:['Contested']});
     memoryRoomLight(contested,0x8a3030,13);
     const motes=particles(90,[contested.w-2,4.5,contested.d-2],0xcbb98a,.03);motes.position.set(contested.cx,.2,contested.cz);
-    memoryDoor(contested.cx,20,'mainhall',[-4,0,17],Math.PI,'The door back to the library','Familiar lamplight glows beyond it.');
+    memoryDoor(contested.cx,20,'mainhall',[53,0,-2],-Math.PI/2,'The door back to the library','The Restricted Catalogue glows beyond it.');
     const group=new THREE.Group();for(const object of [...scene.children]){if(!existing.has(object)){group.add(object);rememberLights(object)}}scene.add(group);performanceZones.contested={group,isNeeded:()=>Math.abs(player.pos.x-170)<16&&Math.abs(player.pos.z-14)<14,active:true}}
 
     // Keep distant environments out of the render tree until the visitor reaches them.
