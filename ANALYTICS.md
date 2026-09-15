@@ -1,15 +1,15 @@
 # First analytics layer — Library After Dark
 
-Baseline: clean `main` at `ddc63aa` in the existing checkout. This separate copy was used for all changes. No live files, accounts, payment details or credentials were changed.
+Baseline: clean `main` at `ddc63aa` in the existing checkout. This separate copy was used for all changes. No account, payment details or credentials were changed. The analytics commits were rebased onto the newer pre-analytics site commit `6a1e1c3` and published to GitHub `main` on 15 September 2026. The live homepage and tracker file were verified as serving the new code.
 
-The site is static HTML/CSS/JavaScript with Three.js loaded when the visitor enters. `CNAME` points to `libraryafterdark.space`; the Git remote is `colm18-gif/gutenberg-athenaeum`. Hosting appears consistent with GitHub Pages, but the publishing source and live response were not verified.
+The site is static HTML/CSS/JavaScript with Three.js loaded when the visitor enters. `CNAME` points to `libraryafterdark.space`; the Git remote is `colm18-gif/gutenberg-athenaeum`. The live site responded with a GitHub.com server header, consistent with GitHub Pages.
 
 ## Activate
 
 1. The owner supplied the site-specific Plausible URL and initialization snippet; both are now configured in `analytics.js`. No account token or payment details were used. Tracking is restricted to the exact production hostname (not localhost or file previews).
 2. A concise Plausible disclosure was added in the settings panel. Review it alongside any separate site privacy notice before publishing. Plausible custom events count toward billable usage, so monitor volume and costs.
-3. Publish the tested commit from this copy to the GitHub repository or apply the changes to the existing checkout, after checking that its `main` has not advanced. Do not force-push.
-4. Verify the snippet with Plausible's installation tester and a live pageview, then enter the library and verify an event request in the browser network panel. Register custom event goals for the event names below in Plausible if you want them reported as conversions. Define `room` as a custom property if you want room breakdowns.
+3. GitHub deployment is complete. Verify the snippet with Plausible's installation tester and a live pageview, then enter the library and verify an event request in the browser network panel. Dashboard ingestion was not independently confirmed.
+4. Register custom event goals for the event names below in Plausible if you want them reported as conversions. Define `room` as a custom property if you want room breakdowns.
 
 ## Measurement definitions
 
