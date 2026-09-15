@@ -27,7 +27,8 @@ const PLAUSIBLE_SCRIPT_URL = 'https://plausible.io/js/pa-nD_g44fQQBbeVFD1ofS4k.j
       // Only fixed event names and finite, non-personal room labels are accepted.
       const allowed = ['Library Entered', 'Room Explored', 'Book Picked Up', 'Book Opened',
         'Reading Started', 'Book Returned', 'Secret Discovered', 'Librarian Talked To',
-        'Cat Petted', 'Rabbit Door Entered', 'Engaged 5 Minutes', 'Engaged 10 Minutes'];
+        'Cat Petted', 'Rabbit Door Entered', 'Engaged 5 Minutes', 'Engaged 10 Minutes',
+        'Support Box Opened', 'Stripe Support Opened'];
       if (!allowed.includes(name)) return;
       const rooms = ['main-library', 'upper-floor', 'roof-garden', 'west-wing', 'east-wing',
         'restricted-stacks', 'below-catalogue', 'portrait-room', 'tunnel', 'archive',
