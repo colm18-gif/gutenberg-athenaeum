@@ -44,9 +44,9 @@
   <div id="bookActions" class="hidden"><div class="meta"><strong></strong><em></em></div><button class="primary" id="openBook">Open book</button><button class="ghost" id="askLibrarian">Ask the librarian</button><button class="ghost" id="leaveBook">Leave at desk</button><button class="ghost" id="returnBook">Return</button></div>
   <div id="reader" class="comfort hidden">
     <div class="book-spread">
-      <header class="reader-head"><div><h2 id="readerTitle"></h2><p id="readerAuthor"></p></div><button class="iconbtn" id="closeReader" aria-label="Close reader">×</button></header>
+      <header class="reader-head"><div><h2 id="readerTitle"></h2><p id="readerAuthor"></p><a id="readerSource" class="reader-source hidden" target="_blank" rel="noopener noreferrer"></a></div><button class="iconbtn" id="closeReader" aria-label="Close reader">×</button></header>
       <main class="pages"><article class="page left"><div class="chapter" id="chapter">A Gutenberg edition</div><div id="pageLeft"></div></article><article class="page right"><div class="chapter">continued</div><div id="pageRight"></div></article></main>
-      <footer class="reader-foot"><button id="prevPage" aria-label="Previous page">←</button><button id="nextPage" aria-label="Next page">→</button><button id="fontDown" aria-label="Decrease font size">A−</button><button id="fontUp" aria-label="Increase font size">A+</button><button id="bookmark" class="bookmark" aria-label="Bookmark page">⌑</button><button id="modeToggle" class="mode-toggle">Immersive mode</button><button id="finishReading">Done</button><div class="progress"><i id="readerProgress"></i></div><span class="page-count" id="readerPage">1 / 1</span><span class="percent" id="readerPercent">0%</span></footer>
+      <footer class="reader-foot"><button id="prevPage" aria-label="Previous page">←</button><button id="nextPage" aria-label="Next page">→</button><button id="fontDown" aria-label="Decrease font size">A−</button><button id="fontUp" aria-label="Increase font size">A+</button><button id="bookmark" class="bookmark" aria-label="Bookmark page">⌑</button><button id="modeToggle" class="mode-toggle">Immersive mode</button><a id="listenBook" class="ghost listen-book hidden" target="_blank" rel="noopener noreferrer">Listen</a><button id="finishReading">Done</button><div class="progress"><i id="readerProgress"></i></div><span class="page-count" id="readerPage">1 / 1</span><span class="percent" id="readerPercent">0%</span></footer>
       <div id="readerAside" aria-live="polite"></div>
       <div id="readerFlicker"></div>
     </div>
@@ -65,7 +65,7 @@
     enter.addEventListener('click',async()=>{
       if(loading)return;
       loading=true;window.__ATHENAEUM_ENTERED__=true;enter.disabled=true;enter.textContent='Opening…';if(intro)intro.textContent='Lighting lamps and waking the shelves…';
-      try{await loadScript('https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js');await loadScript('held-book-fix.js');await loadScript('content.js');await loadScript('progress.js');await loadScript('game.js')}
+      try{await loadScript('https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js');await loadScript('held-book-fix.js');await loadScript('content.js');await loadScript('data/open-access-catalog.js');await loadScript('progress.js');await loadScript('game.js')}
       catch(error){loading=false;enter.disabled=false;enter.textContent='Try again';if(intro)intro.textContent='The door stuck. Check your connection and try once more.';console.error(error)}
     });
   })();
