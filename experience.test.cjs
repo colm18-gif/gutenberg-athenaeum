@@ -36,3 +36,13 @@ test('librarian and Quill can physically guide a visitor',()=>{
   assert.match(game,/catGuideTarget\?1\.45/);
   assert.match(game,/looks directly at you/);
 });
+
+test('held books stay fully visible above world geometry',()=>{
+  assert.match(game,/function setHeldBookRendering/);
+  assert.match(game,/material\.depthTest=false/);
+  assert.match(game,/material\.depthWrite=false/);
+  assert.match(game,/renderOrder=1000/);
+  assert.match(game,/new THREE\.Vector3\(sway,-\.075\+bob,-1\.95\)/);
+  assert.match(game,/new THREE\.Vector3\(\.98,\.98,\.98\)/);
+  assert.doesNotMatch(html,/loadScript\('held-book-fix\.js'\)/);
+});
