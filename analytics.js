@@ -19,19 +19,22 @@ const PLAUSIBLE_SCRIPT_URL = 'https://plausible.io/js/pa-nD_g44fQQBbeVFD1ofS4k.j
   const script = document.createElement('script');
   script.async = true;
   script.src = PLAUSIBLE_SCRIPT_URL;
-  script.onload = () => { ready = true; };
-  script.onerror = () => { ready = false; };
-  let ready = false;
   window.libraryAnalytics = {
     track(name, props) {
-      if (!ready || typeof window.plausible !== 'function') return;
+      // The site's entry button may be used before the async tracker loads.
+      // Plausible's documented command queue preserves that first event.
+      if (typeof window.plausible !== 'function') return;
       // Only fixed event names and finite, non-personal room labels are accepted.
       const allowed = ['Library Entered', 'Room Explored', 'Book Picked Up', 'Book Opened',
         'Reading Started', 'Book Returned', 'Secret Discovered', 'Librarian Talked To',
         'Cat Petted', 'Rabbit Door Entered', 'Engaged 5 Minutes', 'Engaged 10 Minutes'];
       if (!allowed.includes(name)) return;
+      const rooms = ['main-library', 'upper-floor', 'roof-garden', 'west-wing', 'east-wing',
+        'restricted-stacks', 'below-catalogue', 'portrait-room', 'tunnel', 'archive',
+        'rabbit-room', 'returning', 'quiet', 'unread', 'repository', 'gothic', 'inquiry',
+        'chart', 'drawing', 'study', 'garden', 'contested'];
       if (name === 'Room Explored' && typeof props?.room === 'string'
-        && /^[a-z-]{1,32}$/.test(props.room)) window.plausible(name, { props: { room: props.room } });
+        && rooms.includes(props.room)) window.plausible(name, { props: { room: props.room } });
       else if (name !== 'Room Explored') window.plausible(name);
     }
   };

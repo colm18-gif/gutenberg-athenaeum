@@ -8,8 +8,8 @@ The site is static HTML/CSS/JavaScript with Three.js loaded when the visitor ent
 
 1. The owner supplied the site-specific Plausible URL and initialization snippet; both are now configured in `analytics.js`. No account token or payment details were used. Tracking is restricted to the exact production hostname (not localhost or file previews).
 2. A concise Plausible disclosure was added in the settings panel. Review it alongside any separate site privacy notice before publishing. Plausible custom events count toward billable usage, so monitor volume and costs.
-3. GitHub deployment is complete. Verify the snippet with Plausible's installation tester and a live pageview, then enter the library and verify an event request in the browser network panel. Dashboard ingestion was not independently confirmed.
-4. Register custom event goals for the event names below in Plausible if you want them reported as conversions. Define `room` as a custom property if you want room breakdowns.
+3. GitHub deployment is complete. On 15 September 2026 the owner's Plausible dashboard showed pageviews and ingested `Library Entered`, `Room Explored`, `Librarian Talked To`, and `Secret Discovered` goals. This verifies both the pageview tracker and live custom-event ingestion; it does not prove every less-frequent interaction has occurred yet.
+4. The 12 library event goals are registered in Plausible. Define `room` as a custom property if you want room breakdowns. The tracker now queues early clicks before its async script finishes loading and accepts only the fixed room labels used by the current game.
 
 ## Measurement definitions
 
