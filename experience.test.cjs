@@ -71,4 +71,14 @@ test('Jules Verne has a concealed author-only voyages room',()=>{
   assert.match(game,/function verneRoomDetails/);
   assert.match(game,/A model of the Nautilus/);
   assert.match(game,/memoryDoor\(170,39,'mainhall'/);
+  for(const id of [164,103,4552,1268,18857,46597,1842,16457,10339,3808])assert.match(game,new RegExp(`\\[${id},[^\\n]+Jules Verne`));
+  assert.match(game,/An old engraving of impossible voyages/);
+  assert.match(game,/nineteenth-century steel engraving/);
+});
+
+test('reading-room seats face their shelves and benches use Gothic upholstery',()=>{
+  assert.match(game,/chair\(room\.cx,room\.cz\+3,0,Object\.assign/);
+  assert.match(game,/chair\(contested\.cx,contested\.cz\+3,0,/);
+  assert.match(game,/options\.model\|\|'sofa'/);
+  assert.doesNotMatch(game,/bench\([^;\n]*model:'paintedSofa'/);
 });
