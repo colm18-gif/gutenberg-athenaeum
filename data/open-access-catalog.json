@@ -1,0 +1,14 @@
+{
+  "sources": {
+    "standard-ebooks": {"name":"Standard Ebooks","role":"Polished public-domain editions for the principal reading rooms","homepage":"https://standardebooks.org/feeds","defaultRoom":"drawing"},
+    "wikisource": {"name":"Wikisource","role":"Poetry, plays, translations and unusual historical texts","homepage":"https://wikisource.org/wiki/Wikisource:WS_Export","defaultRoom":"garden"},
+    "internet-archive": {"name":"Internet Archive","role":"Forgotten editions, pamphlets, scans and obscure curiosities","homepage":"https://archive.org/developers/metadata.html","defaultRoom":"unread"},
+    "open-library": {"name":"Open Library","role":"Edition metadata, identifiers and locally cached cover discovery","homepage":"https://openlibrary.org/developers/api","defaultRoom":"mainhall"},
+    "doab-oapen": {"name":"DOAB / OAPEN","role":"Peer-reviewed open-access scholarship and literary history","homepage":"https://www.doabooks.org/","defaultRoom":"study"},
+    "librivox": {"name":"LibriVox","role":"Public-domain recordings discovered beside their printed editions","homepage":"https://librivox.org/pages/public-domain/","defaultRoom":"gothic"}
+  },
+  "books": [],
+  "enrichments": {
+    "345": {"audioSource":"LibriVox","audioPageUrl":"https://librivox.org/dracula-by-bram-stoker/","audioLabel":"Hear a public-domain recording at LibriVox"}
+  }
+}
