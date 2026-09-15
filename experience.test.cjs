@@ -61,3 +61,14 @@ test('held books stay fully visible above world geometry',()=>{
   assert.match(game,/new THREE\.Vector3\(\.98,\.98,\.98\)/);
   assert.doesNotMatch(html,/loadScript\('held-book-fix\.js'\)/);
 });
+
+test('Jules Verne has a concealed author-only voyages room',()=>{
+  assert.match(game,/function vernePortalTexture/);
+  assert.match(game,/destination:'verne',spawn:\[170,0,46\]/);
+  assert.match(game,/key:'verne',cx:170,cz:46/);
+  assert.match(game,/themeRoomKeys=new Set\([^\n]*'verne'/);
+  assert.match(game,/def\.books=books\.filter\(book=>book\.author==='Jules Verne'\)/);
+  assert.match(game,/function verneRoomDetails/);
+  assert.match(game,/A model of the Nautilus/);
+  assert.match(game,/memoryDoor\(170,39,'mainhall'/);
+});
