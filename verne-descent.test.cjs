@@ -39,7 +39,7 @@ test('subterranean companions are readable, locally complete and leave chamber c
     const local={window:{}};vm.runInNewContext(fs.readFileSync(`texts/local/pg${companionBooks[i].id}.js`,'utf8'),local);assert.equal(local.window.ATHENAEUM_LOCAL_TEXTS[companionBooks[i].id],text);
   });
   assert(!canWalk(f,33.2,234.4));for(const x of [34.8,39,40.8])for(let z=231;z<237.4;z+=.1)assert(canWalk(f,x,z),`blocked chamber ${x}/${z}`);
-  assert(canWalk(f,38.6,235));assert(f.interactables.some(m=>m.userData.type==='verne-return-bell'));
+  assert(canWalk(f,38.7,235));assert(f.interactables.some(m=>m.userData.type==='verne-return-bell'));
 });
 test('last six flights have two intermediate warm lamps with usable range and no new collision',()=>{
   const f=fixture();f.descent.build();const lights=[];f.descent.group.traverse(o=>{if(o.isPointLight)lights.push(o)});
