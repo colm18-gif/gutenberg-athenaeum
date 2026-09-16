@@ -894,6 +894,38 @@ box(.45,.12,.45,MAT.paper,-27,1.72,-3,false);cylinder(.22,.18,.35,16,new THREE.M
       window.addEventListener('blur',()=>{moveId=null;lookId=null;touchSprint=false;stickReset()});
     })();
 
+    // Additive descent integration: all existing navigation and interaction handlers remain fallbacks.
+    const expeditionBook={...books.find(b=>b.id===18857),id:3748,title:'Journey to the Centre of the Earth',category:'Journey',progress:loadSavedProgress(3748),textPath:'texts/pg3748.txt',textUrl:'https://www.gutenberg.org/cache/epub/3748/pg3748.txt',sourceUrl:'https://www.gutenberg.org/ebooks/3748'};
+    const verneDescent=window.createVerneDescent({THREE,scene,MAT,collider,colliders,interactables,canvasTexture,wrapText,player,camera,book:expeditionBook,performanceZones,rememberLights});
+    const libraryFloorHeight=floorHeight;
+    floorHeight=function(x,z){return verneDescent.floorAt(x,z)??libraryFloorHeight(x,z)};
+    const libraryAllowed=allowed;
+    allowed=function(x,z,y=floorHeight(x,z)){
+      if(!verneDescent.contains(x,z))return libraryAllowed(x,z,y);
+      const r=player.radius,floorY=floorHeight(x,z);
+      for(const [dx,dz] of [[r,0],[-r,0],[0,r],[0,-r],[r*.707,r*.707],[-r*.707,r*.707],[r*.707,-r*.707],[-r*.707,-r*.707]]){
+        const sx=x+dx,sz=z+dz;
+        if(!verneDescent.contains(sx,sz)&&!(sx>19&&sx<37&&sz>-14&&sz<10))return false;
+      }
+      for(const c of colliders){if(c.inactive||floorY<c.minY||floorY>c.maxY)continue;if(x+r>c.minX&&x-r<c.maxX&&z+r>c.minZ&&z-r<c.maxZ)return false}
+      return true;
+    };
+    const libraryInteract=interact;
+    interact=function(){if(focus&&!selected&&verneDescent.interact(focus)){sound(85,.65,'triangle',.1);return}return libraryInteract()};
+    const libraryFocus=updateFocus;
+    updateFocus=function(dt){libraryFocus(dt);if(focus&&verneDescent.contains(player.pos.x,player.pos.z)){const wp=new THREE.Vector3();focus.getWorldPosition(wp);raycaster.setFromCamera(new THREE.Vector2(0,0),camera);if(!verneDescent.clearLine(raycaster,focus,wp.distanceTo(camera.position))){focus=null;ui.prompt.style.opacity=0;ui.reticle.classList.remove('active')}}};
+    const libraryAmbientEvent=triggerAmbientEvent;
+    triggerAmbientEvent=function(){if(verneDescent.contains(player.pos.x,player.pos.z)&&player.pos.y<-.5){nextAmbientAt=performance.now()+65000+Math.random()*50000;sound(48,2,'sine',.025);return}return libraryAmbientEvent()};
+    const libraryWorldUpdate=updateWorld,fillLights=scene.children.filter(l=>l.isAmbientLight).map(l=>({light:l,intensity:l.intensity}));
+    updateWorld=function(t,dt){
+      libraryWorldUpdate(t,dt);
+      const depth=verneDescent.update(t,dt,reducedMotion,sound);
+      ambient.intensity*=1-depth*.92;moon.intensity*=1-depth;
+      for(const {light,intensity} of fillLights)light.intensity=intensity*(1-depth*.93);
+      readerLantern.intensity=selected?5.2:5.2*(1-depth*.92);
+      if(depth>0){scene.background.lerp(new THREE.Color(0x080b09),depth);scene.fog.color.copy(scene.background);scene.fog.density=Math.max(scene.fog.density,.038*depth);if(noiseGain)noiseGain.gain.setTargetAtTime((weather==='CLEAR'?.05:weather==='STORM'?.42:.28)*(1-depth*.98),audioCtx.currentTime,.4);if(fireCrackleGain)fireCrackleGain.gain.setTargetAtTime(.003,audioCtx.currentTime,.3)}
+      else if(noiseGain)noiseGain.gain.setTargetAtTime(weather==='CLEAR'?.05:weather==='STORM'?.42:.28,audioCtx.currentTime,.4);
+    };
     animate();
   })();
 
