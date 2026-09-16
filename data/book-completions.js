@@ -18,6 +18,19 @@ window.ATHENAEUM_EXTRA_NOTES={
   651:'A ghost visits, and the practical difficulties of haunting receive rather more attention than their dignity can bear. Carroll is excellent at giving the impossible everyday manners. These poems are for anyone who has suspected that even a spectre might have office regulations.',
   4763:'Carroll turns reasoning into a game of arrangements and consequences. It is a small invitation to examine how a conclusion was reached, rather than how confidently it was announced. Keep a pencil nearby; the library will forgive you for arguing with the page.',
   29042:'Ten knots of story conceal mathematical puzzles, inviting the reader to untangle them rather than merely admire the string. Carroll keeps the playfulness and the work close together. Do not hurry to the answers: getting pleasantly lost is part of the design.'
+,
+  711:'Quatermain goes looking for distance from grief and finds another hidden kingdom, with all the beauty and violence such discoveries usually conceal. Read it after King Solomon’s Mines, but notice how the supposed blank spaces on the map are already full of politics, loyalties, and lives.',
+  5228:'Nearly twenty years after She, Holly and Leo follow dreams and fragments toward a second encounter with Ayesha. The geography moves from Africa toward Asia, while the old question remains: whether immortality preserves love or merely gives obsession more time.',
+  6769:'A ruined inheritance sends Leonard Outram toward a people hidden in mist and a treasure guarded by religion, danger, and appetite. The novel is an elaborate lost-world mechanism; keep a critical eye on the imperial assumptions that power its adventures.',
+  1207:'Haggard builds this tragedy around Umslopogaas, Nada, and the violent world of Chaka’s reign. Unlike many of his expedition tales, its principal cast is African. The narration is romantic and deeply of its period, but the doomed loyalties carry real force.',
+  2769:'Presented as a translation of ancient papyri, this Cleopatra is the confession of a priest sent to overthrow a queen and undone by divided purpose. Haggard’s Egypt is theatrical rather than archaeological; the false manuscript is part of the pleasure.',
+  2721:'A deliberately saga-shaped story of Icelandic love, sorcery, feuds, and doom. The language reaches backward toward oral epic, and the plot accepts tragedy as a road already marked. Read it beside the colder stones in the room.',
+  5746:'A drug carries Allan Quatermain and Lady Ragnall into lives imagined in ancient Egypt. The book joins adventure to reincarnation and recurring memory, making history feel less like a line than a room one can accidentally re-enter.',
+  2841:'Quatermain is summoned into another conflict shaped by prophecy, an enormous elephant, and rival sacred orders. The racial language and colonial assumptions require a firm critical lamp; the supernatural adventure shows both the reach and limits of its era.',
+  1690:'A younger Allan Quatermain remembers Marie Marais against the upheaval of the Great Trek. Romance and historical adventure share the road, though the history is filtered through a strongly partisan colonial imagination. Consult another account before mistaking fiction for a map.',
+  126:'Professor Challenger seals a small company into an oxygenated room while the world appears to die outside. Doyle turns cosmic catastrophe into a locked-room observation, proving that his taste for evidence and inference was never confined to Baker Street.',
+  439:'Doyle argues for spiritualism with the same appetite for evidence that animates his detective fiction, though not with the same standards every reader will accept. This is useful precisely because it complicates the neat division between Holmesian reason and belief.',
+  1638:'A physician and famous creator of a rational detective recounts his movement from skepticism toward spiritualism. Read it as a record of Doyle’s convictions, not a solved case: the most revealing clues concern the investigator himself.'
 };
 window.ATHENAEUM_COVER_DESIGNS={
   900001:['#263b32','#c8b77e','tree'],900002:['#2d3150','#d1bd87','planet'],900003:['#43314b','#d5bc82','tower'],900004:['#263b47','#d1c39b','ship'],900005:['#3d3030','#c9b17f','moon'],900006:['#384034','#d4c18d','tower'],
@@ -25,6 +38,9 @@ window.ATHENAEUM_COVER_DESIGNS={
   51568:['#34313e','#c5b28b','tower'],64930:['#422b36','#c8af83','moon'],79291:['#28413f','#d7bd87','compass'],23608:['#58362d','#d3b784','mountain'],23515:['#393b31','#cbb68b','moon'],68753:['#263c44','#c6b987','compass'],64031:['#343449','#c7ba94','planet'],29272:['#3f3040','#c9b18c','planet'],19553:['#36372a','#d6bf85','compass'],
   1268:['#29453c','#d1bc85','island'],18857:['#433c2b','#d4bc82','mountain'],46597:['#24434b','#d8c294','ship'],1842:['#49312d','#d8bc85','compass'],16457:['#282d49','#d0c09a','planet'],10339:['#2c4249','#cbd3c0','ship'],3808:['#34454a','#d5bd82','airship'],2147:['#362b3b','#cbb18a','moon'],
   13:['#354039','#d4c294','ship'],651:['#44334b','#d6be91','moon'],4763:['#303f46','#dbc496','scales'],29042:['#344a41','#d9c18f','knot'],139:['#3c4430','#d3bd85','mountain'],3155:['#513833','#d5b684','tower'],2166:['#3c402c','#d9bf86','mountain'],1951:['#36344a','#cec297','planet'],1906:['#3b4233','#cfc391','tower']
+,
+  711:['#3d3a27','#d2bb7f','mountain'],5228:['#472f38','#d5b887','tower'],6769:['#334137','#c9b681','mountain'],1207:['#4b3029','#d8bd89','flower'],2769:['#263a45','#d6bb7d','tower'],2721:['#303d48','#d2c397','mountain'],5746:['#3f3428','#d8be82','scales'],2841:['#3b3d2b','#d7c28d','compass'],1690:['#51362f','#d9bf91','flower'],
+  126:['#293b46','#d3c498','planet'],439:['#3b3148','#d3bc8d','moon'],1638:['#303b43','#d8c79b','scales']
 };
 // Vector-like ornament drawn into the established canvas cover system, not remote images.
 window.drawAthenaeumCoverEmblem=function(c,w,h,motif){

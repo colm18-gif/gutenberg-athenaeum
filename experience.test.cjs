@@ -84,6 +84,24 @@ test('Jules Verne has a concealed author-only voyages room',()=>{
   assert.match(game,/nineteenth-century steel engraving/);
 });
 
+test('Haggard and Conan Doyle have concealed author rooms with distinct period entrances',()=>{
+  assert.match(game,/function haggardPortalTexture/);
+  assert.match(game,/action:'TRACE ROUTE'/);
+  assert.match(game,/function hiddenEvidenceCase/);
+  assert.match(game,/action:'ALIGN CLUES'/);
+  assert.match(game,/destination:'haggard',spawn:\[108,0,68\]/);
+  assert.match(game,/destination:'doyle',spawn:\[138,0,68\]/);
+  assert.match(game,/key:'haggard',cx:108,cz:72/);
+  assert.match(game,/key:'doyle',cx:138,cz:72/);
+  assert.match(game,/authorRooms=\{verne:'Jules Verne',haggard:'H\. Rider Haggard',doyle:'Arthur Conan Doyle'\}/);
+  assert.match(game,/function haggardRoomDetails/);
+  assert.match(game,/function doyleRoomDetails/);
+  assert.match(game,/memoryDoor\(108,63,'mainhall'/);
+  assert.match(game,/memoryDoor\(138,63,'mainhall'/);
+  for(const id of [3155,2166,711,5228,6769,1207,2769,2721,5746,2841])assert.match(game,new RegExp('\\\\['+id+',[^\\\\n]+H\\\\. Rider Haggard'));
+  for(const id of [1661,244,2097,221,2852,834,139,126,439,1638])assert.match(game,new RegExp('\\\\['+id+',[^\\\\n]+Arthur Conan Doyle'));
+});
+
 test('reading-room seats face their shelves and benches use Gothic upholstery',()=>{
   assert.match(game,/chair\(room\.cx,room\.cz\+3,0,Object\.assign/);
   assert.match(game,/chair\(contested\.cx,contested\.cz\+3,0,/);
