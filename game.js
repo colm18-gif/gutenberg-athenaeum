@@ -167,6 +167,7 @@
     [13,'The Hunting of the Snark','Lewis Carroll','Wonder',60],[651,'Phantasmagoria and Other Poems','Lewis Carroll','Wonder',35],[4763,'The Game of Logic','Lewis Carroll','Wonder',30],[29042,'A Tangled Tale','Lewis Carroll','Wonder',30],
       [139,'The Lost World','Arthur Conan Doyle','Adventure',70],[3155,'She','H. Rider Haggard','Adventure',55],[2166,"King Solomon's Mines",'H. Rider Haggard','Adventure',65],[1951,'The Coming Race','Edward Bulwer-Lytton','Adventure',30],[1906,'Erewhon','Samuel Butler','Adventure',40]
 ].map((b,i)=>({id:b[0],title:b[1],author:b[2],category:b[3],fame:b[4],source:'Project Gutenberg',sourceUrl:`https://www.gutenberg.org/ebooks/${b[0]}`,licence:'Public Domain',textUrl:`https://www.gutenberg.org/cache/epub/${b[0]}/pg${b[0]}.txt`,progress:loadSavedProgress(b[0]),index:i}));
+    for(const record of window.ATHENAEUM_RAILWAY_BOOKS||[])if(!books.some(b=>b.id===record.id))books.push({...record,source:'Project Gutenberg',sourceUrl:`https://www.gutenberg.org/ebooks/${record.id}`,licence:'Public Domain',textUrl:`https://www.gutenberg.org/cache/epub/${record.id}/pg${record.id}.txt`,progress:loadSavedProgress(record.id),index:books.length});
     const openAccessSources=window.ATHENAEUM_OPEN_ACCESS_SOURCES||{},openAccessBooks=window.ATHENAEUM_OPEN_ACCESS_BOOKS||[],bookEnrichments=window.ATHENAEUM_BOOK_ENRICHMENTS||{};
     for(const record of openAccessBooks){const source=openAccessSources[record.source]||{};books.push(Object.assign({},record,{sourceKey:record.source,source:source.name||record.source,progress:loadSavedProgress(record.id),index:books.length}))}
     for(const book of books)Object.assign(book,bookEnrichments[book.id]||{});
@@ -938,6 +939,29 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       if(depth>0){scene.background.lerp(new THREE.Color(0x080b09),depth);scene.fog.color.copy(scene.background);scene.fog.density=Math.max(scene.fog.density,.038*depth);if(noiseGain)noiseGain.gain.setTargetAtTime((weather==='CLEAR'?.05:weather==='STORM'?.42:.28)*(1-depth*.98),audioCtx.currentTime,.4);if(fireCrackleGain)fireCrackleGain.gain.setTargetAtTime(.003,audioCtx.currentTime,.3)}
       else if(noiseGain)noiseGain.gain.setTargetAtTime(weather==='CLEAR'?.05:weather==='STORM'?.42:.28,audioCtx.currentTime,.4);
     };
+    const nightRailway=window.createNightTrain({THREE,scene,MAT,player,collider,colliders,interactables,canvasTexture,wrapText,coverTexture,
+      books:[1874,27924,614,51568,1268,1906].map(id=>books.find(b=>b.id===id)),performanceZones,rememberLights,
+      move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null},
+      notice:showNotice,home:()=>{resetPosition();sound(880,.9,'sine',.12);showNotice('The conductor’s bell answers from the entrance clock. Your return ticket is still valid.',6)}
+    });
+    const originalMemoryVisibility=performanceZones.memory.isNeeded;performanceZones.memory.isNeeded=()=>player.pos.x<190&&originalMemoryVisibility();
+    const preRailAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return nightRailway.zoneAt(x,z)?nightRailway.allowed(x,z):preRailAllowed(x,z,y)};
+    const preRailInteract=interact;interact=function(){if(focus&&!selected&&nightRailway.interact(focus)){sound(180,.3,'triangle',.07);return}return preRailInteract()};
+    const preRailReset=resetPosition;resetPosition=function(){nightRailway.cancel();return preRailReset()};
+    const preRailFocus=updateFocus;updateFocus=function(dt){preRailFocus(dt);if(focus&&nightRailway.zoneAt(player.pos.x,player.pos.z)){const wp=new THREE.Vector3();focus.getWorldPosition(wp);raycaster.setFromCamera(new THREE.Vector2(0,0),camera);if(!nightRailway.clearLine(raycaster,focus,wp.distanceTo(camera.position))){focus=null;ui.prompt.style.opacity=0;ui.reticle.classList.remove('active')}}};
+    const preRailAmbient=triggerAmbientEvent;triggerAmbientEvent=function(){if(nightRailway.zoneAt(player.pos.x,player.pos.z)){nextAmbientAt=performance.now()+90000;return}return preRailAmbient()};
+    const preRailWorld=updateWorld;updateWorld=function(t,dt){preRailWorld(t,dt);const active=started&&!settingsOpen&&!chatOpen&&!supportOpen&&ui.pause.classList.contains('hidden')&&ui.journal.classList.contains('hidden');if(nightRailway.update(t,dt,reducedMotion,active,sound)){const depot=nightRailway.zoneAt(player.pos.x,player.pos.z)?.key==='depot';scene.background.setHex(0x111a22);scene.fog.color.copy(scene.background);scene.fog.density=depot?.018:.045;ambient.intensity=depot?.8:.22;moon.intensity=0;if(noiseGain)noiseGain.gain.setTargetAtTime(.015,audioCtx.currentTime,.3);if(fireCrackleGain)fireCrackleGain.gain.setTargetAtTime(.002,audioCtx.currentTime,.3)}};
+    // Keep travelling while the 2D reader covers the world, but pause with menus or a hidden tab.
+    // The existing rumble asset gets a separate lazy pool, so ambient train passes remain untouched.
+    const preRailCovered=worldIsCovered;let lastRailTick=performance.now(),rideAudio=null,ridePlaying=false;
+    worldIsCovered=function(){const now=performance.now(),dt=Math.min(.05,Math.max(0,(now-lastRailTick)/1000));lastRailTick=now;const covered=preRailCovered(),paused=document.hidden||settingsOpen||chatOpen||supportOpen||!ui.pause.classList.contains('hidden')||!ui.journal.classList.contains('hidden');
+      if(covered&&!paused&&started&&!ui.reader.classList.contains('hidden')&&nightRailway.travelling)nightRailway.update(clock.elapsedTime,dt,reducedMotion,true,sound);
+      const moving=started&&!paused&&!muted&&nightRailway.travelling&&nightRailway.zoneAt(player.pos.x,player.pos.z)?.key==='carriage';
+      if(moving&&!rideAudio){rideAudio=new Audio('assets/audio/train-rumble-distant.ogg');rideAudio.loop=true;rideAudio.playsInline=true;samplePools.set('nightRideRumble',{pool:[rideAudio],index:0})}
+      if(rideAudio){rideAudio.muted=muted;rideAudio.volume=clamp(.12*(soundLevel/.13),0,1);if(moving&&!ridePlaying){ridePlaying=true;const attempt=rideAudio.play();if(attempt?.catch)attempt.catch(()=>{})}else if(!moving&&ridePlaying){rideAudio.pause();ridePlaying=false;if(!nightRailway.travelling)rideAudio.currentTime=0}}
+      return covered;
+    };
+    document.addEventListener('visibilitychange',()=>{if(document.hidden&&rideAudio){rideAudio.pause();ridePlaying=false}});
     animate();
   })();
 
