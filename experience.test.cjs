@@ -75,7 +75,8 @@ test('Jules Verne has a concealed author-only voyages room',()=>{
   assert.match(game,/destination:'verne',spawn:\[170,0,42\]/);
   assert.match(game,/key:'verne',cx:170,cz:46/);
   assert.match(game,/themeRoomKeys=new Set\([^\n]*'verne'/);
-  assert.match(game,/def\.books=books\.filter\(book=>book\.author==='Jules Verne'\)/);
+  assert.match(game,/authorRooms=\{verne:'Jules Verne'/);
+  assert.match(game,/def\.books=books\.filter\(book=>book\.author===authorRooms\[def\.key\]\)/);
   assert.match(game,/function verneRoomDetails/);
   assert.match(game,/A model of the Nautilus/);
   assert.match(game,/memoryDoor\(170,39,'mainhall'/);
@@ -87,8 +88,13 @@ test('Jules Verne has a concealed author-only voyages room',()=>{
 test('Haggard and Conan Doyle have concealed author rooms with distinct period entrances',()=>{
   assert.match(game,/function haggardPortalTexture/);
   assert.match(game,/action:'TRACE ROUTE'/);
+  assert.match(game,/image:'assets\/painting-haggard-lost-kingdom\.jpg'/);
   assert.match(game,/function hiddenEvidenceCase/);
   assert.match(game,/action:'ALIGN CLUES'/);
+  assert.match(game,/hiddenEvidenceCase\(23\.5,4,-13\.65,0,/);
+  assert.doesNotMatch(game,/hiddenEvidenceCase\(36\.65,4,-1,/);
+  assert.match(game,/image:'assets\/painting-doyle-consulting-room\.jpg'/);
+  for(const asset of ['assets/painting-haggard-lost-kingdom.jpg','assets/painting-doyle-consulting-room.jpg'])assert(fs.statSync(asset).size>100000,`${asset} should be a detailed oil painting`);
   assert.match(game,/destination:'haggard',spawn:\[108,0,68\]/);
   assert.match(game,/destination:'doyle',spawn:\[138,0,68\]/);
   assert.match(game,/key:'haggard',cx:108,cz:72/);
@@ -98,8 +104,13 @@ test('Haggard and Conan Doyle have concealed author rooms with distinct period e
   assert.match(game,/function doyleRoomDetails/);
   assert.match(game,/memoryDoor\(108,63,'mainhall'/);
   assert.match(game,/memoryDoor\(138,63,'mainhall'/);
-  for(const id of [3155,2166,711,5228,6769,1207,2769,2721,5746,2841])assert.match(game,new RegExp('\\\\['+id+',[^\\\\n]+H\\\\. Rider Haggard'));
-  for(const id of [1661,244,2097,221,2852,834,139,126,439,1638])assert.match(game,new RegExp('\\\\['+id+',[^\\\\n]+Arthur Conan Doyle'));
+  for(const id of [3155,2166,711,5228,6769,1207,2769,2721,5746,2841])assert.match(game,new RegExp('\\['+id+',[^\\r\\n]*H\\. Rider Haggard'));
+  for(const id of [1661,244,2097,221,2852,834,139,126,439,1638])assert.match(game,new RegExp('\\['+id+',[^\\r\\n]*Arthur Conan Doyle'));
+});
+
+test('hidden doors preserve the configured arrival yaw',()=>{
+  assert.match(game,/const hp=\{progress:0,destination:opts\.destination,spawn:opts\.spawn,yaw:opts\.yaw,apply:p=>\{panel\.rotation\.y/);
+  assert.doesNotMatch(game,/yaw:opts\.y,/);
 });
 
 test('reading-room seats face their shelves and benches use Gothic upholstery',()=>{

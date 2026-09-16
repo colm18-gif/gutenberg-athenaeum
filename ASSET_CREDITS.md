@@ -14,3 +14,9 @@ All six models are released under [CC0 1.0 Universal](https://creativecommons.or
 | Window and constellation seats | Painted Wooden Sofa | Kuutti Siitonen | https://polyhaven.com/a/painted_wooden_sofa |
 
 Attribution is not legally required for CC0 assets, but is retained here to make provenance and future maintenance clear.
+
+## Hidden-room paintings and book covers
+
+The H. Rider Haggard lost-kingdom painting and Arthur Conan Doyle consulting-room painting were generated specifically for this project with OpenAI image generation and then locally optimized for the game.
+
+Scans used for the twelve newly added Haggard and Doyle covers are cached locally from the Open Library Covers API. Their Open Library cover identifiers are: 830243, 12640128, 8228482, 3064908, 1748730, 6477640, 2009278, 5815386, 5659856, 5788361, 9987819, and 9987794.
