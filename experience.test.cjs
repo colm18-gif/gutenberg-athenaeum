@@ -64,7 +64,7 @@ test('held books stay fully visible above world geometry',()=>{
 
 test('Jules Verne has a concealed author-only voyages room',()=>{
   assert.match(game,/function vernePortalTexture/);
-  assert.match(game,/destination:'verne',spawn:\[170,0,46\]/);
+  assert.match(game,/destination:'verne',spawn:\[170,0,42\]/);
   assert.match(game,/key:'verne',cx:170,cz:46/);
   assert.match(game,/themeRoomKeys=new Set\([^\n]*'verne'/);
   assert.match(game,/def\.books=books\.filter\(book=>book\.author==='Jules Verne'\)/);
