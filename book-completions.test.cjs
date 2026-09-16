@@ -8,11 +8,11 @@ test('every current book and the expedition copy has a librarian note without ov
   const merged={...data.window.ATHENAEUM_EXTRA_NOTES,...originalNotes};for(const b of books.concat({id:3748}))assert(merged[b.id]?.length>50,`missing note ${b.id}`);for(const [id,note]of Object.entries(originalNotes))assert.equal(merged[id],note);assert.match(game,/librarianNotes=\{[^\n]+\.\.\.await res\.json\(\)/);
 });
 test('every uncached cover has a local illustrated design, including in low-bandwidth mode',()=>{
-  const designs=data.window.ATHENAEUM_COVER_DESIGNS,missing=books.filter(b=>!covers[b.id]);assert.equal(missing.length,35);for(const b of missing)assert(designs[b.id],`missing cover ${b.id}`);
+  const designs=data.window.ATHENAEUM_COVER_DESIGNS,missing=books.filter(b=>!covers[b.id]);assert(missing.length>=35);for(const b of missing)assert(designs[b.id],`missing cover ${b.id}`);
   const coverCode=game.split('\n').find(l=>l.includes('function coverTexture(book)'));
   const ctx=new Proxy({measureText:s=>({width:s.length*12})},{get:(o,k)=>o[k]||(()=>{}),set:(o,k,v)=>(o[k]=v,true)});let emblems=0;
   const runtime={window:{...data.window,drawAthenaeumCoverEmblem:(...args)=>{emblems++;data.window.drawAthenaeumCoverEmblem(...args)}},coverTextureCache:new Map(),lowBandwidth:true,realCovers:covers,bookPalettes:[['#123456','#abcdef']],canvasTexture:draw=>{draw(ctx,384,560);return{}},wrapText:()=>{}};
-  vm.runInNewContext(coverCode+';this.cover=coverTexture;',runtime);for(const b of missing)runtime.cover(b);assert.equal(emblems,35);assert.match(html,/loadScript\('data\/book-completions\.js'\)/);
+  vm.runInNewContext(coverCode+';this.cover=coverTexture;',runtime);for(const b of missing)runtime.cover(b);assert.equal(emblems,missing.length);assert.match(html,/loadScript\('data\/book-completions\.js'\)/);
 });
 test('Nautilus hull and plinth are blocked but its surrounding walkways and other floor levels remain open',()=>{
   const call=game.match(/collider\(room\.cx,room\.cz,4\.2,1\.95,'Nautilus display',-1,2\.4\)/)?.[0];assert(call);

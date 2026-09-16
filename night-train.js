@@ -57,8 +57,9 @@
         const drawer=control(depot,'drawer-'+i,'A catalogue drawer',themes[i]+' — a relationship, rather than a ranking.','READ NOTE',x,1.5,-28.6,2.4,.4,.4);drawer.userData.note=books[i].depotNote;
         for(let j=0;j<4;j++){box(depot,1.1,.65,.9,MAT.wood2,x-1.1+j%2*2.2,.325+Math.floor(j/2)*.7,-31.6,true)}lamp(depot,x,3.5,-26);
       }
-      // Familiar but overlooked companions travel here without disappearing from their old shelves.
-      for(let i=3;i<books.length;i++){const x=251+(i-3)*4;box(depot,2,.9,1.8,MAT.wood2,x,.45,-15,true);volume(depot,books[i],x,1.12,-15)}
+      // New acquisitions and familiar overlooked companions share two browsable rows without replacing their old shelves.
+      label(depot,'OTHER PRESSES · UNCOMMON ROUTES',260,2.5,-21.2,7,.55);
+      for(let i=3;i<books.length;i++){const n=i-3,row=Math.floor(n/6),x=251+(n%6)*4,z=-18.5+row*5;box(depot,2,.9,1.8,MAT.wood2,x,.45,z,true);volume(depot,books[i],x,1.12,z);if(books[i].depotNote){const card=control(depot,'card-'+i,'A librarian’s depot card',books[i].source||'Open-access acquisition','READ NOTE',x+.72,1.18,z+.45,.34,.18,.28);card.userData.note=books[i].depotNote}}
       box(depot,3.2,1,1.8,MAT.darkWood,268,.5,-10,true);control(depot,'depot-home','A conductor’s return bell','One note will carry you back beneath the library clock.','RING · RETURN TO LIBRARY',268,1.35,-10);
       control(depot,'reboard','The waiting night train','The reading carriage remains yours for as long as you need it.','BOARD READING CARRIAGE',260,1.9,-6.1,1.5,3,.12);lamp(depot,260,3,-10,true);lamp(depot,260,3,-20,true);lamp(depot,251,3,-15,true);lamp(depot,268,3,-15,true);label(depot,'RETURNS · NO DEADLINE',268,2,-9.9,3,.6,Math.PI);
       depot.add(new THREE.AmbientLight(0xffd4a1,2.6));
@@ -74,7 +75,7 @@
       else if(key==='depart'){if(!travelling&&!arrived){travelling=true;elapsed=0;controls.depart.userData.action='UNDER WAY';controls.alight.userData.author='The doors will open at the collections depot.';notice('The wheels begin to turn. Read, watch the windows, or settle into the worn seat to arrive sooner.',8)}else notice(arrived?'You have reached the depot. The carriage door opens onto it.':'The depot lies ahead. The reading seat offers a shorter journey.',5)}
       else if(key==='settle'){if(!arrived){travelling=true;elapsed=Math.max(elapsed,58);notice('You settle into the seat. The rhythm softens; a station lamp appears.',4)}else notice('The train waits here without a timetable. Take your time with a book.',5)}
       else if(key==='alight'){if(travelling)notice('The train is moving. Settle into the reading seat if you would like to arrive sooner.',5);else if(arrived){move(260,-9,0);notice('Crates, catalogue drawers, and books held for another reader. Nothing here is arranged by popularity.',8)}else move(213,-20,-Math.PI/2)}
-      else if(key.startsWith('drawer-'))notice(object.userData.note,12);
+      else if(key.startsWith('drawer-')||key.startsWith('card-'))notice(object.userData.note,12);
       sync();return true;
     }
     function allowed(x,z){const r=player.radius;if(!zoneAt(x-r,z-r)||!zoneAt(x+r,z+r))return false;return !colliders.some(c=>!c.inactive&&0>=c.minY&&0<=c.maxY&&x+r>c.minX&&x-r<c.maxX&&z+r>c.minZ&&z-r<c.maxZ)}

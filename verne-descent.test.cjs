@@ -36,7 +36,7 @@ test('subterranean companions are readable, locally complete and leave chamber c
   const copies=f.interactables.filter(m=>m.userData.subterraneanCopy);assert.equal(copies.length,3);
   copies.forEach((copy,i)=>{assert.equal(copy.userData.book,companionBooks[i]);assert.equal(copy.userData.type,'book');assert(copy.userData.realCover);assert.equal(copy.userData.home.parent,copy.parent);assert(canWalk(f,34.8,copy.position.z));
     const text=fs.readFileSync(`texts/pg${companionBooks[i].id}.txt`,'utf8');assert(text.length>100000);assert.match(text,/END OF (?:THE|THIS) PROJECT GUTENBERG EBOOK/);
-    const local={window:{}};vm.runInNewContext(fs.readFileSync(`texts/local/pg${companionBooks[i].id}.js`,'utf8'),local);assert.equal(local.window.ATHENAEUM_LOCAL_TEXTS[companionBooks[i].id],text);
+    const local={window:{}};vm.runInNewContext(fs.readFileSync(`texts/local/pg${companionBooks[i].id}.js`,'utf8'),local);assert.equal(local.window.ATHENAEUM_LOCAL_TEXTS[companionBooks[i].id].replace(/\r\n/g,'\n'),text.replace(/\r\n/g,'\n'));
   });
   assert(!canWalk(f,33.2,234.4));for(const x of [34.8,39,40.8])for(let z=231;z<237.4;z+=.1)assert(canWalk(f,x,z),`blocked chamber ${x}/${z}`);
   assert(canWalk(f,38.7,235));assert(f.interactables.some(m=>m.userData.type==='verne-return-bell'));

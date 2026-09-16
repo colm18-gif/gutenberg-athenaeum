@@ -10,6 +10,14 @@ Railway rooms and geometry are built once, on discovery. Only the occupied railw
 - Charles Dickens and collaborators, *Mugby Junction*, [Project Gutenberg 27924](https://www.gutenberg.org/ebooks/27924). Transcribed by Les Bowler. Includes stories by Andrew Halliday, Charles Collins, Hesba Stretton and Amelia Edwards, as credited in the edition.
 - Robert Louis Stevenson, *Across the Plains, with Other Memories and Essays*, [Project Gutenberg 614](https://www.gutenberg.org/ebooks/614). Produced by David Price and Margaret Price.
 
+## Depot acquisitions from other collections
+
+- Richard Jefferies, *After London*, and David Lindsay, *A Voyage to Arcturus* — locally readable CC0 editions from Standard Ebooks.
+- Lord Dunsany, *The Book of Wonder*, and F. Marion Crawford, *The Upper Berth* — locally cached public-domain transcriptions from Wikisource.
+- Sabine Baring-Gould, *The Book of Were-Wolves*, and John Kendrick Bangs, *Ghosts I Have Met and Some Others* — public-domain scans and OCR from the Internet Archive.
+
+These six uncommon works have source-imprinted local cover designs, individual depot cards, and longer librarian notes. Their catalogue records retain the exact edition source and rights link. The depot now displays fourteen readable volumes across three relationship tables and two acquisition rows; it still exposes no searchable global catalogue.
+
 The downloaded editions retain their Gutenberg credits and licence notices. Each has both a plain-text edition and the existing offline JavaScript loading format, plus original local cover artwork and librarian notes. Existing books appear as additional depot copies; no original shelves, notes, discoveries or books are removed.
 
 ## Checks
