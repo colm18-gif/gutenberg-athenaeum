@@ -79,7 +79,7 @@ test('Jules Verne has a concealed author-only voyages room',()=>{
   assert.match(game,/def\.books=books\.filter\(book=>book\.author===authorRooms\[def\.key\]\)/);
   assert.match(game,/function verneRoomDetails/);
   assert.match(game,/A model of the Nautilus/);
-  assert.match(game,/memoryDoor\(170,39,'mainhall'/);
+  assert.match(game,/memoryDoor\(170,55,'mainhall'/);
   for(const id of [164,103,4552,1268,18857,46597,1842,16457,10339,3808])assert.match(game,new RegExp(`\\[${id},[^\\n]+Jules Verne`));
   assert.match(game,/An old engraving of impossible voyages/);
   assert.match(game,/nineteenth-century steel engraving/);
@@ -102,8 +102,8 @@ test('Haggard and Conan Doyle have concealed author rooms with distinct period e
   assert.match(game,/authorRooms=\{verne:'Jules Verne',haggard:'H\. Rider Haggard',doyle:'Arthur Conan Doyle'\}/);
   assert.match(game,/function haggardRoomDetails/);
   assert.match(game,/function doyleRoomDetails/);
-  assert.match(game,/memoryDoor\(108,63,'mainhall'/);
-  assert.match(game,/memoryDoor\(138,63,'mainhall'/);
+  assert.match(game,/memoryDoor\(108,81,'mainhall'/);
+  assert.match(game,/memoryDoor\(138,81,'mainhall'/);
   for(const id of [3155,2166,711,5228,6769,1207,2769,2721,5746,2841])assert.match(game,new RegExp('\\['+id+',[^\\r\\n]*H\\. Rider Haggard'));
   for(const id of [1661,244,2097,221,2852,834,139,126,439,1638])assert.match(game,new RegExp('\\['+id+',[^\\r\\n]*Arthur Conan Doyle'));
 });
@@ -111,6 +111,20 @@ test('Haggard and Conan Doyle have concealed author rooms with distinct period e
 test('hidden doors preserve the configured arrival yaw',()=>{
   assert.match(game,/const hp=\{progress:0,destination:opts\.destination,spawn:opts\.spawn,yaw:opts\.yaw,apply:p=>\{panel\.rotation\.y/);
   assert.doesNotMatch(game,/yaw:opts\.y,/);
+});
+
+test('themed-room exits face clear south walls and return beside their discoveries',()=>{
+  assert.match(game,/function memoryDoor\([^\n]+rot=0\)[^\n]+group\.rotation\.y=rot/);
+  const exits=[
+    ['gothic',95,22,0,-27],['inquiry',120,22,14,-27],['chart',145,22,-33,9],
+    ['drawing',95,54,-33,-8],['study',120,54,30,-10.5],['garden',145,54,33,-9],
+    ['verne',170,55,34.5,5],['haggard',108,81,-34.5,5],['doyle',138,81,23.5,-10.5]
+  ];
+  for(const [name,x,z,sx,sz] of exits){
+    assert.match(game,new RegExp(`memoryDoor\\(${x},${z},'mainhall',\\[${sx},0,${sz}\\][^;]+Math\\.PI/2\\)`),`${name} exit should be aligned with its south wall`);
+  }
+  for(const oldCall of ["memoryDoor(95,20,'mainhall'","memoryDoor(95,40,'mainhall'","memoryDoor(170,39,'mainhall'","memoryDoor(108,63,'mainhall'","memoryDoor(138,63,'mainhall'"])assert.doesNotMatch(game,new RegExp(oldCall.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+  assert.match(game,/memoryDoor\(138,81,'mainhall',\[23\.5,0,-10\.5\]/);
 });
 
 test('reading-room seats face their shelves and benches use Gothic upholstery',()=>{
