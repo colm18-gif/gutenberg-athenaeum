@@ -29,6 +29,14 @@ test('books warm their editions without presenting a catalogue',()=>{
   assert.doesNotMatch(html,/id="(?:catalogue|catalog|bookSearch|searchBooks)"/i);
 });
 
+test('leave at desk persists a central-stand copy and has a working control',()=>{
+  assert.match(game,/let deskBooks=new Set\(\)/);
+  assert.match(game,/localStorage\.setItem\('athenaeum-desk-books'/);
+  assert.match(game,/function leaveSelectedAtDesk\(\)/);
+  assert.match(game,/deskBooks\.has\(id\)\|\|b\.progress>\.02/);
+  assert.match(game,/\$\('#leaveBook'\)\.addEventListener\('click',leaveSelectedAtDesk\)/);
+});
+
 test('librarian and Quill can physically guide a visitor',()=>{
   assert.match(game,/function guideLibrarian/);
   assert.match(game,/librarianGuideTarget/);
