@@ -35,7 +35,7 @@
     region(32,42,230,238,-57.6);
     function lamp(parent,x,y,z,stage,final=false){
       box(parent,.15,.32,.15,glow,x,y,z,false);box(parent,.25,.05,.25,MAT.brass,x,y-.2,z,false);
-      const light=new THREE.PointLight(0xffb367,final?34:Math.max(3,10-stage*.6),final?10:6,1.7);light.position.set(x,y,z);parent.add(light);lamps.push(light);
+      const light=new THREE.PointLight(0xffb367,final?34:Math.max(6,10-stage*.35),final?10:8,1.7);light.position.set(x,y,z);parent.add(light);lamps.push(light);
     }
     function build(){
       if(built)return;built=true;
@@ -68,6 +68,12 @@
           for(const [a,b] of [[32,ox-2],[ox+2,42]])if(b>a)box(parent,b-a,3.8,.4,mat,(a+b)/2,ly+1.5,ez);
         }
         lamp(parent,x-1.7,y+1.8,z+1,i);lamp(parent,37,ly+2.3,lz,i+2);
+        // Lower rock-cut flights need intermediate lanterns, not just lights at their ends.
+        // Keep fixtures outside the walking envelope and register lights for distance culling.
+        if(i>=6){
+          lamp(parent,x+1.7,y+1.8-5*4.8/14,z+5,i);
+          lamp(parent,x-1.7,y+1.8-10*4.8/14,z+10,i);
+        }
         const px=41.4;
         if(i%3===0){const plank=box(parent,.45,.13,2,MAT.darkWood,px,ly+.2,lz,false);plank.rotation.x=.3;box(parent,.45,.8,.3,MAT.wood2,px,ly+.4,lz-.8,false);box(parent,.7,.12,.8,MAT.wood,px-.3,ly+.07,lz+.4,false)}
         if(i%3===1){box(parent,.8,.65,.9,MAT.wood2,px-.1,ly+.325,lz,false);for(let j=0;j<3;j++){const sample=new THREE.Mesh(new THREE.IcosahedronGeometry(.17+j*.025,0),j%2?MAT.brass:damp);sample.position.set(px-.2,ly+.78,lz-.3+j*.3);parent.add(sample)}}

@@ -30,3 +30,7 @@ test('brass bell fades and returns once, blocks repeated ringing and reuses its 
   assert.equal(returns,1);assert.equal(f.player.pos.z,24);assert(!f.descent.returning);assert.equal(fades.at(-1),0);assert(fades.includes(1));assert.equal(f.interactables.length,count);
   f.descent.interact(bell);for(let i=0;i<20;i++)f.descent.update(i*.02,.02,true,()=>{});assert.equal(returns,2);assert(!f.descent.returning);
 });
+test('last six flights have two intermediate warm lamps with usable range and no new collision',()=>{
+  const f=fixture();f.descent.build();const lights=[];f.descent.group.traverse(o=>{if(o.isPointLight)lights.push(o)});
+for(let i=6;i<12;i++){const x=i%2?40:34,z=14+i*18;for(const offset of [5,10]){const light=lights.find(l=>l.position.z===z+offset&&Math.abs(Math.abs(l.position.x-x)-1.7)<.001);assert(light,`missing lower-flight lamp ${i}/${offset}`);assert(light.intensity>=6);assert(light.distance>=8);assert(canWalk(f,x,z+offset));}}
+});
