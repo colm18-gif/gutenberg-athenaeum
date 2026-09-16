@@ -1,10 +1,10 @@
 /* An additive, uncatalogued discovery. No existing rooms or book records are replaced. */
 (()=>{
   'use strict';
-  window.createVerneDescent=function({THREE,scene,MAT,collider,colliders,interactables,canvasTexture,wrapText,player,camera,book,performanceZones,rememberLights}){
+  window.createVerneDescent=function({THREE,scene,MAT,collider,colliders,interactables,canvasTexture,wrapText,player,camera,book,performanceZones,rememberLights,onReturn=()=>{},onFade=()=>{},onBell=()=>{}}){
     const regions=[],segments=[],drops=[],lamps=[],solidMeshes=[];
     const group=new THREE.Group();group.name='uncatalogued-verne-descent';
-    let built=false,opened=false,doorAngle=0,nextDrip=0;
+    let built=false,opened=false,doorAngle=0,nextDrip=0,returnTime=null,returned=false,returnBell=null;
     const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
     const rock=new THREE.MeshStandardMaterial({color:0x363832,roughness:1,flatShading:true});
     const damp=new THREE.MeshStandardMaterial({color:0x24352e,roughness:.23,metalness:.08});
@@ -82,6 +82,11 @@
       for(const x of [31.75,42.25])box(chamber,.5,3.8,8,rock,x,y+1.5,234);box(chamber,10,3.8,.5,rock,37,y+1.5,238.25);
       box(chamber,2.4,.2,1.5,MAT.darkWood,37,y+1.05,235);box(chamber,.6,1,.6,MAT.wood2,37,y+.5,235);collider(37,235,2.4,1.5,'Verne lectern',y-.5,y+2);
       lamp(chamber,37,y+2.4,235,0,true);
+      // A desk bell, not a menu exit: the expedition's quiet way back to the shelves.
+      box(chamber,.5,.06,.5,MAT.darkWood,37.9,y+1.18,235,false);
+      returnBell=new THREE.Mesh(new THREE.CylinderGeometry(.16,.24,.23,16),MAT.brass);returnBell.position.set(37.9,y+1.325,235);chamber.add(returnBell);
+      const button=new THREE.Mesh(new THREE.SphereGeometry(.055,8,6),MAT.brass);button.position.set(0,.15,0);returnBell.add(button);
+      returnBell.userData={type:'verne-return-bell',title:'A small brass bell',author:'For those who have gone far enough. Its note belongs upstairs.',action:'RING · RETURN TO LIBRARY'};interactables.push(returnBell);
       const cover=canvasTexture((c,w,h)=>{c.fillStyle='#333b2d';c.fillRect(0,0,w,h);c.strokeStyle='#c0a276';c.lineWidth=4;c.strokeRect(24,24,w-48,h-48);c.fillStyle='#c0a276';c.textAlign='center';c.font='18px Georgia';c.fillText('FIELD LIBRARY · ICELAND',w/2,68);c.font='bold 33px Georgia';wrapText(c,'Journey to the Centre of the Earth',w/2,132,w-65,42);for(let i=0;i<6;i++){c.beginPath();c.moveTo(45,310+i*20);c.lineTo(130,290+i*19);c.lineTo(215,320+i*18);c.lineTo(w-45,302+i*20);c.stroke()}c.beginPath();c.arc(w/2,402,35,0,7);c.moveTo(w/2,356);c.lineTo(w/2,448);c.stroke();c.font='italic 25px Georgia';c.fillText('Jules Verne',w/2,494);c.font='15px Georgia';c.fillText('EXPEDITION COPY · 1864',w/2,530)});
       const volume=box(chamber,1.25,1.65,.22,new THREE.MeshStandardMaterial({map:cover,roughness:.92}),37,y+1.22,235,false);volume.rotation.x=-Math.PI/2;
       // Keep the reader's single-material contract; side UVs sample plain cloth, not stretched titles.
@@ -90,9 +95,19 @@
       rememberLights(group);scene.add(group);
       performanceZones.verneDescent={group,isNeeded:()=>opened&&player.pos.x>29&&player.pos.x<45&&player.pos.z>5,active:true};
     }
-    function interact(object){if(object!==panel)return false;build();opened=!opened;doorCollider.inactive=opened;panel.userData.action=opened?'CLOSE':'OPEN';return true}
+    function interact(object){
+      if(object===returnBell&&returnBell){if(returnTime===null){returnTime=0;returned=false;onBell()}return true}
+      if(object!==panel)return false;build();opened=!opened;doorCollider.inactive=opened;panel.userData.action=opened?'CLOSE':'OPEN';return true
+    }
     function clearLine(ray,target,distance){const blockers=solidMeshes.filter(m=>{let p=m;while(p){if(!p.visible)return false;p=p.parent}return true});const first=ray.intersectObjects(blockers,false)[0];return !first||first.object===target||first.distance>=distance-.04}
     function update(t,dt,reduced,sound){
+      if(returnTime!==null){
+        returnTime+=dt;
+        const out=reduced?.12:.45,hold=.1,back=reduced?.12:.5;
+        onFade(returnTime<out?returnTime/out:clamp(1-(returnTime-out-hold)/back,0,1));
+        if(!returned&&returnTime>=out){returned=true;onReturn()}
+        if(returnTime>=out+hold+back){returnTime=null;onFade(0)}
+      }
       doorAngle=THREE.MathUtils.damp(doorAngle,opened?-Math.PI*.49:0,6,dt);pivot.rotation.y=doorAngle;
       const below=contains(player.pos.x,player.pos.z),depth=below?clamp(-player.pos.y/14,0,1):0;
       if(built){for(const s of segments)s.group.visible=below?Math.abs(player.pos.z-s.z)<30:opened&&s.z<30;
@@ -101,6 +116,6 @@
       }
       return depth;
     }
-    return {floorAt,contains,build,interact,update,clearLine,group,panel,regions,get built(){return built}};
+    return {floorAt,contains,build,interact,update,clearLine,group,panel,regions,get built(){return built},get returning(){return returnTime!==null}};
   };
 })();

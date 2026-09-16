@@ -896,7 +896,14 @@ box(.45,.12,.45,MAT.paper,-27,1.72,-3,false);cylinder(.22,.18,.35,16,new THREE.M
 
     // Additive descent integration: all existing navigation and interaction handlers remain fallbacks.
     const expeditionBook={...books.find(b=>b.id===18857),id:3748,title:'Journey to the Centre of the Earth',category:'Journey',progress:loadSavedProgress(3748),textPath:'texts/pg3748.txt',textUrl:'https://www.gutenberg.org/cache/epub/3748/pg3748.txt',sourceUrl:'https://www.gutenberg.org/ebooks/3748'};
-    const verneDescent=window.createVerneDescent({THREE,scene,MAT,collider,colliders,interactables,canvasTexture,wrapText,player,camera,book:expeditionBook,performanceZones,rememberLights});
+    const returnFade=document.createElement('div');returnFade.setAttribute('aria-hidden','true');returnFade.style.cssText='position:fixed;inset:0;background:#080604;opacity:0;pointer-events:none;z-index:22;';document.body.appendChild(returnFade);
+    const verneDescent=window.createVerneDescent({THREE,scene,MAT,collider,colliders,interactables,canvasTexture,wrapText,player,camera,book:expeditionBook,performanceZones,rememberLights,
+      onFade:opacity=>{returnFade.style.opacity=String(opacity)},
+      onBell:()=>{for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.vel.set(0,0,0);sound(880,1.2,'sine',.16);sound(1320,.85,'sine',.055)},
+      onReturn:()=>{resetPosition();showNotice('The bell answers from the entrance clock. You are back among the shelves.',5)}
+    });
+    const libraryGameActive=gameActive;
+    gameActive=function(){return !verneDescent.returning&&libraryGameActive()};
     const libraryFloorHeight=floorHeight;
     floorHeight=function(x,z){return verneDescent.floorAt(x,z)??libraryFloorHeight(x,z)};
     const libraryAllowed=allowed;
@@ -911,7 +918,7 @@ box(.45,.12,.45,MAT.paper,-27,1.72,-3,false);cylinder(.22,.18,.35,16,new THREE.M
       return true;
     };
     const libraryInteract=interact;
-    interact=function(){if(focus&&!selected&&verneDescent.interact(focus)){sound(85,.65,'triangle',.1);return}return libraryInteract()};
+    interact=function(){if(verneDescent.returning)return;if(focus&&!selected&&verneDescent.interact(focus)){if(focus.userData.type!=='verne-return-bell')sound(85,.65,'triangle',.1);return}return libraryInteract()};
     const libraryFocus=updateFocus;
     updateFocus=function(dt){libraryFocus(dt);if(focus&&verneDescent.contains(player.pos.x,player.pos.z)){const wp=new THREE.Vector3();focus.getWorldPosition(wp);raycaster.setFromCamera(new THREE.Vector2(0,0),camera);if(!verneDescent.clearLine(raycaster,focus,wp.distanceTo(camera.position))){focus=null;ui.prompt.style.opacity=0;ui.reticle.classList.remove('active')}}};
     const libraryAmbientEvent=triggerAmbientEvent;
