@@ -1,0 +1,37 @@
+/* Original cover designs and librarian marginalia. Existing artwork and notes take precedence. */
+window.ATHENAEUM_EXTRA_NOTES={
+  1268:'Five castaways make an island habitable with patience, ingenuity, and an alarming faith in practical science. The island has kept a few secrets of its own. I recommend it to anyone who suspects a mystery can be solved with a workshop as well as a detective.',
+  18857:'A scrap of old writing opens a route beneath the world. Verne gives curiosity a geological scale: every answer is another descent. There is a copy somewhere in this library whose proper shelf is a very long way below the others.',
+  3748:'You have already travelled through a little of this book before opening it. Now let the explorers take over: an old manuscript, an Icelandic volcano, and a professor who treats the impossible as a matter of preparation. The bell beside its resting place knows the shorter way home.',
+  46597:'A message recovered from the sea sends a rescue expedition around the globe. Its gaps matter almost as much as its words. Read it for the pleasure, and danger, of following evidence further than common sense would advise.',
+  1842:'A courier crosses a threatened empire with a message that must arrive. Here Verne exchanges wonderful machinery for the endurance of a traveller under pressure. I keep this one for readers who prefer a human heartbeat to the ticking of an invention.',
+  16457:'The moon is no longer merely a light through the window: it has become the destination of a very peculiar journey. The travellers bring their arguments with them, as travellers always do. I admire a book that makes empty space feel crowded with curiosity.',
+  10339:'Verne takes up the unfinished polar mystery left by Edgar Allan Poe and sends another ship toward its unanswered questions. The cold is not the only thing that deepens. A useful reminder that one book can be an expedition into another.',
+  3808:'Robur arrives with an answer to the problem of flight and very little patience for anyone who doubts it. The wonder of his machine does not make its inventor easy company. Read it beside the Nautilus and ask whether ingenuity is quite the same thing as wisdom.',
+  13:'A company of thoroughly unsuitable companions hunts something no one can explain satisfactorily. The nonsense has rules; the rules offer no protection. I advise enjoying the voyage without demanding that the destination justify it.',
+  651:'A ghost visits, and the practical difficulties of haunting receive rather more attention than their dignity can bear. Carroll is excellent at giving the impossible everyday manners. These poems are for anyone who has suspected that even a spectre might have office regulations.',
+  4763:'Carroll turns reasoning into a game of arrangements and consequences. It is a small invitation to examine how a conclusion was reached, rather than how confidently it was announced. Keep a pencil nearby; the library will forgive you for arguing with the page.',
+  29042:'Ten knots of story conceal mathematical puzzles, inviting the reader to untangle them rather than merely admire the string. Carroll keeps the playfulness and the work close together. Do not hurry to the answers: getting pleasantly lost is part of the design.'
+};
+window.ATHENAEUM_COVER_DESIGNS={
+  27827:['#482e37','#dec29a','flower'],1399:['#44283a','#d9b78c','flower'],73:['#54302b','#d9b78c','mountain'],82:['#283c49','#d9b78c','tower'],205:['#273d32','#d9c89a','tree'],208:['#493d46','#dbc7a3','flower'],360:['#443527','#cfb383','scales'],451:['#243b46','#d4bf91','ship'],1206:['#61452c','#dec49a','mountain'],
+  51568:['#34313e','#c5b28b','tower'],64930:['#422b36','#c8af83','moon'],79291:['#28413f','#d7bd87','compass'],23608:['#58362d','#d3b784','mountain'],23515:['#393b31','#cbb68b','moon'],68753:['#263c44','#c6b987','compass'],64031:['#343449','#c7ba94','planet'],29272:['#3f3040','#c9b18c','planet'],19553:['#36372a','#d6bf85','compass'],
+  1268:['#29453c','#d1bc85','island'],18857:['#433c2b','#d4bc82','mountain'],46597:['#24434b','#d8c294','ship'],1842:['#49312d','#d8bc85','compass'],16457:['#282d49','#d0c09a','planet'],10339:['#2c4249','#cbd3c0','ship'],3808:['#34454a','#d5bd82','airship'],2147:['#362b3b','#cbb18a','moon'],
+  13:['#354039','#d4c294','ship'],651:['#44334b','#d6be91','moon'],4763:['#303f46','#dbc496','scales'],29042:['#344a41','#d9c18f','knot'],139:['#3c4430','#d3bd85','mountain'],3155:['#513833','#d5b684','tower'],2166:['#3c402c','#d9bf86','mountain'],1951:['#36344a','#cec297','planet'],1906:['#3b4233','#cfc391','tower']
+};
+// Vector-like ornament drawn into the established canvas cover system, not remote images.
+window.drawAthenaeumCoverEmblem=function(c,w,h,motif){
+  c.save();c.translate(w/2,h*.70);c.lineWidth=3;c.globalAlpha=.8;
+  const line=(points)=>{c.beginPath();points.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.stroke()};
+  const circle=(x,y,r)=>{c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.stroke()};
+  if(motif==='ship'||motif==='island'){line([[-95,22],[-60,47],[60,47],[95,22],[-95,22]]);line([[0,22],[0,-85],[62,10],[0,10]]);line([[-8,-65],[-63,10],[-8,10]]);for(let i=0;i<3;i++)line([[-105,62+i*13],[-45,56+i*13],[20,63+i*13],[105,57+i*13]])}
+  else if(motif==='mountain'){line([[-108,54],[-42,-54],[4,15],[43,-83],[111,54],[-108,54]]);for(let i=0;i<3;i++)line([[-93,66+i*10],[-25,60+i*10],[45,68+i*10],[104,62+i*10]])}
+  else if(motif==='tower'){line([[-52,73],[-52,-50],[-66,-50],[-66,-72],[-36,-72],[-36,-55],[-12,-55],[-12,-72],[12,-72],[12,-55],[36,-55],[36,-72],[66,-72],[66,-50],[52,-50],[52,73],[-52,73]]);line([[-13,73],[-13,30],[13,30],[13,73]]);circle(0,-10,13)}
+  else if(motif==='tree'||motif==='flower'){line([[0,85],[0,-50]]);for(let i=0;i<5;i++){circle(Math.cos(i*Math.PI*2/5)*34,-33+Math.sin(i*Math.PI*2/5)*34,27)}circle(0,-33,13);line([[0,45],[-50,15],[-28,58],[0,45],[48,23],[27,62],[0,45]])}
+  else if(motif==='scales'){line([[0,80],[0,-77],[-83,-35],[83,-35]]);for(const x of [-67,67]){line([[x,-35],[x-23,23],[x+23,23],[x,-35]]);line([[x-23,23],[x-13,39],[x+13,39],[x+23,23]])}line([[-40,80],[40,80]])}
+  else if(motif==='airship'){c.beginPath();c.ellipse(0,-10,103,43,0,0,Math.PI*2);c.stroke();line([[-33,29],[-24,62],[24,62],[33,29]]);line([[-92,-25],[-112,-43],[-104,15],[-92,5]]);line([[-72,-10],[72,-10]])}
+  else if(motif==='knot'){for(let i=0;i<3;i++){c.save();c.rotate(i*Math.PI/3);c.beginPath();c.ellipse(0,0,82,28,0,0,Math.PI*2);c.stroke();c.restore()}}
+  else if(motif==='moon'||motif==='planet'){circle(0,0,63);if(motif==='planet'){c.save();c.rotate(-.35);c.beginPath();c.ellipse(0,0,112,23,0,0,Math.PI*2);c.stroke();c.restore()}else{circle(-15,-18,14);circle(22,21,10);circle(29,-30,6)}for(const [x,y] of [[-95,-65],[90,-36],[-85,58]])line([[x-5,y],[x+5,y],[x,y],[x,y-5],[x,y+5]])}
+  else{circle(0,0,65);circle(0,0,49);line([[0,-81],[17,0],[0,81],[-17,0],[0,-81]]);line([[-81,0],[81,0]])}
+  c.restore();
+};
