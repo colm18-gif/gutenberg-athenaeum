@@ -30,6 +30,17 @@ test('brass bell fades and returns once, blocks repeated ringing and reuses its 
   assert.equal(returns,1);assert.equal(f.player.pos.z,24);assert(!f.descent.returning);assert.equal(fades.at(-1),0);assert(fades.includes(1));assert.equal(f.interactables.length,count);
   f.descent.interact(bell);for(let i=0;i<20;i++)f.descent.update(i*.02,.02,true,()=>{});assert.equal(returns,2);assert(!f.descent.returning);
 });
+test('subterranean companions are readable, locally complete and leave chamber circulation clear',()=>{
+  const companionBooks=[1355,545,1951].map(id=>({id,title:'Underground volume',author:'Author',fieldColour:'#343b2c'}));
+  const f=fixture({companionBooks});f.descent.build();
+  const copies=f.interactables.filter(m=>m.userData.subterraneanCopy);assert.equal(copies.length,3);
+  copies.forEach((copy,i)=>{assert.equal(copy.userData.book,companionBooks[i]);assert.equal(copy.userData.type,'book');assert(copy.userData.realCover);assert.equal(copy.userData.home.parent,copy.parent);assert(canWalk(f,34.8,copy.position.z));
+    const text=fs.readFileSync(`texts/pg${companionBooks[i].id}.txt`,'utf8');assert(text.length>100000);assert.match(text,/END OF (?:THE|THIS) PROJECT GUTENBERG EBOOK/);
+    const local={window:{}};vm.runInNewContext(fs.readFileSync(`texts/local/pg${companionBooks[i].id}.js`,'utf8'),local);assert.equal(local.window.ATHENAEUM_LOCAL_TEXTS[companionBooks[i].id],text);
+  });
+  assert(!canWalk(f,33.2,234.4));for(const x of [34.8,39,40.8])for(let z=231;z<237.4;z+=.1)assert(canWalk(f,x,z),`blocked chamber ${x}/${z}`);
+  assert(canWalk(f,38.6,235));assert(f.interactables.some(m=>m.userData.type==='verne-return-bell'));
+});
 test('last six flights have two intermediate warm lamps with usable range and no new collision',()=>{
   const f=fixture();f.descent.build();const lights=[];f.descent.group.traverse(o=>{if(o.isPointLight)lights.push(o)});
 for(let i=6;i<12;i++){const x=i%2?40:34,z=14+i*18;for(const offset of [5,10]){const light=lights.find(l=>l.position.z===z+offset&&Math.abs(Math.abs(l.position.x-x)-1.7)<.001);assert(light,`missing lower-flight lamp ${i}/${offset}`);assert(light.intensity>=6);assert(light.distance>=8);assert(canWalk(f,x,z+offset));}}

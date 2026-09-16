@@ -1,7 +1,7 @@
 /* An additive, uncatalogued discovery. No existing rooms or book records are replaced. */
 (()=>{
   'use strict';
-  window.createVerneDescent=function({THREE,scene,MAT,collider,colliders,interactables,canvasTexture,wrapText,player,camera,book,performanceZones,rememberLights,onReturn=()=>{},onFade=()=>{},onBell=()=>{}}){
+  window.createVerneDescent=function({THREE,scene,MAT,collider,colliders,interactables,canvasTexture,wrapText,player,camera,book,companionBooks=[],performanceZones,rememberLights,onReturn=()=>{},onFade=()=>{},onBell=()=>{}}){
     const regions=[],segments=[],drops=[],lamps=[],solidMeshes=[];
     const group=new THREE.Group();group.name='uncatalogued-verne-descent';
     let built=false,opened=false,doorAngle=0,nextDrip=0,returnTime=null,returned=false,returnBell=null;
@@ -98,6 +98,25 @@
       // Keep the reader's single-material contract; side UVs sample plain cloth, not stretched titles.
       const uv=volume.geometry.attributes?.uv;if(uv){for(let face=0;face<6;face++)if(face!==4)for(let v=0;v<4;v++)uv.setXY(face*4+v,.005,.005);uv.needsUpdate=true}
       volume.userData={type:'book',book,loaded:true,realCover:true,expeditionCopy:true,home:{parent:chamber,position:volume.position.clone(),quaternion:volume.quaternion.clone()}};interactables.push(volume);
+      // A quiet side collection: no obstruction to the arrival route or return bell.
+      if(companionBooks.length){
+        box(chamber,1.8,.18,5.4,MAT.darkWood,33.2,y+1.05,234.4);
+        for(const z of [232.2,236.6])box(chamber,1.3,1,.2,MAT.wood2,33.2,y+.5,z);
+        collider(33.2,234.4,1.8,5.4,'Subterranean field library',y-.5,y+2);
+        lamp(chamber,33.2,y+2.4,234.4,0,true);
+        companionBooks.slice(0,3).forEach((entry,i)=>{
+          const cover=canvasTexture((c,w,h)=>{
+            c.fillStyle=entry.fieldColour;c.fillRect(0,0,w,h);c.strokeStyle='#c0a276';c.lineWidth=4;c.strokeRect(24,24,w-48,h-48);
+            c.fillStyle='#c0a276';c.textAlign='center';c.font='18px Georgia';c.fillText('FIELD LIBRARY · BELOW GROUND',w/2,68);
+            c.font='bold 32px Georgia';wrapText(c,entry.title,w/2,130,w-70,42);
+            for(let layer=0;layer<7;layer++){c.beginPath();c.moveTo(45,300+layer*22);c.lineTo(w*.35,315+layer*20);c.lineTo(w*.65,290+layer*23);c.lineTo(w-45,310+layer*21);c.stroke()}
+            c.font='italic 23px Georgia';wrapText(c,entry.author,w/2,485,w-70,28);c.font='15px Georgia';c.fillText('SUBTERRANEAN COLLECTION',w/2,550);
+          });
+          const copy=box(chamber,1.25,1.65,.22,new THREE.MeshStandardMaterial({map:cover,roughness:.92}),33.2,y+1.25,232.6+i*1.8,false);copy.rotation.x=-Math.PI/2;
+          const uv=copy.geometry.attributes?.uv;if(uv){for(let face=0;face<6;face++)if(face!==4)for(let v=0;v<4;v++)uv.setXY(face*4+v,.005,.005);uv.needsUpdate=true}
+          copy.userData={type:'book',book:entry,loaded:true,realCover:true,subterraneanCopy:true,home:{parent:chamber,position:copy.position.clone(),quaternion:copy.quaternion.clone()}};interactables.push(copy);
+        });
+      }
       rememberLights(group);scene.add(group);
       performanceZones.verneDescent={group,isNeeded:()=>opened&&player.pos.x>29&&player.pos.x<45&&player.pos.z>5,active:true};
     }

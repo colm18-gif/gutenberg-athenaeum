@@ -896,8 +896,13 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
 
     // Additive descent integration: all existing navigation and interaction handlers remain fallbacks.
     const expeditionBook={...books.find(b=>b.id===18857),id:3748,title:'Journey to the Centre of the Earth',category:'Journey',progress:loadSavedProgress(3748),textPath:'texts/pg3748.txt',textUrl:'https://www.gutenberg.org/cache/epub/3748/pg3748.txt',sourceUrl:'https://www.gutenberg.org/ebooks/3748'};
+    const subterraneanBooks=[
+      [1355,'The Underground City; Or, The Black Indies','Jules Verne','#34434a','A coal mine thought exhausted opens into a hidden underground world. Verne asks what happens when the depths become a home rather than merely a passage. I keep this beside the expedition copy: the earth has more than one kind of interior.'],
+      [545,"At the Earth's Core",'Edgar Rice Burroughs','#593e2f','A drilling machine carries two explorers into Pellucidar, an imagined world inside the earth. Its geology belongs to adventure, not science; its confidence belongs to its era. After all those stairs, a mechanical descent may sound rather tempting.'],
+      [1951,'The Coming Race','Edward Bulwer-Lytton','#413647','A descent through a chasm reveals a subterranean civilisation and the unsettling power called Vril. Read its apparent perfection with care: the visitor brings the prejudices of the surface below ground with him. A hidden world is not necessarily a welcoming one.']
+    ].map(([id,title,author,fieldColour,note])=>{librarianNotes[id]=librarianNotes[id]||note;window.ATHENAEUM_EXTRA_NOTES[id]=window.ATHENAEUM_EXTRA_NOTES[id]||note;return {...expeditionBook,id,title,author,fieldColour,progress:loadSavedProgress(id),textPath:`texts/pg${id}.txt`,textUrl:`https://www.gutenberg.org/cache/epub/${id}/pg${id}.txt`,sourceUrl:`https://www.gutenberg.org/ebooks/${id}`}});
     const returnFade=document.createElement('div');returnFade.setAttribute('aria-hidden','true');returnFade.style.cssText='position:fixed;inset:0;background:#080604;opacity:0;pointer-events:none;z-index:22;';document.body.appendChild(returnFade);
-    const verneDescent=window.createVerneDescent({THREE,scene,MAT,collider,colliders,interactables,canvasTexture,wrapText,player,camera,book:expeditionBook,performanceZones,rememberLights,
+    const verneDescent=window.createVerneDescent({THREE,scene,MAT,collider,colliders,interactables,canvasTexture,wrapText,player,camera,book:expeditionBook,companionBooks:subterraneanBooks,performanceZones,rememberLights,
       onFade:opacity=>{returnFade.style.opacity=String(opacity)},
       onBell:()=>{for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.vel.set(0,0,0);sound(880,1.2,'sine',.16);sound(1320,.85,'sine',.055)},
       onReturn:()=>{resetPosition();showNotice('The bell answers from the entrance clock. You are back among the shelves.',5)}
