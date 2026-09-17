@@ -44,3 +44,23 @@ test('western entrance is clear of the north-wall bookcase and visibly marked',(
   assert.match(stair,/entranceGlow=new THREE\.PointLight\(0xffbd72,11,8,2\)/);
   assert.match(stair,/for\(let i=0;i<5;i\+\+\).*marker=box/);
 });
+
+test('a primitive rocket makes a reversible journey from the summit to the Moon',()=>{
+  assert.match(stair,/function primitiveRocket/);
+  assert.match(stair,/The Librarian’s Lunar Projectile/);
+  assert.match(stair,/type==='moon-rocket-launch'/);
+  assert.match(stair,/moveTo\(mx,0,mz\+6,Math\.PI\)/);
+  assert.match(stair,/type==='moon-rocket-return'/);
+  assert.match(stair,/moveTo\(cx-1\.3,topY,cz\+1\.6,Math\.PI\)/);
+  assert.match(stair,/athenaeum-moon-visited/);
+});
+
+test('the lunar outpost is walkable and holds an early science-fiction collection',()=>{
+  assert.match(stair,/mx=340,mz=30,moonRadius=18/);
+  assert.match(stair,/function onMoon/);
+  assert.match(stair,/if\(onMoon\(x,z\)\)return 0/);
+  assert.match(stair,/THE SELENITE READING OUTPOST/);
+  assert.match(stair,/scienceFiction=\[35,36,62,4552,16457,72,5230,159,10002\]/);
+  assert.match(stair,/moonBooks\.push\(bm\)/);
+  assert.match(stair,/scene\.background\.setHex\(0x03050b\)/);
+});
