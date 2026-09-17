@@ -64,14 +64,15 @@
     const summitTitle=add(new THREE.PlaneGeometry(3.8,.56),new THREE.MeshStandardMaterial({map:summitTitleTex,roughness:.75}),cx,topY+2.1,cz-4.72);summitTitle.userData={type:'high-stair-inscription',title:'The Last Landing',author:'The catalogue calls this the top. The staircase disagrees.',action:'READ'};interactables.push(summitTitle);
 
     function primitiveRocket(x,y,z,type,title,author){
-      const rocket=new THREE.Group();rocket.position.set(x,y,z);root.add(rocket);
+      const rocket=new THREE.Group(),interactiveParts=[],rocketData={type,title,author,action:'BOARD'};rocket.position.set(x,y,z);root.add(rocket);
       const part=(geometry,material,px,py,pz)=>{const m=new THREE.Mesh(geometry,material);m.position.set(px,py,pz);rocket.add(m);return m};
-      part(new THREE.CylinderGeometry(.7,.86,3.35,12),rocketMetal,0,2.05,0);part(new THREE.ConeGeometry(.72,1.6,12),rocketRed,0,4.52,0);part(new THREE.CylinderGeometry(.9,.9,.16,12),MAT.brass,0,.38,0);
+      const body=part(new THREE.CylinderGeometry(.7,.86,3.35,12),rocketMetal,0,2.05,0),nose=part(new THREE.ConeGeometry(.72,1.6,12),rocketRed,0,4.52,0),base=part(new THREE.CylinderGeometry(.9,.9,.16,12),MAT.brass,0,.38,0);interactiveParts.push(body,nose,base);
       for(const yy of [.7,1.55,2.4,3.25])part(new THREE.TorusGeometry(.77,.045,6,18),MAT.brass,0,yy,0).rotation.x=Math.PI/2;
-      for(let i=0;i<3;i++){const a=i/3*Math.PI*2,fin=part(new THREE.BoxGeometry(.12,1.15,1.05),rocketRed,Math.cos(a)*.82,.75,Math.sin(a)*.82);fin.rotation.y=-a}
-      const hatch=part(new THREE.CircleGeometry(.42,18),new THREE.MeshStandardMaterial({color:0x172633,emissive:0x2d5871,emissiveIntensity:.45,metalness:.5,roughness:.25}),0,2.45,.72);hatch.userData={type,title,author,action:'BOARD'};interactables.push(hatch);
+      for(let i=0;i<3;i++){const a=i/3*Math.PI*2,fin=part(new THREE.BoxGeometry(.12,1.15,1.05),rocketRed,Math.cos(a)*.82,.75,Math.sin(a)*.82);fin.rotation.y=-a;interactiveParts.push(fin)}
+      const hatch=part(new THREE.CircleGeometry(.42,18),new THREE.MeshStandardMaterial({color:0x172633,emissive:0x2d5871,emissiveIntensity:.45,metalness:.5,roughness:.25}),0,2.45,.72);interactiveParts.push(hatch);
       for(let i=0;i<16;i++){const a=i/16*Math.PI*2,rivet=part(new THREE.SphereGeometry(.035,6,4),MAT.brass,Math.cos(a)*.52,1.12,Math.sin(a)*.52);rivet.scale.y=.7}
-      for(const xx of [-.39,.39]){const rail=part(new THREE.BoxGeometry(.055,1.75,.055),MAT.brass,xx,1.08,.91);rail.rotation.x=.1}for(let i=0;i<5;i++)part(new THREE.BoxGeometry(.82,.045,.055),MAT.brass,0,.48+i*.35,.98);
+      for(const xx of [-.39,.39]){const rail=part(new THREE.BoxGeometry(.055,1.75,.055),MAT.brass,xx,1.08,.91);rail.rotation.x=.1;interactiveParts.push(rail)}for(let i=0;i<5;i++)interactiveParts.push(part(new THREE.BoxGeometry(.82,.045,.055),MAT.brass,0,.48+i*.35,.98));
+      for(const interactive of interactiveParts){interactive.userData=rocketData;interactables.push(interactive)}
       return rocket
     }
     const summitRocket=primitiveRocket(cx+1.15,topY,cz+.15,'moon-rocket-launch','The Librarian’s Lunar Projectile','Riveted by hand, steered by optimism, and supplied with one return ticket.');

@@ -47,6 +47,8 @@ test('western entrance is clear of the north-wall bookcase and visibly marked',(
 
 test('a primitive rocket makes a reversible journey from the summit to the Moon',()=>{
   assert.match(stair,/function primitiveRocket/);
+  assert.match(stair,/interactiveParts=\[\],rocketData=\{type,title,author,action:'BOARD'\}/);
+  assert.match(stair,/for\(const interactive of interactiveParts\)\{interactive\.userData=rocketData;interactables\.push\(interactive\)\}/);
   assert.match(stair,/The Librarian’s Lunar Projectile/);
   assert.match(stair,/type==='moon-rocket-launch'/);
   assert.match(stair,/moveTo\(mx,0,mz\+6,Math\.PI\)/);
