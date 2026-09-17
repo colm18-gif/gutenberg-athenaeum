@@ -19,6 +19,20 @@ The roof benches intentionally use the project's own procedural dark-oak Gothic
 design rather than the progressive painted bench/sofa models, so their material
 and silhouette remain consistent with the library.
 
+## Night railway hardware
+
+The platform uses the detailed track segment and train connector from Kenney's
+**Train Kit 1.1** as locally cached progressive enhancements. Kenney's complete
+vehicles were reviewed but not used because their bright, toy-like finish did
+not suit the library's Victorian night-service direction. The locomotive,
+carriage, portals and buttoned-leather seats therefore retain bespoke geometry
+and materials while the imported hardware supplies accurate rail proportions.
+
+- Creator/distributor: Kenney (with additional credits to Guus Vermeulen and Tony Schaer)
+- Source: https://kenney.nl/assets/train-kit
+- Licence: [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/)
+- Cached files: `assets/models/kenney-train/track-detailed.glb` and `train-connector.glb`
+
 ## Hidden-room paintings and book covers
 
 The H. Rider Haggard lost-kingdom painting and Arthur Conan Doyle consulting-room painting were generated specifically for this project with OpenAI image generation and then locally optimized for the game.

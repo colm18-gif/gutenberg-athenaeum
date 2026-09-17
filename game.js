@@ -977,6 +977,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     };
     const nightRailway=window.createNightTrain({THREE,scene,MAT,player,collider,colliders,interactables,canvasTexture,wrapText,coverTexture,
       books:[1874,27924,614,103,46597,18857,900001,900002,900003,900004,900005,900006,51568,1268,1906,14107,1302].map(id=>books.find(b=>b.id===id)).filter(Boolean),performanceZones,rememberLights,
+      modelTemplate:url=>seatTemplate({url}),isLowBandwidth:()=>lowBandwidth,
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null},
       notice:showNotice,home:()=>{resetPosition();sound(880,.9,'sine',.12);showNotice('The conductor’s bell answers from the entrance clock. Your return ticket is still valid.',6)}
     });

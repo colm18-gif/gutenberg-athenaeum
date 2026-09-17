@@ -1,11 +1,15 @@
 /* A request-stop railway. Existing rooms, mysteries and train ambience remain intact. */
 (()=>{
   'use strict';
-  window.createNightTrain=function({THREE,scene,MAT,player,collider,colliders,interactables,canvasTexture,wrapText,coverTexture,books,performanceZones,rememberLights,move,notice,home}){
+  window.createNightTrain=function({THREE,scene,MAT,player,collider,colliders,interactables,canvasTexture,wrapText,coverTexture,books,performanceZones,rememberLights,move,notice,home,modelTemplate,isLowBandwidth}){
     const regions=[{key:'platform',a:210,b:216,c:-35,d:-5},{key:'carriage',a:218,b:223,c:-30,d:-10},{key:'depot',a:248,b:272,c:-34,d:-6}];
     const solids=[],scenery=[],landscapes=[],groups={},controls={};let built=false,travelling=false,elapsed=0,arrived=false,nextWheel=0;
     const metal=new THREE.MeshStandardMaterial({color:0x253230,roughness:.65,metalness:.4});
     const cloth=new THREE.MeshStandardMaterial({color:0x493e32,roughness:1});
+    const leather=new THREE.MeshStandardMaterial({color:0x4f1f1a,roughness:.76,metalness:.02});
+    const leatherDark=new THREE.MeshStandardMaterial({color:0x29100f,roughness:.86});
+    const iron=new THREE.MeshStandardMaterial({color:0x111615,roughness:.48,metalness:.72});
+    const paintedGreen=new THREE.MeshStandardMaterial({color:0x183b32,roughness:.58,metalness:.2});
     const night=new THREE.MeshStandardMaterial({color:0x111d29,emissive:0x111d29,emissiveIntensity:.5});
     const glow=new THREE.MeshStandardMaterial({color:0xffc881,emissive:0xffb45d,emissiveIntensity:1.3});
     function zoneAt(x,z){return regions.find(r=>x>=r.a&&x<=r.b&&z>=r.c&&z<=r.d)}
@@ -13,29 +17,72 @@
     function label(g,text,x,y,z,w=2.8,h=.65,rot=0){const map=canvasTexture((c,cw,ch)=>{c.fillStyle='#282b25';c.fillRect(0,0,cw,ch);c.fillStyle='#d6bd90';c.textAlign='center';c.font='25px Georgia';wrapText(c,text,cw/2,40,cw-30,32)},640,160);const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshStandardMaterial({map}));m.position.set(x,y,z);m.rotation.y=rot;g.add(m);return m}
     function control(g,key,title,author,action,x,y,z,w=.7,h=.45,d=.12){const m=box(g,w,h,d,MAT.brass,x,y,z);m.userData={type:'night-railway',key,title,author,action};interactables.push(m);controls[key]=m;return m}
     function lamp(g,x,y,z,bright=false){box(g,.22,.4,.22,glow,x,y,z);const light=new THREE.PointLight(0xffbd77,bright?30:18,bright?15:11,1.7);light.position.set(x,y,z);g.add(light)}
+    function cylinder(g,rt,rb,h,segments,mat,x,y,z,rx=0,ry=0,rz=0){const m=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,segments),mat);m.position.set(x,y,z);m.rotation.x=rx;m.rotation.y=ry;m.rotation.z=rz;g.add(m);return m}
+    function railModel(g,file,x,y,z,size,yaw=0){
+      if(!modelTemplate||isLowBandwidth?.())return;
+      modelTemplate('assets/models/kenney-train/'+file).then(template=>{
+        const model=template.clone(true),bounds=new THREE.Box3().setFromObject(model),dimensions=bounds.getSize(new THREE.Vector3());
+        model.scale.set(size.x/Math.max(dimensions.x,.001),size.y/Math.max(dimensions.y,.001),size.z/Math.max(dimensions.z,.001));model.rotation.y=yaw;model.updateMatrixWorld(true);
+        const fitted=new THREE.Box3().setFromObject(model),center=fitted.getCenter(new THREE.Vector3());model.position.set(x-center.x,y-fitted.min.y,z-center.z);
+        model.traverse(node=>{if(node.isMesh){node.castShadow=false;node.receiveShadow=false}});g.add(model)
+      }).catch(error=>console.warn('CC0 railway detail unavailable; keeping procedural fallback.',file,error))
+    }
+    function rivetLine(g,x,y,z,count,step,axis='z',mat=MAT.brass){for(let i=0;i<count;i++){const r=cylinder(g,.045,.045,.035,8,mat,x,y,z,0,0,Math.PI/2);r.position[axis]+=(i-(count-1)/2)*step}}
+    function carriageSeat(g,z){
+      const seatGroup=new THREE.Group();seatGroup.position.set(218.72,0,z);g.add(seatGroup);
+      const cushion=box(seatGroup,1.22,.28,1.52,leather,0,.62,0);solids.push(cushion);collider(218.72,z,1.22,1.52,'Night railway furniture',-.5,2.2);box(seatGroup,.3,1.55,1.54,MAT.darkWood,-.52,1.28,.02);box(seatGroup,.22,1.25,1.4,leatherDark,-.35,1.25,.02);
+      box(seatGroup,.13,.72,1.58,MAT.brass,.57,.88,0);box(seatGroup,.22,.18,1.48,MAT.darkWood,.58,1.22,0);
+      for(const dz of [-.57,0,.57]){const button=cylinder(seatGroup,.052,.052,.035,8,MAT.brass,-.225,1.34,dz,0,0,Math.PI/2);button.position.x=-.235}
+      for(const dz of [-.55,.55])box(seatGroup,.16,.55,.16,MAT.darkWood,-.38,.27,dz);
+      box(seatGroup,.08,.08,1.3,MAT.brass,.01,.77,0);return seatGroup
+    }
     function volume(g,book,x,y,z){const m=box(g,1.25,1.65,.22,new THREE.MeshStandardMaterial({map:coverTexture(book),roughness:.8}),x,y,z);m.rotation.x=-Math.PI/2;const uv=m.geometry.attributes?.uv;if(uv){for(let f=0;f<6;f++)if(f!==4)for(let i=0;i<4;i++)uv.setXY(f*4+i,.005,.005);uv.needsUpdate=true}m.userData={type:'book',book,loaded:true,realCover:true,railwayCopy:true,home:{parent:g,position:m.position.clone(),quaternion:m.quaternion.clone()}};interactables.push(m)}
     // Only this small service panel exists before discovery; the railway is built on demand.
     const entranceGroup=new THREE.Group();scene.add(entranceGroup);
-    const entrance=control(entranceGroup,'entrance','A railway parcels door','The distant train sounds closer against the worn timber.','OPEN',165,1.9,-27,.16,3.8,2.1);
-    label(entranceGroup,'PARCELS · NIGHT SERVICE',164.9,2.7,-27,1.8,.4,-Math.PI/2);
-    collider(165,-27,.2,2.1,'Railway parcels door',-.5,4.2);lamp(entranceGroup,164.7,3.7,-27);rememberLights(entranceGroup);
+    // The concealed library entrance reads as a Victorian station portal rather than an ordinary cupboard.
+    const entrance=control(entranceGroup,'entrance','The Night Collections platform','Ironwork trembles faintly beneath the station clock.','ENTER PLATFORM',165,1.9,-27,.18,3.8,2.2);entrance.material=paintedGreen;
+    for(const z of [-28.35,-25.65])box(entranceGroup,.42,4.45,.42,MAT.stone,164.98,2.05,z);box(entranceGroup,.42,.5,3.15,MAT.stone,164.98,4.18,-27);box(entranceGroup,.3,.2,3.55,MAT.brass,164.76,3.88,-27);
+    for(const z of [-27.56,-26.44]){box(entranceGroup,.06,1.28,.82,MAT.darkWood,164.83,1.22,z);box(entranceGroup,.06,1.28,.82,MAT.darkWood,164.83,2.7,z);rivetLine(entranceGroup,164.78,2.7,z,3,.27,'z',MAT.brass)}
+    box(entranceGroup,.08,.08,2.05,MAT.brass,164.74,3.46,-27);rivetLine(entranceGroup,164.7,3.47,-27,9,.23,'z',MAT.brass);
+    const portalRoundel=cylinder(entranceGroup,.58,.58,.1,28,paintedGreen,164.69,4.58,-27,0,0,Math.PI/2);const portalRing=cylinder(entranceGroup,.67,.67,.055,28,MAT.brass,164.63,4.58,-27,0,0,Math.PI/2);portalRoundel.renderOrder=2;portalRing.renderOrder=1;
+    label(entranceGroup,'NIGHT PLATFORM',164.58,4.58,-27,1.05,.28,-Math.PI/2);label(entranceGroup,'PARCELS · BOOKS · REQUEST STOP',164.68,3.72,-27,2.35,.34,-Math.PI/2);
+    collider(165,-27,.24,2.2,'Night-platform gates',-.5,4.35);lamp(entranceGroup,164.55,3.25,-28.72);lamp(entranceGroup,164.55,3.25,-25.28);rememberLights(entranceGroup);
     performanceZones.nightRailEntrance={group:entranceGroup,isNeeded:()=>player.pos.x>135&&player.pos.x<170&&player.pos.z<-8,active:true};
     function room(key){const g=new THREE.Group();g.name='night-railway-'+key;groups[key]=g;scene.add(g);performanceZones['nightRail'+key]={group:g,isNeeded:()=>zoneAt(player.pos.x,player.pos.z)?.key===key,active:true};return g}
     function build(){if(built)return;built=true;
       const platform=room('platform');box(platform,6,.4,30,MAT.stone,213,-.2,-20);box(platform,.4,5,30,metal,209.8,2.5,-20);box(platform,6,5,.4,metal,213,2.5,-35.2);box(platform,6,5,.4,metal,213,2.5,-4.8);box(platform,6,.3,30,metal,213,5,-20);
-      // Exterior carriage, running gear and locomotive are visible from a protected platform.
-      box(platform,5,3.8,20,metal,220.5,1.9,-20);box(platform,5.4,.4,20.5,MAT.darkWood,220.5,4,-20);box(platform,4.7,.8,19,metal,220.5,-.6,-20);
+      // The CC0 track adds correctly proportioned sleepers and rail chairs; these boxes remain as a fallback.
+      for(const x of [219.6,221.4])box(platform,.1,.1,48,MAT.brass,x,-.8,-23);for(let z=-45;z<0;z+=1.5)box(platform,4,.12,.25,MAT.darkWood,220.5,-.9,z);for(let z=-43;z<-1;z+=4)railModel(platform,'track-detailed.glb',220.5,-.98,z,{x:4,y:.42,z:4});
+      // Exterior carriage: panelled body, clerestory roof, running boards, suspension and lit compartment windows.
+      box(platform,5,3.8,20,paintedGreen,220.5,1.9,-20);box(platform,5.5,.34,20.7,MAT.darkWood,220.5,4.08,-20);box(platform,3.4,.42,20.1,metal,220.5,4.43,-20);box(platform,4.7,.8,19,iron,220.5,-.6,-20);box(platform,5.65,.14,20.2,MAT.brass,220.5,.18,-20);
       for(const z of [-27,-20,-13])for(const x of [218.2,222.8]){const wheel=new THREE.Mesh(new THREE.CylinderGeometry(.78,.78,.25,20),metal);wheel.rotation.z=Math.PI/2;wheel.position.set(x,-.3,z);platform.add(wheel);const rim=new THREE.Mesh(new THREE.CylinderGeometry(.62,.62,.06,20),MAT.brass);rim.rotation.z=Math.PI/2;rim.position.set(x+(x<220?.14:-.14),-.3,z);platform.add(rim)}
-      for(const z of [-28,-24,-20,-16,-12])box(platform,.05,1.3,2.3,night,217.97,2.5,z);
-      // A recognisable steam locomotive: cab, long boiler, smokebox, chimney, lamp, buffers and cowcatcher.
-      box(platform,4.4,4.2,4.3,metal,220.5,1.5,-33.4);for(const x of [218.25,222.75])box(platform,.08,1.45,1.65,night,x,2.25,-33.4);const boiler=new THREE.Mesh(new THREE.CylinderGeometry(1.28,1.28,7.4,24),metal);boiler.rotation.x=Math.PI/2;boiler.position.set(220.5,1.25,-39);platform.add(boiler);const smokebox=new THREE.Mesh(new THREE.CylinderGeometry(1.36,1.36,.45,24),metal);smokebox.rotation.x=Math.PI/2;smokebox.position.set(220.5,1.25,-42.75);platform.add(smokebox);const chimney=new THREE.Group();chimney.position.set(220.5,2.55,-40.9);platform.add(chimney);box(chimney,.62,1.55,.62,metal,0,.65,0);const stackTop=new THREE.Mesh(new THREE.ConeGeometry(.62,.72,18),metal);stackTop.position.y=1.65;chimney.add(stackTop);const headlamp=box(platform,.48,.48,.35,glow,220.5,2.1,-43.05);const bufferBeam=box(platform,4.2,.28,.32,MAT.brass,220.5,.2,-43.2);for(const x of [219.1,221.9]){box(platform,.18,.18,.5,metal,x,.2,-43.5);const buffer=new THREE.Mesh(new THREE.CylinderGeometry(.22,.22,.12,14),metal);buffer.rotation.x=Math.PI/2;buffer.position.set(x,.2,-43.78);platform.add(buffer)}for(const x of [218.7,219.6,220.5,221.4,222.3]){const bar=box(platform,.08,.08,2.4,MAT.brass,x,-.42,-44);bar.rotation.x=-.32}for(const z of [-41,-38,-35])for(const x of [218.15,222.85]){const wheel=new THREE.Mesh(new THREE.CylinderGeometry(z===-38?.92:.72,z===-38?.92:.72,.3,20),metal);wheel.rotation.z=Math.PI/2;wheel.position.set(x,-.28,z);platform.add(wheel)}for(const x of [218.05,222.95])box(platform,.12,.12,6.5,MAT.brass,x,-.2,-38);
-      for(const x of [219.6,221.4])box(platform,.1,.1,48,MAT.brass,x,-.8,-23);for(let z=-45;z<0;z+=1.5)box(platform,4,.12,.25,MAT.darkWood,220.5,-.9,z);
-      control(platform,'board','The reading carriage','No timetable. A lamp is already burning inside.','BOARD',215.8,1.8,-20,.12,3,1.8);label(platform,'THE NIGHT COLLECTIONS SERVICE',213,3.7,-34.95,4,.8);
+      for(const z of [-28,-24,-16,-12]){box(platform,.055,1.36,2.15,night,217.96,2.48,z);box(platform,.04,1.52,2.35,MAT.brass,217.9,2.48,z);box(platform,.035,.08,2.2,MAT.brass,217.85,2.48,z)}
+      for(let z=-28.8;z<-10.8;z+=1.2)rivetLine(platform,217.86,.58,z,2,.18,'y',iron);for(const z of [-28.9,-10.9])box(platform,.18,3.6,.16,MAT.brass,217.82,2.05,z);
+      for(const z of [-27,-20,-13]){box(platform,.22,.18,2.65,iron,218.02,-.52,z);for(const dz of [-.9,0,.9])box(platform,.16,.32,.16,MAT.brass,217.86,-.52,z+dz)}
+      // A detailed steam locomotive: cab glazing, boiler bands, domes, handrails, motion gear and proper front hardware.
+      box(platform,4.4,4.2,4.3,paintedGreen,220.5,1.5,-33.4);box(platform,4.8,.32,4.75,iron,220.5,3.76,-33.4);for(const x of [218.25,222.75]){box(platform,.08,1.45,1.65,night,x,2.25,-33.4);box(platform,.09,1.6,.09,MAT.brass,x+(x<220?-.06:.06),2.25,-33.4);box(platform,.09,.09,1.78,MAT.brass,x+(x<220?-.06:.06),2.25,-33.4)}
+      const boiler=cylinder(platform,1.28,1.28,7.4,28,iron,220.5,1.25,-39,Math.PI/2),smokebox=cylinder(platform,1.37,1.37,.48,28,iron,220.5,1.25,-42.78,Math.PI/2);for(const z of [-36,-38,-40,-42])cylinder(platform,1.34,1.34,.14,28,MAT.brass,220.5,1.25,z,Math.PI/2);
+      for(const x of [219.22,221.78]){box(platform,.075,.075,6.25,MAT.brass,x,2.15,-39);for(const z of [-36.2,-39,-41.8])box(platform,.15,.55,.15,MAT.brass,x,1.88,z)}
+      for(const z of [-37.1,-39.3]){cylinder(platform,.48,.54,.62,20,metal,220.5,2.58,z);cylinder(platform,.33,.4,.16,20,MAT.brass,220.5,2.94,z)}
+      const chimney=new THREE.Group();chimney.position.set(220.5,2.55,-41.15);platform.add(chimney);cylinder(chimney,.35,.52,1.55,20,iron,0,.65,0);const stackTop=new THREE.Mesh(new THREE.ConeGeometry(.66,.72,20),iron);stackTop.position.y=1.65;chimney.add(stackTop);
+      const headlamp=box(platform,.58,.56,.4,glow,220.5,2.15,-43.14);box(platform,.78,.12,.5,MAT.brass,220.5,2.5,-43.12);const bufferBeam=box(platform,4.35,.32,.36,new THREE.MeshStandardMaterial({color:0x59201a,roughness:.7}),220.5,.18,-43.3);for(const x of [219.08,221.92]){box(platform,.18,.18,.52,iron,x,.2,-43.55);const buffer=cylinder(platform,.24,.24,.14,16,iron,x,.2,-43.87,Math.PI/2)}for(const x of [218.7,219.6,220.5,221.4,222.3]){const bar=box(platform,.09,.09,2.5,MAT.brass,x,-.42,-44.05);bar.rotation.x=-.32}
+      for(const z of [-41,-38,-35])for(const x of [218.15,222.85]){const wheel=cylinder(platform,z===-38?.92:.72,z===-38?.92:.72,.3,24,iron,x,-.28,z,0,0,Math.PI/2);const hub=cylinder(platform,.18,.18,.38,14,MAT.brass,x+(x<220?-.1:.1),-.28,z,0,0,Math.PI/2)}for(const x of [218.03,222.97]){box(platform,.13,.13,6.6,MAT.brass,x,-.2,-38);for(const z of [-41,-38,-35])cylinder(platform,.15,.15,.1,12,MAT.brass,x,-.2,z,0,0,Math.PI/2)}
+      label(platform,'NIGHT COLLECTIONS · No. 1874',217.93,2.08,-38.5,3.6,.42,Math.PI/2);railModel(platform,'train-connector.glb',220.5,-.67,-30.45,{x:1.7,y:.9,z:.55},Math.PI/2);
+      // The boarding control is now a brass-framed carriage vestibule attached to the train.
+      const board=control(platform,'board','The reading carriage','A proper vestibule door; beyond its glass, a lamp is already burning.','BOARD',217.79,1.82,-20,.14,3.1,1.72);board.material=MAT.darkWood;
+      box(platform,.08,3.46,.18,MAT.brass,217.7,1.82,-20.98);box(platform,.08,3.46,.18,MAT.brass,217.7,1.82,-19.02);box(platform,.08,.18,2.12,MAT.brass,217.7,3.51,-20);box(platform,.07,1.06,1.18,night,217.68,2.58,-20);box(platform,.055,.08,1.24,MAT.brass,217.63,2.58,-20);box(platform,.07,.08,1.12,MAT.brass,217.62,1.32,-20);box(platform,.07,.08,1.12,MAT.brass,217.62,.9,-20);cylinder(platform,.08,.08,.18,12,MAT.brass,217.58,1.68,-19.42,0,0,Math.PI/2);
+      for(let i=0;i<3;i++)box(platform,.62,.12,2.25-i*.28,iron,217.25-i*.38,.28-i*.16,-20);label(platform,'THE NIGHT COLLECTIONS SERVICE',213,3.7,-34.95,4,.8);
       control(platform,'platform-home','A library return ticket','The entrance clock is printed on the reverse.','RETURN TO LIBRARY',210.2,1.6,-19,.12,.8,1);lamp(platform,212,3,-28);lamp(platform,212,3,-12);
-      const car=room('carriage');box(car,5,.4,20,MAT.wood,220.5,-.2,-20);box(car,5,.3,20,MAT.darkWood,220.5,3.9,-20);for(const z of [-30.2,-9.8])box(car,5,3.9,.4,MAT.wood2,220.5,1.95,z);
-      for(const x of [217.8,223.2]){box(car,.4,1.4,20,MAT.wood2,x,.7,-20);box(car,.4,.6,20,MAT.wood2,x,3.55,-20);for(let z=-29;z<-10;z+=3){box(car,.4,2,.22,MAT.brass,x,2.4,z);box(car,.08,2,2.75,night,x+(x<220?-3.3:3.3),2.3,z+1.5)}}
-      // A full-width clear aisle joins reading and observation ends; no forced camera motion.
-      for(const z of [-26,-22,-18]){box(car,1.1,.55,1.35,cloth,218.7,.45,z,true);box(car,.2,1.3,1.35,MAT.darkWood,218.1,1,z);box(car,.95,.1,1.3,MAT.darkWood,222.25,1.05,z,true)}
+      const car=room('carriage');box(car,5,.4,20,MAT.wood,220.5,-.2,-20);box(car,5,.3,20,MAT.darkWood,220.5,3.9,-20);box(car,3.25,.24,19.6,metal,220.5,4.2,-20);for(const z of [-30.2,-9.8])box(car,5,3.9,.4,MAT.wood2,220.5,1.95,z);
+      for(const x of [217.8,223.2]){
+        box(car,.4,1.4,20,MAT.wood2,x,.7,-20);box(car,.4,.6,20,MAT.wood2,x,3.55,-20);box(car,.1,.1,19.4,MAT.brass,x+(x<220?.23:-.23),1.42,-20);
+        for(let z=-29;z<-10;z+=3){box(car,.4,2,.22,MAT.brass,x,2.4,z);box(car,.08,1.72,2.56,night,x+(x<220?.23:-.23),2.35,z+1.5);box(car,.06,.07,2.34,MAT.brass,x+(x<220?.28:-.28),2.35,z+1.5)}
+        // Brass luggage rack with leather retaining straps.
+        box(car,.18,.1,18.5,MAT.brass,x+(x<220?.48:-.48),3.2,-20);box(car,.12,.1,18.5,MAT.brass,x+(x<220?.92:-.92),3.2,-20);for(let z=-28;z<-11;z+=2)box(car,.82,.08,.1,MAT.brass,x+(x<220?.7:-.7),3.2,z)
+      }
+      for(let z=-29;z<-10;z+=2){box(car,4.7,.08,.08,MAT.brass,220.5,3.78,z);cylinder(car,.055,.055,4.55,8,MAT.brass,220.5,3.78,z,0,0,Math.PI/2)}
+      // Deep buttoned-leather railway seats retain a full-width clear aisle.
+      for(const z of [-26,-22,-18]){carriageSeat(car,z);box(car,.95,.12,1.4,MAT.darkWood,222.25,1.05,z,true);box(car,.82,.08,1.25,MAT.brass,222.25,1.14,z);for(const dz of [-.54,.54])box(car,.12,1,.12,MAT.darkWood,222.25,.52,z+dz)}
       // A small travel library accompanies the railway titles: across plains, around worlds and into overlooked places.
       for(const [i,z] of [-27.2,-25,-22.8,-20.6,-18.4,-16.2].entries())if(books[i])volume(car,books[i],222.25,1.25,z);label(car,'TRAVEL LIBRARY · ROUTES REAL AND IMAGINED',222.88,2.45,-21.8,5.4,.48,Math.PI/2);
       control(car,'depart','A conductor’s brass punch','The ticket reads: Collections Depot — works awaiting another reader.','BEGIN JOURNEY',220.5,1.6,-28.9);
