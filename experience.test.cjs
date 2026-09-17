@@ -144,7 +144,13 @@ test('visual repair pass keeps library materials and wayfinding legible',()=>{
   assert.match(game,/realisticFlames/);
   assert.match(game,/LIGHT ANOTHER LAMP/);
   assert.match(game,/kind==='evidence-board'[^\n]+BOOT PRINT[^\n]+POCKET WATCH/);
-  assert.match(game,/galleryPicture\(-51\.68,3\.5,1\.2/);
+  assert.match(game,/roofStairUnderwall=box\(5\.65,6\.55,\.72,MAT\.stone,14\.25,3\.275,31\.08/);
+  assert.match(game,/for\(let i=0;i<14;i\+\+\)[^\n]+27\.15\+i\*\.72/);
+  assert.match(game,/galleryPicture\(-51\.68,3\.5,-7\.15/);
+  assert.match(game,/supportBox\.rotation\.y\+=Math\.PI/);
+  assert.match(game,/const whiteVolumeTex=canvasTexture/);
+  assert.match(game,/fillText\('THE WHITE'/);
+  assert.match(game,/whiteVolumeGroup\.position\.y=THREE\.MathUtils\.damp/);
   assert.match(game,/picturePassage:\{src:'assets\/audio\/secret-door\.ogg'/);
   assert.match(game,/if\(\/Quill\/i\.test\(t\)&&!inMainLibrary\)return/);
 });
