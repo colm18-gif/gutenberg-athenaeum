@@ -153,4 +153,7 @@ test('visual repair pass keeps library materials and wayfinding legible',()=>{
   assert.match(game,/whiteVolumeGroup\.position\.y=THREE\.MathUtils\.damp/);
   assert.match(game,/picturePassage:\{src:'assets\/audio\/secret-door\.ogg'/);
   assert.match(game,/if\(\/Quill\/i\.test\(t\)&&!inMainLibrary\)return/);
+  assert.match(game,/new THREE\.AmbientLight\(0xd0a879,1\.55\)/);
+  assert.match(game,/ambient\.intensity=1\.48\+daylight\*\.62/);
+  assert.match(game,/toneMappingExposure=1\.78\+daylight\*\.28/);
 });

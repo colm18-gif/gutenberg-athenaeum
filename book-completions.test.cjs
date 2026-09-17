@@ -1,4 +1,4 @@
-const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),zlib=require('node:zlib');
 const game=fs.readFileSync('game.js','utf8'),html=fs.readFileSync('index.html','utf8');
 const data={window:{},Math};vm.runInNewContext(fs.readFileSync('data/book-completions.js','utf8'),data);
 let raw=game.slice(game.indexOf('const books=')+12);raw=raw.slice(0,raw.indexOf('].map')+1);
@@ -16,6 +16,12 @@ test('every uncached cover has a local illustrated design, including in low-band
 });
 test('new Haggard and Conan Doyle books have locally cached scanned covers',()=>{
   for(const id of [711,5228,6769,1207,2769,2721,5746,2841,1690,126,439,1638])assert(covers[id]?.length>3000,`missing scanned cover ${id}`);
+});
+test('every Gutenberg catalogue book has a complete local reading copy',()=>{
+  for(const book of books.filter(book=>book.id<900000)){
+    const direct=`texts/pg${book.id}.txt`,compressed=`texts/bundled-gzip/pg${book.id}.txt.gz`;let edition;if(fs.existsSync(direct))edition=fs.readFileSync(direct);else{assert(fs.existsSync(compressed),`missing local edition ${book.id}`);edition=zlib.gunzipSync(fs.readFileSync(compressed))}assert(edition.length>10000,`local edition ${book.id} is too short`);assert.match(edition.subarray(0,2048).toString(),/Project Gutenberg/i,`local edition ${book.id} has no Gutenberg header`);assert.match(edition.subarray(-65536).toString(),/END OF (?:THE|THIS) PROJECT GUTENBERG EBOOK/i,`local edition ${book.id} is incomplete`)
+  }
+  assert.match(game,/fetchBundledEdition\(book\.id\)/);assert.match(game,/DecompressionStream\('gzip'\)/);
 });
 test('Nautilus hull and plinth are blocked but its surrounding walkways and other floor levels remain open',()=>{
   const call=game.match(/collider\(room\.cx,room\.cz,4\.2,1\.95,'Nautilus display',-1,2\.4\)/)?.[0];assert(call);
