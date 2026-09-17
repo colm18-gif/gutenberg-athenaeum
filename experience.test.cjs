@@ -114,14 +114,14 @@ test('hidden doors preserve the configured arrival yaw',()=>{
 });
 
 test('themed-room exits face clear south walls and return beside their discoveries',()=>{
-  assert.match(game,/function memoryDoor\([^\n]+rot=0\)[^\n]+group\.rotation\.y=rot/);
+  assert.match(game,/function memoryDoor\([^\n]+rot=0,themeExit=false\)[^\n]+group\.rotation\.y=rot/);
   const exits=[
     ['gothic',95,22,0,-27],['inquiry',120,22,14,-27],['chart',145,22,-33,9],
     ['drawing',95,54,-33,-8],['study',120,54,30,-10.5],['garden',145,54,33,-9],
     ['verne',170,55,34.5,5],['haggard',108,81,-34.5,5],['doyle',138,81,23.5,-10.5]
   ];
   for(const [name,x,z,sx,sz] of exits){
-    assert.match(game,new RegExp(`memoryDoor\\(${x},${z},'mainhall',\\[${sx},0,${sz}\\][^;]+Math\\.PI/2\\)`),`${name} exit should be aligned with its south wall`);
+    assert.match(game,new RegExp(`memoryDoor\\(${x},${z},'mainhall',\\[${sx},0,${sz}\\][^;]+Math\\.PI/2,true\\)`),`${name} exit should be aligned with its south wall`);
   }
   for(const oldCall of ["memoryDoor(95,20,'mainhall'","memoryDoor(95,40,'mainhall'","memoryDoor(170,39,'mainhall'","memoryDoor(108,63,'mainhall'","memoryDoor(138,63,'mainhall'"])assert.doesNotMatch(game,new RegExp(oldCall.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
   assert.match(game,/memoryDoor\(138,81,'mainhall',\[23\.5,0,-10\.5\]/);
@@ -132,4 +132,19 @@ test('reading-room seats face their shelves and benches use Gothic upholstery',(
   assert.match(game,/chair\(contested\.cx,contested\.cz\+3,0,/);
   assert.match(game,/options\.model\|\|'sofa'/);
   assert.doesNotMatch(game,/bench\([^;\n]*model:'paintedSofa'/);
+});
+
+test('visual repair pass keeps library materials and wayfinding legible',()=>{
+  assert.match(game,/const stairMasonry=[^\n]+map:masonryTex/);
+  assert.match(game,/fillTop=\.42\+i\*\.4/);
+  assert.match(game,/themeExitDoorMaterial/);
+  assert.match(game,/fillText\('RETURN'/);
+  assert.match(game,/returnRunnerMaterial/);
+  assert.match(game,/createHearthFire/);
+  assert.match(game,/realisticFlames/);
+  assert.match(game,/LIGHT ANOTHER LAMP/);
+  assert.match(game,/kind==='evidence-board'[^\n]+BOOT PRINT[^\n]+POCKET WATCH/);
+  assert.match(game,/galleryPicture\(-51\.68,3\.5,1\.2/);
+  assert.match(game,/picturePassage:\{src:'assets\/audio\/secret-door\.ogg'/);
+  assert.match(game,/if\(\/Quill\/i\.test\(t\)&&!inMainLibrary\)return/);
 });

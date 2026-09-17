@@ -15,6 +15,10 @@ All six models are released under [CC0 1.0 Universal](https://creativecommons.or
 
 Attribution is not legally required for CC0 assets, but is retained here to make provenance and future maintenance clear.
 
+The roof benches intentionally use the project's own procedural dark-oak Gothic
+design rather than the progressive painted bench/sofa models, so their material
+and silhouette remain consistent with the library.
+
 ## Hidden-room paintings and book covers
 
 The H. Rider Haggard lost-kingdom painting and Arthur Conan Doyle consulting-room painting were generated specifically for this project with OpenAI image generation and then locally optimized for the game.

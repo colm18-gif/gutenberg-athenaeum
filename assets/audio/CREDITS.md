@@ -18,7 +18,9 @@ Processing: trimmed to the useful action, mono, high-pass filtered where
 appropriate, loudness normalised, faded at clip boundaries, and encoded as Opus
 in an Ogg container at 40–48 kb/s.
 
-The staircase's recessed wooden panel uses the existing `secret-door.ogg` derivative.
+The staircase's recessed wooden panel and the picture-frame passages use the
+existing `secret-door.ogg` derivative (the picture interaction uses a shorter,
+slower playback treatment in code).
 Source verified 2026-09-16: TanwerAman, “Old Door Sound Night Time”,
 https://pixabay.com/sound-effects/household-old-door-sound-night-time-505140/
 Available under the Pixabay Content License:
