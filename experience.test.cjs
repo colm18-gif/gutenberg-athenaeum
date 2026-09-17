@@ -6,6 +6,15 @@ const html=fs.readFileSync('index.html','utf8');
 const game=fs.readFileSync('game.js','utf8');
 const css=fs.readFileSync('styles.css','utf8');
 
+test('doors, moving paintings and rockets use distinct recorded effects',()=>{
+  assert.match(game,/picturePassage:\{src:'assets\/audio\/painting-passage\.ogg'/);
+  assert.match(game,/rocketLaunch:\{src:'assets\/audio\/rocket-launch\.ogg'/);
+  assert.match(game,/passageSound:'doorOpen'/);
+  assert.match(game,/passageSound:'picturePassage'/);
+  assert.match(game,/playSample\(hp\.passageSound\|\|'secretDoor'/);
+  for(const asset of ['assets/audio/painting-passage.ogg','assets/audio/rocket-launch.ogg'])assert(fs.statSync(asset).size>5000,`${asset} should contain recorded audio`);
+});
+
 test('entry offers comfort settings and a recoverable WebGL failure',()=>{
   for(const id of ['entryVolume','entryReducedMotion','entryLowBandwidth','entryHighContrast','entryLargeText'])assert.match(html,new RegExp(`id="${id}"`));
   assert.match(html,/webglAvailable/);
@@ -109,7 +118,7 @@ test('Haggard and Conan Doyle have concealed author rooms with distinct period e
 });
 
 test('hidden doors preserve the configured arrival yaw',()=>{
-  assert.match(game,/const hp=\{progress:0,destination:opts\.destination,spawn:opts\.spawn,yaw:opts\.yaw,apply:p=>\{panel\.rotation\.y/);
+  assert.match(game,/const hp=\{progress:0,destination:opts\.destination,spawn:opts\.spawn,yaw:opts\.yaw,passageSound:'doorOpen',apply:p=>\{panel\.rotation\.y/);
   assert.doesNotMatch(game,/yaw:opts\.y,/);
 });
 
@@ -151,7 +160,7 @@ test('visual repair pass keeps library materials and wayfinding legible',()=>{
   assert.match(game,/const whiteVolumeTex=canvasTexture/);
   assert.match(game,/fillText\('THE WHITE'/);
   assert.match(game,/whiteVolumeGroup\.position\.y=THREE\.MathUtils\.damp/);
-  assert.match(game,/picturePassage:\{src:'assets\/audio\/secret-door\.ogg'/);
+  assert.match(game,/picturePassage:\{src:'assets\/audio\/painting-passage\.ogg'/);
   assert.match(game,/if\(\/Quill\/i\.test\(t\)&&!inMainLibrary\)return/);
   assert.match(game,/new THREE\.AmbientLight\(0xd0a879,1\.75\)/);
   assert.match(game,/ambient\.intensity=1\.68\+daylight\*\.68/);

@@ -38,6 +38,14 @@ test('both doors provide reversible, explicit travel',()=>{
   assert.match(stair,/moveTo\(entranceX,0,-11\.15,0\)/);
 });
 
+test('the summit has an unmistakable illuminated shortcut back to the library',()=>{
+  assert.match(stair,/type:'summit-library-exit'/);
+  assert.match(stair,/DOWN TO THE LIBRARY/);
+  assert.match(stair,/action:'DESCEND'/);
+  assert.match(stair,/summitExitGlow=new THREE\.PointLight/);
+  assert.match(stair,/type==='high-stair-exit'\|\|type==='summit-library-exit'/);
+});
+
 test('western entrance is clear of the north-wall bookcase and visibly marked',()=>{
   assert.match(game,/shelf\(-28,-12,0,6\)/);
   assert.match(stair,/entranceX=-33\.5/);
@@ -55,6 +63,8 @@ test('a primitive rocket makes a reversible journey from the summit to the Moon'
   assert.match(stair,/type==='moon-rocket-return'/);
   assert.match(stair,/moveTo\(cx-1\.3,topY,cz\+1\.6,Math\.PI\)/);
   assert.match(stair,/athenaeum-moon-visited/);
+  assert.match(game,/playSample,lastSafePosition/);
+  assert.match(stair,/playSample\?\.\('rocketLaunch'/);
 });
 
 test('the lunar outpost is walkable and holds an early science-fiction collection',()=>{
