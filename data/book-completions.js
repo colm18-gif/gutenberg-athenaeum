@@ -30,7 +30,16 @@ window.ATHENAEUM_EXTRA_NOTES={
   1690:'A younger Allan Quatermain remembers Marie Marais against the upheaval of the Great Trek. Romance and historical adventure share the road, though the history is filtered through a strongly partisan colonial imagination. Consult another account before mistaking fiction for a map.',
   126:'Professor Challenger seals a small company into an oxygenated room while the world appears to die outside. Doyle turns cosmic catastrophe into a locked-room observation, proving that his taste for evidence and inference was never confined to Baker Street.',
   439:'Doyle argues for spiritualism with the same appetite for evidence that animates his detective fiction, though not with the same standards every reader will accept. This is useful precisely because it complicates the neat division between Holmesian reason and belief.',
-  1638:'A physician and famous creator of a rational detective recounts his movement from skepticism toward spiritualism. Read it as a record of Doyle’s convictions, not a solved case: the most revealing clues concern the investigator himself.'
+  1638:'A physician and famous creator of a rational detective recounts his movement from skepticism toward spiritualism. Read it as a record of Doyle’s convictions, not a solved case: the most revealing clues concern the investigator himself.',
+  1013:'Cavor invents a substance that defeats gravity, and Bedford immediately sees a business opportunity. Their sphere reaches a Moon inhabited beneath its surface by the Selenites, whose ordered society turns the expedition into social satire as well as adventure.',
+  1633:'A vast brick sphere intended as a navigational marker is launched accidentally with people aboard. Hale imagined an artificial satellite and an inhabited space station decades before either existed, making this battered volume an ancestor of the outpost around you.',
+  46547:'Cyrano reaches the Moon by methods involving bottles of dew and, later, rockets. The lunar inhabitants walk on four legs and challenge nearly every earthly certainty he brings with him. This seventeenth-century satire is among the collection’s oldest impossible voyages.',
+  10430:'Lucian openly promises ingenious lies, then sends his travellers into a war between the kingdoms of the Sun and Moon. Written in antiquity, it parodies extravagant travel histories so effectively that it became an ancestor of science fiction without intending to found a genre.',
+  10005:'Joseph Atterley and a learned Brahmin travel to the Moon and study the manners, science, philosophy, and political arrangements of its inhabitants. Tucker uses the distance from Earth to make his own society look newly strange.',
+  69338:'A lunar expedition discovers an inhabited world within the Moon and helps open a route that later threatens Earth. Burroughs stretches the consequences across generations, turning a voyage of discovery into occupation, resistance, and an alternate future.',
+  66510:'Serviss surveys the Moon as early twentieth-century astronomy understood it: its visible plains and mountains, the arguments over its origin, and the persistent question of whether it ever supported life. Keep its period assumptions beside what later observation corrected.',
+  62779:'Locke’s celebrated newspaper hoax claimed that a powerful telescope had revealed lunar forests, animals, and winged inhabitants. Many readers believed it. This copy belongs here as both imagined Moon-life and a warning about scientific authority dressed in convincing detail.',
+  19103:'Wilkins argues that the Moon may be another habitable world and seriously considers how a traveller might reach it. Written in 1638, the book stands between astronomy, theology, and speculative fiction, before those shelves had learned to stay separate.'
 };
 window.ATHENAEUM_COVER_DESIGNS={
   900001:['#263b32','#c8b77e','tree'],900002:['#2d3150','#d1bd87','planet'],900003:['#43314b','#d5bc82','tower'],900004:['#263b47','#d1c39b','ship'],900005:['#3d3030','#c9b17f','moon'],900006:['#384034','#d4c18d','tower'],
@@ -41,6 +50,7 @@ window.ATHENAEUM_COVER_DESIGNS={
 ,
   711:['#3d3a27','#d2bb7f','mountain'],5228:['#472f38','#d5b887','tower'],6769:['#334137','#c9b681','mountain'],1207:['#4b3029','#d8bd89','flower'],2769:['#263a45','#d6bb7d','tower'],2721:['#303d48','#d2c397','mountain'],5746:['#3f3428','#d8be82','scales'],2841:['#3b3d2b','#d7c28d','compass'],1690:['#51362f','#d9bf91','flower'],
   126:['#293b46','#d3c498','planet'],439:['#3b3148','#d3bc8d','moon'],1638:['#303b43','#d8c79b','scales']
+  ,1013:['#202d4d','#d8c894','moon'],1633:['#413226','#d1b77d','planet'],46547:['#352d50','#d7bd8b','moon'],10430:['#263e4a','#d9c58f','moon'],10005:['#44332a','#d8bd83','moon'],69338:['#382b4c','#d4bd91','planet'],66510:['#273a4a','#d5c79b','moon'],62779:['#3d2d3b','#d8bf89','moon'],19103:['#2d3d39','#d6c28d','planet']
 };
 // Vector-like ornament drawn into the established canvas cover system, not remote images.
 window.drawAthenaeumCoverEmblem=function(c,w,h,motif){

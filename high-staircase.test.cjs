@@ -62,7 +62,8 @@ test('the lunar outpost is walkable and holds an early science-fiction collectio
   assert.match(stair,/function onMoon/);
   assert.match(stair,/if\(onMoon\(x,z\)\)return 0/);
   assert.match(stair,/THE SELENITE READING OUTPOST/);
-  assert.match(stair,/scienceFiction=\[35,36,62,4552,16457,72,5230,159,10002\]/);
+  assert.match(stair,/lunarCollection=\[4552,16457,1013,1633,46547,10430,10005,69338,66510,62779,19103\]/);
+  assert.doesNotMatch(stair,/scienceFiction=\[35,36,62/);
   assert.match(stair,/moonBooks\.push\(bm\)/);
   assert.match(stair,/scene\.background\.setHex\(0x03050b\)/);
 });
