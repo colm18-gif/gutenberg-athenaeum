@@ -34,5 +34,13 @@ test('both doors provide reversible, explicit travel',()=>{
   assert.match(stair,/type:'high-stair-door'/);
   assert.match(stair,/type:'high-stair-exit'/);
   assert.match(stair,/moveTo\(bottomX,0,bottomZ\+1\.25/);
-  assert.match(stair,/moveTo\(-28,0,-11\.4,0\)/);
+  assert.match(stair,/entranceX=-33\.5,entranceZ=-13\.58/);
+  assert.match(stair,/moveTo\(entranceX,0,-11\.15,0\)/);
+});
+
+test('western entrance is clear of the north-wall bookcase and visibly marked',()=>{
+  assert.match(game,/shelf\(-28,-12,0,6\)/);
+  assert.match(stair,/entranceX=-33\.5/);
+  assert.match(stair,/entranceGlow=new THREE\.PointLight\(0xffbd72,11,8,2\)/);
+  assert.match(stair,/for\(let i=0;i<5;i\+\+\).*marker=box/);
 });

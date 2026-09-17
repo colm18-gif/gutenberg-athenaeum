@@ -12,13 +12,16 @@
     const cylinder=(rt,rb,h,segments,material,x,y,z,parent=root)=>add(new THREE.CylinderGeometry(rt,rb,h,segments),material,x,y,z,parent);
 
     // The entrance is deliberately ordinary in scale; the impossible height is hidden behind it.
-    const entrance=new THREE.Group();entrance.position.set(-28,0,-13.58);scene.add(entrance);
+    const entranceX=-33.5,entranceZ=-13.58;
+    const entrance=new THREE.Group();entrance.position.set(entranceX,0,entranceZ);scene.add(entrance);
     const door=box(2.7,4.35,.24,MAT.darkWood,0,2.18,0,entrance);door.userData={type:'high-stair-door',title:'The stair that is not on the plan',author:'A brass plate reads: ASCENTS, DISTANCES & IMPOSSIBLE HEIGHTS.',action:'ASCEND'};interactables.push(door);
     for(const x of [-1.48,1.48])box(.22,4.72,.32,MAT.brass,x,2.36,.01,entrance);
     box(3.18,.24,.34,MAT.brass,0,4.66,.01,entrance);
     const plaqueTex=canvasTexture((ctx,w,h)=>{ctx.fillStyle='#21170d';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#c29a50';ctx.lineWidth=12;ctx.strokeRect(8,8,w-16,h-16);ctx.fillStyle='#e1c98d';ctx.textAlign='center';ctx.font='bold 30px Georgia';ctx.fillText('ASCENTS & IMPOSSIBLE HEIGHTS',w/2,52)},640,78);
     const plaque=add(new THREE.PlaneGeometry(2.45,.3),new THREE.MeshStandardMaterial({map:plaqueTex,roughness:.7}),0,3.28,.135,entrance);plaque.userData=door.userData;interactables.push(plaque);
     const knob=cylinder(.1,.1,.12,14,MAT.brass,.82,2.05,.2,entrance);knob.rotation.x=Math.PI/2;
+    const entranceLamp=cylinder(.16,.24,.3,10,MAT.brass,0,4.98,.2,entrance),entranceGlow=new THREE.PointLight(0xffbd72,11,8,2);entranceGlow.position.set(0,4.72,.65);entrance.add(entranceGlow);
+    for(let i=0;i<5;i++){const marker=box(.42,.025,.09,MAT.brass,entranceX+(i-2)*.58,.035,-11.15);marker.rotation.y=(i-2)*.06}
 
     // A bottom landing and a shaft whose ceiling is always farther away than it looks.
     const bottomAngle=0,bottomX=cx+outerRadius,bottomZ=cz;
@@ -67,7 +70,7 @@
     function floorAt(x,z){if(!contains(x,z))return null;const r=Math.hypot(x-cx,z-cz);if(r<4.85)return topY;if(Math.hypot(x-bottomX,z-bottomZ)<2.7)return 0;return closestStep(x,z)?.y??null}
     function allowed(x,z){const y=floorAt(x,z);if(y===null)return false;const r=Math.hypot(x-cx,z-cz);if(r<4.55)return true;if(Math.hypot(x-bottomX,z-bottomZ)<2.35)return true;return !!closestStep(x,z)}
     function moveTo(x,y,z,yaw){player.pos.set(x,y,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,y+1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld()}
-    function interact(object){const type=object?.userData?.type;if(type==='high-stair-door'){moveTo(bottomX,0,bottomZ+1.25,-Math.PI/2);showNotice('The door shuts below you. The stair coils upward beyond the reach of its own lamplight.',7);sound(92,1.1,'triangle',.15);localStorage.setItem('athenaeum-high-stair-discovered','1');return true}if(type==='high-stair-exit'){moveTo(-28,0,-11.4,0);showNotice('The western wing receives you at the same hour you left it.',5);sound(145,.7,'triangle',.1);return true}if(type==='high-stair-inscription'){showNotice('The catalogue calls this the top. A narrow continuation vanishes into the dome, proving the catalogue optimistic.',7);sound(523,.7,'sine',.07);return true}return false}
+    function interact(object){const type=object?.userData?.type;if(type==='high-stair-door'){moveTo(bottomX,0,bottomZ+1.25,-Math.PI/2);showNotice('The door shuts below you. The stair coils upward beyond the reach of its own lamplight.',7);sound(92,1.1,'triangle',.15);localStorage.setItem('athenaeum-high-stair-discovered','1');return true}if(type==='high-stair-exit'){moveTo(entranceX,0,-11.15,0);showNotice('The western wing receives you at the same hour you left it.',5);sound(145,.7,'triangle',.1);return true}if(type==='high-stair-inscription'){showNotice('The catalogue calls this the top. A narrow continuation vanishes into the dome, proving the catalogue optimistic.',7);sound(523,.7,'sine',.07);return true}return false}
     function update(time){for(const item of animatedLights)item.light.intensity=5.3+Math.sin(time*2.1+item.phase)*.8;summitLight.intensity=13+Math.sin(time*.7)*1.2;const r=Math.hypot(player.pos.x-cx,player.pos.z-cz);if(r<5&&player.pos.y>topY-1&&!localStorage.getItem('athenaeum-high-stair-summit')){localStorage.setItem('athenaeum-high-stair-summit','1');showNotice('The Last Landing: a reading room above the roof, beneath a sky the library keeps for itself.',7);window.libraryAnalytics?.track('Room Explored',{room:'last-landing'})}}
     function reset(){root.visible=true}
     return {contains,floorAt,allowed,interact,update,reset,center:{x:cx,z:cz},topY,topBooks};
