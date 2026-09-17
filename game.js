@@ -1000,6 +1000,14 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       return covered;
     };
     document.addEventListener('visibilitychange',()=>{if(document.hidden&&rideAudio){rideAudio.pause();ridePlaying=false}});
+    // The western door opens onto a spatially separate stair, allowing its many turns to rise
+    // far beyond the existing roof without changing the carefully packed library floor plan.
+    const highStaircase=window.createHighStaircase({THREE,scene,MAT,player,camera,interactables,books,coverTexture,canvasTexture,showNotice,sound,lastSafePosition});
+    const preStairFloor=floorHeight;floorHeight=function(x,z){return highStaircase.floorAt(x,z)??preStairFloor(x,z)};
+    const preStairAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return highStaircase.contains(x,z)?highStaircase.allowed(x,z):preStairAllowed(x,z,y)};
+    const preStairInteract=interact;interact=function(){if(focus&&!selected&&highStaircase.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preStairInteract()};
+    const preStairReset=resetPosition;resetPosition=function(){highStaircase.reset();return preStairReset()};
+    const preStairWorld=updateWorld;updateWorld=function(t,dt){preStairWorld(t,dt);highStaircase.update(t,dt)};
     animate();
   })();
 
