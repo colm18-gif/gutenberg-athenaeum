@@ -153,7 +153,11 @@ test('visual repair pass keeps library materials and wayfinding legible',()=>{
   assert.match(game,/whiteVolumeGroup\.position\.y=THREE\.MathUtils\.damp/);
   assert.match(game,/picturePassage:\{src:'assets\/audio\/secret-door\.ogg'/);
   assert.match(game,/if\(\/Quill\/i\.test\(t\)&&!inMainLibrary\)return/);
-  assert.match(game,/new THREE\.AmbientLight\(0xd0a879,1\.55\)/);
-  assert.match(game,/ambient\.intensity=1\.48\+daylight\*\.62/);
-  assert.match(game,/toneMappingExposure=1\.78\+daylight\*\.28/);
+  assert.match(game,/new THREE\.AmbientLight\(0xd0a879,1\.75\)/);
+  assert.match(game,/ambient\.intensity=1\.68\+daylight\*\.68/);
+  assert.match(game,/toneMappingExposure=1\.95\+daylight\*\.32/);
+  assert.match(game,/ambient\.intensity\*=1-depth\*\.62/);
+  assert.match(game,/readerLantern\.intensity=selected\?6\.4:6\.4\*\(1-depth\*\.45\)/);
+  assert.match(game,/scene\.fog\.density=depot\?\.014:\.032/);
+  assert.match(game,/ambient\.intensity=depot\?1\.12:\.58/);
 });
