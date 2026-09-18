@@ -76,7 +76,7 @@ test('stair containment checks the full player radius and current vertical turn'
   assert.match(stair,/Math\.abs\(stepY-y\)>1\.35/);
   assert.match(stair,/samples=\[\[0,0\],\[radius,0\]/);
   assert.match(stair,/stepY=from\.y\+\(to\.y-from\.y\)\*u/);
-  assert.match(stair,/return !!closestStep\(x,z\)/);
+  assert.match(stair,/const pathStep=closestStep\(x,z\);if\(pathStep\)return true/);
   assert.match(stair,/if\(rocketTrip\)return false/);
 });
 
@@ -95,6 +95,14 @@ test('stair entrance faces along the first ascending turn',()=>{
   assert(Math.abs(forward.x)<1e-9);
   assert(forward.z>.99,'forward movement should lead toward the next rising tread');
   assert.match(stair,/moveTo\(bottomX,0,bottomZ\+1\.25,Math\.PI\)/);
+});
+
+test('the spiral path takes priority across the landing safety boundary',()=>{
+  const playerRadius=.42,landingLimit=2.38-playerRadius,oldSwitch=2.2;
+  assert(landingLimit<oldSwitch,'the previous landing-only rules created a locked ring');
+  const pathPriority=stair.indexOf('const pathStep=closestStep(x,z);if(pathStep)return true');
+  const landingCheck=stair.indexOf('const summit=Math.hypot');
+  assert(pathPriority>0&&pathPriority<landingCheck,'the overlapping stair path must be accepted before the landing perimeter is checked');
 });
 
 test('the lunar outpost is walkable and holds an early science-fiction collection',()=>{
