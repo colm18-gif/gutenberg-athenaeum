@@ -15,6 +15,18 @@ test('doors, moving paintings and rockets use distinct recorded effects',()=>{
   for(const asset of ['assets/audio/painting-passage.ogg','assets/audio/rocket-launch.ogg'])assert(fs.statSync(asset).size>5000,`${asset} should contain recorded audio`);
 });
 
+test('movement audio is quiet, varied, surface-aware and stops with the visitor',()=>{
+  for(const surface of ['wood','concrete','carpet','metal'])for(let i=0;i<3;i++)assert(fs.statSync(`assets/audio/footsteps/${surface}-00${i}.ogg`).size>5000);
+  assert.match(game,/const footstepNames=\['woodStep0'/);
+  assert.match(game,/function footstepSurface\(\)/);
+  assert.match(game,/nightRailway\?\.zoneAt\(x,z\)/);
+  assert.match(game,/function stopFootsteps\(\)/);
+  assert.match(game,/const cadence=clamp\(\.54-speed\*\.055,\.27,\.48\)/);
+  assert.match(game,/if\(surface==='wood'\)/);
+  assert.match(game,/playSample\('floorboardCreak'/);
+  assert.match(game,/updateFootsteps\(dt\)/);
+});
+
 test('entry offers comfort settings and a recoverable WebGL failure',()=>{
   for(const id of ['entryVolume','entryReducedMotion','entryLowBandwidth','entryHighContrast','entryLargeText'])assert.match(html,new RegExp(`id="${id}"`));
   assert.match(html,/webglAvailable/);

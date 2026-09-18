@@ -16,6 +16,23 @@ terms can be checked before public release.
 | `painting-passage.ogg` | Kenney Impact Sounds: `impactWood_heavy_000.ogg` |
 | `rocket-launch.ogg` | Kenney Sci-Fi Sounds: `thrusterFire_001.ogg` |
 
+### Surface footsteps
+
+The files in `footsteps/` are compact original Ogg files from Kenney's CC0
+**Impact Sounds** pack:
+
+| Project files | Kenney source files |
+| --- | --- |
+| `wood-000.ogg`–`wood-002.ogg` | `footstep_wood_000.ogg`–`footstep_wood_002.ogg` |
+| `concrete-000.ogg`–`concrete-002.ogg` | `footstep_concrete_000.ogg`–`footstep_concrete_002.ogg` |
+| `carpet-000.ogg`–`carpet-002.ogg` | `footstep_carpet_000.ogg`–`footstep_carpet_002.ogg` |
+| `metal-000.ogg`–`metal-002.ogg` | `impactMetal_light_000.ogg`–`impactMetal_light_002.ogg` |
+| `floorboard-creak.ogg` | `impactPlank_medium_000.ogg` |
+
+They are used quietly and selected at runtime according to timber, stone,
+carpet, stair, platform, and carriage surfaces. The heavier plank sound is an
+occasional environmental creak rather than part of every step.
+
 Processing: trimmed to the useful action, mono, high-pass filtered where
 appropriate, loudness normalised, faded at clip boundaries, and encoded as Opus
 in an Ogg container at 40–48 kb/s.
