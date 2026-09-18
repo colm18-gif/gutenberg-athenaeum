@@ -72,10 +72,21 @@ test('a primitive rocket makes a reversible journey from the summit to the Moon'
 });
 
 test('stair containment checks the full player radius and current vertical turn',()=>{
-  assert.match(stair,/Math\.abs\(step\.y-y\)>1\.35/);
+  assert.match(stair,/Math\.abs\(stepY-y\)>1\.35/);
   assert.match(stair,/samples=\[\[0,0\],\[radius,0\]/);
-  assert.match(stair,/samples\.every\(\(\[dx,dz\]\)=>!!closestStep/);
+  assert.match(stair,/stepY=from\.y\+\(to\.y-from\.y\)\*u/);
+  assert.match(stair,/return !!closestStep\(x,z\)/);
   assert.match(stair,/if\(rocketTrip\)return false/);
+});
+
+test('continuous spiral collision has no impassable gaps between outer treads',()=>{
+  const cx=224,cz=30,topY=30,steps=180,turns=3.2,outerRadius=12,innerRadius=4.35,path=[];
+  for(let i=0;i<steps;i++){const p=i/(steps-1),a=p*turns*Math.PI*2,r=outerRadius+(innerRadius-outerRadius)*p;path.push({x:cx+Math.cos(a)*r,z:cz+Math.sin(a)*r,y:p*topY})}
+  const midpoint={x:(path[0].x+path[1].x)/2,z:(path[0].z+path[1].z)/2};
+  const oldNearest=Math.min(...path.map(step=>Math.hypot(midpoint.x-step.x,midpoint.z-step.z)));
+  assert(oldNearest>.55,'the old isolated-centre collision leaves an outer gap');
+  assert.match(stair,/for\(let i=0;i<stepPath\.length-1;i\+\+\)/);
+  assert.match(stair,/\(\(x-from\.x\)\*dx\+\(z-from\.z\)\*dz\)\/lengthSquared/);
 });
 
 test('the lunar outpost is walkable and holds an early science-fiction collection',()=>{
