@@ -27,6 +27,24 @@ test('movement audio is quiet, varied, surface-aware and stops with the visitor'
   assert.match(game,/updateFootsteps\(dt\)/);
 });
 
+test("the librarian's office is loaded, explorable and full of inspectable records",()=>{
+  const office=fs.readFileSync('librarian-office.js','utf8');
+  assert.match(html,/loadScript\('librarian-office\.js'\)/);
+  assert.match(game,/window\.createLibrarianOffice/);
+  assert.match(game,/librarianOffice\.floorAt/);
+  assert.match(game,/librarianOffice\.allowed/);
+  assert.match(office,/THE LIBRARIAN'S OFFICE/);
+  for(const detail of ['appointments ledger','unsent letter','drawer marked LOST KEYS','Plans of the library','office clock'])assert.match(office,new RegExp(detail,'i'));
+  assert.match(office,/type:'book',book,loaded:true/);
+  assert.match(office,/type:'librarian-office-exit'/);
+});
+
+test('the librarian discusses the railway, staircase, Moon, office and recent additions',()=>{
+  for(const topic of ['Tell me about the night train','What is at the top of the spiral stair','Why is there a rocket','May I see your office','What have you added lately'])assert.match(game,new RegExp(topic.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
+  assert.match(game,/Collections Depot/);
+  assert.match(game,/Selenite reading outpost/);
+});
+
 test('entry offers comfort settings and a recoverable WebGL failure',()=>{
   for(const id of ['entryVolume','entryReducedMotion','entryLowBandwidth','entryHighContrast','entryLargeText'])assert.match(html,new RegExp(`id="${id}"`));
   assert.match(html,/webglAvailable/);

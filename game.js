@@ -697,6 +697,11 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       ['Ask Quill to show me something',()=>{guideCat(true);return ui.notice.textContent+' Follow at your own pace; some routes require stairs or a door you must open yourself.'}],
       ['What have I discovered?',()=>`You have recorded ${mysteryCount()} of ${SECRET_TOTAL} mysteries and stirred ${awakenedBooks.size} books by reading. Your hidden catalogue, opened with J, keeps those discoveries for your next visit.`],
       ['How does the brass machine work?',()=> 'Pull its lever in the eastern part of the hall. It favours overlooked books and listens to the weather. Every third pull may leave a little token. You can take the book directly from its tray.'],
+      ['Tell me about the night train',()=> nightRailway?.arrived?'You found the Collections Depot. The conductor calls it a waiting room for books between readers. Its drawers arrange relationships, never rankings.':nightRailway?.built?'The conductor accepts curiosity in place of a ticket. Board the reading carriage, touch the brass punch, and allow the journey its full minute—or settle into a seat if patience is in short supply.':'There is a platform beyond the Repository that appears only to readers willing to follow a tremor beneath the brass rails. The conductor dislikes timetables.'],
+      ['What is at the top of the spiral stair?',()=> localStorage.getItem('athenaeum-high-stair-summit')?'The Last Landing. The books there concern height, distance, time, and journeys that should not fit inside architecture. Use the illuminated return door when your knees remember the climb.':'A reading room the original plans describe as “provisionally uppermost.” The western wing keeps its entrance, though the staircase keeps its own measurements.'],
+      ['Why is there a rocket?',()=> localStorage.getItem('athenaeum-moon-visited')?'To return the lunar books to the place that first lent us moonlight. The countdown is ceremonial; the rattling is unfortunately structural.':'Because the Moon collection complained that shelving lunar voyages on Earth showed a lack of commitment. The projectile waits at the Last Landing.'],
+      ['May I see your office?',()=> 'You may. The door is set into the eastern wing. Please ignore tomorrow’s appointments, the drawer of lost keys, and any correspondence that appears to have been written by you.'],
+      ['What have you added lately?',()=> 'The building has grown a night railway, a staircase of unreasonable height, a Selenite reading outpost, several author rooms, and a descent beneath Verne’s study. I have updated the catalogue. The catalogue has declined to admit it.'],
       ['Is there a basement?',()=> discovered.has('below-catalogue')?'A basement? No. There is, however, a catalogue that happens to be below us. I advise you not to let it learn your name.':'No. Old buildings make noises beneath their floors. Sensible visitors leave those noises unanswered.'],
       ['Do you ever leave?',()=> 'Once, I went out for tea. When I returned, an entire shelf had moved six inches to the left. Now I bring a flask. The roof garden counts as going out, I think.']
     ];
@@ -1029,6 +1034,12 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       return covered;
     };
     document.addEventListener('visibilitychange',()=>{if(document.hidden&&rideAudio){rideAudio.pause();ridePlaying=false}});
+    const librarianOffice=window.createLibrarianOffice({THREE,scene,MAT,player,interactables,books,coverTexture,canvasTexture,showNotice,playSample,
+      move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
+    });
+    const preOfficeFloor=floorHeight;floorHeight=function(x,z){return librarianOffice.floorAt(x,z)??preOfficeFloor(x,z)};
+    const preOfficeAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return librarianOffice.contains(x,z)?librarianOffice.allowed(x,z):preOfficeAllowed(x,z,y)};
+    const preOfficeInteract=interact;interact=function(){if(focus&&!selected&&librarianOffice.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preOfficeInteract()};
     // The western door opens onto a spatially separate stair, allowing its many turns to rise
     // far beyond the existing roof without changing the carefully packed library floor plan.
     const highStaircase=window.createHighStaircase({THREE,scene,MAT,player,camera,interactables,books,coverTexture,canvasTexture,showNotice,sound,playSample,lastSafePosition});

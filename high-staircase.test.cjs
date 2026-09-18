@@ -19,7 +19,7 @@ test('stair rises through many walkable turns to a distinct summit room',()=>{
   assert.match(stair,/topY=30,steps=180,turns=3\.2/);
   assert.match(stair,/stepPath\.push\(\{x,z,y,a\}\)/);
   assert.match(stair,/function closestStep/);
-  assert.match(stair,/if\(r<4\.85\)return topY/);
+  assert.match(stair,/if\(r<4\.85&&player\.pos\.y>topY-2\)return topY/);
   assert.match(stair,/THE LAST LANDING/);
   assert.match(stair,/athenaeum-high-stair-summit/);
 });
@@ -65,12 +65,23 @@ test('a primitive rocket makes a reversible journey from the summit to the Moon'
   assert.match(stair,/athenaeum-moon-visited/);
   assert.match(game,/playSample,lastSafePosition/);
   assert.match(stair,/playSample\?\.\('rocketLaunch'/);
+  assert.match(stair,/function beginRocketTrip\(direction\)/);
+  assert.match(stair,/Launch in 3…/);
+  assert.match(stair,/rocketTrip\.elapsed\+=dt/);
+  assert.match(stair,/e>=8\.5/);
+});
+
+test('stair containment checks the full player radius and current vertical turn',()=>{
+  assert.match(stair,/Math\.abs\(step\.y-y\)>1\.35/);
+  assert.match(stair,/samples=\[\[0,0\],\[radius,0\]/);
+  assert.match(stair,/samples\.every\(\(\[dx,dz\]\)=>!!closestStep/);
+  assert.match(stair,/if\(rocketTrip\)return false/);
 });
 
 test('the lunar outpost is walkable and holds an early science-fiction collection',()=>{
   assert.match(stair,/mx=340,mz=30,moonRadius=18/);
   assert.match(stair,/function onMoon/);
-  assert.match(stair,/if\(onMoon\(x,z\)\)return 0/);
+  assert.match(stair,/if\(onMoon\(x,z\)\|\|inTransit\(x,z\)\)return 0/);
   assert.match(stair,/THE SELENITE READING OUTPOST/);
   assert.match(stair,/lunarCollection=\[4552,16457,1013,1633,46547,10430,10005,69338,66510,62779,19103\]/);
   assert.doesNotMatch(stair,/scienceFiction=\[35,36,62/);

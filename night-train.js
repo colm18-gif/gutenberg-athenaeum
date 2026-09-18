@@ -3,7 +3,7 @@
   'use strict';
   window.createNightTrain=function({THREE,scene,MAT,player,collider,colliders,interactables,canvasTexture,wrapText,coverTexture,books,performanceZones,rememberLights,move,notice,home,modelTemplate,isLowBandwidth}){
     const regions=[{key:'platform',a:210,b:216,c:-35,d:-5},{key:'carriage',a:218,b:223,c:-30,d:-10},{key:'depot',a:248,b:272,c:-34,d:-6}];
-    const solids=[],scenery=[],landscapes=[],groups={},controls={};let built=false,travelling=false,elapsed=0,arrived=false,nextWheel=0;
+    const solids=[],scenery=[],landscapes=[],groups={},controls={};let built=false,travelling=false,elapsed=0,arrived=false,nextWheel=0,conductorTalk=0;
     const metal=new THREE.MeshStandardMaterial({color:0x253230,roughness:.65,metalness:.4});
     const cloth=new THREE.MeshStandardMaterial({color:0x493e32,roughness:1});
     const leather=new THREE.MeshStandardMaterial({color:0x4f1f1a,roughness:.76,metalness:.02});
@@ -36,6 +36,7 @@
       for(const dz of [-.55,.55])box(seatGroup,.16,.55,.16,MAT.darkWood,-.38,.27,dz);
       box(seatGroup,.08,.08,1.3,MAT.brass,.01,.77,0);return seatGroup
     }
+    function conductor(g,x,z,rot=0){const person=new THREE.Group(),data={type:'night-railway',key:'conductor',title:'The Night Collections conductor',author:'His watch has thirteen numerals and his ticket punch bears the library crest.',action:'SPEAK'};person.position.set(x,0,z);person.rotation.y=rot;g.add(person);const coat=box(person,.78,1.45,.46,paintedGreen,0,1.25,0),head=cylinder(person,.28,.3,.5,14,new THREE.MeshStandardMaterial({color:0xb98b69,roughness:.9}),0,2.22,0),hat=box(person,.72,.14,.62,iron,0,2.58,0),brim=box(person,.92,.06,.76,iron,0,2.48,0);for(const part of [coat,head,hat,brim]){part.userData=data;interactables.push(part)}for(const sx of [-.47,.47]){const arm=box(person,.18,1.18,.2,paintedGreen,sx,1.38,0);arm.rotation.z=sx*.16;arm.userData=data;interactables.push(arm)}const watch=cylinder(person,.13,.13,.05,14,MAT.brass,.25,1.55,-.27,Math.PI/2);watch.userData=data;interactables.push(watch);return person}
     function volume(g,book,x,y,z){const m=box(g,1.25,1.65,.22,new THREE.MeshStandardMaterial({map:coverTexture(book),roughness:.8}),x,y,z);m.rotation.x=-Math.PI/2;const uv=m.geometry.attributes?.uv;if(uv){for(let f=0;f<6;f++)if(f!==4)for(let i=0;i<4;i++)uv.setXY(f*4+i,.005,.005);uv.needsUpdate=true}m.userData={type:'book',book,loaded:true,realCover:true,railwayCopy:true,home:{parent:g,position:m.position.clone(),quaternion:m.quaternion.clone()}};interactables.push(m)}
     // Only this small service panel exists before discovery; the railway is built on demand.
     const entranceGroup=new THREE.Group();scene.add(entranceGroup);
@@ -73,6 +74,7 @@
       box(platform,.08,3.46,.18,MAT.brass,217.7,1.82,-20.98);box(platform,.08,3.46,.18,MAT.brass,217.7,1.82,-19.02);box(platform,.08,.18,2.12,MAT.brass,217.7,3.51,-20);box(platform,.07,1.06,1.18,night,217.68,2.58,-20);box(platform,.055,.08,1.24,MAT.brass,217.63,2.58,-20);box(platform,.07,.08,1.12,MAT.brass,217.62,1.32,-20);box(platform,.07,.08,1.12,MAT.brass,217.62,.9,-20);cylinder(platform,.08,.08,.18,12,MAT.brass,217.58,1.68,-19.42,0,0,Math.PI/2);
       for(let i=0;i<3;i++)box(platform,.62,.12,2.25-i*.28,iron,217.25-i*.38,.28-i*.16,-20);label(platform,'THE NIGHT COLLECTIONS SERVICE',213,3.7,-34.95,4,.8);
       control(platform,'platform-home','A library return ticket','The entrance clock is printed on the reverse.','RETURN TO LIBRARY',210.2,1.6,-19,.12,.8,1);lamp(platform,212,3,-28);lamp(platform,212,3,-12);
+      conductor(platform,212.2,-23,-Math.PI/2);
       const car=room('carriage');box(car,5,.4,20,MAT.wood,220.5,-.2,-20);box(car,5,.3,20,MAT.darkWood,220.5,3.9,-20);box(car,3.25,.24,19.6,metal,220.5,4.2,-20);for(const z of [-30.2,-9.8])box(car,5,3.9,.4,MAT.wood2,220.5,1.95,z);
       for(const x of [217.8,223.2]){
         box(car,.4,1.4,20,MAT.wood2,x,.7,-20);box(car,.4,.6,20,MAT.wood2,x,3.55,-20);box(car,.1,.1,19.4,MAT.brass,x+(x<220?.23:-.23),1.42,-20);
@@ -86,6 +88,7 @@
       // A small travel library accompanies the railway titles: across plains, around worlds and into overlooked places.
       for(const [i,z] of [-27.2,-25,-22.8,-20.6,-18.4,-16.2].entries())if(books[i])volume(car,books[i],222.25,1.25,z);label(car,'TRAVEL LIBRARY · ROUTES REAL AND IMAGINED',222.88,2.45,-21.8,5.4,.48,Math.PI/2);
       control(car,'depart','A conductor’s brass punch','The ticket reads: Collections Depot — works awaiting another reader.','BEGIN JOURNEY',220.5,1.6,-28.9);
+      conductor(car,220.7,-26.7,Math.PI);
       control(car,'settle','A worn reading seat','Close your eyes for a moment; the next stop will come sooner.','SETTLE · ARRIVE SOONER',218.8,1.1,-18);
       control(car,'alight','The carriage door','The platform waits until you choose to leave.','BACK TO PLATFORM',220.5,1.7,-10.1,1.2,2.8,.12);
       control(car,'car-home','A return ticket beside the window','Valid whenever you wish to go home.','RETURN TO LIBRARY',222.5,1.6,-14);
@@ -124,6 +127,7 @@
       else if(key==='depart'){if(!travelling&&!arrived){travelling=true;elapsed=0;controls.depart.userData.action='UNDER WAY';controls.alight.userData.author='The doors will open at the collections depot.';notice('The wheels begin to turn. Read, watch the windows, or settle into the worn seat to arrive sooner.',8)}else notice(arrived?'You have reached the depot. The carriage door opens onto it.':'The depot lies ahead. The reading seat offers a shorter journey.',5)}
       else if(key==='settle'){if(!arrived){travelling=true;elapsed=Math.max(elapsed,58);notice('You settle into the seat. The rhythm softens; a station lamp appears.',4)}else notice('The train waits here without a timetable. Take your time with a book.',5)}
       else if(key==='alight'){if(travelling)notice('The train is moving. Settle into the reading seat if you would like to arrive sooner.',5);else if(arrived){move(260,-9,0);notice('Crates, catalogue drawers, and books held for another reader. Nothing here is arranged by popularity.',8)}else move(213,-20,-Math.PI/2)}
+      else if(key==='conductor'){const waiting=['“Tickets are optional. Curiosity is not.”','“The depot keeps books between readers, not books without readers.”','“Departure is whenever you touch the brass punch. The timetable dislikes being consulted.”'],moving=['“Mind the sway. The shelves travel better than some passengers.”','“We are passing the Unwritten Junction. Nothing stops there twice.”','“You may read during the journey. Most distances become shorter inside a book.”'],done=['“Collections Depot. No deadline, no fines, and no promise that the return platform will be where you left it.”','“Take your time. A waiting book is not the same thing as an impatient one.”'];const lines=arrived?done:travelling?moving:waiting;notice(lines[conductorTalk++%lines.length],8)}
       else if(key.startsWith('drawer-')||key.startsWith('card-'))notice(object.userData.note,12);
       sync();return true;
     }
