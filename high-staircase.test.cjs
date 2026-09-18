@@ -72,6 +72,14 @@ test('a primitive rocket makes a reversible journey from the summit to the Moon'
   assert.match(stair,/e>=8\.5/);
 });
 
+test('the rocket cabin is a decorated and inspectable Victorian reading vessel',()=>{
+  for(const detail of ['buttoned launch couch','lunar navigation desk','Aether pressure','Narrative velocity','A practical chart of impractical orbits','secured travelling library','aether lamp'])assert.match(stair,new RegExp(detail,'i'));
+  assert.match(stair,/type:'rocket-interior-detail'/);
+  assert.match(stair,/type==='rocket-interior-detail'/);
+  assert.match(stair,/Horsehair padding, library-red leather/);
+  assert.match(stair,/Verne, Wells, Kepler, and de Bergerac/);
+});
+
 test('stair containment checks the full player radius and current vertical turn',()=>{
   assert.match(stair,/Math\.abs\(stepY-y\)>1\.35/);
   assert.match(stair,/samples=\[\[0,0\],\[radius,0\]/);
