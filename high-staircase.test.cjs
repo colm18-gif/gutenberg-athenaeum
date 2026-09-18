@@ -33,7 +33,8 @@ test('summit collection is curated for height, time and impossible journeys',()=
 test('both doors provide reversible, explicit travel',()=>{
   assert.match(stair,/type:'high-stair-door'/);
   assert.match(stair,/type:'high-stair-exit'/);
-  assert.match(stair,/moveTo\(bottomX,0,bottomZ\+1\.25/);
+  assert.match(stair,/moveTo\(bottomX,0,bottomZ\+1\.25,Math\.PI\)/);
+  assert.match(stair,/first rising tread is directly ahead/);
   assert.match(stair,/entranceX=-33\.5,entranceZ=-13\.58/);
   assert.match(stair,/moveTo\(entranceX,0,-11\.15,0\)/);
 });
@@ -87,6 +88,13 @@ test('continuous spiral collision has no impassable gaps between outer treads',(
   assert(oldNearest>.55,'the old isolated-centre collision leaves an outer gap');
   assert.match(stair,/for\(let i=0;i<stepPath\.length-1;i\+\+\)/);
   assert.match(stair,/\(\(x-from\.x\)\*dx\+\(z-from\.z\)\*dz\)\/lengthSquared/);
+});
+
+test('stair entrance faces along the first ascending turn',()=>{
+  const yaw=Math.PI,forward={x:-Math.sin(yaw),z:-Math.cos(yaw)};
+  assert(Math.abs(forward.x)<1e-9);
+  assert(forward.z>.99,'forward movement should lead toward the next rising tread');
+  assert.match(stair,/moveTo\(bottomX,0,bottomZ\+1\.25,Math\.PI\)/);
 });
 
 test('the lunar outpost is walkable and holds an early science-fiction collection',()=>{
