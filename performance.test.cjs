@@ -99,3 +99,15 @@ test('wing lifecycle sleeps outside its render boundary and can reactivate on re
   assert.match(game,/name==='eastWing'.*managed\?\.state==='dormant'.*activate\('east-wing'\).*managed\?\.state==='active'.*sleep\('east-wing'\)/);
   assert.match(game,/name==='westWing'.*managed\?\.state==='dormant'.*activate\('west-wing'\).*managed\?\.state==='active'.*sleep\('west-wing'\)/);
 });
+
+
+test('distant optional environments use managed on-demand zones',()=>{
+  assert.match(game,/id:'memory-rooms',build:buildMemoryRooms,activate:\(\)=>attachPerformanceZone\('memory'\)/);
+  assert.match(game,/id:'theme-rooms',build:buildThemeRooms,activate:\(\)=>attachPerformanceZone\('theme'\)/);
+  assert.match(game,/id:'roof-garden',build:buildRoofGarden,activate:\(\)=>attachPerformanceZone\('roof'\)/);
+  assert.match(game,/captureNewZoneObjects\('memory',existing\)/);
+  assert.match(game,/captureNewZoneObjects\('theme',existing\)/);
+  assert.match(game,/captureNewZoneObjects\('roof',existing\)/);
+  assert.match(game,/zoneManager\.activate\('roof-garden'\)/);
+  assert.match(game,/zoneManager\.activate\('theme-rooms'\)/);
+});
