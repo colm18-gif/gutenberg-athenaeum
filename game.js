@@ -684,8 +684,8 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     function captureNewZoneObjects(name,existing){const zone=performanceZones[name];if(!zone)return;for(const object of [...scene.children])if(!existing.has(object)&&object!==zone.group)zone.group.add(object);attachPerformanceZone(name)}
 
     // The two public wings are staged independently, so the central hall is the only large room drawn at entry.
-    preparePerformanceZone('westWing',object=>object.position.x<-19&&object.position.x>=-37.5&&object.position.z>-15&&object.position.z<11,()=>player.pos.x<19.5&&player.pos.x>-43);
-    preparePerformanceZone('eastWing',object=>object.position.x>19&&object.position.x<=37.5&&object.position.z>-15&&object.position.z<11,()=>player.pos.x>-19.5&&player.pos.x<43);
+    preparePerformanceZone('westWing',object=>object.position.x<-19&&object.position.x>=-37.5&&object.position.z>-15&&object.position.z<11,()=>player.pos.x<25&&player.pos.x>-43);
+    preparePerformanceZone('eastWing',object=>object.position.x>19&&object.position.x<=37.5&&object.position.z>-15&&object.position.z<11,()=>player.pos.x>-25&&player.pos.x<43);
     preparePerformanceZone('night',object=>object.position.x<-75,()=>player.pos.x<-75);
     preparePerformanceZone('memory',object=>object.position.x>55&&object.position.z<-8,()=>player.pos.x>55);
     preparePerformanceZone('theme',object=>object.position.x>58&&object.position.z>0,()=>player.pos.x>58&&player.pos.z>-3);
@@ -1057,7 +1057,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
     });
     const preOfficeFloor=floorHeight;floorHeight=function(x,z){return librarianOffice.floorAt(x,z)??preOfficeFloor(x,z)};
-    const preOfficeAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return librarianOffice.contains(x,z)?librarianOffice.allowed(x,z):preOfficeAllowed(x,z,y)};
+    const preOfficeAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){if(librarianOffice.blocksEntrance?.(x,z))return false;return librarianOffice.contains(x,z)?librarianOffice.allowed(x,z):preOfficeAllowed(x,z,y)};
     const preOfficeInteract=interact;interact=function(){if(focus&&!selected&&librarianOffice.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preOfficeInteract()};
     // The western door opens onto a spatially separate stair, allowing its many turns to rise
     // far beyond the existing roof without changing the carefully packed library floor plan.
