@@ -126,3 +126,23 @@ test('memory doors enter managed optional zones instead of bypassing lifecycle o
   assert.match(game,/zoneManager&&!memoryRoomsBuilt\)zoneManager\.activate\('memory-rooms'\)/);
   assert.match(game,/zoneManager&&!themeRoomsBuilt\)zoneManager\.activate\('theme-rooms'\)/);
 });
+
+
+test('office entrance is physically blocked and moved away from the wing threshold',()=>{
+  const office=fs.readFileSync('librarian-office.js','utf8');
+  assert.match(office,/entrance\.position\.set\(36\.55,0,5\.8\)/);
+  assert.match(office,/function blocksEntrance\(x,z\)/);
+  assert.match(game,/librarianOffice\.blocksEntrance\?\.\(x,z\)/);
+});
+
+test('public wings use overlapping hysteresis so doorway movement does not flicker geometry',()=>{
+  assert.match(game,/westWing'.*player\.pos\.x<25&&player\.pos\.x>-43/);
+  assert.match(game,/eastWing'.*player\.pos\.x>-25&&player\.pos\.x<43/);
+});
+
+test('Last Landing is widened and its walkable summit matches the larger room',()=>{
+  assert.match(stair,/innerRadius=5\.15/);
+  assert.match(stair,/cylinder\(6\.8,6\.8,\.38/);
+  assert.match(stair,/const summit=Math\.hypot\(x-cx,z-cz\)<6\.15/);
+  assert.match(stair,/Math\.hypot\(x\+dx-cx,z\+dz-cz\)<6\.35/);
+});
