@@ -7,6 +7,7 @@ const stair=fs.readFileSync('high-staircase.js','utf8');
 const train=fs.readFileSync('night-train.js','utf8');
 const html=fs.readFileSync('index.html','utf8');
 const coverMap=fs.readFileSync('data/cover-shard-map.js','utf8');
+const zoneManager=fs.readFileSync('zone-manager.js','utf8');
 
 test('real cover art is requested by proximity instead of at startup',()=>{
   assert.match(html,/loadScript\('data\/cover-shard-map\.js'\)/);
@@ -31,4 +32,17 @@ test('distant animation systems pause outside their zones',()=>{
   assert.match(game,/if\(mainActive\|\|catGuideTarget\|\|librarianGuideTarget\|\|chatOpen\)/);
   assert.match(stair,/const active=contains\(player\.pos\.x,player\.pos\.z\)\|\|rocketTrip;if\(!active\)return/);
   assert.match(train,/if\(!zone\)return false/);
+});
+
+
+test('zone manager provides an incremental lifecycle without eagerly building zones',()=>{
+  assert.match(html,/loadScript\('zone-manager\.js'\)/);
+  assert.match(zoneManager,/UNLOADED:'unloaded'/);
+  assert.match(zoneManager,/PRELOADING:'preloading'/);
+  assert.match(zoneManager,/ACTIVE:'active'/);
+  assert.match(zoneManager,/DORMANT:'dormant'/);
+  assert.match(zoneManager,/async preload\(id\)/);
+  assert.match(zoneManager,/if\(!z\.built\)\{await z\.build\?\.\(\);z\.built=true\}/);
+  assert.match(zoneManager,/async dispose\(id\)/);
+  assert.match(zoneManager,/trimWarmCache/);
 });
