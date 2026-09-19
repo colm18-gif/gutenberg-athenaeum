@@ -46,3 +46,14 @@ test('zone manager provides an incremental lifecycle without eagerly building zo
   assert.match(zoneManager,/async dispose\(id\)/);
   assert.match(zoneManager,/trimWarmCache/);
 });
+
+
+test('first room proof of concept uses ZoneManager without eager construction',()=>{
+  assert.match(game,/new window\.AthenaeumZoneManager\(\{warmLimit:2\}\)/);
+  assert.match(game,/id:'library-at-night',build:buildNightRoom/);
+  assert.match(game,/zoneManager\.activate\('library-at-night'\)/);
+  assert.match(game,/zoneManager\?\.sleep\('library-at-night'\)/);
+  const registration=game.indexOf("id:'library-at-night',build:buildNightRoom");
+  const activation=game.indexOf("zoneManager.activate('library-at-night')");
+  assert.ok(registration>-1&&activation>registration);
+});
