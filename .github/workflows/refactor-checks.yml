@@ -1,0 +1,23 @@
+name: Refactor checks
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [architecture-performance-refactor]
+
+permissions:
+  contents: read
+
+jobs:
+  architecture-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run architecture and performance regression tests
+        run: node --test performance.test.cjs
