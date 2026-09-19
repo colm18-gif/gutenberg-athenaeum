@@ -137,11 +137,14 @@ test('office entrance is physically blocked and moved away from the wing thresho
   assert.match(office,/\|\|blocksEntrance\(x,z\)/);
 });
 
-test('public wings load only after crossing their room thresholds',()=>{
-  assert.match(game,/westWing'.*player\.pos\.x<-18&&player\.pos\.x>-43/);
-  assert.match(game,/eastWing'.*player\.pos\.x>18&&player\.pos\.x<43/);
-  assert.match(game,/!eastWingBuilt.*player\.pos\.x>18/);
-  assert.match(game,/!westWingBuilt.*player\.pos\.x<-18/);
+test('public wings load only after deliberate door interaction',()=>{
+  assert.match(game,/type:'public-wing-door'/);
+  assert.match(game,/function openPublicWing\(side\)/);
+  assert.match(game,/zoneManager\?\.activate\(name\)/);
+  assert.match(game,/if\(d\.type==='public-wing-door'\)\{openPublicWing\(d\.side\);return\}/);
+  assert.match(game,/function wingDoorBlocks\(x,z\)/);
+  assert.doesNotMatch(game,/!eastWingBuilt&&player\.pos\.y/);
+  assert.doesNotMatch(game,/!westWingBuilt&&player\.pos\.y/);
 });
 
 test('Last Landing is widened and its walkable summit matches the larger room',()=>{
@@ -156,5 +159,6 @@ test('public wings are visually closed off while their rooms are unloaded',()=>{
   assert.match(game,/function makeWingThreshold\(side,label\)/);
   assert.match(game,/makeWingThreshold\(-1,'WEST WING'\);makeWingThreshold\(1,'EAST WING'\)/);
   assert.match(game,/function updateWingThresholds\(dt\)/);
+  assert.match(game,/action:'OPEN'/);
   assert.match(game,/function movePlayer\(dt\)\{updateWingThresholds\(dt\);/);
 });
