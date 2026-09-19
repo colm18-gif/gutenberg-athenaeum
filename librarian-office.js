@@ -11,7 +11,7 @@
     const entranceData={type:'librarian-office-door',title:"The Librarian's Office",author:'Appointments are accepted at hours the clock declines to display.',action:'ENTER'};
     const entrance=new THREE.Group();entrance.position.set(36.55,0,5.8);entrance.rotation.y=-Math.PI/2;scene.add(entrance);
     // The office is a portal room: the closed door must behave like a real wall, not a decorative mesh.
-    const entranceBarrier={minX:36.15,maxX:36.95,minZ:4.45,maxZ:7.15};
+    const entranceBarrier={minX:35.95,maxX:37.15,minZ:4.35,maxZ:7.25};
     const entranceDoor=box(2.35,4.2,.22,MAT.darkWood,0,2.1,0,entrance);entranceDoor.userData=entranceData;interactables.push(entranceDoor);
     for(const x of [-1.28,1.28])box(.18,4.5,.3,MAT.brass,x,2.25,0,entrance);box(2.75,.18,.3,MAT.brass,0,4.48,0,entrance);
     const plaqueTex=canvasTexture((c,cw,ch)=>{c.fillStyle='#24170d';c.fillRect(0,0,cw,ch);c.strokeStyle='#c69a50';c.lineWidth=9;c.strokeRect(7,7,cw-14,ch-14);c.fillStyle='#ead39d';c.textAlign='center';c.font='bold 30px Georgia';c.fillText("THE LIBRARIAN'S OFFICE",cw/2,48)},620,72);
