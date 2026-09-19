@@ -162,3 +162,12 @@ test('public wings are visually closed off while their rooms are unloaded',()=>{
   assert.match(game,/action:'OPEN'/);
   assert.match(game,/function movePlayer\(dt\)\{updateWingThresholds\(dt\);/);
 });
+
+
+test('both public wings use enclosed vestibules that occlude unloaded rooms',()=>{
+  assert.match(game,/Permanent hall wall and deep reveal hide the unloaded wing completely/);
+  assert.match(game,/const screen=box\(\.18,7\.2,8\.65,MAT\.darkWood/);
+  assert.match(game,/publicWingDoors\.push\(\{side,left,right,screen/);
+  assert.match(game,/door\.loaded=true;door\.screen\.visible=false/);
+  assert.match(game,/const visualTarget=door\.loaded\?door\.target:0/);
+});
