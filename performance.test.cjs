@@ -120,3 +120,9 @@ test('impossible staircase keeps its discovery entrance while detaching only the
   assert.match(game,/const highStairWorld=\[highStaircase\.root\]/);
   assert.match(game,/focus\.userData\?\.type==='high-stair-door'\)attachHighStair\(\)/);
 });
+
+
+test('memory doors enter managed optional zones instead of bypassing lifecycle ownership',()=>{
+  assert.match(game,/zoneManager&&!memoryRoomsBuilt\)zoneManager\.activate\('memory-rooms'\)/);
+  assert.match(game,/zoneManager&&!themeRoomsBuilt\)zoneManager\.activate\('theme-rooms'\)/);
+});
