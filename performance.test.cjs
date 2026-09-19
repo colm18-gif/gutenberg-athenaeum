@@ -87,3 +87,15 @@ test('public wings have independent render-tree boundaries',()=>{
   assert.match(game,/captureNewZoneObjects\('westWing',existing\)/);
   assert.match(game,/zone\.group\.removeFromParent\(\);zone\.active=false/);
 });
+
+
+test('Grand Hall is the permanent startup core and prepared destinations begin detached',()=>{
+  assert.match(game,/Startup contract: the Grand Hall is the permanent core/);
+  assert.match(game,/for\(const zone of Object\.values\(performanceZones\)\)\{zone\.group\.removeFromParent\(\);zone\.active=false\}/);
+  assert.match(game,/__ATHENAEUM_STARTUP_CORE__=\{name:'grand-hall',deferred:Object\.keys\(performanceZones\)\}/);
+});
+
+test('wing lifecycle sleeps outside its render boundary and can reactivate on return',()=>{
+  assert.match(game,/name==='eastWing'.*managed\?\.state==='dormant'.*activate\('east-wing'\).*managed\?\.state==='active'.*sleep\('east-wing'\)/);
+  assert.match(game,/name==='westWing'.*managed\?\.state==='dormant'.*activate\('west-wing'\).*managed\?\.state==='active'.*sleep\('west-wing'\)/);
+});
