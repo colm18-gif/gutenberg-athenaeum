@@ -171,3 +171,11 @@ test('both public wings use enclosed vestibules that occlude unloaded rooms',()=
   assert.match(game,/door\.loaded=true;door\.screen\.visible=false/);
   assert.match(game,/const visualTarget=door\.loaded\?door\.target:0/);
 });
+
+
+test('wing vestibules overlap destination geometry without an exterior gap',()=>{
+  assert.match(game,/box\(6\.35,\.34,9\.5,MAT\.wood,x\+side\*3\.0/);
+  assert.match(game,/Overlap the vestibule deeply into the wing/);
+  assert.match(game,/x\+side\*5\.7,3\.6,0/);
+  assert.match(game,/setTimeout\(\(\)=>door\.screen\.visible=false,120\)/);
+});
