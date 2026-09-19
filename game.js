@@ -274,10 +274,12 @@ function coverTexture(book){if(coverTextureCache.has(book.id))return coverTextur
     function makeWingThreshold(side,label){const x=side*19,hallX=x-side*.18,vestX=x+side*1.45;
       // Permanent hall wall and deep reveal hide the unloaded wing completely.
       box(.72,8.2,7.15,MAT.stone,hallX,4.1,-8.45,false);box(.72,8.2,7.15,MAT.stone,hallX,4.1,8.45,false);box(.72,1.35,9.8,MAT.stone,hallX,7.5,0,false);
-      box(3.25,.34,9.5,MAT.wood,vestX,.02,0,false);box(3.25,.34,9.5,MAT.darkWood,vestX,7.92,0,false);
-      box(3.25,7.9,.38,MAT.stone,vestX,3.95,-4.62,false);box(3.25,7.9,.38,MAT.stone,vestX,3.95,4.62,false);
+      box(6.35,.34,9.5,MAT.wood,x+side*3.0,.02,0,false);box(6.35,.34,9.5,MAT.darkWood,x+side*3.0,7.92,0,false);
+      box(6.35,7.9,.38,MAT.stone,x+side*3.0,3.95,-4.62,false);box(6.35,7.9,.38,MAT.stone,x+side*3.0,3.95,4.62,false);
+      // Overlap the vestibule deeply into the wing so there can be no exterior void between spaces.
+      box(.42,1.05,9.25,MAT.stone,x+side*5.95,7.38,0,false);
       // A dark inner screen prevents any glimpse of the unloaded room during the opening animation.
-      const screen=box(.18,7.2,8.65,MAT.darkWood,x+side*3.05,3.6,0,false);screen.visible=true;
+      const screen=box(.18,7.2,8.65,MAT.darkWood,x+side*5.7,3.6,0,false);screen.visible=true;
       const left=box(.32,6.65,3.85,MAT.darkWood,hallX-side*.2,3.33,-2.02,false),right=box(.32,6.65,3.85,MAT.darkWood,hallX-side*.2,3.33,2.02,false);
       for(const z of [-4.2,4.2])box(.72,7.75,.72,MAT.wood2,hallX,3.88,z,false);box(.72,.78,9.1,MAT.wood2,hallX,7.36,0,false);
       const signTex=canvasTexture((ctx,w,h)=>{ctx.fillStyle='#21140c';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#b98a48';ctx.lineWidth=8;ctx.strokeRect(7,7,w-14,h-14);ctx.fillStyle='#ead39d';ctx.textAlign='center';ctx.font='bold 34px Georgia';ctx.fillText(label,w/2,49)},520,72);
@@ -286,7 +288,7 @@ function coverTexture(book){if(coverTextureCache.has(book.id))return coverTextur
       publicWingDoors.push({side,left,right,screen,open:0,target:0,loaded:false});
     }
     makeWingThreshold(-1,'WEST WING');makeWingThreshold(1,'EAST WING');
-    function openPublicWing(side){const door=publicWingDoors.find(item=>item.side===side);if(!door||door.target)return;door.target=1;const name=side<0?'west-wing':'east-wing';zoneManager?.activate(name).then(()=>{door.loaded=true;door.screen.visible=false}).catch(error=>{console.warn(name+' activation failed',error);side<0?buildWestWing():buildEastWing();door.loaded=true;door.screen.visible=false});sound(82,.55,'triangle',.16);showNotice((side<0?'West':'East')+' Wing doors open.',3)}
+    function openPublicWing(side){const door=publicWingDoors.find(item=>item.side===side);if(!door||door.target)return;door.target=1;const name=side<0?'west-wing':'east-wing';zoneManager?.activate(name).then(()=>{door.loaded=true;setTimeout(()=>door.screen.visible=false,120)}).catch(error=>{console.warn(name+' activation failed',error);side<0?buildWestWing():buildEastWing();door.loaded=true;door.screen.visible=false});sound(82,.55,'triangle',.16);showNotice((side<0?'West':'East')+' Wing doors open.',3)}
     function updateWingThresholds(dt){for(const door of publicWingDoors){const visualTarget=door.loaded?door.target:0;door.open=THREE.MathUtils.damp(door.open,visualTarget,7,dt);const swing=door.open*Math.PI*.47;door.left.rotation.y=door.side*swing;door.right.rotation.y=-door.side*swing}}
     function wingDoorBlocks(x,z){const r=player.radius||.42;for(const door of publicWingDoors){if(door.open>.72)continue;if(Math.abs(z)>4.25+r)continue;if(door.side<0&&x-r<-18.45&&x+r>-19.55)return true;if(door.side>0&&x+r>18.45&&x-r<19.55)return true}return false}
     // complete roofs and lintels close every seam while preserving intentional entrances
