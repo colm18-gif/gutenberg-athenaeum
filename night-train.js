@@ -49,7 +49,7 @@
     label(entranceGroup,'NIGHT PLATFORM',164.58,4.58,-27,1.05,.28,-Math.PI/2);label(entranceGroup,'PARCELS · BOOKS · REQUEST STOP',164.68,3.72,-27,2.35,.34,-Math.PI/2);
     collider(165,-27,.24,2.2,'Night-platform gates',-.5,4.35);lamp(entranceGroup,164.55,3.25,-28.72);lamp(entranceGroup,164.55,3.25,-25.28);rememberLights(entranceGroup);
     performanceZones.nightRailEntrance={group:entranceGroup,isNeeded:()=>player.pos.x>135&&player.pos.x<170&&player.pos.z<-8,active:true};
-    function room(key){const g=new THREE.Group();g.name='night-railway-'+key;groups[key]=g;scene.add(g);performanceZones['nightRail'+key]={group:g,isNeeded:()=>zoneAt(player.pos.x,player.pos.z)?.key===key,active:true};return g}
+    function room(key){const g=new THREE.Group();g.name='night-railway-'+key;groups[key]=g;performanceZones['nightRail'+key]={group:g,isNeeded:()=>zoneAt(player.pos.x,player.pos.z)?.key===key,active:false};return g}
     function build(){if(built)return;built=true;
       const platform=room('platform');box(platform,6,.4,30,MAT.stone,213,-.2,-20);box(platform,.4,5,30,metal,209.8,2.5,-20);box(platform,6,5,.4,metal,213,2.5,-35.2);box(platform,6,5,.4,metal,213,2.5,-4.8);box(platform,6,.3,30,metal,213,5,-20);
       // The CC0 track adds correctly proportioned sleepers and rail chairs; these boxes remain as a fallback.
@@ -118,7 +118,7 @@
       depot.traverse(o=>{if(o.isPointLight)o.intensity*=2});
       for(const g of Object.values(groups))rememberLights(g);sync();
     }
-    function sync(){const zone=zoneAt(player.pos.x,player.pos.z)?.key;for(const [key,g] of Object.entries(groups))g.visible=key===zone}
+    function sync(){const zone=zoneAt(player.pos.x,player.pos.z)?.key;for(const [key,g] of Object.entries(groups)){const active=key===zone;if(active&&!g.parent)scene.add(g);else if(!active&&g.parent)g.removeFromParent();const perf=performanceZones['nightRail'+key];if(perf)perf.active=active}}
     function cancel(){travelling=false;elapsed=0;nextWheel=0}
     function interact(object){if(object?.userData?.type!=='night-railway')return false;const key=object.userData.key;
       if(key==='entrance'){build();cancel();move(213,-20,-Math.PI/2);notice('A night train waits beside a platform the public catalogue never mentioned.',7)}
