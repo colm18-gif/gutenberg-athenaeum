@@ -150,3 +150,11 @@ test('Last Landing is widened and its walkable summit matches the larger room',(
   assert.match(stair,/const summit=Math\.hypot\(x-cx,z-cz\)<6\.15/);
   assert.match(stair,/Math\.hypot\(x\+dx-cx,z\+dz-cz\)<6\.35/);
 });
+
+
+test('public wings are visually closed off while their rooms are unloaded',()=>{
+  assert.match(game,/function makeWingThreshold\(side,label\)/);
+  assert.match(game,/makeWingThreshold\(-1,'WEST WING'\);makeWingThreshold\(1,'EAST WING'\)/);
+  assert.match(game,/function updateWingThresholds\(dt\)/);
+  assert.match(game,/function movePlayer\(dt\)\{updateWingThresholds\(dt\);/);
+});
