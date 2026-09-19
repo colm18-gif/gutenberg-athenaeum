@@ -132,14 +132,16 @@ test('office entrance is physically blocked and moved away from the wing thresho
   const office=fs.readFileSync('librarian-office.js','utf8');
   assert.match(office,/entrance\.position\.set\(36\.55,0,5\.8\)/);
   assert.match(office,/function blocksEntrance\(x,z\)/);
+  assert.match(office,/function allowed\(x,z\)\{if\(blocksEntrance\(x,z\)\)return false/);
+  assert.match(game,/if\(librarianOffice\.blocksEntrance\?\.\(x,z\)\)return false/);
   assert.match(office,/\|\|blocksEntrance\(x,z\)/);
 });
 
-test('public wings stay present across the Grand Hall sightline and preload before the doorway',()=>{
-  assert.match(game,/westWing'.*player\.pos\.x<31&&player\.pos\.x>-43/);
-  assert.match(game,/eastWing'.*player\.pos\.x>-31&&player\.pos\.x<43/);
-  assert.match(game,/!eastWingBuilt.*player\.pos\.x>8/);
-  assert.match(game,/!westWingBuilt.*player\.pos\.x<-8/);
+test('public wings load only after crossing their room thresholds',()=>{
+  assert.match(game,/westWing'.*player\.pos\.x<-18&&player\.pos\.x>-43/);
+  assert.match(game,/eastWing'.*player\.pos\.x>18&&player\.pos\.x<43/);
+  assert.match(game,/!eastWingBuilt.*player\.pos\.x>18/);
+  assert.match(game,/!westWingBuilt.*player\.pos\.x<-18/);
 });
 
 test('Last Landing is widened and its walkable summit matches the larger room',()=>{
