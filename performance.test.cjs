@@ -59,24 +59,6 @@ test('first room proof of concept uses ZoneManager without eager construction',(
 });
 
 
-test('east wing shelves are reserved but not constructed at startup',()=>{
-  assert.match(game,/const eastWingAddedBookStart=addedBookCursor;addedBookCursor\+=16;let eastWingBuilt=false/);
-  assert.match(game,/function buildEastWing\(\).*shelf\(28,-12,0,6\);shelf\(28,8,Math\.PI,6\)/);
-  assert.match(game,/id:'east-wing',build:buildEastWing/);
-  assert.match(game,/player\.pos\.x>13.*zoneManager\.activate\('east-wing'\)/);
-  const eagerPrefix=game.slice(0,game.indexOf('function buildEastWing'));
-  assert.doesNotMatch(eagerPrefix,/shelf\(28,-12,0,6\)/);
-});
-
-
-test('west wing shelves are reserved and lazy-built on approach',()=>{
-  assert.match(game,/const westWingAddedBookStart=addedBookCursor;addedBookCursor\+=16;let westWingBuilt=false/);
-  assert.match(game,/function buildWestWing\(\).*shelf\(-28,-12,0,6\);shelf\(-28,8,Math\.PI,6\)/);
-  assert.match(game,/id:'west-wing',build:buildWestWing/);
-  assert.match(game,/player\.pos\.x<-13.*zoneManager\.activate\('west-wing'\)/);
-  const eagerPrefix=game.slice(0,game.indexOf('function buildWestWing'));
-  assert.doesNotMatch(eagerPrefix,/shelf\(-28,-12,0,6\)/);
-});
 
 
 test('public wings have independent render-tree boundaries',()=>{
@@ -113,15 +95,28 @@ test('distant optional environments use managed on-demand zones',()=>{
 });
 
 
-test('impossible staircase heavy world is detached until its discovery door is used',()=>{
-  assert.match(game,/const highStairExisting=new Set\(scene\.children\)/);
-  assert.match(game,/for\(const object of highStairWorld\)object\.removeFromParent\(\)/);
-  assert.match(game,/focus\.userData\?\.type==='high-stair-door'\)attachHighStair\(\)/);
-  assert.match(game,/detachHighStair\(\);return preStairReset\(\)/);
-});
-
 test('night railway attaches only the current station, carriage, or depot group',()=>{
   assert.match(train,/performanceZones\['nightRail'\+key\]=\{group:g,isNeeded:.*active:false\}/);
   assert.match(train,/if\(active&&!g\.parent\)scene\.add\(g\)/);
   assert.match(train,/else if\(!active&&g\.parent\)g\.removeFromParent\(\)/);
+});
+
+
+test('lazy wing catalogue cursors preserve the original shelf sequence',()=>{
+  assert.match(game,/const westWingBookStart=bookCursor,westWingAddedBookStart=addedBookCursor;bookCursor\+=16;addedBookCursor\+=16/);
+  assert.match(game,/const eastWingBookStart=bookCursor,eastWingAddedBookStart=addedBookCursor;bookCursor\+=10;addedBookCursor\+=16/);
+  assert.match(game,/bookCursor=westWingBookStart;addedBookCursor=westWingAddedBookStart/);
+  assert.match(game,/bookCursor=eastWingBookStart;addedBookCursor=eastWingAddedBookStart/);
+});
+
+test('managed zones are not independently reattached by the legacy visibility loop',()=>{
+  assert.match(game,/managedName=name==='eastWing'\?'east-wing':name==='westWing'\?'west-wing':name==='memory'\?'memory-rooms':name==='theme'\?'theme-rooms':name==='roof'\?'roof-garden':null/);
+  assert.match(game,/if\(!managedName\)\{if\(needed&&!zone\.active\)/);
+});
+
+test('impossible staircase keeps its discovery entrance while detaching only the remote world',()=>{
+  assert.match(stair,/entrance\.name='high-stair-entrance'/);
+  assert.match(stair,/return \{contains,floorAt,allowed,interact,update,reset,onMoon,root,entrance/);
+  assert.match(game,/const highStairWorld=\[highStaircase\.root\]/);
+  assert.match(game,/focus\.userData\?\.type==='high-stair-door'\)attachHighStair\(\)/);
 });
