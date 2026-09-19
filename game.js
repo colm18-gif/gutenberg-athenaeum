@@ -1061,11 +1061,14 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     const preOfficeInteract=interact;interact=function(){if(focus&&!selected&&librarianOffice.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preOfficeInteract()};
     // The western door opens onto a spatially separate stair, allowing its many turns to rise
     // far beyond the existing roof without changing the carefully packed library floor plan.
-    const highStaircase=window.createHighStaircase({THREE,scene,MAT,player,camera,interactables,books,coverTexture,canvasTexture,showNotice,sound,playSample,lastSafePosition});
+    const highStairExisting=new Set(scene.children),highStaircase=window.createHighStaircase({THREE,scene,MAT,player,camera,interactables,books,coverTexture,canvasTexture,showNotice,sound,playSample,lastSafePosition});
+    // The impossible stair is spatially remote: keep its heavy world detached until its ordinary western-wing door is used.
+    const highStairWorld=[...scene.children].filter(object=>!highStairExisting.has(object)&&object.name!=='');for(const object of highStairWorld)object.removeFromParent();
+    let highStairActive=false;const attachHighStair=()=>{if(highStairActive)return;for(const object of highStairWorld)scene.add(object);highStairActive=true},detachHighStair=()=>{if(!highStairActive)return;for(const object of highStairWorld)object.removeFromParent();highStairActive=false};
     const preStairFloor=floorHeight;floorHeight=function(x,z){return highStaircase.floorAt(x,z)??preStairFloor(x,z)};
     const preStairAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return highStaircase.contains(x,z)?highStaircase.allowed(x,z):preStairAllowed(x,z,y)};
-    const preStairInteract=interact;interact=function(){if(focus&&!selected&&highStaircase.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preStairInteract()};
-    const preStairReset=resetPosition;resetPosition=function(){highStaircase.reset();return preStairReset()};
+    const preStairInteract=interact;interact=function(){if(focus&&!selected&&focus.userData?.type==='high-stair-door')attachHighStair();if(focus&&!selected&&highStaircase.interact(focus)){if(focus?.userData?.type==='high-stair-exit'||focus?.userData?.type==='summit-library-exit')detachHighStair();focus=null;ui.prompt.style.opacity=0;return}return preStairInteract()};
+    const preStairReset=resetPosition;resetPosition=function(){highStaircase.reset();detachHighStair();return preStairReset()};
     const preStairWorld=updateWorld;updateWorld=function(t,dt){preStairWorld(t,dt);highStaircase.update(t,dt)};
     animate();
   })();
