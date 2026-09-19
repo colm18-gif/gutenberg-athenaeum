@@ -67,3 +67,13 @@ test('east wing shelves are reserved but not constructed at startup',()=>{
   const eagerPrefix=game.slice(0,game.indexOf('function buildEastWing'));
   assert.doesNotMatch(eagerPrefix,/shelf\(28,-12,0,6\)/);
 });
+
+
+test('west wing shelves are reserved and lazy-built on approach',()=>{
+  assert.match(game,/const westWingAddedBookStart=addedBookCursor;addedBookCursor\+=16;let westWingBuilt=false/);
+  assert.match(game,/function buildWestWing\(\).*shelf\(-28,-12,0,6\);shelf\(-28,8,Math\.PI,6\)/);
+  assert.match(game,/id:'west-wing',build:buildWestWing/);
+  assert.match(game,/player\.pos\.x<-13.*zoneManager\.activate\('west-wing'\)/);
+  const eagerPrefix=game.slice(0,game.indexOf('function buildWestWing'));
+  assert.doesNotMatch(eagerPrefix,/shelf\(-28,-12,0,6\)/);
+});
