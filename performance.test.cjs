@@ -57,3 +57,13 @@ test('first room proof of concept uses ZoneManager without eager construction',(
   const activation=game.indexOf("zoneManager.activate('library-at-night')");
   assert.ok(registration>-1&&activation>registration);
 });
+
+
+test('east wing shelves are reserved but not constructed at startup',()=>{
+  assert.match(game,/const eastWingAddedBookStart=addedBookCursor;addedBookCursor\+=16;let eastWingBuilt=false/);
+  assert.match(game,/function buildEastWing\(\).*shelf\(28,-12,0,6\);shelf\(28,8,Math\.PI,6\)/);
+  assert.match(game,/id:'east-wing',build:buildEastWing/);
+  assert.match(game,/player\.pos\.x>13.*zoneManager\.activate\('east-wing'\)/);
+  const eagerPrefix=game.slice(0,game.indexOf('function buildEastWing'));
+  assert.doesNotMatch(eagerPrefix,/shelf\(28,-12,0,6\)/);
+});
