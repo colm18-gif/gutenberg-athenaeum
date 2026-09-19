@@ -111,3 +111,17 @@ test('distant optional environments use managed on-demand zones',()=>{
   assert.match(game,/zoneManager\.activate\('roof-garden'\)/);
   assert.match(game,/zoneManager\.activate\('theme-rooms'\)/);
 });
+
+
+test('impossible staircase heavy world is detached until its discovery door is used',()=>{
+  assert.match(game,/const highStairExisting=new Set\(scene\.children\)/);
+  assert.match(game,/for\(const object of highStairWorld\)object\.removeFromParent\(\)/);
+  assert.match(game,/focus\.userData\?\.type==='high-stair-door'\)attachHighStair\(\)/);
+  assert.match(game,/detachHighStair\(\);return preStairReset\(\)/);
+});
+
+test('night railway attaches only the current station, carriage, or depot group',()=>{
+  assert.match(train,/performanceZones\['nightRail'\+key\]=\{group:g,isNeeded:.*active:false\}/);
+  assert.match(train,/if\(active&&!g\.parent\)scene\.add\(g\)/);
+  assert.match(train,/else if\(!active&&g\.parent\)g\.removeFromParent\(\)/);
+});
