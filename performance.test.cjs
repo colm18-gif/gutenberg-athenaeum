@@ -77,3 +77,13 @@ test('west wing shelves are reserved and lazy-built on approach',()=>{
   const eagerPrefix=game.slice(0,game.indexOf('function buildWestWing'));
   assert.doesNotMatch(eagerPrefix,/shelf\(-28,-12,0,6\)/);
 });
+
+
+test('public wings have independent render-tree boundaries',()=>{
+  assert.match(game,/id:'east-wing'.*activate:\(\)=>attachPerformanceZone\('eastWing'\),deactivate:\(\)=>detachPerformanceZone\('eastWing'\)/);
+  assert.match(game,/id:'west-wing'.*activate:\(\)=>attachPerformanceZone\('westWing'\),deactivate:\(\)=>detachPerformanceZone\('westWing'\)/);
+  assert.match(game,/function captureNewZoneObjects\(name,existing\)/);
+  assert.match(game,/captureNewZoneObjects\('eastWing',existing\)/);
+  assert.match(game,/captureNewZoneObjects\('westWing',existing\)/);
+  assert.match(game,/zone\.group\.removeFromParent\(\);zone\.active=false/);
+});
