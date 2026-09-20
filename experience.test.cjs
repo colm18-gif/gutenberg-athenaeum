@@ -177,6 +177,12 @@ test('Haggard and Conan Doyle have concealed author rooms with distinct period e
   for(const id of [1661,244,2097,221,2852,834,139,126,439,1638])assert.match(game,new RegExp('\\['+id+',[^\\r\\n]*Arthur Conan Doyle'));
 });
 
+test('local startup files are build-versioned so room updates cannot mix with cached scripts',()=>{
+  assert.match(html,/const BUILD='[^']+'/);
+  assert.match(html,/const versionedSource=src=>\/\^https\?:/);
+  assert.match(html,/script\.src=versionedSource\(src\)/);
+});
+
 test('H. G. Wells has a complete English-only Project Gutenberg room with librarian notes',()=>{
   const wellsContext={window:{}};
   vm.runInNewContext(fs.readFileSync('data/wells-catalog.js','utf8'),wellsContext);
