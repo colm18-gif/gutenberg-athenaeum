@@ -6,18 +6,28 @@ const game=fs.readFileSync('game.js','utf8');
 const stair=fs.readFileSync('high-staircase.js','utf8');
 const train=fs.readFileSync('night-train.js','utf8');
 const html=fs.readFileSync('index.html','utf8');
-const coverMap=fs.readFileSync('data/cover-shard-map.js','utf8');
-
-test('real cover art is requested by proximity instead of at startup',()=>{
-  assert.match(html,/loadScript\('data\/cover-shard-map\.js'\)/);
-  assert.match(coverMap,/window\.ATHENAEUM_COVER_SHARDS=/);
+test('real cover art is requested individually, visibly and only while stationary',()=>{
+  assert.doesNotMatch(html,/cover-shard-map/);
   assert.match(game,/function requestRealCover\(book\)/);
-  assert.match(game,/fetch\(`covers\/shard_\$\{shardIndex\}\.json`\)/);
-  assert.doesNotMatch(game,/Promise\.all\(Array\.from\(\{length:9\}/);
+  assert.match(game,/fetch\(`covers\/books\/\$\{encodeURIComponent\(id\)\}\.jpg`/);
+  assert.doesNotMatch(game,/covers\/shard_/);
   assert.match(game,/tmpWorldPosition\.distanceToSquared\(camera\.position\)<144/);
+  assert.match(game,/coverFrustum\.containsPoint\(tmpWorldPosition\)/);
   assert.match(game,/requestIdleCallback/);
   assert.match(game,/playerIsMoving\(\)/);
+  assert.match(game,/noteCoverMotion\(\)/);
+  assert.match(game,/realCoverController\.abort\(\)/);
   assert.match(game,/queueCoverMesh\(bm\)/);
+});
+
+test('individual cover assets exist for every former shard entry',()=>{
+  const ids=new Set();
+  for(const name of fs.readdirSync('covers').filter(name=>/^shard_\d+\.json$/.test(name))){
+    const shard=JSON.parse(fs.readFileSync(`covers/${name}`,'utf8'));
+    for(const id of Object.keys(shard))ids.add(id);
+  }
+  assert.ok(ids.size>100);
+  for(const id of ids)assert.ok(fs.statSync(`covers/books/${id}.jpg`).size>100,`missing cover ${id}`);
 });
 
 test('movement and interaction use nearby spatial cells instead of whole-library scans',()=>{

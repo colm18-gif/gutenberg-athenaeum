@@ -1,595 +1,2352 @@
-(()=>{
-    'use strict';
-    const $=s=>document.querySelector(s), clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
-    const ui={veil:$('#veil'),enter:$('#enter'),reticle:$('#reticle'),prompt:$('#prompt'),notice:$('#notice'),status:$('#status'),time:$('#timeLabel'),weather:$('#weatherLabel'),mute:$('#mute'),actions:$('#bookActions'),reader:$('#reader'),journal:$('#journal'),pause:$('#pause')};
-    const touchMode=matchMedia('(hover:none) and (pointer:coarse)').matches||navigator.maxTouchPoints>0;let touchMoveX=0,touchMoveY=0,touchSprint=false;
-    if(!window.THREE){ui.veil.querySelector('.crest').innerHTML='<h1>THE DOORS REMAIN CLOSED</h1><p>The library could not load its 3D engine. Check your connection and try again.</p>';return;}
+YªçŠx-®éÜj×¢ëiºÚ+Š§j[h‘éÜ¢éí×M4×tèµ©hºÚn¶X§zÍJ
 
-    function loadSavedProgress(id){try{const raw=localStorage.getItem('athenaeum-progress-'+id);if(!raw)return 0;const parsed=JSON.parse(raw);if(parsed&&typeof parsed==='object'&&typeof parsed.p==='number'&&typeof parsed.n==='number'&&parsed.n>1)return parsed.p;return 0}catch(e){return 0}}
-    const books=[
-      [1342,'Pride and Prejudice','Jane Austen','Society',100],[84,'Frankenstein','Mary Shelley','Gothic',100],[2701,'Moby-Dick','Herman Melville','Sea',100],[11,"Aliceâ€™s Adventures in Wonderland",'Lewis Carroll','Wonder',100],[1661,'The Adventures of Sherlock Holmes','Arthur Conan Doyle','Mystery',100],[98,'A Tale of Two Cities','Charles Dickens','History',90],[174,'The Picture of Dorian Gray','Oscar Wilde','Gothic',95],[345,'Dracula','Bram Stoker','Gothic',100],[5200,'Metamorphosis','Franz Kafka','Strange',90],[1232,'The Prince','NiccolÃ² Machiavelli','Philosophy',80],
-      [1952,'The Yellow Wallpaper','Charlotte Perkins Gilman','Gothic',70],[1400,'Great Expectations','Charles Dickens','Society',90],[4300,'Ulysses','James Joyce','Modern',95],[1080,'A Modest Proposal','Jonathan Swift','Satire',75],[46,'A Christmas Carol','Charles Dickens','Ghosts',90],[768,'Wuthering Heights','Emily BrontÃ«','Gothic',95],[2554,'Crime and Punishment','Fyodor Dostoyevsky','Conscience',95],[219,'Heart of Darkness','Joseph Conrad','Journey',85],[16328,'Beowulf','Anonymous','Legend',70],[6130,'The Iliad','Homer','Epic',85],
-      [19942,'Candide','Voltaire','Satire',75],[55,'The Wonderful Wizard of Oz','L. Frank Baum','Wonder',80],[244,'A Study in Scarlet','Arthur Conan Doyle','Mystery',80],[514,'Little Women','Louisa May Alcott','Society',90],[1260,'Jane Eyre','Charlotte BrontÃ«','Gothic',95],[2097,'The Sign of the Four','Arthur Conan Doyle','Mystery',70],[1727,'The Odyssey','Homer','Epic',90],[27827,'The Kama Sutra of Vatsyayana','Vatsyayana','Customs',65],[5740,'Tractatus Logico-Philosophicus','Ludwig Wittgenstein','Philosophy',55],[1064,'The Masque of the Red Death','Edgar Allan Poe','Gothic',65],
-      [145,'Middlemarch','George Eliot','Society',80],[35,'The Time Machine','H. G. Wells','Speculative',90],[5230,'The Invisible Man','H. G. Wells','Speculative',85],[236,'The Jungle Book','Rudyard Kipling','Adventure',85],[3296,'The Confessions of St. Augustine','Saint Augustine','Memory',55],[1524,'Hamlet','William Shakespeare','Drama',95],[10002,'The House on the Borderland','William Hope Hodgson','Uncanny',25],[389,'The Great God Pan','Arthur Machen','Uncanny',25],[1695,'The Man Who Was Thursday','G. K. Chesterton','Strange',30],[1934,'Songs of Innocence and of Experience','William Blake','Poetry',35],[2005,'Piccadilly Jim','P. G. Wodehouse','Comedy',25],[10897,'The Wendigo','Algernon Blackwood','Uncanny',20],[1144,'In the Cage','Henry James','Society',20],[204,'The Innocence of Father Brown','G. K. Chesterton','Mystery',30],[1154,'The Voyages of Doctor Dolittle','Hugh Lofting','Adventure',30],[72,'Thuvia, Maid of Mars','Edgar Rice Burroughs','Adventure',15],[965,'The Black Arrow','Robert Louis Stevenson','Adventure',35],[215,'The Call of the Wild','Jack London','Adventure',70],
-      [43,'Strange Case of Dr Jekyll and Mr Hyde','Robert Louis Stevenson','Gothic',95],[74,'The Adventures of Tom Sawyer','Mark Twain','Adventure',90],[76,'Adventures of Huckleberry Finn','Mark Twain','Adventure',95],[120,'Treasure Island','Robert Louis Stevenson','Adventure',95],[164,'Twenty Thousand Leagues under the Sea','Jules Verne','Adventure',90],
-      [161,'Sense and Sensibility','Jane Austen','Society',95],[158,'Emma','Jane Austen','Society',95],[105,'Persuasion','Jane Austen','Society',90],[141,'Mansfield Park','Jane Austen','Society',90],[730,'Oliver Twist','Charles Dickens','Society',90],
-      [1184,'The Count of Monte Cristo','Alexandre Dumas','Adventure',95],[2600,'War and Peace','Leo Tolstoy','History',100],[1399,'Anna Karenina','Leo Tolstoy','Society',95],[996,'Don Quixote','Miguel de Cervantes','Adventure',100],[28054,'The Brothers Karamazov','Fyodor Dostoyevsky','Conscience',95],
-      [2500,'Siddhartha','Hermann Hesse','Philosophy',85],[1322,'Leaves of Grass','Walt Whitman','Poetry',90],[2148,'The Works of Edgar Allan Poe â€” Volume 2','Edgar Allan Poe','Gothic',75],[3207,'Leviathan','Thomas Hobbes','Philosophy',80],[1497,'The Republic','Plato','Philosophy',90],
-      [61,'The Communist Manifesto','Karl Marx and Friedrich Engels','Contested',90],[160,'The Awakening and Selected Short Stories','Kate Chopin','Contested',85],[153,'Jude the Obscure','Thomas Hardy','Contested',85],[33,'The Scarlet Letter','Nathaniel Hawthorne','Contested',90],[140,'The Jungle','Upton Sinclair','Contested',90],
-      [408,'The Souls of Black Folk','W. E. B. Du Bois','Contested',90],[203,"Uncle Tomâ€™s Cabin",'Harriet Beecher Stowe','Contested',90],[1998,'Thus Spake Zarathustra','Friedrich Nietzsche','Contested',85],[3420,'A Vindication of the Rights of Woman','Mary Wollstonecraft','Contested',90],[25305,'Memoirs of Fanny Hill','John Cleland','Contested',70],
-      [16, "Peter Pan", "J. M. Barrie", "Wonder", 65],
-      [23, "Narrative of the Life of Frederick Douglass, an American Slave", "Frederick Douglass", "Memory", 65],
-      [36, "The War of the Worlds", "H. G. Wells", "Speculative", 65],
-      [41, "The Legend of Sleepy Hollow", "Washington Irving", "Ghosts", 65],
-      [45, "Anne of Green Gables", "L. M. Montgomery", "Society", 65],
-      [62, "A Princess of Mars", "Edgar Rice Burroughs", "Adventure", 65],
-      [73, "The Red Badge of Courage: An Episode of the American Civil War", "Stephen Crane", "History", 65],
-      [82, "Ivanhoe: A Romance", "Walter Scott", "Adventure", 65],
-      [86, "A Connecticut Yankee in King Arthur's Court", "Mark Twain", "Comedy", 65],
-      [90, "The Son of Tarzan", "Edgar Rice Burroughs", "Adventure", 65],
-      [103, "Around the World in Eighty Days", "Jules Verne", "Journey", 65],
-      [107, "Far from the Madding Crowd", "Thomas Hardy", "Society", 65],
-      [113, "The Secret Garden", "Frances Hodgson Burnett", "Wonder", 65],
-      [125, "A Girl of the Limberlost", "Gene Stratton-Porter", "Society", 65],
-      [135, "Les MisÃ©rables", "Victor Hugo", "Society", 65],
-      [151, "The Rime of the Ancient Mariner", "Samuel Taylor Coleridge", "Poetry", 65],
-      [163, "Flower Fables", "Louisa May Alcott", "Wonder", 65],
-      [171, "Charlotte Temple", "Mrs. Rowson", "Society", 65],
-      [209, "The Turn of the Screw", "Henry James", "Ghosts", 65],
-      [202, "My Bondage and My Freedom", "Frederick Douglass", "Memory", 65],
-      [205, "Walden, and On The Duty Of Civil Disobedience", "Henry David Thoreau", "Philosophy", 65],
-      [208, "Daisy Miller: A Study", "Henry James", "Society", 65],
-      [213, "The Man from Snowy River", "A. B. Paterson", "Poetry", 65],
-      [221, "The Return of Sherlock Holmes", "Arthur Conan Doyle", "Mystery", 65],
-      [226, "Cicero's Orations", "Marcus Tullius Cicero", "Philosophy", 65],
-      [230, "The Bucolics and Eclogues", "Virgil", "Poetry", 65],
-      [234, "Child Christopher and Goldilind the Fair", "William Morris", "Legend", 65],
-      [245, "Life on the Mississippi", "Mark Twain", "Memory", 65],
-      [268, "The Octopus : A Story of California", "Frank Norris", "Society", 65],
-      [285, "The Lost Continent", "C. J. Cutcliffe Hyne", "Adventure", 65],
-      [910, "White Fang", "Jack London", "Adventure", 65],
-      [1155, "The Secret Adversary", "Agatha Christie", "Mystery", 65],
-      [308, "Three Men in a Boat (To Say Nothing of the Dog)", "Jerome K. Jerome", "Comedy", 65],
-      [317, "The Culprit Fay, and Other Poems", "Joseph Rodman Drake", "Poetry", 65],
-      [332, "The Burial of the Guns", "Thomas Nelson Page", "History", 65],
-      [349, "The Harvester", "Gene Stratton-Porter", "Society", 65],
-      [360, "What is Property? An Inquiry into the Principle of Right and of Government", "P.-J. Proudhon", "Philosophy", 65],
-      [394, "Cranford", "Elizabeth Cleghorn Gaskell", "Society", 65],
-      [421, "Kidnapped", "Robert Louis Stevenson", "Adventure", 65],
-      [436, "The Master Key", "L. Frank Baum", "Speculative", 65],
-      [451, "The Shadow Line: A Confession", "Joseph Conrad", "Sea", 65],
-      [470, "Heretics", "G. K. Chesterton", "Philosophy", 65],
-      [521, "The Life and Adventures of Robinson Crusoe", "Daniel Defoe", "Adventure", 65],
-      [534, "An Inland Voyage", "Robert Louis Stevenson", "Journey", 65],
-      [543, "Main Street", "Sinclair Lewis", "Society", 65],
-      [599, "Vanity Fair", "William Makepeace Thackeray", "Society", 65],
-      [605, "Pellucidar", "Edgar Rice Burroughs", "Adventure", 65],
-      [1137, "A Lover's Complaint", "William Shakespeare", "Poetry", 65],
-      [863, "The Mysterious Affair at Styles", "Agatha Christie", "Mystery", 65],
-      [1206, "The Flying U Ranch", "B. M. Bower", "Adventure", 65],
-      [12352,'Iola Leroy; Or, Shadows Uplifted','Frances Ellen Watkins Harper','Returning Voices',18],
-      [11666,'The Conjure Woman','Charles W. Chesnutt','Returning Voices',17],
-      [11214,'The Garies and Their Friends','Frank J. Webb','Returning Voices',16],
-      [15265,'The Quest of the Silver Fleece','W. E. B. Du Bois','Returning Voices',16],
-      [32,'Herland','Charlotte Perkins Gilman','Returning Voices',15],
-      [11228,'The Marrow of Tradition','Charles W. Chesnutt','Returning Voices',14],
-      [241,'Clotelle; Or, The Colored Heroine','William Wells Brown','Returning Voices',13],
-      [15454,'Imperium in Imperio','Sutton E. Griggs','Returning Voices',12],
-      [17854,'The Sport of the Gods','Paul Laurence Dunbar','Returning Voices',11],
-      [472,'The House Behind the Cedars','Charles W. Chesnutt','Returning Voices',10],
-      [14107,'The Lost Stradivarius','John Meade Falkner','Fading Supernatural',9],
-      [10052,'The Open Door, and the Portrait','Margaret Oliphant','Fading Supernatural',9],
-      [14471,'The Empty House and Other Ghost Stories','Algernon Blackwood','Fading Supernatural',8],
-      [25016,'The House of Souls','Arthur Machen','Fading Supernatural',8],
-      [10662,'The Night Land','William Hope Hodgson','Fading Speculative',7],
-      [11229,'The Purple Cloud','M. P. Shiel','Fading Speculative',7],
-      [10542,'The Boats of the Glen Carrig','William Hope Hodgson','Fading Adventure',6],
-      [11045,'The Ghost Ship','Richard Middleton','Fading Supernatural',6],
-      [35517,'The Three Impostors','Arthur Machen','Fading Supernatural',5],
-      [5164,'The Beetle: A Mystery','Richard Marsh','Fading Supernatural',5],
-      [51568,'Some Haunted Houses of England & Wales','Elliott Oâ€™Donnell','Almost Unread',4],
-      [64930,'The Goddess: A Demon','Richard Marsh','Almost Unread',3],
-      [79291,'The Mysterious Locket','Ruth Lynn','Almost Unread',3],
-      [23608,'The Day of Wrath','MÃ³r JÃ³kai','Almost Unread',3],
-      [23515,'The Spectre in the Cart','Thomas Nelson Page','Almost Unread',2],
-      [68753,'Forgotten Danger','Joseph Samachson','Almost Unread',2],
-      [64031,'Is That You Xeluchli?','Dick Hetschel','Almost Unread',1],
-      [29272,'No Hiding Place','Richard Rein Smith','Almost Unread',1],
-      [14275,'The Necromancers','Robert Hugh Benson','Almost Unread',2],
-      [14317,'The Sorcery Club','Elliott Oâ€™Donnell','Almost Unread',2],
-      [1302,'The Enemies of Books','William Blades','Archive',5],
-      [26378,'The Care of Books','John Willis Clark','Archive',5],
-      [22136,'The Book-Hunter','John Hill Burton','Archive',4],
-      [28540,'Bibliomania; or Book-Madness','Thomas Frognall Dibdin','Archive',4],
-      [36764,'In the Track of the Bookworm','Irving Browne','Archive',3],
-      [22608,'A Book for All Readers','Ainsworth Rand Spofford','Archive',3],
-      [19553,'The Private Diary of Dr. John Dee and the Catalog of His Library','John Dee','Archive',2],
-      [443,'The Love Affairs of a Bibliomaniac','Eugene Field','Archive',2],
-      [1615,'Old English Libraries','Ernest Albert Savage','Archive',2],
-      [28174,'The Private Library','Arthur Lee Humphreys','Archive',1],
-    [1513,'Romeo and Juliet','William Shakespeare','Drama',65],
-    [3268,'The Mysteries of Udolpho','Ann Radcliffe','Gothic',65],
-    [601,'The Monk','M. G. Lewis','Gothic',65],
-    [2680,'Meditations','Marcus Aurelius','Philosophy',65],
-    [3011,'The Lady of the Lake','Walter Scott','Poetry',65],
-    [921,'De Profundis','Oscar Wilde','Memory',65],
-    [2825,'Undine','Friedrich de la Motte FouquÃ©','Wonder',65],
-    [8492,'The King in Yellow','Robert W. Chambers','Uncanny',65],
-    [2852,'The Hound of the Baskervilles','Arthur Conan Doyle','Mystery',65],
-    [834,'The Memoirs of Sherlock Holmes','Arthur Conan Doyle','Mystery',65],
-    [223,'The Wisdom of Father Brown','G. K. Chesterton','Mystery',65],
-    [5197,'My Life','Richard Wagner','Memory',65],
-    [20203,'Autobiography of Benjamin Franklin','Benjamin Franklin','Memory',65],
-    [175,'The Phantom of the Opera','Gaston Leroux','Gothic',65],
-    [2641,'A Room with a View','E. M. Forster','Society',65],
-    [17460,'Lorna Doone','R. D. Blackmore','Adventure',65],
-    [2002,'Sonnets from the Portuguese','Elizabeth Barrett Browning','Poetry',65],
-    [14244,'The Romance of Tristan and Iseult','Joseph BÃ©dier','Legend',65],
-    [36462,'King Arthur and the Knights of the Round Table','Thomas Malory','Legend',65],
-    [69087,'The Murder of Roger Ackroyd','Agatha Christie','Mystery',65],
-    [6133,'The Extraordinary Adventures of ArsÃ¨ne Lupin','Maurice Leblanc','Adventure',65],
-    [766,'David Copperfield','Charles Dickens','Society',65],
-    [1023,'Bleak House','Charles Dickens','Society',65],
-    [110,'Tess of the dâ€™Urbervilles','Thomas Hardy','Contested',65],
-    [589,'Catriona','Robert Louis Stevenson','Adventure',65],
-    [1013,'The First Men in the Moon','H. G. Wells','Speculative',75],
-    [1633,'The Brick Moon, and Other Stories','Edward Everett Hale','Speculative',45],
-    [46547,'A Voyage to the Moon','Cyrano de Bergerac','Speculative',40],
-    [10430,'Trips to the Moon','Lucian of Samosata','Speculative',35],
-    [10005,'A Voyage to the Moon','George Tucker','Speculative',30],
-    [69338,'The Moon Maid','Edgar Rice Burroughs','Speculative',45],
-    [66510,'The Moon: A Popular Treatise','Garrett Putman Serviss','Science',25],
-    [62779,'The Moon Hoax','Richard Adams Locke','Speculative',35],
-    [19103,'The Discovery of a World in the Moone','John Wilkins','Science',25],
-    [4552,'From the Earth to the Moon','Jules Verne','Speculative',65],
-    [1268,'The Mysterious Island','Jules Verne','Adventure',75],
-    [18857,'A Journey to the Centre of the Earth','Jules Verne','Speculative',85],
-    [46597,'In Search of the Castaways','Jules Verne','Journey',65],
-    [1842,'Michael Strogoff; Or, The Courier of the Czar','Jules Verne','Adventure',65],
-    [16457,'All Around the Moon','Jules Verne','Speculative',65],
-    [10339,'An Antarctic Mystery','Jules Verne','Adventure',60],
-    [3808,'Robur the Conqueror','Jules Verne','Speculative',60],
-    [159,'The Island of Doctor Moreau','H. G. Wells','Speculative',65],
-    [2147,'The Works of Edgar Allan Poe â€” Volume 1','Edgar Allan Poe','Gothic',65],
-    [77,'The House of the Seven Gables','Nathaniel Hawthorne','Gothic',65],
-    [1837,'The Prince and the Pauper','Mark Twain','Adventure',65],
-    [54,'The Marvelous Land of Oz','L. Frank Baum','Wonder',65],
-    [146,'A Little Princess','Frances Hodgson Burnett','Wonder',65],
-    [12,'Through the Looking-Glass','Lewis Carroll','Wonder',65],
-    [1600,'The Symposium','Plato','Philosophy',65],
-    [132,'The Art of War','Sun Tzu','Philosophy',65],
-    [1228,'On the Origin of Species','Charles Darwin','Contested',65],
-    [829,'Gulliverâ€™s Travels','Jonathan Swift','Satire',65],
-    [26,'Paradise Lost','John Milton','Epic',65],
-    [2591,'Grimmsâ€™ Fairy Tales','The Brothers Grimm','Wonder',65],
-    [1597,'Andersenâ€™s Fairy Tales','Hans Christian Andersen','Wonder',65],
-    [1074,'The Sea-Wolf','Jack London','Sea',65],
-    [2226,'Kim','Rudyard Kipling','Adventure',65],
-    [2376,'Up from Slavery','Booker T. Washington','Memory',65],
-    [3300,'The Wealth of Nations','Adam Smith','Philosophy',65],
-    [4363,'Beyond Good and Evil','Friedrich Nietzsche','Contested',65],
-    [147,'Common Sense','Thomas Paine','Contested',65],
-    [2542,'A Dollâ€™s House','Henrik Ibsen','Drama',65],
-    [550,'Silas Marner','George Eliot','Society',65],
-    [1257,'The Three Musketeers','Alexandre Dumas','Adventure',65],
-    [65238,'The Secret of Chimneys','Agatha Christie','Mystery',65],
-    [13,'The Hunting of the Snark','Lewis Carroll','Wonder',60],[651,'Phantasmagoria and Other Poems','Lewis Carroll','Wonder',35],[4763,'The Game of Logic','Lewis Carroll','Wonder',30],[29042,'A Tangled Tale','Lewis Carroll','Wonder',30],
-      [139,'The Lost World','Arthur Conan Doyle','Adventure',70],[126,'The Poison Belt','Arthur Conan Doyle','Speculative',55],[439,'The Vital Message','Arthur Conan Doyle','Philosophy',30],[1638,'The New Revelation','Arthur Conan Doyle','Philosophy',25],[3155,'She','H. Rider Haggard','Adventure',55],[2166,"King Solomon's Mines",'H. Rider Haggard','Adventure',65],
-      [711,'Allan Quatermain','H. Rider Haggard','Adventure',55],[5228,'Ayesha, the Return of She','H. Rider Haggard','Gothic',45],[6769,'The People of the Mist','H. Rider Haggard','Adventure',40],[1207,'Nada the Lily','H. Rider Haggard','History',45],[2769,'Cleopatra','H. Rider Haggard','History',45],[2721,'Eric Brighteyes','H. Rider Haggard','Legend',40],[5746,'The Ancient Allan','H. Rider Haggard','Adventure',35],[2841,'The Ivory Child','H. Rider Haggard','Adventure',35],[1690,'Marie: An Episode in the Life of the Late Allan Quatermain','H. Rider Haggard','History',35],
-      [1951,'The Coming Race','Edward Bulwer-Lytton','Adventure',30],[1906,'Erewhon','Samuel Butler','Adventure',40]
-].map((b,i)=>({id:b[0],title:b[1],author:b[2],category:b[3],fame:b[4],source:'Project Gutenberg',sourceUrl:`https://www.gutenberg.org/ebooks/${b[0]}`,licence:'Public Domain',textUrl:`https://www.gutenberg.org/cache/epub/${b[0]}/pg${b[0]}.txt`,progress:loadSavedProgress(b[0]),index:i}));
-    for(const record of window.ATHENAEUM_RAILWAY_BOOKS||[])if(!books.some(b=>b.id===record.id))books.push({...record,source:'Project Gutenberg',sourceUrl:`https://www.gutenberg.org/ebooks/${record.id}`,licence:'Public Domain',textUrl:`https://www.gutenberg.org/cache/epub/${record.id}/pg${record.id}.txt`,progress:loadSavedProgress(record.id),index:books.length});
-    const openAccessSources=window.ATHENAEUM_OPEN_ACCESS_SOURCES||{},openAccessBooks=window.ATHENAEUM_OPEN_ACCESS_BOOKS||[],bookEnrichments=window.ATHENAEUM_BOOK_ENRICHMENTS||{};
-    for(const record of openAccessBooks){const source=openAccessSources[record.source]||{};books.push(Object.assign({},record,{sourceKey:record.source,source:source.name||record.source,progress:loadSavedProgress(record.id),index:books.length}))}
-    for(const book of books)Object.assign(book,bookEnrichments[book.id]||{});
-    const offlineExtracts={
-      1342:`It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.\n\nHowever little known the feelings or views of such a man may be on his first entering a neighbourhood, this truth is so well fixed in the minds of the surrounding families, that he is considered as the rightful property of some one or other of their daughters.\n\nâ€œMy dear Mr. Bennet,â€ said his lady to him one day, â€œhave you heard that Netherfield Park is let at last?â€`,
-      84:`You will rejoice to hear that no disaster has accompanied the commencement of an enterprise which you have regarded with such evil forebodings. I arrived here yesterday, and my first task is to assure my dear sister of my welfare and increasing confidence in the success of my undertaking.\n\nI am already far north of London, and as I walk in the streets of Petersburgh, I feel a cold northern breeze play upon my cheeks, which braces my nerves and fills me with delight.`,
-      2701:`Call me Ishmael. Some years agoâ€”never mind how long preciselyâ€”having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.\n\nIt is a way I have of driving off the spleen and regulating the circulation. Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly November in my soul; then, I account it high time to get to sea as soon as I can.`,
-      11:`Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do: once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it, â€œand what is the use of a book,â€ thought Alice â€œwithout pictures or conversations?â€\n\nSo she was considering in her own mind whether the pleasure of making a daisy-chain would be worth the trouble of getting up and picking the daisies, when suddenly a White Rabbit with pink eyes ran close by her.`,
-      1661:`To Sherlock Holmes she is always the woman. I have seldom heard him mention her under any other name. In his eyes she eclipses and predominates the whole of her sex.\n\nIt was not that he felt any emotion akin to love for Irene Adler. All emotions, and that one particularly, were abhorrent to his cold, precise but admirably balanced mind.`,
-      98:`It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair.`,
-      174:`The studio was filled with the rich odour of roses, and when the light summer wind stirred amidst the trees of the garden, there came through the open door the heavy scent of the lilac, or the more delicate perfume of the pink-flowering thorn.`,
-      345:`3 May. Bistritz.â€”Left Munich at 8:35 P.M., on 1st May, arriving at Vienna early next morning; should have arrived at 6:46, but train was an hour late. Buda-Pesth seems a wonderful place, from the glimpse which I got of it from the train and the little I could walk through the streets.`,
-      5200:`One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections.`,
-      46:`Marley was dead: to begin with. There is no doubt whatever about that. The register of his burial was signed by the clergyman, the clerk, the undertaker, and the chief mourner. Scrooge signed it. And Scroogeâ€™s name was good upon â€™Change, for anything he chose to put his hand to.`,
-      768:`1801.â€”I have just returned from a visit to my landlordâ€”the solitary neighbour that I shall be troubled with. This is certainly a beautiful country! In all England, I do not believe that I could have fixed on a situation so completely removed from the stir of society.`,
-      2554:`On an exceptionally hot evening early in July a young man came out of the garret in which he lodged and in S. Place and walked slowly, almost hesitatingly, towards K. bridge. He had successfully avoided meeting his landlady on the staircase.`,
-      1260:`There was no possibility of taking a walk that day. We had been wandering, indeed, in the leafless shrubbery an hour in the morning; but since dinner the cold winter wind had brought with it clouds so sombre, and a rain so penetrating, that further out-door exercise was now out of the question.`,
-      35:`The Time Travellerâ€”for so it will be convenient to speak of himâ€”was expounding a recondite matter to us. His grey eyes shone and twinkled, and his usually pale face was flushed and animated. The fire burned brightly, and the soft radiance of the incandescent lights in the lilies of silver caught the bubbles that flashed and passed in our glasses.`,
-      236:`It was seven oâ€™clock of a very warm evening in the Seeonee hills when Father Wolf woke up from his dayâ€™s rest, scratched himself, yawned, and spread out his paws one after the other to get rid of the sleepy feeling in their tips.`,
-      215:`Buck did not read the newspapers, or he would have known that trouble was brewing, not alone for himself, but for every tide-water dog, strong of muscle and with warm, long hair, from Puget Sound to San Diego.`
-    };
-    function offlineEdition(book){const excerpt=offlineExtracts[book.id],source=book.source||'the source archive';return excerpt?`${book.title}\nby ${book.author}\n\nSelected opening from the public-domain edition\n\n${excerpt}`:`${book.title}\nby ${book.author}\n\nThe complete ${source} edition could not be fetched just now. The catalogue record, provenance and your reading place are still kept.\n\nCategory: ${book.category}`}
-    function cleanEdition(text){const start=text.search(/\*\*\* START OF (THE|THIS) PROJECT GUTENBERG EBOOK/i);if(start>=0)text=text.slice(text.indexOf('\n',start)+1);const end=text.search(/\*\*\* END OF (THE|THIS) PROJECT GUTENBERG EBOOK/i);if(end>1000)text=text.slice(0,end);return text.replace(/\r/g,'').replace(/\n{4,}/g,'\n\n').trim()}
-    function loadLocalEdition(book){window.ATHENAEUM_LOCAL_TEXTS=window.ATHENAEUM_LOCAL_TEXTS||{};const cached=window.ATHENAEUM_LOCAL_TEXTS[book.id];if(cached)return Promise.resolve(cached);return new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=`texts/local/pg${book.id}.js`;script.onload=()=>{script.remove();const text=window.ATHENAEUM_LOCAL_TEXTS[book.id];text?resolve(text):reject(new Error('Local edition was empty'))};script.onerror=()=>{script.remove();reject(new Error('Local edition could not be loaded'))};document.head.appendChild(script)})}
+OOÃBˆ	İ\ÙHİšXİ	ÎÃBˆÛÛœİ	\ÏO™Øİ[Y[œ]Y\TÙ[XİÜŠÊKÛ[\J‹KŠOO“X]›X^
+KX]›Z[Š‹ŠJNÃBˆÛÛœİZO^İ™Z[‰
+	Èİ™Z[	ÊK[\‰
+	ÈÙ[\‰ÊK™]XÛN‰
+	ÈÜ™]XÛIÊK›Û\‰
+	ÈÜ›Û\	ÊK›İXÙN‰
+	ÈÛ›İXÙIÊKİ]\Î‰
+	ÈÜİ]\ÉÊK[YN‰
+	Èİ[YSX™[	ÊKÙX]\‰
+	ÈİÙX]\“X™[	ÊK]]N‰
+	ÈÛ]]IÊKXİ[ÛœÎ‰
+	ÈØ›ÛÚĞXİ[ÛœÉÊK™XY\‰
+	ÈÜ™XY\‰ÊK›İ\›˜[‰
+	ÈÚ›İ\›˜[	ÊK]\ÙN‰
+	ÈÜ]\ÙIÊ_NÃBˆÛÛœİİXÚ[ÙO[X]ÚYYXJ	Êİ™\››Û™JH[™
+Ú[\˜ÛØ\œÙJIÊK›X]Ú\ß˜]šYØ]Ü‹›X^İXÚÚ[ÏŒÛ]İXÚ[İ™VLİXÚ[İ™VOLİXÚÜš[Y˜[ÙNÃBˆYŠ]Ú[™İË•‘QJ^İZK™Z[œ]Y\TÙ[XİÜŠ	Ë˜Ü™\İ	ÊKš[›™\’SIÏO•HÓÔ”È‘SPRSˆÓÔÑQÚO•HXœ˜\HÛİ[›İØY]ÈÑ[™Ú[™KˆÚXÚÈ[İ\ˆÛÛ›™Xİ[Ûˆ[™HYØZ[‹Ü‰ÎÜ™]\›ßCBƒBˆ[˜İ[ÛˆØYØ]™Y›ÙÜ™\ÜÊY
+^İ^ØÛÛœİ˜]Ï[ØØ[İÜ˜YÙK™Ù]][J	Ø][˜Y][K\›ÙÜ™\ÜËIÊÚY
+NÚYŠ\˜]Ê\™]\›ˆØÛÛœİ\œÙYR”ÓÓ‹œ\œÙJ˜]ÊNÚYŠ\œÙY	‰\[Ùˆ\œÙYOOIÛØš™Xİ	É‰\[Ùˆ\œÙYœOOIÛ[X™\‰É‰\[Ùˆ\œÙY›OOIÛ[X™\‰É‰œ\œÙY›ŒJ\™]\›ˆ\œÙYœÜ™]\›ˆXØ]Ú
+J^Ü™]\›ˆ_CBˆÛÛœİ›ÛÚÜÏVÃBˆÌLÍ‹	ÔšYH[™™ZYXÙIË	Ò˜[™H]\İ[‰Ë	ÔÛØÚY]IËLKÎ	Ñœ˜[šÙ[œİZ[‰Ë	ÓX\HÚ[^IË	ÑÛİXÉËLKÌÌK	Ó[ØKQXÚÉË	Ò\›X[ˆY[š[IË	ÔÙXIËLKÌLK[XÙx &\ÈY™[\™\È[ˆÛÛ™\›[™‹	Ó]Ú\ÈØ\œ›Û	Ë	ÕÛÛ™\‰ËLKÌMŒK	ÕHY™[\™\ÈÙˆÚ\›ØÚÈÛY\ÉË	Ğ\\ˆÛÛ˜[ˆŞ[IË	Ó^\İ\IËLKÎN	ĞH[HÙˆÛÈÚ]Y\ÉË	ĞÚ\›\ÈXÚÙ[œÉË	Ò\İÜIËLKÌMÍ	ÕHXİ\™HÙˆÜšX[ˆÜ˜^IË	ÓÜØØ\ˆÚ[IË	ÑÛİXÉËMWKÌÍK	Ñ˜Xİ[IË	Ğœ˜[HİÚÙ\‰Ë	ÑÛİXÉËLKÍLŒ	ÓY][[ÜœÜÚ\ÉË	Ñœ˜[ˆØYšØIË	Ôİ˜[™ÙIËLKÌLŒÌ‹	ÕHš[˜ÙIË	ÓšXØÛÛ0ìˆXXÚX]™[IË	Ô[ÜÛÜIËKBˆÌNML‹	ÕHY[İÈØ[\\‰Ë	ĞÚ\›İH\šÚ[œÈÚ[X[‰Ë	ÑÛİXÉËÌKÌM	ÑÜ™X]^Xİ][ÛœÉË	ĞÚ\›\ÈXÚÙ[œÉË	ÔÛØÚY]IËLKÍÌ	Õ[\ÜÙ\ÉË	Ò˜[Y\È›ŞXÙIË	Ó[Ù\›‰ËMWKÌL	ĞH[Ù\İ›ÜÜØ[	Ë	Ò›Û˜][ˆİÚY	Ë	ÔØ]\™IËÍWKÍ‹	ĞHÚš\İX\ÈØ\›Û	Ë	ĞÚ\›\ÈXÚÙ[œÉË	ÑÚÜİÉËLKÍÍ	Õİ]\š[™ÈZYÚÉË	Ñ[Z[Hœ›Û0êÉË	ÑÛİXÉËMWKÌMM	ĞÜš[YH[™[š\ÚY[	Ë	Ñ[ÙÜˆÜİŞY]œÚŞIË	ĞÛÛœØÚY[˜ÙIËMWKÌŒNK	ÒX\Ùˆ\šÛ™\ÜÉË	Ò›ÜÙ\ÛÛœ˜Y	Ë	Ò›İ\›™^IËWKÌMŒÌ	Ğ™[İİ[‰Ë	Ğ[›Û[[İ\ÉË	ÓYÙ[™	ËÌKÍŒLÌ	ÕH[XY	Ë	ÒÛY\‰Ë	Ñ\XÉËWKBˆÌNNM‹	ĞØ[™YIË	Õ›ÛZ\™IË	ÔØ]\™IËÍWKÍMK	ÕHÛÛ™\™[Ú^˜\™ÙˆŞ‰Ë	Óˆœ˜[šÈ˜][IË	ÕÛÛ™\‰ËKÌ	ĞHİYH[ˆØØ\›]	Ë	Ğ\\ˆÛÛ˜[ˆŞ[IË	Ó^\İ\IËKÍLM	Ó]HÛÛY[‰Ë	ÓİZ\ØHX^H[Ûİ	Ë	ÔÛØÚY]IËLKÌLŒ	Ò˜[™H^\™IË	ĞÚ\›İHœ›Û0êÉË	ÑÛİXÉËMWKÌŒMË	ÕHÚYÛˆÙˆH›İ\‰Ë	Ğ\\ˆÛÛ˜[ˆŞ[IË	Ó^\İ\IËÌKÌMÌË	ÕHÙ\ÜÙ^IË	ÒÛY\‰Ë	Ñ\XÉËLKÌÎË	ÕHØ[XHİ]˜HÙˆ˜]ŞX^X[˜IË	Õ˜]ŞX^X[˜IË	Ğİ\İÛ\ÉËWKÍMÍ	Õ˜Xİ]\ÈÙÚXÛËT[ÜÛÜXİ\ÉË	ÓYÚYÈÚ]Ù[œİZ[‰Ë	Ô[ÜÛÜIËMWKÌL	ÕHX\Ü]YHÙˆH™YX]	Ë	ÑYØ\ˆ[[ˆÙIË	ÑÛİXÉËWKBˆÌMK	ÓZY[X\˜Ú	Ë	ÑÙ[Ü™ÙH[[İ	Ë	ÔÛØÚY]IËKÌÍK	ÕH[YHXXÚ[™IË	ÒˆËˆÙ[ÉË	ÔÜXİ[]]™IËLKÍLŒÌ	ÕH[š\ÚX›HX[‰Ë	ÒˆËˆÙ[ÉË	ÔÜXİ[]]™IËWKÌŒÍ‹	ÕH[™ÛH›ÛÚÉË	ÔYX\™Ú\[™ÉË	ĞY™[\™IËWKÌÌM‹	ÕHÛÛ™™\ÜÚ[ÛœÈÙˆİˆ]Yİ\İ[™IË	ÔØZ[]Yİ\İ[™IË	ÓY[[ÜIËMWKÌML	Ò[[]	Ë	ÕÚ[X[HÚZÙ\ÜX\™IË	Ñ˜[XIËMWKÌL‹	ÕHİ\ÙHÛˆH›Ü™\›[™	Ë	ÕÚ[X[HÜHÙÜÛÛ‰Ë	Õ[˜Ø[›IËWKÌÎK	ÕHÜ™X]ÛÙ[‰Ë	Ğ\\ˆXXÚ[‰Ë	Õ[˜Ø[›IËWKÌMMK	ÕHX[ˆÚÈØ\È\œÙ^IË	ÑËˆËˆÚ\İ\Û‰Ë	Ôİ˜[™ÙIËÌKÌNLÍ	ÔÛÛ™ÜÈÙˆ[››ØÙ[˜ÙH[™Ùˆ^\šY[˜ÙIË	ÕÚ[X[H›ZÙIË	ÔÙ]IËÍWKÌŒK	ÔXØØY[Hš[IË	ÔˆËˆÛÙZİ\ÙIË	ĞÛÛYYIËWKÌLMË	ÕHÙ[™YÛÉË	Ğ[Ù\››Ûˆ›XÚİÛÛÙ	Ë	Õ[˜Ø[›IËŒKÌLM	Ò[ˆHØYÙIË	Ò[œH˜[Y\ÉË	ÔÛØÚY]IËŒKÌŒ	ÕH[››ØÙ[˜ÙHÙˆ˜]\ˆœ›İÛ‰Ë	ÑËˆËˆÚ\İ\Û‰Ë	Ó^\İ\IËÌKÌLMM	ÕH›ŞXYÙ\ÈÙˆØİÜˆÛ]IË	ÒYÚÙ[™ÉË	ĞY™[\™IËÌKÍÌ‹	Õ]šXKXZYÙˆX\œÉË	ÑYØ\ˆšXÙH\œ›İYÚÉË	ĞY™[\™IËMWKÎMK	ÕH›XÚÈ\œ›İÉË	Ô›Ø™\İZ\Èİ]™[œÛÛ‰Ë	ĞY™[\™IËÍWKÌŒMK	ÕHØ[ÙˆHÚ[	Ë	Ò˜XÚÈÛ™Û‰Ë	ĞY™[\™IËÌKBˆÍË	Ôİ˜[™ÙHØ\ÙHÙˆˆ™ZŞ[[™\ˆYIË	Ô›Ø™\İZ\Èİ]™[œÛÛ‰Ë	ÑÛİXÉËMWKÍÍ	ÕHY™[\™\ÈÙˆÛHØ]ŞY\‰Ë	ÓX\šÈØZ[‰Ë	ĞY™[\™IËLKÍÍ‹	ĞY™[\™\ÈÙˆXÚÛX™\œHš[›‰Ë	ÓX\šÈØZ[‰Ë	ĞY™[\™IËMWKÌLŒ	Õ™X\İ\™H\Û[™	Ë	Ô›Ø™\İZ\Èİ]™[œÛÛ‰Ë	ĞY™[\™IËMWKÌM	ÕÙ[Hİ\Ø[™XYİY\È[™\ˆHÙXIË	Ò[\È™\›™IË	ĞY™[\™IËLKBˆÌMŒK	ÔÙ[œÙH[™Ù[œÚXš[]IË	Ò˜[™H]\İ[‰Ë	ÔÛØÚY]IËMWKÌMN	Ñ[[XIË	Ò˜[™H]\İ[‰Ë	ÔÛØÚY]IËMWKÌLK	Ô\œİX\Ú[Û‰Ë	Ò˜[™H]\İ[‰Ë	ÔÛØÚY]IËLKÌMK	ÓX[œÙšY[\šÉË	Ò˜[™H]\İ[‰Ë	ÔÛØÚY]IËLKÍÌÌ	ÓÛ]™\ˆÚ\İ	Ë	ĞÚ\›\ÈXÚÙ[œÉË	ÔÛØÚY]IËLKBˆÌLN	ÕHÛİ[Ùˆ[ÛHÜš\İÉË	Ğ[^[™™H[X\ÉË	ĞY™[\™IËMWKÌŒ	ÕØ\ˆ[™XXÙIË	Ó[ÈÛİŞIË	Ò\İÜIËLKÌLÎNK	Ğ[›˜HØ\™[š[˜IË	Ó[ÈÛİŞIË	ÔÛØÚY]IËMWKÎNM‹	ÑÛˆ]Z^İIË	ÓZYİY[HÙ\˜[\ÉË	ĞY™[\™IËLKÌM	ÕHœ›İ\œÈØ\˜[X^›İ‰Ë	Ñ[ÙÜˆÜİŞY]œÚŞIË	ĞÛÛœØÚY[˜ÙIËMWKBˆÌL	ÔÚY\IË	Ò\›X[›ˆ\ÜÙIË	Ô[ÜÛÜIËWKÌLÌŒ‹	ÓX]™\ÈÙˆÜ˜\ÜÉË	ÕØ[Ú]X[‰Ë	ÔÙ]IËLKÌŒM	ÕHÛÜšÜÈÙˆYØ\ˆ[[ˆÙH8 %›Û[YH‰Ë	ÑYØ\ˆ[[ˆÙIË	ÑÛİXÉËÍWKÌÌŒË	Ó]šX][‰Ë	ÕÛX\ÈØ˜™\ÉË	Ô[ÜÛÜIËKÌMMË	ÕH™\X›XÉË	Ô]ÉË	Ô[ÜÛÜIËLKBˆÍŒK	ÕHÛÛ[][š\İX[šY™\İÉË	ÒØ\›X\[™œšYYšXÚ[™Ù[ÉË	ĞÛÛ\İY	ËLKÌMŒ	ÕH]ØZÙ[š[™È[™Ù[XİYÚÜİÜšY\ÉË	ÒØ]HÚÜ[‰Ë	ĞÛÛ\İY	ËWKÌMLË	ÒYHHØœØİ\™IË	ÕÛX\È\™IË	ĞÛÛ\İY	ËWKÌÌË	ÕHØØ\›]]\‰Ë	Ó˜][šY[]İÜ›™IË	ĞÛÛ\İY	ËLKÌM	ÕH[™ÛIË	Õ\ÛˆÚ[˜ÛZ\‰Ë	ĞÛÛ\İY	ËLKBˆÍ	ÕHÛİ[ÈÙˆ›XÚÈ›ÛÉË	ÕËˆKˆ‹ˆH›Ú\ÉË	ĞÛÛ\İY	ËLKÌŒË•[˜ÛHÛx &\ÈØXš[ˆ‹	Ò\œšY]™YXÚ\ˆİİÙIË	ĞÛÛ\İY	ËLKÌNNN	Õ\ÈÜZÙH˜\˜]\İ˜IË	ÑœšYYšXÚšY]œØÚIË	ĞÛÛ\İY	ËWKÌÍŒ	ĞHš[™XØ][ÛˆÙˆHšYÚÈÙˆÛÛX[‰Ë	ÓX\HÛÛİÛ™XÜ˜Y	Ë	ĞÛÛ\İY	ËLKÌLÌK	ÓY[[Ú\œÈÙˆ˜[›H[	Ë	Ò›ÚˆÛ[[™	Ë	ĞÛÛ\İY	ËÌKBˆÌM‹”]\ˆ[ˆ‹’‹ˆKˆ˜\œšYH‹•ÛÛ™\ˆ‹WKBˆÌŒË“˜\œ˜]]™HÙˆHY™HÙˆœ™Y\šXÚÈİYÛ\ÜË[ˆ[Y\šXØ[ˆÛ]™H‹‘œ™Y\šXÚÈİYÛ\ÜÈ‹“Y[[ÜH‹WKBˆÌÍ‹•HØ\ˆÙˆHÛÜ›È‹’ˆËˆÙ[È‹”ÜXİ[]]™H‹WKBˆÍK•HYÙ[™ÙˆÛY\HÛİÈ‹•Ø\Ú[™İÛˆ\š[™È‹‘ÚÜİÈ‹WKBˆÍK[›™HÙˆÜ™Y[ˆØX›\È‹“ˆKˆ[ÛÛÛY\H‹”ÛØÚY]H‹WKBˆÍŒ‹Hš[˜Ù\ÜÈÙˆX\œÈ‹‘YØ\ˆšXÙH\œ›İYÚÈ‹Y™[\™H‹WKBˆÍÌË•H™Y˜YÙHÙˆÛİ\˜YÙNˆ[ˆ\\ÛÙHÙˆH[Y\šXØ[ˆÚ]š[Ø\ˆ‹”İ\[ˆÜ˜[™H‹’\İÜH‹WKBˆÎ‹’]˜[šÙNˆH›ÛX[˜ÙH‹•Ø[\ˆØÛİ‹Y™[\™H‹WKBˆÎ‹HÛÛ›™XİXİ]X[šÙYH[ˆÚ[™È\\‰ÜÈÛİ\‹“X\šÈØZ[ˆ‹ÛÛYYH‹WKBˆÎL•HÛÛˆÙˆ\˜[ˆ‹‘YØ\ˆšXÙH\œ›İYÚÈ‹Y™[\™H‹WKBˆÌLË\›İ[™HÛÜ›[ˆZYÚH^\È‹’[\È™\›™H‹’›İ\›™^H‹WKBˆÌLË‘˜\ˆœ›ÛHHXY[™ÈÜ›İÙ‹•ÛX\È\™H‹”ÛØÚY]H‹WKBˆÌLLË•HÙXÜ™]Ø\™[ˆ‹‘œ˜[˜Ù\ÈÙÜÛÛˆ\›™]‹•ÛÛ™\ˆ‹WKBˆÌLKHÚ\›ÙˆH[X™\›Üİ‹‘Ù[™Hİ˜]Û‹TÜ\ˆ‹”ÛØÚY]H‹WKBˆÌLÍK“\ÈZ\ğê\˜X›\È‹•šXİÜˆYÛÈ‹”ÛØÚY]H‹WKBˆÌMLK•Hš[YHÙˆH[˜ÚY[X\š[™\ˆ‹”Ø[]Y[^[ÜˆÛÛ\šYÙH‹”Ù]H‹WKBˆÌMŒË‘›İÙ\ˆ˜X›\È‹“İZ\ØHX^H[Ûİ‹•ÛÛ™\ˆ‹WKBˆÌMÌKÚ\›İH[\H‹“\œËˆ›İÜÛÛˆ‹”ÛØÚY]H‹WKBˆÌŒK•H\›ˆÙˆHØÜ™]È‹’[œH˜[Y\È‹‘ÚÜİÈ‹WKBˆÌŒ‹“^H›Û™YÙH[™^Hœ™YYÛH‹‘œ™Y\šXÚÈİYÛ\ÜÈ‹“Y[[ÜH‹WKBˆÌŒK•Ø[[‹[™ÛˆH]HÙˆÚ]š[\ÛØ™YY[˜ÙH‹’[œH]šYÜ™X]H‹”[ÜÛÜH‹WKBˆÌŒ‘Z\ŞHZ[\ˆHİYH‹’[œH˜[Y\È‹”ÛØÚY]H‹WKBˆÌŒLË•HX[ˆœ›ÛHÛ›İŞHš]™\ˆ‹Kˆ‹ˆ]\œÛÛˆ‹”Ù]H‹WKBˆÌŒŒK•H™]\›ˆÙˆÚ\›ØÚÈÛY\È‹\\ˆÛÛ˜[ˆŞ[H‹“^\İ\H‹WKBˆÌŒ‹ÚXÙ\›ÉÜÈÜ˜][ÛœÈ‹“X\˜İ\È[]\ÈÚXÙ\›È‹”[ÜÛÜH‹WKBˆÌŒÌ•HXÛÛXÜÈ[™XÛÙİY\È‹•š\™Ú[‹”Ù]H‹WKBˆÌŒÍÚ[Úš\İÜ\ˆ[™ÛÛ[[™H˜Z\ˆ‹•Ú[X[H[Üœš\È‹“YÙ[™‹WKBˆÌK“Y™HÛˆHZ\ÜÚ\ÜÚ\H‹“X\šÈØZ[ˆ‹“Y[[ÜH‹WKBˆÌ•HØİÜ\ÈˆHİÜHÙˆØ[Y›Ü›šXH‹‘œ˜[šÈ›Üœš\È‹”ÛØÚY]H‹WKBˆÌK•HÜİÛÛ[™[‹Ëˆ‹ˆİ]ÛY™™H[™H‹Y™[\™H‹WKBˆÎLL•Ú]H˜[™È‹’˜XÚÈÛ™Ûˆ‹Y™[\™H‹WKBˆÌLMMK•HÙXÜ™]Y™\œØ\H‹YØ]HÚš\İYH‹“^\İ\H‹WKBˆÌÌ•™YHY[ˆ[ˆH›Ø]
+ÈØ^H›İ[™ÈÙˆHÙÊH‹’™\›ÛYHËˆ™\›ÛYH‹ÛÛYYH‹WKBˆÌÌMË•Hİ[š]˜^K[™İ\ˆÙ[\È‹’›ÜÙ\›ÙX[ˆ˜ZÙH‹”Ù]H‹WKBˆÌÌÌ‹•H\šX[ÙˆHİ[œÈ‹•ÛX\È™[ÛÛˆYÙH‹’\İÜH‹WKBˆÌÍK•H\™\İ\ˆ‹‘Ù[™Hİ˜]Û‹TÜ\ˆ‹”ÛØÚY]H‹WKBˆÌÍŒ•Ú]\È›Ü\OÈ[ˆ[œ]Z\H[ÈHš[˜Ú\HÙˆšYÚ[™ÙˆÛİ™\››Y[‹”‹R‹ˆ›İYÛˆ‹”[ÜÛÜH‹WKBˆÌÎMÜ˜[™›Ü™‹‘[^˜X™]ÛYÚÜ›ˆØ\ÚÙ[‹”ÛØÚY]H‹WKBˆÍŒK’ÚY˜\Y‹”›Ø™\İZ\Èİ]™[œÛÛˆ‹Y™[\™H‹WKBˆÍÍ‹•HX\İ\ˆÙ^H‹“ˆœ˜[šÈ˜][H‹”ÜXİ[]]™H‹WKBˆÍLK•HÚYİÈ[™NˆHÛÛ™™\ÜÚ[Ûˆ‹’›ÜÙ\ÛÛœ˜Y‹”ÙXH‹WKBˆÍÌ’\™]XÜÈ‹‘ËˆËˆÚ\İ\Ûˆ‹”[ÜÛÜH‹WKBˆÍLŒK•HY™H[™Y™[\™\ÈÙˆ›Øš[œÛÛˆÜ\ÛÙH‹‘[šY[Y›ÙH‹Y™[\™H‹WKBˆÍLÍ[ˆ[›[™›ŞXYÙH‹”›Ø™\İZ\Èİ]™[œÛÛˆ‹’›İ\›™^H‹WKBˆÍMË“XZ[ˆİ™Y]‹”Ú[˜ÛZ\ˆ]Ú\È‹”ÛØÚY]H‹WKBˆÍNNK•˜[š]H˜Z\ˆ‹•Ú[X[HXZÙ\XXÙHXÚÙ\˜^H‹”ÛØÚY]H‹WKBˆÍŒK”[XÚY\ˆ‹‘YØ\ˆšXÙH\œ›İYÚÈ‹Y™[\™H‹WKBˆÌLLÍËHİ™\‰ÜÈÛÛ\Z[‹•Ú[X[HÚZÙ\ÜX\™H‹”Ù]H‹WKBˆÎŒË•H^\İ\š[İ\ÈY™˜Z\ˆ]İ[\È‹YØ]HÚš\İYH‹“^\İ\H‹WKBˆÌLŒ‹•H›Z[™ÈH˜[˜Ú‹‹ˆKˆ›İÙ\ˆ‹Y™[\™H‹WKBˆÌLŒÍL‹	Ò[ÛH\›ŞNÈÜ‹ÚYİÜÈ\YY	Ë	Ñœ˜[˜Ù\È[[ˆØ]Ú[œÈ\œ\‰Ë	Ô™]\›š[™È›ÚXÙ\ÉËNKBˆÌLM‹	ÕHÛÛš\™HÛÛX[‰Ë	ĞÚ\›\ÈËˆÚ\Û]	Ë	Ô™]\›š[™È›ÚXÙ\ÉËM×KBˆÌLLŒM	ÕHØ\šY\È[™Z\ˆœšY[™ÉË	Ñœ˜[šÈ‹ˆÙX˜‰Ë	Ô™]\›š[™È›ÚXÙ\ÉËM—KBˆÌMLK	ÕH]Y\İÙˆHÚ[™\ˆ›YXÙIË	ÕËˆKˆ‹ˆH›Ú\ÉË	Ô™]\›š[™È›ÚXÙ\ÉËM—KBˆÌÌ‹	Ò\›[™	Ë	ĞÚ\›İH\šÚ[œÈÚ[X[‰Ë	Ô™]\›š[™È›ÚXÙ\ÉËMWKBˆÌLLŒ	ÕHX\œ›İÈÙˆ˜Y][Û‰Ë	ĞÚ\›\ÈËˆÚ\Û]	Ë	Ô™]\›š[™È›ÚXÙ\ÉËMKBˆÌK	ĞÛİ[NÈÜ‹HÛÛÜ™Y\›Ú[™IË	ÕÚ[X[HÙ[Èœ›İÛ‰Ë	Ô™]\›š[™È›ÚXÙ\ÉËL×KBˆÌMMM	Ò[\\š][H[ˆ[\\š[ÉË	Ôİ]ÛˆKˆÜšYÙÜÉË	Ô™]\›š[™È›ÚXÙ\ÉËL—KBˆÌMÎM	ÕHÜÜÙˆHÛÙÉË	Ô][]\™[˜ÙH[˜˜\‰Ë	Ô™]\›š[™È›ÚXÙ\ÉËLWKBˆÍÌ‹	ÕHİ\ÙH™Z[™HÙY\œÉË	ĞÚ\›\ÈËˆÚ\Û]	Ë	Ô™]\›š[™È›ÚXÙ\ÉËLKBˆÌMLË	ÕHÜİİ˜Y]˜\š]\ÉË	Ò›ÚˆYXYH˜[Û™\‰Ë	Ñ˜Y[™Èİ\\›˜]\˜[	ËWKBˆÌLL‹	ÕHÜ[ˆÛÜ‹[™HÜ˜Z]	Ë	ÓX\™Ø\™]Û\[	Ë	Ñ˜Y[™Èİ\\›˜]\˜[	ËWKBˆÌMÌK	ÕH[\Hİ\ÙH[™İ\ˆÚÜİİÜšY\ÉË	Ğ[Ù\››Ûˆ›XÚİÛÛÙ	Ë	Ñ˜Y[™Èİ\\›˜]\˜[	ËKBˆÌLM‹	ÕHİ\ÙHÙˆÛİ[ÉË	Ğ\\ˆXXÚ[‰Ë	Ñ˜Y[™Èİ\\›˜]\˜[	ËKBˆÌLŒ‹	ÕHšYÚ[™	Ë	ÕÚ[X[HÜHÙÜÛÛ‰Ë	Ñ˜Y[™ÈÜXİ[]]™IË×KBˆÌLLŒK	ÕH\œHÛİY	Ë	ÓKˆˆÚY[	Ë	Ñ˜Y[™ÈÜXİ[]]™IË×KBˆÌLM‹	ÕH›Ø]ÈÙˆHÛ[ˆØ\œšYÉË	ÕÚ[X[HÜHÙÜÛÛ‰Ë	Ñ˜Y[™ÈY™[\™IË—KBˆÌLLK	ÕHÚÜİÚ\	Ë	ÔšXÚ\™ZY]Û‰Ë	Ñ˜Y[™Èİ\\›˜]\˜[	Ë—KBˆÌÍMLMË	ÕH™YH[\ÜİÜœÉË	Ğ\\ˆXXÚ[‰Ë	Ñ˜Y[™Èİ\\›˜]\˜[	ËWKBˆÍLM	ÕH™Y]NˆH^\İ\IË	ÔšXÚ\™X\œÚ	Ë	Ñ˜Y[™Èİ\\›˜]\˜[	ËWKBˆÍLMM	ÔÛÛYH][Yİ\Ù\ÈÙˆ[™Û[™	ˆØ[\ÉË	Ñ[[İø &QÛ›™[	Ë	Ğ[[Üİ[œ™XY	ËKBˆÍLÌ	ÕHÛÙ\ÜÎˆH[[Û‰Ë	ÔšXÚ\™X\œÚ	Ë	Ğ[[Üİ[œ™XY	Ë×KBˆÍÎLLK	ÕH^\İ\š[İ\ÈØÚÙ]	Ë	Ô][›‰Ë	Ğ[[Üİ[œ™XY	Ë×KBˆÌŒÍŒ	ÕH^HÙˆÜ˜]	Ë	ÓpìÜˆ°ìÚØZIË	Ğ[[Üİ[œ™XY	Ë×KBˆÌŒÍLMK	ÕHÜXİ™H[ˆHØ\	Ë	ÕÛX\È™[ÛÛˆYÙIË	Ğ[[Üİ[œ™XY	Ë—KBˆÍÍLË	Ñ›Ü™Ûİ[ˆ[™Ù\‰Ë	Ò›ÜÙ\Ø[XXÚÛÛ‰Ë	Ğ[[Üİ[œ™XY	Ë—KBˆÍÌK	Ò\È][İH[XÚOÉË	ÑXÚÈ]ØÚ[	Ë	Ğ[[Üİ[œ™XY	ËWKBˆÌLÌ‹	Ó›ÈY[™ÈXÙIË	ÔšXÚ\™™Z[ˆÛZ]	Ë	Ğ[[Üİ[œ™XY	ËWKBˆÌMÍK	ÕH™XÜ›ÛX[˜Ù\œÉË	Ô›Ø™\YÚ™[œÛÛ‰Ë	Ğ[[Üİ[œ™XY	Ë—KBˆÌMÌMË	ÕHÛÜ˜Ù\HÛX‰Ë	Ñ[[İø &QÛ›™[	Ë	Ğ[[Üİ[œ™XY	Ë—KBˆÌLÌ‹	ÕH[™[ZY\ÈÙˆ›ÛÚÜÉË	ÕÚ[X[H›Y\ÉË	Ğ\˜Ú]™IËWKBˆÌŒÍÎ	ÕHØ\™HÙˆ›ÛÚÜÉË	Ò›ÚˆÚ[\ÈÛ\šÉË	Ğ\˜Ú]™IËWKBˆÌŒŒLÍ‹	ÕH›ÛÚËR[\‰Ë	Ò›Úˆ[\Û‰Ë	Ğ\˜Ú]™IËKBˆÌM	ĞšX›[ÛX[šXNÈÜˆ›ÛÚËSXY™\ÜÉË	ÕÛX\Èœ›ÙÛ˜[X™[‰Ë	Ğ\˜Ú]™IËKBˆÌÍÍ	Ò[ˆH˜XÚÈÙˆH›ÛÚİÛÜ›IË	Ò\š[™Èœ›İÛ™IË	Ğ\˜Ú]™IË×KBˆÌŒŒ	ĞH›ÛÚÈ›Üˆ[™XY\œÉË	ĞZ[œİÛÜ˜[™ÜÙ™›Ü™	Ë	Ğ\˜Ú]™IË×KBˆÌNMMLË	ÕHš]˜]HX\HÙˆ‹ˆ›ÚˆYH[™HØ][ÙÈÙˆ\ÈXœ˜\IË	Ò›ÚˆYIË	Ğ\˜Ú]™IË—KBˆÍË	ÕHİ™HY™˜Z\œÈÙˆHšX›[ÛX[šXXÉË	Ñ]YÙ[™HšY[	Ë	Ğ\˜Ú]™IË—KBˆÌMŒMK	ÓÛ[™Û\ÚXœ˜\šY\ÉË	Ñ\›™\İ[™\Ø]˜YÙIË	Ğ\˜Ú]™IË—KBˆÌMÍ	ÕHš]˜]HXœ˜\IË	Ğ\\ˆYH[\™^\ÉË	Ğ\˜Ú]™IËWKBˆÌMLLË	Ô›ÛY[È[™[Y]	Ë	ÕÚ[X[HÚZÙ\ÜX\™IË	Ñ˜[XIËWKBˆÌÌ	ÕH^\İ\šY\ÈÙˆYÛÉË	Ğ[›ˆ˜YÛY™™IË	ÑÛİXÉËWKBˆÍŒK	ÕH[ÛšÉË	ÓKˆËˆ]Ú\ÉË	ÑÛİXÉËWKBˆÌ	ÓYY]][ÛœÉË	ÓX\˜İ\È]\™[]\ÉË	Ô[ÜÛÜIËWKBˆÌÌLK	ÕHYHÙˆHZÙIË	ÕØ[\ˆØÛİ	Ë	ÔÙ]IËWKBˆÎLŒK	ÑH›Ù[™\ÉË	ÓÜØØ\ˆÚ[IË	ÓY[[ÜIËWKBˆÌK	Õ[™[™IË	ÑœšYYšXÚHH[İH›İ\]pêIË	ÕÛÛ™\‰ËWKBˆÎL‹	ÕHÚ[™È[ˆY[İÉË	Ô›Ø™\ËˆÚ[X™\œÉË	Õ[˜Ø[›IËWKBˆÌL‹	ÕHİ[™ÙˆH˜\ÚÙ\š[\ÉË	Ğ\\ˆÛÛ˜[ˆŞ[IË	Ó^\İ\IËWKBˆÎÍ	ÕHY[[Ú\œÈÙˆÚ\›ØÚÈÛY\ÉË	Ğ\\ˆÛÛ˜[ˆŞ[IË	Ó^\İ\IËWKBˆÌŒŒË	ÕHÚ\ÙÛHÙˆ˜]\ˆœ›İÛ‰Ë	ÑËˆËˆÚ\İ\Û‰Ë	Ó^\İ\IËWKBˆÍLNMË	Ó^HY™IË	ÔšXÚ\™ØYÛ™\‰Ë	ÓY[[ÜIËWKBˆÌŒŒË	Ğ]]Øš[ÙÜ˜\HÙˆ™[š˜[Z[ˆœ˜[šÛ[‰Ë	Ğ™[š˜[Z[ˆœ˜[šÛ[‰Ë	ÓY[[ÜIËWKBˆÌMÍK	ÕH[ÛHÙˆHÜ\˜IË	ÑØ\İÛˆ\›İ^	Ë	ÑÛİXÉËWKBˆÌK	ĞH›ÛÛHÚ]HšY]ÉË	ÑKˆKˆ›Üœİ\‰Ë	ÔÛØÚY]IËWKBˆÌMÍŒ	ÓÜ›˜HÛÛ™IË	Ô‹ˆˆ›XÚÛ[Ü™IË	ĞY™[\™IËWKBˆÌŒ‹	ÔÛÛ›™]Èœ›ÛHHÜYİY\ÙIË	Ñ[^˜X™]˜\œ™]œ›İÛš[™ÉË	ÔÙ]IËWKBˆÌM	ÕH›ÛX[˜ÙHÙˆš\İ[ˆ[™\Ù][	Ë	Ò›ÜÙ\°êYY\‰Ë	ÓYÙ[™	ËWKBˆÌÍŒ‹	ÒÚ[™È\\ˆ[™HÛšYÚÈÙˆH›İ[™X›IË	ÕÛX\ÈX[ÜIË	ÓYÙ[™	ËWKBˆÍLË	ÕH]\™\ˆÙˆ›ÙÙ\ˆXÚÜ›ŞY	Ë	ĞYØ]HÚš\İYIË	Ó^\İ\IËWKBˆÍŒLÌË	ÕH^˜[Ü™[˜\HY™[\™\ÈÙˆ\œğê™H\[‰Ë	ÓX]\šXÙHX›[˜ÉË	ĞY™[\™IËWKBˆÍÍ‹	Ñ]šYÛÜ\™šY[	Ë	ĞÚ\›\ÈXÚÙ[œÉË	ÔÛØÚY]IËWKBˆÌLŒË	Ğ›XZÈİ\ÙIË	ĞÚ\›\ÈXÚÙ[œÉË	ÔÛØÚY]IËWKBˆÌLL	Õ\ÜÈÙˆH8 &U\˜™\š[\ÉË	ÕÛX\È\™IË	ĞÛÛ\İY	ËWKBˆÍNK	ĞØ]š[Û˜IË	Ô›Ø™\İZ\Èİ]™[œÛÛ‰Ë	ĞY™[\™IËWKˆÌLLË	ÕHš\œİY[ˆ[ˆH[ÛÛ‰Ë	ÒˆËˆÙ[ÉË	ÔÜXİ[]]™IËÍWKˆÌMŒÌË	ÕHœšXÚÈ[ÛÛ‹[™İ\ˆİÜšY\ÉË	ÑYØ\™]™\™][IË	ÔÜXİ[]]™IËWKˆÍMË	ĞH›ŞXYÙHÈH[ÛÛ‰Ë	ĞŞ\˜[›ÈH™\™Ù\˜XÉË	ÔÜXİ[]]™IËKˆÌLÌ	Õš\ÈÈH[ÛÛ‰Ë	ÓXÚX[ˆÙˆØ[[ÜØ]IË	ÔÜXİ[]]™IËÍWKˆÌLK	ĞH›ŞXYÙHÈH[ÛÛ‰Ë	ÑÙ[Ü™ÙHXÚÙ\‰Ë	ÔÜXİ[]]™IËÌKˆÍLÌÎ	ÕH[ÛÛˆXZY	Ë	ÑYØ\ˆšXÙH\œ›İYÚÉË	ÔÜXİ[]]™IËWKˆÍLL	ÕH[ÛÛˆHÜ[\ˆ™X]\ÙIË	ÑØ\œ™]]X[ˆÙ\š\ÜÉË	ÔØÚY[˜ÙIËWKˆÍŒÍÎK	ÕH[ÛÛˆØ^	Ë	ÔšXÚ\™Y[\ÈØÚÙIË	ÔÜXİ[]]™IËÍWKˆÌNLLË	ÕH\ØÛİ™\HÙˆHÛÜ›[ˆH[ÛÛ™IË	Ò›ÚˆÚ[Ú[œÉË	ÔØÚY[˜ÙIËWKˆÍML‹	Ñœ›ÛHHX\ÈH[ÛÛ‰Ë	Ò[\È™\›™IË	ÔÜXİ[]]™IËWKˆÌL	ÕH^\İ\š[İ\È\Û[™	Ë	Ò[\È™\›™IË	ĞY™[\™IËÍWKˆÌNMË	ĞH›İ\›™^HÈHÙ[™HÙˆHX\	Ë	Ò[\È™\›™IË	ÔÜXİ[]]™IËWKˆÍNMË	Ò[ˆÙX\˜ÚÙˆHØ\İ]Ø^\ÉË	Ò[\È™\›™IË	Ò›İ\›™^IËWKˆÌN‹	ÓZXÚY[İ›ÙÛÙ™ÈÜ‹HÛİ\šY\ˆÙˆHŞ˜\‰Ë	Ò[\È™\›™IË	ĞY™[\™IËWKˆÌMMË	Ğ[\›İ[™H[ÛÛ‰Ë	Ò[\È™\›™IË	ÔÜXİ[]]™IËWKˆÌLÌÎK	Ğ[ˆ[\˜İXÈ^\İ\IË	Ò[\È™\›™IË	ĞY™[\™IËŒKˆÌÎ	Ô›Ø\ˆHÛÛœ]Y\›Ü‰Ë	Ò[\È™\›™IË	ÔÜXİ[]]™IËŒKˆÌMNK	ÕH\Û[™ÙˆØİÜˆ[Ü™X]IË	ÒˆËˆÙ[ÉË	ÔÜXİ[]]™IËWKBˆÌŒMË	ÕHÛÜšÜÈÙˆYØ\ˆ[[ˆÙH8 %›Û[YHIË	ÑYØ\ˆ[[ˆÙIË	ÑÛİXÉËWKBˆÍÍË	ÕHİ\ÙHÙˆHÙ]™[ˆØX›\ÉË	Ó˜][šY[]İÜ›™IË	ÑÛİXÉËWKBˆÌNÍË	ÕHš[˜ÙH[™H]\\‰Ë	ÓX\šÈØZ[‰Ë	ĞY™[\™IËWKBˆÍM	ÕHX\™[İ\È[™ÙˆŞ‰Ë	Óˆœ˜[šÈ˜][IË	ÕÛÛ™\‰ËWKBˆÌM‹	ĞH]Hš[˜Ù\ÜÉË	Ñœ˜[˜Ù\ÈÙÜÛÛˆ\›™]	Ë	ÕÛÛ™\‰ËWKBˆÌL‹	Õ›İYÚHÛÚÚ[™ËQÛ\ÜÉË	Ó]Ú\ÈØ\œ›Û	Ë	ÕÛÛ™\‰ËWKBˆÌMŒ	ÕHŞ[\ÜÚ][IË	Ô]ÉË	Ô[ÜÛÜIËWKBˆÌLÌ‹	ÕH\ÙˆØ\‰Ë	Ôİ[ˆIË	Ô[ÜÛÜIËWKBˆÌLŒ	ÓÛˆHÜšYÚ[ˆÙˆÜXÚY\ÉË	ĞÚ\›\È\Ú[‰Ë	ĞÛÛ\İY	ËWKBˆÎK	Ñİ[]™\¸ &\È˜]™[ÉË	Ò›Û˜][ˆİÚY	Ë	ÔØ]\™IËWKBˆÌ‹	Ô\˜Y\ÙHÜİ	Ë	Ò›ÚˆZ[Û‰Ë	Ñ\XÉËWKBˆÌNLK	ÑÜš[[\ø &H˜Z\H[\ÉË	ÕHœ›İ\œÈÜš[[IË	ÕÛÛ™\‰ËWKBˆÌMNMË	Ğ[™\œÙ[¸ &\È˜Z\H[\ÉË	Ò[œÈÚš\İX[ˆ[™\œÙ[‰Ë	ÕÛÛ™\‰ËWKBˆÌLÍ	ÕHÙXKUÛÛ‰Ë	Ò˜XÚÈÛ™Û‰Ë	ÔÙXIËWKBˆÌŒŒ‹	ÒÚ[IË	ÔYX\™Ú\[™ÉË	ĞY™[\™IËWKBˆÌŒÍÍ‹	Õ\œ›ÛHÛ]™\IË	Ğ›ÛÚÙ\ˆˆØ\Ú[™İÛ‰Ë	ÓY[[ÜIËWKBˆÌÌÌ	ÕHÙX[Ùˆ˜][ÛœÉË	ĞY[HÛZ]	Ë	Ô[ÜÛÜIËWKBˆÍÍŒË	Ğ™^[Û™ÛÛÙ[™]š[	Ë	ÑœšYYšXÚšY]œØÚIË	ĞÛÛ\İY	ËWKBˆÌMË	ĞÛÛ[[ÛˆÙ[œÙIË	ÕÛX\ÈZ[™IË	ĞÛÛ\İY	ËWKBˆÌM‹	ĞHÛ8 &\Èİ\ÙIË	Ò[œšZÈXœÙ[‰Ë	Ñ˜[XIËWKBˆÍML	ÔÚ[\ÈX\›™\‰Ë	ÑÙ[Ü™ÙH[[İ	Ë	ÔÛØÚY]IËWKBˆÌLMË	ÕH™YH]\ÚÙ]Y\œÉË	Ğ[^[™™H[X\ÉË	ĞY™[\™IËWKBˆÍLŒÎ	ÕHÙXÜ™]ÙˆÚ[[™^\ÉË	ĞYØ]HÚš\İYIË	Ó^\İ\IËWKBˆÌLË	ÕH[[™ÈÙˆHÛ˜\šÉË	Ó]Ú\ÈØ\œ›Û	Ë	ÕÛÛ™\‰ËŒKÍLK	Ô[\ÛXYÛÜšXH[™İ\ˆÙ[\ÉË	Ó]Ú\ÈØ\œ›Û	Ë	ÕÛÛ™\‰ËÍWKÍÍŒË	ÕHØ[YHÙˆÙÚXÉË	Ó]Ú\ÈØ\œ›Û	Ë	ÕÛÛ™\‰ËÌKÌL‹	ĞH[™ÛY[IË	Ó]Ú\ÈØ\œ›Û	Ë	ÕÛÛ™\‰ËÌKBˆÌLÎK	ÕHÜİÛÜ›	Ë	Ğ\\ˆÛÛ˜[ˆŞ[IË	ĞY™[\™IËÌKÌL‹	ÕHÚ\ÛÛˆ™[	Ë	Ğ\\ˆÛÛ˜[ˆŞ[IË	ÔÜXİ[]]™IËMWKÍÎK	ÕHš][Y\ÜØYÙIË	Ğ\\ˆÛÛ˜[ˆŞ[IË	Ô[ÜÛÜIËÌKÌMŒÎ	ÕH™]È™]™[][Û‰Ë	Ğ\\ˆÛÛ˜[ˆŞ[IË	Ô[ÜÛÜIËWKÌÌMMK	ÔÚIË	ÒˆšY\ˆYÙØ\™	Ë	ĞY™[\™IËMWKÌŒM‹’Ú[™ÈÛÛÛ[Û‰ÜÈZ[™\È‹	ÒˆšY\ˆYÙØ\™	Ë	ĞY™[\™IËWKˆÍÌLK	Ğ[[ˆ]X]\›XZ[‰Ë	ÒˆšY\ˆYÙØ\™	Ë	ĞY™[\™IËMWKÍLŒ	Ğ^Y\ÚKH™]\›ˆÙˆÚIË	ÒˆšY\ˆYÙØ\™	Ë	ÑÛİXÉËWKÍÍK	ÕH[ÜHÙˆHZ\İ	Ë	ÒˆšY\ˆYÙØ\™	Ë	ĞY™[\™IËKÌLŒË	Ó˜YHH[IË	ÒˆšY\ˆYÙØ\™	Ë	Ò\İÜIËWKÌÍK	ĞÛ[Ü]˜IË	ÒˆšY\ˆYÙØ\™	Ë	Ò\İÜIËWKÌÌŒK	Ñ\šXÈœšYÚ^Y\ÉË	ÒˆšY\ˆYÙØ\™	Ë	ÓYÙ[™	ËKÍMÍ‹	ÕH[˜ÚY[[[‰Ë	ÒˆšY\ˆYÙØ\™	Ë	ĞY™[\™IËÍWKÌK	ÕH]›ÜHÚ[	Ë	ÒˆšY\ˆYÙØ\™	Ë	ĞY™[\™IËÍWKÌML	ÓX\šYNˆ[ˆ\\ÛÙH[ˆHY™HÙˆH]H[[ˆ]X]\›XZ[‰Ë	ÒˆšY\ˆYÙØ\™	Ë	Ò\İÜIËÍWKˆÌNMLK	ÕHÛÛZ[™È˜XÙIË	ÑYØ\™[Ù\‹S]Û‰Ë	ĞY™[\™IËÌKÌNL‹	Ñ\™]ÚÛ‰Ë	ÔØ[]Y[]\‰Ë	ĞY™[\™IËCB—K›X\
 
-    const scene=new THREE.Scene();scene.background=new THREE.Color(0x211b16);scene.fog=new THREE.FogExp2(0x211a14,.0075);
-    const camera=new THREE.PerspectiveCamera(67,innerWidth/innerHeight,.08,130);camera.position.set(0,1.72,24);scene.add(camera);
-    const lowPowerDevice=touchMode||(navigator.deviceMemory&&navigator.deviceMemory<=4)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=4),pixelRatioCap=touchMode?.85:lowPowerDevice?.9:1;
-    let renderer;try{renderer=new THREE.WebGLRenderer({antialias:!lowPowerDevice,powerPreference:'high-performance'})}catch(error){window.__ATHENAEUM_BOOT_FAILED__?.(error);return}renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,pixelRatioCap));renderer.shadowMap.enabled=false;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.95;renderer.domElement.tabIndex=0;renderer.domElement.setAttribute('aria-label','Explorable library');renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();window.__ATHENAEUM_BOOT_FAILED__?.(new Error('The WebGL context was lost'))},{once:true});document.body.prepend(renderer.domElement);
-    const clock=new THREE.Clock(), raycaster=new THREE.Raycaster();raycaster.far=6.5;
-    const seats=[],colliders=[], interactables=[], coverQueue=[],pullSequence=[];
-    const tmpWorldPosition=new THREE.Vector3(),tmpWorldPosition2=new THREE.Vector3(),tmpVector=new THREE.Vector3(),tmpVector2=new THREE.Vector3(),tmpQuaternion=new THREE.Quaternion(),tmpQuaternion2=new THREE.Quaternion(),tmpEuler=new THREE.Euler(),screenCentre=new THREE.Vector2(0,0);
-    const SPATIAL_CELL_SIZE=12,colliderCells=new Map();
-    const spatialKey=(x,z)=>`${Math.floor(x/SPATIAL_CELL_SIZE)},${Math.floor(z/SPATIAL_CELL_SIZE)}`;
-    function indexCollider(c){const minCellX=Math.floor(c.minX/SPATIAL_CELL_SIZE),maxCellX=Math.floor(c.maxX/SPATIAL_CELL_SIZE),minCellZ=Math.floor(c.minZ/SPATIAL_CELL_SIZE),maxCellZ=Math.floor(c.maxZ/SPATIAL_CELL_SIZE);for(let cx=minCellX;cx<=maxCellX;cx++)for(let cz=minCellZ;cz<=maxCellZ;cz++){const key=`${cx},${cz}`;if(!colliderCells.has(key))colliderCells.set(key,[]);colliderCells.get(key).push(c)}}
-    let started=false,locked=false,hadPointerLock=false,dragging=false,lastPointerX=0,lastPointerY=0,muted=false,settingsOpen=false,settingsReturnToPause=false,soundLevel=clamp(Number(localStorage.getItem('athenaeum-sound-level')||13)/100,0,1),reducedMotion=localStorage.getItem('athenaeum-reduced-motion')==='1',lowBandwidth=localStorage.getItem('athenaeum-low-bandwidth')==='1',highContrast=localStorage.getItem('athenaeum-high-contrast')==='1',largeText=localStorage.getItem('athenaeum-large-text')==='1',selected=null,focus=null,noticeTimer=0,weather='RAIN',dayPhase=.68,secretOpen=0,portraitOpen=0,portraitTargetOpen=0,tunnelOpen=0,finalDoorOpen=0,leverTime=0,readerSize=16,machineBook=null,resizeTimer=0,finalDoor=null,finalDoorCollider=null,catGuideTarget=null,catGuideLabel='',rooftopVisited=localStorage.getItem('athenaeum-rooftop-visited')==='1',machinePulls=Number(localStorage.getItem('athenaeum-machine-pulls')||0),lastReadCategory='',lastDiscoveryAt=performance.now(),lastHintAt=0,nextAmbientAt=performance.now()+45000+Math.random()*35000,midnightRoomOpen=false,rabbitActive=false,rabbitWaypoint=0,insectTime=0,insectQueued=false,whiteVolumeLevel=0,rockingUntil=0,readerAsideTimer=null,readerOpenedAt=0,cheshireCat=null,cheshireNextAt=0,nightShelfIndex=0,nightBookIndex=0,nextTrainRumbleAt=0,trainPass=null,trainZoneWasActive='';
-    document.body.classList.toggle('reduced-motion',reducedMotion);document.body.classList.toggle('high-contrast',highContrast);document.body.classList.toggle('large-text',largeText);
-    const keys={},player={pos:new THREE.Vector3(0,0,24),vel:new THREE.Vector3(),yaw:0,pitch:0,radius:.42};
-    const MYSTERIES=[['folded-note','The folded note'],['book-under-table','A misplaced volume'],['book-mantel','The firekeeperâ€™s book'],['book-balcony','A book above the rain'],['roof-book','The weatherbound volume'],['west-shelf','The false western shelf'],['portrait-passage','The room behind the portrait'],['unlabelled-orb','The nameless object'],['tunnel','The breathing wall'],['below-catalogue','The door beneath the catalogue'],['redacted-catalogue','The redacted catalogue']],SECRET_TOTAL=MYSTERIES.length;
-    const lastSafePosition=player.pos.clone();
-    let discovered=new Set();try{const saved=JSON.parse(localStorage.getItem('athenaeum-mysteries')||'[]');if(Array.isArray(saved))discovered=new Set(saved)}catch(ignore){}
-    let collection=new Set();try{const saved=JSON.parse(localStorage.getItem('athenaeum-collection')||'[]');if(Array.isArray(saved))collection=new Set(saved)}catch(ignore){}
-    const ROOM_RECORDS={
-      gothic:{title:'The last candle',text:'This room was sealed after every witness to the final vigil described a different person in the empty chair. The night porter kept the candle burning so the stories could disagree in peace.'},
-      inquiry:{title:'The case without a culprit',text:'The investigator solved the disappearance, then hid the answer. The missing reader had simply walked into a book and wanted no one to fetch her back.'},
-      chart:{title:'The chart of a vanished shore',text:'Every map here points to an island erased by the sea. Its books were kept out of the public catalogue because the island appears again whenever someone reads its name aloud.'},
-      drawing:{title:'The unfinished invitation',text:'A guest was struck from every invitation, yet her cup was always laid. This room preserves the conversation that continued after everyone agreed she had never existed.'},
-      study:{title:'The argument under glass',text:'Two scholars reached opposite conclusions from the same page. Rather than choose one, the librarian shut their debate in this room and left both chairs facing the evidence.'},
-      garden:{title:'The gardenerâ€™s impossible seed',text:'The gardener planted a word clipped from a poem. By morning it had roots. The room was hidden before anyone could decide whether the new flowers belonged in a catalogue or a garden.'},
-      verne:{title:'The engineerâ€™s impossible itinerary',text:'The room was planned for journeys no railway could yet make: under the sea, through the earth, around the world, and upward toward the moon. Its architect left the final destination blank.'},
-      haggard:{title:'The country omitted from every atlas',text:'An explorer returned with a route no surveyor could repeat. The librarians filed his map sideways, where its mountains slowly gathered names from stories of lost kingdoms.'},
-      doyle:{title:'The inference behind the locked glass',text:'Three clues were preserved without their case: a footprint, a stopped watch, and a thread of red wool. The consulting room opens only when a reader notices what the catalogue does not say.'},
-      portrait:{title:'The keeperâ€™s private ledger',text:'The portrait was turned toward the hall to hide this ledger. It lists readers who found books no one had meant to recommend, and the small changes those accidents made to their lives.'}
-    };
-    let roomRecords=new Set();try{const saved=JSON.parse(localStorage.getItem('athenaeum-room-records')||'[]');if(Array.isArray(saved))roomRecords=new Set(saved.filter(id=>ROOM_RECORDS[id]))}catch(ignore){}
-    let awakenedBooks=new Set();try{const saved=JSON.parse(localStorage.getItem('athenaeum-awakened-books')||'[]');if(Array.isArray(saved))awakenedBooks=new Set(saved)}catch(ignore){}
-    let deskBooks=new Set();try{const saved=JSON.parse(localStorage.getItem('athenaeum-desk-books')||'[]');if(Array.isArray(saved))deskBooks=new Set(saved)}catch(ignore){}
-    let restoredMemoryBooks=new Set();try{const saved=JSON.parse(localStorage.getItem('library-returning-names')||'[]');if(Array.isArray(saved))restoredMemoryBooks=new Set(saved)}catch(ignore){}
-    let exploredRooms=new Set();try{const saved=JSON.parse(localStorage.getItem('athenaeum-explored-rooms')||'[]');if(Array.isArray(saved))exploredRooms=new Set(saved)}catch(ignore){}
-    function tileTex(draw,w,h,rx,ry){const t=canvasTexture(draw,w,h);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(rx,ry);return t}
-    function drawPlankGrain(ctx,w,h){ctx.fillStyle='#5c5c5c';ctx.fillRect(0,0,w,h);const planks=6,ph=h/planks;for(let i=0;i<planks;i++){const y=i*ph,shade=120+((i*53)%80);ctx.fillStyle=`rgb(${shade},${shade},${shade})`;ctx.fillRect(0,y,w,ph-3);ctx.fillStyle='rgba(0,0,0,.55)';ctx.fillRect(0,y+ph-3,w,3);for(let g=0;g<4;g++){const gy=y+3+(g/4)*(ph-6)+Math.random()*3;ctx.strokeStyle='rgba(0,0,0,.32)';ctx.beginPath();ctx.moveTo(0,gy);ctx.bezierCurveTo(w*.3,gy+Math.random()*6-3,w*.7,gy+Math.random()*6-3,w,gy);ctx.stroke()}}for(let n=0;n<600;n++){ctx.fillStyle=`rgba(255,255,255,${Math.random()*.08})`;ctx.fillRect(Math.random()*w,Math.random()*h,2,1)}}
-    function drawMasonryGrain(ctx,w,h){ctx.fillStyle='#4a4a46';ctx.fillRect(0,0,w,h);const rows=6,rh=h/rows,cols=8,cw=w/cols;for(let r=0;r<rows;r++){const y=r*rh,offset=(r%2)*(cw/2);for(let c=0;c<cols;c++){const x=(c*cw+offset)%w,shade=95+((r*53+c*29)%75);ctx.fillStyle=`rgb(${shade},${shade},${shade-4})`;ctx.fillRect(x+1,y+1,cw-2,rh-2)}}ctx.strokeStyle='rgba(0,0,0,.6)';ctx.lineWidth=3;for(let r=0;r<=rows;r++){ctx.beginPath();ctx.moveTo(0,r*rh);ctx.lineTo(w,r*rh);ctx.stroke()}for(let n=0;n<800;n++){ctx.fillStyle=`rgba(0,0,0,${Math.random()*.09})`;ctx.fillRect(Math.random()*w,Math.random()*h,2,2)}}
-    function drawMetalGrain(ctx,w,h){ctx.fillStyle='#78787a';ctx.fillRect(0,0,w,h);for(let i=0;i<260;i++){const y=Math.random()*h;ctx.strokeStyle=`rgba(255,255,255,${Math.random()*.18})`;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y+Math.random()*8-4);ctx.stroke()}for(let i=0;i<260;i++){const y=Math.random()*h;ctx.strokeStyle=`rgba(0,0,0,${Math.random()*.18})`;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y+Math.random()*8-4);ctx.stroke()}}
-    const plankTex=tileTex(drawPlankGrain,256,256,4,3),masonryTex=tileTex(drawMasonryGrain,256,256,4,3),metalTex=tileTex(drawMetalGrain,256,256,3,3);
-    const MAT={wood:new THREE.MeshStandardMaterial({color:0x4d2d19,roughness:.72}),wood2:new THREE.MeshStandardMaterial({color:0x321c10,roughness:.82}),darkWood:new THREE.MeshStandardMaterial({color:0x25140d,roughness:.7}),brass:new THREE.MeshStandardMaterial({color:0x9f7330,metalness:.65,roughness:.32,map:metalTex,bumpMap:metalTex,bumpScale:.02}),paper:new THREE.MeshStandardMaterial({color:0xd4c59f,roughness:.86}),stone:new THREE.MeshStandardMaterial({color:0x4a4339,roughness:.94,map:masonryTex,bumpMap:masonryTex,bumpScale:.07}),fabric:new THREE.MeshStandardMaterial({color:0x5d1e22,roughness:.96}),green:new THREE.MeshStandardMaterial({color:0x1f4034,roughness:.92}),black:new THREE.MeshStandardMaterial({color:0x0d0b09,roughness:.75}),glass:new THREE.MeshPhysicalMaterial({color:0x263a4a,transparent:true,opacity:.48,roughness:.08,metalness:.08}),gold:new THREE.MeshStandardMaterial({color:0xbe914c,metalness:.45,roughness:.42,map:metalTex,bumpMap:metalTex,bumpScale:.02})};
-    function mesh(geo,mat,x=0,y=0,z=0,shadow=true){const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);m.castShadow=false;m.receiveShadow=false;scene.add(m);return m}
-    function box(w,h,d,mat,x,y,z,shadow=true){return mesh(new THREE.BoxGeometry(w,h,d),mat,x,y,z,shadow)}
-    function cylinder(rt,rb,h,seg,mat,x,y,z){return mesh(new THREE.CylinderGeometry(rt,rb,h,seg),mat,x,y,z)}
-    function collider(x,z,w,d,name='furniture',minY=-Infinity,maxY=Infinity){const c={minX:x-w/2,maxX:x+w/2,minZ:z-d/2,maxZ:z+d/2,name,minY,maxY,inactive:false};colliders.push(c);indexCollider(c);return c}
-    function nearbyColliders(x,z){return colliderCells.get(spatialKey(x,z))||[]}
-    function addBox(w,h,d,mat,x,y,z,solid=true){const m=box(w,h,d,mat,x,y,z);if(solid)collider(x,z,w,d);return m}
-    function trim(x,y,z,w,h,d){return box(w,h,d,MAT.darkWood,x,y,z)}
-    const lampShadeMaterial=new THREE.MeshStandardMaterial({color:0xd6ad69,emissive:0xb86c27,emissiveIntensity:2.35,roughness:.8});
-    function addLamp(x,y,z,scale=1){cylinder(.55,.75,.24,10,MAT.brass,x,y,z);return cylinder(.32,.74,.64,12,lampShadeMaterial,x,y+.46,z)}
-    function addSoftRoomLight(x,y,z,color=0xe0b77a,intensity=7,distance=15){const light=new THREE.PointLight(color,intensity,distance,2);light.position.set(x,y,z);light.castShadow=false;scene.add(light);return light}
-    function mergedBoxParts(parts,mat){const positions=[],normals=[],uvs=[];for(const [w,h,d,x,y,z] of parts){const source=new THREE.BoxGeometry(w,h,d).toNonIndexed();source.translate(x,y,z);positions.push(...source.attributes.position.array);normals.push(...source.attributes.normal.array);uvs.push(...source.attributes.uv.array);source.dispose()}const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setAttribute('normal',new THREE.Float32BufferAttribute(normals,3));geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));geometry.computeBoundingSphere();return new THREE.Mesh(geometry,mat)}
-    function rug(x,z,w,d,color=0x561d1e){const canvas=document.createElement('canvas');canvas.width=256;canvas.height=128;const c=canvas.getContext('2d');c.fillStyle='#321014';c.fillRect(0,0,256,128);c.strokeStyle='#b18a48';c.lineWidth=5;c.strokeRect(8,8,240,112);c.lineWidth=2;c.strokeRect(18,18,220,92);c.fillStyle='#7b3b31';for(let i=0;i<18;i++){c.beginPath();c.arc(30+i*12,64,3+(i%3),0,7);c.fill()}const t=new THREE.CanvasTexture(canvas);const m=new THREE.MeshStandardMaterial({map:t,roughness:1,color});const r=mesh(new THREE.PlaneGeometry(w,d),m,x,.021,z,false);r.rotation.x=-Math.PI/2;return r}
-    function canvasTexture(draw,w=384,h=560){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=4;return t}
-    const bookPalettes=[['#182d2a','#c49a53'],['#4a1618','#d6b36c'],['#18243d','#c59b56'],['#432612','#d2ad68'],['#24201d','#ba8741']],coverTextureCache=new Map();
-    function bookMaterial(book,roughness=.72){return new THREE.MeshStandardMaterial({color:bookPalettes[book.index%bookPalettes.length][0],roughness})}
-    // Cover shards stay local, but are fetched only when one of their books is approached.
-    // This avoids downloading and parsing the whole 3.8 MB collection at startup.
-    const realCovers={},realCoverLoader=new THREE.TextureLoader(),coverShardById=window.ATHENAEUM_COVER_SHARDS||{},coverShardPromises=new Map(),coverWorkQueue=[],queuedCoverMeshes=new Set(),pendingRealCoverIds=new Set();let coverIdleHandle=0;
-    const requestLibraryIdle=callback=>window.requestIdleCallback?window.requestIdleCallback(callback,{timeout:700}):setTimeout(()=>callback({timeRemaining:()=>8,didTimeout:true}),lowPowerDevice?250:160);
-    function playerIsMoving(){return player.vel.x*player.vel.x+player.vel.z*player.vel.z>.12}
-    function scheduleCoverWork(){if(coverIdleHandle||!coverWorkQueue.length&&!pendingRealCoverIds.size)return;coverIdleHandle=requestLibraryIdle(processCoverWork)}
-    function queueCoverMesh(bm){if(!bm||queuedCoverMeshes.has(bm)||bm.userData?.realCover)return;queuedCoverMeshes.add(bm);coverWorkQueue.push(bm);scheduleCoverWork()}
-    function processCoverWork(deadline){coverIdleHandle=0;if(playerIsMoving()||!gameActive()){scheduleCoverWork();return}const bm=coverWorkQueue.shift();if(bm){queuedCoverMeshes.delete(bm);const data=bm.userData;if(data?.type==='book'&&bm.parent){if(!data.loaded){data.loaded=true;bm.material.map=coverTexture(data.book);if(bm.material.color)bm.material.color.setHex(0xffffff);bm.material.needsUpdate=true}requestRealCover(data.book)}}else if(pendingRealCoverIds.size){const id=pendingRealCoverIds.values().next().value;pendingRealCoverIds.delete(id);coverTextureCache.delete(Number(id));const texture=coverTexture({id:Number(id),index:0,title:'',author:'',source:''});for(const object of interactables){const book=object.userData?.book;if(String(book?.id)!==String(id)||!object.material)continue;object.material.map=texture;if(object.material.color)object.material.color.setHex(0xffffff);object.material.needsUpdate=true;object.userData.realCover=true}}if(coverWorkQueue.length||pendingRealCoverIds.size)scheduleCoverWork()}
-    function applyRealCovers(ids){for(const id of ids)pendingRealCoverIds.add(String(id));scheduleCoverWork()}
-    function requestRealCover(book){if(lowBandwidth||realCovers[book.id])return Promise.resolve();const shardIndex=coverShardById[book.id];if(shardIndex===undefined)return Promise.resolve();if(!coverShardPromises.has(shardIndex))coverShardPromises.set(shardIndex,fetch(`covers/shard_${shardIndex}.json`).then(r=>r.ok?r.json():{}).then(shard=>{Object.assign(realCovers,shard);applyRealCovers(Object.keys(shard))}).catch(()=>{}));return coverShardPromises.get(shardIndex)}
-function coverTexture(book){if(coverTextureCache.has(book.id))return coverTextureCache.get(book.id);const real=lowBandwidth?null:realCovers[book.id];if(real){const texture=realCoverLoader.load(`data:image/jpeg;base64,${real}`);texture.colorSpace=THREE.SRGBColorSpace;texture.anisotropy=4;coverTextureCache.set(book.id,texture);return texture}const texture=canvasTexture((c,w,h)=>{const design=window.ATHENAEUM_COVER_DESIGNS?.[book.id],p=design||bookPalettes[book.index%bookPalettes.length],imprint=(book.source||'THE ATHENAEUM').toUpperCase().slice(0,28);c.fillStyle=p[0];c.fillRect(0,0,w,h);c.strokeStyle=p[1];c.lineWidth=9;c.strokeRect(20,20,w-40,h-40);c.lineWidth=2;c.strokeRect(31,31,w-62,h-62);c.fillStyle=p[1];c.textAlign='center';c.font='24px Georgia';c.fillText(imprint,w/2,82);c.beginPath();c.moveTo(75,104);c.lineTo(w-75,104);c.stroke();c.font=design?(book.title.length>100?'bold 22px Georgia':book.title.length>65?'bold 26px Georgia':'bold 32px Georgia'):'bold 37px Georgia';wrapText(c,book.title,w/2,design?135:195,w-92,design?34:47);if(design)window.drawAthenaeumCoverEmblem(c,w,h,design[2]);c.font='italic 25px Georgia';c.fillText(book.author,w/2,design?h-50:h-92);c.font='32px Georgia';if(!design)c.fillText('â¦',w/2,h-42)},384,560);coverTextureCache.set(book.id,texture);return texture}
-    function wrapText(c,text,x,y,max,line){const words=text.split(' ');let s='',rows=[];for(const word of words){const n=s?`${s} ${word}`:word;if(c.measureText(n).width>max&&s){rows.push(s);s=word}else s=n}rows.push(s);rows.forEach((r,i)=>c.fillText(r,x,y+i*line))}
+‹JOOŠÚY˜–ÌK]N˜–ÌWK]]Ü˜–Ì—KØ]YÛÜN˜–Ì×K˜[YN˜–ÍKÛİ\˜ÙN‰Ô›Ú™Xİİ][˜™\™ÉËÛİ\˜ÙU\›˜Î‹ËİİİË™İ][˜™\™Ë›Ü™ËÙX›ÛÚÜËÉØ–Ì_XXÙ[˜ÙN‰ÔX›XÈÛXZ[‰Ë^\›˜Î‹ËİİİË™İ][˜™\™Ë›Ü™ËØØXÚKÙ\X‹ÉØ–Ì_KÜÉØ–Ì_K›ÙÜ™\ÜÎ›ØYØ]™Y›ÙÜ™\ÜÊ–ÌJK[™^š_JJNÂˆ›ÜŠÛÛœİ™XÛÜ™ÙˆÚ[™İËUSQUSWÔRSĞVWĞ“ÓÒÔß×JZYŠX›ÛÚÜËœÛÛYJO˜‹šYOO\™XÛÜ™šY
+JX›ÛÚÜËœ\Ú
+Ë‹‹œ™XÛÜ™Ûİ\˜ÙN‰Ô›Ú™Xİİ][˜™\™ÉËÛİ\˜ÙU\›˜Î‹ËİİİË™İ][˜™\™Ë›Ü™ËÙX›ÛÚÜËÉÜ™XÛÜ™šYXXÙ[˜ÙN‰ÔX›XÈÛXZ[‰Ë^\›˜Î‹ËİİİË™İ][˜™\™Ë›Ü™ËØØXÚKÙ\X‹ÉÜ™XÛÜ™šYKÜÉÜ™XÛÜ™šYK›ÙÜ™\ÜÎ›ØYØ]™Y›ÙÜ™\ÜÊ™XÛÜ™šY
+K[™^˜›ÛÚÜË›[™İJNÂˆÛÛœİÜ[XØÙ\ÜÔÛİ\˜Ù\Ï]Ú[™İËUSQUSWÓÔS—ĞPĞÑTÔ×ÔÓÕTÑTßßKÜ[XØÙ\ÜĞ›ÛÚÜÏ]Ú[™İËUSQUSWÓÔS—ĞPĞÑTÔ×Ğ“ÓÒÔß×K›ÛÚÑ[œšXÚY[Ï]Ú[™İËUSQUSWĞ“ÓÒ×ÑS”’PÒQS•ßßNÂˆ›ÜŠÛÛœİ™XÛÜ™ÙˆÜ[XØÙ\ÜĞ›ÛÚÜÊ^ØÛÛœİÛİ\˜ÙO[Ü[XØÙ\ÜÔÛİ\˜Ù\ÖÜ™XÛÜ™œÛİ\˜ÙW_ßNØ›ÛÚÜËœ\Ú
+Øš™Xİ˜\ÜÚYÛŠßK™XÛÜ™ÜÛİ\˜ÙRÙ^Nœ™XÛÜ™œÛİ\˜ÙKÛİ\˜ÙNœÛİ\˜ÙK›˜[Y_™XÛÜ™œÛİ\˜ÙK›ÙÜ™\ÜÎ›ØYØ]™Y›ÙÜ™\ÜÊ™XÛÜ™šY
+K[™^˜›ÛÚÜË›[™İJJ_Bˆ›ÜŠÛÛœİ›ÛÚÈÙˆ›ÛÚÜÊSØš™Xİ˜\ÜÚYÛŠ›ÛÚË›ÛÚÑ[œšXÚY[ÖØ›ÛÚËšY_ßJNÂˆÛÛœİÙ™›[™Q^˜XİÏ^ÃBˆLÍ˜]\ÈH][š]™\œØ[HXÚÛ›İÛYÙY]HÚ[™ÛHX[ˆ[ˆÜÜÙ\ÜÚ[ÛˆÙˆHÛÛÙ›Ü[™K]\İ™H[ˆØ[ÙˆHÚY™K——’İÙ]™\ˆ]HÛ›İÛˆH™Y[[™ÜÈÜˆšY]ÜÈÙˆİXÚHX[ˆX^H™HÛˆ\Èš\œİ[\š[™ÈH™ZYÚ›İ\šÛÙ\È]\ÈÛÈÙ[š^Y[ˆHZ[™ÈÙˆHİ\œ›İ[™[™È˜[Z[Y\Ë]H\ÈÛÛœÚY\™Y\ÈHšYÚ[›Ü\HÙˆÛÛYHÛ™HÜˆİ\ˆÙˆZ\ˆ]YÚ\œË——¸ '^HX\ˆ\‹ˆ™[›™]8 'HØZY\ÈYHÈ[HÛ™H^K8 ']™H[İHX\™]™]\™šY[\šÈ\È]]\İø 'XBˆ˜[İHÚ[™Z›ÚXÙHÈX\ˆ]›È\Ø\İ\ˆ\ÈXØÛÛ\[šYYHÛÛ[Y[˜Ù[Y[Ùˆ[ˆ[\œš\ÙHÚXÚ[İH]™H™YØ\™YÚ]İXÚ]š[›Ü™X›Ù[™ÜËˆH\œš]™Y\™HY\İ\™^K[™^Hš\œİ\ÚÈ\ÈÈ\Üİ\™H^HX\ˆÚ\İ\ˆÙˆ^HÙ[˜\™H[™[˜Ü™X\Ú[™ÈÛÛ™šY[˜ÙH[ˆHİXØÙ\ÜÈÙˆ^H[™\ZÚ[™Ë——’H[H[™XYH˜\ˆ›ÜÙˆÛ™Û‹[™\ÈHØ[È[ˆHİ™Y]ÈÙˆ]\œØ\™ÚH™Y[HÛÛ›Ü\›ˆœ™Y^™H^H\Ûˆ^HÚYZÜËÚXÚœ˜XÙ\È^H™\™\È[™š[ÈYHÚ][YÚ˜BˆÌN˜Ø[YH\ÚXY[ˆÛÛYHYX\œÈYÛø %™]™\ˆZ[™İÈÛ™È™XÚ\Ù[x %]š[™È]HÜˆ›È[Û™^H[ˆ^H\œÙK[™›İ[™È\Xİ[\ˆÈ[\™\İYHÛˆÚÜ™KHİYÚHÛİ[ØZ[X›İ]H]H[™ÙYHHØ]\H\ÙˆHÛÜ›——’]\ÈHØ^HH]™HÙˆš]š[™ÈÙ™ˆHÜY[ˆ[™™Yİ[][™ÈHÚ\˜İ[][Û‹ˆÚ[™]™\ˆHš[™^\Ù[ˆÜ›İÚ[™ÈÜš[HX›İ]H[İ]ÈÚ[™]™\ˆ]\ÈH[\š^›H›İ™[X™\ˆ[ˆ^HÛİ[È[‹HXØÛİ[]YÚ[YHÈÙ]ÈÙXH\ÈÛÛÛˆ\ÈHØ[‹˜BˆLN˜[XÙHØ\È™YÚ[›š[™ÈÈÙ]™\H\™YÙˆÚ][™ÈH\ˆÚ\İ\ˆÛˆH˜[šË[™Ùˆ]š[™È›İ[™ÈÈÎˆÛ˜ÙHÜˆÚXÙHÚHYY\Y[ÈH›ÛÚÈ\ˆÚ\İ\ˆØ\È™XY[™Ë]]Y›ÈXİ\™\ÈÜˆÛÛ™\œØ][ÛœÈ[ˆ]8 '[™Ú]\ÈH\ÙHÙˆH›ÛÚË8 'HİYÚ[XÙH8 'Ú]İ]Xİ\™\ÈÜˆÛÛ™\œØ][ÛœÏø 'W—”ÛÈÚHØ\ÈÛÛœÚY\š[™È[ˆ\ˆİÛˆZ[™Ú]\ˆHX\İ\™HÙˆXZÚ[™ÈHZ\ŞKXÚZ[ˆÛİ[™HÛÜH›İX›HÙˆÙ][™È\[™XÚÚ[™ÈHZ\ÚY\ËÚ[ˆİY[›HHÚ]H˜X˜š]Ú][šÈ^Y\È˜[ˆÛÜÙHH\‹˜BˆMŒN˜ÈÚ\›ØÚÈÛY\ÈÚH\È[Ø^\ÈHÛÛX[‹ˆH]™HÙ[ÛHX\™[HY[[Ûˆ\ˆ[™\ˆ[Hİ\ˆ˜[YKˆ[ˆ\È^Y\ÈÚHXÛ\Ù\È[™™YÛZ[˜]\ÈHÚÛHÙˆ\ˆÙ^——’]Ø\È›İ]H™[[H[[İ[ÛˆZÚ[ˆÈİ™H›Üˆ\™[™HY\‹ˆ[[[İ[ÛœË[™]Û™H\Xİ[\›KÙ\™HXšÜœ™[È\ÈÛÛ™XÚ\ÙH]YZ\˜X›H˜[[˜ÙYZ[™˜BˆN˜]Ø\ÈH™\İÙˆ[Y\Ë]Ø\ÈHÛÜœİÙˆ[Y\Ë]Ø\ÈHYÙHÙˆÚ\ÙÛK]Ø\ÈHYÙHÙˆ›ÛÛ\Ú™\ÜË]Ø\ÈH\ØÚÙˆ™[YY‹]Ø\ÈH\ØÚÙˆ[˜Ü™Y[]K]Ø\ÈHÙX\ÛÛˆÙˆYÚ]Ø\ÈHÙX\ÛÛˆÙˆ\šÛ™\ÜË]Ø\ÈHÜš[™ÈÙˆÜK]Ø\ÈHÚ[\ˆÙˆ\ÜZ\‹˜BˆMÍ˜HİY[ÈØ\Èš[YÚ]HšXÚÙİ\ˆÙˆ›ÜÙ\Ë[™Ú[ˆHYÚİ[[Y\ˆÚ[™İ\œ™Y[ZYİH™Y\ÈÙˆHØ\™[‹\™HØ[YH›İYÚHÜ[ˆÛÜˆHX]HØÙ[ÙˆH[XËÜˆH[Ü™H[XØ]H\™[YHÙˆH[šËY›İÙ\š[™ÈÜ›‹˜BˆÍN˜ÈX^Kˆš\İš]‹¸ %Y][šXÚ]ŒÍH“K‹Ûˆ\İX^K\œš]š[™È]šY[›˜HX\›H™^[Ü›š[™ÎÈÚİ[]™H\œš]™Y]‹]˜Z[ˆØ\È[ˆİ\ˆ]KˆYKT\İÙY[\ÈHÛÛ™\™[XÙKœ›ÛHHÛ[\ÙHÚXÚHÛİÙˆ]œ›ÛHH˜Z[ˆ[™H]HHÛİ[Ø[È›İYÚHİ™Y]Ë˜BˆLŒ˜Û™H[Ü›š[™ËÚ[ˆÜ™YÛÜˆØ[\ØHÛÚÙHœ›ÛH›İX›Y™X[\ËH›İ[™[\Ù[ˆ˜[œÙ›Ü›YY[ˆ\È™Y[ÈHÜœšX›H™\›Z[‹ˆH^HÛˆ\È\›[İ\‹[ZÙH˜XÚË[™YˆHYY\ÈXYH]HHÛİ[ÙYH\Èœ›İÛˆ™[KÛYÚHÛYY[™]šYYH\˜Ú\È[ÈİY™ˆÙXİ[ÛœË˜Bˆ˜X\›^HØ\ÈXYˆÈ™YÚ[ˆÚ]ˆ\™H\È›ÈİXÚ]]™\ˆX›İ]]ˆH™YÚ\İ\ˆÙˆ\È\šX[Ø\ÈÚYÛ™YHHÛ\™Ş[X[‹HÛ\šËH[™\ZÙ\‹[™HÚYYˆ[İ\›™\‹ˆØÜ›ÛÙÙHÚYÛ™Y]ˆ[™ØÜ›ÛÙÙx &\È˜[YHØ\ÈÛÛÙ\Ûˆ8 &PÚ[™ÙK›Üˆ[][™ÈHÚÜÙHÈ]\È[™Ë˜BˆÍ˜NK¸ %H]™H\İ™]\›™Yœ›ÛHHš\Ú]È^H[™Ü™8 %HÛÛ]\H™ZYÚ›İ\ˆ]HÚ[™H›İX›YÚ]ˆ\È\ÈÙ\Z[›HH™X]]Y[Ûİ[HH[ˆ[[™Û[™HÈ›İ™[Y]™H]HÛİ[]™Hš^YÛˆHÚ]X][ÛˆÛÈÛÛ\][H™[[İ™Yœ›ÛHHİ\ˆÙˆÛØÚY]K˜BˆMM˜Ûˆ[ˆ^Ù\[Û˜[Hİ]™[š[™ÈX\›H[ˆ[HH[İ[™ÈX[ˆØ[YHİ]ÙˆHØ\œ™][ˆÚXÚHÙÙY[™[ˆËˆXÙH[™Ø[ÙYÛİÛK[[Üİ\Ú]][™ÛKİØ\™ÈËˆœšYÙKˆHYİXØÙ\ÜÙ[H]›ÚYYYY][™È\È[™YHÛˆHİZ\˜Ø\ÙK˜BˆLŒ˜\™HØ\È›ÈÜÜÚXš[]HÙˆZÚ[™ÈHØ[È]^KˆÙHY™Y[ˆØ[™\š[™Ë[™YY[ˆHXY›\ÜÈÚX˜™\H[ˆİ\ˆ[ˆH[Ü›š[™ÎÈ]Ú[˜ÙH[›™\ˆHÛÛÚ[\ˆÚ[™Yœ›İYÚÚ]]ÛİYÈÛÈÛÛXœ™K[™H˜Z[ˆÛÈ[™]˜][™Ë]\\ˆİ]YÛÜˆ^\˜Ú\ÙHØ\È›İÈİ]ÙˆH]Y\İ[Û‹˜BˆÍN˜H[YH˜]™[\¸ %›ÜˆÛÈ]Ú[™HÛÛ™[šY[ÈÜXZÈÙˆ[x %Ø\È^İ[™[™ÈH™XÛÛ™]HX]\ˆÈ\Ëˆ\ÈÜ™^H^Y\ÈÚÛ™H[™Ú[šÛY[™\È\İX[H[H˜XÙHØ\È›\ÚY[™[š[X]YˆHš\™H\›™YœšYÚK[™HÛÙ˜YX[˜ÙHÙˆH[˜Ø[™\ØÙ[YÚÈ[ˆH[Y\ÈÙˆÚ[™\ˆØ]YÚHX˜›\È]›\ÚY[™\ÜÙY[ˆİ\ˆÛ\ÜÙ\Ë˜BˆŒÍ˜]Ø\ÈÙ]™[ˆø &XÛØÚÈÙˆH™\HØ\›H]™[š[™È[ˆHÙY[Û™YH[ÈÚ[ˆ˜]\ˆÛÛˆÛÚÙH\œ›ÛH\È^x &\È™\İØÜ˜]ÚY[\Ù[‹X]Û™Y[™Ü™XYİ]\È]ÜÈÛ™HY\ˆHİ\ˆÈÙ]šYÙˆHÛY\H™Y[[™È[ˆZ\ˆ\Ë˜BˆŒMN˜XÚÈY›İ™XYH™]ÜÜ\\œËÜˆHÛİ[]™HÛ›İÛˆ]›İX›HØ\Èœ™]Ú[™Ë›İ[Û™H›Üˆ[\Ù[‹]›Üˆ]™\HYK]Ø]\ˆÙËİ›Û™ÈÙˆ]\ØÛH[™Ú]Ø\›KÛ™ÈZ\‹œ›ÛHYÙ]Ûİ[™ÈØ[ˆYYÛË˜BˆNÃBˆ[˜İ[ÛˆÙ™›[™QY][ÛŠ›ÛÚÊ^ØÛÛœİ^Ù\œ[Ù™›[™Q^˜XİÖØ›ÛÚËšYKÛİ\˜ÙOX›ÛÚËœÛİ\˜Ù_	İHÛİ\˜ÙH\˜Ú]™IÎÜ™]\›ˆ^Ù\œØ	Ø›ÛÚË]_W˜H	Ø›ÛÚË˜]]ÜŸW—”Ù[XİYÜ[š[™Èœ›ÛHHX›XËYÛXZ[ˆY][Û——‰Ù^Ù\œX˜	Ø›ÛÚË]_W˜H	Ø›ÛÚË˜]]ÜŸW—•HÛÛ\]H	ÜÛİ\˜Ù_HY][ÛˆÛİ[›İ™H™]ÚY\İ›İËˆHØ][ÙİYH™XÛÜ™›İ™[˜[˜ÙH[™[İ\ˆ™XY[™ÈXÙH\™Hİ[Ù\——Ø]YÛÜNˆ	Ø›ÛÚË˜Ø]YÛÜ_XBˆ[˜İ[ÛˆÛX[‘Y][ÛŠ^
+^ØÛÛœİİ\]^œÙX\˜Ú
+×
+—
+—
+ˆÕT•Ñˆ
+_TÊH“Ò‘PÕÕUS‘T‘ÈP“ÓÒËÚJNÚYŠİ\L
+]^]^œÛXÙJ^š[™^ÙŠ	×‰Ëİ\
+JÌJNØÛÛœİ[™]^œÙX\˜Ú
+×
+—
+—
+ˆS‘Ñˆ
+_TÊH“Ò‘PÕÕUS‘T‘ÈP“ÓÒËÚJNÚYŠ[™ŒL
+]^]^œÛXÙJ[™
+NÜ™]\›ˆ^œ™\XÙJ×‹ÙË	ÉÊKœ™\XÙJ×ÍKÙË	×—‰ÊKš[J
+_CBˆ[˜İ[ÛˆØYØØ[Y][ÛŠ›ÛÚÊ^İÚ[™İËUSQUSWÓĞĞSÕVÏ]Ú[™İËUSQUSWÓĞĞSÕVßßNØÛÛœİØXÚY]Ú[™İËUSQUSWÓĞĞSÕVÖØ›ÛÚËšYNÚYŠØXÚY
+\™]\›ˆ›ÛZ\ÙKœ™\ÛÛ™JØXÚY
+NÜ™]\›ˆ™]È›ÛZ\ÙJ
+™\ÛÛ™K™Z™Xİ
+OOØÛÛœİØÜš\YØİ[Y[˜Ü™X]Q[[Y[
+	ÜØÜš\	ÊNÜØÜš\œÜ˜ÏX^ËÛØØ[ÜÉØ›ÛÚËšYKšœØÜØÜš\›Û›ØYJ
+OOÜØÜš\œ™[[İ™J
+NØÛÛœİ^]Ú[™İËUSQUSWÓĞĞSÕVÖØ›ÛÚËšYNİ^Ü™\ÛÛ™J^
+Nœ™Z™Xİ
+™]È\œ›ÜŠ	ÓØØ[Y][ÛˆØ\È[\IÊJ_NÜØÜš\›Û™\œ›ÜJ
+OOÜØÜš\œ™[[İ™J
+NÜ™Z™Xİ
+™]È\œ›ÜŠ	ÓØØ[Y][ÛˆÛİ[›İ™HØYY	ÊJ_NÙØİ[Y[šXY˜\[™Ú[
+ØÜš\
+_J_CBƒBˆÛÛœİØÙ[™O[™]È‘QK”ØÙ[™J
+NÜØÙ[™K˜˜XÚÙÜ›İ[™[™]È‘QKÛÛÜŠŒLXŒMŠNÜØÙ[™K™›ÙÏ[™]È‘QK‘›ÙÑ^ŠŒLXLMŒÍJNÃBˆÛÛœİØ[Y\˜O[™]È‘QK”\œÜXİ]™PØ[Y\˜JË[›™\•ÚYÚ[›™\’ZYÚŒLÌ
+NØØ[Y\˜KœÜÚ][Û‹œÙ]
+KÌ‹
+NÜØÙ[™K˜Y
+Ø[Y\˜JNÃBˆÛÛœİİÔİÙ\‘]šXÙO]İXÚ[Ù_
+˜]šYØ]Ü‹™]šXÙSY[[ÜI‰›˜]šYØ]Ü‹™]šXÙSY[[ÜOM
+_
+˜]šYØ]Ü‹š\™Ø\™PÛÛ˜İ\œ™[˜ŞI‰›˜]šYØ]Ü‹š\™Ø\™PÛÛ˜İ\œ™[˜ŞOM
+K^[˜][ĞØ\]İXÚ[ÙOËN›İÔİÙ\‘]šXÙOËNŒNÃBˆ]™[™\™\İ^Ü™[™\™\[™]È‘QK•ÙX‘Ó™[™\™\ŠØ[X[X\Îˆ[İÔİÙ\‘]šXÙKİÙ\”™Y™\™[˜ÙN‰ÚYÚ\\™›Ü›X[˜ÙIßJ_XØ]Ú
+\œ›ÜŠ^İÚ[™İË—×ĞUSQUSWĞ“ÓÕÑRSQ×ÏËŠ\œ›ÜŠNÜ™]\›Ÿ\™[™\™\‹œÙ]Ú^™J[›™\•ÚY[›™\’ZYÚ
+NÜ™[™\™\‹œÙ]^[˜][ÊX]›Z[Š]šXÙT^[˜][Ë^[˜][ĞØ\
+JNÜ™[™\™\‹œÚYİÓX\™[˜X›YY˜[ÙNÜ™[™\™\‹›İ]]ÛÛÜ”ÜXÙOU‘QK”Ô‘ĞÛÛÜ”ÜXÙNÜ™[™\™\‹Û™SX\[™ÏU‘QKPÑTÑš[ZXÕÛ™SX\[™ÎÜ™[™\™\‹Û™SX\[™Ñ^Üİ\™OLKMNÜ™[™\™\‹™ÛQ[[Y[X’[™^LÜ™[™\™\‹™ÛQ[[Y[œÙ]]šX]J	Ø\šXK[X™[	Ë	Ñ^Ü˜X›HXœ˜\IÊNÜ™[™\™\‹™ÛQ[[Y[˜Y]™[\İ[™\Š	İÙX™ÛÛÛ^Üİ	Ë]™[OÙ]™[œ™]™[Y˜][
 
-    const grain=canvasTexture((c,w,h)=>{c.fillStyle='#ad8c66';c.fillRect(0,0,w,h);for(let i=0;i<1800;i++){const y=Math.random()*h;c.strokeStyle=`rgba(45,22,9,${Math.random()*.16})`;c.beginPath();c.moveTo(0,y);c.bezierCurveTo(w*.3,y+Math.random()*8,w*.6,y-4,w,y+2);c.stroke()}},256,256);grain.wrapS=grain.wrapT=THREE.RepeatWrapping;grain.repeat.set(2,4);for(const m of [MAT.wood,MAT.wood2,MAT.darkWood]){m.map=grain;m.bumpMap=grain;m.bumpScale=.045;m.needsUpdate=true}
-    // architecture
-    addBox(38,.5,62,MAT.wood,0,-.28,0,false);rug(0,11,11,20);rug(0,-15,13,15);rug(-27,-2,14,15,0x3b1b22);rug(27,-2,14,15,0x3b1b22);
-    addBox(38,10,.6,MAT.stone,0,5,-31);addBox(30.4,10,.6,MAT.stone,-3.8,5,31);addBox(1.9,10,.6,MAT.stone,18.05,5,31);
-    addBox(18,.45,24,MAT.wood,-28,-.2,-2,false);addBox(18,.45,24,MAT.wood,28,-.2,-2,false);addBox(.5,8,8,MAT.stone,-37,4,-10);addBox(.5,8,10,MAT.stone,-37,4,5);addBox(.5,8,9,MAT.stone,37,4,-9.5);addBox(.5,8,9,MAT.stone,37,4,5.5);addBox(18,8,.5,MAT.stone,-28,4,-14);addBox(18,8,.5,MAT.stone,-28,4,10);addBox(18,8,.5,MAT.stone,28,4,-14);addBox(18,8,.5,MAT.stone,28,4,10);
-    // openings between wings; the eastern upper wall leaves a concealed portrait passage
-    for(const side of [-1,1]){const x=side*19;addBox(.5,10,18,MAT.stone,x,5,-22);if(side<0)addBox(.5,10,18,MAT.stone,x,5,22);else{addBox(.5,10,4,MAT.stone,x,5,15);addBox(.5,10,8,MAT.stone,x,5,27)}trim(x,7.4,0,.7,.5,8);trim(x,3.7,-4,.7,7.4,.5);trim(x,3.7,4,.7,7.4,.5);addBox(.5,2,26,MAT.stone,x,8.9,0,false);addBox(.5,10,3,MAT.stone,x,5,11.5)}
-    // complete roofs and lintels close every seam while preserving intentional entrances
-    const roofMat=new THREE.MeshStandardMaterial({color:0x39342e,roughness:.96});box(38,.38,62,roofMat,0,9.62,0,false);box(18,.38,24,roofMat,-28,8.18,-2,false);box(18,.38,24,roofMat,28,8.18,-2,false);box(20,.38,20,roofMat,47,8.18,-2,false);box(14,.38,18,roofMat,-45,7.18,-3,false);box(10,.38,4,roofMat,-57,4.18,-3,false);box(10,.38,10,roofMat,-67,6.18,-3,false);box(9,.38,8,roofMat,23.5,12.18,20,false);
-    box(1.05,7.7,.65,MAT.stone,11.92,5.75,31,false);box(1.05,7.7,.65,MAT.stone,16.58,5.75,31,false);box(5.7,.7,.65,MAT.stone,14.25,9.25,31,false);const roofStairUnderwall=box(5.65,6.55,.72,MAT.stone,14.25,3.275,31.08,false);for(let i=0;i<14;i++){const z=27.15+i*.72,y=5.08+i*.36;box(5.1,.22,.78,MAT.wood,14.25,y,z,false)}box(.55,1.8,6,MAT.stone,37,7.08,-2,false);box(.55,.3,6,MAT.darkWood,-37,7.82,-3,false);for(const x of [-37,-19,19,37,57])for(const z of [-14,10])trim(x,8.05,z,.7,.3,.7);
-    const parquet=canvasTexture((c,w,h)=>{for(let row=0;row<8;row++)for(let col=-1;col<4;col++){const x=col*128+(row%2)*64,y=row*32;c.fillStyle=['#583a24','#62432b','#715035','#503520'][(row*3+col+4)%4];c.fillRect(x,y,127,31);for(let k=0;k<12;k++){c.strokeStyle='rgba(20,9,3,.12)';c.beginPath();c.moveTo(x,y+k*2.5);c.lineTo(x+127,y+k*2.5+1);c.stroke()}}},512,256);parquet.wrapS=parquet.wrapT=THREE.RepeatWrapping;parquet.repeat.set(6,12);const parquetFloor=mesh(new THREE.PlaneGeometry(37.8,61.8),new THREE.MeshStandardMaterial({map:parquet,roughness:.76,bumpMap:parquet,bumpScale:.018}),0,.005,0,false);parquetFloor.rotation.x=-Math.PI/2;
-    // ceiling beams and columns
-    for(let z=-27;z<=27;z+=9)trim(0,9.3,z,38,.35,.42);for(const x of [-17,-11,11,17])for(const z of [-25,-5,15,27]){cylinder(.45,.62,8,10,MAT.stone,x,4,z);cylinder(.7,.7,.25,10,MAT.brass,x,.25,z);cylinder(.63,.48,.32,10,MAT.brass,x,8,z)}
-    // windows with rainy exterior
-    const windowMeshes=[];for(const x of [-12,-4,4,12]){const frame=box(5,5.8,.18,MAT.glass,x,5.2,-30.62,false);windowMeshes.push(frame);trim(x,5.2,-30.5,.14,6,.28);trim(x,5.2,-30.5,5.2,.14,.28);trim(x,2.2,-30.45,5.4,.26,.3);trim(x,8.2,-30.45,5.4,.26,.3)}
-    // balcony and staircase
-    addBox(7,.38,14,MAT.wood,15,5,22,false);collider(11.45,23,.45,13,'balcony rail',4,8);for(let z=16;z<=28;z+=2){trim(11.5,6,z,.22,1.8,.22);trim(11.5,6.9,z,.25,.2,2)}
-    const stairMasonry=new THREE.MeshStandardMaterial({color:0x4a433d,roughness:.98,map:masonryTex,bumpMap:masonryTex,bumpScale:.09});
-    for(let i=0;i<12;i++){const y=.22+i*.4,z=7+i*.75,fillTop=.42+i*.4;box(6,.4,.82,MAT.wood,15,y,z);box(5.55,fillTop,.68,stairMasonry,15,fillTop/2,z,false)}
-    for(let i=0;i<11;i++){trim(11.8,1+i*.4,7+i*.75,.2,1.2,.2);trim(18.2,1+i*.4,7+i*.75,.2,1.2,.2)}
-    // chandelier
-    cylinder(.06,.06,3,8,MAT.brass,0,8,2);const ring=mesh(new THREE.TorusGeometry(2.1,.1,8,28),MAT.brass,0,6.55,2);ring.rotation.x=Math.PI/2;for(let i=0;i<8;i++){const a=i/8*Math.PI*2,x=Math.cos(a)*2.1,z=2+Math.sin(a)*2.1;addLamp(x,6.7,z,.35)}
-    // layered logs, embers and translucent flames give both hearths depth instead of a flat orange panel
-    const realisticFlames=[];function createHearthFire(x,y,z,scale=1,parent=scene){const group=new THREE.Group();group.position.set(x,y,z);group.scale.setScalar(scale);parent.add(group);const emberMat=new THREE.MeshStandardMaterial({color:0x4a1308,emissive:0xff3b08,emissiveIntensity:2.7,roughness:.8}),flameMats=[new THREE.MeshBasicMaterial({color:0xffae35,transparent:true,opacity:.82,blending:THREE.AdditiveBlending,depthWrite:false}),new THREE.MeshBasicMaterial({color:0xff5324,transparent:true,opacity:.67,blending:THREE.AdditiveBlending,depthWrite:false})];for(const dz of [-.18,.18]){const log=new THREE.Mesh(new THREE.CylinderGeometry(.13,.17,1.75,10),MAT.darkWood);log.rotation.z=Math.PI/2;log.rotation.y=dz<0?.18:-.18;log.position.set(0,.12,dz);group.add(log)}const ember=new THREE.Mesh(new THREE.SphereGeometry(.52,14,8),emberMat);ember.scale.set(1.8,.28,.55);ember.position.y=.18;group.add(ember);for(let i=0;i<7;i++){const flame=new THREE.Mesh(new THREE.ConeGeometry(.18+(i%3)*.045,.78+(i%2)*.35,10,1,true),flameMats[i%2]);flame.position.set((i-3)*.24,.5+(i%2)*.08,(i%3-1)*.08);flame.rotation.z=(i-3)*.04;flame.userData.phase=i*.83;group.add(flame);realisticFlames.push(flame)}const light=new THREE.PointLight(0xff7430,22*scale,10*scale,2);light.position.set(0,1.5,1.6);light.castShadow=false;group.add(light);return {group,ember,light}}
-    // fireplace
-    addBox(8,5,1.2,MAT.stone,-13,2.5,-28.8);box(4.8,3.1,1.25,MAT.black,-13,1.65,-28.1);trim(-13,5.25,-28.1,9,.45,1.5);const mainHearth=createHearthFire(-13,.18,-27.38,1.25),fire=mainHearth.ember,fireLight=mainHearth.light;collider(-13,-28,8,2);
-    // The entrance clock, mounted above the doorway on the south wall; its hands keep the library's own time.
-    const clockFaceTex=canvasTexture((c,w,h)=>{c.fillStyle='#1c1409';c.beginPath();c.arc(w/2,h/2,w/2-6,0,Math.PI*2);c.fill();c.strokeStyle='#b9924f';c.lineWidth=10;c.beginPath();c.arc(w/2,h/2,w/2-11,0,Math.PI*2);c.stroke();c.fillStyle='#d8bd88';for(let i=0;i<12;i++){const a=i/12*Math.PI*2,r=i%3===0?w/2-34:w/2-28,rad=i%3===0?5:3,x=w/2+Math.sin(a)*r,y=h/2-Math.cos(a)*r;c.beginPath();c.arc(x,y,rad,0,Math.PI*2);c.fill()}},260,260);
-    const clockGroup=new THREE.Group();clockGroup.position.set(0,7.1,30.55);clockGroup.rotation.y=Math.PI;scene.add(clockGroup);
-    const clockFace=new THREE.Mesh(new THREE.CircleGeometry(1.05,32),new THREE.MeshStandardMaterial({map:clockFaceTex,roughness:.75}));clockGroup.add(clockFace);
-    const clockRim=new THREE.Mesh(new THREE.TorusGeometry(1.08,.08,8,28),MAT.brass);clockRim.position.z=.01;clockGroup.add(clockRim);
-    function clockHand(length,width,mat,z){const pivot=new THREE.Group();pivot.position.z=z;const hand=new THREE.Mesh(new THREE.BoxGeometry(width,length,.03),mat);hand.position.y=length/2;pivot.add(hand);clockGroup.add(pivot);return pivot}
-    const clockHourHand=clockHand(.6,.085,MAT.black,.05),clockMinuteHand=clockHand(.88,.055,MAT.darkWood,.08);
-    const clockPin=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,.12,10),MAT.brass);clockPin.rotation.x=Math.PI/2;clockPin.position.z=.1;clockGroup.add(clockPin);
-    clockFace.userData={type:'object',title:'The entrance clock',author:'Its hands have never once agreed with a watch carried in from outside.',action:'EXAMINE'};interactables.push(clockFace);
-    // reading tables, tea, spectacles suggested
-    function table(x,z){addBox(5,.35,2.5,MAT.wood,x,1.45,z);for(const dx of [-2,2])for(const dz of [-.9,.9])addBox(.25,1.4,.25,MAT.darkWood,x+dx,.7,z+dz);addLamp(x,1.75,z,1);collider(x,z,5,2.5)}
-    table(0,4);table(-28,-3);table(28,-3);
-    const supportBox=new THREE.Group();supportBox.position.set(-6.2,0,22.3);supportBox.rotation.y=.12;scene.add(supportBox);const supportData={type:'support-box',title:'Light Another Lamp',author:'The Library Restoration Fund â€” every contribution keeps a lamp burning.',action:'INSPECT FUND'},supportPedestal=new THREE.Mesh(new THREE.BoxGeometry(1.5,1.05,1.18),MAT.darkWood);supportPedestal.position.y=.52;supportBox.add(supportPedestal);const supportChest=new THREE.Mesh(new THREE.BoxGeometry(1.62,.9,1.12),MAT.wood);supportChest.position.y=1.42;supportChest.castShadow=true;supportChest.userData=supportData;supportBox.add(supportChest);interactables.push(supportChest);const supportLid=new THREE.Mesh(new THREE.BoxGeometry(1.78,.16,1.26),MAT.darkWood);supportLid.position.y=1.94;supportBox.add(supportLid);const supportSlot=new THREE.Mesh(new THREE.BoxGeometry(.82,.035,.13),MAT.brass);supportSlot.position.set(0,2.04,-.04);supportSlot.rotation.x=-.18;supportBox.add(supportSlot);const fundTex=canvasTexture((c,w,h)=>{c.fillStyle='#20150c';c.fillRect(0,0,w,h);c.strokeStyle='#c49a51';c.lineWidth=12;c.strokeRect(10,10,w-20,h-20);c.fillStyle='#ead4a0';c.textAlign='center';c.font='bold 35px Georgia';c.fillText('LIGHT ANOTHER LAMP',w/2,58);c.font='italic 24px Georgia';c.fillText('LIBRARY RESTORATION FUND',w/2,101)},700,140),supportPlaque=new THREE.Mesh(new THREE.PlaneGeometry(1.52,.5),new THREE.MeshStandardMaterial({map:fundTex,emissiveMap:fundTex,emissive:0x38210f,emissiveIntensity:.45,roughness:.72}));supportPlaque.position.set(0,1.46,.575);supportPlaque.userData=supportData;supportBox.add(supportPlaque);interactables.push(supportPlaque);for(const x of [-.7,.7]){const finial=new THREE.Mesh(new THREE.SphereGeometry(.1,10,8),MAT.gold);finial.position.set(x,2.08,0);supportBox.add(finial)}for(let i=0;i<9;i++){const coin=new THREE.Mesh(new THREE.CylinderGeometry(.095,.095,.025,16),MAT.gold);coin.rotation.x=Math.PI/2;coin.position.set(-.42+(i%5)*.21,.93+Math.floor(i/5)*.04,.58);supportBox.add(coin)}const supportGlow=new THREE.PointLight(0xffbd67,6.5,7,2);supportGlow.position.set(0,2.3,.35);supportBox.add(supportGlow);collider(-6.2,22.3,1.8,1.3);
-    supportBox.rotation.y+=Math.PI;
-box(.45,.12,.45,MAT.paper,-27,1.72,-3,false);cylinder(.22,.18,.35,16,new THREE.MeshStandardMaterial({color:0x365748,roughness:.8}),-29,1.78,-3);
-    const collectionDisplay=new THREE.Group();collectionDisplay.position.set(0,1.72,3.7);scene.add(collectionDisplay);const deskToken=new THREE.Mesh(new THREE.CylinderGeometry(.18,.18,.06,18),MAT.gold);deskToken.rotation.x=Math.PI/2;deskToken.position.x=-.55;collectionDisplay.add(deskToken);const deskMap=new THREE.Mesh(new THREE.BoxGeometry(.72,.03,.48),MAT.paper);deskMap.rotation.y=.18;collectionDisplay.add(deskMap);const deskKey=new THREE.Group(),keyRing=new THREE.Mesh(new THREE.TorusGeometry(.15,.035,6,16),MAT.brass),keyStem=new THREE.Mesh(new THREE.BoxGeometry(.42,.055,.055),MAT.brass);keyStem.position.x=.27;deskKey.add(keyRing,keyStem);deskKey.position.x=.65;deskKey.rotation.x=Math.PI/2;collectionDisplay.add(deskKey);const memoryLight=new THREE.PointLight(0xd8a55c,0,13,2);memoryLight.position.set(0,4.5,4);scene.add(memoryLight);
-    function registerSeat(parts,group,eye,yaw,options={}){const data=Object.assign({type:'seat',title:'A place to read',author:'Sit down with a random book',action:'SIT & READ',group,eye,yaw,categories:[]},options);for(const part of parts){part.userData=data;interactables.push(part)}if(data.type==='seat')seats.push(data);return data}
-    // CC0 Poly Haven models are progressive enhancements: the lightweight procedural seats remain
-    // usable while loading, in low-bandwidth mode, and whenever the asset CDN is unavailable.
-    const seatAssetBase='https://dl.polyhaven.org/file/ph-assets/Models/gltf/1k/';
-    const seatAssets={
-      armchair:{url:seatAssetBase+'ArmChair_01/ArmChair_01_1k.gltf',height:2.35,yaw:Math.PI},
-      sofa:{url:seatAssetBase+'Sofa_01/Sofa_01_1k.gltf',height:2.15,yaw:Math.PI},
-      feature:{url:seatAssetBase+'WoodenChair_01/WoodenChair_01_1k.gltf',height:2.75,yaw:Math.PI},
-      painted:{url:seatAssetBase+'painted_wooden_chair_01/painted_wooden_chair_01_1k.gltf',height:2.15,yaw:Math.PI},
-      bench:{url:seatAssetBase+'painted_wooden_bench/painted_wooden_bench_1k.gltf',height:1.55,yaw:Math.PI},
-      paintedSofa:{url:seatAssetBase+'painted_wooden_sofa/painted_wooden_sofa_1k.gltf',height:1.85,yaw:Math.PI}
-    };
-    const seatModelTemplates=new Map();
-    let seatLoaderPromise=null;
-    function seatLoader(){return seatLoaderPromise||(seatLoaderPromise=import('https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/loaders/GLTFLoader.js/+esm').then(module=>new module.GLTFLoader()))}
-    function seatTemplate(asset){if(!seatModelTemplates.has(asset.url))seatModelTemplates.set(asset.url,seatLoader().then(loader=>new Promise((resolve,reject)=>loader.load(asset.url,gltf=>resolve(gltf.scene),undefined,reject))));return seatModelTemplates.get(asset.url)}
-    function decorateSeat(group,fallbackParts,data,assetName,placement={}){
-      const asset=seatAssets[assetName];if(!asset||lowBandwidth)return;
-      seatTemplate(asset).then(template=>{
-        const model=template.clone(true),bounds=new THREE.Box3().setFromObject(model),size=bounds.getSize(new THREE.Vector3()),scale=(placement.height||asset.height)/Math.max(size.y,.001);
-        model.scale.setScalar(scale);model.rotation.y=asset.yaw+(placement.yaw||0);model.updateMatrixWorld(true);
-        const fitted=new THREE.Box3().setFromObject(model),center=fitted.getCenter(new THREE.Vector3());
-        model.position.x+=-center.x+(placement.x||0);model.position.y+=-fitted.min.y+(placement.y||0);model.position.z+=-center.z+(placement.z||0);
-        model.traverse(node=>{if(!node.isMesh)return;node.castShadow=false;node.receiveShadow=false;if(data){node.userData=data;interactables.push(node)}});
-        fallbackParts.forEach(part=>part.visible=false);group.add(model)
-      }).catch(error=>console.warn('CC0 seating asset unavailable; keeping procedural fallback.',assetName,error))
-    }
-    function chair(x,z,rot=0,options={}){const y=floorHeight(x,z),g=new THREE.Group();g.position.set(x,y,z);g.rotation.y=rot;scene.add(g);const seat=new THREE.Mesh(new THREE.BoxGeometry(2.1,.55,1.9),MAT.fabric);seat.position.y=.75;g.add(seat);const back=new THREE.Mesh(new THREE.BoxGeometry(2.1,2.4,.5),MAT.fabric);back.position.set(0,1.65,.72);g.add(back);const parts=[seat,back];for(const dx of [-.84,.84]){const a=new THREE.Mesh(new THREE.BoxGeometry(.3,.75,1.8),MAT.wood);a.position.set(dx,.65,0);g.add(a);parts.push(a)}collider(x,z,2.4,2.2,'armchair',y-1,y+3);const data=registerSeat([seat,back],g,new THREE.Vector3(0,1.35,-.1),rot,options);decorateSeat(g,parts,data,options.model);return g}
-    function sofa(x,z,rot=0,options={}){const y=floorHeight(x,z),g=new THREE.Group();g.position.set(x,y,z);g.rotation.y=rot;scene.add(g);const seat=new THREE.Mesh(new THREE.BoxGeometry(4.1,.48,1.75),MAT.fabric);seat.position.y=.72;const back=new THREE.Mesh(new THREE.BoxGeometry(4.1,1.85,.42),MAT.fabric);back.position.set(0,1.55,.68);g.add(seat,back);const parts=[seat,back];for(const dx of [-1.85,1.85]){const arm=new THREE.Mesh(new THREE.BoxGeometry(.35,.72,1.75),MAT.wood);arm.position.set(dx,.72,0);g.add(arm);parts.push(arm)}collider(x,z,4.5,2.15,'sofa',y-1,y+3);const data=registerSeat([seat,back],g,new THREE.Vector3(0,1.32,-.08),rot,options);decorateSeat(g,parts,data,options.model||'sofa');return g}
-    function bench(x,z,rot=0,options={}){const y=floorHeight(x,z),g=new THREE.Group();g.position.set(x,y,z);g.rotation.y=rot;scene.add(g);const cushion=new THREE.MeshStandardMaterial({color:0x3f1721,roughness:.92}),seat=new THREE.Mesh(new THREE.BoxGeometry(4.8,.34,1.35),cushion);seat.position.y=.72;const back=new THREE.Mesh(new THREE.BoxGeometry(4.8,1.18,.22),MAT.darkWood);back.position.set(0,1.38,.62);g.add(seat,back);const parts=[seat,back];for(const dx of [-2.18,2.18]){const leg=new THREE.Mesh(new THREE.BoxGeometry(.25,1.82,.25),MAT.darkWood);leg.position.set(dx,.82,.48);g.add(leg);parts.push(leg);const finial=new THREE.Mesh(new THREE.ConeGeometry(.19,.45,8),MAT.brass);finial.position.set(dx,1.96,.48);g.add(finial);parts.push(finial)}for(const dx of [-1.55,-.78,0,.78,1.55]){const slat=new THREE.Mesh(new THREE.BoxGeometry(.12,.88,.12),MAT.wood);slat.position.set(dx,1.38,.53);g.add(slat);parts.push(slat)}const width=Math.abs(Math.cos(rot))*5.1+Math.abs(Math.sin(rot))*1.55,depth=Math.abs(Math.sin(rot))*5.1+Math.abs(Math.cos(rot))*1.55;collider(x,z,width,depth,'bench',y-1,y+2.5);const data=registerSeat([seat,back],g,new THREE.Vector3(0,1.3,-.05),rot,options);if(options.model!==false)decorateSeat(g,parts,data,options.model||'bench',{height:1.7});return g}
-    chair(-13,-23,Math.PI,{model:'armchair',title:'A fireside Victorian armchair',author:'Settle beside the crackling hearth with a ghost story.',categories:['Ghosts']});
-    sofa(-8.2,-23,Math.PI,{title:'A carved Gothic sofa',author:'The worn upholstery holds room for two, though the library admits one reader at a time.',categories:['Gothic','Ghosts','Society']});
-    chair(0,8,0,{model:'armchair',title:'The central reading chair',author:'A deep chair positioned beneath the chandelier.',categories:['Wonder','Poetry','Philosophy']});
-    chair(-28,-.9,0,{model:'painted',title:'A worn catalogue chair',author:'Pulled up to the western reading desk, its paint has softened beneath generations of searching hands.',categories:['Mystery','Memory']});
-    chair(28,-.9,0,{model:'painted',title:'A plain reading chair',author:'Pulled up to the eastern desk: unshowy, sturdy, and exactly where a reader needs it.',categories:['Society','Comedy','Journey']});
-    chair(14,22,Math.PI/2,{model:'feature',title:'The librarianâ€™s Gothic chair',author:'Carved tracery rises like a small wooden cathedral. It feels improper to sit here.',categories:['Gothic','Philosophy','Strange']});
-    function windowSeat(x){const g=new THREE.Group();g.position.set(x,0,-28.65);scene.add(g);const base=new THREE.Mesh(new THREE.BoxGeometry(3.4,.72,1.25),MAT.wood);base.position.y=.36;g.add(base);const cushion=new THREE.Mesh(new THREE.BoxGeometry(3.12,.26,1.08),new THREE.MeshStandardMaterial({color:0x314553,roughness:.96}));cushion.position.y=.83;g.add(cushion);for(const dx of [-1.28,1.28]){const pillow=new THREE.Mesh(new THREE.SphereGeometry(.38,10,7),MAT.fabric);pillow.scale.set(1.1,.75,.45);pillow.position.set(dx,.98,.22);g.add(pillow)}collider(x,-28.65,3.5,1.35,'window seat');const windowSeatData=registerSeat([cushion],g,new THREE.Vector3(0,1.3,0),0,{title:'A rain-window seat',author:'Read while the rain writes its own story on the glass.',categories:['Journey','Sea','Adventure','Poetry']});decorateSeat(g,[base,cushion,...g.children.filter(child=>child!==base&&child!==cushion)],windowSeatData,'paintedSofa',{height:1.75})}
-    windowSeat(-4);windowSeat(4);windowSeat(12);
-    function writingDesk(x,z,carrel=false){const g=new THREE.Group();g.position.set(x,0,z);scene.add(g);const top=new THREE.Mesh(new THREE.BoxGeometry(3.5,.22,1.5),MAT.wood);top.position.set(0,1.32,-.45);g.add(top);for(const dx of [-1.45,1.45]){const leg=new THREE.Mesh(new THREE.BoxGeometry(.18,1.25,.18),MAT.darkWood);leg.position.set(dx,.63,-.45);g.add(leg)}const writingChair=new THREE.Mesh(new THREE.BoxGeometry(1.45,.3,1.25),MAT.green);writingChair.position.set(0,.72,1);g.add(writingChair);const writingBack=new THREE.Mesh(new THREE.BoxGeometry(1.45,1.5,.2),MAT.green);writingBack.position.set(0,1.35,1.52);g.add(writingBack);const page=new THREE.Mesh(new THREE.BoxGeometry(.78,.025,.54),MAT.paper);page.position.set(-.35,1.46,-.42);page.rotation.y=.12;g.add(page);const ink=new THREE.Mesh(new THREE.CylinderGeometry(.12,.15,.22,10),MAT.black);ink.position.set(.72,1.52,-.4);g.add(ink);if(carrel){for(const dx of [-1.82,1.82]){const side=new THREE.Mesh(new THREE.BoxGeometry(.12,2.35,2.7),MAT.darkWood);side.position.set(dx,1.18,-.1);g.add(side)}const hood=new THREE.Mesh(new THREE.BoxGeometry(3.75,.15,2.7),MAT.darkWood);hood.position.set(0,2.32,-.1);g.add(hood)}collider(x,z,carrel?3.9:3.6,3.2,carrel?'study carrel':'writing desk');const deskSeatData=registerSeat([writingChair,writingBack],g,new THREE.Vector3(0,1.32,.92),0,{title:carrel?'A private study carrel':'A readerâ€™s writing desk',author:carrel?'Outside sounds soften when you sit inside.':'Ink, paper, and a chair for arguing in the margins.',categories:carrel?['Mystery','Philosophy','Conscience']:['Philosophy','Poetry','Society','Satire']});decorateSeat(g,[writingChair,writingBack],deskSeatData,'painted',{height:1.9,z:1});return g}
-    writingDesk(-8,14,false);writingDesk(-14,15,true);
-    // The returns desk: a small stand that keeps a physical stack of whatever is currently being read, and what has been finished.
-    function readingStandBook(book,x,z,layer,baseY){const bm=new THREE.Mesh(new THREE.BoxGeometry(1.25,1.65,.22),new THREE.MeshStandardMaterial({map:coverTexture(book),roughness:.68}));const h=book.id%97,jx=Math.sin(h*12.9898+layer*3.7)*.07,jz=Math.cos(h*78.233+layer*1.3)*.07,yaw=Math.sin(h*4.51+layer)*.4;bm.position.set(x+jx,baseY+layer*.235+.11,z+jz);const q=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),-Math.PI/2);q.premultiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0),yaw));bm.quaternion.copy(q);scene.add(bm);bm.userData={type:'book',book,loaded:true,home:{position:bm.position.clone(),quaternion:bm.quaternion.clone(),parent:scene}};interactables.push(bm);return bm}
-    const readingStandMeshes=[];function clearReadingStand(){for(const bm of readingStandMeshes){if(bm===selected)continue;const idx=interactables.indexOf(bm);if(idx>=0)interactables.splice(idx,1);scene.remove(bm);bm.geometry.dispose();bm.material.dispose()}readingStandMeshes.length=0}
-    const readingStandPos={x:5,z:5,top:1.21};
-    const readingStandTopMat=new THREE.MeshStandardMaterial({color:0x3a2213,roughness:.72});addBox(2.6,.14,1.5,readingStandTopMat,readingStandPos.x,1.14,readingStandPos.z);for(const dx of [-1.05,1.05])for(const dz of [-.6,.6]){const leg=new THREE.Mesh(new THREE.BoxGeometry(.16,1.08,.16),MAT.darkWood);leg.position.set(readingStandPos.x+dx,.54,readingStandPos.z+dz);scene.add(leg)}
-    const readingHit=box(1.4,.5,1.3,new THREE.MeshBasicMaterial({transparent:true,opacity:.001,depthWrite:false}),readingStandPos.x-.55,1.5,readingStandPos.z,false),finishedHit=box(1.4,.5,1.3,new THREE.MeshBasicMaterial({transparent:true,opacity:.001,depthWrite:false}),readingStandPos.x+.55,1.5,readingStandPos.z,false);
-    const readingPileData={type:'object',title:'An empty side of the stand',author:'Nothing is left open here just now.',action:'EXAMINE'},finishedPileData={type:'object',title:'Nothing shelved here yet',author:'No book has been read to its final page yet.',action:'EXAMINE'};readingHit.userData=readingPileData;finishedHit.userData=finishedPileData;interactables.push(readingHit,finishedHit);
-    function refreshReadingStack(){if(selected&&readingStandMeshes.includes(selected))return;clearReadingStand();const order=[...new Set([...awakenedBooks,...deskBooks])].reverse(),readingList=[],finishedList=[];for(const id of order){const b=books.find(bk=>bk.id===id);if(!b)continue;if(b.progress>=.95)finishedList.push(b);else if(deskBooks.has(id)||b.progress>.02)readingList.push(b)}const showReading=readingList.slice(0,5),showFinished=finishedList.slice(0,5);showReading.forEach((b,i)=>readingStandMeshes.push(readingStandBook(b,readingStandPos.x-.55,readingStandPos.z,i,readingStandPos.top)));showFinished.forEach((b,i)=>readingStandMeshes.push(readingStandBook(b,readingStandPos.x+.55,readingStandPos.z,i,readingStandPos.top)));const totalFinished=books.filter(b=>b.progress>=.95).length;readingPileData.title=showReading.length?'Currently reading':'An empty side of the stand';readingPileData.author=showReading.length?`Left at the desk or partway through: ${showReading.map(b=>b.title).join(', ')}.`:'Nothing is left open here just now.';finishedPileData.title=showFinished.length?'Recently finished':'Nothing shelved here yet';finishedPileData.author=totalFinished?`${totalFinished} volume${totalFinished===1?'':'s'} read to the last page. Most recent: ${showFinished.map(b=>b.title).join(', ')}.`:'No book has been read to its final page yet.'}
-    refreshReadingStack();
-    const rockingChair=new THREE.Group();rockingChair.position.set(-3.5,0,-23);scene.add(rockingChair);const rockerSeat=new THREE.Mesh(new THREE.BoxGeometry(1.65,.3,1.45),MAT.green);rockerSeat.position.y=.85;rockingChair.add(rockerSeat);const rockerBack=new THREE.Mesh(new THREE.BoxGeometry(1.65,2,.22),MAT.wood);rockerBack.position.set(0,1.65,.6);rockerBack.rotation.x=-.12;rockingChair.add(rockerBack);const rockerParts=[rockerSeat,rockerBack];for(const x of [-.68,.68]){const runner=new THREE.Mesh(new THREE.BoxGeometry(.14,.12,2.4),MAT.darkWood);runner.position.set(x,.16,0);runner.rotation.x=.08;rockingChair.add(runner)}collider(-3.5,-23,2,2.5,'rocking chair');const rockingSeatData=registerSeat([rockerSeat,rockerBack],rockingChair,new THREE.Vector3(0,1.34,-.05),Math.PI,{title:'An old Victorian rocking chair',author:'It continues rocking after its reader leaves.',categories:['Ghosts','Gothic','Memory']});decorateSeat(rockingChair,rockerParts,rockingSeatData,'armchair',{height:2.15});
-    const reservedChair=chair(7,22,Math.PI,{model:'feature',type:'object',title:'A chair reserved for someone absent',author:'A silver card says: PLEASE DO NOT DISTURB THE READER.',action:'EXAMINE'}),invisibleReader=new THREE.Group();reservedChair.add(invisibleReader);const ghostMat=new THREE.MeshBasicMaterial({color:0xbcc9d8,transparent:true,opacity:.08,depthWrite:false});const ghostBody=new THREE.Mesh(new THREE.SphereGeometry(.55,12,8),ghostMat);ghostBody.scale.set(.75,1.5,.65);ghostBody.position.y=1.55;invisibleReader.add(ghostBody);const ghostHead=new THREE.Mesh(new THREE.SphereGeometry(.27,12,8),ghostMat);ghostHead.position.y=2.45;invisibleReader.add(ghostHead);invisibleReader.visible=false;
-    // paintings and mysterious note
-    function painting(x,y,z,w,h,rot=0,colors=['#342016','#a87b45'],imageUrl='',hinged=false){const tex=canvasTexture((c,W,H)=>{const g=c.createLinearGradient(0,0,W,H);g.addColorStop(0,colors[0]);g.addColorStop(1,'#080706');c.fillStyle=g;c.fillRect(0,0,W,H);c.fillStyle=colors[1];c.globalAlpha=.45;c.beginPath();c.ellipse(W*.5,H*.38,W*.19,H*.28,0,0,7);c.fill();c.fillRect(W*.32,H*.65,W*.36,H*.3);c.globalAlpha=.3;c.fillStyle='#e3c68f';c.fillRect(0,H*.78,W,H*.03)},256,320),group=new THREE.Group();group.position.set(x,y,z);group.rotation.y=rot;scene.add(group);const offset=hinged?w/2:0,frame=new THREE.Group(),rail=.24,depth=.15,panel=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshStandardMaterial({map:tex,roughness:.82,emissive:0xffffff,emissiveMap:tex,emissiveIntensity:.16,side:THREE.DoubleSide})),backing=new THREE.Mesh(new THREE.BoxGeometry(w,h,.06),MAT.darkWood);frame.position.set(offset,0,.08);for(const fy of [-1,1]){const edge=new THREE.Mesh(new THREE.BoxGeometry(w+rail*2,rail,depth),MAT.gold);edge.position.y=fy*(h/2+rail/2);frame.add(edge)}for(const fx of [-1,1]){const edge=new THREE.Mesh(new THREE.BoxGeometry(rail,h,depth),MAT.gold);edge.position.x=fx*(w/2+rail/2);frame.add(edge)}panel.position.set(offset,0,.07);backing.position.set(offset,0,-.03);group.add(backing,panel,frame);if(imageUrl)new THREE.TextureLoader().load(imageUrl,image=>{image.colorSpace=THREE.SRGBColorSpace;image.anisotropy=4;panel.material.map=image;panel.material.emissiveMap=image;panel.material.needsUpdate=true});return{group,panel,frame}}
-    painting(8,5,-30.05,2.6,3.5,0,['#263324','#b58249'],'assets/moonlit-bay.jpg');const secretPortrait=painting(18.65,5,17.175,5.65,9.4,-Math.PI/2,['#201f38','#8a6240'],'assets/secret-librarian-portrait.jpg',true);painting(-18.65,4,19,3.5,4.5,Math.PI/2,['#3b1717','#9b7748'],'assets/botanist.jpg');
-    secretPortrait.panel.userData={type:'portrait',title:'A portrait hung slightly askew',author:'A cold thread of air touches the frame.',action:'OPEN'};interactables.push(secretPortrait.panel);const portraitDoorCollider=collider(19,20,.6,6,'portrait door');
-    addBox(.5,10,1,MAT.stone,19,5,17,false);addBox(.5,10,1,MAT.stone,19,5,23,false);addBox(.5,1,6,MAT.stone,19,9.6,20,false);addBox(.5,1,6,MAT.stone,19,.4,20,false);
-    function galleryPicture(x,y,z,w,h,rot,image,title,inscription){const art=painting(x,y,z,w,h,rot,['#17120f','#8d6b3e'],image);art.panel.userData={type:'object',title,author:inscription,action:'EXAMINE'};interactables.push(art.panel);return art}
-    const veiledWidow=galleryPicture(-18.65,4,-20,3.4,4.8,Math.PI/2,'assets/portrait-veiled-widow.jpg','The Veiled Widow','The plaque is warm. Her painted eyes are not.');
-    galleryPicture(-51.68,3.5,-7.15,3.1,4.45,Math.PI/2,'assets/portrait-impossible-stairs.jpg','The Stair That Returns','Every landing appears to lead back to this room.');
-    galleryPicture(-17.62,-3,-58,3.4,4.8,Math.PI/2,'assets/portrait-lantern-librarian.jpg','The Last Librarian','She carries a lantern into an aisle the catalogue denies exists.');
-    function vernePortalTexture(){return canvasTexture((c,W,H)=>{
-      // A foxed nineteenth-century steel engraving, rather than a modern poster.
-      c.fillStyle='#d6c294';c.fillRect(0,0,W,H);const wash=c.createRadialGradient(W*.47,H*.38,W*.05,W*.5,H*.44,W*.68);wash.addColorStop(0,'rgba(255,248,214,.34)');wash.addColorStop(1,'rgba(66,43,21,.28)');c.fillStyle=wash;c.fillRect(0,0,W,H);
-      c.strokeStyle='#2d2318';c.lineWidth=7;c.strokeRect(18,18,W-36,H-36);c.lineWidth=2;c.strokeRect(29,29,W-58,H-58);c.strokeRect(38,38,W-76,H-76);
-      for(const [x,y,sx,sy] of [[46,46,1,1],[W-46,46,-1,1],[46,H-46,1,-1],[W-46,H-46,-1,-1]]){c.save();c.translate(x,y);c.scale(sx,sy);c.beginPath();c.moveTo(0,28);c.bezierCurveTo(5,5,9,5,28,0);c.bezierCurveTo(12,13,14,20,0,28);c.stroke();c.restore()}
-      c.save();c.beginPath();c.rect(48,70,W-96,H-158);c.clip();c.strokeStyle='rgba(48,35,22,.26)';c.lineWidth=1;for(let i=-H;i<W+H;i+=9){c.beginPath();c.moveTo(i,58);c.lineTo(i-H,H-70);c.stroke()}for(let y=H*.5;y<H*.82;y+=13){c.beginPath();c.moveTo(40,y);c.bezierCurveTo(W*.27,y-16,W*.7,y+18,W-40,y-4);c.stroke()}
-      c.strokeStyle='#2a2117';c.fillStyle='rgba(214,194,148,.88)';c.lineWidth=4;
-      c.beginPath();c.arc(W*.76,H*.19,W*.095,0,Math.PI*2);c.fill();c.stroke();for(let i=0;i<10;i++){const a=i*.63;c.beginPath();c.arc(W*.76+Math.cos(a)*W*.048,H*.19+Math.sin(a)*W*.048,3+i%3,0,Math.PI*2);c.stroke()}
-      c.beginPath();c.ellipse(W*.24,H*.23,W*.105,H*.14,0,0,Math.PI*2);c.fill();c.stroke();for(let i=-3;i<=3;i++){c.beginPath();c.moveTo(W*(.15+i*.006),H*(.2+i*.008));c.quadraticCurveTo(W*.24,H*(.27+i*.006),W*(.33-i*.006),H*(.2+i*.008));c.stroke()}c.beginPath();c.moveTo(W*.17,H*.34);c.lineTo(W*.2,H*.39);c.lineTo(W*.28,H*.39);c.lineTo(W*.31,H*.34);c.strokeRect(W*.2,H*.385,W*.08,H*.045);c.stroke();
-      c.save();c.translate(W*.5,H*.69);c.beginPath();c.ellipse(0,0,W*.3,H*.073,0,0,Math.PI*2);c.fill();c.stroke();c.beginPath();c.moveTo(-W*.3,0);c.lineTo(-W*.39,-H*.042);c.lineTo(-W*.37,H*.038);c.closePath();c.fill();c.stroke();c.beginPath();c.moveTo(W*.02,-H*.073);c.lineTo(W*.065,-H*.12);c.lineTo(W*.12,-H*.073);c.stroke();for(const px of [-.18,-.06,.06,.18]){c.beginPath();c.arc(W*px,0,W*.021,0,Math.PI*2);c.stroke()}for(let i=-5;i<=5;i++){c.beginPath();c.moveTo(-W*.27,H*(.012+i*.004));c.lineTo(W*.26,H*(-.01+i*.004));c.stroke()}c.restore();c.restore();
-      c.fillStyle='#2a2117';c.textAlign='center';c.font='small-caps bold 25px Georgia';c.fillText('VOYAGES EXTRAORDINAIRES',W/2,H*.91);c.font='italic 16px Georgia';c.fillText('MER  â€¢  TERRE  â€¢  LUNE',W/2,H*.945)
-    },512,640)}
-    function haggardPortalTexture(){return canvasTexture((c,W,H)=>{
-      c.fillStyle='#c8b37e';c.fillRect(0,0,W,H);c.strokeStyle='#493822';c.lineWidth=6;c.strokeRect(20,20,W-40,H-40);c.lineWidth=2;c.strokeRect(31,31,W-62,H-62);
-      c.globalAlpha=.22;for(let i=-H;i<W+H;i+=10){c.beginPath();c.moveTo(i,42);c.lineTo(i-H,H-45);c.stroke()}c.globalAlpha=1;
-      c.lineWidth=4;c.beginPath();c.moveTo(W*.12,H*.76);c.bezierCurveTo(W*.27,H*.5,W*.28,H*.34,W*.45,H*.23);c.bezierCurveTo(W*.59,H*.14,W*.75,H*.38,W*.88,H*.17);c.stroke();
-      c.lineWidth=2;for(const y of [.64,.69,.74]){c.beginPath();c.moveTo(W*.12,H*y);c.bezierCurveTo(W*.35,H*(y-.05),W*.58,H*(y+.04),W*.88,H*(y-.03));c.stroke()}
-      c.setLineDash([9,8]);c.strokeStyle='#7b281e';c.lineWidth=4;c.beginPath();c.moveTo(W*.19,H*.73);c.quadraticCurveTo(W*.34,H*.62,W*.32,H*.47);c.quadraticCurveTo(W*.3,H*.32,W*.49,H*.29);c.quadraticCurveTo(W*.66,H*.25,W*.73,H*.39);c.stroke();c.setLineDash([]);
-      c.strokeStyle='#493822';c.lineWidth=3;c.beginPath();c.arc(W*.73,H*.39,16,0,Math.PI*2);c.moveTo(W*.72,H*.37);c.lineTo(W*.75,H*.42);c.moveTo(W*.75,H*.37);c.lineTo(W*.72,H*.42);c.stroke();
-      for(const [x,y] of [[.22,.43],[.57,.58],[.78,.66]]){c.beginPath();c.moveTo(W*x-12,H*y+18);c.lineTo(W*x,H*y-18);c.lineTo(W*x+13,H*y+18);c.closePath();c.stroke()}
-      c.fillStyle='#352719';c.textAlign='center';c.font='small-caps bold 27px Georgia';c.fillText('SURVEY OF AN UNNAMED COUNTRY',W/2,H*.89);c.font='italic 17px Georgia';c.fillText('route incomplete â€” trace by hand',W/2,H*.935)
-    },512,640)}
-    function doyleClueTexture(){return canvasTexture((c,W,H)=>{
-      c.fillStyle='#382b20';c.fillRect(0,0,W,H);c.strokeStyle='#b48b4d';c.lineWidth=6;c.strokeRect(15,15,W-30,H-30);c.fillStyle='#d7c79e';c.fillRect(42,44,W-84,H-88);c.strokeStyle='#5b4530';c.lineWidth=2;
-      for(const [x,y,a] of [[.25,.27,-.12],[.67,.23,.08],[.48,.58,-.04]]){c.save();c.translate(W*x,H*y);c.rotate(a);c.strokeRect(-58,-45,116,90);c.fillStyle='#eee3c4';c.fillRect(-53,-40,106,80);c.fillStyle='#4a3927';c.font='bold 18px Georgia';c.textAlign='center';c.fillText(y>.5?'RED THREAD':x<.5?'FOOTPRINT':'STOPPED WATCH',0,-15);c.font='italic 14px Georgia';c.fillText(y>.5?'from a torn cuff':x<.5?'heel worn left':'quarter past two',0,15);c.restore()}
-      c.strokeStyle='#7f201d';c.lineWidth=3;c.beginPath();c.moveTo(W*.25,H*.33);c.lineTo(W*.48,H*.51);c.lineTo(W*.67,H*.29);c.stroke();c.beginPath();c.arc(W*.48,H*.72,48,0,Math.PI*2);c.stroke();c.beginPath();c.arc(W*.48,H*.72,27,0,Math.PI*2);c.stroke();c.moveTo(W*.515,H*.755);c.lineTo(W*.63,H*.88);c.stroke();
-      c.fillStyle='#34261a';c.textAlign='center';c.font='small-caps bold 24px Georgia';c.fillText('THE FACTS, BEFORE THE THEORY',W/2,H*.95)
-    },512,640)}
-    galleryPicture(18.65,4,-20,3.5,4.9,-Math.PI/2,'assets/painting-journey-caravan.jpg','The Long Road East','The caravan has crossed the same moonlit pass for a hundred years.');
-    galleryPicture(18.65,7,27,3.5,4.9,-Math.PI/2,'assets/painting-wonder-garden.jpg','The Garden Between Verses','A place for poetry, wonder, and paths that only appear at night.');
-    addBox(9,.4,8,MAT.wood,23.5,4.8,20,false);addBox(.5,7,8,MAT.stone,28,8.5,20);addBox(9,7,.5,MAT.stone,23.5,8.5,16);addBox(9,7,.5,MAT.stone,23.5,8.5,24);const portraitRug=rug(23.5,20,6,5,0x232f3c);portraitRug.position.y=5.021;addLamp(24,7,20,.7);
-    const portraitDesk=box(2.6,.18,1.4,MAT.darkWood,24,5.9,20,false);for(const dx of [-1.1,1.1])for(const dz of [-.5,.5])box(.14,.9,.14,MAT.wood,24+dx,5.4,20+dz,false);const portraitLedger=box(.9,.08,.65,MAT.paper,24,6.06,20,false);portraitLedger.rotation.y=-.24;portraitLedger.userData={type:'room-record',recordId:'portrait',title:'A ledger beneath the portrait',author:'Its names are written in several different hands.',action:'READ'};interactables.push(portraitLedger);
-    const note=box(.72,.03,.5,MAT.paper,1.2,1.66,3.7,false);note.rotation.y=.4;note.userData={type:'note',title:'A folded note',author:'â€œThe west wall remembers what the catalogue forgets.â€',secretId:'folded-note'};interactables.push(note);
+NİÚ[™İË—×ĞUSQUSWĞ“ÓÕÑRSQ×ÏËŠ™]È\œ›ÜŠ	ÕHÙX‘ÓÛÛ^Ø\ÈÜİ	ÊJ_KÛÛ˜ÙNY_JNÙØİ[Y[˜›ÙKœ™\[™
+™[™\™\‹™ÛQ[[Y[
+NÂˆÛÛœİÛØÚÏ[™]È‘QKÛØÚÊ
+K˜^XØ\İ\[™]È‘QK”˜^XØ\İ\Š
+NÜ˜^XØ\İ\‹™˜\M‹NÂˆÛÛœİÙX]ÏV×KÛÛY\œÏV×K[\˜XİX›\ÏV×KÛİ™\”]Y]YOV×K[Ù\]Y[˜ÙOV×NÂˆÛÛœİ\ÛÜ›ÜÚ][Û[™]È‘QK•™XİÜŒÊ
+K\ÛÜ›ÜÚ][ÛŒ[™]È‘QK•™XİÜŒÊ
+K\™XİÜ[™]È‘QK•™XİÜŒÊ
+K\™XİÜŒ[™]È‘QK•™XİÜŒÊ
+K\]X]\›š[Û[™]È‘QK”]X]\›š[ÛŠ
+K\]X]\›š[ÛŒ[™]È‘QK”]X]\›š[ÛŠ
+K\][\[™]È‘QK‘][\Š
+KØÜ™Y[Ù[™O[™]È‘QK•™XİÜŒŠ
+NÂˆÛÛœİÔUPSĞÑSÔÒV‘OLL‹ÛÛY\Ù[Ï[™]ÈX\
 
-    // shelves and cover-facing books
-    let bookCursor=0,addedBookCursor=78,secretShelf=null;
-    const shelvedBookGeometry=new THREE.BoxGeometry(1.25,1.65,.22);
-    function shelf(x,z,rot=0,count=6,secret=false,level=0){const g=new THREE.Group();g.position.set(x,level,z);g.rotation.y=rot;scene.add(g);const W=7.2,H=7.8,D=.8,structure=mergedBoxParts([[W,.18,D,0,.2,0],[W,.18,D,0,2.05,0],[W,.18,D,0,3.9,0],[W,.18,D,0,5.75,0],[W,.18,D,0,7.6,0],[.25,H,D,-W/2,H/2,0],[.25,H,D,W/2,H/2,0]],MAT.darkWood),back=mergedBoxParts([[W,H,.18,0,H/2,-.35]],MAT.wood2);g.add(structure,back);
-      const cols=Math.ceil(count/4);for(let row=0;row<4;row++)for(let col=0;col<(secret?cols:4);col++){let b;if(col>=cols){if(addedBookCursor>=books.length)continue;b=books[addedBookCursor++]}else b=bookCursor<78?books[bookCursor++]:books[36+((row*cols+col)%12)];const mat=bookMaterial(b);const bm=new THREE.Mesh(shelvedBookGeometry,mat);bm.position.set(-2.65+col*1.72,1.14+row*1.85,.48);bm.rotation.x=(col%2?-.02:.018);g.add(bm);bm.userData={type:'book',book:b,home:null,loaded:false};interactables.push(bm);coverQueue.push(bm);if(secret&&row===2&&col===1){bm.userData.secret=true;bm.userData.action='PULL';bm.position.x+=.12;bm.position.z=.76;bm.rotation.z=-.18;bm.material.emissive=new THREE.Color(0x3b210d);bm.material.emissiveIntensity=.42}bm.userData.home={position:bm.position.clone(),quaternion:bm.quaternion.clone(),parent:g}}
-      g.userData.collider=collider(x,z,Math.abs(Math.cos(rot))*W+Math.abs(Math.sin(rot))*D,Math.abs(Math.sin(rot))*W+Math.abs(Math.cos(rot))*D);return g}
-    function curatedShelf(ids,x,z,rot=0,neglect=0){
-      const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=rot;scene.add(g);const W=9,H=4.5,D=.8,structure=mergedBoxParts([[W,.18,D,0,.2,0],[W,.18,D,0,2.25,0],[W,.18,D,0,4.4,0],[.25,H,D,-W/2,H/2,0],[.25,H,D,W/2,H/2,0]],MAT.darkWood),back=mergedBoxParts([[W,H,.18,0,H/2,-.35]],MAT.wood2);g.add(structure,back);
-      ids.forEach((id,i)=>{const b=books.find(book=>book.id===id);if(!b)return;const row=Math.floor(i/5),col=i%5,bm=new THREE.Mesh(shelvedBookGeometry,bookMaterial(b)),wobble=Math.sin((id%997)*.73+i*2.17),fallen=neglect>=2&&i>=ids.length-(neglect-1);if(fallen){bm.position.set(-2.5+(i%3)*2.15,.14,1.25+(i%2)*.58);bm.rotation.set(-Math.PI/2,wobble*.22,wobble*.48)}else{bm.position.set(-3.5+col*1.75+wobble*neglect*.11,1.2+row*2.05-(i%2)*neglect*.045,.48+(i%3)*neglect*.035);bm.rotation.set((col%2?-.018:.015)+wobble*neglect*.035,0,wobble*neglect*.13)}g.add(bm);bm.userData={type:'book',book:b,loaded:false,home:{position:bm.position.clone(),quaternion:bm.quaternion.clone(),parent:g}};interactables.push(bm);coverQueue.push(bm)});
-      if(neglect>=2){const brokenPlank=new THREE.Mesh(new THREE.BoxGeometry(W*.42,.13,D*.7),MAT.darkWood);brokenPlank.position.set(1.7,2.13,.35);brokenPlank.rotation.z=.055*neglect;brokenPlank.rotation.y=-.08*neglect;g.add(brokenPlank)}
-      g.userData.collider=collider(x,z,Math.abs(Math.cos(rot))*W+Math.abs(Math.sin(rot))*D,Math.abs(Math.sin(rot))*W+Math.abs(Math.cos(rot))*D);return g
-    }
-    function looseBook(book,x,y,z,rot=0,secretId=''){const bm=new THREE.Mesh(new THREE.BoxGeometry(1.25,1.65,.22),bookMaterial(book)),safeY=Math.max(y,floorHeight(x,z)+.68);bm.position.set(x,safeY,z);bm.rotation.set(0,rot,Math.PI/2);bm.castShadow=true;scene.add(bm);bm.userData={type:'book',book,loaded:false,secretId,home:{position:bm.position.clone(),quaternion:bm.quaternion.clone(),parent:scene}};interactables.push(bm);coverQueue.push(bm);return bm}
-    shelf(-7.3,-17,0,12);shelf(0,-17,0,12);shelf(7.3,-17,0,12);shelf(-15,-7,Math.PI/2,8);shelf(15,-7,-Math.PI/2,8);shelf(-28,-12,0,6);shelf(-28,8,Math.PI,6);shelf(28,-12,0,6);shelf(28,8,Math.PI,6);
-    // Hidden passages: each Reading Room is reached only by finding its own scattered secret in the main hall or wings - no obvious door, no shared lobby.
-    const hiddenPassages=[];function enterHiddenRoom(hp){if(themeRoomKeys.has(hp.destination))buildThemeRooms();player.pos.set(hp.spawn[0],hp.spawn[1],hp.spawn[2]);player.vel.set(0,0,0);player.yaw=hp.yaw;lastSafePosition.copy(player.pos);showNotice(themeArrivals[hp.destination]||'The library rearranges itself around you.',6);sound(170,.9,'triangle',.12)}function hiddenDoor(x,z,rot,opts){const group=new THREE.Group();group.position.set(x,0,z);group.rotation.y=rot;scene.add(group);const panel=new THREE.Mesh(new THREE.BoxGeometry(2.25,4.8,.14),MAT.darkWood);panel.geometry.translate(1.125,0,0);panel.position.set(-1.125,2.45,0);group.add(panel);for(const side of [-1,1]){const jamb=new THREE.Mesh(new THREE.BoxGeometry(.16,5.1,.24),MAT.gold);jamb.position.set(side*1.2,2.55,.08);group.add(jamb)}const lintel=new THREE.Mesh(new THREE.BoxGeometry(2.55,.16,.24),MAT.gold);lintel.position.set(0,5.02,.08);group.add(lintel);const handle=new THREE.Mesh(new THREE.SphereGeometry(.12,10,8),MAT.brass);handle.position.set(1.9,-.05,.18);panel.add(handle);const hp={progress:0,destination:opts.destination,spawn:opts.spawn,yaw:opts.yaw,passageSound:'doorOpen',apply:p=>{panel.rotation.y=-p*.95}};panel.userData={type:'hidden-passage',hp,title:opts.title,author:opts.author,action:'OPEN'};interactables.push(panel);hiddenPassages.push(hp);return group}function hiddenPainting(x,y,z,w,h,rot,colors,opts){const art=painting(x,y,z,w,h,rot,colors,opts.image);if(opts.texture){art.panel.material.map=opts.texture;art.panel.material.emissiveMap=opts.texture;art.panel.material.needsUpdate=true}const hp={progress:0,destination:opts.destination,spawn:opts.spawn,yaw:opts.yaw,passageSound:'picturePassage',apply:p=>{art.group.rotation.z=p*.12}};art.panel.userData={type:'hidden-passage',hp,title:opts.title,author:opts.author,action:opts.action||'PRESS'};interactables.push(art.panel);hiddenPassages.push(hp);return art}function hiddenEvidenceCase(x,y,z,rot,opts){const art=painting(x,y,z,3.4,4.7,rot,['#2c2118','#b48b4d'],opts.image,true),closedRot=rot;const glass=new THREE.Mesh(new THREE.PlaneGeometry(3.05,4.35),MAT.glass);glass.position.set(1.7,0,.12);art.group.add(glass);const hp={progress:0,destination:opts.destination,spawn:opts.spawn,yaw:opts.yaw,passageSound:'picturePassage',apply:p=>{art.group.rotation.y=closedRot-p*.82}};art.panel.userData={type:'hidden-passage',hp,title:opts.title,author:opts.author,action:'ALIGN CLUES'};glass.userData=art.panel.userData;interactables.push(art.panel,glass);hiddenPassages.push(hp);return art}
-    hiddenDoor(0,-30.5,0,{destination:'gothic',spawn:[95,0,14],yaw:Math.PI,title:'A narrow door in the south wall',author:'The handle is cold, and a thread of candle smoke escapes the seam.'});
-    hiddenPainting(14,4.6,-30.05,2.6,3.5,0,['#241a2c','#6a4a5a'],{image:'assets/portrait-impossible-stairs.jpg',destination:'inquiry',spawn:[120,0,14],yaw:Math.PI,title:'A small unsigned sketch of a locked door',author:'Something about the hinge feels wrong.'});
-    hiddenDoor(-30,9.7,Math.PI,{destination:'chart',spawn:[145,0,14],yaw:Math.PI,title:'A door marked with a compass rose',author:'A scratched brass compass points somewhere beyond the western wing.'});
-    hiddenPainting(-36.7,4.4,-8,2.6,3.5,Math.PI/2,['#3a3020','#7a6a3a'],{image:'assets/botanist.jpg',destination:'drawing',spawn:[95,0,46],yaw:Math.PI,title:'A faded watercolor of a parlour no one furnished',author:'The brushwork seems to shift when you look away.'});
-    hiddenDoor(30,-13.7,0,{destination:'study',spawn:[120,0,46],yaw:Math.PI,title:'A quiet door behind the eastern shelves',author:'The handle is polished by a single, familiar hand.'});
-    hiddenPainting(36.7,4.4,-9,2.6,3.5,-Math.PI/2,['#1c2c1e','#4a6a3a'],{image:'assets/painting-wonder-garden.jpg',destination:'garden',spawn:[145,0,46],yaw:Math.PI,title:'A small painted garden, oddly overgrown',author:'New flowers seem to bloom between visits.'});
-hiddenPainting(36.65,4,5,3.5,4.9,-Math.PI/2,['#3a2a19','#b59660'],{texture:vernePortalTexture(),destination:'verne',spawn:[170,0,42],yaw:Math.PI,title:'An old engraving of impossible voyages',author:'Foxed copperplate lines join a submarine, a balloon, and the moon. The tarnished frame resembles a hatch.'});
-    hiddenPainting(-36.65,4.1,5,3.5,4.9,Math.PI/2,['#4a3922','#b9a36f'],{image:'assets/painting-haggard-lost-kingdom.jpg',destination:'haggard',spawn:[108,0,68],yaw:Math.PI,title:'A lost kingdom under old varnish',author:'In the painted mist, a dotted route appears only when the brass frame is warm beneath your finger.',action:'TRACE ROUTE'});
-    hiddenEvidenceCase(23.5,4,-13.65,0,{image:'assets/painting-doyle-consulting-room.jpg',destination:'doyle',spawn:[138,0,68],yaw:Math.PI,title:'A gaslit consulting room behind glass',author:'The watch, violin, and sealed papers look unrelated until their reflections align.'});
-    // Literary Easter eggs: a climbing white volume, a midnight doorway, and creatures glimpsed between shelves.
-    const whiteVolumeTex=canvasTexture((c,w,h)=>{const paper=c.createLinearGradient(0,0,w,h);paper.addColorStop(0,'#d8d0bd');paper.addColorStop(.48,'#f0eadc');paper.addColorStop(1,'#bdb3a0');c.fillStyle=paper;c.fillRect(0,0,w,h);c.strokeStyle='#8d7651';c.lineWidth=12;c.strokeRect(18,18,w-36,h-36);c.lineWidth=3;c.strokeRect(32,32,w-64,h-64);c.fillStyle='#5a4932';c.textAlign='center';c.font='bold 28px Georgia';c.fillText('THE WHITE',w/2,105);c.fillText('VOLUME',w/2,143);c.beginPath();c.arc(w/2,245,62,.2,Math.PI*1.7);c.lineWidth=7;c.stroke();c.beginPath();c.moveTo(w/2-58,250);c.quadraticCurveTo(w/2,205,w/2+58,250);c.quadraticCurveTo(w/2,285,w/2-58,250);c.stroke();c.font='italic 18px Georgia';c.fillText('A book without a catalogue mark',w/2,h-55)},384,560),whiteVolumeGroup=new THREE.Group();whiteVolumeGroup.position.set(-7.3,1.14,-16.48);scene.add(whiteVolumeGroup);const whiteVolume=new THREE.Mesh(new THREE.BoxGeometry(1.22,1.62,.2),new THREE.MeshStandardMaterial({map:whiteVolumeTex,roughness:.76,bumpMap:whiteVolumeTex,bumpScale:.012}));whiteVolumeGroup.add(whiteVolume);const whitePages=new THREE.Mesh(new THREE.BoxGeometry(1.08,1.48,.08),new THREE.MeshStandardMaterial({color:0xbeb49e,roughness:1}));whitePages.position.z=-.14;whiteVolumeGroup.add(whitePages);const whiteSpine=new THREE.Mesh(new THREE.BoxGeometry(.12,1.62,.28),new THREE.MeshStandardMaterial({color:0x8d7651,roughness:.82}));whiteSpine.position.x=-.61;whiteVolumeGroup.add(whiteSpine);whiteVolume.userData={type:'object',title:'The White Volume',author:'An ivory cloth binding, a faded whale device, and no catalogue mark. It smells faintly of salt.',action:'EXAMINE'};interactables.push(whiteVolume);
-    const midnightDoor=new THREE.Group(),initialRabbitDoorScale=awakenedBooks.has(11)?1.22:.16;midnightDoor.position.set(-28,1.86*initialRabbitDoorScale,9.58);midnightDoor.scale.setScalar(initialRabbitDoorScale);scene.add(midnightDoor);const midnightDoorSlab=new THREE.Mesh(new THREE.BoxGeometry(1.65,3.7,.16),MAT.darkWood);midnightDoorSlab.userData={type:'midnight-door',title:'A door no taller than a book',author:'A brass rabbit is engraved above a keyhole smaller than your thumbnail.',action:'TRY DOOR'};if(awakenedBooks.has(11))Object.assign(midnightDoorSlab.userData,{title:'The grown rabbit door',author:'After reading Alice, it has become larger than an ordinary door.',action:'ENTER'});midnightDoor.add(midnightDoorSlab);for(const x of [-.96,.96]){const edge=new THREE.Mesh(new THREE.BoxGeometry(.2,4.1,.26),MAT.gold);edge.position.x=x;midnightDoor.add(edge)}const midnightLintel=new THREE.Mesh(new THREE.BoxGeometry(2.12,.2,.26),MAT.gold);midnightLintel.position.y=2.02;midnightDoor.add(midnightLintel);const rabbitKnob=new THREE.Mesh(new THREE.SphereGeometry(.09,8,6),MAT.brass);rabbitKnob.position.set(.5,0,.16);midnightDoor.add(rabbitKnob);midnightDoor.visible=true;const rabbitDoorGlow=new THREE.PointLight(0xd7bd87,4.5,7,2);rabbitDoorGlow.position.set(-28,.65,8.8);scene.add(rabbitDoorGlow);interactables.push(midnightDoorSlab);
-    const rabbit=new THREE.Group(),rabbitMat=new THREE.MeshStandardMaterial({color:0xe9e5da,roughness:.95}),rabbitEyeMat=new THREE.MeshStandardMaterial({color:0xb53a42,emissive:0x541018,emissiveIntensity:.5});scene.add(rabbit);const rabbitBody=new THREE.Mesh(new THREE.SphereGeometry(.38,12,9),rabbitMat);rabbitBody.scale.set(1.2,.8,.72);rabbitBody.position.y=.42;rabbit.add(rabbitBody);const rabbitHead=new THREE.Mesh(new THREE.SphereGeometry(.25,12,8),rabbitMat);rabbitHead.position.set(.38,.7,0);rabbit.add(rabbitHead);for(const z of [-.11,.11]){const ear=new THREE.Mesh(new THREE.ConeGeometry(.09,.48,8),rabbitMat);ear.position.set(.4,1.02,z);ear.rotation.z=-.12;rabbit.add(ear)}const rabbitEye=new THREE.Mesh(new THREE.SphereGeometry(.045,8,6),rabbitEyeMat);rabbitEye.position.set(.56,.76,-.18);rabbit.add(rabbitEye);rabbit.scale.setScalar(.72);rabbit.visible=false;
-    const insectShadow=new THREE.Group(),shadowMat=new THREE.MeshBasicMaterial({color:0x080706,transparent:true,opacity:.72,depthWrite:false});scene.add(insectShadow);const insectBody=new THREE.Mesh(new THREE.SphereGeometry(.42,10,6),shadowMat);insectBody.scale.set(1.45,.08,.65);insectShadow.add(insectBody);const insectHead=new THREE.Mesh(new THREE.SphereGeometry(.22,9,6),shadowMat);insectHead.scale.y=.1;insectHead.position.x=.55;insectShadow.add(insectHead);for(const side of [-1,1])for(let i=0;i<3;i++){const leg=new THREE.Mesh(new THREE.BoxGeometry(.7,.015,.035),shadowMat);leg.position.set(.05-i*.18,.01,side*(.24+i*.09));leg.rotation.y=side*(.35+i*.18);insectShadow.add(leg)}insectShadow.position.set(-12,.055,-16);insectShadow.visible=false;
-    // The Library at Night is built only when Alice opens its impossible door.
-    const nightRoom={cx:-110,cz:-25,w:64,d:70,h:15};let nightRoomBuilt=false;
-    const cheshireLines=['Only the smile is visible tonight. The rest, apparently, had somewhere better to be.','It offers an opinion on your reading pace, then vanishes before you can object.','A pair of eyes considers you for a long moment, unblinking, and then simply isnâ€™t there.','It grins wider the longer you look, for no reason it cares to explain.','Its voice arrives a half-second before the rest of it, and leaves a half-second after.','It suggests, unhelpfully, that you are exactly as lost as you ought to be.'];
-    function nightShelfScale(){const i=nightShelfIndex++;return i%6===2?1.6:i%6===4?.55:1}
-    function carrollShelf(x,z,rot=0,scale=1){const carrollBooks=books.filter(b=>b.author==='Lewis Carroll');const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=rot;g.scale.setScalar(scale);scene.add(g);const W=7.2,H=7.8,D=.8,structure=mergedBoxParts([[W,.18,D,0,.2,0],[W,.18,D,0,2.05,0],[W,.18,D,0,3.9,0],[W,.18,D,0,5.75,0],[W,.18,D,0,7.6,0],[.25,H,D,-W/2,H/2,0],[.25,H,D,W/2,H/2,0]],MAT.darkWood),back=mergedBoxParts([[W,H,.18,0,H/2,-.35]],MAT.wood2);g.add(structure,back);for(let row=0;row<4;row++)for(let col=0;col<4;col++){const b=carrollBooks[nightBookIndex%carrollBooks.length];nightBookIndex++;const mat=bookMaterial(b);const bm=new THREE.Mesh(shelvedBookGeometry,mat);bm.position.set(-2.65+col*1.72,1.14+row*1.85,.48);bm.rotation.x=(col%2?-.02:.018);g.add(bm);bm.userData={type:'book',book:b,home:null,loaded:false};interactables.push(bm);coverQueue.push(bm);bm.userData.home={position:bm.position.clone(),quaternion:bm.quaternion.clone(),parent:g}}g.userData.collider=collider(x,z,(Math.abs(Math.cos(rot))*W+Math.abs(Math.sin(rot))*D)*scale,(Math.abs(Math.sin(rot))*W+Math.abs(Math.cos(rot))*D)*scale,'night shelf');return g}
-    function checkerFloor(x,z,w,d,squares=10){const tex=canvasTexture((c,W,H)=>{const cell=W/squares,cellH=H/squares;for(let r=0;r<squares;r++)for(let col=0;col<squares;col++){c.fillStyle=(r+col)%2===0?'#e7ddc6':'#241c30';c.fillRect(col*cell,r*cellH,cell,cellH)}},512,512);const floorMesh=mesh(new THREE.PlaneGeometry(w,d),new THREE.MeshStandardMaterial({map:tex,roughness:.85}),x,.015,z,false);floorMesh.rotation.x=-Math.PI/2;return floorMesh}
-    function cardSoldier(x,z,rot,suitSymbol,suitColor){const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=rot;scene.add(g);const tex=canvasTexture((c,W,H)=>{c.fillStyle='#e9e2cf';c.fillRect(0,0,W,H);c.strokeStyle='#8a7a58';c.lineWidth=10;c.strokeRect(14,14,W-28,H-28);c.fillStyle=suitColor;c.textAlign='center';c.font='bold 220px Georgia';c.fillText(suitSymbol,W/2,H*.56);c.font='bold 64px Georgia';c.fillText(suitSymbol,64,84);c.save();c.translate(W-64,H-84);c.rotate(Math.PI);c.fillText(suitSymbol,0,0);c.restore()},260,420);const face=mesh(new THREE.PlaneGeometry(1.15,2.15),new THREE.MeshStandardMaterial({map:tex,roughness:.85}),0,1.08,.075,false);g.add(face);const backing=new THREE.Mesh(new THREE.BoxGeometry(1.15,2.15,.1),new THREE.MeshStandardMaterial({color:0xcfc6ab,roughness:.9}));backing.position.y=1.08;g.add(backing);const halberd=new THREE.Mesh(new THREE.BoxGeometry(.06,2.6,.06),MAT.darkWood);halberd.position.set(.68,1.3,0);g.add(halberd);const blade=new THREE.Mesh(new THREE.BoxGeometry(.3,.36,.05),MAT.brass);blade.position.set(.68,2.5,0);g.add(blade);face.userData={type:'object',title:`A card soldier, ${suitSymbol}`,author:'It stands at attention and does not blink. It does not appear to breathe, either.',action:'EXAMINE'};interactables.push(face);collider(x,z,1.2,.6,'card soldier');return g}
-    function nightSign(x,y,z,rotY,text){const tex=canvasTexture((c,w,h)=>{c.fillStyle='#161014';c.fillRect(0,0,w,h);c.strokeStyle='#8a6b40';c.lineWidth=6;c.strokeRect(10,10,w-20,h-20);c.fillStyle='#e8d9b0';c.textAlign='center';c.font='italic 26px Georgia';const words=text.split(' ');let line='';const lines=[];for(const wd of words){const test=line+wd+' ';if(c.measureText(test).width>w-40&&line){lines.push(line);line=wd+' '}else line=test}lines.push(line);const startY=h/2-(lines.length-1)*16;lines.forEach((ln,i)=>c.fillText(ln.trim(),w/2,startY+i*32))},420,150);const sign=mesh(new THREE.PlaneGeometry(3.4,1.2),new THREE.MeshStandardMaterial({map:tex,roughness:.85}),x,y,z,false);sign.rotation.y=rotY;sign.userData={type:'object',title:'A sign that should not be here',author:text,action:'READ'};interactables.push(sign);return sign}
-    function drinkMeCorner(x,z){cylinder(.3,.28,.6,10,MAT.darkWood,x,.3,z);const bottle=mesh(new THREE.CylinderGeometry(.09,.11,.34,10),new THREE.MeshPhysicalMaterial({color:0x8fd4c8,transparent:true,opacity:.55,roughness:.15,transmission:.35}),x-.12,.77,z,false);bottle.userData={type:'object',title:'A small bottle labelled â€œDRINK MEâ€',author:'Beside it sits a slice of cake marked â€œEAT MEâ€ in dried currants. Neither offers instructions, or a reason to trust them.',action:'EXAMINE'};interactables.push(bottle);box(.22,.12,.22,new THREE.MeshStandardMaterial({color:0xcf9a5c,roughness:.85}),x+.16,.66,z,false)}
-    function updateCheshireCat(){if(!nightRoomBuilt||!cheshireCat)return;const inRoom=player.pos.x>-142&&player.pos.x<-78&&player.pos.z>-60&&player.pos.z<10;if(!inRoom){if(cheshireCat.visible)cheshireCat.visible=false;return}const now=performance.now();if(now>cheshireNextAt){if(cheshireCat.visible){cheshireCat.visible=false;cheshireNextAt=now+6000+Math.random()*9000}else{const spots=[[-22,-12],[10,-40],[-4,4],[18,10]],p=spots[Math.floor(Math.random()*spots.length)];cheshireCat.position.set(nightRoom.cx+p[0],3.2+Math.random()*2,nightRoom.cz+p[1]);cheshireCat.visible=true;cheshireNextAt=now+3200+Math.random()*2200;showNotice(cheshireLines[Math.floor(Math.random()*cheshireLines.length)],5);sound(660,.3,'sine',.05)}}}
-    function buildNightRoom(){if(nightRoomBuilt)return;nightRoomBuilt=true;const existing=new Set(scene.children);addBox(nightRoom.w,.42,nightRoom.d,MAT.wood,nightRoom.cx,-.21,nightRoom.cz,false);addBox(nightRoom.w,nightRoom.h,.55,MAT.stone,nightRoom.cx,nightRoom.h/2,nightRoom.cz-nightRoom.d/2);addBox(nightRoom.w,nightRoom.h,.55,MAT.stone,nightRoom.cx,nightRoom.h/2,nightRoom.cz+nightRoom.d/2);addBox(.55,nightRoom.h,nightRoom.d,MAT.stone,nightRoom.cx-nightRoom.w/2,nightRoom.h/2,nightRoom.cz);addBox(.55,nightRoom.h,nightRoom.d,MAT.stone,nightRoom.cx+nightRoom.w/2,nightRoom.h/2,nightRoom.cz);box(nightRoom.w,.38,nightRoom.d,roofMat,nightRoom.cx,nightRoom.h+.1,nightRoom.cz,false);rug(nightRoom.cx,nightRoom.cz+22,18,18,0x20283b);checkerFloor(nightRoom.cx,nightRoom.cz,nightRoom.w-3,nightRoom.d-3,12);
-    for(const x of [-134,-122,-110,-98,-86]){carrollShelf(x,-59.35,0,nightShelfScale());carrollShelf(x,-41,Math.PI,nightShelfScale())}for(const z of [-52,-38,-24,-10,4]){carrollShelf(-141.35,z,Math.PI/2,nightShelfScale());carrollShelf(-78.65,z,-Math.PI/2,nightShelfScale())}for(const x of [-126,-110,-94]){carrollShelf(x,-24,0,nightShelfScale());carrollShelf(x,-8,Math.PI,nightShelfScale())}
-    for(const x of [-134,-118,-102,-86])for(const z of [-49,-33,-17,-1]){cylinder(.48,.72,13.8,12,MAT.stone,x,6.9,z);collider(x,z,1.2,1.2,'monumental column');const capital=mesh(new THREE.CylinderGeometry(.9,.55,.55,12),MAT.brass,x,13.7,z,false);capital.rotation.y=Math.PI/12}for(const x of [-126,-110,-94])for(const z of [-50,-32,-14,3])addLamp(x,2,z,.7);
-    const nightChandelier=new THREE.Group();nightChandelier.position.set(nightRoom.cx,12,nightRoom.cz);scene.add(nightChandelier);for(let i=0;i<12;i++){const a=i/12*Math.PI*2,arm=new THREE.Mesh(new THREE.BoxGeometry(4.8,.08,.08),MAT.brass);arm.position.set(Math.cos(a)*2.2,0,Math.sin(a)*2.2);arm.rotation.y=-a;nightChandelier.add(arm);const flame=new THREE.PointLight(0xf1c787,3.2,13,2);flame.position.set(Math.cos(a)*4.5,-.25,Math.sin(a)*4.5);nightChandelier.add(flame)}
-    const suitDeck=[['â™ ','#1c1c1c'],['â™¥','#8f1d1d'],['â™£','#1c1c1c'],['â™¦','#8f1d1d']];let suitCursor=0;for(const z of [-52,-38,-24,-10,4]){const sw=suitDeck[suitCursor++%suitDeck.length];cardSoldier(-137.5,z,Math.PI/2,sw[0],sw[1]);const se=suitDeck[suitCursor++%suitDeck.length];cardSoldier(-82.5,z,-Math.PI/2,se[0],se[1])}
-    const teaSeats=[[-12,'The March Hareâ€™s place setting','A teacup sits precisely where a saucer ought to be, and vice versa.'],[-6,'The Hatterâ€™s cup','It has been moved along from a dirtier one, one seat over. This one is no cleaner.'],[0,'An empty place, set anyway','No room, insists a card propped against the pot. There is, in fact, a great deal of room.'],[6,'The Dormouseâ€™s seat','The cushion is still warm, though no one admits to having sat here.'],[12,'A seat for no one in particular','The chair is pulled out. The library has not said for whom.']];for(const [dx,title,desc] of teaSeats)themeProp({cx:nightRoom.cx+dx,cz:nightRoom.cz+24,w:6},{kind:'tea-table',title,desc});
-    nightSign(nightRoom.cx-15,4.4,nightRoom.cz-nightRoom.d/2+.25,0,'NO ROOM! NO ROOM! (There is, in fact, a great deal of room.)');
-    nightSign(nightRoom.cx+10,4.4,nightRoom.cz+nightRoom.d/2-.25,Math.PI,'TIME HAS BEEN ASKED TO WAIT OUTSIDE, AND HAS AGREED, FOR NOW.');
-    nightSign(nightRoom.cx-32+.25,4.4,nightRoom.cz-16,Math.PI/2,'ALL THE DOORS HERE ARE THE RIGHT SIZE FOR SOMEONE.');
-    nightSign(nightRoom.cx+32-.25,4.4,nightRoom.cz-2,-Math.PI/2,'PLEASE DO NOT FEED THE FOOTNOTES.');
-    nightSign(nightRoom.cx+16,4.4,nightRoom.cz+24+2.6,Math.PI,'THIS CHAIR IS RESERVED FOR SOMEONE WHO LEFT SOME TIME AGO.');
-    drinkMeCorner(nightRoom.cx-22,nightRoom.cz+nightRoom.d/2-4);
-    const cheshireTex=canvasTexture((c,w,h)=>{c.clearRect(0,0,w,h);c.strokeStyle='#f4ede0';c.lineWidth=10;c.lineCap='round';c.beginPath();c.moveTo(w*.16,h*.4);c.quadraticCurveTo(w*.5,h*.86,w*.84,h*.4);c.stroke();c.fillStyle='#f4ede0';c.beginPath();c.ellipse(w*.35,h*.26,w*.045,h*.075,0,0,7);c.fill();c.beginPath();c.ellipse(w*.65,h*.26,w*.045,h*.075,0,0,7);c.fill()},300,220);cheshireCat=mesh(new THREE.PlaneGeometry(2.6,1.9),new THREE.MeshStandardMaterial({map:cheshireTex,transparent:true,emissive:0xf4ede0,emissiveMap:cheshireTex,emissiveIntensity:.7,side:THREE.DoubleSide}),nightRoom.cx-22,3.6,nightRoom.cz-12,false);cheshireCat.visible=false;cheshireCat.userData={type:'object',title:'A grin, hanging in the dark',author:'Only the smile remains, considering you carefully.',action:'LISTEN'};interactables.push(cheshireCat);
-    const nightPlaqueTex=canvasTexture((c,w,h)=>{c.fillStyle='#121a22';c.fillRect(0,0,w,h);c.strokeStyle='#b89d70';c.lineWidth=8;c.strokeRect(12,12,w-24,h-24);c.fillStyle='#e5d5b1';c.textAlign='center';c.font='bold 31px Georgia';c.fillText('THE LIBRARY AT NIGHT',w/2,54);c.font='italic 18px Georgia';c.fillText('Every library becomes a different library after dark.',w/2,95)},800,125);const nightPlaque=mesh(new THREE.PlaneGeometry(12,1.9),new THREE.MeshStandardMaterial({map:nightPlaqueTex,roughness:.8}),nightRoom.cx,8.5,nightRoom.cz-nightRoom.d/2+.3,false);nightPlaque.userData={type:'object',title:'THE LIBRARY AT NIGHT',author:'â€œEvery library becomes a different library after dark.â€',action:'READ'};interactables.push(nightPlaque);
-    const nightExit=box(3.4,5.2,.22,MAT.darkWood,nightRoom.cx,2.6,nightRoom.cz+nightRoom.d/2-.3,false);nightExit.userData={type:'night-exit',title:'The little door, seen from the enormous side',author:'From here, its brass handle seems perfectly ordinary.',action:'RETURN'};interactables.push(nightExit);registerPerformanceZoneObjects('night',existing)}
-    const usefulPlaces=[[-1.45,1.68,4],[-27.4,1.68,-3],[27.4,1.68,-3],[-10.5,5.55,-27.2],[14,5.55,22],[-12.4,10.46,42]],dateKey=new Date().toISOString().slice(0,10),usefulIndex=[...dateKey].reduce((n,ch)=>(n*31+ch.charCodeAt(0))>>>0,7)%usefulPlaces.length,usefulPlace=usefulPlaces[usefulIndex];const usefulNote=box(.52,.025,.34,MAT.paper,usefulPlace[0],usefulPlace[1],usefulPlace[2],false);usefulNote.rotation.y=.28;usefulNote.userData={type:'useful-note',title:'ONE USEFUL THING',author:'A practical clue written in a hurried hand.',action:'READ'};usefulNote.visible=false;interactables.push(usefulNote);
-    // the restricted catalogue: barred in appearance, deliberately open to every visitor
-    addBox(20,.45,20,MAT.wood,47,-.2,-2,false);addBox(.5,8,20,MAT.stone,57,4,-2);addBox(20,8,.5,MAT.stone,47,4,-12);addBox(20,8,.5,MAT.stone,47,4,8);
-    const iron=new THREE.MeshStandardMaterial({color:0x25282a,metalness:.78,roughness:.35});for(const z of [-4.7,-4,-3.3,.4])cylinder(.075,.075,6.2,8,iron,36.72,3.1,z);box(.16,.16,6,iron,36.72,6.15,-2.05,false);box(.16,.16,6,iron,36.72,.12,-2.05,false);
-    const openGate=new THREE.Group();openGate.position.set(36.72,0,-3.05);scene.add(openGate);for(let i=0;i<5;i++){const bar=new THREE.Mesh(new THREE.CylinderGeometry(.065,.065,5.8,8),iron);bar.position.set(.2+i*.65,3.05,0);openGate.add(bar)}const gateTop=new THREE.Mesh(new THREE.BoxGeometry(3,.14,.14),iron),gateBottom=gateTop.clone();gateTop.position.set(1.5,5.9,0);gateBottom.position.set(1.5,.2,0);openGate.add(gateTop,gateBottom);
-    const restrictedSignTex=canvasTexture((c,w,h)=>{c.fillStyle='#241610';c.fillRect(0,0,w,h);c.strokeStyle='#b48a50';c.lineWidth=10;c.strokeRect(12,12,w-24,h-24);c.fillStyle='#e0c28f';c.textAlign='center';c.font='bold 42px Georgia';c.fillText('THE RESTRICTED CATALOGUE',w/2,66);c.font='25px Georgia';c.fillText('Historically challenged, censored, or prosecuted',w/2,116);c.font='italic 24px Georgia';c.fillText('The gate is open. Context belongs beside every book.',w/2,160)},900,190),restrictedSign=mesh(new THREE.PlaneGeometry(6.4,1.35),new THREE.MeshStandardMaterial({map:restrictedSignTex,roughness:.8}),36.68,7,-2,false);restrictedSign.rotation.y=-Math.PI/2;restrictedSign.userData={type:'object',title:'THE RESTRICTED CATALOGUE',author:'These books were challenged in different places and periods. Entry and reading are unrestricted.',action:'READ PLAQUE'};interactables.push(restrictedSign);
-    rug(47,-2,13,11,0x351c25);curatedShelf([61,160,153,33,140],42,-11.05,0);curatedShelf([408,203,1998,3420,25305],52,-11.05,0);
-    const lectern=box(2.3,1.1,1.5,MAT.wood,47,1.05,2.5,false),lecternTop=box(2.7,.18,1.7,MAT.darkWood,47,1.72,2.35,false);lecternTop.rotation.x=-.22;const lockBody=box(.7,.65,.2,MAT.brass,47,2.18,2.05,false),openShackle=mesh(new THREE.TorusGeometry(.42,.075,8,18,Math.PI*1.42),MAT.brass,47,2.66,2.04,false);openShackle.rotation.z=.35;
-    const balancePole=cylinder(.07,.12,2.3,10,MAT.brass,53.8,1.15,3.8),balanceBeam=box(3,.1,.1,MAT.brass,53.8,2.25,3.8,false);for(const dx of [-1.25,1.25]){const chain=box(.025,.75,.025,MAT.brass,53.8+dx,1.82,3.8,false),pan=mesh(new THREE.CylinderGeometry(.5,.3,.08,16),MAT.brass,53.8+dx,1.42,3.8,false)}
-    addLamp(42,1.2,3.7,.9);addLamp(52,1.2,3.7,.9);const restrictedGlow=new THREE.PointLight(0xc46f67,13,22,2);restrictedGlow.position.set(47,4,-2);scene.add(restrictedGlow);
+NÂˆÛÛœİÜ]X[Ù^OJŠOO˜	ÓX]™›ÛÜŠÔÔUPSĞÑSÔÒV‘J_K	ÓX]™›ÛÜŠ‹ÔÔUPSĞÑSÔÒV‘J_XÂˆ[˜İ[Ûˆ[™^ÛÛY\ŠÊ^ØÛÛœİZ[Ù[SX]™›ÛÜŠË›Z[–ÔÔUPSĞÑSÔÒV‘JKX^Ù[SX]™›ÛÜŠË›X^ÔÔUPSĞÑSÔÒV‘JKZ[Ù[SX]™›ÛÜŠË›Z[–‹ÔÔUPSĞÑSÔÒV‘JKX^Ù[SX]™›ÛÜŠË›X^‹ÔÔUPSĞÑSÔÒV‘JNÙ›ÜŠ]Ş[Z[Ù[ØŞ[X^Ù[ØŞ
+ÊÊY›ÜŠ]Ş[Z[Ù[ØŞ[X^Ù[ØŞŠÊÊ^ØÛÛœİÙ^OX	ØŞK	ØŞŸXÚYŠXÛÛY\Ù[Ëš\ÊÙ^JJXÛÛY\Ù[ËœÙ]
+Ù^K×JNØÛÛY\Ù[Ë™Ù]
+Ù^JKœ\Ú
+Ê__Bˆ]İ\YY˜[ÙKØÚÙYY˜[ÙKYÚ[\“ØÚÏY˜[ÙK˜YÙÚ[™ÏY˜[ÙK\İÚ[\–L\İÚ[\–OL]]YY˜[ÙKÙ][™ÜÓÜ[Y˜[ÙKÙ][™ÜÔ™]\›•Ô]\ÙOY˜[ÙKÛİ[™]™[XÛ[\
+[X™\ŠØØ[İÜ˜YÙK™Ù]][J	Ø][˜Y][K\Ûİ[™[]™[	Ê_LÊKÌLJK™YXÙY[İ[Û[ØØ[İÜ˜YÙK™Ù]][J	Ø][˜Y][K\™YXÙY[[İ[Û‰ÊOOOIÌIËİĞ˜[™ÚY[ØØ[İÜ˜YÙK™Ù]][J	Ø][˜Y][K[İËX˜[™ÚY	ÊOOOIÌIËYÚÛÛ˜\İ[ØØ[İÜ˜YÙK™Ù]][J	Ø][˜Y][KZYÚXÛÛ˜\İ	ÊOOOIÌIË\™ÙU^[ØØ[İÜ˜YÙK™Ù]][J	Ø][˜Y][K[\™ÙK]^	ÊOOOIÌIËÙ[XİY[[›Øİ\Ï[[›İXÙU[Y\LÙX]\IÔRS‰Ë^T\ÙOKÙXÜ™]Ü[LÜ˜Z]Ü[LÜ˜Z]\™Ù]Ü[L[›™[Ü[Lš[˜[ÛÜ“Ü[L]™\•[YOL™XY\”Ú^™OLM‹XXÚ[™P›ÛÚÏ[[™\Ú^™U[Y\Lš[˜[ÛÜ[[š[˜[ÛÜÛÛY\[[Ø]İZYU\™Ù][[Ø]İZYSX™[IÉË›ÛÙÜš\Ú]Y[ØØ[İÜ˜YÙK™Ù]][J	Ø][˜Y][K\›ÛÙÜ]š\Ú]Y	ÊOOOIÌIËXXÚ[™T[ÏS[X™\ŠØØ[İÜ˜YÙK™Ù]][J	Ø][˜Y][K[XXÚ[™K\[ÉÊ_
+K\İ™XYØ]YÛÜOIÉË\İ\ØÛİ™\P]\\™›Ü›X[˜ÙK››İÊ
+K\İ[]L™^[XšY[]\\™›Ü›X[˜ÙK››İÊ
+JÍL
+ÓX]œ˜[™ÛJ
+JŒÍLZYšYÚ›ÛÛSÜ[Y˜[ÙK˜X˜š]Xİ]™OY˜[ÙK˜X˜š]Ø^\Ú[L[œÙXİ[YOL[œÙXİ]Y]YYY˜[ÙKÚ]U›Û[YS]™[L›ØÚÚ[™Õ[[L™XY\\ÚYU[Y\[[™XY\“Ü[™Y]LÚ\Ú\™PØ][[Ú\Ú\™S™^]LšYÚÚ[’[™^LšYÚ›ÛÚÒ[™^L™^˜Z[”[X›P]L˜Z[”\ÜÏ[[˜Z[–›Û™UØ\ĞXİ]™OIÉÎÂˆØİ[Y[˜›ÙK˜Û\ÜÓ\İÙÙÛJ	Ü™YXÙY[[İ[Û‰Ë™YXÙY[İ[ÛŠNÙØİ[Y[˜›ÙK˜Û\ÜÓ\İÙÙÛJ	ÚYÚXÛÛ˜\İ	ËYÚÛÛ˜\İ
+NÙØİ[Y[˜›ÙK˜Û\ÜÓ\İÙÙÛJ	Û\™ÙK]^	Ë\™ÙU^
+NÂˆÛÛœİÙ^\Ï^ßK^Y\^ÜÜÎ›™]È‘QK•™XİÜŒÊ
+K™[›™]È‘QK•™XİÜŒÊ
+KX]ÎŒ]ÚŒ˜Y]\Î‹ŸNÃBˆÛÛœİVTÕT’QTÏVÖÉÙ›ÛY[›İIË	ÕH›ÛY›İI×KÉØ›ÛÚË][™\‹]X›IË	ĞHZ\ÜXÙY›Û[YI×KÉØ›ÛÚË[X[[	Ë	ÕHš\™ZÙY\\¸ &\È›ÛÚÉ×KÉØ›ÛÚËX˜[ÛÛIË	ĞH›ÛÚÈX›İ™HH˜Z[‰×KÉÜ›ÛÙ‹X›ÛÚÉË	ÕHÙX]\˜›İ[™›Û[YI×KÉİÙ\İ\Ú[‰Ë	ÕH˜[ÙHÙ\İ\›ˆÚ[‰×KÉÜÜ˜Z]\\ÜØYÙIË	ÕH›ÛÛH™Z[™HÜ˜Z]	×KÉİ[›X™[Y[Ü˜‰Ë	ÕH˜[Y[\ÜÈØš™Xİ	×KÉİ[›™[	Ë	ÕHœ™X][™ÈØ[	×KÉØ™[İËXØ][ÙİYIË	ÕHÛÜˆ™[™X]HØ][ÙİYI×KÉÜ™YXİYXØ][ÙİYIË	ÕH™YXİYØ][ÙİYI×WKÑPÔ‘UÕÕSSVTÕT’QTË›[™İÃBˆÛÛœİ\İØY™TÜÚ][Û\^Y\‹œÜË˜ÛÛ™J
+NÃBˆ]\ØÛİ™\™Y[™]ÈÙ]
 
-    // The Below Catalogue: a basement the librarian insists does not exist.
-    const dampStone=new THREE.MeshStandardMaterial({color:0x292d2a,roughness:1}),verdigris=new THREE.MeshStandardMaterial({color:0x31594f,metalness:.52,roughness:.55}),basementFloorY=-6;
-    const basementHatch=box(3.4,.16,2.5,iron,-7,.08,-25.8,false);basementHatch.userData={type:'basement-hatch',title:'An iron hatch with a narrow ladder',author:'Cold air turns the dust around its hinges.',action:'CLIMB DOWN'};interactables.push(basementHatch);
-    const restrictedEntryTex=canvasTexture((c,w,h)=>{c.fillStyle='#241712';c.fillRect(0,0,w,h);c.strokeStyle='#b88a4e';c.lineWidth=8;c.strokeRect(10,10,w-20,h-20);c.fillStyle='#d8bd88';c.textAlign='center';c.font='bold 31px Georgia';c.fillText('SOME DOORS WERE CLOSED',w/2,50);c.font='italic 17px Georgia';c.fillText('But the ink says: enter',w/2,82)},620,102),restrictedEntrySign=mesh(new THREE.PlaneGeometry(3.1,.7),new THREE.MeshStandardMaterial({map:restrictedEntryTex,roughness:.9,side:THREE.DoubleSide}),-4.25,.115,-25.8,false);restrictedEntrySign.rotation.x=-Math.PI/2;restrictedEntrySign.rotation.z=-.035;restrictedEntrySign.userData={type:'object',title:'SOME DOORS WERE CLOSED',author:'The ink below adds: â€œPermission is acquired by entering.â€',action:'READ SIGN'};interactables.push(restrictedEntrySign);
-    for(let i=0;i<5;i++)box(.11,.05,2.2,MAT.brass,-8.2+i*.6,.18,-25.8,false);
-    for(const x of [-7.75,-6.25])cylinder(.07,.07,1.55,8,iron,x,.82,-26.55);for(let i=0;i<5;i++)box(1.55,.07,.08,iron,-7,.3+i*.27,-26.55,false);
-    const hatchGlow=new THREE.PointLight(0x5a9b76,0,7,2);hatchGlow.position.set(-7,.3,-25.8);scene.add(hatchGlow);
-    let basementBuilt=false,basementFurnaceLight=null,basementMotes=null;
-    function buildBasement(){if(basementBuilt)return;basementBuilt=true;const existing=new Set(scene.children);addBox(36,.5,28,dampStone,0,basementFloorY-.28,-54,false);addBox(36,6,.55,dampStone,0,basementFloorY+3,-68);addBox(36,6,.55,dampStone,0,basementFloorY+3,-40);addBox(.55,6,28,dampStone,-18,basementFloorY+3,-54);addBox(.55,6,28,dampStone,18,basementFloorY+3,-54);box(36,.4,28,dampStone,0,basementFloorY+6.1,-54,false);
-    const basementRug=rug(0,-54,14,8,0x18362e);basementRug.position.y=basementFloorY+.02;
-    for(const x of [-12,-4,4,12]){const arch=mesh(new THREE.TorusGeometry(4.8,.24,8,24,Math.PI),dampStone,x,basementFloorY+4.8,-54);arch.rotation.y=Math.PI/2}
-    const belowSignTex=canvasTexture((c,w,h)=>{c.fillStyle='#101915';c.fillRect(0,0,w,h);c.strokeStyle='#73977c';c.lineWidth=7;c.strokeRect(10,10,w-20,h-20);c.fillStyle='#b8c5a9';c.textAlign='center';c.font='32px Georgia';c.fillText('WHAT LIES BENEATH',w/2,55);c.font='italic 20px Georgia';c.fillText('Not every name made the index',w/2,92)},640,120);const belowSign=mesh(new THREE.PlaneGeometry(6.2,1.15),new THREE.MeshStandardMaterial({map:belowSignTex,roughness:.9}),0,basementFloorY+4.75,-67.65,false);belowSign.userData={type:'object',title:'WHAT LIES BENEATH',author:'Several names have been scratched from the lower edge.',action:'READ'};interactables.push(belowSign);
-    const cellarShelfA=curatedShelf([10002,389,10897,209,1064],-10,-66.8,0),cellarShelfB=curatedShelf([84,345,174,2148,43],10,-66.8,0);cellarShelfA.position.y=cellarShelfB.position.y=basementFloorY;
-    const oldDesk=addBox(6,.35,2.6,MAT.wood,0,basementFloorY+1.35,-52);for(const dx of [-2.5,2.5])for(const dz of [-.9,.9])addBox(.25,1.3,.25,MAT.darkWood,dx,basementFloorY+.65,-52+dz);
-    const redacted=box(2.4,.08,1.65,MAT.paper,0,basementFloorY+1.58,-52,false);redacted.rotation.y=-.12;redacted.userData={type:'object',title:'THE REDACTED CATALOGUE',author:'Seven titles are inked out. The final line reads: â€œThe building keeps the books it dreams.â€',action:'DECIPHER',secretId:'redacted-catalogue'};interactables.push(redacted);
-    const furnace=box(3.3,3.7,2.4,iron,-14.7,basementFloorY+1.85,-53);const furnaceMouth=box(2.1,1.45,.12,new THREE.MeshStandardMaterial({color:0x160d08,emissive:0x6b1b09,emissiveIntensity:1.2}),-14.7,basementFloorY+1.45,-51.75,false);furnaceMouth.userData={type:'object',title:'The catalogue furnace',author:'A voice inside repeats the last sentence you read.',action:'LISTEN'};interactables.push(furnaceMouth);basementFurnaceLight=new THREE.PointLight(0x8bd29b,20,14,2);basementFurnaceLight.position.set(-14,basementFloorY+2,-51);scene.add(basementFurnaceLight);addSoftRoomLight(0,basementFloorY+3,-49,0xc8a873,15,20);addSoftRoomLight(4,basementFloorY+3,-62,0x9db5a5,13,19);
-    for(const y of [basementFloorY+4.7,basementFloorY+5.25]){const pipe=mesh(new THREE.CylinderGeometry(.13,.13,26,10),verdigris,14.5,y,-54);pipe.rotation.x=Math.PI/2}
-    for(const [x,z] of [[-7,-46],[-2,-47],[5,-45],[11,-48]]){const bowl=mesh(new THREE.CylinderGeometry(.58,.42,.12,18),MAT.brass,x,basementFloorY+.08,z,false);const water=mesh(new THREE.CircleGeometry(.48,18),new THREE.MeshPhysicalMaterial({color:0x638a83,transparent:true,opacity:.65,roughness:.12}),x,basementFloorY+.15,z,false);water.rotation.x=-Math.PI/2}
-    const turnedPortrait=painting(17.62,basementFloorY+3,-57,3.2,4.3,-Math.PI/2,['#141817','#6c7b65'],'assets/portrait-lantern-librarian.jpg');turnedPortrait.panel.rotation.y=Math.PI;turnedPortrait.panel.userData={type:'object',title:'A portrait facing the wall',author:'The nameplate says only: â€œReturned.â€',action:'TURN AWAY'};interactables.push(turnedPortrait.panel);
-    const glassCase=box(3.5,2.6,1.7,MAT.glass,12,basementFloorY+1.3,-44,false);trim(12,basementFloorY+2.7,-44,3.8,.18,1.9);const futureBook=looseBook(books[36],12,basementFloorY+1.05,-44,0);futureBook.userData.machineNote=`The final page bears today's date: ${new Date().toLocaleDateString()}.`;
-    for(let i=0;i<3;i++){const chain=mesh(new THREE.TorusGeometry(1.05+i*.08,.055,7,22),iron,12,basementFloorY+1.35,-43.1-i*.08,false);chain.rotation.x=Math.PI/2}
-    for(const x of [-.72,.72])cylinder(.075,.075,5.35,8,iron,x,basementFloorY+2.72,-40.38);for(let i=0;i<9;i++)box(1.5,.07,.09,iron,0,basementFloorY+.45+i*.57,-40.38,false);
-    for(let i=0;i<4;i++)box(4,.3,1.05,MAT.stone,0,basementFloorY+.15+i*.2,-44.2+i*.9,false);
-    const basementSteps=box(4,.35,1.4,MAT.stone,0,basementFloorY+.88,-41.25,false),ladderReturnTarget=box(1.9,5.45,.12,new THREE.MeshBasicMaterial({transparent:true,opacity:.001,depthWrite:false}),0,basementFloorY+2.72,-40.31,false),ladderReturnData={type:'basement-stairs',title:'The ladder to the library',author:'Warm firelight trembles at the top.',action:'RETURN UPSTAIRS'};basementSteps.userData=ladderReturnData;ladderReturnTarget.userData=ladderReturnData;interactables.push(basementSteps,ladderReturnTarget);
-    function basementStool(x,z){return chair(x,z,0,{model:'painted',title:'A mismatched basement chair',author:'Something scratches the stone beneath it when you begin to read.',categories:['Gothic','Strange','Uncanny','Contested']})}
-    basementStool(-6,-59);basementStool(6,-59);
-    addLamp(-7,basementFloorY+1.2,-61,.7);addLamp(7,basementFloorY+1.2,-61,.7);basementMotes=particles(240,[34,5.5,26],0x91b69a,.035);basementMotes.position.set(0,basementFloorY,-54);memoryDoor(17.72,-48,'returning',[64.6,0,-20],-Math.PI/2,'A narrow door behind the pipes','A tarnished card bears several names, all nearly rubbed away.',basementFloorY+1.9);registerPerformanceZoneObjects('basement',existing)}
+Nİ^ØÛÛœİØ]™YR”ÓÓ‹œ\œÙJØØ[İÜ˜YÙK™Ù]][J	Ø][˜Y][K[^\İ\šY\ÉÊ_	Ö×IÊNÚYŠ\œ˜^Kš\Ğ\œ˜^JØ]™Y
+JY\ØÛİ™\™Y[™]ÈÙ]
+Ø]™Y
+_XØ]Ú
+YÛ›Ü™J^ßCBˆ]ÛÛXİ[Û[™]ÈÙ]
 
-    // The rooms of cultural memory: each space is less cared for than the last, and reading quietly repairs it.
-    const repositoryRails=[],memoryZones=[{key:'returning',cx:72,cz:-20,w:18,d:18},{key:'quiet',cx:96,cz:-20,w:18,d:18},{key:'unread',cx:122,cz:-20,w:22,d:22},{key:'repository',cx:153,cz:-20,w:28,d:24}],memoryRoomVisuals={},neglectedStone=new THREE.MeshStandardMaterial({color:0x34312d,roughness:1,map:masonryTex,bumpMap:masonryTex,bumpScale:.07}),repositoryMetal=new THREE.MeshStandardMaterial({color:0x343b3d,metalness:.52,roughness:.62,map:metalTex,bumpMap:metalTex,bumpScale:.02});
-    function memoryZoneAt(x,z){return memoryZones.find(r=>x>r.cx-r.w/2+.3&&x<r.cx+r.w/2-.3&&z>r.cz-r.d/2+.3&&z<r.cz+r.d/2-.3)}
-    function memoryShell(room,wallMat){addBox(room.w,.42,room.d,MAT.wood,room.cx,-.22,room.cz,false);addBox(room.w,6,.45,wallMat,room.cx,3,room.cz-room.d/2);addBox(room.w,6,.45,wallMat,room.cx,3,room.cz+room.d/2);addBox(.45,6,room.d,wallMat,room.cx-room.w/2,3,room.cz);addBox(.45,6,room.d,wallMat,room.cx+room.w/2,3,room.cz);box(room.w,.35,room.d,roofMat,room.cx,6.15,room.cz,false)}
-    function memorySign(room,label,subtitle,tilt,damage=0){const tex=canvasTexture((c,w,h)=>{c.fillStyle=damage>1?'#171818':'#21170f';c.fillRect(0,0,w,h);c.strokeStyle=damage?'#76664e':'#b99761';c.lineWidth=8;c.strokeRect(12,12,w-24,h-24);c.fillStyle=damage>1?'#978b73':'#dec99e';c.textAlign='center';c.font='bold 30px Georgia';c.fillText(label,w/2,54);c.font='italic 17px Georgia';c.fillText(subtitle,w/2,94);if(damage){c.fillStyle='#171818';for(let i=0;i<damage;i++)c.fillRect(90+i*173,25+(i%2)*28,62,18)}},760,122),sign=mesh(new THREE.PlaneGeometry(6.4,1.03),new THREE.MeshStandardMaterial({map:tex,roughness:.9,side:THREE.DoubleSide}),room.cx,4.45,room.cz-room.d/2+.24,false);sign.rotation.z=tilt;sign.userData={type:'object',title:label,author:subtitle,action:'READ SIGN',initialTilt:tilt};interactables.push(sign);return sign}
-    const webTexture=canvasTexture((c,w,h)=>{c.clearRect(0,0,w,h);c.strokeStyle='rgba(220,218,202,.55)';c.lineWidth=2;for(let i=0;i<9;i++){const a=i/8*Math.PI/2;c.beginPath();c.moveTo(0,h);c.lineTo(Math.cos(a)*w,h-Math.sin(a)*h);c.stroke()}for(let r=.18;r<1;r+=.16){c.beginPath();for(let i=0;i<=24;i++){const a=i/24*Math.PI/2,x=Math.cos(a)*w*r,y=h-Math.sin(a)*h*r;i?c.lineTo(x,y):c.moveTo(x,y)}c.stroke()}},256,256);
-    function cobweb(x,y,z,rot=0,scale=1){const mat=new THREE.MeshBasicMaterial({map:webTexture,transparent:true,opacity:.52,depthWrite:false,side:THREE.DoubleSide}),web=mesh(new THREE.PlaneGeometry(2.5*scale,2.5*scale),mat,x,y,z,false);web.rotation.y=rot;return web}
-    function damagedChair(x,z,damage=1){const g=new THREE.Group();g.position.set(x,0,z);scene.add(g);const seat=new THREE.Mesh(new THREE.BoxGeometry(1.55,.22,1.35),MAT.wood);seat.position.y=.72;seat.rotation.z=damage*.08;g.add(seat);const back=new THREE.Mesh(new THREE.BoxGeometry(1.5,1.6,.18),MAT.darkWood);back.position.set(.12,1.42,.55);back.rotation.z=damage*.12;g.add(back);const parts=[seat,back];for(let i=0;i<4-damage;i++){const leg=new THREE.Mesh(new THREE.BoxGeometry(.13,.72,.13),MAT.darkWood);leg.position.set(i%2?-.58:.58,.35,i<2?-.48:.48);g.add(leg);parts.push(leg)}const fallenLeg=new THREE.Mesh(new THREE.BoxGeometry(.14,.14,1.15),MAT.darkWood);fallenLeg.position.set(1,.12,.2);fallenLeg.rotation.y=.55;g.add(fallenLeg);parts.push(fallenLeg);g.rotation.z=damage*.035;decorateSeat(g,parts,null,'painted',{height:1.8,yaw:damage*.18});return g}
-    const memoryDoorMaterial=new THREE.MeshStandardMaterial({color:0x342016,emissive:0x2a1608,emissiveIntensity:.32,roughness:.72,map:plankTex,bumpMap:plankTex,bumpScale:.05}),themeExitDoorMaterial=new THREE.MeshStandardMaterial({color:0x51301b,emissive:0x7a3f18,emissiveIntensity:.7,roughness:.65,map:plankTex,bumpMap:plankTex,bumpScale:.06}),doorMarkerMaterial=new THREE.MeshBasicMaterial({color:0xd3a75f,map:metalTex}),returnPlaqueTexture=canvasTexture((c,w,h)=>{c.fillStyle='#25170d';c.fillRect(0,0,w,h);c.strokeStyle='#d3a75f';c.lineWidth=12;c.strokeRect(9,9,w-18,h-18);c.fillStyle='#f1d49a';c.textAlign='center';c.font='bold 55px Georgia';c.fillText('RETURN',w/2,69)},420,100),returnPlaqueMaterial=new THREE.MeshStandardMaterial({map:returnPlaqueTexture,emissiveMap:returnPlaqueTexture,emissive:0x5a3012,emissiveIntensity:.55}),returnRunnerMaterial=new THREE.MeshStandardMaterial({color:0x5b1723,emissive:0x28080f,emissiveIntensity:.25,roughness:.96});
-    function memoryDoor(x,z,destination,spawn,yaw,title,author,y=1.9,rot=0,themeExit=false){const group=new THREE.Group();group.position.set(x,y,z);group.rotation.y=rot;scene.add(group);const part=(geometry,material,px,py,pz)=>{const object=new THREE.Mesh(geometry,material);object.position.set(px,py,pz);group.add(object);return object},door=part(new THREE.BoxGeometry(.2,3.8,2.5),themeExit?themeExitDoorMaterial:memoryDoorMaterial,0,0,0),postA=part(new THREE.BoxGeometry(.34,4.25,.18),MAT.brass,0,0,-1.4),postB=part(new THREE.BoxGeometry(.34,4.25,.18),MAT.brass,0,0,1.4),lintel=part(new THREE.BoxGeometry(.34,.22,3),MAT.brass,0,2.05,0),threshold=part(new THREE.BoxGeometry(.38,.06,2.8),doorMarkerMaterial,0,-1.86,0),knob=part(new THREE.SphereGeometry(.12,10,8),MAT.brass,.16,-.4,.95);for(const pz of [-.83,0,.83])part(new THREE.BoxGeometry(.05,1.18,.48),MAT.brass,.13,pz===0?0:pz*1.15,0);door.userData={type:'memory-door',destination,spawn,yaw,title,author,action:'OPEN'};for(const marker of [postA,postB,lintel,threshold])marker.userData=door.userData;interactables.push(door,postA,postB,lintel,threshold);if(themeExit){const plaque=part(new THREE.PlaneGeometry(1.55,.43),returnPlaqueMaterial,.19,2.52,0);plaque.rotation.y=Math.PI/2;plaque.userData=door.userData;interactables.push(plaque);const runner=part(new THREE.PlaneGeometry(3.6,2.35),returnRunnerMaterial,1.72,-1.86,0);runner.rotation.x=-Math.PI/2;const glow=new THREE.PointLight(0xe3ae62,8,6,2);glow.position.set(.85,.65,0);group.add(glow)}return door}
-    function memoryRoomLight(room,color,intensity){const light=new THREE.PointLight(color,intensity,18,2);light.position.set(room.cx,4.2,room.cz);scene.add(light);return light}
-    // A small themed prop for a Reading Room, built from primitives (no new asset files) and placed at a fixed corner clear of the shelves, chair and sign. One interactable focus mesh per kind carries the EXAMINE text.
-    function readerTraces(room,bookIds,key){const x=room.cx-room.w/2+2.4,z=room.cz+1.1,tableMat=new THREE.MeshStandardMaterial({color:0x4a3020,roughness:.92});box(1.35,.12,1.05,tableMat,x,.76,z,false);for(const dx of [-.48,.48])for(const dz of [-.34,.34])box(.09,.72,.09,MAT.darkWood,x+dx,.36,z+dz,false);const chosen=books.find(book=>book.id===bookIds[(key.length+bookIds.length)%bookIds.length]);if(chosen){const left=box(.58,.035,.72,MAT.paper,x-.3,.86,z,false),right=box(.58,.035,.72,MAT.paper,x+.3,.86,z,false);left.rotation.y=.035;right.rotation.y=-.035;left.userData={type:'object',title:`An open copy of ${chosen.title}`,author:'A pencilled line in the margin ends halfway through a thought.',action:'EXAMINE'};interactables.push(left)}const mugMat=new THREE.MeshStandardMaterial({color:key==='gothic'?0x382a3c:0x6b583d,roughness:.72});cylinder(.13,.11,.22,12,mugMat,x+.42,.94,z+.25,false);for(let i=0;i<3;i++){const page=box(.34+i*.05,.018,.48,MAT.paper,x-1.05+i*.24,.025,z+2.05+i*.13,false);page.rotation.y=-.32+i*.21}for(let i=0;i<4;i++){const scuff=mesh(new THREE.CircleGeometry(.16+i*.035,12),new THREE.MeshBasicMaterial({color:0x17130f,transparent:true,opacity:.12,depthWrite:false}),room.cx-1.2+i*.8,.012,room.cz+2.25+(i%2)*.22,false);scuff.rotation.x=-Math.PI/2}}
-    function neglectDetails(room,level){const stainMat=new THREE.MeshStandardMaterial({color:0x17191a,roughness:1}),splinterMat=new THREE.MeshStandardMaterial({color:0x34271e,roughness:1});for(let i=0;i<level+2;i++){const crack=box(.025,.018,1.05+i*.18,stainMat,room.cx-room.w/2+1.1+i*.72,.018,room.cz-2.8+i*1.3,false);crack.rotation.y=.35+i*.47}for(let i=0;i<level;i++){const plank=box(.16,.12,1.6,splinterMat,room.cx+room.w/2-1.2-i*.38,.1,room.cz+2.5-i*1.45,false);plank.rotation.z=.06*(i+1);plank.rotation.y=.45+i*.31}for(let i=0;i<level+1;i++){const slip=box(.45,.018,.62,MAT.paper,room.cx-room.w/2+1.7+i*.55,.03,room.cz+room.d/2-1.2-i*.7,false);slip.rotation.y=-.5+i*.34}if(level>2){const fallenShelf=box(3.1,.16,.68,MAT.darkWood,room.cx+room.w/2-2.2,.22,room.cz-1.5,false);fallenShelf.rotation.z=.09;fallenShelf.rotation.y=.25}}
-    function themeProp(room,prop){const bx=room.cx+room.w/2-3,bz=room.cz-2;let focus;
-    if(prop.kind==='candelabra'){box(1.5,.85,1,MAT.darkWood,bx,.42,bz,false);cylinder(.3,.36,.14,10,MAT.brass,bx,.9,bz);for(const[dx,dz]of[[0,0],[-.3,.17],[.3,-.14]]){cylinder(.04,.05,.48,8,MAT.brass,bx+dx,1.16,bz+dz);focus=mesh(new THREE.SphereGeometry(.06,8,6),new THREE.MeshStandardMaterial({color:0xffcf7a,emissive:0xffaa33,emissiveIntensity:1.5}),bx+dx,1.42,bz+dz,false)}}
-    else if(prop.kind==='evidence-board'){const evidenceTex=canvasTexture((c,w,h)=>{c.fillStyle='#6a5033';c.fillRect(0,0,w,h);c.strokeStyle='#362719';c.lineWidth=20;c.strokeRect(7,7,w-14,h-14);const cards=[['BOOT PRINT',45,42,150,170],['11:47',236,30,130,105],['LONDON Â· 1891',390,50,190,145],['TELEGRAM',225,175,185,112],['POCKET WATCH',430,225,145,150]];for(const[label,x,y,cw,ch]of cards){c.save();c.translate(x+cw/2,y+ch/2);c.rotate((x%3-1)*.035);c.fillStyle='#e5d9b9';c.fillRect(-cw/2,-ch/2,cw,ch);c.strokeStyle='#8b7856';c.lineWidth=3;c.strokeRect(-cw/2+5,-ch/2+5,cw-10,ch-10);c.fillStyle='#352b20';c.textAlign='center';c.font='bold 18px Georgia';c.fillText(label,0,-ch/2+27);for(let n=0;n<4;n++){c.globalAlpha=.5;c.fillRect(-cw/2+15,-ch/2+45+n*18,cw-30,2)}c.restore()}c.strokeStyle='#8e1d20';c.lineWidth=5;c.beginPath();c.moveTo(120,125);c.lineTo(300,82);c.lineTo(484,120);c.lineTo(302,230);c.lineTo(505,300);c.stroke();for(const[x,y]of[[120,125],[300,82],[484,120],[302,230],[505,300]]){c.fillStyle='#c49b51';c.beginPath();c.arc(x,y,9,0,7);c.fill()}},640,400);focus=box(1.9,1.35,.09,new THREE.MeshStandardMaterial({map:evidenceTex,roughness:.92}),bx,1.2,bz,false);for(const x of [-.98,.98])for(const y of [.48,1.92]){const pin=cylinder(.025,.025,.08,8,MAT.brass,bx+x,y,bz+.07);pin.rotation.x=Math.PI/2}}
-    else if(prop.kind==='compass-table'){cylinder(.55,.5,.06,20,MAT.wood,bx,.85,bz,false);cylinder(.08,.08,.85,8,MAT.darkWood,bx,.42,bz,false);const tex=canvasTexture((c,w,h)=>{c.fillStyle='#e9dcb0';c.fillRect(0,0,w,h);c.strokeStyle='#2a2016';c.lineWidth=3;c.beginPath();c.arc(w/2,h/2,w*.42,0,7);c.stroke();c.save();c.translate(w/2,h/2);for(let i=0;i<16;i++){c.rotate(Math.PI/8);c.beginPath();c.moveTo(0,0);c.lineTo(0,-w*.4);c.strokeStyle=i%4===0?'#7a1f1f':'#2a2016';c.lineWidth=i%4===0?3:1;c.stroke()}c.restore()},220,220);focus=mesh(new THREE.CircleGeometry(.5,32),new THREE.MeshStandardMaterial({map:tex,roughness:.7}),bx,.885,bz,false);focus.rotation.x=-Math.PI/2}
-    else if(prop.kind==='tea-table'){cylinder(.42,.38,.06,16,MAT.wood,bx,.78,bz,false);cylinder(.05,.05,.72,8,MAT.darkWood,bx,.42,bz,false);cylinder(.13,.1,.03,12,new THREE.MeshStandardMaterial({color:0xe7dfc4,roughness:.6}),bx-.12,.82,bz+.1,false);focus=cylinder(.09,.11,.14,12,new THREE.MeshStandardMaterial({color:0xf2ead2,roughness:.5}),bx-.12,.9,bz+.1)}
-    else if(prop.kind==='philosopher-bust'){cylinder(.32,.36,.95,14,MAT.stone,bx,.47,bz,false);box(.34,.22,.3,new THREE.MeshStandardMaterial({color:0xcac2b0,roughness:.85}),bx,.98,bz,false);focus=mesh(new THREE.SphereGeometry(.26,16,14),new THREE.MeshStandardMaterial({color:0xcac2b0,roughness:.85}),bx,1.15,bz,false)}
-    else if(prop.kind==='flower-urn'){cylinder(.22,.34,.55,14,MAT.stone,bx,.3,bz,false);const petals=[0xc2547a,0xe0c25a,0x9a4fc2,0xd9705a];for(let i=0;i<7;i++){const a=i/7*Math.PI*2;focus=mesh(new THREE.SphereGeometry(.1+(i%3)*.02,8,6),new THREE.MeshStandardMaterial({color:petals[i%4],roughness:.9}),bx+Math.cos(a)*.14,.63+(i%2)*.05,bz+Math.sin(a)*.14,false)}}
-    if(focus){focus.userData={type:'object',title:prop.title,author:prop.desc,action:'EXAMINE'};interactables.push(focus)}}
-    function themeRecord(room,key){const x=room.cx-room.w/2+3,z=room.cz+1;const stand=box(1.6,.15,1.15,MAT.darkWood,x,.9,z,false);for(const dx of [-.6,.6])for(const dz of [-.4,.4])box(.1,.8,.1,MAT.wood,x+dx,.4,z+dz,false);const record=box(.83,.065,.58,MAT.paper,x,1.04,z,false);record.rotation.y=(key.length%3-1)*.19;record.userData={type:'room-record',recordId:key,title:ROOM_RECORDS[key].title,author:'A record kept apart from the public shelves.',action:'READ'};interactables.push(record)}
-    let memoryRoomsBuilt=false,rememberedBook=null;
-    function buildMemoryRooms(){if(memoryRoomsBuilt)return;memoryRoomsBuilt=true;const existing=new Set(scene.children),returning=memoryZones[0],quiet=memoryZones[1],unread=memoryZones[2],repository=memoryZones[3];memoryShell(returning,MAT.stone);memoryShell(quiet,neglectedStone);memoryShell(unread,neglectedStone);memoryShell(repository,repositoryMetal);
-    rug(returning.cx,returning.cz,10,10,0x4b2431);rug(quiet.cx,quiet.cz,8,9,0x2c2425);rug(unread.cx,unread.cz,6,8,0x1b1a1c);
-    const returningSign=memorySign(returning,'NAMES IN THE DUST','Some books still wait to be called.',.055),quietSign=memorySign(quiet,'THE LONGER SILENCE','There is more here than the light shows.',.15,1),unreadSign=memorySign(unread,'STâ€”LL Wâ€”TING','A hand could change what happens next.',.27,3),repositorySign=memorySign(repository,'WHAT WAS KEPT','No one has explained why these remain.',.025,1);
-    const memoryCollections={
-      returning:[12352,11666,11214,15265,32,11228,241,15454,17854,472],
-      quiet:[14107,10052,14471,25016,10662,11229,10542,11045,35517,5164],
-      unread:[51568,64930,79291,23608,23515,68753,64031,29272,14275,14317],
-      repository:[1302,26378,22136,28540,36764,22608,19553,443,1615,28174]
-    };
-    for(const key of Object.keys(memoryCollections)){const acquisitions=books.filter(book=>book.sourceKey&&book.room===key).map(book=>book.id);if(acquisitions.length)memoryCollections[key]=[...acquisitions,...memoryCollections[key].filter(id=>!acquisitions.includes(id))].slice(0,10)}
-    const memoryBooks=Object.fromEntries(Object.entries(memoryCollections).map(([key,ids])=>[key,ids.map(id=>books.find(book=>book.id===id)).filter(Boolean)]));
-    curatedShelf(memoryCollections.returning.slice(0,5),returning.cx-4.6,returning.cz-returning.d/2+.55,0,0);curatedShelf(memoryCollections.returning.slice(5),returning.cx+4.6,returning.cz-returning.d/2+.55,0,0);curatedShelf(memoryCollections.quiet.slice(0,5),quiet.cx-4.6,quiet.cz-quiet.d/2+.55,0,1);curatedShelf(memoryCollections.quiet.slice(5),quiet.cx+4.6,quiet.cz-quiet.d/2+.55,0,1);curatedShelf(memoryCollections.unread.slice(0,5),unread.cx-5.4,unread.cz-unread.d/2+.55,0,2);curatedShelf(memoryCollections.unread.slice(5),unread.cx+5.4,unread.cz-unread.d/2+.55,0,2);
-    const returningWebs=[cobweb(65,5,-28.72,0,.65)],quietWebs=[cobweb(90,4.7,-28.72,0,.9),cobweb(101,3.8,-28.72,0,.72),cobweb(96,5,-11.28,Math.PI,.8),cobweb(87.3,3.4,-24,Math.PI/2,.62),cobweb(104.7,4.6,-16,-Math.PI/2,.72)],unreadWebs=[cobweb(113,4.8,-30.72,0,1.1),cobweb(121,3.8,-30.72,0,.9),cobweb(130,4.7,-30.72,0,1.2),cobweb(111.28,4,-24,Math.PI/2,.9),cobweb(132.72,4,-15,-Math.PI/2,.85),cobweb(118,5.2,-9.3,Math.PI,.9),cobweb(126,3.5,-9.3,Math.PI,.68),cobweb(132.7,5,-26,-Math.PI/2,.75)],repositoryWebs=[cobweb(140,4.5,-31.72,0,.65),cobweb(166.7,5,-28,-Math.PI/2,.8),cobweb(145,3.8,-8.3,Math.PI,.62),cobweb(160,4.8,-8.3,Math.PI,.72)];
-    const returningBroken=damagedChair(77,-15,1),quietBroken=damagedChair(99,-15,2),unreadBroken=damagedChair(127,-13,3);neglectDetails(quiet,2);neglectDetails(unread,4);neglectDetails(repository,3);writingDesk(returning.cx,returning.cz+2,false);writingDesk(quiet.cx,quiet.cz+2,true);chair(unread.cx,unread.cz+2,Math.PI,{model:'armchair',title:'The only intact chair',author:'One lamp still believes a reader is coming.',categories:['Strange','Memory','Gothic']});
-    const returningLight=memoryRoomLight(returning,0xffc77d,21),quietLight=memoryRoomLight(quiet,0xbda875,11),unreadLight=memoryRoomLight(unread,0xd5c18a,6),repositoryLight=memoryRoomLight(repository,0xa9c2c3,11);for(const room of memoryZones){const motes=particles(room.key==='repository'?170:120,[room.w-2,5.5,room.d-2],room.key==='repository'?0xb8c6c2:0xc7b58d,.035);motes.position.set(room.cx,.2,room.cz)}
-    const rememberedLectern=box(2,1.05,1.4,MAT.wood,unread.cx,1.05,unread.cz-1,false);rememberedBook=looseBook(memoryBooks.unread[0],unread.cx,1.7,unread.cz-1,0);rememberedBook.visible=false;
-    function repositoryRack(x,z,offset=0){for(const y of [.25,2.15,4.05]){const shelf=box(8,.16,1,repositoryMetal,x,y,z);if(y>4)shelf.rotation.z=(offset%2?-.025:.025)}for(const dx of [-3.9,3.9])box(.18,4.2,1,repositoryMetal,x+dx,2.1,z);for(let i=0;i<9;i++){const b=memoryBooks.repository[(i+offset)%memoryBooks.repository.length],fallen=i>=7,bm=looseBook(b,fallen?x-2.2+(i-7)*2.7:x-3.2+(i%5)*1.55,fallen?.14:.95+Math.floor(i/5)*1.9,fallen?z+1.5+(i-7)*.45:z+.58,0),wobble=Math.sin((b.id%991)*.61+i);if(fallen)bm.position.y=.14;bm.rotation.set(fallen?-Math.PI/2:wobble*.07,fallen?wobble*.25:0,wobble*(fallen?.45:.18));bm.userData.home.position.copy(bm.position);bm.userData.home.quaternion.copy(bm.quaternion)}}
-    repositoryRack(147,-29,0);repositoryRack(157,-29,3);repositoryRack(147,-20,6);repositoryRack(157,-20,8);for(const x of [143,163]){const rail=box(.12,.08,20,MAT.brass,x,.05,-20,false);rail.material=repositoryMetal;rail.userData.trainBaseY=rail.position.y;repositoryRails.push(rail)}const requestDesk=box(3.2,1.1,1.8,repositoryMetal,153,1.05,-10,false),requestBook=looseBook(memoryBooks.repository[4],153,1.72,-10,0);requestBook.userData.machineNote='REQUEST STOP â€” selected from a shelf almost nobody visits.';
-    memoryDoor(63.22,-20,'basement',[15.4,basementFloorY,-48],Math.PI/2,'The door back to the Below Catalogue','The pipes can be heard on the other side.');memoryDoor(80.78,-20,'quiet',[88.6,0,-20],-Math.PI/2,'A door with a fading index card','Beyond it, fewer lamps are burning.');memoryDoor(87.22,-20,'returning',[79.4,0,-20],Math.PI/2,'The warmer room behind you','Names glimmer through the keyhole.');memoryDoor(104.78,-20,'unread',[113,0,-20],-Math.PI/2,'A door whose sign has fallen away','Dust has gathered against its threshold.');memoryDoor(111.22,-20,'quiet',[103.4,0,-20],Math.PI/2,'The door back to the Quiet Stacks','A weak amber light marks the way back.');memoryDoor(132.78,-20,'repository',[141,0,-20],-Math.PI/2,'An industrial fire door','A railway vibration passes through its handle.');memoryDoor(139.22,-20,'unread',[131,0,-20],Math.PI/2,'The door back to the Unread Room','A single warm lamp shows beneath it.');memoryDoor(166.78,-20,'returning',[64.6,0,-20],-Math.PI/2,'REQUEST STOP','The far platform returns unexpected readers to the first room.');
-    memoryRoomVisuals.returning={sign:returningSign,webs:returningWebs,broken:returningBroken,light:returningLight,baseLight:22};memoryRoomVisuals.quiet={sign:quietSign,webs:quietWebs,broken:quietBroken,light:quietLight,baseLight:14};memoryRoomVisuals.unread={sign:unreadSign,webs:unreadWebs,broken:unreadBroken,light:unreadLight,baseLight:11};memoryRoomVisuals.repository={sign:repositorySign,webs:repositoryWebs,broken:null,light:repositoryLight,baseLight:14};Object.keys(memoryRoomVisuals).forEach(key=>applyRoomMemory(key));registerRoomPerformanceZones('memory',existing,memoryZones)}
-    function applyRoomMemory(key,book=null,announce=false){const visual=memoryRoomVisuals[key];if(!visual)return;const count=[...restoredMemoryBooks].filter(v=>v.startsWith(key+':')).length;visual.sign.rotation.z=visual.sign.userData.initialTilt*Math.pow(.58,count);visual.webs.forEach((web,i)=>web.visible=i>=count);if(visual.broken)visual.broken.rotation.z=Math.max(0,visual.broken.rotation.z-count*.025);visual.light.intensity=visual.baseLight+Math.min(count,4)*1.6;if(key==='unread'&&count){rememberedBook.visible=true;if(book){rememberedBook.userData.book=book;rememberedBook.material.map=coverTexture(book);rememberedBook.material.needsUpdate=true}}if(announce)showNotice(key==='repository'?'A distant rack light flickers on. The Repository has registered another reader.':'A lamp brightens. Dust loosens. The room has noticed that one of its books is being read.',6)}
-    function restoreMemoryRoom(key,book){const token=`${key}:${book.id}`;if(restoredMemoryBooks.has(token))return;restoredMemoryBooks.add(token);localStorage.setItem('library-returning-names',JSON.stringify([...restoredMemoryBooks]));applyRoomMemory(key,book,true)}
-    let basementEntered=false;
-    // secret shelf built separately with a passage behind
-    secretShelf=shelf(-36.45,-3,Math.PI/2,8,true);secretShelf.userData.pivot=secretShelf.position.clone();
-    addBox(.5,.6,6.4,MAT.stone,-37,7.85,-3,false);
-    // secret library and the narrow passage hidden beyond its west wall
-    addBox(14,.4,18,MAT.wood,-45,-.2,-3,false);addBox(.5,7,7,MAT.stone,-52,3.5,-8.5);addBox(.5,7,7,MAT.stone,-52,3.5,2.5);addBox(14,7,.5,MAT.stone,-45,3.5,-12);addBox(14,7,.5,MAT.stone,-45,3.5,6);rug(-45,-3,9,11,0x351831);addLamp(-45,2,-3,1.5);addSoftRoomLight(-45,3,-3,0xb69bd2,15,20);shelf(-48,-10,0,4);shelf(-42,-10,0,4);shelf(-48,4,Math.PI,4);shelf(-42,4,Math.PI,4);const orb=cylinder(.7,.7,1.4,24,new THREE.MeshPhysicalMaterial({color:0x25214c,emissive:0x34246c,emissiveIntensity:1,transmission:.2}),-45,1,-3);orb.userData={type:'object',title:'An object with no label',author:'It is warmer than the room.',secretId:'unlabelled-orb'};interactables.push(orb);
-    // Fill the space above the moving wall: otherwise the supposed hairline crack reads as a square opening.
-    addBox(.5,2.8,4,MAT.stone,-52,5.6,-3,false);
-    const tunnelDoor=box(.38,4.2,4,MAT.stone,-51.94,2.1,-3);tunnelDoor.userData={type:'secret-wall',title:'A wall with a hairline crack',author:'A thin, wandering fracture lets out a breath of warm air.',action:'PRESS'};interactables.push(tunnelDoor);
-    const crackTexture=canvasTexture((c,w,h)=>{c.clearRect(0,0,w,h);c.strokeStyle='rgba(8,7,9,.82)';c.lineWidth=3;c.lineJoin='round';c.beginPath();c.moveTo(w*.51,12);c.lineTo(w*.49,h*.17);c.lineTo(w*.54,h*.29);c.lineTo(w*.47,h*.43);c.lineTo(w*.52,h*.59);c.lineTo(w*.45,h*.76);c.lineTo(w*.49,h-12);c.stroke();c.strokeStyle='rgba(192,173,139,.35)';c.lineWidth=1;c.beginPath();c.moveTo(w*.52,12);c.lineTo(w*.5,h*.17);c.lineTo(w*.55,h*.29);c.lineTo(w*.48,h*.43);c.lineTo(w*.53,h*.59);c.lineTo(w*.46,h*.76);c.lineTo(w*.5,h-12);c.stroke();c.strokeStyle='rgba(8,7,9,.45)';c.beginPath();c.moveTo(w*.47,h*.43);c.lineTo(w*.35,h*.48);c.stroke()},256,512);
-    const crack=new THREE.Mesh(new THREE.PlaneGeometry(2.4,3.8),new THREE.MeshBasicMaterial({map:crackTexture,transparent:true,depthWrite:false,side:THREE.DoubleSide}));crack.rotation.y=Math.PI/2;crack.position.set(.196,0,0);tunnelDoor.add(crack);
-    const tunnelDoorCollider=collider(-52,-3,.6,4.2,'tunnel door');addBox(10,.4,4,MAT.wood,-57,-.2,-3,false);addBox(10,4,.35,MAT.stone,-57,2,-5.05);addBox(10,4,.35,MAT.stone,-57,2,-.95);finalDoor=box(.42,4,4,MAT.darkWood,-61.75,2,-3);finalDoor.userData={type:'archive-door',title:'A door marked with empty circles',author:'The library is waiting for its hidden catalogue.',action:'EXAMINE'};interactables.push(finalDoor);finalDoorCollider=collider(-62,-3,.6,4.2,'archive door');box(.5,4.45,.18,MAT.brass,-61.75,2,-5.15,false);box(.5,4.45,.18,MAT.brass,-61.75,2,-.85,false);box(.5,.22,4.3,MAT.brass,-61.75,4.15,-3,false);mesh(new THREE.SphereGeometry(.09,8,6),MAT.brass,-61.46,1.5,-1.7);addLamp(-59,1.7,-3,.4);
-    addBox(10,.4,10,MAT.wood,-67,-.2,-3,false);addBox(.5,6,10,MAT.stone,-72,3,-3);addBox(10,6,.5,MAT.stone,-67,3,-8);addBox(10,6,.5,MAT.stone,-67,3,2);addBox(.5,6,3,MAT.stone,-62,3,-6.5);addBox(.5,6,3,MAT.stone,-62,3,.5);rug(-67,-3,6.5,6.5,0x231c42);addLamp(-67,2,-3,1.2);addSoftRoomLight(-67,3,-3,0xa69bc9,14,18);const archiveSigil=cylinder(.6,.6,1.5,8,new THREE.MeshStandardMaterial({color:0x6e5a9e,emissive:0x49357c,emissiveIntensity:1.2}),-67,.75,-5.4);archiveSigil.userData={type:'archive',title:'THE LAST CATALOGUE',author:'Every discovered path is written here.',action:'REMEMBER'};interactables.push(archiveSigil);const archiveBook=looseBook(books[45],-67,1.08,-2.6,0);archiveBook.userData.machineNote='The final margin contains your own footsteps.';
-    looseBook(books[40],1.55,.44,4,.15,'book-under-table');looseBook(books[41],-13,5.62,-27.25,0,'book-mantel');looseBook(books[42],15,5.5,25,.2,'book-balcony');
-    box(1.8,.15,1.15,MAT.darkWood,26,5.92,21.2,false);for(const dx of [-.7,.7])for(const dz of [-.4,.4])box(.12,.9,.12,MAT.wood,26+dx,5.45,21.2+dz,false);
-    const portraitBook=looseBook(books.find(book=>book.id===1952),26,6.08,21.2,-Math.PI/2);portraitBook.userData.machineNote='A pencilled line in the margin: â€œThe portrait keeps a room the catalogue cannot name.â€';
-    const thresholdBook=looseBook(books.find(book=>book.id===10002),-60,1.05,-3,Math.PI/2);thresholdBook.userData.machineNote='The last reader underlined every mention of a doorway and left this book beside one.';
-    const wanderingBook=looseBook(books[39],0,1.05,13,.3);wanderingBook.visible=false;
+Nİ^ØÛÛœİØ]™YR”ÓÓ‹œ\œÙJØØ[İÜ˜YÙK™Ù]][J	Ø][˜Y][KXÛÛXİ[Û‰Ê_	Ö×IÊNÚYŠ\œ˜^Kš\Ğ\œ˜^JØ]™Y
+JXÛÛXİ[Û[™]ÈÙ]
+Ø]™Y
+_XØ]Ú
+YÛ›Ü™J^ßBˆÛÛœİ“ÓÓWÔ‘PÓÔ‘Ï^ÂˆÛİXÎİ]N‰ÕH\İØ[™IË^‰Õ\È›ÛÛHØ\ÈÙX[YY\ˆ]™\HÚ]™\ÜÈÈHš[˜[šYÚ[\ØÜšX™YHY™™\™[\œÛÛˆ[ˆH[\HÚZ\‹ˆHšYÚÜ\ˆÙ\HØ[™H\›š[™ÈÛÈHİÜšY\ÈÛİ[\ØYÜ™YH[ˆXXÙK‰ßKˆ[œ]Z\Nİ]N‰ÕHØ\ÙHÚ]İ]Hİ[š]	Ë^‰ÕH[™\İYØ]ÜˆÛÛ™YH\Ø\X\˜[˜ÙK[ˆYH[œİÙ\‹ˆHZ\ÜÚ[™È™XY\ˆYÚ[\HØ[ÙY[ÈH›ÛÚÈ[™Ø[Y›ÈÛ™HÈ™]Ú\ˆ˜XÚË‰ßKˆÚ\İ]N‰ÕHÚ\ÙˆH˜[š\ÚYÚÜ™IË^‰Ñ]™\HX\\™HÚ[ÈÈ[ˆ\Û[™\˜\ÙYHHÙXKˆ]È›ÛÚÜÈÙ\™HÙ\İ]ÙˆHX›XÈØ][ÙİYH™XØ]\ÙHH\Û[™\X\œÈYØZ[ˆÚ[™]™\ˆÛÛY[Û™H™XYÈ]È˜[YH[İY‰ßKˆ˜]Ú[™Îİ]N‰ÕH[™š[š\ÚY[š]][Û‰Ë^‰ĞHİY\İØ\ÈİXÚÈœ›ÛH]™\H[š]][Û‹Y]\ˆİ\Ø\È[Ø^\ÈZYˆ\È›ÛÛH™\Ù\™\ÈHÛÛ™\œØ][Ûˆ]ÛÛ[YYY\ˆ]™\[Û™HYÜ™YYÚHY™]™\ˆ^\İY‰ßKˆİYNİ]N‰ÕH\™İ[Y[[™\ˆÛ\ÜÉË^‰ÕÛÈØÚÛ\œÈ™XXÚYÜÜÚ]HÛÛ˜Û\Ú[ÛœÈœ›ÛHHØ[YHYÙKˆ˜]\ˆ[ˆÚÛÜÙHÛ™KHXœ˜\šX[ˆÚ]Z\ˆX˜]H[ˆ\È›ÛÛH[™Y›İÚZ\œÈ˜XÚ[™ÈH]šY[˜ÙK‰ßKˆØ\™[İ]N‰ÕHØ\™[™\¸ &\È[\ÜÜÚX›HÙYY	Ë^‰ÕHØ\™[™\ˆ[YHÛÜ™Û\Yœ›ÛHHÙ[KˆH[Ü›š[™È]Y›ÛİËˆH›ÛÛHØ\ÈY[ˆ™Y›Ü™H[[Û™HÛİ[XÚYHÚ]\ˆH™]È›İÙ\œÈ™[Û™ÙY[ˆHØ][ÙİYHÜˆHØ\™[‹‰ßKˆ™\›™Nİ]N‰ÕH[™Ú[™Y\¸ &\È[\ÜÜÚX›H][™\˜\IË^‰ÕH›ÛÛHØ\È[›™Y›Üˆ›İ\›™^\È›È˜Z[Ø^HÛİ[Y]XZÙNˆ[™\ˆHÙXK›İYÚHX\\›İ[™HÛÜ›[™\Ø\™İØ\™H[ÛÛ‹ˆ]È\˜Ú]XİYHš[˜[\İ[˜][Ûˆ›[šË‰ßKˆYÙØ\™İ]N‰ÕHÛİ[HÛZ]Yœ›ÛH]™\H]\ÉË^‰Ğ[ˆ^Ü™\ˆ™]\›™YÚ]H›İ]H›Èİ\™^[ÜˆÛİ[™\X]ˆHXœ˜\šX[œÈš[Y\ÈX\ÚY]Ø^\ËÚ\™H]È[İ[Z[œÈÛİÛHØ]\™Y˜[Y\Èœ›ÛHİÜšY\ÈÙˆÜİÚ[™ÙÛ\Ë‰ßKˆŞ[Nİ]N‰ÕH[™™\™[˜ÙH™Z[™HØÚÙYÛ\ÜÉË^‰Õ™YHÛY\ÈÙ\™H™\Ù\™YÚ]İ]Z\ˆØ\ÙNˆH›Ûİš[HİÜYØ]Ú[™H™XYÙˆ™YÛÛÛˆHÛÛœİ[[™È›ÛÛHÜ[œÈÛ›HÚ[ˆH™XY\ˆ›İXÙ\ÈÚ]HØ][ÙİYHÙ\È›İØ^K‰ßKˆÜ˜Z]İ]N‰ÕHÙY\\¸ &\Èš]˜]HYÙ\‰Ë^‰ÕHÜ˜Z]Ø\È\›™YİØ\™H[ÈYH\ÈYÙ\‹ˆ]\İÈ™XY\œÈÚÈ›İ[™›ÛÚÜÈ›ÈÛ™HYYX[È™XÛÛ[Y[™[™HÛX[Ú[™Ù\ÈÜÙHXØÚY[ÈXYHÈZ\ˆ]™\Ë‰ßBˆNÂˆ]›ÛÛT™XÛÜ™Ï[™]ÈÙ]
 
-    // rooftop observatory reached by the upper balcony stair
-    for(let i=0;i<13;i++){const y=5.18+i*.4,z=27+i*.8;box(5.6,.38,.86,MAT.wood,14.2,y,z);trim(11.35,6+i*.4,z,.16,1.35,.16);trim(17.05,6+i*.4,z,.16,1.35,.16)}
-    trim(11.35,8.2,31.8,.18,.18,10.4);trim(17.05,8.2,31.8,.18,.18,10.4);
-    let roofBuilt=false,vaneArrow=null;const windChimes=[];
-    function buildRoofGarden(){if(roofBuilt)return;roofBuilt=true;const existing=new Set(scene.children);addBox(34,.45,24,MAT.stone,0,9.78,49,false);rug(0,49,15,9,0x33424b).position.y=10.021;
-    addBox(28.4,.9,.55,MAT.stone,-2.8,10.35,37,false);collider(-2.8,37,28.4,.55,'roof parapet',9,13);
-    addBox(34,.9,.55,MAT.stone,0,10.35,61,false);collider(0,61,34,.55,'roof parapet',9,13);
-    addBox(.55,.9,24,MAT.stone,-17,10.35,49,false);collider(-17,49,.55,24,'roof parapet',9,13);
-    addBox(.55,.9,24,MAT.stone,17,10.35,49,false);collider(17,49,.55,24,'roof parapet',9,13);
-    const roofSign=box(4.7,1,.18,MAT.darkWood,8.6,11.25,37.3,false);roofSign.userData={type:'object',title:'THE ROOF GARDEN',author:'Up here, even the weather reads over your shoulder.'};interactables.push(roofSign);
-    // a small observatory, garden, telescope and wind chimes
-    for(const x of [-8,8])for(const z of [44,54])cylinder(.18,.24,4.6,10,MAT.brass,x,12.3,z);const canopy=box(18,.28,12,MAT.wood,0,14.58,49,false);canopy.material=new THREE.MeshStandardMaterial({color:0x49311f,roughness:.8});
-    const telescopeStand=cylinder(.18,.3,2.2,12,MAT.brass,-7,11.05,49);const telescope=mesh(new THREE.CylinderGeometry(.34,.5,3,18),new THREE.MeshStandardMaterial({color:0x314758,metalness:.35,roughness:.4}),-7,12.45,49);telescope.rotation.z=Math.PI/2.7;telescope.userData={type:'constellation',title:'The readerâ€™s constellation',author:'Each book you read gives the night another star.',action:'LOOK'};interactables.push(telescope);
-    for(const x of [-12,-8,8,12]){addBox(2.8,.65,1.4,MAT.wood,x,10.35,57,false);for(let i=0;i<4;i++){const plant=mesh(new THREE.SphereGeometry(.22+Math.random()*.18,8,6),new THREE.MeshStandardMaterial({color:i%2?0x557056:0x6f7f55,roughness:1}),x-1+i*.65,10.9+Math.random()*.2,57,false);plant.scale.y=1.7}}
-    bench(-11.5,42,Math.PI,{model:false,title:'A weathered Gothic garden bench',author:'Dark oak and wine-red upholstery replace the old painted seat.',categories:['Poetry','Philosophy','Wonder','Memory']});
-    bench(12,49,Math.PI/2,{model:false,title:'The carved constellation bench',author:'Brass finials catch the light beneath the newest star.',categories:['Poetry','Wonder','Epic','Philosophy']});
-    const roofBook=looseBook(books[46],-13.2,10.44,41.15,.18,'roof-book');roofBook.userData.machineNote='Rain has blurred one sentence into a map of the roof.';
-    const vanePole=cylinder(.1,.16,3.6,10,MAT.brass,11.5,11.8,48);vaneArrow=box(2.4,.12,.12,MAT.gold,11.5,13.45,48,false);const vaneTail=mesh(new THREE.ConeGeometry(.42,.9,3),MAT.gold,10.5,13.45,48,false);vaneTail.rotation.z=Math.PI/2;vanePole.userData={type:'weather-vane',title:'The library weather vane',author:'Its arrow refuses to point north.',action:'READ WEATHER'};interactables.push(vanePole);
-    for(let i=0;i<5;i++){const chime=cylinder(.055,.07,.75+i*.11,8,MAT.brass,5.3+i*.3,13.65-i*.08,43.8);windChimes.push(chime)}
-    for(const p of [[-12,11.2,39],[12,11.2,39],[-12,11.2,59],[12,11.2,59]])addLamp(p[0],p[1],p[2],.65);registerPerformanceZoneObjects('roof',existing)}
+Nİ^ØÛÛœİØ]™YR”ÓÓ‹œ\œÙJØØ[İÜ˜YÙK™Ù]][J	Ø][˜Y][K\›ÛÛK\™XÛÜ™ÉÊ_	Ö×IÊNÚYŠ\œ˜^Kš\Ğ\œ˜^JØ]™Y
+J\›ÛÛT™XÛÜ™Ï[™]ÈÙ]
+Ø]™Y™š[\ŠYO”“ÓÓWÔ‘PÓÔ‘ÖÚYJJ_XØ]Ú
+YÛ›Ü™J^ßBˆ]]ØZÙ[™Y›ÛÚÜÏ[™]ÈÙ]
 
-    // serendipity machine
-    const machine=new THREE.Group();machine.position.set(12,0,1);scene.add(machine);const base=new THREE.Mesh(new THREE.BoxGeometry(3.4,3.8,2.2),MAT.brass);base.position.y=1.9;machine.add(base);const face=new THREE.Mesh(new THREE.CylinderGeometry(1.05,1.05,.18,32),MAT.black);face.rotation.x=Math.PI/2;face.position.set(0,2.25,-1.14);machine.add(face);for(let i=0;i<12;i++){const tick=new THREE.Mesh(new THREE.BoxGeometry(.05,.3,.05),MAT.gold);const a=i/12*Math.PI*2;tick.position.set(Math.cos(a)*.78,2.25+Math.sin(a)*.78,-1.27);tick.rotation.z=a;machine.add(tick)}const leverPivot=new THREE.Group();leverPivot.position.set(1.9,2.3,0);machine.add(leverPivot);const lever=new THREE.Mesh(new THREE.BoxGeometry(.15,2,.15),MAT.brass);lever.position.y=.75;leverPivot.add(lever);const knob=new THREE.Mesh(new THREE.SphereGeometry(.31,14,10),MAT.wood2);knob.position.y=1.72;leverPivot.add(knob);const tray=new THREE.Mesh(new THREE.BoxGeometry(2.2,.16,1.3),MAT.brass);tray.position.set(0,.7,-1.55);tray.rotation.x=-.12;machine.add(tray);const trayGlow=new THREE.PointLight(0xe2aa57,0,5,2);trayGlow.position.set(0,1,-1.8);machine.add(trayGlow);machine.userData={type:'machine',title:'THE SERENDIPITY MACHINE',author:'A brass lever waits.',action:'PULL LEVER',lever:leverPivot,tray,trayGlow};for(const part of [base,lever,knob]){part.userData=machine.userData;interactables.push(part)}collider(12,1,4,3);
+Nİ^ØÛÛœİØ]™YR”ÓÓ‹œ\œÙJØØ[İÜ˜YÙK™Ù]][J	Ø][˜Y][KX]ØZÙ[™YX›ÛÚÜÉÊ_	Ö×IÊNÚYŠ\œ˜^Kš\Ğ\œ˜^JØ]™Y
+JX]ØZÙ[™Y›ÛÚÜÏ[™]ÈÙ]
+Ø]™Y
+_XØ]Ú
+YÛ›Ü™J^ßBˆ]\ÚĞ›ÛÚÜÏ[™]ÈÙ]
+
+Nİ^ØÛÛœİØ]™YR”ÓÓ‹œ\œÙJØØ[İÜ˜YÙK™Ù]][J	Ø][˜Y][KY\ÚËX›ÛÚÜÉÊ_	Ö×IÊNÚYŠ\œ˜^Kš\Ğ\œ˜^JØ]™Y
+JY\ÚĞ›ÛÚÜÏ[™]ÈÙ]
+Ø]™Y
+_XØ]Ú
+YÛ›Ü™J^ßBˆ]™\İÜ™YY[[ÜP›ÛÚÜÏ[™]ÈÙ]
+
+Nİ^ØÛÛœİØ]™YR”ÓÓ‹œ\œÙJØØ[İÜ˜YÙK™Ù]][J	ÛXœ˜\K\™]\›š[™Ë[˜[Y\ÉÊ_	Ö×IÊNÚYŠ\œ˜^Kš\Ğ\œ˜^JØ]™Y
+J\™\İÜ™YY[[ÜP›ÛÚÜÏ[™]ÈÙ]
+Ø]™Y
+_XØ]Ú
+YÛ›Ü™J^ßBˆ]^Ü™Y›ÛÛ\Ï[™]ÈÙ]
+
+Nİ^ØÛÛœİØ]™YR”ÓÓ‹œ\œÙJØØ[İÜ˜YÙK™Ù]][J	Ø][˜Y][KY^Ü™Y\›ÛÛ\ÉÊ_	Ö×IÊNÚYŠ\œ˜^Kš\Ğ\œ˜^JØ]™Y
+JY^Ü™Y›ÛÛ\Ï[™]ÈÙ]
+Ø]™Y
+_XØ]Ú
+YÛ›Ü™J^ßBˆ[˜İ[Ûˆ[U^
+˜]ËËJ^ØÛÛœİXØ[˜\Õ^\™J˜]ËË
+NİÜ˜\Ï]Ü˜\U‘QK”™\X]Ü˜\[™Îİœ™\X]œÙ]
+JNÜ™]\›ˆCBˆ[˜İ[Ûˆ˜]Ô[šÑÜ˜Z[ŠİË
+^Øİ™š[İ[OIÈÍXÍXÍXÉÎØİ™š[™Xİ
+Ë
+NØÛÛœİ[šÜÏM‹ZÜ[šÜÎÙ›ÜŠ]OLÚO[šÜÎÚJÊÊ^ØÛÛœİOZJœÚYOLLŒ
+Ê
+JLÊIN
+NØİ™š[İ[OX™ØŠ	ÜÚY_K	ÜÚY_K	ÜÚY_JXØİ™š[™Xİ
+KËLÊNØİ™š[İ[OIÜ™Ø˜JMJIÎØİ™š[™Xİ
+JÜLËËÊNÙ›ÜŠ]ÏLÙÏÙÊÊÊ^ØÛÛœİŞO^JÌÊÊËÍ
+JŠMŠJÓX]œ˜[™ÛJ
+JŒÎØİœİ›ÚÙTİ[OIÜ™Ø˜JŒÌŠIÎØİ˜™YÚ[”]
+
+NØİ›[İ™UÊŞJNØİ˜™^šY\İ\™UÊÊ‹ŒËŞJÓX]œ˜[™ÛJ
+J‹LËÊ‹ËŞJÓX]œ˜[™ÛJ
+J‹LËËŞJNØİœİ›ÚÙJ
+__Y›ÜŠ]LÛŒÛŠÊÊ^Øİ™š[İ[OX™Ø˜JMKMKMK	ÓX]œ˜[™ÛJ
+J‹ŒJXØİ™š[™Xİ
+X]œ˜[™ÛJ
+JËX]œ˜[™ÛJ
+Jš‹J__CBˆ[˜İ[Ûˆ˜]ÓX\ÛÛœQÜ˜Z[ŠİË
+^Øİ™š[İ[OIÈÍMM‰ÎØİ™š[™Xİ
+Ë
+NØÛÛœİ›İÜÏM‹šZÜ›İÜËÛÛÏNİÏ]ËØÛÛÎÙ›ÜŠ]LÜ›İÜÎÜŠÊÊ^ØÛÛœİO\ŠœšÙ™œÙ]J‰LŠJŠİËÌŠNÙ›ÜŠ]ÏLØÏÛÛÎØÊÊÊ^ØÛÛœİJÊ˜İÊÛÙ™œÙ]
+I]ËÚYONMJÊ
+ŠLÊØÊŒJIMÍJNØİ™š[İ[OX™ØŠ	ÜÚY_K	ÜÚY_K	ÜÚYKMJXØİ™š[™Xİ
+
+ÌKJÌKİËL‹šLŠ__Xİœİ›ÚÙTİ[OIÜ™Ø˜JŠIÎØİ›[™UÚYLÎÙ›ÜŠ]LÜ\›İÜÎÜŠÊÊ^Øİ˜™YÚ[”]
+
+NØİ›[İ™UÊŠœš
+NØİ›[™UÊËŠœš
+NØİœİ›ÚÙJ
+_Y›ÜŠ]LÛÛŠÊÊ^Øİ™š[İ[OX™Ø˜J	ÓX]œ˜[™ÛJ
+J‹Œ_JXØİ™š[™Xİ
+X]œ˜[™ÛJ
+JËX]œ˜[™ÛJ
+Jš‹Š__CBˆ[˜İ[Ûˆ˜]ÓY][Ü˜Z[ŠİË
+^Øİ™š[İ[OIÈÍÎÎØIÎØİ™š[™Xİ
+Ë
+NÙ›ÜŠ]OLÚOŒÚJÊÊ^ØÛÛœİOSX]œ˜[™ÛJ
+JšØİœİ›ÚÙTİ[OX™Ø˜JMKMKMK	ÓX]œ˜[™ÛJ
+J‹ŒNJXØİ˜™YÚ[”]
+
+NØİ›[İ™UÊJNØİ›[™UÊËJÓX]œ˜[™ÛJ
+JM
+NØİœİ›ÚÙJ
+_Y›ÜŠ]OLÚOŒÚJÊÊ^ØÛÛœİOSX]œ˜[™ÛJ
+JšØİœİ›ÚÙTİ[OX™Ø˜J	ÓX]œ˜[™ÛJ
+J‹ŒNJXØİ˜™YÚ[”]
+
+NØİ›[İ™UÊJNØİ›[™UÊËJÓX]œ˜[™ÛJ
+JM
+NØİœİ›ÚÙJ
+__CBˆÛÛœİ[šÕ^][U^
+˜]Ô[šÑÜ˜Z[‹M‹M‹ÊKX\ÛÛœU^][U^
+˜]ÓX\ÛÛœQÜ˜Z[‹M‹M‹ÊKY][^][U^
+˜]ÓY][Ü˜Z[‹M‹M‹ËÊNÃBˆÛÛœİPU^İÛÛÙ›™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒ™NK›İYÚ™\ÜÎ‹ÌŸJKÛÛÙ›™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒÌŒXÌL›İYÚ™\ÜÎ‹ŸJK\šÕÛÛÙ›™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒLM›İYÚ™\ÜÎ‹ßJKœ˜\ÜÎ›™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒYÌÌÌY][™\ÜÎ‹K›İYÚ™\ÜÎ‹ŒÌ‹X\›Y][^[\X\›Y][^[\ØØ[N‹ŒŸJK\\›™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒÍNY‹›İYÚ™\ÜÎ‹ŸJKİÛ™N›™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒMÌÎK›İYÚ™\ÜÎ‹MX\›X\ÛÛœU^[\X\›X\ÛÛœU^[\ØØ[N‹ŒßJK˜XœšXÎ›™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒYYLŒ‹›İYÚ™\ÜÎ‹MŸJKÜ™Y[›™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒYÍ›İYÚ™\ÜÎ‹LŸJK›XÚÎ›™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒŒK›İYÚ™\ÜÎ‹Í_JKÛ\ÜÎ›™]È‘QK“Y\Ú\ÚXØ[X]\šX[
+ØÛÛÜŒŒØMK˜[œÜ\™[YKÜXÚ]N‹›İYÚ™\ÜÎ‹ŒY][™\ÜÎ‹ŒJKÛÛ›™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒ™NLMËY][™\ÜÎ‹K›İYÚ™\ÜÎ‹‹X\›Y][^[\X\›Y][^[\ØØ[N‹ŒŸJ_NÃBˆ[˜İ[ÛˆY\Ú
+Ù[ËX]LOLLÚYİÏ]YJ^ØÛÛœİO[™]È‘QK“Y\Ú
+Ù[ËX]
+NÛKœÜÚ][Û‹œÙ]
+KŠNÛK˜Ø\İÚYİÏY˜[ÙNÛKœ™XÙZ]™TÚYİÏY˜[ÙNÜØÙ[™K˜Y
+JNÜ™]\›ˆ_CBˆ[˜İ[Ûˆ›Ş
+ËX]K‹ÚYİÏ]YJ^Ü™]\›ˆY\Ú
+™]È‘QK›ŞÙ[ÛY]JË
+KX]K‹ÚYİÊ_CBˆ[˜İ[ÛˆŞ[[™\Š˜‹ÙYËX]KŠ^Ü™]\›ˆY\Ú
+™]È‘QKŞ[[™\‘Ù[ÛY]J˜‹ÙYÊKX]KŠ_CBˆ[˜İ[ÛˆÛÛY\Š‹Ë˜[YOIÙ\›š]\™IËZ[–OKR[™š[š]KX^OR[™š[š]J^ØÛÛœİÏ^ÛZ[–]ËÌ‹X^
+İËÌ‹Z[–‹YÌ‹X^ŠÙÌ‹˜[YKZ[–KX^K[˜Xİ]™N™˜[Ù_NØÛÛY\œËœ\Ú
+ÊNÚ[™^ÛÛY\ŠÊNÜ™]\›ˆßBˆ[˜İ[Ûˆ™X\˜PÛÛY\œÊŠ^Ü™]\›ˆÛÛY\Ù[Ë™Ù]
+Ü]X[Ù^JŠJ_×_Bˆ[˜İ[ÛˆY›Ş
+ËX]K‹ÛÛY]YJ^ØÛÛœİOX›Ş
+ËX]KŠNÚYŠÛÛY
+XÛÛY\Š‹Ë
+NÜ™]\›ˆ_CBˆ[˜İ[Ûˆš[JK‹Ë
+^Ü™]\›ˆ›Ş
+ËPU™\šÕÛÛÙKŠ_CBˆÛÛœİ[\ÚYSX]\šX[[™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒ˜YK[Z\ÜÚ]™NŒ˜ÌË[Z\ÜÚ]™R[[œÚ]NŒ‹ŒÍK›İYÚ™\ÜÎ‹JNÃBˆ[˜İ[ÛˆY[\
+K‹ØØ[OLJ^ØŞ[[™\ŠMKÍKŒLPU˜œ˜\ÜËKŠNÜ™]\›ˆŞ[[™\ŠŒÌ‹ÍL‹[\ÚYSX]\šX[JË‹Š_CBˆ[˜İ[ÛˆYÛÙ›ÛÛSYÚ
+K‹ÛÛÜLLÍØK[[œÚ]OMË\İ[˜ÙOLMJ^ØÛÛœİYÚ[™]È‘QK”Ú[YÚ
+ÛÛÜ‹[[œÚ]K\İ[˜ÙKŠNÛYÚœÜÚ][Û‹œÙ]
+KŠNÛYÚ˜Ø\İÚYİÏY˜[ÙNÜØÙ[™K˜Y
+YÚ
+NÜ™]\›ˆYÚCBˆ[˜İ[ÛˆY\™ÙY›Ş\Ê\ËX]
+^ØÛÛœİÜÚ][ÛœÏV×K›Ü›X[ÏV×K]œÏV×NÙ›ÜŠÛÛœİİËK—HÙˆ\Ê^ØÛÛœİÛİ\˜ÙO[™]È‘QK›ŞÙ[ÛY]JË
+KÓ›Û’[™^Y
+
+NÜÛİ\˜ÙK˜[œÛ]JKŠNÜÜÚ][ÛœËœ\Ú
+‹‹œÛİ\˜ÙK˜]šX]\ËœÜÚ][Û‹˜\œ˜^JNÛ›Ü›X[Ëœ\Ú
+‹‹œÛİ\˜ÙK˜]šX]\Ë››Ü›X[˜\œ˜^JNİ]œËœ\Ú
+‹‹œÛİ\˜ÙK˜]šX]\Ë]‹˜\œ˜^JNÜÛİ\˜ÙK™\ÜÜÙJ
+_XÛÛœİÙ[ÛY]O[™]È‘QKY™™\‘Ù[ÛY]J
+NÙÙ[ÛY]KœÙ]]šX]J	ÜÜÚ][Û‰Ë™]È‘QK‘›Ø]ÌY™™\]šX]JÜÚ][ÛœËÊJNÙÙ[ÛY]KœÙ]]šX]J	Û›Ü›X[	Ë™]È‘QK‘›Ø]ÌY™™\]šX]J›Ü›X[ËÊJNÙÙ[ÛY]KœÙ]]šX]J	İ]‰Ë™]È‘QK‘›Ø]ÌY™™\]šX]J]œËŠJNÙÙ[ÛY]K˜ÛÛ\]P›İ[™[™ÔÜ\™J
+NÜ™]\›ˆ™]È‘QK“Y\Ú
+Ù[ÛY]KX]
+_CBˆ[˜İ[ÛˆYÊ‹ËÛÛÜLMŒYYJ^ØÛÛœİØ[˜\ÏYØİ[Y[˜Ü™X]Q[[Y[
+	ØØ[˜\ÉÊNØØ[˜\ËÚYLMØØ[˜\ËšZYÚLLØÛÛœİÏXØ[˜\Ë™Ù]ÛÛ^
+	Ì™	ÊNØË™š[İ[OIÈÌÌŒLM	ÎØË™š[™Xİ
+M‹L
+NØËœİ›ÚÙTİ[OIÈØŒNM	ÎØË›[™UÚYMNØËœİ›ÚÙT™Xİ
+LLŠNØË›[™UÚYLØËœİ›ÚÙT™Xİ
+NNŒŒLŠNØË™š[İ[OIÈÍØŒØŒÌIÎÙ›ÜŠ]OLÚONÚJÊÊ^ØË˜™YÚ[”]
+
+NØË˜\˜ÊÌ
+ÚJŒL‹ÊÊILÊKÊNØË™š[
+
+_XÛÛœİ[™]È‘QKØ[˜\Õ^\™JØ[˜\ÊNØÛÛœİO[™]È‘QK“Y\Úİ[™\™X]\šX[
+ÛX\›İYÚ™\ÜÎŒKÛÛÜŸJNØÛÛœİ[Y\Ú
+™]È‘QK”[™QÙ[ÛY]JË
+KKŒŒK‹˜[ÙJNÜ‹œ›İ][Û‹KSX]”KÌÜ™]\›ˆŸCBˆ[˜İ[ÛˆØ[˜\Õ^\™J˜]ËÏLÎMMŒ
+^ØÛÛœİÏYØİ[Y[˜Ü™X]Q[[Y[
+	ØØ[˜\ÉÊNØËÚY]ÎØËšZYÚZÙ˜]ÊË™Ù]ÛÛ^
+	Ì™	ÊKË
+NØÛÛœİ[™]È‘QKØ[˜\Õ^\™JÊNİ˜ÛÛÜ”ÜXÙOU‘QK”Ô‘ĞÛÛÜ”ÜXÙNİ˜[š\Ûİ›ÜOMÜ™]\›ˆCBˆÛÛœİ›ÛÚÔ[]\ÏVÖÉÈÌN™˜IË	ÈØÍXMLÉ×KÉÈÍLMŒN	Ë	ÈÙ˜ŒÍ˜É×KÉÈÌNÙ	Ë	ÈØÍNXM‰×KÉÈÍÌŒL‰Ë	ÈÙ˜Y	×KÉÈÌŒY	Ë	ÈØ˜NÍI×WKÛİ™\•^\™PØXÚO[™]ÈX\
+
+NÃBˆ[˜İ[Ûˆ›ÛÚÓX]\šX[
+›ÛÚË›İYÚ™\ÜÏKÌŠ^Ü™]\›ˆ™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜ˜›ÛÚÔ[]\ÖØ›ÛÚËš[™^	X›ÛÚÔ[]\Ë›[™İVÌK›İYÚ™\ÜßJ_CBˆËÈ]Z[YÛİ™\œÈ\™HÙ\\˜]Hš[\ÈÛÈ\›ØXÚ[™ÈÛ™H›ÛÚÈ™]™\ˆ\œÙ\ÈÜˆXÛÙ\ÂˆËÈ[ˆ[\™HÚ\™ˆÛÜšÈ\È[Z]YÈÛ™HÛİ™\ˆ]H[YHÚ[HH™XY\ˆ\Èİ[‚ˆÛÛœİ™X[Ûİ™\•^\™PØXÚO[™]ÈX\
+
+KZ\ÜÚ[™Ô™X[Ûİ™\’YÏ[™]ÈÙ]
+
+KÛİ™\•ÛÜšÔ]Y]YOV×K]Y]YYÛİ™\“Y\Ú\Ï[™]ÈÙ]
+
+K[™[™Ô™X[Ûİ™\’YÏ[™]ÈÙ]
+
+KÛİ™\‘œ\İ[O[™]È‘QK‘œ\İ[J
+KÛİ™\”›Ú™Xİ[Û“X]š^[™]È‘QK“X]š^
+
+NÛ]Ûİ™\’YR[™OL™X[Ûİ™\ÛÛ›Û\[[™X[Ûİ™\’[‘›YÚYIÉËÛİ™\“ØYÙ[™\˜][ÛL\İÛİ™\“[İ[Û]\\™›Ü›X[˜ÙK››İÊ
+K\İÛİ™\•\ØY]LÂˆÛÛœİ™\]Y\İXœ˜\RYOXØ[˜XÚÏOÚ[™İËœ™\]Y\İYPØ[˜XÚÏİÚ[™İËœ™\]Y\İYPØ[˜XÚÊØ[˜XÚËİ[Y[İ]ÌJNœÙ][Y[İ]
+
+
+OO˜Ø[˜XÚÊİ[YT™[XZ[š[™ÎŠ
+OOY[Y[İ]Y_JKİÔİÙ\‘]šXÙOÌLŒMŒ
+NÂˆ[˜İ[Ûˆ^Y\’\Ó[İš[™Ê
+^Ü™]\›ˆ^Y\‹™[
+œ^Y\‹™[
+Ü^Y\‹™[Šœ^Y\‹™[‹ŒLŸ\™›Ü›X[˜ÙK››İÊ
+K[\İÛİ™\“[İ[Û]LBˆ[˜İ[Ûˆ›İPÛİ™\“[İ[ÛŠ
+^Û\İÛİ™\“[İ[Û]\\™›Ü›X[˜ÙK››İÊ
+NØÛİ™\“ØYÙ[™\˜][ÛŠÊÎÚYŠ™X[Ûİ™\ÛÛ›Û\Š^Ü™X[Ûİ™\ÛÛ›Û\‹˜X›Ü
+
+NÜ™X[Ûİ™\ÛÛ›Û\[[ÚYŠ™X[Ûİ™\’[‘›YÚY
+\[™[™Ô™X[Ûİ™\’YË˜Y
+™X[Ûİ™\’[‘›YÚY
+NÜ™X[Ûİ™\’[‘›YÚYIÉß_Bˆ[˜İ[ÛˆØÚY[PÛİ™\•ÛÜšÊ
+^ÚYŠÛİ™\’YR[™_™X[Ûİ™\ÛÛ›Û\ŸXÛİ™\•ÛÜšÔ]Y]YK›[™İ	‰ŠİĞ˜[™ÚY\[™[™Ô™X[Ûİ™\’YËœÚ^™JJ\™]\›ØÛİ™\’YR[™O\™\]Y\İXœ˜\RYJ›ØÙ\ÜĞÛİ™\•ÛÜšÊ_Bˆ[˜İ[Ûˆ]Y]YPÛİ™\“Y\Ú
+›J^ÚYŠX›_]Y]YYÛİ™\“Y\Ú\Ëš\Ê›J_›K\Ù\‘]OËœ™X[Ûİ™\Š\™]\›Ü]Y]YYÛİ™\“Y\Ú\Ë˜Y
+›JNØÛİ™\•ÛÜšÔ]Y]YKœ\Ú
+›JNÜØÚY[PÛİ™\•ÛÜšÊ
+_Bˆ[˜İ[Ûˆ™Yœ™\ÚÛİ™\‘œ\İ[J
+^ØØ[Y\˜K\]SX]š^ÛÜ›
+
+NØÛİ™\”›Ú™Xİ[Û“X]š^›][\SX]šXÙ\ÊØ[Y\˜Kœ›Ú™Xİ[Û“X]š^Ø[Y\˜K›X]š^ÛÜ›[™\œÙJNØÛİ™\‘œ\İ[KœÙ]œ›ÛT›Ú™Xİ[Û“X]š^
+Ûİ™\”›Ú™Xİ[Û“X]š^
+_Bˆ[˜İ[ÛˆÛİ™\“Øš™Xİ\Õš\ÚX›JØš™Xİ
+^ÚYŠØš™XİOO\Ù[XİY
+\™]\›ˆYNÚYŠ[Øš™XİËœ\™[[Øš™Xİš\ÚX›J\™]\›ˆ˜[ÙNÛ]›Ûİ[Øš™XİİÚ[J›Ûİœ\™[
+\›Ûİ\›Ûİœ\™[ÚYŠ›ÛİOO\ØÙ[™J\™]\›ˆ˜[ÙNÛØš™Xİ™Ù]ÛÜ›ÜÚ][ÛŠ\ÛÜ›ÜÚ][ÛŠNÜ™]\›ˆ\ÛÜ›ÜÚ][Û‹™\İ[˜ÙUÔÜ]X\™Y
+Ø[Y\˜KœÜÚ][ÛŠOM	‰˜Ûİ™\‘œ\İ[K˜ÛÛZ[œÔÚ[
+\ÛÜ›ÜÚ][ÛŠ_Bˆ[˜İ[Ûˆ\P›ÛÚĞÛİ™\ŠY^\™K]Z[Y]YJ^Ü™Yœ™\ÚÛİ™\‘œ\İ[J
+NÙ›ÜŠÛÛœİØš™XİÙˆ[\˜XİX›\Ê^ØÛÛœİ›ÛÚÏ[Øš™Xİ\Ù\‘]OË˜›ÛÚÎÚYŠİš[™Ê›ÛÚÏËšY
+HOOTİš[™ÊY
+_[Øš™Xİ›X]\šX[XÛİ™\“Øš™Xİ\Õš\ÚX›JØš™Xİ
+JXÛÛ[YNÛØš™Xİ›X]\šX[›X\]^\™NÚYŠØš™Xİ›X]\šX[˜ÛÛÜŠ[Øš™Xİ›X]\šX[˜ÛÛÜ‹œÙ]^
+™™™™™ŠNÛØš™Xİ›X]\šX[›™YYÕ\]O]YNÛØš™Xİ\Ù\‘]Kœ™X[Ûİ™\Y]Z[Y_Bˆ[˜İ[Ûˆš\ÚX›PÛİ™\“™YYY
+Y
+^Ü™Yœ™\ÚÛİ™\‘œ\İ[J
+NÜ™]\›ˆ[\˜XİX›\ËœÛÛYJØš™XİO”İš[™ÊØš™Xİ\Ù\‘]OË˜›ÛÚÏËšY
+OOOTİš[™ÊY
+I‰˜Ûİ™\“Øš™Xİ\Õš\ÚX›JØš™Xİ
+J_Bˆ[˜İ[Ûˆ^\™Qœ›ÛP›ØŠ›Ø‹ÚYÛ˜[
+^Ü™]\›ˆ™]È›ÛZ\ÙJ
+™\ÛÛ™K™Z™Xİ
+OOØÛÛœİ\›UT“˜Ü™X]SØš™XİT“
+›ØŠK[XYÙO[™]È[XYÙJ
+Kš[š\ÚJ
+OO•T“œ™]›ÚÙSØš™XİT“
+\›
+NÚ[XYÙK›Û›ØYJ
+OOÙš[š\Ú
+
+NÚYŠÚYÛ˜[˜X›ÜY
+^Ü™Z™Xİ
+™]ÈÓQ^Ù\[ÛŠ	ĞX›ÜY	Ë	ĞX›Ü\œ›Ü‰ÊJNÜ™]\›ŸXÛÛœİ^\™O[™]È‘QK•^\™J[XYÙJNİ^\™K˜ÛÛÜ”ÜXÙOU‘QK”Ô‘ĞÛÛÜ”ÜXÙNİ^\™K˜[š\Ûİ›ÜOLİ^\™K›™YYÕ\]O]YNÜ™\ÛÛ™J^\™J_NÚ[XYÙK›Û™\œ›ÜJ
+OOÙš[š\Ú
+
+NÜ™Z™Xİ
+™]È\œ›ÜŠ	ĞÛİ™\ˆ[XYÙHÛİ[›İ™HXÛÙY	ÊJ_NÚ[XYÙKœÜ˜Ï]\›J_Bˆ\Ş[˜È[˜İ[ÛˆØY™X[Ûİ™\ŠY
+^ØÛÛœİÙ[™\˜][ÛXÛİ™\“ØYÙ[™\˜][Û‹ÛÛ›Û\[™]ÈX›ÜÛÛ›Û\Š
+NÜ™X[Ûİ™\ÛÛ›Û\XÛÛ›Û\Ü™X[Ûİ™\’[‘›YÚYZYİ^ØÛÛœİ™\ÜÛœÙOX]ØZ]™]Ú
+Ûİ™\œËØ›ÛÚÜËÉÙ[˜ÛÙUT’PÛÛ\Û™[
+Y
+_KšœØÜÚYÛ˜[˜ÛÛ›Û\‹œÚYÛ˜[ØXÚN‰Ù›Ü˜ÙKXØXÚIßJNÚYŠ\™\ÜÛœÙK›ÚÊ]›İÈ™]È\œ›ÜŠÛİ™\ˆ	ÚYHØ\È›İ›İ[™
+NØÛÛœİ^\™OX]ØZ]^\™Qœ›ÛP›ØŠ]ØZ]™\ÜÛœÙK˜›ØŠ
+KÛÛ›Û\‹œÚYÛ˜[
+NÚYŠÛÛ›Û\‹œÚYÛ˜[˜X›ÜYÙ[™\˜][ÛˆOOXÛİ™\“ØYÙ[™\˜][ÛŸ^Y\’\Ó[İš[™Ê
+J^İ^\™K™\ÜÜÙJ
+NÜ[™[™Ô™X[Ûİ™\’YË˜Y
+Y
+NÜ™]\›Ÿ\™X[Ûİ™\•^\™PØXÚKœÙ]
+Y^\™JNÛ\İÛİ™\•\ØY]\\™›Ü›X[˜ÙK››İÊ
+NØ\P›ÛÚĞÛİ™\ŠY^\™J_XØ]Ú
+\œ›ÜŠ^ÚYŠ\œ›Ü‹›˜[YOOOIĞX›Ü\œ›Ü‰Ê\[™[™Ô™X[Ûİ™\’YË˜Y
+Y
+NÙ[Ù^ÛZ\ÜÚ[™Ô™X[Ûİ™\’YË˜Y
+Y
+NØÛÛœİ›ÛÚÏX›ÛÚÜË™š[™
+][OO”İš[™Ê][KšY
+OOOTİš[™ÊY
+JNÚYŠ›ÛÚÊ^Û\İÛİ™\•\ØY]\\™›Ü›X[˜ÙK››İÊ
+NØ\P›ÛÚĞÛİ™\ŠYÛİ™\•^\™J›ÛÚÊK˜[ÙJ___Yš[˜[^ÚYŠ™X[Ûİ™\ÛÛ›Û\OOXÛÛ›Û\Š\™X[Ûİ™\ÛÛ›Û\[[ÚYŠ™X[Ûİ™\’[‘›YÚYOOZY
+\™X[Ûİ™\’[‘›YÚYIÉÎÜØÚY[PÛİ™\•ÛÜšÊ
+__Bˆ[˜İ[Ûˆ›ØÙ\ÜĞÛİ™\•ÛÜšÊXY[™J^ØÛİ™\’YR[™OLÚYŠ^Y\’\Ó[İš[™Ê
+_YØ[YPXİ]™J
+I‰ˆ\Ù[XİY
+^ÜØÚY[PÛİ™\•ÛÜšÊ
+NÜ™]\›ŸXÛÛœİ›OXÛİ™\•ÛÜšÔ]Y]YKœÚY
+
+NÚYŠ›J^Ü]Y]YYÛİ™\“Y\Ú\Ë™[]J›JNØÛÛœİ]OX›K\Ù\‘]NÜ™Yœ™\ÚÛİ™\‘œ\İ[J
+NÚYŠ]OË\OOOIØ›ÛÚÉÉ‰˜›Kœ\™[	‰˜Ûİ™\“Øš™Xİ\Õš\ÚX›J›JJ^ÚYŠİĞ˜[™ÚY	‰ˆY]K›ØYY
+^Ù]K›ØYY]YNØ›K›X]\šX[›X\XÛİ™\•^\™J]K˜›ÛÚÊNÚYŠ›K›X]\šX[˜ÛÛÜŠX›K›X]\šX[˜ÛÛÜ‹œÙ]^
+™™™™™ŠNØ›K›X]\šX[›™YYÕ\]O]YNÛ\İÛİ™\•\ØY]\\™›Ü›X[˜ÙK››İÊ
+_Y[ÙH™\]Y\İ™X[Ûİ™\Š]K˜›ÛÚÊ_Y[ÙHYŠ]JY]K˜Ûİ™\”™\]Y\İYY˜[Ù_Y[ÙHYŠ[İĞ˜[™ÚY	‰œ[™[™Ô™X[Ûİ™\’YËœÚ^™I‰œ\™›Ü›X[˜ÙK››İÊ
+K[\İÛİ™\•\ØY]ML
+^ØÛÛœİY\[™[™Ô™X[Ûİ™\’YË˜[Y\Ê
+K›™^
+
+K˜[YNÜ[™[™Ô™X[Ûİ™\’YË™[]JY
+NÚYŠš\ÚX›PÛİ™\“™YYY
+Y
+J^ØÛÛœİØXÚY\™X[Ûİ™\•^\™PØXÚK™Ù]
+Y
+NÚYŠØXÚY
+X\P›ÛÚĞÛİ™\ŠYØXÚY
+NÙ[ÙHØY™X[Ûİ™\ŠY
+__ZYŠÛİ™\•ÛÜšÔ]Y]YK›[™İ[İĞ˜[™ÚY	‰œ[™[™Ô™X[Ûİ™\’YËœÚ^™J\ØÚY[PÛİ™\•ÛÜšÊ
+_Bˆ[˜İ[Ûˆ™\]Y\İ™X[Ûİ™\Š›ÛÚÊ^ØÛÛœİYTİš[™Ê›ÛÚÏËšY	ÉÊNÚYŠİĞ˜[™ÚYZYZ\ÜÚ[™Ô™X[Ûİ™\’YËš\ÊY
+J\™]\›ˆ›ÛZ\ÙKœ™\ÛÛ™J
+NØÛÛœİØXÚY\™X[Ûİ™\•^\™PØXÚK™Ù]
+Y
+NÚYŠØXÚY
+^Ø\P›ÛÚĞÛİ™\ŠYØXÚY
+NÜ™]\›ˆ›ÛZ\ÙKœ™\ÛÛ™JØXÚY
+_ZYŠYOO\™X[Ûİ™\’[‘›YÚY
+\[™[™Ô™X[Ûİ™\’YË˜Y
+Y
+NÜØÚY[PÛİ™\•ÛÜšÊ
+NÜ™]\›ˆ›ÛZ\ÙKœ™\ÛÛ™J
+_B™[˜İ[ÛˆÛİ™\•^\™J›ÛÚÊ^ÚYŠÛİ™\•^\™PØXÚKš\Ê›ÛÚËšY
+J\™]\›ˆÛİ™\•^\™PØXÚK™Ù]
+›ÛÚËšY
+NØÛÛœİ^\™OXØ[˜\Õ^\™J
+ËË
+OOØÛÛœİ\ÚYÛ]Ú[™İËUSQUSWĞÓÕ‘T—ÑTÒQÓ”ÏË–Ø›ÛÚËšYKY\ÚYÛŸ›ÛÚÔ[]\ÖØ›ÛÚËš[™^	X›ÛÚÔ[]\Ë›[™İK[\š[J›ÛÚËœÛİ\˜Ù_	ÕHUSQUSIÊKÕ\\Ø\ÙJ
+KœÛXÙJ
+NØË™š[İ[O\ÌNØË™š[™Xİ
+Ë
+NØËœİ›ÚÙTİ[O\ÌWNØË›[™UÚYNNØËœİ›ÚÙT™Xİ
+ŒŒËMM
+NØË›[™UÚYLØËœİ›ÚÙT™Xİ
+ÌKÌKËMŒ‹MŒŠNØË™š[İ[O\ÌWNØË^[YÛIØÙ[\‰ÎØË™›ÛIÌÙ[Ü™ÚXIÎØË™š[^
+[\š[ËÌ‹ŠNØË˜™YÚ[”]
+
+NØË›[İ™UÊÍKL
+NØË›[™UÊËMÍKL
+NØËœİ›ÚÙJ
+NØË™›ÛY\ÚYÛÊ›ÛÚË]K›[™İŒLÉØ›ÛŒœÙ[Ü™ÚXIÎ˜›ÛÚË]K›[™İOÉØ›ÛœÙ[Ü™ÚXIÎ‰Ø›ÛÌœÙ[Ü™ÚXIÊN‰Ø›ÛÍÜÙ[Ü™ÚXIÎİÜ˜\^
+Ë›ÛÚË]KËÌ‹\ÚYÛÌLÍNŒNMKËNL‹\ÚYÛÌÍÊNÚYŠ\ÚYÛŠ]Ú[™İË™˜]Ğ][˜Y][PÛİ™\‘[X›[JËË\ÚYÛ–Ì—JNØË™›ÛIÚ][XÈ\Ù[Ü™ÚXIÎØË™š[^
+›ÛÚË˜]]Ü‹ËÌ‹\ÚYÛÚMLšNLŠNØË™›ÛIÌÌœÙ[Ü™ÚXIÎÚYŠY\ÚYÛŠXË™š[^
+	ø§i‰ËËÌ‹MŠ_KÎMŒ
+NØÛİ™\•^\™PØXÚKœÙ]
+›ÛÚËšY^\™JNÜ™]\›ˆ^\™_Bˆ[˜İ[ÛˆÜ˜\^
+Ë^KX^[™J^ØÛÛœİÛÜ™Ï]^œÜ]
+	È	ÊNÛ]ÏIÉË›İÜÏV×NÙ›ÜŠÛÛœİÛÜ™ÙˆÛÜ™Ê^ØÛÛœİ\ÏØ	ÜßH	İÛÜ™XÛÜ™ÚYŠË›YX\İ\™U^
+ŠKÚY›X^	‰œÊ^Ü›İÜËœ\Ú
+ÊNÜÏ]ÛÜ™Y[ÙHÏ[Ÿ\›İÜËœ\Ú
+ÊNÜ›İÜË™›Ü‘XXÚ
+
+‹JOO˜Ë™š[^
+‹JÚJ›[™JJ_CBƒBˆÛÛœİÜ˜Z[XØ[˜\Õ^\™J
+ËË
+OOØË™š[İ[OIÈØYÍ‰ÎØË™š[™Xİ
+Ë
+NÙ›ÜŠ]OLÚONÚJÊÊ^ØÛÛœİOSX]œ˜[™ÛJ
+JšØËœİ›ÚÙTİ[OX™Ø˜JKŒ‹K	ÓX]œ˜[™ÛJ
+J‹ŒMŸJXØË˜™YÚ[”]
+
+NØË›[İ™UÊJNØË˜™^šY\İ\™UÊÊ‹ŒËJÓX]œ˜[™ÛJ
+JÊ‹‹KMËJÌŠNØËœİ›ÚÙJ
+__KM‹MŠNÙÜ˜Z[‹Ü˜\ÏYÜ˜Z[‹Ü˜\U‘QK”™\X]Ü˜\[™ÎÙÜ˜Z[‹œ™\X]œÙ]
+‹
+NÙ›ÜŠÛÛœİHÙˆÓPUÛÛÙPUÛÛÙ‹PU™\šÕÛÛÙJ^ÛK›X\YÜ˜Z[ÛK˜[\X\YÜ˜Z[ÛK˜[\ØØ[OKŒNÛK›™YYÕ\]O]Y_CBˆËÈ\˜Ú]Xİ\™CBˆY›Ş
+ÎKŒ‹PUÛÛÙKŒ˜[ÙJNÜYÊLKLKŒ
+NÜYÊLMKLËMJNÜYÊLËL‹MMKØŒXŒŒŠNÜYÊËL‹MMKØŒXŒŒŠNÃBˆY›Ş
+ÎL‹PUœİÛ™KKLÌJNØY›Ş
+ÌL‹PUœİÛ™KLËKÌJNØY›Ş
+KKL‹PUœİÛ™KNŒKKÌJNÃBˆY›Ş
+NKPUÛÛÙLKŒ‹L‹˜[ÙJNØY›Ş
+NKPUÛÛÙKŒ‹L‹˜[ÙJNØY›Ş
+KPUœİÛ™KLÍËLL
+NØY›Ş
+KLPUœİÛ™KLÍËJNØY›Ş
+KKPUœİÛ™KÍËNKJNØY›Ş
+KKPUœİÛ™KÍËKJNØY›Ş
+NKPUœİÛ™KLLM
+NØY›Ş
+NKPUœİÛ™KLL
+NØY›Ş
+NKPUœİÛ™KLM
+NØY›Ş
+NKPUœİÛ™KL
+NÃBˆËÈÜ[š[™ÜÈ™]ÙY[ˆÚ[™ÜÎÈHX\İ\›ˆ\\ˆØ[X]™\ÈHÛÛ˜ÙX[YÜ˜Z]\ÜØYÙCBˆ›ÜŠÛÛœİÚYHÙˆËLKWJ^ØÛÛœİ\ÚYJŒNNØY›Ş
+KLNPUœİÛ™KKLŒŠNÚYŠÚYO
+XY›Ş
+KLNPUœİÛ™KKŒŠNÙ[Ù^ØY›Ş
+KLPUœİÛ™KKMJNØY›Ş
+KLPUœİÛ™KKÊ_]š[JËËK
+Nİš[JËËMËËJNİš[JËËËËJNØY›Ş
+K‹‹PUœİÛ™KK˜[ÙJNØY›Ş
+KLËPUœİÛ™KKLKJ_CBˆËÈÛÛ\]H›ÛÙœÈ[™[[ÈÛÜÙH]™\HÙX[HÚ[H™\Ù\š[™È[[[Û˜[[˜[˜Ù\ÃBˆÛÛœİ›ÛÙ“X][™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒÎLÍ™K›İYÚ™\ÜÎ‹MŸJNØ›Ş
+ÎŒÎŒ‹›ÛÙ“X]KŒ‹˜[ÙJNØ›Ş
+NŒÎ›ÛÙ“X]LŒNL‹˜[ÙJNØ›Ş
+NŒÎ›ÛÙ“X]ŒNL‹˜[ÙJNØ›Ş
+ŒŒÎŒ›ÛÙ“X]ËŒNL‹˜[ÙJNØ›Ş
+MŒÎN›ÛÙ“X]MKËŒNLË˜[ÙJNØ›Ş
+LŒÎ›ÛÙ“X]MMËŒNLË˜[ÙJNØ›Ş
+LŒÎL›ÛÙ“X]MË‹ŒNLË˜[ÙJNØ›Ş
+KŒÎ›ÛÙ“X]ŒËKL‹ŒNŒ˜[ÙJNÃBˆ›Ş
+KŒKËËKPUœİÛ™KLKL‹KÍKÌK˜[ÙJNØ›Ş
+KŒKËËKPUœİÛ™KM‹NKÍKÌK˜[ÙJNØ›Ş
+KËËKPUœİÛ™KMŒKKŒKÌK˜[ÙJNØÛÛœİ›ÛÙ”İZ\•[™\Ø[X›Ş
+KK‹MKÌ‹PUœİÛ™KMŒKËŒÍKÌKŒ˜[ÙJNÙ›ÜŠ]OLÚOMÚJÊÊ^ØÛÛœİLËŒMJÚJ‹Ì‹OMKŒ
+ÚJ‹ŒÍØ›Ş
+KŒKŒŒ‹ÎPUÛÛÙMŒKK‹˜[ÙJ_X›Ş
+MKK‹PUœİÛ™KÍËËŒL‹˜[ÙJNØ›Ş
+MKŒË‹PU™\šÕÛÛÙLÍËË‹LË˜[ÙJNÙ›ÜŠÛÛœİÙˆËLÍËLNKNKÍËM×JY›ÜŠÛÛœİˆÙˆËLMLJ]š[JŒK‹ËŒËÊNÂˆÛÛœİ\œ]Y]XØ[˜\Õ^\™J
+ËË
+OOÙ›ÜŠ]›İÏLÜ›İÏÜ›İÊÊÊY›ÜŠ]ÛÛKLNØÛÛØÛÛ
+ÊÊ^ØÛÛœİXÛÛ
+ŒL
+Ê›İÉLŠJO\›İÊŒÌØË™š[İ[OVÉÈÍNØL	Ë	ÈÍŒÌ˜‰Ë	ÈÍÌMLÍIË	ÈÍLÍLŒ	×VÊ›İÊŒÊØÛÛ
+Í
+IMNØË™š[™Xİ
+KLËÌJNÙ›ÜŠ]ÏLÚÏLÚÊÊÊ^ØËœİ›ÚÙTİ[OIÜ™Ø˜JŒKËŒLŠIÎØË˜™YÚ[”]
+
+NØË›[İ™UÊJÚÊŒ‹JNØË›[™UÊ
+ÌLËJÚÊŒ‹JÌJNØËœİ›ÚÙJ
+___KLL‹MŠNÜ\œ]Y]Ü˜\Ï\\œ]Y]Ü˜\U‘QK”™\X]Ü˜\[™ÎÜ\œ]Y]œ™\X]œÙ]
+‹LŠNØÛÛœİ\œ]Y]›ÛÜ[Y\Ú
+™]È‘QK”[™QÙ[ÛY]JÍËŒK
+K™]È‘QK“Y\Úİ[™\™X]\šX[
+ÛX\œ\œ]Y]›İYÚ™\ÜÎ‹Í‹[\X\œ\œ]Y][\ØØ[N‹ŒNJKŒK˜[ÙJNÜ\œ]Y]›ÛÜ‹œ›İ][Û‹KSX]”KÌÃBˆËÈÙZ[[™È™X[\È[™ÛÛ[[œÃBˆ›ÜŠ]KLÎŞLÎŞŠÏNJ]š[JKŒË‹ÎŒÍKŠNÙ›ÜŠÛÛœİÙˆËLMËLLKLKM×JY›ÜŠÛÛœİˆÙˆËLKMKMK×J^ØŞ[[™\ŠKŒ‹LPUœİÛ™KŠNØŞ[[™\ŠËËŒKLPU˜œ˜\ÜËŒKŠNØŞ[[™\ŠŒËŒÌ‹LPU˜œ˜\ÜËŠ_CBˆËÈÚ[™İÜÈÚ]˜Z[H^\š[ÜƒBˆÛÛœİÚ[™İÓY\Ú\ÏV×NÙ›ÜŠÛÛœİÙˆËLL‹ML—J^ØÛÛœİœ˜[YOX›Ş
+KKŒNPU™Û\ÜËKŒ‹LÌŒ‹˜[ÙJNİÚ[™İÓY\Ú\Ëœ\Ú
+œ˜[YJNİš[JKŒ‹LÌKŒM‹Œ
+Nİš[JKŒ‹LÌKKŒ‹ŒMŒ
+Nİš[J‹Œ‹LÌKKŒ‹ŒÊNİš[JŒ‹LÌKKŒ‹ŒÊ_CBˆËÈ˜[ÛÛH[™İZ\˜Ø\ÙCBˆY›Ş
+ËŒÎMPUÛÛÙMKKŒ‹˜[ÙJNØÛÛY\ŠLKKŒËKLË	Ø˜[ÛÛH˜Z[	Ë
+NÙ›ÜŠ]LMŞLŞŠÏLŠ^İš[JLKK‹‹ŒŒ‹KŒŒŠNİš[JLKK‹K‹ŒKŒ‹Š_CBˆÛÛœİİZ\“X\ÛÛœO[™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒMÌÙ›İYÚ™\ÜÎ‹NX\›X\ÛÛœU^[\X\›X\ÛÛœU^[\ØØ[N‹Œ_JNÂˆ›ÜŠ]OLÚOLÚJÊÊ^ØÛÛœİOKŒŒŠÚJ‹MÊÚJ‹ÍKš[ÜKŠÚJ‹Ø›Ş
+‹‹PUÛÛÙMKKŠNØ›Ş
+KMKš[ÜİZ\“X\ÛÛœKMKš[ÜÌ‹‹˜[ÙJ_Bˆ›ÜŠ]OLÚOLNÚJÊÊ^İš[JLKJÚJ‹ÊÚJ‹ÍKŒ‹KŒ‹ŒŠNİš[JNŒ‹JÚJ‹ÊÚJ‹ÍKŒ‹KŒ‹ŒŠ_CBˆËÈÚ[™[Y\ƒBˆŞ[[™\ŠŒ‹Œ‹ËPU˜œ˜\ÜËŠNØÛÛœİš[™Ï[Y\Ú
+™]È‘QK•Ü\ÑÙ[ÛY]J‹ŒKŒK
+KPU˜œ˜\ÜË‹MKŠNÜš[™Ëœ›İ][Û‹SX]”KÌÙ›ÜŠ]OLÚOÚJÊÊ^ØÛÛœİOZKÎ
+“X]”JŒ‹SX]˜ÛÜÊJJŒ‹ŒKLŠÓX]œÚ[ŠJJŒ‹ŒNØY[\
+‹Ë‹ŒÍJ_CBˆËÈ^Y\™YÙÜË[X™\œÈ[™˜[œÛXÙ[›[Y\ÈÚ]™H›İX\È\[œİXYÙˆH›]Ü˜[™ÙH[™[ˆÛÛœİ™X[\İXÑ›[Y\ÏV×NÙ[˜İ[ÛˆÜ™X]RX\š\™JK‹ØØ[OLK\™[\ØÙ[™J^ØÛÛœİÜ›İ\[™]È‘QK‘Ü›İ\
+
+NÙÜ›İ\œÜÚ][Û‹œÙ]
+KŠNÙÜ›İ\œØØ[KœÙ]ØØ[\ŠØØ[JNÜ\™[˜Y
+Ü›İ\
+NØÛÛœİ[X™\“X][™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒLLÌ[Z\ÜÚ]™NŒ™ŒØŒ[Z\ÜÚ]™R[[œÚ]NŒ‹Ë›İYÚ™\ÜÎ‹JK›[YSX]ÏVÛ™]È‘QK“Y\Ú˜\ÚXÓX]\šX[
+ØÛÛÜŒ™˜YLÍK˜[œÜ\™[YKÜXÚ]N‹‹›[™[™Î•‘QKY]]™P›[™[™Ë\Üš]N™˜[Ù_JK™]È‘QK“Y\Ú˜\ÚXÓX]\šX[
+ØÛÛÜŒ™LÌ˜[œÜ\™[YKÜXÚ]N‹Ë›[™[™Î•‘QKY]]™P›[™[™Ë\Üš]N™˜[Ù_JWNÙ›ÜŠÛÛœİˆÙˆËKŒNŒNJ^ØÛÛœİÙÏ[™]È‘QK“Y\Ú
+™]È‘QKŞ[[™\‘Ù[ÛY]JŒLËŒMËKÍKL
+KPU™\šÕÛÛÙ
+NÛÙËœ›İ][Û‹SX]”KÌÛÙËœ›İ][Û‹OYËŒN‹KŒNÛÙËœÜÚ][Û‹œÙ]
+ŒL‹ŠNÙÜ›İ\˜Y
+ÙÊ_XÛÛœİ[X™\[™]È‘QK“Y\Ú
+™]È‘QK”Ü\™QÙ[ÛY]JL‹M
+K[X™\“X]
+NÙ[X™\‹œØØ[KœÙ]
+KŒMJNÙ[X™\‹œÜÚ][Û‹OKŒNÙÜ›İ\˜Y
+[X™\ŠNÙ›ÜŠ]OLÚOÎÚJÊÊ^ØÛÛœİ›[YO[™]È‘QK“Y\Ú
+™]È‘QKÛÛ™QÙ[ÛY]JŒN
+ÊILÊJ‹ŒKÎ
+ÊILŠJ‹ŒÍKLKYJK›[YSX]ÖÚIL—JNÙ›[YKœÜÚ][Û‹œÙ]
+
+KLÊJ‹ŒJÊILŠJ‹Œ
+ILËLJJ‹Œ
+NÙ›[YKœ›İ][Û‹JKLÊJ‹ŒÙ›[YK\Ù\‘]Kœ\ÙOZJ‹ÎÙÜ›İ\˜Y
+›[YJNÜ™X[\İXÑ›[Y\Ëœ\Ú
+›[YJ_XÛÛœİYÚ[™]È‘QK”Ú[YÚ
+™ÍÌŒŠœØØ[KL
+œØØ[KŠNÛYÚœÜÚ][Û‹œÙ]
+KKKŠNÛYÚ˜Ø\İÚYİÏY˜[ÙNÙÜ›İ\˜Y
+YÚ
+NÜ™]\›ˆÙÜ›İ\[X™\‹YÚ_BˆËÈš\™\XÙBˆY›Ş
+KKŒ‹PUœİÛ™KLLË‹KL
+NØ›Ş
+ËŒKKŒKPU˜›XÚËLLËKKLŒJNİš[JLLËKŒKLŒKKKKJNØÛÛœİXZ[’X\XÜ™X]RX\š\™JLLËŒNLËŒÎKŒJKš\™O[XZ[’X\™[X™\‹š\™SYÚ[XZ[’X\›YÚØÛÛY\ŠLLËLŠNÂˆËÈH[˜[˜ÙHÛØÚË[İ[YX›İ™HHÛÜØ^HÛˆHÛİ]Ø[È]È[™ÈÙY\HXœ˜\IÜÈİÛˆ[YKƒBˆÛÛœİÛØÚÑ˜XÙU^XØ[˜\Õ^\™J
+ËË
+OOØË™š[İ[OIÈÌXÌMIÎØË˜™YÚ[”]
+
+NØË˜\˜ÊËÌ‹Ì‹ËÌ‹M‹X]”JŒŠNØË™š[
+
+NØËœİ›ÚÙTİ[OIÈØNL‰ÎØË›[™UÚYLLØË˜™YÚ[”]
+
+NØË˜\˜ÊËÌ‹Ì‹ËÌ‹LLKX]”JŒŠNØËœİ›ÚÙJ
+NØË™š[İ[OIÈÙ™	ÎÙ›ÜŠ]OLÚOLÚJÊÊ^ØÛÛœİOZKÌLŠ“X]”JŒ‹ZILÏOOLİËÌ‹LÍËÌ‹L˜YZILÏOOLÍNŒË]ËÌŠÓX]œÚ[ŠJJœ‹OZÌ‹SX]˜ÛÜÊJJœØË˜™YÚ[”]
+
+NØË˜\˜ÊK˜YX]”JŒŠNØË™š[
+
+__KŒŒ
+NÃBˆÛÛœİÛØÚÑÜ›İ\[™]È‘QK‘Ü›İ\
+
+NØÛØÚÑÜ›İ\œÜÚ][Û‹œÙ]
+ËŒKÌMJNØÛØÚÑÜ›İ\œ›İ][Û‹OSX]”NÜØÙ[™K˜Y
+ÛØÚÑÜ›İ\
+NÃBˆÛÛœİÛØÚÑ˜XÙO[™]È‘QK“Y\Ú
+™]È‘QKÚ\˜ÛQÙ[ÛY]JKŒKÌŠK™]È‘QK“Y\Úİ[™\™X]\šX[
+ÛX\˜ÛØÚÑ˜XÙU^›İYÚ™\ÜÎ‹Í_JJNØÛØÚÑÜ›İ\˜Y
+ÛØÚÑ˜XÙJNÃBˆÛÛœİÛØÚÔš[O[™]È‘QK“Y\Ú
+™]È‘QK•Ü\ÑÙ[ÛY]JKŒŒ
+KPU˜œ˜\ÜÊNØÛØÚÔš[KœÜÚ][Û‹KŒNØÛØÚÑÜ›İ\˜Y
+ÛØÚÔš[JNÃBˆ[˜İ[ÛˆÛØÚÒ[™
+[™İÚYX]Š^ØÛÛœİ]›İ[™]È‘QK‘Ü›İ\
+
+NÜ]›İœÜÚ][Û‹^ØÛÛœİ[™[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JÚY[™İŒÊKX]
+NÚ[™œÜÚ][Û‹O[[™İÌÜ]›İ˜Y
+[™
+NØÛØÚÑÜ›İ\˜Y
+]›İ
+NÜ™]\›ˆ]›İCBˆÛÛœİÛØÚÒİ\’[™XÛØÚÒ[™
+‹ŒKPU˜›XÚËŒJKÛØÚÓZ[]R[™XÛØÚÒ[™
+ŒMKPU™\šÕÛÛÙŒ
+NÃBˆÛÛœİÛØÚÔ[[™]È‘QK“Y\Ú
+™]È‘QKŞ[[™\‘Ù[ÛY]JŒKŒKŒL‹L
+KPU˜œ˜\ÜÊNØÛØÚÔ[‹œ›İ][Û‹SX]”KÌØÛØÚÔ[‹œÜÚ][Û‹KŒNØÛØÚÑÜ›İ\˜Y
+ÛØÚÔ[ŠNÃBˆÛØÚÑ˜XÙK\Ù\‘]O^İ\N‰ÛØš™Xİ	Ë]N‰ÕH[˜[˜ÙHÛØÚÉË]]Ü‰Ò]È[™È]™H™]™\ˆÛ˜ÙHYÜ™YYÚ]HØ]ÚØ\œšYY[ˆœ›ÛHİ]ÚYK‰ËXİ[Û‰ÑVSRS‘IßNÚ[\˜XİX›\Ëœ\Ú
+ÛØÚÑ˜XÙJNÃBˆËÈ™XY[™ÈX›\ËXKÜXİXÛ\ÈİYÙÙ\İYBˆ[˜İ[ÛˆX›JŠ^ØY›Ş
+KŒÍK‹KPUÛÛÙKKŠNÙ›ÜŠÛÛœİÙˆËL‹—JY›ÜŠÛÛœİˆÙˆËKKWJXY›Ş
+ŒKKŒKPU™\šÕÛÛÙ
+ÙËŠÙŠNØY[\
+KÍK‹JNØÛÛY\Š‹K‹J_CBˆX›J
+NİX›JLLÊNİX›JLÊNÂˆÛÛœİİ\Ü›Ş[™]È‘QK‘Ü›İ\
+
+NÜİ\Ü›ŞœÜÚ][Û‹œÙ]
+M‹Œ‹Œ‹ŒÊNÜİ\Ü›Şœ›İ][Û‹OKŒLÜØÙ[™K˜Y
+İ\Ü›Ş
+NØÛÛœİİ\Ü]O^İ\N‰Üİ\ÜX›Ş	Ë]N‰ÓYÚ[›İ\ˆ[\	Ë]]Ü‰ÕHXœ˜\H™\İÜ˜][Ûˆ[™8 %]™\HÛÛšX][ÛˆÙY\ÈH[\\›š[™Ë‰ËXİ[Û‰ÒS”ÔPÕ•S‘	ßKİ\ÜY\İ[[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JKKKŒKKŒN
+KPU™\šÕÛÛÙ
+NÜİ\ÜY\İ[œÜÚ][Û‹OKLÜİ\Ü›Ş˜Y
+İ\ÜY\İ[
+NØÛÛœİİ\ÜÚ\İ[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JKŒ‹KKŒLŠKPUÛÛÙ
+NÜİ\ÜÚ\İœÜÚ][Û‹OLKÜİ\ÜÚ\İ˜Ø\İÚYİÏ]YNÜİ\ÜÚ\İ\Ù\‘]O\İ\Ü]NÜİ\Ü›Ş˜Y
+İ\ÜÚ\İ
+NÚ[\˜XİX›\Ëœ\Ú
+İ\ÜÚ\İ
+NØÛÛœİİ\ÜY[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JKÎŒM‹KŒŠKPU™\šÕÛÛÙ
+NÜİ\ÜYœÜÚ][Û‹OLKMÜİ\Ü›Ş˜Y
+İ\ÜY
+NØÛÛœİİ\ÜÛİ[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]J‹ŒÍKŒLÊKPU˜œ˜\ÜÊNÜİ\ÜÛİœÜÚ][Û‹œÙ]
+‹ŒKŒ
+NÜİ\ÜÛİœ›İ][Û‹KKŒNÜİ\Ü›Ş˜Y
+İ\ÜÛİ
+NØÛÛœİ[™^XØ[˜\Õ^\™J
+ËË
+OOØË™š[İ[OIÈÌŒMLÉÎØË™š[™Xİ
+Ë
+NØËœİ›ÚÙTİ[OIÈØÍXMLIÎØË›[™UÚYLLØËœİ›ÚÙT™Xİ
+LLËLŒLŒ
+NØË™š[İ[OIÈÙXYL	ÎØË^[YÛIØÙ[\‰ÎØË™›ÛIØ›ÛÍ\Ù[Ü™ÚXIÎØË™š[^
+	ÓQÒS“ÕTˆST	ËËÌ‹N
+NØË™›ÛIÚ][XÈÙ[Ü™ÚXIÎØË™š[^
+	ÓP”T–H‘TÕÔUSÓˆ•S‘	ËËÌ‹LJ_KÌM
+Kİ\Ü\]YO[™]È‘QK“Y\Ú
+™]È‘QK”[™QÙ[ÛY]JKL‹JK™]È‘QK“Y\Úİ[™\™X]\šX[
+ÛX\™[™^[Z\ÜÚ]™SX\™[™^[Z\ÜÚ]™NŒÎŒL‹[Z\ÜÚ]™R[[œÚ]N‹K›İYÚ™\ÜÎ‹ÌŸJJNÜİ\Ü\]YKœÜÚ][Û‹œÙ]
+K‹MÍJNÜİ\Ü\]YK\Ù\‘]O\İ\Ü]NÜİ\Ü›Ş˜Y
+İ\Ü\]YJNÚ[\˜XİX›\Ëœ\Ú
+İ\Ü\]YJNÙ›ÜŠÛÛœİÙˆËKË×J^ØÛÛœİš[šX[[™]È‘QK“Y\Ú
+™]È‘QK”Ü\™QÙ[ÛY]JŒKL
+KPU™ÛÛ
+NÙš[šX[œÜÚ][Û‹œÙ]
+‹Œ
+NÜİ\Ü›Ş˜Y
+š[šX[
+_Y›ÜŠ]OLÚONÚJÊÊ^ØÛÛœİÛÚ[[™]È‘QK“Y\Ú
+™]È‘QKŞ[[™\‘Ù[ÛY]JŒMKŒMKŒKMŠKPU™ÛÛ
+NØÛÚ[‹œ›İ][Û‹SX]”KÌØÛÚ[‹œÜÚ][Û‹œÙ]
+KŠÊIMJJ‹ŒŒKLÊÓX]™›ÛÜŠKÍJJ‹ŒN
+NÜİ\Ü›Ş˜Y
+ÛÚ[Š_XÛÛœİİ\ÜÛİÏ[™]È‘QK”Ú[YÚ
+™˜™Ë‹KËŠNÜİ\ÜÛİËœÜÚ][Û‹œÙ]
+‹ŒËŒÍJNÜİ\Ü›Ş˜Y
+İ\ÜÛİÊNØÛÛY\ŠM‹Œ‹Œ‹ŒËKKŒÊNÂˆİ\Ü›Şœ›İ][Û‹JÏSX]”NÂ˜›Ş
+KŒL‹KPUœ\\‹LËKÌ‹LË˜[ÙJNØŞ[[™\ŠŒŒ‹ŒNŒÍKM‹™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒÍMÍ›İYÚ™\ÜÎ‹JKLKKÎLÊNÂˆÛÛœİÛÛXİ[Û‘\Ü^O[™]È‘QK‘Ü›İ\
+
+NØÛÛXİ[Û‘\Ü^KœÜÚ][Û‹œÙ]
+KÌ‹ËÊNÜØÙ[™K˜Y
+ÛÛXİ[Û‘\Ü^JNØÛÛœİ\ÚÕÚÙ[[™]È‘QK“Y\Ú
+™]È‘QKŞ[[™\‘Ù[ÛY]JŒNŒNŒ‹N
+KPU™ÛÛ
+NÙ\ÚÕÚÙ[‹œ›İ][Û‹SX]”KÌÙ\ÚÕÚÙ[‹œÜÚ][Û‹KKMNØÛÛXİ[Û‘\Ü^K˜Y
+\ÚÕÚÙ[ŠNØÛÛœİ\ÚÓX\[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JÌ‹ŒË
+KPUœ\\ŠNÙ\ÚÓX\œ›İ][Û‹OKŒNØÛÛXİ[Û‘\Ü^K˜Y
+\ÚÓX\
+NØÛÛœİ\ÚÒÙ^O[™]È‘QK‘Ü›İ\
+
+KÙ^Tš[™Ï[™]È‘QK“Y\Ú
+™]È‘QK•Ü\ÑÙ[ÛY]JŒMKŒÍK‹MŠKPU˜œ˜\ÜÊKÙ^Tİ[O[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]J‹ŒMKŒMJKPU˜œ˜\ÜÊNÚÙ^Tİ[KœÜÚ][Û‹KŒÎÙ\ÚÒÙ^K˜Y
+Ù^Tš[™ËÙ^Tİ[JNÙ\ÚÒÙ^KœÜÚ][Û‹KNÙ\ÚÒÙ^Kœ›İ][Û‹SX]”KÌØÛÛXİ[Û‘\Ü^K˜Y
+\ÚÒÙ^JNØÛÛœİY[[ÜSYÚ[™]È‘QK”Ú[YÚ
+MMXËLËŠNÛY[[ÜSYÚœÜÚ][Û‹œÙ]
+K
+NÜØÙ[™K˜Y
+Y[[ÜSYÚ
+NÃBˆ[˜İ[Ûˆ™YÚ\İ\”ÙX]
+\ËÜ›İ\^YKX]ËÜ[ÛœÏ^ßJ^ØÛÛœİ]OSØš™Xİ˜\ÜÚYÛŠİ\N‰ÜÙX]	Ë]N‰ĞHXÙHÈ™XY	Ë]]Ü‰ÔÚ]İÛˆÚ]H˜[™ÛH›ÛÚÉËXİ[Û‰ÔÒU	ˆ‘PQ	ËÜ›İ\^YKX]ËØ]YÛÜšY\Î–×_KÜ[ÛœÊNÙ›ÜŠÛÛœİ\Ùˆ\Ê^Ü\\Ù\‘]OY]NÚ[\˜XİX›\Ëœ\Ú
+\
+_ZYŠ]K\OOOIÜÙX]	Ê\ÙX]Ëœ\Ú
+]JNÜ™]\›ˆ]_CBˆËÈĞÌÛH]™[ˆ[Ù[È\™H›ÙÜ™\ÜÚ]™H[š[˜Ù[Y[ÎˆHYÚÙZYÚ›ØÙY\˜[ÙX]È™[XZ[ƒBˆËÈ\ØX›HÚ[HØY[™Ë[ˆİËX˜[™ÚY[ÙK[™Ú[™]™\ˆH\ÜÙ]Ñˆ\È[˜]˜Z[X›KƒBˆÛÛœİÙX]\ÜÙ]˜\ÙOIÚÎ‹ËÙœÛZ]™[‹›Ü™ËÙš[KÜX\ÜÙ]ËÓ[Ù[ËÙÛ‹ÌZËÉÎÃBˆÛÛœİÙX]\ÜÙ]Ï^ÃBˆ\›XÚZ\İ\›œÙX]\ÜÙ]˜\ÙJÉĞ\›PÚZ\—ÌKĞ\›PÚZ\—ÌWÌZË™Û‰ËZYÚŒ‹ŒÍKX]Î“X]”_KBˆÛÙ˜Nİ\›œÙX]\ÜÙ]˜\ÙJÉÔÛÙ˜WÌKÔÛÙ˜WÌWÌZË™Û‰ËZYÚŒ‹ŒMKX]Î“X]”_KBˆ™X]\™Nİ\›œÙX]\ÜÙ]˜\ÙJÉÕÛÛÙ[ÚZ\—ÌKÕÛÛÙ[ÚZ\—ÌWÌZË™Û‰ËZYÚŒ‹ÍKX]Î“X]”_KBˆZ[Yİ\›œÙX]\ÜÙ]˜\ÙJÉÜZ[YİÛÛÙ[—ØÚZ\—ÌKÜZ[YİÛÛÙ[—ØÚZ\—ÌWÌZË™Û‰ËZYÚŒ‹ŒMKX]Î“X]”_KBˆ™[˜Úİ\›œÙX]\ÜÙ]˜\ÙJÉÜZ[YİÛÛÙ[—Ø™[˜ÚÜZ[YİÛÛÙ[—Ø™[˜ÚÌZË™Û‰ËZYÚŒKMKX]Î“X]”_KBˆZ[YÛÙ˜Nİ\›œÙX]\ÜÙ]˜\ÙJÉÜZ[YİÛÛÙ[—ÜÛÙ˜KÜZ[YİÛÛÙ[—ÜÛÙ˜WÌZË™Û‰ËZYÚŒKKX]Î“X]”_CBˆNÃBˆÛÛœİÙX][Ù[[\]\Ï[™]ÈX\
+
+NÃBˆ]ÙX]ØY\”›ÛZ\ÙO[[ÃBˆ[˜İ[ÛˆÙX]ØY\Š
+^Ü™]\›ˆÙX]ØY\”›ÛZ\Ù_
+ÙX]ØY\”›ÛZ\ÙOZ[\Ü
+	ÚÎ‹ËØÙ‹šœÙ[]œ‹›™]ÛœKİ™YPŒMŒŒKÙ^[\\ËÚœÛKÛØY\œËÑÓ“ØY\‹šœËÊÙ\ÛIÊK[Š[Ù[OO›™]È[Ù[K‘Ó“ØY\Š
+JJ_CBˆ[˜İ[ÛˆÙX][\]J\ÜÙ]
+^ÚYŠ\ÙX][Ù[[\]\Ëš\Ê\ÜÙ]\›
+J\ÙX][Ù[[\]\ËœÙ]
+\ÜÙ]\›ÙX]ØY\Š
+K[ŠØY\O›™]È›ÛZ\ÙJ
+™\ÛÛ™K™Z™Xİ
+OO›ØY\‹›ØY
+\ÜÙ]\›ÛOœ™\ÛÛ™JÛ‹œØÙ[™JK[™Yš[™Y™Z™Xİ
+JJJNÜ™]\›ˆÙX][Ù[[\]\Ë™Ù]
+\ÜÙ]\›
+_CBˆ[˜İ[ÛˆXÛÜ˜]TÙX]
+Ü›İ\˜[˜XÚÔ\Ë]K\ÜÙ]˜[YKXÙ[Y[^ßJ^ÃBˆÛÛœİ\ÜÙ]\ÙX]\ÜÙ]ÖØ\ÜÙ]˜[YWNÚYŠX\ÜÙ]İĞ˜[™ÚY
+\™]\›ÃBˆÙX][\]J\ÜÙ]
+K[Š[\]OOÃBˆÛÛœİ[Ù[][\]K˜ÛÛ™JYJK›İ[™Ï[™]È‘QK›ŞÊ
+KœÙ]œ›ÛSØš™Xİ
+[Ù[
+KÚ^™OX›İ[™Ë™Ù]Ú^™J™]È‘QK•™XİÜŒÊ
+JKØØ[OJXÙ[Y[šZYÚ\ÜÙ]šZYÚ
+KÓX]›X^
+Ú^™KKŒJNÃBˆ[Ù[œØØ[KœÙ]ØØ[\ŠØØ[JNÛ[Ù[œ›İ][Û‹OX\ÜÙ]X]ÊÊXÙ[Y[X]ß
+NÛ[Ù[\]SX]š^ÛÜ›
+YJNÃBˆÛÛœİš]Y[™]È‘QK›ŞÊ
+KœÙ]œ›ÛSØš™Xİ
+[Ù[
+KÙ[\Yš]Y™Ù]Ù[\Š™]È‘QK•™XİÜŒÊ
+JNÃBˆ[Ù[œÜÚ][Û‹
+ÏKXÙ[\‹
+ÊXÙ[Y[
+NÛ[Ù[œÜÚ][Û‹JÏKYš]Y›Z[‹JÊXÙ[Y[_
+NÛ[Ù[œÜÚ][Û‹ŠÏKXÙ[\‹ŠÊXÙ[Y[Ÿ
+NÃBˆ[Ù[˜]™\œÙJ›ÙOOÚYŠ[›ÙKš\ÓY\Ú
+\™]\›Û›ÙK˜Ø\İÚYİÏY˜[ÙNÛ›ÙKœ™XÙZ]™TÚYİÏY˜[ÙNÚYŠ]J^Û›ÙK\Ù\‘]OY]NÚ[\˜XİX›\Ëœ\Ú
+›ÙJ__JNÃBˆ˜[˜XÚÔ\Ë™›Ü‘XXÚ
+\Oœ\š\ÚX›OY˜[ÙJNÙÜ›İ\˜Y
+[Ù[
+CBˆJK˜Ø]Ú
+\œ›ÜO˜ÛÛœÛÛKØ\›Š	ĞĞÌÙX][™È\ÜÙ][˜]˜Z[X›NÈÙY\[™È›ØÙY\˜[˜[˜XÚË‰Ë\ÜÙ]˜[YK\œ›ÜŠJCBˆCBˆ[˜İ[ÛˆÚZ\Š‹›İLÜ[ÛœÏ^ßJ^ØÛÛœİOY›ÛÜ’ZYÚ
+ŠKÏ[™]È‘QK‘Ü›İ\
+
+NÙËœÜÚ][Û‹œÙ]
+KŠNÙËœ›İ][Û‹O\›İÜØÙ[™K˜Y
+ÊNØÛÛœİÙX][™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]J‹ŒKMKKJKPU™˜XœšXÊNÜÙX]œÜÚ][Û‹OKÍNÙË˜Y
+ÙX]
+NØÛÛœİ˜XÚÏ[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]J‹ŒK‹JKPU™˜XœšXÊNØ˜XÚËœÜÚ][Û‹œÙ]
+KKÌŠNÙË˜Y
+˜XÚÊNØÛÛœİ\ÏVÜÙX]˜XÚ×NÙ›ÜŠÛÛœİÙˆËKJ^ØÛÛœİO[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒËÍKK
+KPUÛÛÙ
+NØKœÜÚ][Û‹œÙ]
+K
+NÙË˜Y
+JNÜ\Ëœ\Ú
+J_XÛÛY\Š‹‹‹Œ‹	Ø\›XÚZ\‰ËKLKJÌÊNØÛÛœİ]O\™YÚ\İ\”ÙX]
+ÜÙX]˜XÚ×KË™]È‘QK•™XİÜŒÊKŒÍKKŒJK›İÜ[ÛœÊNÙXÛÜ˜]TÙX]
+Ë\Ë]KÜ[ÛœË›[Ù[
+NÜ™]\›ˆßCBˆ[˜İ[ÛˆÛÙ˜J‹›İLÜ[ÛœÏ^ßJ^ØÛÛœİOY›ÛÜ’ZYÚ
+ŠKÏ[™]È‘QK‘Ü›İ\
+
+NÙËœÜÚ][Û‹œÙ]
+KŠNÙËœ›İ][Û‹O\›İÜØÙ[™K˜Y
+ÊNØÛÛœİÙX][™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒKKÍJKPU™˜XœšXÊNÜÙX]œÜÚ][Û‹OKÌØÛÛœİ˜XÚÏ[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒKKKŠKPU™˜XœšXÊNØ˜XÚËœÜÚ][Û‹œÙ]
+KMK
+NÙË˜Y
+ÙX]˜XÚÊNØÛÛœİ\ÏVÜÙX]˜XÚ×NÙ›ÜŠÛÛœİÙˆËLKKKWJ^ØÛÛœİ\›O[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒÍKÌ‹KÍJKPUÛÛÙ
+NØ\›KœÜÚ][Û‹œÙ]
+Ì‹
+NÙË˜Y
+\›JNÜ\Ëœ\Ú
+\›J_XÛÛY\Š‹K‹ŒMK	ÜÛÙ˜IËKLKJÌÊNØÛÛœİ]O\™YÚ\İ\”ÙX]
+ÜÙX]˜XÚ×KË™]È‘QK•™XİÜŒÊKŒÌ‹KŒ
+K›İÜ[ÛœÊNÙXÛÜ˜]TÙX]
+Ë\Ë]KÜ[ÛœË›[Ù[	ÜÛÙ˜IÊNÜ™]\›ˆßCBˆ[˜İ[Ûˆ™[˜Ú
+‹›İLÜ[ÛœÏ^ßJ^ØÛÛœİOY›ÛÜ’ZYÚ
+ŠKÏ[™]È‘QK‘Ü›İ\
+
+NÙËœÜÚ][Û‹œÙ]
+KŠNÙËœ›İ][Û‹O\›İÜØÙ[™K˜Y
+ÊNØÛÛœİİ\Ú[Û[™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒÙŒMÌŒK›İYÚ™\ÜÎ‹LŸJKÙX][™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒÍKŒÍJKİ\Ú[ÛŠNÜÙX]œÜÚ][Û‹OKÌØÛÛœİ˜XÚÏ[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JKŒNŒŒŠKPU™\šÕÛÛÙ
+NØ˜XÚËœÜÚ][Û‹œÙ]
+KŒÎŒŠNÙË˜Y
+ÙX]˜XÚÊNØÛÛœİ\ÏVÜÙX]˜XÚ×NÙ›ÜŠÛÛœİÙˆËL‹ŒN‹ŒNJ^ØÛÛœİYÏ[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒKK‹ŒJKPU™\šÕÛÛÙ
+NÛYËœÜÚ][Û‹œÙ]
+‹
+NÙË˜Y
+YÊNÜ\Ëœ\Ú
+YÊNØÛÛœİš[šX[[™]È‘QK“Y\Ú
+™]È‘QKÛÛ™QÙ[ÛY]JŒNKK
+KPU˜œ˜\ÜÊNÙš[šX[œÜÚ][Û‹œÙ]
+KM‹
+NÙË˜Y
+š[šX[
+NÜ\Ëœ\Ú
+š[šX[
+_Y›ÜŠÛÛœİÙˆËLKMKKÎÎKMWJ^ØÛÛœİÛ][™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒL‹ŒLŠKPUÛÛÙ
+NÜÛ]œÜÚ][Û‹œÙ]
+KŒÎLÊNÙË˜Y
+Û]
+NÜ\Ëœ\Ú
+Û]
+_XÛÛœİÚYSX]˜XœÊX]˜ÛÜÊ›İ
+JJKŒJÓX]˜XœÊX]œÚ[Š›İ
+JJŒKMK\SX]˜XœÊX]œÚ[Š›İ
+JJKŒJÓX]˜XœÊX]˜ÛÜÊ›İ
+JJŒKMNØÛÛY\Š‹ÚY\	Ø™[˜Ú	ËKLKJÌ‹JNØÛÛœİ]O\™YÚ\İ\”ÙX]
+ÜÙX]˜XÚ×KË™]È‘QK•™XİÜŒÊKŒËKŒJK›İÜ[ÛœÊNÚYŠÜ[ÛœË›[Ù[OOY˜[ÙJYXÛÜ˜]TÙX]
+Ë\Ë]KÜ[ÛœË›[Ù[	Ø™[˜Ú	ËÚZYÚŒKßJNÜ™]\›ˆßBˆÚZ\ŠLLËLŒËX]”KÛ[Ù[‰Ø\›XÚZ\‰Ë]N‰ĞHš\™\ÚYHšXİÜšX[ˆ\›XÚZ\‰Ë]]Ü‰ÔÙ]H™\ÚYHHÜ˜XÚÛ[™ÈX\Ú]HÚÜİİÜK‰ËØ]YÛÜšY\Î–ÉÑÚÜİÉ×_JNÃBˆÛÙ˜JNŒ‹LŒËX]”Kİ]N‰ĞHØ\™YÛİXÈÛÙ˜IË]]Ü‰ÕHÛÜ›ˆ\Ûİ\HÛÈ›ÛÛH›ÜˆÛËİYÚHXœ˜\HYZ]ÈÛ™H™XY\ˆ]H[YK‰ËØ]YÛÜšY\Î–ÉÑÛİXÉË	ÑÚÜİÉË	ÔÛØÚY]I×_JNÃBˆÚZ\ŠÛ[Ù[‰Ø\›XÚZ\‰Ë]N‰ÕHÙ[˜[™XY[™ÈÚZ\‰Ë]]Ü‰ĞHY\ÚZ\ˆÜÚ][Û™Y™[™X]HÚ[™[Y\‹‰ËØ]YÛÜšY\Î–ÉÕÛÛ™\‰Ë	ÔÙ]IË	Ô[ÜÛÜI×_JNÃBˆÚZ\ŠLKKÛ[Ù[‰ÜZ[Y	Ë]N‰ĞHÛÜ›ˆØ][ÙİYHÚZ\‰Ë]]Ü‰Ô[Y\ÈHÙ\İ\›ˆ™XY[™È\ÚË]ÈZ[\ÈÛÙ[™Y™[™X]Ù[™\˜][ÛœÈÙˆÙX\˜Ú[™È[™Ë‰ËØ]YÛÜšY\Î–ÉÓ^\İ\IË	ÓY[[ÜI×_JNÃBˆÚZ\ŠKKÛ[Ù[‰ÜZ[Y	Ë]N‰ĞHZ[ˆ™XY[™ÈÚZ\‰Ë]]Ü‰Ô[Y\ÈHX\İ\›ˆ\ÚÎˆ[œÚİŞKİ\™K[™^XİHÚ\™HH™XY\ˆ™YYÈ]‰ËØ]YÛÜšY\Î–ÉÔÛØÚY]IË	ĞÛÛYYIË	Ò›İ\›™^I×_JNÃBˆÚZ\ŠMŒ‹X]”KÌ‹Û[Ù[‰Ù™X]\™IË]N‰ÕHXœ˜\šX[¸ &\ÈÛİXÈÚZ\‰Ë]]Ü‰ĞØ\™Y˜XÙ\Hš\Ù\ÈZÙHHÛX[ÛÛÙ[ˆØ]Y˜[ˆ]™Y[È[\›Ü\ˆÈÚ]\™K‰ËØ]YÛÜšY\Î–ÉÑÛİXÉË	Ô[ÜÛÜIË	Ôİ˜[™ÙI×_JNÃBˆ[˜İ[ÛˆÚ[™İÔÙX]
+
+^ØÛÛœİÏ[™]È‘QK‘Ü›İ\
+
+NÙËœÜÚ][Û‹œÙ]
+LJNÜØÙ[™K˜Y
+ÊNØÛÛœİ˜\ÙO[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JËÌ‹KŒJKPUÛÛÙ
+NØ˜\ÙKœÜÚ][Û‹OKŒÍÙË˜Y
+˜\ÙJNØÛÛœİİ\Ú[Û[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JËŒL‹Œ‹KŒ
+K™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒÌMMLË›İYÚ™\ÜÎ‹MŸJJNØİ\Ú[Û‹œÜÚ][Û‹OKÎÙË˜Y
+İ\Ú[ÛŠNÙ›ÜŠÛÛœİÙˆËLKŒKŒJ^ØÛÛœİ[İÏ[™]È‘QK“Y\Ú
+™]È‘QK”Ü\™QÙ[ÛY]JŒÎLÊKPU™˜XœšXÊNÜ[İËœØØ[KœÙ]
+KŒKÍKJNÜ[İËœÜÚ][Û‹œÙ]
+NŒŒŠNÙË˜Y
+[İÊ_XÛÛY\ŠLKËKKŒÍK	İÚ[™İÈÙX]	ÊNØÛÛœİÚ[™İÔÙX]]O\™YÚ\İ\”ÙX]
+Øİ\Ú[Û—KË™]È‘QK•™XİÜŒÊKŒË
+Kİ]N‰ĞH˜Z[‹]Ú[™İÈÙX]	Ë]]Ü‰Ô™XYÚ[HH˜Z[ˆÜš]\È]ÈİÛˆİÜHÛˆHÛ\ÜË‰ËØ]YÛÜšY\Î–ÉÒ›İ\›™^IË	ÔÙXIË	ĞY™[\™IË	ÔÙ]I×_JNÙXÛÜ˜]TÙX]
+ËØ˜\ÙKİ\Ú[Û‹‹‹™Ë˜Ú[™[‹™š[\ŠÚ[O˜Ú[OOX˜\ÙI‰˜Ú[OOXİ\Ú[ÛŠWKÚ[™İÔÙX]]K	ÜZ[YÛÙ˜IËÚZYÚŒKÍ_J_CBˆÚ[™İÔÙX]
+M
+NİÚ[™İÔÙX]
+
+NİÚ[™İÔÙX]
+LŠNÃBˆ[˜İ[ÛˆÜš][™Ñ\ÚÊ‹Ø\œ™[Y˜[ÙJ^ØÛÛœİÏ[™]È‘QK‘Ü›İ\
+
+NÙËœÜÚ][Û‹œÙ]
+ŠNÜØÙ[™K˜Y
+ÊNØÛÛœİÜ[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JËKŒŒ‹KJKPUÛÛÙ
+NİÜœÜÚ][Û‹œÙ]
+KŒÌ‹KJNÙË˜Y
+Ü
+NÙ›ÜŠÛÛœİÙˆËLKKKWJ^ØÛÛœİYÏ[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒNKŒKŒN
+KPU™\šÕÛÛÙ
+NÛYËœÜÚ][Û‹œÙ]
+ŒËKJNÙË˜Y
+YÊ_XÛÛœİÜš][™ĞÚZ\[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JKKŒËKŒJKPU™Ü™Y[ŠNİÜš][™ĞÚZ\‹œÜÚ][Û‹œÙ]
+Ì‹JNÙË˜Y
+Üš][™ĞÚZ\ŠNØÛÛœİÜš][™Ğ˜XÚÏ[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JKKKKŒŠKPU™Ü™Y[ŠNİÜš][™Ğ˜XÚËœÜÚ][Û‹œÙ]
+KŒÍKKLŠNÙË˜Y
+Üš][™Ğ˜XÚÊNØÛÛœİYÙO[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JÎŒKM
+KPUœ\\ŠNÜYÙKœÜÚ][Û‹œÙ]
+KŒÍKK‹KŠNÜYÙKœ›İ][Û‹OKŒLÙË˜Y
+YÙJNØÛÛœİ[šÏ[™]È‘QK“Y\Ú
+™]È‘QKŞ[[™\‘Ù[ÛY]JŒL‹ŒMKŒŒ‹L
+KPU˜›XÚÊNÚ[šËœÜÚ][Û‹œÙ]
+Ì‹KL‹K
+NÙË˜Y
+[šÊNÚYŠØ\œ™[
+^Ù›ÜŠÛÛœİÙˆËLK‹K—J^ØÛÛœİÚYO[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒL‹‹ŒÍK‹ÊKPU™\šÕÛÛÙ
+NÜÚYKœÜÚ][Û‹œÙ]
+KŒNKŒJNÙË˜Y
+ÚYJ_XÛÛœİÛÙ[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JËÍKŒMK‹ÊKPU™\šÕÛÛÙ
+NÚÛÙœÜÚ][Û‹œÙ]
+‹ŒÌ‹KŒJNÙË˜Y
+ÛÙ
+_XÛÛY\Š‹Ø\œ™[ÌËNŒË‹ËŒ‹Ø\œ™[ÉÜİYHØ\œ™[	Î‰İÜš][™È\ÚÉÊNØÛÛœİ\ÚÔÙX]]O\™YÚ\İ\”ÙX]
+İÜš][™ĞÚZ\‹Üš][™Ğ˜XÚ×KË™]È‘QK•™XİÜŒÊKŒÌ‹LŠKİ]N˜Ø\œ™[ÉĞHš]˜]HİYHØ\œ™[	Î‰ĞH™XY\¸ &\ÈÜš][™È\ÚÉË]]Ü˜Ø\œ™[ÉÓİ]ÚYHÛİ[™ÈÛÙ[ˆÚ[ˆ[İHÚ][œÚYK‰Î‰Ò[šË\\‹[™HÚZ\ˆ›Üˆ\™İZ[™È[ˆHX\™Ú[œË‰ËØ]YÛÜšY\Î˜Ø\œ™[ÖÉÓ^\İ\IË	Ô[ÜÛÜIË	ĞÛÛœØÚY[˜ÙI×N–ÉÔ[ÜÛÜIË	ÔÙ]IË	ÔÛØÚY]IË	ÔØ]\™I×_JNÙXÛÜ˜]TÙX]
+ËİÜš][™ĞÚZ\‹Üš][™Ğ˜XÚ×K\ÚÔÙX]]K	ÜZ[Y	ËÚZYÚŒKKŒ_JNÜ™]\›ˆßCBˆÜš][™Ñ\ÚÊNM˜[ÙJNİÜš][™Ñ\ÚÊLMMKYJNÃBˆËÈH™]\›œÈ\ÚÎˆHÛX[İ[™]ÙY\ÈH\ÚXØ[İXÚÈÙˆÚ]]™\ˆ\Èİ\œ™[H™Z[™È™XY[™Ú]\È™Y[ˆš[š\ÚYƒBˆ[˜İ[Ûˆ™XY[™Ôİ[™›ÛÚÊ›ÛÚË‹^Y\‹˜\ÙVJ^ØÛÛœİ›O[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JKŒKKKŒŒŠK™]È‘QK“Y\Úİ[™\™X]\šX[
+ÛX\˜Ûİ™\•^\™J›ÛÚÊK›İYÚ™\ÜÎ‹JJNØÛÛœİX›ÛÚËšY	NMËSX]œÚ[Š
+ŒL‹NN
+Û^Y\ŠŒËÊJ‹ŒËSX]˜ÛÜÊ
+ÎŒŒÌÊÛ^Y\ŠŒKŒÊJ‹ŒËX]ÏSX]œÚ[Š
+LJÛ^Y\ŠJ‹Ø›KœÜÚ][Û‹œÙ]
+
+Ú˜\ÙVJÛ^Y\Š‹ŒŒÍJËŒLKŠÚŠNØÛÛœİO[™]È‘QK”]X]\›š[ÛŠ
+KœÙ]œ›ÛP^\Ğ[™ÛJ™]È‘QK•™XİÜŒÊK
+KSX]”KÌŠNÜKœ™[][\J™]È‘QK”]X]\›š[ÛŠ
+KœÙ]œ›ÛP^\Ğ[™ÛJ™]È‘QK•™XİÜŒÊK
+KX]ÊJNØ›Kœ]X]\›š[Û‹˜ÛÜJJNÜØÙ[™K˜Y
+›JNØ›K\Ù\‘]O^İ\N‰Ø›ÛÚÉË›ÛÚËØYYYKÛYNÜÜÚ][Û˜›KœÜÚ][Û‹˜ÛÛ™J
+K]X]\›š[Û˜›Kœ]X]\›š[Û‹˜ÛÛ™J
+K\™[œØÙ[™__NÚ[\˜XİX›\Ëœ\Ú
+›JNÜ™]\›ˆ›_CBˆÛÛœİ™XY[™Ôİ[™Y\Ú\ÏV×NÙ[˜İ[ÛˆÛX\”™XY[™Ôİ[™
+
+^Ù›ÜŠÛÛœİ›HÙˆ™XY[™Ôİ[™Y\Ú\Ê^ÚYŠ›OOO\Ù[XİY
+XÛÛ[YNØÛÛœİYZ[\˜XİX›\Ëš[™^ÙŠ›JNÚYŠYL
+Z[\˜XİX›\ËœÜXÙJYJNÜØÙ[™Kœ™[[İ™J›JNØ›K™Ù[ÛY]K™\ÜÜÙJ
+NØ›K›X]\šX[™\ÜÜÙJ
+_\™XY[™Ôİ[™Y\Ú\Ë›[™İLCBˆÛÛœİ™XY[™Ôİ[™ÜÏ^ŞKKÜŒKŒŒ_NÃBˆÛÛœİ™XY[™Ôİ[™ÜX][™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒØLŒŒLË›İYÚ™\ÜÎ‹ÌŸJNØY›Ş
+‹‹ŒMKK™XY[™Ôİ[™ÜX]™XY[™Ôİ[™ÜËKŒM™XY[™Ôİ[™ÜËŠNÙ›ÜŠÛÛœİÙˆËLKŒKKŒWJY›ÜŠÛÛœİˆÙˆËK‹—J^ØÛÛœİYÏ[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒM‹KŒŒMŠKPU™\šÕÛÛÙ
+NÛYËœÜÚ][Û‹œÙ]
+™XY[™Ôİ[™ÜË
+ÙM™XY[™Ôİ[™ÜËŠÙŠNÜØÙ[™K˜Y
+YÊ_CBˆÛÛœİ™XY[™Ò]X›Ş
+KKKŒË™]È‘QK“Y\Ú˜\ÚXÓX]\šX[
+İ˜[œÜ\™[YKÜXÚ]N‹ŒK\Üš]N™˜[Ù_JK™XY[™Ôİ[™ÜËKMKKK™XY[™Ôİ[™ÜË‹˜[ÙJKš[š\ÚY]X›Ş
+KKKŒË™]È‘QK“Y\Ú˜\ÚXÓX]\šX[
+İ˜[œÜ\™[YKÜXÚ]N‹ŒK\Üš]N™˜[Ù_JK™XY[™Ôİ[™ÜË
+ËMKKK™XY[™Ôİ[™ÜË‹˜[ÙJNÃBˆÛÛœİ™XY[™Ô[Q]O^İ\N‰ÛØš™Xİ	Ë]N‰Ğ[ˆ[\HÚYHÙˆHİ[™	Ë]]Ü‰Ó›İ[™È\ÈYÜ[ˆ\™H\İ›İË‰ËXİ[Û‰ÑVSRS‘IßKš[š\ÚY[Q]O^İ\N‰ÛØš™Xİ	Ë]N‰Ó›İ[™ÈÚ[™Y\™HY]	Ë]]Ü‰Ó›È›ÛÚÈ\È™Y[ˆ™XYÈ]Èš[˜[YÙHY]‰ËXİ[Û‰ÑVSRS‘IßNÜ™XY[™Ò]\Ù\‘]O\™XY[™Ô[Q]NÙš[š\ÚY]\Ù\‘]OYš[š\ÚY[Q]NÚ[\˜XİX›\Ëœ\Ú
+™XY[™Ò]š[š\ÚY]
+NÃBˆ[˜İ[Ûˆ™Yœ™\Ú™XY[™ÔİXÚÊ
+^ÚYŠÙ[XİY	‰œ™XY[™Ôİ[™Y\Ú\Ëš[˜ÛY\ÊÙ[XİY
+J\™]\›ØÛX\”™XY[™Ôİ[™
+
+NØÛÛœİÜ™\VË‹‹›™]ÈÙ]
+Ë‹‹˜]ØZÙ[™Y›ÛÚÜË‹‹™\ÚĞ›ÛÚÜ×JWKœ™]™\œÙJ
+K™XY[™Ó\İV×Kš[š\ÚY\İV×NÙ›ÜŠÛÛœİYÙˆÜ™\Š^ØÛÛœİX›ÛÚÜË™š[™
+šÏO˜šËšYOOZY
+NÚYŠXŠXÛÛ[YNÚYŠ‹œ›ÙÜ™\ÜÏKMJYš[š\ÚY\İœ\Ú
+ŠNÙ[ÙHYŠ\ÚĞ›ÛÚÜËš\ÊY
+_‹œ›ÙÜ™\ÜÏ‹ŒŠ\™XY[™Ó\İœ\Ú
+Š_XÛÛœİÚİÔ™XY[™Ï\™XY[™Ó\İœÛXÙJJKÚİÑš[š\ÚYYš[š\ÚY\İœÛXÙJJNÜÚİÔ™XY[™Ë™›Ü‘XXÚ
+
+‹JOOœ™XY[™Ôİ[™Y\Ú\Ëœ\Ú
+™XY[™Ôİ[™›ÛÚÊ‹™XY[™Ôİ[™ÜËKMK™XY[™Ôİ[™ÜË‹K™XY[™Ôİ[™ÜËÜ
+JJNÜÚİÑš[š\ÚY™›Ü‘XXÚ
+
+‹JOOœ™XY[™Ôİ[™Y\Ú\Ëœ\Ú
+™XY[™Ôİ[™›ÛÚÊ‹™XY[™Ôİ[™ÜË
+ËMK™XY[™Ôİ[™ÜË‹K™XY[™Ôİ[™ÜËÜ
+JJNØÛÛœİİ[š[š\ÚYX›ÛÚÜË™š[\ŠO˜‹œ›ÙÜ™\ÜÏKMJK›[™İÜ™XY[™Ô[Q]K]O\ÚİÔ™XY[™Ë›[™İÉĞİ\œ™[H™XY[™ÉÎ‰Ğ[ˆ[\HÚYHÙˆHİ[™	ÎÜ™XY[™Ô[Q]K˜]]Ü\ÚİÔ™XY[™Ë›[™İØY]H\ÚÈÜˆ\Ø^H›İYÚˆ	ÜÚİÔ™XY[™Ë›X\
+O˜‹]JKš›Ú[Š	Ë	Ê_K˜‰Ó›İ[™È\ÈYÜ[ˆ\™H\İ›İË‰ÎÙš[š\ÚY[Q]K]O\ÚİÑš[š\ÚY›[™İÉÔ™XÙ[Hš[š\ÚY	Î‰Ó›İ[™ÈÚ[™Y\™HY]	ÎÙš[š\ÚY[Q]K˜]]Ü]İ[š[š\ÚYØ	İİ[š[š\ÚYH›Û[YIİİ[š[š\ÚYOOLOÉÉÎ‰ÜÉßH™XYÈH\İYÙKˆ[Üİ™XÙ[ˆ	ÜÚİÑš[š\ÚY›X\
+O˜‹]JKš›Ú[Š	Ë	Ê_K˜‰Ó›È›ÛÚÈ\È™Y[ˆ™XYÈ]Èš[˜[YÙHY]‰ßBˆ™Yœ™\Ú™XY[™ÔİXÚÊ
+NÃBˆÛÛœİ›ØÚÚ[™ĞÚZ\[™]È‘QK‘Ü›İ\
+
+NÜ›ØÚÚ[™ĞÚZ\‹œÜÚ][Û‹œÙ]
+LËKLŒÊNÜØÙ[™K˜Y
+›ØÚÚ[™ĞÚZ\ŠNØÛÛœİ›ØÚÙ\”ÙX][™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JKKŒËKJKPU™Ü™Y[ŠNÜ›ØÚÙ\”ÙX]œÜÚ][Û‹OKNÜ›ØÚÚ[™ĞÚZ\‹˜Y
+›ØÚÙ\”ÙX]
+NØÛÛœİ›ØÚÙ\˜XÚÏ[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JKK‹ŒŒŠKPUÛÛÙ
+NÜ›ØÚÙ\˜XÚËœÜÚ][Û‹œÙ]
+KKŠNÜ›ØÚÙ\˜XÚËœ›İ][Û‹KKŒLÜ›ØÚÚ[™ĞÚZ\‹˜Y
+›ØÚÙ\˜XÚÊNØÛÛœİ›ØÚÙ\”\ÏVÜ›ØÚÙ\”ÙX]›ØÚÙ\˜XÚ×NÙ›ÜŠÛÛœİÙˆËKJ^ØÛÛœİ[›™\[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒMŒL‹‹
+KPU™\šÕÛÛÙ
+NÜ[›™\‹œÜÚ][Û‹œÙ]
+ŒM‹
+NÜ[›™\‹œ›İ][Û‹KŒÜ›ØÚÚ[™ĞÚZ\‹˜Y
+[›™\Š_XÛÛY\ŠLËKLŒË‹‹K	Ü›ØÚÚ[™ÈÚZ\‰ÊNØÛÛœİ›ØÚÚ[™ÔÙX]]O\™YÚ\İ\”ÙX]
+Ü›ØÚÙ\”ÙX]›ØÚÙ\˜XÚ×K›ØÚÚ[™ĞÚZ\‹™]È‘QK•™XİÜŒÊKŒÍKŒJKX]”Kİ]N‰Ğ[ˆÛšXİÜšX[ˆ›ØÚÚ[™ÈÚZ\‰Ë]]Ü‰Ò]ÛÛ[Y\È›ØÚÚ[™ÈY\ˆ]È™XY\ˆX]™\Ë‰ËØ]YÛÜšY\Î–ÉÑÚÜİÉË	ÑÛİXÉË	ÓY[[ÜI×_JNÙXÛÜ˜]TÙX]
+›ØÚÚ[™ĞÚZ\‹›ØÚÙ\”\Ë›ØÚÚ[™ÔÙX]]K	Ø\›XÚZ\‰ËÚZYÚŒ‹ŒM_JNÃBˆÛÛœİ™\Ù\™YÚZ\XÚZ\ŠËŒ‹X]”KÛ[Ù[‰Ù™X]\™IË\N‰ÛØš™Xİ	Ë]N‰ĞHÚZ\ˆ™\Ù\™Y›ÜˆÛÛY[Û™HXœÙ[	Ë]]Ü‰ĞHÚ[™\ˆØ\™Ø^\ÎˆPTÑHÈ“ÕTÕTˆH‘PQT‹‰ËXİ[Û‰ÑVSRS‘IßJK[š\ÚX›T™XY\[™]È‘QK‘Ü›İ\
+
+NÜ™\Ù\™YÚZ\‹˜Y
+[š\ÚX›T™XY\ŠNØÛÛœİÚÜİX][™]È‘QK“Y\Ú˜\ÚXÓX]\šX[
+ØÛÛÜŒ˜ØÎY˜[œÜ\™[YKÜXÚ]N‹Œ\Üš]N™˜[Ù_JNØÛÛœİÚÜİ›ÙO[™]È‘QK“Y\Ú
+™]È‘QK”Ü\™QÙ[ÛY]JMKL‹
+KÚÜİX]
+NÙÚÜİ›ÙKœØØ[KœÙ]
+ÍKKKJNÙÚÜİ›ÙKœÜÚ][Û‹OLKMNÚ[š\ÚX›T™XY\‹˜Y
+ÚÜİ›ÙJNØÛÛœİÚÜİXY[™]È‘QK“Y\Ú
+™]È‘QK”Ü\™QÙ[ÛY]JŒËL‹
+KÚÜİX]
+NÙÚÜİXYœÜÚ][Û‹OL‹NÚ[š\ÚX›T™XY\‹˜Y
+ÚÜİXY
+NÚ[š\ÚX›T™XY\‹š\ÚX›OY˜[ÙNÃBˆËÈZ[[™ÜÈ[™^\İ\š[İ\È›İCBˆ[˜İ[ÛˆZ[[™ÊK‹Ë›İLÛÛÜœÏVÉÈÌÍŒM‰Ë	ÈØNØI×K[XYÙU\›IÉË[™ÙYY˜[ÙJ^ØÛÛœİ^XØ[˜\Õ^\™J
+ËË
+OOØÛÛœİÏXË˜Ü™X]S[™X\‘Ü˜YY[
+Ë
+NÙË˜YÛÛÜ”İÜ
+ÛÛÜœÖÌJNÙË˜YÛÛÜ”İÜ
+K	ÈÌÌ‰ÊNØË™š[İ[OYÎØË™š[™Xİ
+Ë
+NØË™š[İ[OXÛÛÜœÖÌWNØË™ÛØ˜[[OKNØË˜™YÚ[”]
+
+NØË™[\ÙJÊ‹K
+‹ŒÎÊ‹ŒNK
+‹ŒÊNØË™š[
+
+NØË™š[™Xİ
+Ê‹ŒÌ‹
+‹KÊ‹ŒÍ‹
+‹ŒÊNØË™ÛØ˜[[OKŒÎØË™š[İ[OIÈÙLØÍ‰ÎØË™š[™Xİ
+
+‹ÎË
+‹ŒÊ_KM‹ÌŒ
+KÜ›İ\[™]È‘QK‘Ü›İ\
+
+NÙÜ›İ\œÜÚ][Û‹œÙ]
+KŠNÙÜ›İ\œ›İ][Û‹O\›İÜØÙ[™K˜Y
+Ü›İ\
+NØÛÛœİÙ™œÙ]Z[™ÙYİËÌŒœ˜[YO[™]È‘QK‘Ü›İ\
+
+K˜Z[KŒ\KŒMK[™[[™]È‘QK“Y\Ú
+™]È‘QK”[™QÙ[ÛY]JË
+K™]È‘QK“Y\Úİ[™\™X]\šX[
+ÛX\^›İYÚ™\ÜÎ‹‹[Z\ÜÚ]™NŒ™™™™™‹[Z\ÜÚ]™SX\^[Z\ÜÚ]™R[[œÚ]N‹ŒM‹ÚYN•‘QK‘İX›TÚY_JJK˜XÚÚ[™Ï[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JËŒŠKPU™\šÕÛÛÙ
+NÙœ˜[YKœÜÚ][Û‹œÙ]
+Ù™œÙ]Œ
+NÙ›ÜŠÛÛœİHÙˆËLKWJ^ØÛÛœİYÙO[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JÊÜ˜Z[
+Œ‹˜Z[\
+KPU™ÛÛ
+NÙYÙKœÜÚ][Û‹OYJŠÌŠÜ˜Z[ÌŠNÙœ˜[YK˜Y
+YÙJ_Y›ÜŠÛÛœİÙˆËLKWJ^ØÛÛœİYÙO[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]J˜Z[\
+KPU™ÛÛ
+NÙYÙKœÜÚ][Û‹Y
+ŠËÌŠÜ˜Z[ÌŠNÙœ˜[YK˜Y
+YÙJ_\[™[œÜÚ][Û‹œÙ]
+Ù™œÙ]ŒÊNØ˜XÚÚ[™ËœÜÚ][Û‹œÙ]
+Ù™œÙ]KŒÊNÙÜ›İ\˜Y
+˜XÚÚ[™Ë[™[œ˜[YJNÚYŠ[XYÙU\›
+[™]È‘QK•^\™SØY\Š
+K›ØY
+[XYÙU\›[XYÙOOÚ[XYÙK˜ÛÛÜ”ÜXÙOU‘QK”Ô‘ĞÛÛÜ”ÜXÙNÚ[XYÙK˜[š\Ûİ›ÜOMÜ[™[›X]\šX[›X\Z[XYÙNÜ[™[›X]\šX[™[Z\ÜÚ]™SX\Z[XYÙNÜ[™[›X]\šX[›™YYÕ\]O]Y_JNÜ™]\›ÙÜ›İ\[™[œ˜[Y__CBˆZ[[™ÊKLÌŒK‹‹ËKÉÈÌŒÌÌ	Ë	ÈØNI×K	Ø\ÜÙ]ËÛ[ÛÛ›]X˜^KšœÉÊNØÛÛœİÙXÜ™]Ü˜Z]\Z[[™ÊNKKMËŒMÍKKKKSX]”KÌ‹ÉÈÌŒYŒÎ	Ë	ÈÎMŒ	×K	Ø\ÜÙ]ËÜÙXÜ™][Xœ˜\šX[‹\Ü˜Z]šœÉËYJNÜZ[[™ÊLNKNKËKKX]”KÌ‹ÉÈÌØŒMÌMÉË	ÈÎXÍÍ	×K	Ø\ÜÙ]ËØ›İ[š\İšœÉÊNÃBˆÙXÜ™]Ü˜Z]œ[™[\Ù\‘]O^İ\N‰ÜÜ˜Z]	Ë]N‰ĞHÜ˜Z][™ÈÛYÚH\ÚÙ]ÉË]]Ü‰ĞHÛÛ™XYÙˆZ\ˆİXÚ\ÈHœ˜[YK‰ËXİ[Û‰ÓÔS‰ßNÚ[\˜XİX›\Ëœ\Ú
+ÙXÜ™]Ü˜Z]œ[™[
+NØÛÛœİÜ˜Z]ÛÜÛÛY\XÛÛY\ŠNKŒ‹‹	ÜÜ˜Z]ÛÜ‰ÊNÃBˆY›Ş
+KLKPUœİÛ™KNKKMË˜[ÙJNØY›Ş
+KLKPUœİÛ™KNKKŒË˜[ÙJNØY›Ş
+KK‹PUœİÛ™KNKK‹Œ˜[ÙJNØY›Ş
+KK‹PUœİÛ™KNKŒ˜[ÙJNÃBˆ[˜İ[ÛˆØ[\TXİ\™JK‹Ë›İ[XYÙK]K[œØÜš\[ÛŠ^ØÛÛœİ\\Z[[™ÊK‹Ë›İÉÈÌMÌLŒ‰Ë	ÈÎ˜ŒÙI×K[XYÙJNØ\œ[™[\Ù\‘]O^İ\N‰ÛØš™Xİ	Ë]K]]Üš[œØÜš\[Û‹Xİ[Û‰ÑVSRS‘IßNÚ[\˜XİX›\Ëœ\Ú
+\œ[™[
+NÜ™]\›ˆ\CBˆÛÛœİ™Z[YÚYİÏYØ[\TXİ\™JLNKLŒËX]”KÌ‹	Ø\ÜÙ]ËÜÜ˜Z]]™Z[Y]ÚYİËšœÉË	ÕH™Z[YÚYİÉË	ÕH\]YH\ÈØ\›Kˆ\ˆZ[Y^Y\È\™H›İ‰ÊNÃBˆØ[\TXİ\™JMLKËKMËŒMKËŒKKX]”KÌ‹	Ø\ÜÙ]ËÜÜ˜Z]Z[\ÜÜÚX›K\İZ\œËšœÉË	ÕHİZ\ˆ]™]\›œÉË	Ñ]™\H[™[™È\X\œÈÈXY˜XÚÈÈ\È›ÛÛK‰ÊNÂˆØ[\TXİ\™JLMËŒ‹LËMNËX]”KÌ‹	Ø\ÜÙ]ËÜÜ˜Z][[\›‹[Xœ˜\šX[‹šœÉË	ÕH\İXœ˜\šX[‰Ë	ÔÚHØ\œšY\ÈH[\›ˆ[È[ˆZ\ÛHHØ][ÙİYH[šY\È^\İË‰ÊNÃBˆ[˜İ[Ûˆ™\›™TÜ[^\™J
+^Ü™]\›ˆØ[˜\Õ^\™J
+ËË
+OOÂˆËÈH›ŞYš[™]Y[XÙ[\HİY[[™Ü˜]š[™Ë˜]\ˆ[ˆH[Ù\›ˆÜİ\‹‚ˆË™š[İ[OIÈÙ˜ÌM	ÎØË™š[™Xİ
+Ë
+NØÛÛœİØ\ÚXË˜Ü™X]T˜YX[Ü˜YY[
+Ê‹Ë
+‹ŒÎÊ‹ŒKÊ‹K
+‹Ê‹
+NİØ\Ú˜YÛÛÜ”İÜ
+	Ü™Ø˜JMKŒMŒÍ
+IÊNİØ\Ú˜YÛÛÜ”İÜ
+K	Ü™Ø˜J‹ËŒKŒ
+IÊNØË™š[İ[O]Ø\ÚØË™š[™Xİ
+Ë
+NÂˆËœİ›ÚÙTİ[OIÈÌ™ŒÌN	ÎØË›[™UÚYMÎØËœİ›ÚÙT™Xİ
+NNËLÍ‹LÍŠNØË›[™UÚYLØËœİ›ÚÙT™Xİ
+KKËMNMN
+NØËœİ›ÚÙT™Xİ
+ÎÎËMÍ‹MÍŠNÂˆ›ÜŠÛÛœİŞKŞŞWHÙˆÖÍ‹‹KWKÕËM‹‹LKWKÍ‹M‹KLWKÕËM‹M‹LKLWWJ^ØËœØ]™J
+NØË˜[œÛ]JJNØËœØØ[JŞŞJNØË˜™YÚ[”]
+
+NØË›[İ™UÊ
+NØË˜™^šY\İ\™UÊKKKK
+NØË˜™^šY\İ\™UÊL‹LËMŒ
+NØËœİ›ÚÙJ
+NØËœ™\İÜ™J
+_BˆËœØ]™J
+NØË˜™YÚ[”]
+
+NØËœ™Xİ
+ÌËNM‹LMN
+NØË˜Û\
+
+NØËœİ›ÚÙTİ[OIÜ™Ø˜JÍKŒ‹ŒŠIÎØË›[™UÚYLNÙ›ÜŠ]OKRÚOÊÒÚJÏNJ^ØË˜™YÚ[”]
+
+NØË›[İ™UÊKN
+NØË›[™UÊKRMÌ
+NØËœİ›ÚÙJ
+_Y›ÜŠ]OR
+‹NŞO
+‹ŞJÏLLÊ^ØË˜™YÚ[”]
+
+NØË›[İ™UÊJNØË˜™^šY\İ\™UÊÊ‹ŒËKLM‹Ê‹ËJÌNËMKM
+NØËœİ›ÚÙJ
+_BˆËœİ›ÚÙTİ[OIÈÌ˜LŒLMÉÎØË™š[İ[OIÜ™Ø˜JŒMNMM
+IÎØË›[™UÚYMÂˆË˜™YÚ[”]
+
+NØË˜\˜ÊÊ‹Í‹
+‹ŒNKÊ‹ŒMKX]”JŒŠNØË™š[
+
+NØËœİ›ÚÙJ
+NÙ›ÜŠ]OLÚOLÚJÊÊ^ØÛÛœİOZJ‹ŒÎØË˜™YÚ[”]
+
+NØË˜\˜ÊÊ‹ÍŠÓX]˜ÛÜÊJJ•Ê‹Œ
+‹ŒNJÓX]œÚ[ŠJJ•Ê‹ŒÊÚILËX]”JŒŠNØËœİ›ÚÙJ
+_BˆË˜™YÚ[”]
+
+NØË™[\ÙJÊ‹Œ
+‹ŒŒËÊ‹ŒLK
+‹ŒMX]”JŒŠNØË™š[
+
+NØËœİ›ÚÙJ
+NÙ›ÜŠ]OKLÎÚOLÎÚJÊÊ^ØË˜™YÚ[”]
+
+NØË›[İ™UÊÊŠŒMJÚJ‹ŒŠK
+ŠŒŠÚJ‹Œ
+JNØËœ]XY˜]XĞİ\™UÊÊ‹Œ
+ŠŒÊÚJ‹ŒŠKÊŠŒÌËZJ‹ŒŠK
+ŠŒŠÚJ‹Œ
+JNØËœİ›ÚÙJ
+_XË˜™YÚ[”]
+
+NØË›[İ™UÊÊ‹ŒMË
+‹ŒÍ
+NØË›[™UÊÊ‹Œ‹
+‹ŒÎJNØË›[™UÊÊ‹Œ
+‹ŒÎJNØË›[™UÊÊ‹ŒÌK
+‹ŒÍ
+NØËœİ›ÚÙT™Xİ
+Ê‹Œ‹
+‹ŒÎKÊ‹Œ
+‹ŒJNØËœİ›ÚÙJ
+NÂˆËœØ]™J
+NØË˜[œÛ]JÊ‹K
+‹JNØË˜™YÚ[”]
+
+NØË™[\ÙJÊ‹ŒË
+‹ŒÌËX]”JŒŠNØË™š[
+
+NØËœİ›ÚÙJ
+NØË˜™YÚ[”]
+
+NØË›[İ™UÊUÊ‹ŒË
+NØË›[™UÊUÊ‹ŒÎKR
+‹ŒŠNØË›[™UÊUÊ‹ŒÍË
+‹ŒÎ
+NØË˜ÛÜÙT]
+
+NØË™š[
+
+NØËœİ›ÚÙJ
+NØË˜™YÚ[”]
+
+NØË›[İ™UÊÊ‹Œ‹R
+‹ŒÌÊNØË›[™UÊÊ‹ŒKR
+‹ŒLŠNØË›[™UÊÊ‹ŒL‹R
+‹ŒÌÊNØËœİ›ÚÙJ
+NÙ›ÜŠÛÛœİÙˆËKŒNKŒ‹Œ‹ŒNJ^ØË˜™YÚ[”]
+
+NØË˜\˜ÊÊœÊ‹ŒŒKX]”JŒŠNØËœİ›ÚÙJ
+_Y›ÜŠ]OKMNÚOMNÚJÊÊ^ØË˜™YÚ[”]
+
+NØË›[İ™UÊUÊ‹ŒË
+ŠŒLŠÚJ‹Œ
+JNØË›[™UÊÊ‹Œ‹
+ŠKŒJÚJ‹Œ
+JNØËœİ›ÚÙJ
+_XËœ™\İÜ™J
+NØËœ™\İÜ™J
+NÂˆË™š[İ[OIÈÌ˜LŒLMÉÎØË^[YÛIØÙ[\‰ÎØË™›ÛIÜÛX[XØ\È›Û\Ù[Ü™ÚXIÎØË™š[^
+	Õ“ÖPQÑTÈVSÔ‘SRT‘TÉËËÌ‹
+‹LJNØË™›ÛIÚ][XÈMœÙ[Ü™ÚXIÎØË™š[^
+	ÓQTˆ8 (ˆT”‘H8 (ˆS‘IËËÌ‹
+‹MJBˆKLL‹
+_Bˆ[˜İ[ÛˆYÙØ\™Ü[^\™J
+^Ü™]\›ˆØ[˜\Õ^\™J
+ËË
+OOÂˆË™š[İ[OIÈØÎŒÍÙIÎØË™š[™Xİ
+Ë
+NØËœİ›ÚÙTİ[OIÈÍLÎŒ‰ÎØË›[™UÚYMØËœİ›ÚÙT™Xİ
+ŒŒËMM
+NØË›[™UÚYLØËœİ›ÚÙT™Xİ
+ÌKÌKËMŒ‹MŒŠNÂˆË™ÛØ˜[[OKŒŒÙ›ÜŠ]OKRÚOÊÒÚJÏLL
+^ØË˜™YÚ[”]
+
+NØË›[İ™UÊKŠNØË›[™UÊKRMJNØËœİ›ÚÙJ
+_XË™ÛØ˜[[OLNÂˆË›[™UÚYMØË˜™YÚ[”]
+
+NØË›[İ™UÊÊ‹ŒL‹
+‹ÍŠNØË˜™^šY\İ\™UÊÊ‹ŒË
+‹KÊ‹Œ
+‹ŒÍÊ‹K
+‹ŒŒÊNØË˜™^šY\İ\™UÊÊ‹NK
+‹ŒMÊ‹ÍK
+‹ŒÎÊ‹
+‹ŒMÊNØËœİ›ÚÙJ
+NÂˆË›[™UÚYLÙ›ÜŠÛÛœİHÙˆËKÍJ^ØË˜™YÚ[”]
+
+NØË›[İ™UÊÊ‹ŒL‹
+JNØË˜™^šY\İ\™UÊÊ‹ŒÍK
+ŠKKŒJKÊ‹N
+ŠJËŒ
+KÊ‹
+ŠKKŒÊJNØËœİ›ÚÙJ
+_BˆËœÙ][™Q\Ú
+ÎKJNØËœİ›ÚÙTİ[OIÈÍØŒYIÎØË›[™UÚYMØË˜™YÚ[”]
+
+NØË›[İ™UÊÊ‹ŒNK
+‹ÌÊNØËœ]XY˜]XĞİ\™UÊÊ‹ŒÍ
+‹Œ‹Ê‹ŒÌ‹
+‹ÊNØËœ]XY˜]XĞİ\™UÊÊ‹ŒË
+‹ŒÌ‹Ê‹K
+‹ŒJNØËœ]XY˜]XĞİ\™UÊÊ‹‹
+‹ŒKÊ‹ÌË
+‹ŒÎJNØËœİ›ÚÙJ
+NØËœÙ][™Q\Ú
+×JNÂˆËœİ›ÚÙTİ[OIÈÍLÎŒ‰ÎØË›[™UÚYLÎØË˜™YÚ[”]
+
+NØË˜\˜ÊÊ‹ÌË
+‹ŒÎKM‹X]”JŒŠNØË›[İ™UÊÊ‹Ì‹
+‹ŒÍÊNØË›[™UÊÊ‹ÍK
+‹ŠNØË›[İ™UÊÊ‹ÍK
+‹ŒÍÊNØË›[™UÊÊ‹Ì‹
+‹ŠNØËœİ›ÚÙJ
+NÂˆ›ÜŠÛÛœİŞWHÙˆÖËŒŒ‹×KËMËNKËÎ—WJ^ØË˜™YÚ[”]
+
+NØË›[İ™UÊÊLL‹
+JÌN
+NØË›[™UÊÊ
+KLN
+NØË›[™UÊÊ
+ÌLË
+JÌN
+NØË˜ÛÜÙT]
+
+NØËœİ›ÚÙJ
+_BˆË™š[İ[OIÈÌÍLÌNIÎØË^[YÛIØÙ[\‰ÎØË™›ÛIÜÛX[XØ\È›ÛÜÙ[Ü™ÚXIÎØË™š[^
+	ÔÕT•‘VHÑˆSˆS“SQQÓÕS•–IËËÌ‹
+‹JNØË™›ÛIÚ][XÈMÜÙ[Ü™ÚXIÎØË™š[^
+	Ü›İ]H[˜ÛÛ\]H8 %˜XÙHH[™	ËËÌ‹
+‹LÍJBˆKLL‹
+_Bˆ[˜İ[ÛˆŞ[PÛYU^\™J
+^Ü™]\›ˆØ[˜\Õ^\™J
+ËË
+OOÂˆË™š[İ[OIÈÌÎ˜ŒŒ	ÎØË™š[™Xİ
+Ë
+NØËœİ›ÚÙTİ[OIÈØ	ÎØË›[™UÚYMØËœİ›ÚÙT™Xİ
+MKMKËLÌLÌ
+NØË™š[İ[OIÈÙØÍÎYIÎØË™š[™Xİ
+‹ËNN
+NØËœİ›ÚÙTİ[OIÈÍXLÌ	ÎØË›[™UÚYLÂˆ›ÜŠÛÛœİŞKWHÙˆÖËŒKŒËKŒL—KËËŒŒËŒKËNKŒWJ^ØËœØ]™J
+NØË˜[œÛ]JÊ
+JNØËœ›İ]JJNØËœİ›ÚÙT™Xİ
+MNMKLM‹L
+NØË™š[İ[OIÈÙYYLØÍ	ÎØË™š[™Xİ
+MLËML‹
+NØË™š[İ[OIÈÍLÎLÉÎØË™›ÛIØ›ÛNÙ[Ü™ÚXIÎØË^[YÛIØÙ[\‰ÎØË™š[^
+O‹OÉÔ‘Q‘PQ	ÎOÉÑ“ÓÕ’S•	Î‰ÔÕÔQĞUÒ	ËLMJNØË™›ÛIÚ][XÈMÙ[Ü™ÚXIÎØË™š[^
+O‹OÉÙœ›ÛHHÜ›ˆİY™‰ÎOÉÚY[ÛÜ›ˆY	Î‰Ü]X\\ˆ\İÛÉËMJNØËœ™\İÜ™J
+_BˆËœİ›ÚÙTİ[OIÈÍÙŒŒY	ÎØË›[™UÚYLÎØË˜™YÚ[”]
+
+NØË›[İ™UÊÊ‹ŒK
+‹ŒÌÊNØË›[™UÊÊ‹
+‹LJNØË›[™UÊÊ‹Ë
+‹ŒJNØËœİ›ÚÙJ
+NØË˜™YÚ[”]
+
+NØË˜\˜ÊÊ‹
+‹Ì‹X]”JŒŠNØËœİ›ÚÙJ
+NØË˜™YÚ[”]
+
+NØË˜\˜ÊÊ‹
+‹Ì‹ËX]”JŒŠNØËœİ›ÚÙJ
+NØË›[İ™UÊÊ‹LMK
+‹ÍMJNØË›[™UÊÊ‹ŒË
+‹
+NØËœİ›ÚÙJ
+NÂˆË™š[İ[OIÈÌÍŒXIÎØË^[YÛIØÙ[\‰ÎØË™›ÛIÜÛX[XØ\È›ÛÙ[Ü™ÚXIÎØË™š[^
+	ÕHPÕË‘Q“Ô‘HHSÔ–IËËÌ‹
+‹MJBˆKLL‹
+_BˆØ[\TXİ\™JNKLŒËKKSX]”KÌ‹	Ø\ÜÙ]ËÜZ[[™ËZ›İ\›™^KXØ\˜]˜[‹šœÉË	ÕHÛ™È›ØYX\İ	Ë	ÕHØ\˜]˜[ˆ\ÈÜ›ÜÜÙYHØ[YH[ÛÛ›]\ÜÈ›ÜˆH[™™YYX\œË‰ÊNÃBˆØ[\TXİ\™JNKËËËKKSX]”KÌ‹	Ø\ÜÙ]ËÜZ[[™Ë]ÛÛ™\‹YØ\™[‹šœÉË	ÕHØ\™[ˆ™]ÙY[ˆ™\œÙ\ÉË	ĞHXÙH›ÜˆÙ]KÛÛ™\‹[™]È]Û›H\X\ˆ]šYÚ‰ÊNÃBˆY›Ş
+KPUÛÛÙŒËKŒ˜[ÙJNØY›Ş
+KËPUœİÛ™KKŒ
+NØY›Ş
+KËKPUœİÛ™KŒËKKMŠNØY›Ş
+KËKPUœİÛ™KŒËKK
+NØÛÛœİÜ˜Z]YÏ\YÊŒËKŒ‹KŒÌ™ŒØÊNÜÜ˜Z]YËœÜÚ][Û‹OMKŒŒNØY[\
+ËŒÊNÂˆÛÛœİÜ˜Z]\ÚÏX›Ş
+‹‹ŒNKPU™\šÕÛÛÙKKŒ˜[ÙJNÙ›ÜŠÛÛœİÙˆËLKŒKKŒWJY›ÜŠÛÛœİˆÙˆËKKWJX›Ş
+ŒMKŒMPUÛÛÙ
+ÙKŒ
+Ù‹˜[ÙJNØÛÛœİÜ˜Z]YÙ\X›Ş
+KŒKPUœ\\‹‹Œ‹Œ˜[ÙJNÜÜ˜Z]YÙ\‹œ›İ][Û‹OKKŒÜÜ˜Z]YÙ\‹\Ù\‘]O^İ\N‰Ü›ÛÛK\™XÛÜ™	Ë™XÛÜ™Y‰ÜÜ˜Z]	Ë]N‰ĞHYÙ\ˆ™[™X]HÜ˜Z]	Ë]]Ü‰Ò]È˜[Y\È\™HÜš][ˆ[ˆÙ]™\˜[Y™™\™[[™Ë‰ËXİ[Û‰Ô‘PQ	ßNÚ[\˜XİX›\Ëœ\Ú
+Ü˜Z]YÙ\ŠNÂˆÛÛœİ›İOX›Ş
+Ì‹ŒËKPUœ\\‹KŒ‹K‹ËË˜[ÙJNÛ›İKœ›İ][Û‹OKÛ›İK\Ù\‘]O^İ\N‰Û›İIË]N‰ĞH›ÛY›İIË]]Ü‰ø 'HÙ\İØ[™[Y[X™\œÈÚ]HØ][ÙİYH›Ü™Ù]Ë¸ 'IËÙXÜ™]Y‰Ù›ÛY[›İIßNÚ[\˜XİX›\Ëœ\Ú
+›İJNÃBƒBˆËÈÚ[™\È[™Ûİ™\‹Y˜XÚ[™È›ÛÚÜÃBˆ]›ÛÚĞİ\œÛÜLYY›ÛÚĞİ\œÛÜMÎÙXÜ™]Ú[[[ÂˆÛÛœİÚ[™Y›ÛÚÑÙ[ÛY]O[™]È‘QK›ŞÙ[ÛY]JKŒKKKŒŒŠNÃBˆ[˜İ[ÛˆÚ[Š‹›İLÛİ[M‹ÙXÜ™]Y˜[ÙK]™[L
+^ØÛÛœİÏ[™]È‘QK‘Ü›İ\
+
+NÙËœÜÚ][Û‹œÙ]
+]™[ŠNÙËœ›İ][Û‹O\›İÜØÙ[™K˜Y
+ÊNØÛÛœİÏMËŒ‹MËKİXİ\™O[Y\™ÙY›Ş\ÊÖÕËŒNŒ‹KÕËŒN‹ŒKKÕËŒNËKKÕËŒNKÍKKÕËŒNË‹KËŒKUËÌ‹Ì‹KËŒKËÌ‹Ì‹WKPU™\šÕÛÛÙ
+K˜XÚÏ[Y\™ÙY›Ş\ÊÖÕËŒNÌ‹KŒÍWWKPUÛÛÙŠNÙË˜Y
+İXİ\™K˜XÚÊNÃBˆÛÛœİÛÛÏSX]˜ÙZ[
+Ûİ[Í
+NÙ›ÜŠ]›İÏLÜ›İÏÜ›İÊÊÊY›ÜŠ]ÛÛLØÛÛ
+ÙXÜ™]ØÛÛÎ
+NØÛÛ
+ÊÊ^Û]ÚYŠÛÛXÛÛÊ^ÚYŠYY›ÛÚĞİ\œÛÜX›ÛÚÜË›[™İ
+XÛÛ[YNØX›ÛÚÜÖØYY›ÛÚĞİ\œÛÜŠÊ×_Y[ÙHX›ÛÚĞİ\œÛÜÎØ›ÛÚÜÖØ›ÛÚĞİ\œÛÜŠÊ×N˜›ÛÚÜÖÌÍŠÊ
+›İÊ˜ÛÛÊØÛÛ
+ILLŠWNØÛÛœİX]X›ÛÚÓX]\šX[
+ŠNØÛÛœİ›O[™]È‘QK“Y\Ú
+Ú[™Y›ÛÚÑÙ[ÛY]KX]
+NØ›KœÜÚ][Û‹œÙ]
+L‹JØÛÛ
+ŒKÌ‹KŒM
+Ü›İÊŒKK
+NØ›Kœ›İ][Û‹JÛÛ	LËKŒ‹ŒN
+NÙË˜Y
+›JNØ›K\Ù\‘]O^İ\N‰Ø›ÛÚÉË›ÛÚÎ˜‹ÛYN›[ØYY™˜[Ù_NÚ[\˜XİX›\Ëœ\Ú
+›JNØÛİ™\”]Y]YKœ\Ú
+›JNÚYŠÙXÜ™]	‰œ›İÏOOL‰‰˜ÛÛOOLJ^Ø›K\Ù\‘]KœÙXÜ™]]YNØ›K\Ù\‘]K˜Xİ[ÛIÔS	ÎØ›KœÜÚ][Û‹
+ÏKŒLØ›KœÜÚ][Û‹KÍØ›Kœ›İ][Û‹KKŒNØ›K›X]\šX[™[Z\ÜÚ]™O[™]È‘QKÛÛÜŠØŒŒL
+NØ›K›X]\šX[™[Z\ÜÚ]™R[[œÚ]OKŸX›K\Ù\‘]KšÛYO^ÜÜÚ][Û˜›KœÜÚ][Û‹˜ÛÛ™J
+K]X]\›š[Û˜›Kœ]X]\›š[Û‹˜ÛÛ™J
+K\™[™ß_BˆË\Ù\‘]K˜ÛÛY\XÛÛY\Š‹X]˜XœÊX]˜ÛÜÊ›İ
+JJ•ÊÓX]˜XœÊX]œÚ[Š›İ
+JJ‘X]˜XœÊX]œÚ[Š›İ
+JJ•ÊÓX]˜XœÊX]˜ÛÜÊ›İ
+JJ‘
+NÜ™]\›ˆßCBˆ[˜İ[Ûˆİ\˜]YÚ[ŠYË‹›İL™YÛXİL
+^ÂˆÛÛœİÏ[™]È‘QK‘Ü›İ\
+
+NÙËœÜÚ][Û‹œÙ]
+ŠNÙËœ›İ][Û‹O\›İÜØÙ[™K˜Y
+ÊNØÛÛœİÏNKMKKİXİ\™O[Y\™ÙY›Ş\ÊÖÕËŒNŒ‹KÕËŒN‹ŒKKÕËŒNKËŒKUËÌ‹Ì‹KËŒKËÌ‹Ì‹WKPU™\šÕÛÛÙ
+K˜XÚÏ[Y\™ÙY›Ş\ÊÖÕËŒNÌ‹KŒÍWWKPUÛÛÙŠNÙË˜Y
+İXİ\™K˜XÚÊNÂˆYË™›Ü‘XXÚ
+
+YJOOØÛÛœİX›ÛÚÜË™š[™
+›ÛÚÏO˜›ÛÚËšYOOZY
+NÚYŠXŠ\™]\›ØÛÛœİ›İÏSX]™›ÛÜŠKÍJKÛÛZIMK›O[™]È‘QK“Y\Ú
+Ú[™Y›ÛÚÑÙ[ÛY]K›ÛÚÓX]\šX[
+ŠJKÛØ˜›OSX]œÚ[Š
+Y	NNMÊJ‹ÌÊÚJŒ‹ŒMÊK˜[[[™YÛXİL‰‰šOZYË›[™İJ™YÛXİLJNÚYŠ˜[[Š^Ø›KœÜÚ][Û‹œÙ]
+L‹JÊILÊJŒ‹ŒMKŒMKŒJÊILŠJ‹N
+NØ›Kœ›İ][Û‹œÙ]
+SX]”KÌ‹ÛØ˜›J‹ŒŒ‹ÛØ˜›J‹
+_Y[Ù^Ø›KœÜÚ][Û‹œÙ]
+LËJØÛÛ
+ŒKÍJİÛØ˜›J›™YÛXİ
+‹ŒLKKŒŠÜ›İÊŒ‹ŒKJILŠJ›™YÛXİ
+‹ŒK
+ÊILÊJ›™YÛXİ
+‹ŒÍJNØ›Kœ›İ][Û‹œÙ]
+
+ÛÛ	LËKŒN‹ŒMJJİÛØ˜›J›™YÛXİ
+‹ŒÍKÛØ˜›J›™YÛXİ
+‹ŒLÊ_YË˜Y
+›JNØ›K\Ù\‘]O^İ\N‰Ø›ÛÚÉË›ÛÚÎ˜‹ØYY™˜[ÙKÛYNÜÜÚ][Û˜›KœÜÚ][Û‹˜ÛÛ™J
+K]X]\›š[Û˜›Kœ]X]\›š[Û‹˜ÛÛ™J
+K\™[™ß_NÚ[\˜XİX›\Ëœ\Ú
+›JNØÛİ™\”]Y]YKœ\Ú
+›J_JNÂˆYŠ™YÛXİLŠ^ØÛÛœİœ›ÚÙ[”[šÏ[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JÊ‹‹ŒLË
+‹ÊKPU™\šÕÛÛÙ
+NØœ›ÚÙ[”[šËœÜÚ][Û‹œÙ]
+KË‹ŒLËŒÍJNØœ›ÚÙ[”[šËœ›İ][Û‹KŒMJ›™YÛXİØœ›ÚÙ[”[šËœ›İ][Û‹OKKŒ
+›™YÛXİÙË˜Y
+œ›ÚÙ[”[šÊ_BˆË\Ù\‘]K˜ÛÛY\XÛÛY\Š‹X]˜XœÊX]˜ÛÜÊ›İ
+JJ•ÊÓX]˜XœÊX]œÚ[Š›İ
+JJ‘X]˜XœÊX]œÚ[Š›İ
+JJ•ÊÓX]˜XœÊX]˜ÛÜÊ›İ
+JJ‘
+NÜ™]\›ˆÂˆBˆ[˜İ[ÛˆÛÜÙP›ÛÚÊ›ÛÚËK‹›İLÙXÜ™]YIÉÊ^ØÛÛœİ›O[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JKŒKKKŒŒŠK›ÛÚÓX]\šX[
+›ÛÚÊJKØY™VOSX]›X^
+K›ÛÜ’ZYÚ
+ŠJË
+NØ›KœÜÚ][Û‹œÙ]
+ØY™VKŠNØ›Kœ›İ][Û‹œÙ]
+›İX]”KÌŠNØ›K˜Ø\İÚYİÏ]YNÜØÙ[™K˜Y
+›JNØ›K\Ù\‘]O^İ\N‰Ø›ÛÚÉË›ÛÚËØYY™˜[ÙKÙXÜ™]YÛYNÜÜÚ][Û˜›KœÜÚ][Û‹˜ÛÛ™J
+K]X]\›š[Û˜›Kœ]X]\›š[Û‹˜ÛÛ™J
+K\™[œØÙ[™__NÚ[\˜XİX›\Ëœ\Ú
+›JNØÛİ™\”]Y]YKœ\Ú
+›JNÜ™]\›ˆ›_CBˆÚ[ŠMËŒËLMËLŠNÜÚ[ŠLMËLŠNÜÚ[ŠËŒËLMËLŠNÜÚ[ŠLMKMËX]”KÌ‹
+NÜÚ[ŠMKMËSX]”KÌ‹
+NÜÚ[ŠLLL‹ŠNÜÚ[ŠLX]”KŠNÜÚ[ŠLL‹ŠNÜÚ[ŠX]”KŠNÃBˆËÈY[ˆ\ÜØYÙ\ÎˆXXÚ™XY[™È›ÛÛH\È™XXÚYÛ›HHš[™[™È]ÈİÛˆØØ]\™YÙXÜ™][ˆHXZ[ˆ[ÜˆÚ[™ÜÈH›ÈØš[İ\ÈÛÜ‹›ÈÚ\™YØ˜KƒBˆÛÛœİY[”\ÜØYÙ\ÏV×NÙ[˜İ[Ûˆ[\’Y[”›ÛÛJ
+^ÚYŠ[YT›ÛÛRÙ^\Ëš\Ê™\İ[˜][ÛŠJXZ[[YT›ÛÛ\Ê
+NÜ^Y\‹œÜËœÙ]
+œÜ]Û–ÌKœÜ]Û–ÌWKœÜ]Û–Ì—JNÜ^Y\‹™[œÙ]
+
+NÜ^Y\‹X]ÏZX]ÎÛ\İØY™TÜÚ][Û‹˜ÛÜJ^Y\‹œÜÊNÜÚİÓ›İXÙJ[YP\œš]˜[ÖÚ™\İ[˜][Û—_	ÕHXœ˜\H™X\œ˜[™Ù\È]Ù[ˆ\›İ[™[İK‰ËŠNÜÛİ[™
+MÌK	İšX[™ÛIËŒLŠ_Y[˜İ[ÛˆY[‘ÛÜŠ‹›İÜÊ^ØÛÛœİÜ›İ\[™]È‘QK‘Ü›İ\
+
+NÙÜ›İ\œÜÚ][Û‹œÙ]
+ŠNÙÜ›İ\œ›İ][Û‹O\›İÜØÙ[™K˜Y
+Ü›İ\
+NØÛÛœİ[™[[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]J‹ŒKŒM
+KPU™\šÕÛÛÙ
+NÜ[™[™Ù[ÛY]K˜[œÛ]JKŒLK
+NÜ[™[œÜÚ][Û‹œÙ]
+LKŒLK‹K
+NÙÜ›İ\˜Y
+[™[
+NÙ›ÜŠÛÛœİÚYHÙˆËLKWJ^ØÛÛœİ˜[X[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒM‹KŒKŒ
+KPU™ÛÛ
+NÚ˜[X‹œÜÚ][Û‹œÙ]
+ÚYJŒKŒ‹‹MKŒ
+NÙÜ›İ\˜Y
+˜[XŠ_XÛÛœİ[[[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]J‹MKŒM‹Œ
+KPU™ÛÛ
+NÛ[[œÜÚ][Û‹œÙ]
+KŒ‹Œ
+NÙÜ›İ\˜Y
+[[
+NØÛÛœİ[™O[™]È‘QK“Y\Ú
+™]È‘QK”Ü\™QÙ[ÛY]JŒL‹L
+KPU˜œ˜\ÜÊNÚ[™KœÜÚ][Û‹œÙ]
+KKKŒKŒN
+NÜ[™[˜Y
+[™JNØÛÛœİ^Ü›ÙÜ™\ÜÎŒ\İ[˜][Û›ÜË™\İ[˜][Û‹Ü]Û›ÜËœÜ]Û‹X]Î›ÜËX]Ë\ÜØYÙTÛİ[™‰ÙÛÜ“Ü[‰Ë\NœOÜ[™[œ›İ][Û‹OK\
+‹M__NÜ[™[\Ù\‘]O^İ\N‰ÚY[‹\\ÜØYÙIË]N›ÜË]K]]Ü›ÜË˜]]Ü‹Xİ[Û‰ÓÔS‰ßNÚ[\˜XİX›\Ëœ\Ú
+[™[
+NÚY[”\ÜØYÙ\Ëœ\Ú
+
+NÜ™]\›ˆÜ›İ\Y[˜İ[ÛˆY[”Z[[™ÊK‹Ë›İÛÛÜœËÜÊ^ØÛÛœİ\\Z[[™ÊK‹Ë›İÛÛÜœËÜËš[XYÙJNÚYŠÜË^\™J^Ø\œ[™[›X]\šX[›X\[ÜË^\™NØ\œ[™[›X]\šX[™[Z\ÜÚ]™SX\[ÜË^\™NØ\œ[™[›X]\šX[›™YYÕ\]O]Y_XÛÛœİ^Ü›ÙÜ™\ÜÎŒ\İ[˜][Û›ÜË™\İ[˜][Û‹Ü]Û›ÜËœÜ]Û‹X]Î›ÜËX]Ë\ÜØYÙTÛİ[™‰ÜXİ\™T\ÜØYÙIË\NœOØ\™Ü›İ\œ›İ][Û‹\
+‹ŒLŸ_NØ\œ[™[\Ù\‘]O^İ\N‰ÚY[‹\\ÜØYÙIË]N›ÜË]K]]Ü›ÜË˜]]Ü‹Xİ[Û›ÜË˜Xİ[ÛŸ	Ô‘TÔÉßNÚ[\˜XİX›\Ëœ\Ú
+\œ[™[
+NÚY[”\ÜØYÙ\Ëœ\Ú
+
+NÜ™]\›ˆ\Y[˜İ[ÛˆY[‘]šY[˜ÙPØ\ÙJK‹›İÜÊ^ØÛÛœİ\\Z[[™ÊK‹ËË›İÉÈÌ˜ÌŒLN	Ë	ÈØ	×KÜËš[XYÙKYJKÛÜÙY›İ\›İØÛÛœİÛ\ÜÏ[™]È‘QK“Y\Ú
+™]È‘QK”[™QÙ[ÛY]JËŒKŒÍJKPU™Û\ÜÊNÙÛ\ÜËœÜÚ][Û‹œÙ]
+KËŒLŠNØ\™Ü›İ\˜Y
+Û\ÜÊNØÛÛœİ^Ü›ÙÜ™\ÜÎŒ\İ[˜][Û›ÜË™\İ[˜][Û‹Ü]Û›ÜËœÜ]Û‹X]Î›ÜËX]Ë\ÜØYÙTÛİ[™‰ÜXİ\™T\ÜØYÙIË\NœOØ\™Ü›İ\œ›İ][Û‹OXÛÜÙY›İ\
+‹Ÿ_NØ\œ[™[\Ù\‘]O^İ\N‰ÚY[‹\\ÜØYÙIË]N›ÜË]K]]Ü›ÜË˜]]Ü‹Xİ[Û‰ĞSQÓˆÓQTÉßNÙÛ\ÜË\Ù\‘]OX\œ[™[\Ù\‘]NÚ[\˜XİX›\Ëœ\Ú
+\œ[™[Û\ÜÊNÚY[”\ÜØYÙ\Ëœ\Ú
+
+NÜ™]\›ˆ\BˆY[‘ÛÜŠLÌKÙ\İ[˜][Û‰ÙÛİXÉËÜ]Û–ÎMKMKX]Î“X]”K]N‰ĞH˜\œ›İÈÛÜˆ[ˆHÛİ]Ø[	Ë]]Ü‰ÕH[™H\ÈÛÛ[™H™XYÙˆØ[™HÛ[ÚÙH\ØØ\\ÈHÙX[K‰ßJNÃBˆY[”Z[[™ÊM‹LÌŒK‹‹ËKÉÈÌXL˜ÉË	ÈÍ˜MMXI×KÚ[XYÙN‰Ø\ÜÙ]ËÜÜ˜Z]Z[\ÜÜÚX›K\İZ\œËšœÉË\İ[˜][Û‰Ú[œ]Z\IËÜ]Û–ÌLŒMKX]Î“X]”K]N‰ĞHÛX[[œÚYÛ™YÚÙ]ÚÙˆHØÚÙYÛÜ‰Ë]]Ü‰ÔÛÛY][™ÈX›İ]H[™ÙH™Y[ÈÜ›Û™Ë‰ßJNÃBˆY[‘ÛÜŠLÌKËX]”KÙ\İ[˜][Û‰ØÚ\	ËÜ]Û–ÌMKMKX]Î“X]”K]N‰ĞHÛÜˆX\šÙYÚ]HÛÛ\\ÜÈ›ÜÙIË]]Ü‰ĞHØÜ˜]ÚYœ˜\ÜÈÛÛ\\ÜÈÚ[ÈÛÛY]Ú\™H™^[Û™HÙ\İ\›ˆÚ[™Ë‰ßJNÃBˆY[”Z[[™ÊLÍ‹ËN‹‹ËKX]”KÌ‹ÉÈÌØLÌŒ	Ë	ÈÍØM˜LØI×KÚ[XYÙN‰Ø\ÜÙ]ËØ›İ[š\İšœÉË\İ[˜][Û‰Ù˜]Ú[™ÉËÜ]Û–ÎMK—KX]Î“X]”K]N‰ĞH˜YYØ]\˜ÛÛÜˆÙˆH\›İ\ˆ›ÈÛ™H\›š\ÚY	Ë]]Ü‰ÕHœ\ÚÛÜšÈÙY[\ÈÈÚYÚ[ˆ[İHÛÚÈ]Ø^K‰ßJNÃBˆY[‘ÛÜŠÌLLËËÙ\İ[˜][Û‰ÜİYIËÜ]Û–ÌLŒ—KX]Î“X]”K]N‰ĞH]ZY]ÛÜˆ™Z[™HX\İ\›ˆÚ[™\ÉË]]Ü‰ÕH[™H\ÈÛ\ÚYHHÚ[™ÛK˜[Z[X\ˆ[™‰ßJNÃBˆY[”Z[[™ÊÍ‹ËNK‹‹ËKSX]”KÌ‹ÉÈÌXÌ˜ÌYIË	ÈÍM˜LØI×KÚ[XYÙN‰Ø\ÜÙ]ËÜZ[[™Ë]ÛÛ™\‹YØ\™[‹šœÉË\İ[˜][Û‰ÙØ\™[‰ËÜ]Û–ÌMK—KX]Î“X]”K]N‰ĞHÛX[Z[YØ\™[‹ÙHİ™\™Ü›İÛ‰Ë]]Ü‰Ó™]È›İÙ\œÈÙY[HÈ›ÛÛH™]ÙY[ˆš\Ú]Ë‰ßJNÂšY[”Z[[™ÊÍ‹KKËKKSX]”KÌ‹ÉÈÌØL˜LNIË	ÈØNMŒ	×Kİ^\™N™\›™TÜ[^\™J
+K\İ[˜][Û‰İ™\›™IËÜ]Û–ÌMÌ—KX]Î“X]”K]N‰Ğ[ˆÛ[™Ü˜]š[™ÈÙˆ[\ÜÜÚX›H›ŞXYÙ\ÉË]]Ü‰Ñ›ŞYÛÜ\œ]H[™\È›Ú[ˆHİX›X\š[™KH˜[ÛÛ‹[™H[ÛÛ‹ˆH\›š\ÚYœ˜[YH™\Ù[X›\ÈH]Ú‰ßJNÂˆY[”Z[[™ÊLÍ‹KŒKKËKKX]”KÌ‹ÉÈÍLÎLŒ‰Ë	ÈØXLÍ™‰×KÚ[XYÙN‰Ø\ÜÙ]ËÜZ[[™ËZYÙØ\™[ÜİZÚ[™ÙÛKšœÉË\İ[˜][Û‰ÚYÙØ\™	ËÜ]Û–ÌLKX]Î“X]”K]N‰ĞHÜİÚ[™ÙÛH[™\ˆÛ˜\›š\Ú	Ë]]Ü‰Ò[ˆHZ[YZ\İHİY›İ]H\X\œÈÛ›HÚ[ˆHœ˜\ÜÈœ˜[YH\ÈØ\›H™[™X][İ\ˆš[™Ù\‹‰ËXİ[Û‰ÕPÑH“ÕUIßJNÂˆY[‘]šY[˜ÙPØ\ÙJŒËKLLËKÚ[XYÙN‰Ø\ÜÙ]ËÜZ[[™ËYŞ[KXÛÛœİ[[™Ë\›ÛÛKšœÉË\İ[˜][Û‰ÙŞ[IËÜ]Û–ÌLÎKX]Î“X]”K]N‰ĞHØ\Û]ÛÛœİ[[™È›ÛÛH™Z[™Û\ÜÉË]]Ü‰ÕHØ]Úš[Û[‹[™ÙX[Y\\œÈÛÚÈ[œ™[]Y[[Z\ˆ™Y›Xİ[ÛœÈ[YÛ‹‰ßJNÂˆËÈ]\˜\HX\İ\ˆYÙÜÎˆHÛ[Xš[™ÈÚ]H›Û[YKHZYšYÚÛÜØ^K[™Ü™X]\™\ÈÛ[\ÙY™]ÙY[ˆÚ[™\ËƒBˆÛÛœİÚ]U›Û[YU^XØ[˜\Õ^\™J
+ËË
+OOØÛÛœİ\\XË˜Ü™X]S[™X\‘Ü˜YY[
+Ë
+NÜ\\‹˜YÛÛÜ”İÜ
+	ÈÙ™	ÊNÜ\\‹˜YÛÛÜ”İÜ
+	ÈÙŒXYÉÊNÜ\\‹˜YÛÛÜ”İÜ
+K	ÈØ™ŒØL	ÊNØË™š[İ[O\\\ØË™š[™Xİ
+Ë
+NØËœİ›ÚÙTİ[OIÈÎÍLIÎØË›[™UÚYLLØËœİ›ÚÙT™Xİ
+NNËLÍ‹LÍŠNØË›[™UÚYLÎØËœİ›ÚÙT™Xİ
+Ì‹Ì‹ËMM
+NØË™š[İ[OIÈÍXMLÌ‰ÎØË^[YÛIØÙ[\‰ÎØË™›ÛIØ›ÛÙ[Ü™ÚXIÎØË™š[^
+	ÕHÒUIËËÌ‹LJNØË™š[^
+	Õ“ÓSQIËËÌ‹MÊNØË˜™YÚ[”]
+
+NØË˜\˜ÊËÌ‹KŒ‹Œ‹X]”JŒKÊNØË›[™UÚYMÎØËœİ›ÚÙJ
+NØË˜™YÚ[”]
+
+NØË›[İ™UÊËÌ‹MNL
+NØËœ]XY˜]XĞİ\™UÊËÌ‹ŒKËÌŠÍNL
+NØËœ]XY˜]XĞİ\™UÊËÌ‹KËÌ‹MNL
+NØËœİ›ÚÙJ
+NØË™›ÛIÚ][XÈNÙ[Ü™ÚXIÎØË™š[^
+	ĞH›ÛÚÈÚ]İ]HØ][ÙİYHX\šÉËËÌ‹MMJ_KÎMŒ
+KÚ]U›Û[YQÜ›İ\[™]È‘QK‘Ü›İ\
+
+NİÚ]U›Û[YQÜ›İ\œÜÚ][Û‹œÙ]
+MËŒËKŒMLM‹
+NÜØÙ[™K˜Y
+Ú]U›Û[YQÜ›İ\
+NØÛÛœİÚ]U›Û[YO[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JKŒŒ‹KŒ‹ŒŠK™]È‘QK“Y\Úİ[™\™X]\šX[
+ÛX\Ú]U›Û[YU^›İYÚ™\ÜÎ‹Í‹[\X\Ú]U›Û[YU^[\ØØ[N‹ŒLŸJJNİÚ]U›Û[YQÜ›İ\˜Y
+Ú]U›Û[YJNØÛÛœİÚ]TYÙ\Ï[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JKŒKŒ
+K™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒ™XYK›İYÚ™\ÜÎŒ_JJNİÚ]TYÙ\ËœÜÚ][Û‹KKŒMİÚ]U›Û[YQÜ›İ\˜Y
+Ú]TYÙ\ÊNØÛÛœİÚ]TÜ[™O[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒL‹KŒ‹Œ
+K™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒÍLK›İYÚ™\ÜÎ‹ŸJJNİÚ]TÜ[™KœÜÚ][Û‹KKŒNİÚ]U›Û[YQÜ›İ\˜Y
+Ú]TÜ[™JNİÚ]U›Û[YK\Ù\‘]O^İ\N‰ÛØš™Xİ	Ë]N‰ÕHÚ]H›Û[YIË]]Ü‰Ğ[ˆ]›ÜHÛİš[™[™ËH˜YYÚ[H]šXÙK[™›ÈØ][ÙİYHX\šËˆ]ÛY[È˜Z[HÙˆØ[‰ËXİ[Û‰ÑVSRS‘IßNÚ[\˜XİX›\Ëœ\Ú
+Ú]U›Û[YJNÂˆÛÛœİZYšYÚÛÜ[™]È‘QK‘Ü›İ\
+
+K[š]X[˜X˜š]ÛÜ”ØØ[OX]ØZÙ[™Y›ÛÚÜËš\ÊLJOÌKŒŒ‹ŒMÛZYšYÚÛÜ‹œÜÚ][Û‹œÙ]
+LKŠš[š]X[˜X˜š]ÛÜ”ØØ[KKN
+NÛZYšYÚÛÜ‹œØØ[KœÙ]ØØ[\Š[š]X[˜X˜š]ÛÜ”ØØ[JNÜØÙ[™K˜Y
+ZYšYÚÛÜŠNØÛÛœİZYšYÚÛÜ”ÛX[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JKKËËŒMŠKPU™\šÕÛÛÙ
+NÛZYšYÚÛÜ”ÛX‹\Ù\‘]O^İ\N‰ÛZYšYÚYÛÜ‰Ë]N‰ĞHÛÜˆ›È[\ˆ[ˆH›ÛÚÉË]]Ü‰ĞHœ˜\ÜÈ˜X˜š]\È[™Ü˜]™YX›İ™HHÙ^ZÛHÛX[\ˆ[ˆ[İ\ˆ[X›˜Z[‰ËXİ[Û‰Õ–HÓÔ‰ßNÚYŠ]ØZÙ[™Y›ÛÚÜËš\ÊLJJSØš™Xİ˜\ÜÚYÛŠZYšYÚÛÜ”ÛX‹\Ù\‘]Kİ]N‰ÕHÜ›İÛˆ˜X˜š]ÛÜ‰Ë]]Ü‰ĞY\ˆ™XY[™È[XÙK]\È™XÛÛYH\™Ù\ˆ[ˆ[ˆÜ™[˜\HÛÜ‹‰ËXİ[Û‰ÑS•T‰ßJNÛZYšYÚÛÜ‹˜Y
+ZYšYÚÛÜ”ÛXŠNÙ›ÜŠÛÛœİÙˆËKM‹M—J^ØÛÛœİYÙO[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒ‹ŒKŒŠKPU™ÛÛ
+NÙYÙKœÜÚ][Û‹^ÛZYšYÚÛÜ‹˜Y
+YÙJ_XÛÛœİZYšYÚ[[[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]J‹ŒL‹Œ‹ŒŠKPU™ÛÛ
+NÛZYšYÚ[[œÜÚ][Û‹OL‹ŒÛZYšYÚÛÜ‹˜Y
+ZYšYÚ[[
+NØÛÛœİ˜X˜š]Û›Ø[™]È‘QK“Y\Ú
+™]È‘QK”Ü\™QÙ[ÛY]JŒKŠKPU˜œ˜\ÜÊNÜ˜X˜š]Û›Ø‹œÜÚ][Û‹œÙ]
+KŒMŠNÛZYšYÚÛÜ‹˜Y
+˜X˜š]Û›ØŠNÛZYšYÚÛÜ‹š\ÚX›O]YNØÛÛœİ˜X˜š]ÛÜ‘ÛİÏ[™]È‘QK”Ú[YÚ
+Ø™ËKËŠNÜ˜X˜š]ÛÜ‘ÛİËœÜÚ][Û‹œÙ]
+LK
+NÜØÙ[™K˜Y
+˜X˜š]ÛÜ‘ÛİÊNÚ[\˜XİX›\Ëœ\Ú
+ZYšYÚÛÜ”ÛXŠNÃBˆÛÛœİ˜X˜š][™]È‘QK‘Ü›İ\
+
+K˜X˜š]X][™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒNYMYK›İYÚ™\ÜÎ‹M_JK˜X˜š]^YSX][™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒLØM‹[Z\ÜÚ]™NŒMLN[Z\ÜÚ]™R[[œÚ]N‹_JNÜØÙ[™K˜Y
+˜X˜š]
+NØÛÛœİ˜X˜š]›ÙO[™]È‘QK“Y\Ú
+™]È‘QK”Ü\™QÙ[ÛY]JŒÎL‹JK˜X˜š]X]
+NÜ˜X˜š]›ÙKœØØ[KœÙ]
+KŒ‹ÌŠNÜ˜X˜š]›ÙKœÜÚ][Û‹OKÜ˜X˜š]˜Y
+˜X˜š]›ÙJNØÛÛœİ˜X˜š]XY[™]È‘QK“Y\Ú
+™]È‘QK”Ü\™QÙ[ÛY]JŒKL‹
+K˜X˜š]X]
+NÜ˜X˜š]XYœÜÚ][Û‹œÙ]
+ŒÎË
+NÜ˜X˜š]˜Y
+˜X˜š]XY
+NÙ›ÜŠÛÛœİˆÙˆËKŒLKŒLWJ^ØÛÛœİX\[™]È‘QK“Y\Ú
+™]È‘QKÛÛ™QÙ[ÛY]JŒK
+K˜X˜š]X]
+NÙX\‹œÜÚ][Û‹œÙ]
+KŒ‹ŠNÙX\‹œ›İ][Û‹KKŒLÜ˜X˜š]˜Y
+X\Š_XÛÛœİ˜X˜š]^YO[™]È‘QK“Y\Ú
+™]È‘QK”Ü\™QÙ[ÛY]JŒKŠK˜X˜š]^YSX]
+NÜ˜X˜š]^YKœÜÚ][Û‹œÙ]
+M‹Í‹KŒN
+NÜ˜X˜š]˜Y
+˜X˜š]^YJNÜ˜X˜š]œØØ[KœÙ]ØØ[\ŠÌŠNÜ˜X˜š]š\ÚX›OY˜[ÙNÃBˆÛÛœİ[œÙXİÚYİÏ[™]È‘QK‘Ü›İ\
+
+KÚYİÓX][™]È‘QK“Y\Ú˜\ÚXÓX]\šX[
+ØÛÛÜŒÌ‹˜[œÜ\™[YKÜXÚ]N‹Ì‹\Üš]N™˜[Ù_JNÜØÙ[™K˜Y
+[œÙXİÚYİÊNØÛÛœİ[œÙXİ›ÙO[™]È‘QK“Y\Ú
+™]È‘QK”Ü\™QÙ[ÛY]J‹LŠKÚYİÓX]
+NÚ[œÙXİ›ÙKœØØ[KœÙ]
+KKŒJNÚ[œÙXİÚYİË˜Y
+[œÙXİ›ÙJNØÛÛœİ[œÙXİXY[™]È‘QK“Y\Ú
+™]È‘QK”Ü\™QÙ[ÛY]JŒŒ‹KŠKÚYİÓX]
+NÚ[œÙXİXYœØØ[KOKŒNÚ[œÙXİXYœÜÚ][Û‹KMNÚ[œÙXİÚYİË˜Y
+[œÙXİXY
+NÙ›ÜŠÛÛœİÚYHÙˆËLKWJY›ÜŠ]OLÚOÎÚJÊÊ^ØÛÛœİYÏ[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JËŒMKŒÍJKÚYİÓX]
+NÛYËœÜÚ][Û‹œÙ]
+ŒKZJ‹ŒNŒKÚYJŠŒ
+ÚJ‹ŒJJNÛYËœ›İ][Û‹O\ÚYJŠŒÍJÚJ‹ŒN
+NÚ[œÙXİÚYİË˜Y
+YÊ_Z[œÙXİÚYİËœÜÚ][Û‹œÙ]
+LL‹ŒMKLMŠNÚ[œÙXİÚYİËš\ÚX›OY˜[ÙNÃBˆËÈHXœ˜\H]šYÚ\ÈZ[Û›HÚ[ˆ[XÙHÜ[œÈ]È[\ÜÜÚX›HÛÜ‹ƒBˆÛÛœİšYÚ›ÛÛO^ØŞ‹LLLŞ‹LKÎÌŒM_NÛ]šYÚ›ÛÛPZ[Y˜[ÙNÃBˆÛÛœİÚ\Ú\™S[™\ÏVÉÓÛ›HHÛZ[H\Èš\ÚX›HÛšYÚˆH™\İ\\™[KYÛÛY]Ú\™H™]\ˆÈ™K‰Ë	Ò]Ù™™\œÈ[ˆÜ[š[ÛˆÛˆ[İ\ˆ™XY[™ÈXÙK[ˆ˜[š\Ú\È™Y›Ü™H[İHØ[ˆØš™Xİ‰Ë	ĞHZ\ˆÙˆ^Y\ÈÛÛœÚY\œÈ[İH›ÜˆHÛ™È[ÛY[[˜›[šÚ[™Ë[™[ˆÚ[\H\Û¸ &]\™K‰Ë	Ò]Üš[œÈÚY\ˆHÛ™Ù\ˆ[İHÛÚË›Üˆ›È™X\ÛÛˆ]Ø\™\ÈÈ^Z[‹‰Ë	Ò]È›ÚXÙH\œš]™\ÈH[‹\ÙXÛÛ™™Y›Ü™HH™\İÙˆ][™X]™\ÈH[‹\ÙXÛÛ™Y\‹‰Ë	Ò]İYÙÙ\İË[š[[K][İH\™H^XİH\ÈÜİ\È[İHİYÚÈ™K‰×NÃBˆ[˜İ[ÛˆšYÚÚ[”ØØ[J
+^ØÛÛœİO[šYÚÚ[’[™^
+ÊÎÜ™]\›ˆIMOOLÌKšIMOOMËMNŒ_CBˆ[˜İ[ÛˆØ\œ›ÛÚ[Š‹›İLØØ[OLJ^ØÛÛœİØ\œ›Û›ÛÚÜÏX›ÛÚÜË™š[\ŠO˜‹˜]]ÜOOIÓ]Ú\ÈØ\œ›Û	ÊNØÛÛœİÏ[™]È‘QK‘Ü›İ\
+
+NÙËœÜÚ][Û‹œÙ]
+ŠNÙËœ›İ][Û‹O\›İÙËœØØ[KœÙ]ØØ[\ŠØØ[JNÜØÙ[™K˜Y
+ÊNØÛÛœİÏMËŒ‹MËKİXİ\™O[Y\™ÙY›Ş\ÊÖÕËŒNŒ‹KÕËŒN‹ŒKKÕËŒNËKKÕËŒNKÍKKÕËŒNË‹KËŒKUËÌ‹Ì‹KËŒKËÌ‹Ì‹WKPU™\šÕÛÛÙ
+K˜XÚÏ[Y\™ÙY›Ş\ÊÖÕËŒNÌ‹KŒÍWWKPUÛÛÙŠNÙË˜Y
+İXİ\™K˜XÚÊNÙ›ÜŠ]›İÏLÜ›İÏÜ›İÊÊÊY›ÜŠ]ÛÛLØÛÛØÛÛ
+ÊÊ^ØÛÛœİXØ\œ›Û›ÛÚÜÖÛšYÚ›ÛÚÒ[™^	XØ\œ›Û›ÛÚÜË›[™İNÛšYÚ›ÛÚÒ[™^
+ÊÎØÛÛœİX]X›ÛÚÓX]\šX[
+ŠNØÛÛœİ›O[™]È‘QK“Y\Ú
+Ú[™Y›ÛÚÑÙ[ÛY]KX]
+NØ›KœÜÚ][Û‹œÙ]
+L‹JØÛÛ
+ŒKÌ‹KŒM
+Ü›İÊŒKK
+NØ›Kœ›İ][Û‹JÛÛ	LËKŒ‹ŒN
+NÙË˜Y
+›JNØ›K\Ù\‘]O^İ\N‰Ø›ÛÚÉË›ÛÚÎ˜‹ÛYN›[ØYY™˜[Ù_NÚ[\˜XİX›\Ëœ\Ú
+›JNØÛİ™\”]Y]YKœ\Ú
+›JNØ›K\Ù\‘]KšÛYO^ÜÜÚ][Û˜›KœÜÚ][Û‹˜ÛÛ™J
+K]X]\›š[Û˜›Kœ]X]\›š[Û‹˜ÛÛ™J
+K\™[™ß_YË\Ù\‘]K˜ÛÛY\XÛÛY\Š‹
+X]˜XœÊX]˜ÛÜÊ›İ
+JJ•ÊÓX]˜XœÊX]œÚ[Š›İ
+JJ‘
+JœØØ[K
+X]˜XœÊX]œÚ[Š›İ
+JJ•ÊÓX]˜XœÊX]˜ÛÜÊ›İ
+JJ‘
+JœØØ[K	ÛšYÚÚ[‰ÊNÜ™]\›ˆßCBˆ[˜İ[ÛˆÚXÚÙ\‘›ÛÜŠ‹ËÜ]X\™\ÏLL
+^ØÛÛœİ^XØ[˜\Õ^\™J
+ËË
+OOØÛÛœİÙ[UËÜÜ]X\™\ËÙ[RÜÜ]X\™\ÎÙ›ÜŠ]LÜÜ]X\™\ÎÜŠÊÊY›ÜŠ]ÛÛLØÛÛÜ]X\™\ÎØÛÛ
+ÊÊ^ØË™š[İ[OJŠØÛÛ
+ILOOLÉÈÙMÙÍ‰Î‰ÈÌXÌÌ	ÎØË™š[™Xİ
+ÛÛ
+˜Ù[Š˜Ù[Ù[Ù[
+__KLL‹LLŠNØÛÛœİ›ÛÜ“Y\Ú[Y\Ú
+™]È‘QK”[™QÙ[ÛY]JË
+K™]È‘QK“Y\Úİ[™\™X]\šX[
+ÛX\^›İYÚ™\ÜÎ‹_JKŒMK‹˜[ÙJNÙ›ÛÜ“Y\Úœ›İ][Û‹KSX]”KÌÜ™]\›ˆ›ÛÜ“Y\ÚCBˆ[˜İ[ÛˆØ\™ÛÛY\Š‹›İİZ]Ş[X›ÛİZ]ÛÛÜŠ^ØÛÛœİÏ[™]È‘QK‘Ü›İ\
+
+NÙËœÜÚ][Û‹œÙ]
+ŠNÙËœ›İ][Û‹O\›İÜØÙ[™K˜Y
+ÊNØÛÛœİ^XØ[˜\Õ^\™J
+ËË
+OOØË™š[İ[OIÈÙNYL˜Ù‰ÎØË™š[™Xİ
+Ë
+NØËœİ›ÚÙTİ[OIÈÎMØMN	ÎØË›[™UÚYLLØËœİ›ÚÙT™Xİ
+MMËLL
+NØË™š[İ[O\İZ]ÛÛÜØË^[YÛIØÙ[\‰ÎØË™›ÛIØ›ÛŒŒÙ[Ü™ÚXIÎØË™š[^
+İZ]Ş[X›ÛËÌ‹
+‹MŠNØË™›ÛIØ›ÛÙ[Ü™ÚXIÎØË™š[^
+İZ]Ş[X›Û
+NØËœØ]™J
+NØË˜[œÛ]JËMN
+NØËœ›İ]JX]”JNØË™š[^
+İZ]Ş[X›Û
+NØËœ™\İÜ™J
+_KŒŒ
+NØÛÛœİ˜XÙO[Y\Ú
+™]È‘QK”[™QÙ[ÛY]JKŒMK‹ŒMJK™]È‘QK“Y\Úİ[™\™X]\šX[
+ÛX\^›İYÚ™\ÜÎ‹_JKKŒŒÍK˜[ÙJNÙË˜Y
+˜XÙJNØÛÛœİ˜XÚÚ[™Ï[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JKŒMK‹ŒMKŒJK™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒÙ˜Í˜X‹›İYÚ™\ÜÎ‹_JJNØ˜XÚÚ[™ËœÜÚ][Û‹OLKŒÙË˜Y
+˜XÚÚ[™ÊNØÛÛœİ[™\™[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒ‹‹‹ŒŠKPU™\šÕÛÛÙ
+NÚ[™\™œÜÚ][Û‹œÙ]
+KŒË
+NÙË˜Y
+[™\™
+NØÛÛœİ›YO[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒËŒÍ‹ŒJKPU˜œ˜\ÜÊNØ›YKœÜÚ][Û‹œÙ]
+‹K
+NÙË˜Y
+›YJNÙ˜XÙK\Ù\‘]O^İ\N‰ÛØš™Xİ	Ë]N˜HØ\™ÛÛY\‹	ÜİZ]Ş[X›ÛX]]Ü‰Ò]İ[™È]][[Ûˆ[™Ù\È›İ›[šËˆ]Ù\È›İ\X\ˆÈœ™X]KZ]\‹‰ËXİ[Û‰ÑVSRS‘IßNÚ[\˜XİX›\Ëœ\Ú
+˜XÙJNØÛÛY\Š‹KŒ‹‹	ØØ\™ÛÛY\‰ÊNÜ™]\›ˆßCBˆ[˜İ[ÛˆšYÚÚYÛŠK‹›İK^
+^ØÛÛœİ^XØ[˜\Õ^\™J
+ËË
+OOØË™š[İ[OIÈÌMŒLM	ÎØË™š[™Xİ
+Ë
+NØËœİ›ÚÙTİ[OIÈÎM˜	ÎØË›[™UÚYMØËœİ›ÚÙT™Xİ
+LLËLŒLŒ
+NØË™š[İ[OIÈÙNXŒ	ÎØË^[YÛIØÙ[\‰ÎØË™›ÛIÚ][XÈœÙ[Ü™ÚXIÎØÛÛœİÛÜ™Ï]^œÜ]
+	È	ÊNÛ][™OIÉÎØÛÛœİ[™\ÏV×NÙ›ÜŠÛÛœİÙÙˆÛÜ™Ê^ØÛÛœİ\İ[[™JİÙ
+ÉÈ	ÎÚYŠË›YX\İ\™U^
+\İ
+KÚYËM	‰›[™J^Û[™\Ëœ\Ú
+[™JNÛ[™O]Ù
+ÉÈ	ßY[ÙH[™O]\İ[[™\Ëœ\Ú
+[™JNØÛÛœİİ\OZÌ‹J[™\Ë›[™İLJJŒMÛ[™\Ë™›Ü‘XXÚ
+
+‹JOO˜Ë™š[^
+‹š[J
+KËÌ‹İ\JÚJŒÌŠJ_KŒML
+NØÛÛœİÚYÛ[Y\Ú
+™]È‘QK”[™QÙ[ÛY]JËKŒŠK™]È‘QK“Y\Úİ[™\™X]\šX[
+ÛX\^›İYÚ™\ÜÎ‹_JKK‹˜[ÙJNÜÚYÛ‹œ›İ][Û‹O\›İNÜÚYÛ‹\Ù\‘]O^İ\N‰ÛØš™Xİ	Ë]N‰ĞHÚYÛˆ]Úİ[›İ™H\™IË]]Ü^Xİ[Û‰Ô‘PQ	ßNÚ[\˜XİX›\Ëœ\Ú
+ÚYÛŠNÜ™]\›ˆÚYÛŸCBˆ[˜İ[Ûˆš[šÓYPÛÜ›™\ŠŠ^ØŞ[[™\ŠŒËŒ‹LPU™\šÕÛÛÙŒËŠNØÛÛœİ›İO[Y\Ú
+™]È‘QKŞ[[™\‘Ù[ÛY]JŒKŒLKŒÍL
+K™]È‘QK“Y\Ú\ÚXØ[X]\šX[
+ØÛÛÜŒ™Î˜[œÜ\™[YKÜXÚ]N‹MK›İYÚ™\ÜÎ‹ŒMK˜[œÛZ\ÜÚ[Û‹ŒÍ_JKKŒL‹ÍË‹˜[ÙJNØ›İK\Ù\‘]O^İ\N‰ÛØš™Xİ	Ë]N‰ĞHÛX[›İHX™[Y8 '’S’ÈQx 'IË]]Ü‰Ğ™\ÚYH]Ú]ÈHÛXÙHÙˆØZÙHX\šÙY8 'PUQx 'H[ˆšYYİ\œ˜[Ëˆ™Z]\ˆÙ™™\œÈ[œİXİ[ÛœËÜˆH™X\ÛÛˆÈ\İ[K‰ËXİ[Û‰ÑVSRS‘IßNÚ[\˜XİX›\Ëœ\Ú
+›İJNØ›Ş
+ŒŒ‹ŒL‹ŒŒ‹™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒÙXMXË›İYÚ™\ÜÎ‹_JK
+ËŒM‹‹‹˜[ÙJ_CBˆ[˜İ[Ûˆ\]PÚ\Ú\™PØ]
+
+^ÚYŠ[šYÚ›ÛÛPZ[XÚ\Ú\™PØ]
+\™]\›ØÛÛœİ[”›ÛÛO\^Y\‹œÜË‹LM‰‰œ^Y\‹œÜËMÎ	‰œ^Y\‹œÜË‹MŒ	‰œ^Y\‹œÜËLÚYŠZ[”›ÛÛJ^ÚYŠÚ\Ú\™PØ]š\ÚX›JXÚ\Ú\™PØ]š\ÚX›OY˜[ÙNÜ™]\›ŸXÛÛœİ›İÏ\\™›Ü›X[˜ÙK››İÊ
+NÚYŠ›İÏ˜Ú\Ú\™S™^]
+^ÚYŠÚ\Ú\™PØ]š\ÚX›J^ØÚ\Ú\™PØ]š\ÚX›OY˜[ÙNØÚ\Ú\™S™^][›İÊÍŒ
+ÓX]œ˜[™ÛJ
+JLY[Ù^ØÛÛœİÜİÏVÖËLŒ‹LL—KÌLMKËMKÌNLWK\ÜİÖÓX]™›ÛÜŠX]œ˜[™ÛJ
+JœÜİË›[™İ
+WNØÚ\Ú\™PØ]œÜÚ][Û‹œÙ]
+šYÚ›ÛÛK˜Ş
+ÜÌKËŒŠÓX]œ˜[™ÛJ
+JŒ‹šYÚ›ÛÛK˜ŞŠÜÌWJNØÚ\Ú\™PØ]š\ÚX›O]YNØÚ\Ú\™S™^][›İÊÌÌŒ
+ÓX]œ˜[™ÛJ
+JŒŒŒÜÚİÓ›İXÙJÚ\Ú\™S[™\ÖÓX]™›ÛÜŠX]œ˜[™ÛJ
+J˜Ú\Ú\™S[™\Ë›[™İ
+WKJNÜÛİ[™
+ŒŒË	ÜÚ[™IËŒJ___CBˆ[˜İ[ÛˆZ[šYÚ›ÛÛJ
+^ÚYŠšYÚ›ÛÛPZ[
+\™]\›ÛšYÚ›ÛÛPZ[]YNØÛÛœİ^\İ[™Ï[™]ÈÙ]
+ØÙ[™K˜Ú[™[ŠNØY›Ş
+šYÚ›ÛÛKË‹šYÚ›ÛÛK™PUÛÛÙšYÚ›ÛÛK˜ŞKŒŒKšYÚ›ÛÛK˜Ş‹˜[ÙJNØY›Ş
+šYÚ›ÛÛKËšYÚ›ÛÛKšMKPUœİÛ™KšYÚ›ÛÛK˜ŞšYÚ›ÛÛKšÌ‹šYÚ›ÛÛK˜Ş‹[šYÚ›ÛÛK™ÌŠNØY›Ş
+šYÚ›ÛÛKËšYÚ›ÛÛKšMKPUœİÛ™KšYÚ›ÛÛK˜ŞšYÚ›ÛÛKšÌ‹šYÚ›ÛÛK˜ŞŠÛšYÚ›ÛÛK™ÌŠNØY›Ş
+MKšYÚ›ÛÛKššYÚ›ÛÛK™PUœİÛ™KšYÚ›ÛÛK˜Ş[šYÚ›ÛÛKËÌ‹šYÚ›ÛÛKšÌ‹šYÚ›ÛÛK˜ŞŠNØY›Ş
+MKšYÚ›ÛÛKššYÚ›ÛÛK™PUœİÛ™KšYÚ›ÛÛK˜Ş
+ÛšYÚ›ÛÛKËÌ‹šYÚ›ÛÛKšÌ‹šYÚ›ÛÛK˜ŞŠNØ›Ş
+šYÚ›ÛÛKËŒÎšYÚ›ÛÛK™›ÛÙ“X]šYÚ›ÛÛK˜ŞšYÚ›ÛÛKš
+ËŒKšYÚ›ÛÛK˜Ş‹˜[ÙJNÜYÊšYÚ›ÛÛK˜ŞšYÚ›ÛÛK˜ŞŠÌŒ‹NNŒØŠNØÚXÚÙ\‘›ÛÜŠšYÚ›ÛÛK˜ŞšYÚ›ÛÛK˜Ş‹šYÚ›ÛÛKËLËšYÚ›ÛÛK™LËLŠNÃBˆ›ÜŠÛÛœİÙˆËLLÍLLŒ‹LLLNNN—J^ØØ\œ›ÛÚ[ŠMNKŒÍKšYÚÚ[”ØØ[J
+JNØØ\œ›ÛÚ[ŠMKX]”KšYÚÚ[”ØØ[J
+J_Y›ÜŠÛÛœİˆÙˆËML‹LÎLLLJ^ØØ\œ›ÛÚ[ŠLMKŒÍK‹X]”KÌ‹šYÚÚ[”ØØ[J
+JNØØ\œ›ÛÚ[ŠMÎK‹SX]”KÌ‹šYÚÚ[”ØØ[J
+J_Y›ÜŠÛÛœİÙˆËLL‹LLLNMJ^ØØ\œ›ÛÚ[ŠLšYÚÚ[”ØØ[J
+JNØØ\œ›ÛÚ[ŠNX]”KšYÚÚ[”ØØ[J
+J_CBˆ›ÜŠÛÛœİÙˆËLLÍLLNLL‹N—JY›ÜŠÛÛœİˆÙˆËMKLÌËLMËLWJ^ØŞ[[™\ŠÌ‹LËL‹PUœİÛ™K‹KŠNØÛÛY\Š‹KŒ‹KŒ‹	Û[Û[Y[[ÛÛ[[‰ÊNØÛÛœİØ\][[Y\Ú
+™]È‘QKŞ[[™\‘Ù[ÛY]JKMKMKLŠKPU˜œ˜\ÜËLËË‹˜[ÙJNØØ\][œ›İ][Û‹OSX]”KÌLŸY›ÜŠÛÛœİÙˆËLL‹LLLNMJY›ÜŠÛÛœİˆÙˆËMLLÌ‹LM×JXY[\
+‹‹ÊNÃBˆÛÛœİšYÚÚ[™[Y\[™]È‘QK‘Ü›İ\
+
+NÛšYÚÚ[™[Y\‹œÜÚ][Û‹œÙ]
+šYÚ›ÛÛK˜ŞL‹šYÚ›ÛÛK˜ŞŠNÜØÙ[™K˜Y
+šYÚÚ[™[Y\ŠNÙ›ÜŠ]OLÚOLÚJÊÊ^ØÛÛœİOZKÌLŠ“X]”JŒ‹\›O[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒŒ
+KPU˜œ˜\ÜÊNØ\›KœÜÚ][Û‹œÙ]
+X]˜ÛÜÊJJŒ‹Œ‹X]œÚ[ŠJJŒ‹ŒŠNØ\›Kœ›İ][Û‹OKXNÛšYÚÚ[™[Y\‹˜Y
+\›JNØÛÛœİ›[YO[™]È‘QK”Ú[YÚ
+ŒXÍÎËËŒ‹LËŠNÙ›[YKœÜÚ][Û‹œÙ]
+X]˜ÛÜÊJJKKŒKX]œÚ[ŠJJJNÛšYÚÚ[™[Y\‹˜Y
+›[YJ_CBˆÛÛœİİZ]XÚÏVÖÉø¦h	Ë	ÈÌXÌXÌXÉ×KÉø¦iIË	ÈÎŒYY	×KÉø¦hÉË	ÈÌXÌXÌXÉ×KÉø¦i‰Ë	ÈÎŒYY	×WNÛ]İZ]İ\œÛÜLÙ›ÜŠÛÛœİˆÙˆËML‹LÎLLLJ^ØÛÛœİİÏ\İZ]XÚÖÜİZ]İ\œÛÜŠÊÉ\İZ]XÚË›[™İNØØ\™ÛÛY\ŠLLÍËK‹X]”KÌ‹İÖÌKİÖÌWJNØÛÛœİÙO\İZ]XÚÖÜİZ]İ\œÛÜŠÊÉ\İZ]XÚË›[™İNØØ\™ÛÛY\ŠN‹K‹SX]”KÌ‹ÙVÌKÙVÌWJ_CBˆÛÛœİXTÙX]ÏVÖËLL‹	ÕHX\˜Ú\™x &\ÈXÙHÙ][™ÉË	ĞHXXİ\Ú]È™XÚ\Ù[HÚ\™HHØ]XÙ\ˆİYÚÈ™K[™šXÙH™\œØK‰×KËM‹	ÕH]\¸ &\Èİ\	Ë	Ò]\È™Y[ˆ[İ™Y[Û™Èœ›ÛHH\Y\ˆÛ™KÛ™HÙX]İ™\‹ˆ\ÈÛ™H\È›ÈÛX[™\‹‰×KÌ	Ğ[ˆ[\HXÙKÙ][]Ø^IË	Ó›È›ÛÛK[œÚ\İÈHØ\™›ÜYYØZ[œİHİˆ\™H\Ë[ˆ˜XİHÜ™X]X[Ùˆ›ÛÛK‰×KÍ‹	ÕHÜ›[İ\Ùx &\ÈÙX]	Ë	ÕHİ\Ú[Ûˆ\Èİ[Ø\›KİYÚ›ÈÛ™HYZ]ÈÈ]š[™ÈØ]\™K‰×KÌL‹	ĞHÙX]›Üˆ›ÈÛ™H[ˆ\Xİ[\‰Ë	ÕHÚZ\ˆ\È[Yİ]ˆHXœ˜\H\È›İØZY›ÜˆÚÛK‰×WNÙ›ÜŠÛÛœİÙ]K\Ø×HÙˆXTÙX]Ê][YT›Ü
+ØŞ›šYÚ›ÛÛK˜Ş
+ÙŞ›šYÚ›ÛÛK˜ŞŠÌÎŸKÚÚ[™‰İXK]X›IË]K\ØßJNÃBˆšYÚÚYÛŠšYÚ›ÛÛK˜ŞLMKšYÚ›ÛÛK˜Ş‹[šYÚ›ÛÛK™ÌŠËŒK	Ó“È“ÓÓHH“È“ÓÓHH
+\™H\Ë[ˆ˜XİHÜ™X]X[Ùˆ›ÛÛKŠIÊNÃBˆšYÚÚYÛŠšYÚ›ÛÛK˜Ş
+ÌLšYÚ›ÛÛK˜ŞŠÛšYÚ›ÛÛK™Ì‹KŒKX]”K	ÕSQHTÈ‘QSˆTÒÑQÈĞRUÕUÒQKS‘TÈQÔ‘QQ“Ôˆ“ÕË‰ÊNÃBˆšYÚÚYÛŠšYÚ›ÛÛK˜ŞLÌŠËŒKšYÚ›ÛÛK˜Ş‹LM‹X]”KÌ‹	ĞSHÓÔ”ÈT‘HT‘HH’QÒÒV‘H“ÔˆÓÓQSÓ‘K‰ÊNÃBˆšYÚÚYÛŠšYÚ›ÛÛK˜Ş
+ÌÌ‹KŒKšYÚ›ÛÛK˜Ş‹L‹SX]”KÌ‹	ÔPTÑHÈ“Õ‘QQH“ÓÕ“ÕTË‰ÊNÃBˆšYÚÚYÛŠšYÚ›ÛÛK˜Ş
+ÌM‹šYÚ›ÛÛK˜ŞŠÌ
+Ì‹‹X]”K	ÕTÈÒRTˆTÈ‘TÑT•‘Q“ÔˆÓÓQSÓ‘HÒÈQ•ÓÓQHSQHQÓË‰ÊNÃBˆš[šÓYPÛÜ›™\ŠšYÚ›ÛÛK˜ŞLŒ‹šYÚ›ÛÛK˜ŞŠÛšYÚ›ÛÛK™Ì‹M
+NÃBˆÛÛœİÚ\Ú\™U^XØ[˜\Õ^\™J
+ËË
+OOØË˜ÛX\”™Xİ
+Ë
+NØËœİ›ÚÙTİ[OIÈÙYL	ÎØË›[™UÚYLLØË›[™PØ\IÜ›İ[™	ÎØË˜™YÚ[”]
+
+NØË›[İ™UÊÊ‹ŒM‹
+‹
+NØËœ]XY˜]XĞİ\™UÊÊ‹K
+‹‹Ê‹
+‹
+NØËœİ›ÚÙJ
+NØË™š[İ[OIÈÙYL	ÎØË˜™YÚ[”]
+
+NØË™[\ÙJÊ‹ŒÍK
+‹Œ‹Ê‹ŒK
+‹ŒÍKÊNØË™š[
+
+NØË˜™YÚ[”]
+
+NØË™[\ÙJÊ‹K
+‹Œ‹Ê‹ŒK
+‹ŒÍKÊNØË™š[
+
+_KÌŒŒ
+NØÚ\Ú\™PØ][Y\Ú
+™]È‘QK”[™QÙ[ÛY]J‹‹KJK™]È‘QK“Y\Úİ[™\™X]\šX[
+ÛX\˜Ú\Ú\™U^˜[œÜ\™[YK[Z\ÜÚ]™NŒYL[Z\ÜÚ]™SX\˜Ú\Ú\™U^[Z\ÜÚ]™R[[œÚ]N‹ËÚYN•‘QK‘İX›TÚY_JKšYÚ›ÛÛK˜ŞLŒ‹Ë‹šYÚ›ÛÛK˜Ş‹LL‹˜[ÙJNØÚ\Ú\™PØ]š\ÚX›OY˜[ÙNØÚ\Ú\™PØ]\Ù\‘]O^İ\N‰ÛØš™Xİ	Ë]N‰ĞHÜš[‹[™Ú[™È[ˆH\šÉË]]Ü‰ÓÛ›HHÛZ[H™[XZ[œËÛÛœÚY\š[™È[İHØ\™Y[K‰ËXİ[Û‰ÓTÕS‰ßNÚ[\˜XİX›\Ëœ\Ú
+Ú\Ú\™PØ]
+NÃBˆÛÛœİšYÚ\]YU^XØ[˜\Õ^\™J
+ËË
+OOØË™š[İ[OIÈÌLŒXLŒ‰ÎØË™š[™Xİ
+Ë
+NØËœİ›ÚÙTİ[OIÈØYÌ	ÎØË›[™UÚYNØËœİ›ÚÙT™Xİ
+L‹L‹ËLL
+NØË™š[İ[OIÈÙMYXŒIÎØË^[YÛIØÙ[\‰ÎØË™›ÛIØ›ÛÌ\Ù[Ü™ÚXIÎØË™š[^
+	ÕHP”T–HU’QÒ	ËËÌ‹M
+NØË™›ÛIÚ][XÈNÙ[Ü™ÚXIÎØË™š[^
+	Ñ]™\HXœ˜\H™XÛÛY\ÈHY™™\™[Xœ˜\HY\ˆ\šË‰ËËÌ‹MJ_KLJNØÛÛœİšYÚ\]YO[Y\Ú
+™]È‘QK”[™QÙ[ÛY]JL‹KJK™]È‘QK“Y\Úİ[™\™X]\šX[
+ÛX\›šYÚ\]YU^›İYÚ™\ÜÎ‹JKšYÚ›ÛÛK˜ŞKšYÚ›ÛÛK˜Ş‹[šYÚ›ÛÛK™ÌŠËŒË˜[ÙJNÛšYÚ\]YK\Ù\‘]O^İ\N‰ÛØš™Xİ	Ë]N‰ÕHP”T–HU’QÒ	Ë]]Ü‰ø ']™\HXœ˜\H™XÛÛY\ÈHY™™\™[Xœ˜\HY\ˆ\šË¸ 'IËXİ[Û‰Ô‘PQ	ßNÚ[\˜XİX›\Ëœ\Ú
+šYÚ\]YJNÃBˆÛÛœİšYÚ^]X›Ş
+ËKŒ‹ŒŒ‹PU™\šÕÛÛÙšYÚ›ÛÛK˜Ş‹‹šYÚ›ÛÛK˜ŞŠÛšYÚ›ÛÛK™Ì‹KŒË˜[ÙJNÛšYÚ^]\Ù\‘]O^İ\N‰ÛšYÚY^]	Ë]N‰ÕH]HÛÜ‹ÙY[ˆœ›ÛHH[›Ü›[İ\ÈÚYIË]]Ü‰Ñœ›ÛH\™K]Èœ˜\ÜÈ[™HÙY[\È\™™XİHÜ™[˜\K‰ËXİ[Û‰Ô‘UT“‰ßNÚ[\˜XİX›\Ëœ\Ú
+šYÚ^]
+NÜ™YÚ\İ\”\™›Ü›X[˜ÙV›Û™SØš™XİÊ	ÛšYÚ	Ë^\İ[™Ê_CBˆÛÛœİ\ÙY[XÙ\ÏVÖËLKKKKËLËKL×KÌËKL×KËLLKKMKLËŒ—KÌMKMKŒ—KËLL‹L‹—WK]RÙ^O[™]È]J
+KÒTÓÔİš[™Ê
+KœÛXÙJL
+K\ÙY[[™^VË‹‹™]RÙ^WKœ™YXÙJ
+‹Ú
+OOŠŠŒÌJØÚ˜Ú\ÛÙP]
+
+JOŒÊI]\ÙY[XÙ\Ë›[™İ\ÙY[XÙO]\ÙY[XÙ\Öİ\ÙY[[™^NØÛÛœİ\ÙY[›İOX›Ş
+L‹ŒKŒÍPUœ\\‹\ÙY[XÙVÌK\ÙY[XÙVÌWK\ÙY[XÙVÌ—K˜[ÙJNİ\ÙY[›İKœ›İ][Û‹OKŒİ\ÙY[›İK\Ù\‘]O^İ\N‰İ\ÙY[[›İIË]N‰ÓÓ‘HTÑQ•SS‘ÉË]]Ü‰ĞH˜XİXØ[ÛYHÜš][ˆ[ˆH\œšYY[™‰ËXİ[Û‰Ô‘PQ	ßNİ\ÙY[›İKš\ÚX›OY˜[ÙNÚ[\˜XİX›\Ëœ\Ú
+\ÙY[›İJNÃBˆËÈH™\İšXİYØ][ÙİYNˆ˜\œ™Y[ˆ\X\˜[˜ÙK[X™\˜][HÜ[ˆÈ]™\Hš\Ú]ÜƒBˆY›Ş
+ŒKŒPUÛÛÙËKŒ‹L‹˜[ÙJNØY›Ş
+KŒPUœİÛ™KMËLŠNØY›Ş
+ŒKPUœİÛ™KËLLŠNØY›Ş
+ŒKPUœİÛ™KË
+NÃBˆÛÛœİ\›Û[™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒL˜KY][™\ÜÎ‹Î›İYÚ™\ÜÎ‹ŒÍ_JNÙ›ÜŠÛÛœİˆÙˆËMËMLËŒËJXŞ[[™\ŠŒÍKŒÍK‹Œ‹\›Û‹Í‹Ì‹ËŒKŠNØ›Ş
+ŒM‹ŒM‹‹\›Û‹Í‹Ì‹‹ŒMKL‹ŒK˜[ÙJNØ›Ş
+ŒM‹ŒM‹‹\›Û‹Í‹Ì‹ŒL‹L‹ŒK˜[ÙJNÃBˆÛÛœİÜ[‘Ø]O[™]È‘QK‘Ü›İ\
+
+NÛÜ[‘Ø]KœÜÚ][Û‹œÙ]
+Í‹Ì‹LËŒJNÜØÙ[™K˜Y
+Ü[‘Ø]JNÙ›ÜŠ]OLÚONÚJÊÊ^ØÛÛœİ˜\[™]È‘QK“Y\Ú
+™]È‘QKŞ[[™\‘Ù[ÛY]JŒKŒKK
+K\›ÛŠNØ˜\‹œÜÚ][Û‹œÙ]
+ŒŠÚJ‹KËŒK
+NÛÜ[‘Ø]K˜Y
+˜\Š_XÛÛœİØ]UÜ[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JËŒMŒM
+K\›ÛŠKØ]P›İÛOYØ]UÜ˜ÛÛ™J
+NÙØ]UÜœÜÚ][Û‹œÙ]
+KKKK
+NÙØ]P›İÛKœÜÚ][Û‹œÙ]
+KKŒ‹
+NÛÜ[‘Ø]K˜Y
+Ø]UÜØ]P›İÛJNÃBˆÛÛœİ™\İšXİYÚYÛ•^XØ[˜\Õ^\™J
+ËË
+OOØË™š[İ[OIÈÌMŒL	ÎØË™š[™Xİ
+Ë
+NØËœİ›ÚÙTİ[OIÈØML	ÎØË›[™UÚYLLØËœİ›ÚÙT™Xİ
+L‹L‹ËLL
+NØË™š[İ[OIÈÙLÌ‰ÎØË^[YÛIØÙ[\‰ÎØË™›ÛIØ›ÛœÙ[Ü™ÚXIÎØË™š[^
+	ÕH‘TÕ’PÕQĞUSÑÕQIËËÌ‹ŠNØË™›ÛIÌ\Ù[Ü™ÚXIÎØË™š[^
+	Ò\İÜšXØ[HÚ[[™ÙYÙ[œÛÜ™YÜˆ›ÜÙXİ]Y	ËËÌ‹LMŠNØË™›ÛIÚ][XÈÙ[Ü™ÚXIÎØË™š[^
+	ÕHØ]H\ÈÜ[‹ˆÛÛ^™[Û™ÜÈ™\ÚYH]™\H›ÛÚË‰ËËÌ‹MŒ
+_KLNL
+K™\İšXİYÚYÛ[Y\Ú
+™]È‘QK”[™QÙ[ÛY]J‹KŒÍJK™]È‘QK“Y\Úİ[™\™X]\šX[
+ÛX\œ™\İšXİYÚYÛ•^›İYÚ™\ÜÎ‹JKÍ‹ËL‹˜[ÙJNÜ™\İšXİYÚYÛ‹œ›İ][Û‹OKSX]”KÌÜ™\İšXİYÚYÛ‹\Ù\‘]O^İ\N‰ÛØš™Xİ	Ë]N‰ÕH‘TÕ’PÕQĞUSÑÕQIË]]Ü‰Õ\ÙH›ÛÚÜÈÙ\™HÚ[[™ÙY[ˆY™™\™[XÙ\È[™\š[ÙËˆ[H[™™XY[™È\™H[œ™\İšXİY‰ËXİ[Û‰Ô‘PQTUQIßNÚ[\˜XİX›\Ëœ\Ú
+™\İšXİYÚYÛŠNÃBˆYÊËL‹LËLKÍLXÌJNØİ\˜]YÚ[ŠÍŒKMŒMLËÌËMK‹LLKŒK
+NØİ\˜]YÚ[ŠÍŒËNNNÍŒLÌWKL‹LLKŒK
+NÃBˆÛÛœİXİ\›X›Ş
+‹ŒËKŒKKKPUÛÛÙËKŒK‹K˜[ÙJKXİ\›•ÜX›Ş
+‹ËŒNKËPU™\šÕÛÛÙËKÌ‹‹ŒÍK˜[ÙJNÛXİ\›•Üœ›İ][Û‹KKŒŒØÛÛœİØÚĞ›ÙOX›Ş
+ËKŒ‹PU˜œ˜\ÜËË‹ŒN‹ŒK˜[ÙJKÜ[”ÚXÚÛO[Y\Ú
+™]È‘QK•Ü\ÑÙ[ÛY]J‹ŒÍKNX]”JŒKŠKPU˜œ˜\ÜËË‹‹‹Œ˜[ÙJNÛÜ[”ÚXÚÛKœ›İ][Û‹KŒÍNÃBˆÛÛœİ˜[[˜ÙTÛOXŞ[[™\ŠŒËŒL‹‹ŒËLPU˜œ˜\ÜËLËKŒMKË
+K˜[[˜ÙP™X[OX›Ş
+ËŒKŒKPU˜œ˜\ÜËLË‹ŒKË˜[ÙJNÙ›ÜŠÛÛœİÙˆËLKŒKKŒWJ^ØÛÛœİÚZ[X›Ş
+ŒKÍKŒKPU˜œ˜\ÜËLË
+ÙK‹Ë˜[ÙJK[[Y\Ú
+™]È‘QKŞ[[™\‘Ù[ÛY]JKŒËŒMŠKPU˜œ˜\ÜËLË
+ÙK‹Ë˜[ÙJ_CBˆY[\
+‹KŒ‹ËËJNØY[\
+L‹KŒ‹ËËJNØÛÛœİ™\İšXİYÛİÏ[™]È‘QK”Ú[YÚ
+Í™ËLËŒ‹ŠNÜ™\İšXİYÛİËœÜÚ][Û‹œÙ]
+ËLŠNÜØÙ[™K˜Y
+™\İšXİYÛİÊNÃBƒBˆËÈH™[İÈØ][ÙİYNˆH˜\Ù[Y[HXœ˜\šX[ˆ[œÚ\İÈÙ\È›İ^\İƒBˆÛÛœİ[\İÛ™O[™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒL™˜K›İYÚ™\ÜÎŒ_JK™\™YÜš\Ï[™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒÌMNM‹Y][™\ÜÎ‹L‹›İYÚ™\ÜÎ‹M_JK˜\Ù[Y[›ÛÜ–OKMÃBˆÛÛœİ˜\Ù[Y[]ÚX›Ş
+ËŒM‹‹K\›Û‹MËŒLK˜[ÙJNØ˜\Ù[Y[]Ú\Ù\‘]O^İ\N‰Ø˜\Ù[Y[Z]Ú	Ë]N‰Ğ[ˆ\›Ûˆ]ÚÚ]H˜\œ›İÈY\‰Ë]]Ü‰ĞÛÛZ\ˆ\›œÈH\İ\›İ[™]È[™Ù\Ë‰ËXİ[Û‰ĞÓSPˆÕÓ‰ßNÚ[\˜XİX›\Ëœ\Ú
+˜\Ù[Y[]Ú
+NÃBˆÛÛœİ™\İšXİY[U^XØ[˜\Õ^\™J
+ËË
+OOØË™š[İ[OIÈÌMÌL‰ÎØË™š[™Xİ
+Ë
+NØËœİ›ÚÙTİ[OIÈØMIÎØË›[™UÚYNØËœİ›ÚÙT™Xİ
+LLËLŒLŒ
+NØË™š[İ[OIÈÙ™	ÎØË^[YÛIØÙ[\‰ÎØË™›ÛIØ›ÛÌ\Ù[Ü™ÚXIÎØË™š[^
+	ÔÓÓQHÓÔ”ÈÑT‘HÓÔÑQ	ËËÌ‹L
+NØË™›ÛIÚ][XÈMÜÙ[Ü™ÚXIÎØË™š[^
+	Ğ]H[šÈØ^\Îˆ[\‰ËËÌ‹Š_KŒŒLŠK™\İšXİY[TÚYÛ[Y\Ú
+™]È‘QK”[™QÙ[ÛY]JËŒKÊK™]È‘QK“Y\Úİ[™\™X]\šX[
+ÛX\œ™\İšXİY[U^›İYÚ™\ÜÎ‹KÚYN•‘QK‘İX›TÚY_JKMŒKŒLMKLK˜[ÙJNÜ™\İšXİY[TÚYÛ‹œ›İ][Û‹KSX]”KÌÜ™\İšXİY[TÚYÛ‹œ›İ][Û‹KKŒÍNÜ™\İšXİY[TÚYÛ‹\Ù\‘]O^İ\N‰ÛØš™Xİ	Ë]N‰ÔÓÓQHÓÔ”ÈÑT‘HÓÔÑQ	Ë]]Ü‰ÕH[šÈ™[İÈYÎˆ8 '\›Z\ÜÚ[Ûˆ\ÈXÜ]Z\™YH[\š[™Ë¸ 'IËXİ[Û‰Ô‘PQÒQÓ‰ßNÚ[\˜XİX›\Ëœ\Ú
+™\İšXİY[TÚYÛŠNÂˆ›ÜŠ]OLÚONÚJÊÊX›Ş
+ŒLKŒK‹Œ‹PU˜œ˜\ÜËNŒŠÚJ‹‹ŒNLK˜[ÙJNÃBˆ›ÜŠÛÛœİÙˆËMËÍKM‹ŒWJXŞ[[™\ŠŒËŒËKMK\›Û‹‹L‹MJNÙ›ÜŠ]OLÚONÚJÊÊX›Ş
+KMKŒËŒ\›Û‹MËŒÊÚJ‹ŒËL‹MK˜[ÙJNÃBˆÛÛœİ]ÚÛİÏ[™]È‘QK”Ú[YÚ
+XNXÍ‹ËŠNÚ]ÚÛİËœÜÚ][Û‹œÙ]
+MËŒËLK
+NÜØÙ[™K˜Y
+]ÚÛİÊNÃBˆ]˜\Ù[Y[Z[Y˜[ÙK˜\Ù[Y[\›˜XÙSYÚ[[˜\Ù[Y[[İ\Ï[[ÃBˆ[˜İ[ÛˆZ[˜\Ù[Y[
+
+^ÚYŠ˜\Ù[Y[Z[
+\™]\›Ø˜\Ù[Y[Z[]YNØÛÛœİ^\İ[™Ï[™]ÈÙ]
+ØÙ[™K˜Ú[™[ŠNØY›Ş
+Í‹K[\İÛ™K˜\Ù[Y[›ÛÜ–KKŒMM˜[ÙJNØY›Ş
+Í‹‹MK[\İÛ™K˜\Ù[Y[›ÛÜ–JÌËM
+NØY›Ş
+Í‹‹MK[\İÛ™K˜\Ù[Y[›ÛÜ–JÌËM
+NØY›Ş
+MK‹[\İÛ™KLN˜\Ù[Y[›ÛÜ–JÌËMM
+NØY›Ş
+MK‹[\İÛ™KN˜\Ù[Y[›ÛÜ–JÌËMM
+NØ›Ş
+Í‹[\İÛ™K˜\Ù[Y[›ÛÜ–JÍ‹ŒKMM˜[ÙJNÃBˆÛÛœİ˜\Ù[Y[YÏ\YÊMMMNÍŒ™JNØ˜\Ù[Y[YËœÜÚ][Û‹OX˜\Ù[Y[›ÛÜ–JËŒÃBˆ›ÜŠÛÛœİÙˆËLL‹ML—J^ØÛÛœİ\˜Ú[Y\Ú
+™]È‘QK•Ü\ÑÙ[ÛY]JŒX]”JK[\İÛ™K˜\Ù[Y[›ÛÜ–JÍMM
+NØ\˜Úœ›İ][Û‹OSX]”KÌŸCBˆÛÛœİ™[İÔÚYÛ•^XØ[˜\Õ^\™J
+ËË
+OOØË™š[İ[OIÈÌLNLMIÎØË™š[™Xİ
+Ë
+NØËœİ›ÚÙTİ[OIÈÍÌÎMÍØÉÎØË›[™UÚYMÎØËœİ›ÚÙT™Xİ
+LLËLŒLŒ
+NØË™š[İ[OIÈØÍXNIÎØË^[YÛIØÙ[\‰ÎØË™›ÛIÌÌœÙ[Ü™ÚXIÎØË™š[^
+	ÕÒUQTÈ‘S‘PU	ËËÌ‹MJNØË™›ÛIÚ][XÈŒÙ[Ü™ÚXIÎØË™š[^
+	Ó›İ]™\H˜[YHXYHH[™^	ËËÌ‹LŠ_KLŒ
+NØÛÛœİ™[İÔÚYÛ[Y\Ú
+™]È‘QK”[™QÙ[ÛY]J‹Œ‹KŒMJK™]È‘QK“Y\Úİ[™\™X]\šX[
+ÛX\˜™[İÔÚYÛ•^›İYÚ™\ÜÎ‹_JK˜\Ù[Y[›ÛÜ–JÍÍKMËK˜[ÙJNØ™[İÔÚYÛ‹\Ù\‘]O^İ\N‰ÛØš™Xİ	Ë]N‰ÕÒUQTÈ‘S‘PU	Ë]]Ü‰ÔÙ]™\˜[˜[Y\È]™H™Y[ˆØÜ˜]ÚYœ›ÛHHİÙ\ˆYÙK‰ËXİ[Û‰Ô‘PQ	ßNÚ[\˜XİX›\Ëœ\Ú
+™[İÔÚYÛŠNÂˆÛÛœİÙ[\”Ú[OXİ\˜]YÚ[ŠÌL‹ÎKLMËŒKLKLLM‹
+KÙ[\”Ú[Xİ\˜]YÚ[ŠÎÍKMÍŒM×KLM‹
+NØÙ[\”Ú[KœÜÚ][Û‹OXÙ[\”Ú[‹œÜÚ][Û‹OX˜\Ù[Y[›ÛÜ–NÃBˆÛÛœİÛ\ÚÏXY›Ş
+‹ŒÍK‹‹PUÛÛÙ˜\Ù[Y[›ÛÜ–JÌKŒÍKMLŠNÙ›ÜŠÛÛœİÙˆËL‹K‹WJY›ÜŠÛÛœİˆÙˆËKKWJXY›Ş
+ŒKKŒËŒKPU™\šÕÛÛÙ˜\Ù[Y[›ÛÜ–JËKMLŠÙŠNÃBˆÛÛœİ™YXİYX›Ş
+‹ŒKKPUœ\\‹˜\Ù[Y[›ÛÜ–JÌKNML‹˜[ÙJNÜ™YXİYœ›İ][Û‹OKKŒLÜ™YXİY\Ù\‘]O^İ\N‰ÛØš™Xİ	Ë]N‰ÕH‘QPÕQĞUSÑÕQIË]]Ü‰ÔÙ]™[ˆ]\È\™H[šÙYİ]ˆHš[˜[[™H™XYÎˆ8 'HZ[[™ÈÙY\ÈH›ÛÚÜÈ]™X[\Ë¸ 'IËXİ[Û‰ÑPÒTT‰ËÙXÜ™]Y‰Ü™YXİYXØ][ÙİYIßNÚ[\˜XİX›\Ëœ\Ú
+™YXİY
+NÃBˆÛÛœİ\›˜XÙOX›Ş
+ËŒËËË‹\›Û‹LMË˜\Ù[Y[›ÛÜ–JÌKKMLÊNØÛÛœİ\›˜XÙS[İ]X›Ş
+‹ŒKKKŒL‹™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒMŒ[Z\ÜÚ]™NŒ˜ŒXŒK[Z\ÜÚ]™R[[œÚ]NŒKŒŸJKLMË˜\Ù[Y[›ÛÜ–JÌKKMLKÍK˜[ÙJNÙ\›˜XÙS[İ]\Ù\‘]O^İ\N‰ÛØš™Xİ	Ë]N‰ÕHØ][ÙİYH\›˜XÙIË]]Ü‰ĞH›ÚXÙH[œÚYH™\X]ÈH\İÙ[[˜ÙH[İH™XY‰ËXİ[Û‰ÓTÕS‰ßNÚ[\˜XİX›\Ëœ\Ú
+\›˜XÙS[İ]
+NØ˜\Ù[Y[\›˜XÙSYÚ[™]È‘QK”Ú[YÚ
+™X‹ŒMŠNØ˜\Ù[Y[\›˜XÙSYÚœÜÚ][Û‹œÙ]
+LM˜\Ù[Y[›ÛÜ–JÌ‹MLJNÜØÙ[™K˜Y
+˜\Ù[Y[\›˜XÙSYÚ
+NØYÛÙ›ÛÛSYÚ
+˜\Ù[Y[›ÛÜ–JÌËMKÎNÌËMKŒ
+NØYÛÙ›ÛÛSYÚ
+˜\Ù[Y[›ÛÜ–JÌËMŒ‹YXMKLËNJNÃBˆ›ÜŠÛÛœİHÙˆØ˜\Ù[Y[›ÛÜ–JÍË˜\Ù[Y[›ÛÜ–JÍKŒWJ^ØÛÛœİ\O[Y\Ú
+™]È‘QKŞ[[™\‘Ù[ÛY]JŒLËŒLË‹L
+K™\™YÜš\ËMKKMM
+NÜ\Kœ›İ][Û‹SX]”KÌŸCBˆ›ÜŠÛÛœİŞ—HÙˆÖËMËM—KËL‹M×KÍKMWKÌLKMWJ^ØÛÛœİ›İÛ[Y\Ú
+™]È‘QKŞ[[™\‘Ù[ÛY]JN‹ŒL‹N
+KPU˜œ˜\ÜË˜\Ù[Y[›ÛÜ–JËŒ‹˜[ÙJNØÛÛœİØ]\[Y\Ú
+™]È‘QKÚ\˜ÛQÙ[ÛY]JN
+K™]È‘QK“Y\Ú\ÚXØ[X]\šX[
+ØÛÛÜŒŒÎNË˜[œÜ\™[YKÜXÚ]N‹K›İYÚ™\ÜÎ‹ŒLŸJK˜\Ù[Y[›ÛÜ–JËŒMK‹˜[ÙJNİØ]\‹œ›İ][Û‹KSX]”KÌŸCBˆÛÛœİ\›™YÜ˜Z]\Z[[™ÊMËŒ‹˜\Ù[Y[›ÛÜ–JÌËMMËËŒ‹ŒËSX]”KÌ‹ÉÈÌMNMÉË	ÈÍ˜ÍØI×K	Ø\ÜÙ]ËÜÜ˜Z][[\›‹[Xœ˜\šX[‹šœÉÊNİ\›™YÜ˜Z]œ[™[œ›İ][Û‹OSX]”Nİ\›™YÜ˜Z]œ[™[\Ù\‘]O^İ\N‰ÛØš™Xİ	Ë]N‰ĞHÜ˜Z]˜XÚ[™ÈHØ[	Ë]]Ü‰ÕH˜[Y\]HØ^\ÈÛ›Nˆ8 '™]\›™Y¸ 'IËXİ[Û‰ÕT“ˆUĞVIßNÚ[\˜XİX›\Ëœ\Ú
+\›™YÜ˜Z]œ[™[
+NÃBˆÛÛœİÛ\ÜĞØ\ÙOX›Ş
+ËK‹‹KËPU™Û\ÜËL‹˜\Ù[Y[›ÛÜ–JÌKŒËM˜[ÙJNİš[JL‹˜\Ù[Y[›ÛÜ–JÌ‹ËMËŒNKJNØÛÛœİ]\™P›ÛÚÏ[ÛÜÙP›ÛÚÊ›ÛÚÜÖÌÍ—KL‹˜\Ù[Y[›ÛÜ–JÌKŒKM
+NÙ]\™P›ÛÚË\Ù\‘]K›XXÚ[™S›İOXHš[˜[YÙH™X\œÈÙ^IÜÈ]Nˆ	Û™]È]J
+KÓØØ[Q]Tİš[™Ê
+_K˜ÃBˆ›ÜŠ]OLÚOÎÚJÊÊ^ØÛÛœİÚZ[[Y\Ú
+™]È‘QK•Ü\ÑÙ[ÛY]JKŒJÚJ‹ŒŒMKËŒŠK\›Û‹L‹˜\Ù[Y[›ÛÜ–JÌKŒÍKMËŒKZJ‹Œ˜[ÙJNØÚZ[‹œ›İ][Û‹SX]”KÌŸCBˆ›ÜŠÛÛœİÙˆËKÌ‹Ì—JXŞ[[™\ŠŒÍKŒÍKKŒÍK\›Û‹˜\Ù[Y[›ÛÜ–JÌ‹Ì‹MŒÎ
+NÙ›ÜŠ]OLÚONÚJÊÊX›Ş
+KKŒËŒK\›Û‹˜\Ù[Y[›ÛÜ–JËJÚJ‹MËMŒÎ˜[ÙJNÃBˆ›ÜŠ]OLÚOÚJÊÊX›Ş
+ŒËKŒKPUœİÛ™K˜\Ù[Y[›ÛÜ–JËŒMJÚJ‹Œ‹MŒŠÚJ‹K˜[ÙJNÃBˆÛÛœİ˜\Ù[Y[İ\ÏX›Ş
+ŒÍKKPUœİÛ™K˜\Ù[Y[›ÛÜ–JËMKŒK˜[ÙJKY\”™]\›•\™Ù]X›Ş
+KKKKŒL‹™]È‘QK“Y\Ú˜\ÚXÓX]\šX[
+İ˜[œÜ\™[YKÜXÚ]N‹ŒK\Üš]N™˜[Ù_JK˜\Ù[Y[›ÛÜ–JÌ‹Ì‹MŒÌK˜[ÙJKY\”™]\›‘]O^İ\N‰Ø˜\Ù[Y[\İZ\œÉË]N‰ÕHY\ˆÈHXœ˜\IË]]Ü‰ÕØ\›Hš\™[YÚ™[X›\È]HÜ‰ËXİ[Û‰Ô‘UT“ˆTÕRT”ÉßNØ˜\Ù[Y[İ\Ë\Ù\‘]O[Y\”™]\›‘]NÛY\”™]\›•\™Ù]\Ù\‘]O[Y\”™]\›‘]NÚ[\˜XİX›\Ëœ\Ú
+˜\Ù[Y[İ\ËY\”™]\›•\™Ù]
+NÃBˆ[˜İ[Ûˆ˜\Ù[Y[İÛÛ
+Š^Ü™]\›ˆÚZ\Š‹Û[Ù[‰ÜZ[Y	Ë]N‰ĞHZ\ÛX]ÚY˜\Ù[Y[ÚZ\‰Ë]]Ü‰ÔÛÛY][™ÈØÜ˜]Ú\ÈHİÛ™H™[™X]]Ú[ˆ[İH™YÚ[ˆÈ™XY‰ËØ]YÛÜšY\Î–ÉÑÛİXÉË	Ôİ˜[™ÙIË	Õ[˜Ø[›IË	ĞÛÛ\İY	×_J_CBˆ˜\Ù[Y[İÛÛ
+M‹MNJNØ˜\Ù[Y[İÛÛ
+‹MNJNÃBˆY[\
+MË˜\Ù[Y[›ÛÜ–JÌKŒ‹MŒKÊNØY[\
+Ë˜\Ù[Y[›ÛÜ–JÌKŒ‹MŒKÊNØ˜\Ù[Y[[İ\Ï\\XÛ\ÊÌÍKK—KLXXKŒÍJNØ˜\Ù[Y[[İ\ËœÜÚ][Û‹œÙ]
+˜\Ù[Y[›ÛÜ–KMM
+NÛY[[ÜQÛÜŠMËÌ‹M	Ü™]\›š[™ÉËÍ‹LŒKSX]”KÌ‹	ĞH˜\œ›İÈÛÜˆ™Z[™H\\ÉË	ĞH\›š\ÚYØ\™™X\œÈÙ]™\˜[˜[Y\Ë[™X\›HX˜™Y]Ø^K‰Ë˜\Ù[Y[›ÛÜ–JÌKJNÜ™YÚ\İ\”\™›Ü›X[˜ÙV›Û™SØš™XİÊ	Ø˜\Ù[Y[	Ë^\İ[™Ê_CBƒBˆËÈH›ÛÛ\ÈÙˆİ[\˜[Y[[ÜNˆXXÚÜXÙH\È\ÜÈØ\™Y›Üˆ[ˆH\İ[™™XY[™È]ZY]H™\Z\œÈ]ƒBˆÛÛœİ™\ÜÚ]ÜT˜Z[ÏV×KY[[ÜV›Û™\ÏVŞÚÙ^N‰Ü™]\›š[™ÉËŞÌ‹Ş‹LŒÎŒNŒNKÚÙ^N‰Ü]ZY]	ËŞM‹Ş‹LŒÎŒNŒNKÚÙ^N‰İ[œ™XY	ËŞŒLŒ‹Ş‹LŒÎŒŒ‹ŒŒŸKÚÙ^N‰Ü™\ÜÚ]ÜIËŞŒMLËŞ‹LŒÎŒŒWKY[[ÜT›ÛÛUš\İX[Ï^ßK™YÛXİYİÛ™O[™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒÍÌL™›İYÚ™\ÜÎŒKX\›X\ÛÛœU^[\X\›X\ÛÛœU^[\ØØ[N‹ŒßJK™\ÜÚ]ÜSY][[™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒÍØŒÙY][™\ÜÎ‹L‹›İYÚ™\ÜÎ‹Œ‹X\›Y][^[\X\›Y][^[\ØØ[N‹ŒŸJNÃBˆ[˜İ[ÛˆY[[ÜV›Û™P]
+Š^Ü™]\›ˆY[[ÜV›Û™\Ë™š[™
+Oœ‹˜Ş\‹ËÌŠËŒÉ‰‹˜Ş
+Ü‹ËÌ‹KŒÉ‰œ‹˜Ş‹\‹™ÌŠËŒÉ‰‹˜ŞŠÜ‹™Ì‹KŒÊ_CBˆ[˜İ[ÛˆY[[ÜTÚ[
+›ÛÛKØ[X]
+^ØY›Ş
+›ÛÛKË‹›ÛÛK™PUÛÛÙ›ÛÛK˜ŞKŒŒ‹›ÛÛK˜Ş‹˜[ÙJNØY›Ş
+›ÛÛKË‹KØ[X]›ÛÛK˜ŞË›ÛÛK˜Ş‹\›ÛÛK™ÌŠNØY›Ş
+›ÛÛKË‹KØ[X]›ÛÛK˜ŞË›ÛÛK˜ŞŠÜ›ÛÛK™ÌŠNØY›Ş
+K‹›ÛÛK™Ø[X]›ÛÛK˜Ş\›ÛÛKËÌ‹Ë›ÛÛK˜ŞŠNØY›Ş
+K‹›ÛÛK™Ø[X]›ÛÛK˜Ş
+Ü›ÛÛKËÌ‹Ë›ÛÛK˜ŞŠNØ›Ş
+›ÛÛKËŒÍK›ÛÛK™›ÛÙ“X]›ÛÛK˜Ş‹ŒMK›ÛÛK˜Ş‹˜[ÙJ_CBˆ[˜İ[ÛˆY[[ÜTÚYÛŠ›ÛÛKX™[İX]K[[XYÙOL
+^ØÛÛœİ^XØ[˜\Õ^\™J
+ËË
+OOØË™š[İ[OY[XYÙOŒOÉÈÌMÌNN	Î‰ÈÌŒLMÌ‰ÎØË™š[™Xİ
+Ë
+NØËœİ›ÚÙTİ[OY[XYÙOÉÈÍÍIÎ‰ÈØNMÍŒIÎØË›[™UÚYNØËœİ›ÚÙT™Xİ
+L‹L‹ËLL
+NØË™š[İ[OY[XYÙOŒOÉÈÎMÎÌÉÎ‰ÈÙXÎNYIÎØË^[YÛIØÙ[\‰ÎØË™›ÛIØ›ÛÌÙ[Ü™ÚXIÎØË™š[^
+X™[ËÌ‹M
+NØË™›ÛIÚ][XÈMÜÙ[Ü™ÚXIÎØË™š[^
+İX]KËÌ‹M
+NÚYŠ[XYÙJ^ØË™š[İ[OIÈÌMÌNN	ÎÙ›ÜŠ]OLÚO[XYÙNÚJÊÊXË™š[™Xİ
+L
+ÚJŒMÌËJÊILŠJŒŒ‹N
+__KÍŒLŒŠKÚYÛ[Y\Ú
+™]È‘QK”[™QÙ[ÛY]J‹KŒÊK™]È‘QK“Y\Úİ[™\™X]\šX[
+ÛX\^›İYÚ™\ÜÎ‹KÚYN•‘QK‘İX›TÚY_JK›ÛÛK˜ŞK›ÛÛK˜Ş‹\›ÛÛK™ÌŠËŒ˜[ÙJNÜÚYÛ‹œ›İ][Û‹][ÜÚYÛ‹\Ù\‘]O^İ\N‰ÛØš™Xİ	Ë]N›X™[]]ÜœİX]KXİ[Û‰Ô‘PQÒQÓ‰Ë[š]X[[[NÚ[\˜XİX›\Ëœ\Ú
+ÚYÛŠNÜ™]\›ˆÚYÛŸCBˆÛÛœİÙX•^\™OXØ[˜\Õ^\™J
+ËË
+OOØË˜ÛX\”™Xİ
+Ë
+NØËœİ›ÚÙTİ[OIÜ™Ø˜JŒŒŒNŒ‹MJIÎØË›[™UÚYLÙ›ÜŠ]OLÚONÚJÊÊ^ØÛÛœİOZKÎ
+“X]”KÌØË˜™YÚ[”]
+
+NØË›[İ™UÊ
+NØË›[™UÊX]˜ÛÜÊJJËSX]œÚ[ŠJJš
+NØËœİ›ÚÙJ
+_Y›ÜŠ]KŒNÜNÜŠÏKŒMŠ^ØË˜™YÚ[”]
+
+NÙ›ÜŠ]OLÚOLÚJÊÊ^ØÛÛœİOZKÌ
+“X]”KÌ‹SX]˜ÛÜÊJJÊœ‹OZSX]œÚ[ŠJJš
+œÚOØË›[™UÊJN˜Ë›[İ™UÊJ_XËœİ›ÚÙJ
+__KM‹MŠNÃBˆ[˜İ[ÛˆÛØÙXŠK‹›İLØØ[OLJ^ØÛÛœİX][™]È‘QK“Y\Ú˜\ÚXÓX]\šX[
+ÛX\ÙX•^\™K˜[œÜ\™[YKÜXÚ]N‹L‹\Üš]N™˜[ÙKÚYN•‘QK‘İX›TÚY_JKÙX[Y\Ú
+™]È‘QK”[™QÙ[ÛY]J‹JœØØ[K‹JœØØ[JKX]K‹˜[ÙJNİÙX‹œ›İ][Û‹O\›İÜ™]\›ˆÙXŸCBˆ[˜İ[Ûˆ[XYÙYÚZ\Š‹[XYÙOLJ^ØÛÛœİÏ[™]È‘QK‘Ü›İ\
+
+NÙËœÜÚ][Û‹œÙ]
+ŠNÜØÙ[™K˜Y
+ÊNØÛÛœİÙX][™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JKMKŒŒ‹KŒÍJKPUÛÛÙ
+NÜÙX]œÜÚ][Û‹OKÌÜÙX]œ›İ][Û‹Y[XYÙJ‹ŒÙË˜Y
+ÙX]
+NØÛÛœİ˜XÚÏ[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JKKK‹ŒN
+KPU™\šÕÛÛÙ
+NØ˜XÚËœÜÚ][Û‹œÙ]
+ŒL‹K‹MJNØ˜XÚËœ›İ][Û‹Y[XYÙJ‹ŒLÙË˜Y
+˜XÚÊNØÛÛœİ\ÏVÜÙX]˜XÚ×NÙ›ÜŠ]OLÚOY[XYÙNÚJÊÊ^ØÛÛœİYÏ[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒLËÌ‹ŒLÊKPU™\šÕÛÛÙ
+NÛYËœÜÚ][Û‹œÙ]
+ILËKN‹NŒÍKOËK‹
+NÙË˜Y
+YÊNÜ\Ëœ\Ú
+YÊ_XÛÛœİ˜[[“YÏ[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒMŒMKŒMJKPU™\šÕÛÛÙ
+NÙ˜[[“YËœÜÚ][Û‹œÙ]
+KŒL‹ŒŠNÙ˜[[“YËœ›İ][Û‹OKMNÙË˜Y
+˜[[“YÊNÜ\Ëœ\Ú
+˜[[“YÊNÙËœ›İ][Û‹Y[XYÙJ‹ŒÍNÙXÛÜ˜]TÙX]
+Ë\Ë[	ÜZ[Y	ËÚZYÚŒKX]Î™[XYÙJ‹ŒNJNÜ™]\›ˆßCBˆÛÛœİY[[ÜQÛÜ“X]\šX[[™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒÍŒM‹[Z\ÜÚ]™NŒ˜LMŒ[Z\ÜÚ]™R[[œÚ]N‹ŒÌ‹›İYÚ™\ÜÎ‹Ì‹X\œ[šÕ^[\X\œ[šÕ^[\ØØ[N‹Œ_JK[YQ^]ÛÜ“X]\šX[[™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒLLÌX‹[Z\ÜÚ]™NŒØLÙŒN[Z\ÜÚ]™R[[œÚ]N‹Ë›İYÚ™\ÜÎ‹KX\œ[šÕ^[\X\œ[šÕ^[\ØØ[N‹ŒŸJKÛÜ“X\šÙ\“X]\šX[[™]È‘QK“Y\Ú˜\ÚXÓX]\šX[
+ØÛÛÜŒØMÍY‹X\›Y][^JK™]\›”\]YU^\™OXØ[˜\Õ^\™J
+ËË
+OOØË™š[İ[OIÈÌLMÌ	ÎØË™š[™Xİ
+Ë
+NØËœİ›ÚÙTİ[OIÈÙØMÍY‰ÎØË›[™UÚYLLØËœİ›ÚÙT™Xİ
+KKËLNLN
+NØË™š[İ[OIÈÙŒYXIÎØË^[YÛIØÙ[\‰ÎØË™›ÛIØ›ÛM\Ù[Ü™ÚXIÎØË™š[^
+	Ô‘UT“‰ËËÌ‹J_KŒL
+K™]\›”\]YSX]\šX[[™]È‘QK“Y\Úİ[™\™X]\šX[
+ÛX\œ™]\›”\]YU^\™K[Z\ÜÚ]™SX\œ™]\›”\]YU^\™K[Z\ÜÚ]™NŒXLÌL‹[Z\ÜÚ]™R[[œÚ]N‹M_JK™]\›”[›™\“X]\šX[[™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒXŒMÌŒË[Z\ÜÚ]™NŒ‹[Z\ÜÚ]™R[[œÚ]N‹ŒK›İYÚ™\ÜÎ‹MŸJNÂˆ[˜İ[ÛˆY[[ÜQÛÜŠ‹\İ[˜][Û‹Ü]Û‹X]Ë]K]]Ü‹OLKK›İL[YQ^]Y˜[ÙJ^ØÛÛœİÜ›İ\[™]È‘QK‘Ü›İ\
+
+NÙÜ›İ\œÜÚ][Û‹œÙ]
+KŠNÙÜ›İ\œ›İ][Û‹O\›İÜØÙ[™K˜Y
+Ü›İ\
+NØÛÛœİ\JÙ[ÛY]KX]\šX[KŠOOØÛÛœİØš™Xİ[™]È‘QK“Y\Ú
+Ù[ÛY]KX]\šX[
+NÛØš™XİœÜÚ][Û‹œÙ]
+KŠNÙÜ›İ\˜Y
+Øš™Xİ
+NÜ™]\›ˆØš™XİKÛÜ\\
+™]È‘QK›ŞÙ[ÛY]JŒ‹Ë‹JK[YQ^]İ[YQ^]ÛÜ“X]\šX[›Y[[ÜQÛÜ“X]\šX[
+KÜİO\\
+™]È‘QK›ŞÙ[ÛY]JŒÍŒKŒN
+KPU˜œ˜\ÜËLK
+KÜİ\\
+™]È‘QK›ŞÙ[ÛY]JŒÍŒKŒN
+KPU˜œ˜\ÜËK
+K[[\\
+™]È‘QK›ŞÙ[ÛY]JŒÍŒŒ‹ÊKPU˜œ˜\ÜË‹ŒK
+K™\ÚÛ\\
+™]È‘QK›ŞÙ[ÛY]JŒÎŒ‹‹
+KÛÜ“X\šÙ\“X]\šX[LK‹
+KÛ›Ø\\
+™]È‘QK”Ü\™QÙ[ÛY]JŒL‹L
+KPU˜œ˜\ÜËŒM‹KMJNÙ›ÜŠÛÛœİˆÙˆËKË×J\\
+™]È‘QK›ŞÙ[ÛY]JŒKKŒN
+KPU˜œ˜\ÜËŒLËOOLÌœŠŒKŒMK
+NÙÛÜ‹\Ù\‘]O^İ\N‰ÛY[[ÜKYÛÜ‰Ë\İ[˜][Û‹Ü]Û‹X]Ë]K]]Ü‹Xİ[Û‰ÓÔS‰ßNÙ›ÜŠÛÛœİX\šÙ\ˆÙˆÜÜİKÜİ‹[[™\ÚÛJ[X\šÙ\‹\Ù\‘]OYÛÜ‹\Ù\‘]NÚ[\˜XİX›\Ëœ\Ú
+ÛÜ‹ÜİKÜİ‹[[™\ÚÛ
+NÚYŠ[YQ^]
+^ØÛÛœİ\]YO\\
+™]È‘QK”[™QÙ[ÛY]JKMKÊK™]\›”\]YSX]\šX[ŒNK‹L‹
+NÜ\]YKœ›İ][Û‹OSX]”KÌÜ\]YK\Ù\‘]OYÛÜ‹\Ù\‘]NÚ[\˜XİX›\Ëœ\Ú
+\]YJNØÛÛœİ[›™\\\
+™]È‘QK”[™QÙ[ÛY]JË‹‹ŒÍJK™]\›”[›™\“X]\šX[KÌ‹LK‹
+NÜ[›™\‹œ›İ][Û‹KSX]”KÌØÛÛœİÛİÏ[™]È‘QK”Ú[YÚ
+LØYMŒ‹‹ŠNÙÛİËœÜÚ][Û‹œÙ]
+KK
+NÙÜ›İ\˜Y
+ÛİÊ_\™]\›ˆÛÜŸBˆ[˜İ[ÛˆY[[ÜT›ÛÛSYÚ
+›ÛÛKÛÛÜ‹[[œÚ]J^ØÛÛœİYÚ[™]È‘QK”Ú[YÚ
+ÛÛÜ‹[[œÚ]KNŠNÛYÚœÜÚ][Û‹œÙ]
+›ÛÛK˜ŞŒ‹›ÛÛK˜ŞŠNÜØÙ[™K˜Y
+YÚ
+NÜ™]\›ˆYÚCBˆËÈHÛX[[YY›Ü›ÜˆH™XY[™È›ÛÛKZ[œ›ÛHš[Z]]™\È
+›È™]È\ÜÙ]š[\ÊH[™XÙY]Hš^YÛÜ›™\ˆÛX\ˆÙˆHÚ[™\ËÚZ\ˆ[™ÚYÛ‹ˆÛ™H[\˜XİX›H›Øİ\ÈY\Ú\ˆÚ[™Ø\œšY\ÈHVSRS‘H^ƒBˆ[˜İ[Ûˆ™XY\•˜XÙ\Ê›ÛÛK›ÛÚÒYËÙ^J^ØÛÛœİ\›ÛÛK˜Ş\›ÛÛKËÌŠÌ‹\›ÛÛK˜ŞŠÌKŒKX›SX][™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒLÌŒ›İYÚ™\ÜÎ‹LŸJNØ›Ş
+KŒÍKŒL‹KŒKX›SX]Í‹‹˜[ÙJNÙ›ÜŠÛÛœİÙˆËKJY›ÜŠÛÛœİˆÙˆËKŒÍŒÍJX›Ş
+ŒKÌ‹ŒKPU™\šÕÛÛÙ
+ÙŒÍ‹ŠÙ‹˜[ÙJNØÛÛœİÚÜÙ[X›ÛÚÜË™š[™
+›ÛÚÏO˜›ÛÚËšYOOX›ÛÚÒYÖÊÙ^K›[™İ
+Ø›ÛÚÒYË›[™İ
+IX›ÛÚÒYË›[™İJNÚYŠÚÜÙ[Š^ØÛÛœİYX›Ş
+NŒÍKÌ‹PUœ\\‹KŒË‹‹˜[ÙJKšYÚX›Ş
+NŒÍKÌ‹PUœ\\‹
+ËŒË‹‹˜[ÙJNÛYœ›İ][Û‹OKŒÍNÜšYÚœ›İ][Û‹OKKŒÍNÛY\Ù\‘]O^İ\N‰ÛØš™Xİ	Ë]N˜[ˆÜ[ˆÛÜHÙˆ	ØÚÜÙ[‹]_X]]Ü‰ĞH[˜Ú[Y[™H[ˆHX\™Ú[ˆ[™È[Ø^H›İYÚHİYÚ‰ËXİ[Û‰ÑVSRS‘IßNÚ[\˜XİX›\Ëœ\Ú
+Y
+_XÛÛœİ]YÓX][™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜšÙ^OOOIÙÛİXÉÏÌÎ˜LØÎŒ˜NÙ›İYÚ™\ÜÎ‹ÌŸJNØŞ[[™\ŠŒLËŒLKŒŒ‹L‹]YÓX]
+Ë‹MŠËŒK˜[ÙJNÙ›ÜŠ]OLÚOÎÚJÊÊ^ØÛÛœİYÙOX›Ş
+ŒÍ
+ÚJ‹ŒKŒNPUœ\\‹LKŒJÚJ‹ŒŒKŠÌ‹ŒJÚJ‹ŒLË˜[ÙJNÜYÙKœ›İ][Û‹OKKŒÌŠÚJ‹ŒŒ_Y›ÜŠ]OLÚOÚJÊÊ^ØÛÛœİØİY™[Y\Ú
+™]È‘QKÚ\˜ÛQÙ[ÛY]JŒMŠÚJ‹ŒÍKLŠK™]È‘QK“Y\Ú˜\ÚXÓX]\šX[
+ØÛÛÜŒMÌLÌ‹˜[œÜ\™[YKÜXÚ]N‹ŒL‹\Üš]N™˜[Ù_JK›ÛÛK˜ŞLKŒŠÚJ‹ŒL‹›ÛÛK˜ŞŠÌ‹ŒJÊILŠJ‹ŒŒ‹˜[ÙJNÜØİY™‹œ›İ][Û‹KSX]”KÌŸ_Bˆ[˜İ[Ûˆ™YÛXİ]Z[Ê›ÛÛK]™[
+^ØÛÛœİİZ[“X][™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒMÌNLXK›İYÚ™\ÜÎŒ_JKÜ[\“X][™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒÍÌYK›İYÚ™\ÜÎŒ_JNÙ›ÜŠ]OLÚO]™[
+ÌÚJÊÊ^ØÛÛœİÜ˜XÚÏX›Ş
+ŒKŒNKŒJÚJ‹ŒNİZ[“X]›ÛÛK˜Ş\›ÛÛKËÌŠÌKŒJÚJ‹Ì‹ŒN›ÛÛK˜Ş‹L‹
+ÚJŒKŒË˜[ÙJNØÜ˜XÚËœ›İ][Û‹OKŒÍJÚJ‹ßY›ÜŠ]OLÚO]™[ÚJÊÊ^ØÛÛœİ[šÏX›Ş
+ŒM‹ŒL‹K‹Ü[\“X]›ÛÛK˜Ş
+Ü›ÛÛKËÌ‹LKŒ‹ZJ‹ŒÎŒK›ÛÛK˜ŞŠÌ‹KZJŒKK˜[ÙJNÜ[šËœ›İ][Û‹KŒŠŠJÌJNÜ[šËœ›İ][Û‹OKJÚJ‹ŒÌ_Y›ÜŠ]OLÚO]™[
+ÌNÚJÊÊ^ØÛÛœİÛ\X›Ş
+KŒNŒ‹PUœ\\‹›ÛÛK˜Ş\›ÛÛKËÌŠÌKÊÚJ‹MKŒË›ÛÛK˜ŞŠÜ›ÛÛK™Ì‹LKŒ‹ZJ‹Ë˜[ÙJNÜÛ\œ›İ][Û‹OKKJÚJ‹ŒÍZYŠ]™[ŒŠ^ØÛÛœİ˜[[”Ú[X›Ş
+ËŒKŒM‹PU™\šÕÛÛÙ›ÛÛK˜Ş
+Ü›ÛÛKËÌ‹L‹Œ‹ŒŒ‹›ÛÛK˜Ş‹LKK˜[ÙJNÙ˜[[”Ú[‹œ›İ][Û‹KŒNÙ˜[[”Ú[‹œ›İ][Û‹OKŒ__Bˆ[˜İ[Ûˆ[YT›Ü
+›ÛÛK›Ü
+^ØÛÛœİ\›ÛÛK˜Ş
+Ü›ÛÛKËÌ‹LË\›ÛÛK˜Ş‹LÛ]›Øİ\ÎÂˆYŠ›ÜšÚ[™OOIØØ[™[Xœ˜IÊ^Ø›Ş
+KKKKPU™\šÕÛÛÙ‹‹˜[ÙJNØŞ[[™\ŠŒËŒÍ‹ŒMLPU˜œ˜\ÜËKŠNÙ›ÜŠÛÛœİÙ—[Ù–ÖÌKËKŒËŒM×KËŒËKŒMWJ^ØŞ[[™\ŠŒŒKPU˜œ˜\ÜË
+ÙKŒM‹ŠÙŠNÙ›Øİ\Ï[Y\Ú
+™]È‘QK”Ü\™QÙ[ÛY]JŒ‹ŠK™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒ™˜ÙØK[Z\ÜÚ]™NŒ™˜XLÌË[Z\ÜÚ]™R[[œÚ]NŒK_JK
+ÙK‹ŠÙ‹˜[ÙJ__CBˆ[ÙHYŠ›ÜšÚ[™OOIÙ]šY[˜ÙKX›Ø\™	Ê^ØÛÛœİ]šY[˜ÙU^XØ[˜\Õ^\™J
+ËË
+OOØË™š[İ[OIÈÍ˜MLÌÉÎØË™š[™Xİ
+Ë
+NØËœİ›ÚÙTİ[OIÈÌÍŒÌNIÎØË›[™UÚYLŒØËœİ›ÚÙT™Xİ
+ËËËLMLM
+NØÛÛœİØ\™ÏVÖÉĞ“ÓÕ’S•	ËK‹MLMÌKÉÌLNÉËŒÍ‹ÌLÌLWKÉÓÓ‘Óˆ0­ÈNLIËÎLLNLMWKÉÕSQÔSIËŒKMÍKNKLL—KÉÔĞÒÑUĞUÒ	ËÌŒKMKMLWNÙ›ÜŠÛÛœİÛX™[KİËÚ[ÙˆØ\™Ê^ØËœØ]™J
+NØË˜[œÛ]J
+ØİËÌ‹JØÚÌŠNØËœ›İ]J
+	LËLJJ‹ŒÍJNØË™š[İ[OIÈÙMYXIÎØË™š[™Xİ
+XİËÌ‹XÚÌ‹İËÚ
+NØËœİ›ÚÙTİ[OIÈÎÎM‰ÎØË›[™UÚYLÎØËœİ›ÚÙT™Xİ
+XİËÌŠÍKXÚÌŠÍKİËLLÚLL
+NØË™š[İ[OIÈÌÍL˜ŒŒ	ÎØË^[YÛIØÙ[\‰ÎØË™›ÛIØ›ÛNÙ[Ü™ÚXIÎØË™š[^
+X™[XÚÌŠÌÊNÙ›ÜŠ]LÛÛŠÊÊ^ØË™ÛØ˜[[OKNØË™š[™Xİ
+XİËÌŠÌMKXÚÌŠÍJÛŠŒNİËLÌŠ_XËœ™\İÜ™J
+_XËœİ›ÚÙTİ[OIÈÎLYŒ	ÎØË›[™UÚYMNØË˜™YÚ[”]
+
+NØË›[İ™UÊLŒLJNØË›[™UÊÌŠNØË›[™UÊLŒ
+NØË›[™UÊÌ‹ŒÌ
+NØË›[™UÊLKÌ
+NØËœİ›ÚÙJ
+NÙ›ÜŠÛÛœİŞW[Ù–ÖÌLŒLWKÌÌ—KÍLŒKÌÌ‹ŒÌKÍLKÌWJ^ØË™š[İ[OIÈØÍXLIÎØË˜™YÚ[”]
+
+NØË˜\˜ÊKKÊNØË™š[
+
+__K
+NÙ›Øİ\ÏX›Ş
+KKKŒÍKŒK™]È‘QK“Y\Úİ[™\™X]\šX[
+ÛX\™]šY[˜ÙU^›İYÚ™\ÜÎ‹LŸJKKŒ‹‹˜[ÙJNÙ›ÜŠÛÛœİÙˆËKNNJY›ÜŠÛÛœİHÙˆËKL—J^ØÛÛœİ[XŞ[[™\ŠŒKŒKŒPU˜œ˜\ÜË
+ŞKŠËŒÊNÜ[‹œ›İ][Û‹SX]”KÌŸ_Bˆ[ÙHYŠ›ÜšÚ[™OOIØÛÛ\\ÜË]X›IÊ^ØŞ[[™\ŠMKKŒ‹ŒPUÛÛÙK‹˜[ÙJNØŞ[[™\ŠŒŒKPU™\šÕÛÛÙ‹‹˜[ÙJNØÛÛœİ^XØ[˜\Õ^\™J
+ËË
+OOØË™š[İ[OIÈÙNYØŒ	ÎØË™š[™Xİ
+Ë
+NØËœİ›ÚÙTİ[OIÈÌ˜LŒM‰ÎØË›[™UÚYLÎØË˜™YÚ[”]
+
+NØË˜\˜ÊËÌ‹Ì‹Ê‹‹ÊNØËœİ›ÚÙJ
+NØËœØ]™J
+NØË˜[œÛ]JËÌ‹ÌŠNÙ›ÜŠ]OLÚOMÚJÊÊ^ØËœ›İ]JX]”KÎ
+NØË˜™YÚ[”]
+
+NØË›[İ™UÊ
+NØË›[™UÊ]Ê‹
+NØËœİ›ÚÙTİ[OZIMOOLÉÈÍØLYŒY‰Î‰ÈÌ˜LŒM‰ÎØË›[™UÚYZIMOOLÌÎŒNØËœİ›ÚÙJ
+_XËœ™\İÜ™J
+_KŒŒŒŒ
+NÙ›Øİ\Ï[Y\Ú
+™]È‘QKÚ\˜ÛQÙ[ÛY]JKÌŠK™]È‘QK“Y\Úİ[™\™X]\šX[
+ÛX\^›İYÚ™\ÜÎ‹ßJKK‹˜[ÙJNÙ›Øİ\Ëœ›İ][Û‹KSX]”KÌŸCBˆ[ÙHYŠ›ÜšÚ[™OOIİXK]X›IÊ^ØŞ[[™\Š‹ŒÎŒ‹M‹PUÛÛÙÎ‹˜[ÙJNØŞ[[™\ŠŒKŒKÌ‹PU™\šÕÛÛÙ‹‹˜[ÙJNØŞ[[™\ŠŒLËŒKŒËL‹™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒMÙ˜Í›İYÚ™\ÜÎ‹ŸJKKŒL‹‹ŠËŒK˜[ÙJNÙ›Øİ\ÏXŞ[[™\ŠŒKŒLKŒML‹™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒŒ™XY‹›İYÚ™\ÜÎ‹_JKKŒL‹KŠËŒJ_CBˆ[ÙHYŠ›ÜšÚ[™OOIÜ[ÜÛÜ\‹X\İ	Ê^ØŞ[[™\ŠŒÌ‹ŒÍ‹MKMPUœİÛ™KË‹˜[ÙJNØ›Ş
+ŒÍŒŒ‹ŒË™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒØXÌ˜Œ›İYÚ™\ÜÎ‹_JKN‹˜[ÙJNÙ›Øİ\Ï[Y\Ú
+™]È‘QK”Ü\™QÙ[ÛY]JŒ‹M‹M
+K™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒØXÌ˜Œ›İYÚ™\ÜÎ‹_JKKŒMK‹˜[ÙJ_CBˆ[ÙHYŠ›ÜšÚ[™OOIÙ›İÙ\‹]\›‰Ê^ØŞ[[™\ŠŒŒ‹ŒÍMKMPUœİÛ™KŒË‹˜[ÙJNØÛÛœİ][ÏVÌÌMØKLÌXKXM˜Ì‹MÌXWNÙ›ÜŠ]OLÚOÎÚJÊÊ^ØÛÛœİOZKÍÊ“X]”JŒÙ›Øİ\Ï[Y\Ú
+™]È‘QK”Ü\™QÙ[ÛY]JŒJÊILÊJ‹Œ‹ŠK™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜœ][ÖÚIMK›İYÚ™\ÜÎ‹_JK
+ÓX]˜ÛÜÊJJ‹ŒMŒÊÊILŠJ‹ŒKŠÓX]œÚ[ŠJJ‹ŒM˜[ÙJ__CBˆYŠ›Øİ\Ê^Ù›Øİ\Ë\Ù\‘]O^İ\N‰ÛØš™Xİ	Ë]Nœ›Ü]K]]Üœ›Ü™\ØËXİ[Û‰ÑVSRS‘IßNÚ[\˜XİX›\Ëœ\Ú
+›Øİ\Ê__Bˆ[˜İ[Ûˆ[YT™XÛÜ™
+›ÛÛKÙ^J^ØÛÛœİ\›ÛÛK˜Ş\›ÛÛKËÌŠÌË\›ÛÛK˜ŞŠÌNØÛÛœİİ[™X›Ş
+K‹ŒMKKŒMKPU™\šÕÛÛÙK‹˜[ÙJNÙ›ÜŠÛÛœİÙˆËK‹—JY›ÜŠÛÛœİˆÙˆËKJX›Ş
+ŒKŒKPUÛÛÙ
+ÙŠÙ‹˜[ÙJNØÛÛœİ™XÛÜ™X›Ş
+ËŒKNPUœ\\‹KŒ‹˜[ÙJNÜ™XÛÜ™œ›İ][Û‹OJÙ^K›[™İ	LËLJJ‹ŒNNÜ™XÛÜ™\Ù\‘]O^İ\N‰Ü›ÛÛK\™XÛÜ™	Ë™XÛÜ™YšÙ^K]N”“ÓÓWÔ‘PÓÔ‘ÖÚÙ^WK]K]]Ü‰ĞH™XÛÜ™Ù\\\œ›ÛHHX›XÈÚ[™\Ë‰ËXİ[Û‰Ô‘PQ	ßNÚ[\˜XİX›\Ëœ\Ú
+™XÛÜ™
+_Bˆ]Y[[ÜT›ÛÛ\ĞZ[Y˜[ÙK™[Y[X™\™Y›ÛÚÏ[[ÃBˆ[˜İ[ÛˆZ[Y[[ÜT›ÛÛ\Ê
+^ÚYŠY[[ÜT›ÛÛ\ĞZ[
+\™]\›ÛY[[ÜT›ÛÛ\ĞZ[]YNØÛÛœİ^\İ[™Ï[™]ÈÙ]
+ØÙ[™K˜Ú[™[ŠK™]\›š[™Ï[Y[[ÜV›Û™\ÖÌK]ZY][Y[[ÜV›Û™\ÖÌWK[œ™XY[Y[[ÜV›Û™\ÖÌ—K™\ÜÚ]ÜO[Y[[ÜV›Û™\ÖÌ×NÛY[[ÜTÚ[
+™]\›š[™ËPUœİÛ™JNÛY[[ÜTÚ[
+]ZY]™YÛXİYİÛ™JNÛY[[ÜTÚ[
+[œ™XY™YÛXİYİÛ™JNÛY[[ÜTÚ[
+™\ÜÚ]ÜK™\ÜÚ]ÜSY][
+NÃBˆYÊ™]\›š[™Ë˜Ş™]\›š[™Ë˜Ş‹LLŒÌJNÜYÊ]ZY]˜Ş]ZY]˜Ş‹K˜ÌJNÜYÊ[œ™XY˜Ş[œ™XY˜Ş‹‹XŒXLXÊNÃBˆÛÛœİ™]\›š[™ÔÚYÛ[Y[[ÜTÚYÛŠ™]\›š[™Ë	ÓSQTÈSˆHTÕ	Ë	ÔÛÛYH›ÛÚÜÈİ[ØZ]È™HØ[Y‰ËŒMJK]ZY]ÚYÛ[Y[[ÜTÚYÛŠ]ZY]	ÕHÓ‘ÑTˆÒSSÑIË	Õ\™H\È[Ü™H\™H[ˆHYÚÚİÜË‰ËŒMKJK[œ™XYÚYÛ[Y[[ÜTÚYÛŠ[œ™XY	ÔÕ8 %ø %S‘ÉË	ĞH[™Ûİ[Ú[™ÙHÚ]\[œÈ™^‰ËŒËÊK™\ÜÚ]ÜTÚYÛ[Y[[ÜTÚYÛŠ™\ÜÚ]ÜK	ÕÒUĞTÈÑT	Ë	Ó›ÈÛ™H\È^Z[™YÚH\ÙH™[XZ[‹‰ËŒKJNÂˆÛÛœİY[[ÜPÛÛXİ[ÛœÏ^ÃBˆ™]\›š[™Î–ÌLŒÍL‹LM‹LLŒMMLKÌ‹LLŒKMMMMÎMÌ—KBˆ]ZY]–ÌMLËLL‹MÌKLM‹LŒ‹LLŒKLM‹LLKÍMLMËLMKBˆ[œ™XY–ÍLMMLÌÎLLKŒÍŒŒÍLMKÍLËÌKLÌ‹MÍKMÌM×KBˆ™\ÜÚ]ÜN–ÌLÌ‹ŒÍÎŒŒLÍ‹MÍÍŒŒNMMLËËMŒMKMÍBˆNÂˆ›ÜŠÛÛœİÙ^HÙˆØš™XİšÙ^\ÊY[[ÜPÛÛXİ[ÛœÊJ^ØÛÛœİXÜ]Z\Ú][ÛœÏX›ÛÚÜË™š[\Š›ÛÚÏO˜›ÛÚËœÛİ\˜ÙRÙ^I‰˜›ÛÚËœ›ÛÛOOOZÙ^JK›X\
+›ÛÚÏO˜›ÛÚËšY
+NÚYŠXÜ]Z\Ú][ÛœË›[™İ
+[Y[[ÜPÛÛXİ[ÛœÖÚÙ^WOVË‹‹˜XÜ]Z\Ú][ÛœË‹‹›Y[[ÜPÛÛXİ[ÛœÖÚÙ^WK™š[\ŠYOˆXXÜ]Z\Ú][ÛœËš[˜ÛY\ÊY
+JWKœÛXÙJL
+_BˆÛÛœİY[[ÜP›ÛÚÜÏSØš™Xİ™œ›ÛQ[šY\ÊØš™Xİ™[šY\ÊY[[ÜPÛÛXİ[ÛœÊK›X\
+
+ÚÙ^KY×JOO–ÚÙ^KYË›X\
+YO˜›ÛÚÜË™š[™
+›ÛÚÏO˜›ÛÚËšYOOZY
+JK™š[\Š›ÛÛX[ŠWJJNÂˆİ\˜]YÚ[ŠY[[ÜPÛÛXİ[ÛœËœ™]\›š[™ËœÛXÙJJK™]\›š[™Ë˜ŞM‹™]\›š[™Ë˜Ş‹\™]\›š[™Ë™ÌŠËMK
+NØİ\˜]YÚ[ŠY[[ÜPÛÛXİ[ÛœËœ™]\›š[™ËœÛXÙJJK™]\›š[™Ë˜Ş
+Í‹™]\›š[™Ë˜Ş‹\™]\›š[™Ë™ÌŠËMK
+NØİ\˜]YÚ[ŠY[[ÜPÛÛXİ[ÛœËœ]ZY]œÛXÙJJK]ZY]˜ŞM‹]ZY]˜Ş‹\]ZY]™ÌŠËMKJNØİ\˜]YÚ[ŠY[[ÜPÛÛXİ[ÛœËœ]ZY]œÛXÙJJK]ZY]˜Ş
+Í‹]ZY]˜Ş‹\]ZY]™ÌŠËMKJNØİ\˜]YÚ[ŠY[[ÜPÛÛXİ[ÛœË[œ™XYœÛXÙJJK[œ™XY˜ŞMK[œ™XY˜Ş‹][œ™XY™ÌŠËMKŠNØİ\˜]YÚ[ŠY[[ÜPÛÛXİ[ÛœË[œ™XYœÛXÙJJK[œ™XY˜Ş
+ÍK[œ™XY˜Ş‹][œ™XY™ÌŠËMKŠNÂˆÛÛœİ™]\›š[™ÕÙXœÏVØÛØÙXŠKKLÌ‹JWK]ZY]ÙXœÏVØÛØÙXŠLËLÌ‹JKÛØÙXŠLKËLÌ‹ÌŠKÛØÙXŠM‹KLLKŒX]”K
+KÛØÙXŠËŒËËLX]”KÌ‹ŒŠKÛØÙXŠLË‹LM‹SX]”KÌ‹ÌŠWK[œ™XYÙXœÏVØÛØÙXŠLLËLÌÌ‹KŒJKÛØÙXŠLŒKËLÌÌ‹JKÛØÙXŠLÌËLÌÌ‹KŒŠKÛØÙXŠLLKŒLX]”KÌ‹JKÛØÙXŠLÌ‹Ì‹LMKSX]”KÌ‹JKÛØÙXŠLNKŒ‹NKŒËX]”KJKÛØÙXŠL‹ËKNKŒËX]”K
+KÛØÙXŠLÌ‹ËKL‹SX]”KÌ‹ÍJWK™\ÜÚ]ÜUÙXœÏVØÛØÙXŠMKLÌKÌ‹JKÛØÙXŠM‹ËKLSX]”KÌ‹
+KÛØÙXŠMKËNŒËX]”KŒŠKÛØÙXŠMŒNŒËX]”KÌŠWNÃBˆÛÛœİ™]\›š[™Ğœ›ÚÙ[Y[XYÙYÚZ\ŠÍËLMKJK]ZY]œ›ÚÙ[Y[XYÙYÚZ\ŠNKLMKŠK[œ™XYœ›ÚÙ[Y[XYÙYÚZ\ŠLËLLËÊNÛ™YÛXİ]Z[Ê]ZY]ŠNÛ™YÛXİ]Z[Ê[œ™XY
+NÛ™YÛXİ]Z[Ê™\ÜÚ]ÜKÊNİÜš][™Ñ\ÚÊ™]\›š[™Ë˜Ş™]\›š[™Ë˜ŞŠÌ‹˜[ÙJNİÜš][™Ñ\ÚÊ]ZY]˜Ş]ZY]˜ŞŠÌ‹YJNØÚZ\Š[œ™XY˜Ş[œ™XY˜ŞŠÌ‹X]”KÛ[Ù[‰Ø\›XÚZ\‰Ë]N‰ÕHÛ›H[XİÚZ\‰Ë]]Ü‰ÓÛ™H[\İ[™[Y]™\ÈH™XY\ˆ\ÈÛÛZ[™Ë‰ËØ]YÛÜšY\Î–ÉÔİ˜[™ÙIË	ÓY[[ÜIË	ÑÛİXÉ×_JNÃBˆÛÛœİ™]\›š[™ÓYÚ[Y[[ÜT›ÛÛSYÚ
+™]\›š[™Ë™˜ÍÍÙŒJK]ZY]YÚ[Y[[ÜT›ÛÛSYÚ
+]ZY]™NÍKLJK[œ™XYYÚ[Y[[ÜT›ÛÛSYÚ
+[œ™XYXÌNKŠK™\ÜÚ]ÜSYÚ[Y[[ÜT›ÛÛSYÚ
+™\ÜÚ]ÜKNXÌ˜ÌËLJNÙ›ÜŠÛÛœİ›ÛÛHÙˆY[[ÜV›Û™\Ê^ØÛÛœİ[İ\Ï\\XÛ\Ê›ÛÛKšÙ^OOOIÜ™\ÜÚ]ÜIÏÌMÌŒLŒÜ›ÛÛKËL‹KK›ÛÛK™L—K›ÛÛKšÙ^OOOIÜ™\ÜÚ]ÜIÏÌÍ˜ÌŒÍØNŒÍJNÛ[İ\ËœÜÚ][Û‹œÙ]
+›ÛÛK˜ŞŒ‹›ÛÛK˜ŞŠ_CBˆÛÛœİ™[Y[X™\™YXİ\›X›Ş
+‹KŒKKPUÛÛÙ[œ™XY˜ŞKŒK[œ™XY˜Ş‹LK˜[ÙJNÜ™[Y[X™\™Y›ÛÚÏ[ÛÜÙP›ÛÚÊY[[ÜP›ÛÚÜË[œ™XYÌK[œ™XY˜ŞKË[œ™XY˜Ş‹LK
+NÜ™[Y[X™\™Y›ÛÚËš\ÚX›OY˜[ÙNÃBˆ[˜İ[Ûˆ™\ÜÚ]ÜT˜XÚÊ‹Ù™œÙ]L
+^Ù›ÜŠÛÛœİHÙˆËŒK‹ŒMKŒWJ^ØÛÛœİÚ[X›Ş
+ŒM‹K™\ÜÚ]ÜSY][KŠNÚYŠO
+\Ú[‹œ›İ][Û‹JÙ™œÙ]	LËKŒN‹ŒJ_Y›ÜŠÛÛœİÙˆËLËKËWJX›Ş
+ŒNŒ‹K™\ÜÚ]ÜSY][
+Ù‹ŒKŠNÙ›ÜŠ]OLÚONÚJÊÊ^ØÛÛœİ[Y[[ÜP›ÛÚÜËœ™\ÜÚ]ÜVÊJÛÙ™œÙ]
+I[Y[[ÜP›ÛÚÜËœ™\ÜÚ]ÜK›[™İK˜[[ZOMË›O[ÛÜÙP›ÛÚÊ‹˜[[ŞL‹ŒŠÊKMÊJŒ‹ÎLËŒŠÊIMJJŒKMK˜[[ËŒM‹MJÓX]™›ÛÜŠKÍJJŒKK˜[[ŞŠÌKJÊKMÊJ‹NŠËN
+KÛØ˜›OSX]œÚ[Š
+‹šY	NNLJJ‹ŒJÚJNÚYŠ˜[[ŠX›KœÜÚ][Û‹OKŒMØ›Kœ›İ][Û‹œÙ]
+˜[[ËSX]”KÌÛØ˜›J‹ŒË˜[[İÛØ˜›J‹ŒNŒÛØ˜›JŠ˜[[ËN‹ŒN
+JNØ›K\Ù\‘]KšÛYKœÜÚ][Û‹˜ÛÜJ›KœÜÚ][ÛŠNØ›K\Ù\‘]KšÛYKœ]X]\›š[Û‹˜ÛÜJ›Kœ]X]\›š[ÛŠ__Bˆ™\ÜÚ]ÜT˜XÚÊMËLK
+NÜ™\ÜÚ]ÜT˜XÚÊMMËLKÊNÜ™\ÜÚ]ÜT˜XÚÊMËLŒŠNÜ™\ÜÚ]ÜT˜XÚÊMMËLŒ
+NÙ›ÜŠÛÛœİÙˆÌMËMŒ×J^ØÛÛœİ˜Z[X›Ş
+ŒL‹ŒŒPU˜œ˜\ÜËŒKLŒ˜[ÙJNÜ˜Z[›X]\šX[\™\ÜÚ]ÜSY][Ü˜Z[\Ù\‘]K˜Z[˜\ÙVO\˜Z[œÜÚ][Û‹NÜ™\ÜÚ]ÜT˜Z[Ëœ\Ú
+˜Z[
+_XÛÛœİ™\]Y\İ\ÚÏX›Ş
+ËŒ‹KŒKK™\ÜÚ]ÜSY][MLËKŒKLL˜[ÙJK™\]Y\İ›ÛÚÏ[ÛÜÙP›ÛÚÊY[[ÜP›ÛÚÜËœ™\ÜÚ]ÜVÍKMLËKÌ‹LL
+NÜ™\]Y\İ›ÛÚË\Ù\‘]K›XXÚ[™S›İOIÔ‘TUQTÕÕÔ8 %Ù[XİYœ›ÛHHÚ[ˆ[[Üİ›Ø›ÙHš\Ú]Ë‰ÎÃBˆY[[ÜQÛÜŠŒËŒŒ‹LŒ	Ø˜\Ù[Y[	ËÌMK˜\Ù[Y[›ÛÜ–KMKX]”KÌ‹	ÕHÛÜˆ˜XÚÈÈH™[İÈØ][ÙİYIË	ÕH\\ÈØ[ˆ™HX\™ÛˆHİ\ˆÚYK‰ÊNÛY[[ÜQÛÜŠÎLŒ	Ü]ZY]	ËÎ‹LŒKSX]”KÌ‹	ĞHÛÜˆÚ]H˜Y[™È[™^Ø\™	Ë	Ğ™^[Û™]™]Ù\ˆ[\È\™H\›š[™Ë‰ÊNÛY[[ÜQÛÜŠËŒŒ‹LŒ	Ü™]\›š[™ÉËÍÎKLŒKX]”KÌ‹	ÕHØ\›Y\ˆ›ÛÛH™Z[™[İIË	Ó˜[Y\ÈÛ[[Y\ˆ›İYÚHÙ^ZÛK‰ÊNÛY[[ÜQÛÜŠLÎLŒ	İ[œ™XY	ËÌLLËLŒKSX]”KÌ‹	ĞHÛÜˆÚÜÙHÚYÛˆ\È˜[[ˆ]Ø^IË	Ñ\İ\ÈØ]\™YYØZ[œİ]È™\ÚÛ‰ÊNÛY[[ÜQÛÜŠLLKŒŒ‹LŒ	Ü]ZY]	ËÌLËLŒKX]”KÌ‹	ÕHÛÜˆ˜XÚÈÈH]ZY]İXÚÜÉË	ĞHÙXZÈ[X™\ˆYÚX\šÜÈHØ^H˜XÚË‰ÊNÛY[[ÜQÛÜŠLÌ‹ÎLŒ	Ü™\ÜÚ]ÜIËÌMKLŒKSX]”KÌ‹	Ğ[ˆ[™\İšX[š\™HÛÜ‰Ë	ĞH˜Z[Ø^HšXœ˜][Ûˆ\ÜÙ\È›İYÚ]È[™K‰ÊNÛY[[ÜQÛÜŠLÎKŒŒ‹LŒ	İ[œ™XY	ËÌLÌKLŒKX]”KÌ‹	ÕHÛÜˆ˜XÚÈÈH[œ™XY›ÛÛIË	ĞHÚ[™ÛHØ\›H[\ÚİÜÈ™[™X]]‰ÊNÛY[[ÜQÛÜŠM‹ÎLŒ	Ü™]\›š[™ÉËÍ‹LŒKSX]”KÌ‹	Ô‘TUQTÕÕÔ	Ë	ÕH˜\ˆ]›Ü›H™]\›œÈ[™^XİY™XY\œÈÈHš\œİ›ÛÛK‰ÊNÃBˆY[[ÜT›ÛÛUš\İX[Ëœ™]\›š[™Ï^ÜÚYÛœ™]\›š[™ÔÚYÛ‹ÙXœÎœ™]\›š[™ÕÙXœËœ›ÚÙ[œ™]\›š[™Ğœ›ÚÙ[‹YÚœ™]\›š[™ÓYÚ˜\ÙSYÚŒŒŸNÛY[[ÜT›ÛÛUš\İX[Ëœ]ZY]^ÜÚYÛœ]ZY]ÚYÛ‹ÙXœÎœ]ZY]ÙXœËœ›ÚÙ[œ]ZY]œ›ÚÙ[‹YÚœ]ZY]YÚ˜\ÙSYÚŒMNÛY[[ÜT›ÛÛUš\İX[Ë[œ™XY^ÜÚYÛ[œ™XYÚYÛ‹ÙXœÎ[œ™XYÙXœËœ›ÚÙ[[œ™XYœ›ÚÙ[‹YÚ[œ™XYYÚ˜\ÙSYÚŒL_NÛY[[ÜT›ÛÛUš\İX[Ëœ™\ÜÚ]ÜO^ÜÚYÛœ™\ÜÚ]ÜTÚYÛ‹ÙXœÎœ™\ÜÚ]ÜUÙXœËœ›ÚÙ[›[YÚœ™\ÜÚ]ÜSYÚ˜\ÙSYÚŒMNÓØš™XİšÙ^\ÊY[[ÜT›ÛÛUš\İX[ÊK™›Ü‘XXÚ
+Ù^OO˜\T›ÛÛSY[[ÜJÙ^JJNÜ™YÚ\İ\”›ÛÛT\™›Ü›X[˜ÙV›Û™\Ê	ÛY[[ÜIË^\İ[™ËY[[ÜV›Û™\Ê_Bˆ[˜İ[Ûˆ\T›ÛÛSY[[ÜJÙ^K›ÛÚÏ[[[››İ[˜ÙOY˜[ÙJ^ØÛÛœİš\İX[[Y[[ÜT›ÛÛUš\İX[ÖÚÙ^WNÚYŠ]š\İX[
+\™]\›ØÛÛœİÛİ[VË‹‹œ™\İÜ™YY[[ÜP›ÛÚÜ×K™š[\ŠO‹œİ\ÕÚ]
+Ù^JÉÎ‰ÊJK›[™İİš\İX[œÚYÛ‹œ›İ][Û‹]š\İX[œÚYÛ‹\Ù\‘]Kš[š]X[[
+“X]œİÊNÛİ[
+Nİš\İX[ÙXœË™›Ü‘XXÚ
+
+ÙX‹JOOÙX‹š\ÚX›OZOXÛİ[
+NÚYŠš\İX[˜œ›ÚÙ[Š]š\İX[˜œ›ÚÙ[‹œ›İ][Û‹SX]›X^
+š\İX[˜œ›ÚÙ[‹œ›İ][Û‹‹XÛİ[
+‹ŒJNİš\İX[›YÚš[[œÚ]O]š\İX[˜˜\ÙSYÚ
+ÓX]›Z[ŠÛİ[
+JŒKÚYŠÙ^OOOIİ[œ™XY	É‰˜Ûİ[
+^Ü™[Y[X™\™Y›ÛÚËš\ÚX›O]YNÚYŠ›ÛÚÊ^Ü™[Y[X™\™Y›ÛÚË\Ù\‘]K˜›ÛÚÏX›ÛÚÎÜ™[Y[X™\™Y›ÛÚË›X]\šX[›X\XÛİ™\•^\™J›ÛÚÊNÜ™[Y[X™\™Y›ÛÚË›X]\šX[›™YYÕ\]O]Y__ZYŠ[››İ[˜ÙJ\ÚİÓ›İXÙJÙ^OOOIÜ™\ÜÚ]ÜIÏÉĞH\İ[˜XÚÈYÚ›XÚÙ\œÈÛ‹ˆH™\ÜÚ]ÜH\È™YÚ\İ\™Y[›İ\ˆ™XY\‹‰Î‰ĞH[\œšYÚ[œËˆ\İÛÜÙ[œËˆH›ÛÛH\È›İXÙY]Û™HÙˆ]È›ÛÚÜÈ\È™Z[™È™XY‰ËŠ_CBˆ[˜İ[Ûˆ™\İÜ™SY[[ÜT›ÛÛJÙ^K›ÛÚÊ^ØÛÛœİÚÙ[X	ÚÙ^_N‰Ø›ÛÚËšYXÚYŠ™\İÜ™YY[[ÜP›ÛÚÜËš\ÊÚÙ[ŠJ\™]\›Ü™\İÜ™YY[[ÜP›ÛÚÜË˜Y
+ÚÙ[ŠNÛØØ[İÜ˜YÙKœÙ]][J	ÛXœ˜\K\™]\›š[™Ë[˜[Y\ÉË”ÓÓ‹œİš[™ÚYJË‹‹œ™\İÜ™YY[[ÜP›ÛÚÜ×JJNØ\T›ÛÛSY[[ÜJÙ^K›ÛÚËYJ_CBˆ]˜\Ù[Y[[\™YY˜[ÙNÃBˆËÈÙXÜ™]Ú[ˆZ[Ù\\˜][HÚ]H\ÜØYÙH™Z[™BˆÙXÜ™]Ú[\Ú[ŠLÍ‹KLËX]”KÌ‹YJNÜÙXÜ™]Ú[‹\Ù\‘]Kœ]›İ\ÙXÜ™]Ú[‹œÜÚ][Û‹˜ÛÛ™J
+NÂˆY›Ş
+K‹‹PUœİÛ™KLÍËËKLË˜[ÙJNÃBˆËÈÙXÜ™]Xœ˜\H[™H˜\œ›İÈ\ÜØYÙHY[ˆ™^[Û™]ÈÙ\İØ[BˆY›Ş
+MNPUÛÛÙMKKŒ‹LË˜[ÙJNØY›Ş
+KËËPUœİÛ™KML‹ËKNJNØY›Ş
+KËËPUœİÛ™KML‹ËK‹JNØY›Ş
+MËKPUœİÛ™KMKËKLLŠNØY›Ş
+MËKPUœİÛ™KMKËKŠNÜYÊMKLËKLKÍLNÌJNØY[\
+MK‹LËKJNØYÛÙ›ÛÛSYÚ
+MKËLËX™‹MKŒ
+NÜÚ[ŠMLL
+NÜÚ[ŠM‹LL
+NÜÚ[ŠMX]”K
+NÜÚ[ŠM‹X]”K
+NØÛÛœİÜ˜XŞ[[™\ŠËËK™]È‘QK“Y\Ú\ÚXØ[X]\šX[
+ØÛÛÜŒLŒMË[Z\ÜÚ]™NŒÍ˜Ë[Z\ÜÚ]™R[[œÚ]NŒK˜[œÛZ\ÜÚ[Û‹ŒŸJKMKKLÊNÛÜ˜‹\Ù\‘]O^İ\N‰ÛØš™Xİ	Ë]N‰Ğ[ˆØš™XİÚ]›ÈX™[	Ë]]Ü‰Ò]\ÈØ\›Y\ˆ[ˆH›ÛÛK‰ËÙXÜ™]Y‰İ[›X™[Y[Ü˜‰ßNÚ[\˜XİX›\Ëœ\Ú
+Ü˜ŠNÃBˆËÈš[HÜXÙHX›İ™HH[İš[™ÈØ[ˆİ\Ú\ÙHHİ\ÜÙYZ\›[™HÜ˜XÚÈ™XYÈ\ÈHÜ]X\™HÜ[š[™Ë‚ˆY›Ş
+K‹PUœİÛ™KML‹K‹LË˜[ÙJNÂˆÛÛœİ[›™[ÛÜX›Ş
+ŒÎŒ‹PUœİÛ™KMLKM‹ŒKLÊNİ[›™[ÛÜ‹\Ù\‘]O^İ\N‰ÜÙXÜ™]]Ø[	Ë]N‰ĞHØ[Ú]HZ\›[™HÜ˜XÚÉË]]Ü‰ĞH[‹Ø[™\š[™Èœ˜Xİ\™H]Èİ]Hœ™X]ÙˆØ\›HZ\‹‰ËXİ[Û‰Ô‘TÔÉßNÚ[\˜XİX›\Ëœ\Ú
+[›™[ÛÜŠNÂˆÛÛœİÜ˜XÚÕ^\™OXØ[˜\Õ^\™J
+ËË
+OOØË˜ÛX\”™Xİ
+Ë
+NØËœİ›ÚÙTİ[OIÜ™Ø˜JËKŠIÎØË›[™UÚYLÎØË›[™R›Ú[IÜ›İ[™	ÎØË˜™YÚ[”]
+
+NØË›[İ™UÊÊ‹LKLŠNØË›[™UÊÊ‹K
+‹ŒMÊNØË›[™UÊÊ‹M
+‹ŒJNØË›[™UÊÊ‹Ë
+‹ÊNØË›[™UÊÊ‹L‹
+‹NJNØË›[™UÊÊ‹K
+‹ÍŠNØË›[™UÊÊ‹KLLŠNØËœİ›ÚÙJ
+NØËœİ›ÚÙTİ[OIÜ™Ø˜JNL‹MÌËLÎKŒÍJIÎØË›[™UÚYLNØË˜™YÚ[”]
+
+NØË›[İ™UÊÊ‹L‹LŠNØË›[™UÊÊ‹K
+‹ŒMÊNØË›[™UÊÊ‹MK
+‹ŒJNØË›[™UÊÊ‹
+‹ÊNØË›[™UÊÊ‹LË
+‹NJNØË›[™UÊÊ‹‹
+‹ÍŠNØË›[™UÊÊ‹KLLŠNØËœİ›ÚÙJ
+NØËœİ›ÚÙTİ[OIÜ™Ø˜JËKJIÎØË˜™YÚ[”]
+
+NØË›[İ™UÊÊ‹Ë
+‹ÊNØË›[™UÊÊ‹ŒÍK
+‹
+NØËœİ›ÚÙJ
+_KM‹LLŠNÂˆÛÛœİÜ˜XÚÏ[™]È‘QK“Y\Ú
+™]È‘QK”[™QÙ[ÛY]J‹Ë
+K™]È‘QK“Y\Ú˜\ÚXÓX]\šX[
+ÛX\˜Ü˜XÚÕ^\™K˜[œÜ\™[YK\Üš]N™˜[ÙKÚYN•‘QK‘İX›TÚY_JJNØÜ˜XÚËœ›İ][Û‹OSX]”KÌØÜ˜XÚËœÜÚ][Û‹œÙ]
+ŒNM‹
+Nİ[›™[ÛÜ‹˜Y
+Ü˜XÚÊNÂˆÛÛœİ[›™[ÛÜÛÛY\XÛÛY\ŠML‹LË‹Œ‹	İ[›™[ÛÜ‰ÊNØY›Ş
+LPUÛÛÙMMËKŒ‹LË˜[ÙJNØY›Ş
+LŒÍKPUœİÛ™KMMË‹MKŒJNØY›Ş
+LŒÍKPUœİÛ™KMMË‹KMJNÙš[˜[ÛÜX›Ş
+‹PU™\šÕÛÛÙMŒKÍK‹LÊNÙš[˜[ÛÜ‹\Ù\‘]O^İ\N‰Ø\˜Ú]™KYÛÜ‰Ë]N‰ĞHÛÜˆX\šÙYÚ][\HÚ\˜Û\ÉË]]Ü‰ÕHXœ˜\H\ÈØZ][™È›Üˆ]ÈY[ˆØ][ÙİYK‰ËXİ[Û‰ÑVSRS‘IßNÚ[\˜XİX›\Ëœ\Ú
+š[˜[ÛÜŠNÙš[˜[ÛÜÛÛY\XÛÛY\ŠMŒ‹LË‹Œ‹	Ø\˜Ú]™HÛÜ‰ÊNØ›Ş
+KKŒNPU˜œ˜\ÜËMŒKÍK‹MKŒMK˜[ÙJNØ›Ş
+KKŒNPU˜œ˜\ÜËMŒKÍK‹KK˜[ÙJNØ›Ş
+KŒŒ‹ŒËPU˜œ˜\ÜËMŒKÍKŒMKLË˜[ÙJNÛY\Ú
+™]È‘QK”Ü\™QÙ[ÛY]JŒKŠKPU˜œ˜\ÜËMŒK‹KKLKÊNØY[\
+MNKKËLË
+NÂˆY›Ş
+LLPUÛÛÙMËKŒ‹LË˜[ÙJNØY›Ş
+K‹LPUœİÛ™KMÌ‹ËLÊNØY›Ş
+L‹KPUœİÛ™KMËËN
+NØY›Ş
+L‹KPUœİÛ™KMËËŠNØY›Ş
+K‹ËPUœİÛ™KMŒ‹ËM‹JNØY›Ş
+K‹ËPUœİÛ™KMŒ‹ËJNÜYÊMËLË‹K‹KŒÌXÍŠNØY[\
+MË‹LËKŒŠNØYÛÙ›ÛÛSYÚ
+MËËLËMX˜ÎKMN
+NØÛÛœİ\˜Ú]™TÚYÚ[XŞ[[™\Š‹‹KK™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒ™MXNYK[Z\ÜÚ]™NŒLÍMØË[Z\ÜÚ]™R[[œÚ]NŒKŒŸJKMËÍKMK
+NØ\˜Ú]™TÚYÚ[\Ù\‘]O^İ\N‰Ø\˜Ú]™IË]N‰ÕHTÕĞUSÑÕQIË]]Ü‰Ñ]™\H\ØÛİ™\™Y]\ÈÜš][ˆ\™K‰ËXİ[Û‰Ô‘SQSP‘T‰ßNÚ[\˜XİX›\Ëœ\Ú
+\˜Ú]™TÚYÚ[
+NØÛÛœİ\˜Ú]™P›ÛÚÏ[ÛÜÙP›ÛÚÊ›ÛÚÜÖÍWKMËKŒL‹‹
+NØ\˜Ú]™P›ÛÚË\Ù\‘]K›XXÚ[™S›İOIÕHš[˜[X\™Ú[ˆÛÛZ[œÈ[İ\ˆİÛˆ›Ûİİ\Ë‰ÎÃBˆÛÜÙP›ÛÚÊ›ÛÚÜÖÍKKMKŒMK	Ø›ÛÚË][™\‹]X›IÊNÛÛÜÙP›ÛÚÊ›ÛÚÜÖÍWKLLËKŒ‹LËŒK	Ø›ÛÚË[X[[	ÊNÛÛÜÙP›ÛÚÊ›ÛÚÜÖÍ—KMKKKKŒ‹	Ø›ÛÚËX˜[ÛÛIÊNÂˆ›Ş
+KŒMKKŒMKPU™\šÕÛÛÙ‹KL‹ŒKŒ‹˜[ÙJNÙ›ÜŠÛÛœİÙˆËKË×JY›ÜŠÛÛœİˆÙˆËKJX›Ş
+ŒL‹KŒL‹PUÛÛÙŠÙKKŒKŒŠÙ‹˜[ÙJNÂˆÛÛœİÜ˜Z]›ÛÚÏ[ÛÜÙP›ÛÚÊ›ÛÚÜË™š[™
+›ÛÚÏO˜›ÛÚËšYOOLNMLŠK‹‹ŒŒKŒ‹SX]”KÌŠNÜÜ˜Z]›ÛÚË\Ù\‘]K›XXÚ[™S›İOIĞH[˜Ú[Y[™H[ˆHX\™Ú[ˆ8 'HÜ˜Z]ÙY\ÈH›ÛÛHHØ][ÙİYHØ[››İ˜[YK¸ 'IÎÂˆÛÛœİ™\ÚÛ›ÛÚÏ[ÛÜÙP›ÛÚÊ›ÛÚÜË™š[™
+›ÛÚÏO˜›ÛÚËšYOOLLŠKMŒKŒKLËX]”KÌŠNİ™\ÚÛ›ÛÚË\Ù\‘]K›XXÚ[™S›İOIÕH\İ™XY\ˆ[™\›[™Y]™\HY[[ÛˆÙˆHÛÜØ^H[™Y\È›ÛÚÈ™\ÚYHÛ™K‰ÎÂˆÛÛœİØ[™\š[™Ğ›ÛÚÏ[ÛÜÙP›ÛÚÊ›ÛÚÜÖÌÎWKKŒKLËŒÊNİØ[™\š[™Ğ›ÛÚËš\ÚX›OY˜[ÙNÂƒBˆËÈ›ÛÙÜØœÙ\˜]ÜH™XXÚYHH\\ˆ˜[ÛÛHİZ\ƒBˆ›ÜŠ]OLÚOLÎÚJÊÊ^ØÛÛœİOMKŒN
+ÚJ‹LÊÚJ‹Ø›Ş
+K‹ŒÎ‹PUÛÛÙMŒ‹KŠNİš[JLKŒÍKŠÚJ‹‹ŒM‹KŒÍKŒMŠNİš[JMËŒKŠÚJ‹‹ŒM‹KŒÍKŒMŠ_CBˆš[JLKŒÍKŒ‹ÌKŒNŒNL
+Nİš[JMËŒKŒ‹ÌKŒNŒNL
+NÃBˆ]›ÛÙZ[Y˜[ÙK˜[™P\œ›İÏ[[ØÛÛœİÚ[™Ú[Y\ÏV×NÃBˆ[˜İ[ÛˆZ[›ÛÙ‘Ø\™[Š
+^ÚYŠ›ÛÙZ[
+\™]\›Ü›ÛÙZ[]YNØÛÛœİ^\İ[™Ï[™]ÈÙ]
+ØÙ[™K˜Ú[™[ŠNØY›Ş
+ÍKPUœİÛ™KKÎK˜[ÙJNÜYÊKMKKÌÍŠKœÜÚ][Û‹OLLŒŒNÃBˆY›Ş
+KMKPUœİÛ™KL‹LŒÍKÍË˜[ÙJNØÛÛY\ŠL‹ÍËMK	Ü›ÛÙˆ\˜\]	ËKLÊNÃBˆY›Ş
+ÍKMKPUœİÛ™KLŒÍKŒK˜[ÙJNØÛÛY\ŠŒKÍMK	Ü›ÛÙˆ\˜\]	ËKLÊNÃBˆY›Ş
+MKKPUœİÛ™KLMËLŒÍKK˜[ÙJNØÛÛY\ŠLMËKMK	Ü›ÛÙˆ\˜\]	ËKLÊNÃBˆY›Ş
+MKKPUœİÛ™KMËLŒÍKK˜[ÙJNØÛÛY\ŠMËKMK	Ü›ÛÙˆ\˜\]	ËKLÊNÃBˆÛÛœİ›ÛÙ”ÚYÛX›Ş
+ËKŒNPU™\šÕÛÛÙ‹LKŒKÍËŒË˜[ÙJNÜ›ÛÙ”ÚYÛ‹\Ù\‘]O^İ\N‰ÛØš™Xİ	Ë]N‰ÕH“ÓÑˆĞT‘S‰Ë]]Ü‰Õ\\™K]™[ˆHÙX]\ˆ™XYÈİ™\ˆ[İ\ˆÚİ[\‹‰ßNÚ[\˜XİX›\Ëœ\Ú
+›ÛÙ”ÚYÛŠNÃBˆËÈHÛX[ØœÙ\˜]ÜKØ\™[‹[\ØÛÜH[™Ú[™Ú[Y\ÃBˆ›ÜŠÛÛœİÙˆËNJY›ÜŠÛÛœİˆÙˆÍMJXŞ[[™\ŠŒNŒ‹LPU˜œ˜\ÜËL‹ŒËŠNØÛÛœİØ[›ÜOX›Ş
+NŒL‹PUÛÛÙMNK˜[ÙJNØØ[›ÜK›X]\šX[[™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒLÌLY‹›İYÚ™\ÜÎ‹JNÃBˆÛÛœİ[\ØÛÜTİ[™XŞ[[™\ŠŒNŒË‹Œ‹L‹PU˜œ˜\ÜËMËLKŒKJNØÛÛœİ[\ØÛÜO[Y\Ú
+™]È‘QKŞ[[™\‘Ù[ÛY]JŒÍKËN
+K™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜŒÌMÍNY][™\ÜÎ‹ŒÍK›İYÚ™\ÜÎ‹JKMËL‹KJNİ[\ØÛÜKœ›İ][Û‹SX]”KÌ‹Îİ[\ØÛÜK\Ù\‘]O^İ\N‰ØÛÛœİ[][Û‰Ë]N‰ÕH™XY\¸ &\ÈÛÛœİ[][Û‰Ë]]Ü‰ÑXXÚ›ÛÚÈ[İH™XYÚ]™\ÈHšYÚ[›İ\ˆİ\‹‰ËXİ[Û‰ÓÓÒÉßNÚ[\˜XİX›\Ëœ\Ú
+[\ØÛÜJNÃBˆ›ÜŠÛÛœİÙˆËLL‹NL—J^ØY›Ş
+‹KKPUÛÛÙLŒÍKMË˜[ÙJNÙ›ÜŠ]OLÚOÚJÊÊ^ØÛÛœİ[[Y\Ú
+™]È‘QK”Ü\™QÙ[ÛY]JŒŒŠÓX]œ˜[™ÛJ
+J‹ŒNŠK™]È‘QK“Y\Úİ[™\™X]\šX[
+ØÛÛÜšILÌMMÌMŒ™ÙMK›İYÚ™\ÜÎŒ_JKLJÚJ‹KLJÓX]œ˜[™ÛJ
+J‹Œ‹MË˜[ÙJNÜ[œØØ[KOLKß_CBˆ™[˜Ú
+LLKK‹X]”KÛ[Ù[™˜[ÙK]N‰ĞHÙX]\™YÛİXÈØ\™[ˆ™[˜Ú	Ë]]Ü‰Ñ\šÈØZÈ[™Ú[™K\™Y\Ûİ\H™\XÙHHÛZ[YÙX]‰ËØ]YÛÜšY\Î–ÉÔÙ]IË	Ô[ÜÛÜIË	ÕÛÛ™\‰Ë	ÓY[[ÜI×_JNÂˆ™[˜Ú
+L‹KX]”KÌ‹Û[Ù[™˜[ÙK]N‰ÕHØ\™YÛÛœİ[][Ûˆ™[˜Ú	Ë]]Ü‰Ğœ˜\ÜÈš[šX[ÈØ]ÚHYÚ™[™X]H™]Ù\İİ\‹‰ËØ]YÛÜšY\Î–ÉÔÙ]IË	ÕÛÛ™\‰Ë	Ñ\XÉË	Ô[ÜÛÜI×_JNÂˆÛÛœİ›ÛÙ›ÛÚÏ[ÛÜÙP›ÛÚÊ›ÛÚÜÖÍ—KLLËŒ‹LKŒMKŒN	Ü›ÛÙ‹X›ÛÚÉÊNÜ›ÛÙ›ÛÚË\Ù\‘]K›XXÚ[™S›İOIÔ˜Z[ˆ\È›\œ™YÛ™HÙ[[˜ÙH[ÈHX\ÙˆH›ÛÙ‹‰ÎÃBˆÛÛœİ˜[™TÛOXŞ[[™\ŠŒKŒM‹Ë‹LPU˜œ˜\ÜËLKKLK
+Nİ˜[™P\œ›İÏX›Ş
+‹ŒL‹ŒL‹PU™ÛÛLKKLËK˜[ÙJNØÛÛœİ˜[™UZ[[Y\Ú
+™]È‘QKÛÛ™QÙ[ÛY]J‹KÊKPU™ÛÛLKLËK˜[ÙJNİ˜[™UZ[œ›İ][Û‹SX]”KÌİ˜[™TÛK\Ù\‘]O^İ\N‰İÙX]\‹]˜[™IË]N‰ÕHXœ˜\HÙX]\ˆ˜[™IË]]Ü‰Ò]È\œ›İÈ™Y\Ù\ÈÈÚ[›Ü‰ËXİ[Û‰Ô‘PQÑPUT‰ßNÚ[\˜XİX›\Ëœ\Ú
+˜[™TÛJNÃBˆ›ÜŠ]OLÚONÚJÊÊ^ØÛÛœİÚ[YOXŞ[[™\ŠŒMKŒËÍJÚJ‹ŒLKPU˜œ˜\ÜËKŒÊÚJ‹ŒËLËKZJ‹ŒË
+NİÚ[™Ú[Y\Ëœ\Ú
+Ú[YJ_CBˆ›ÜŠÛÛœİÙˆÖËLL‹LKŒ‹ÎWKÌL‹LKŒ‹ÎWKËLL‹LKŒ‹NWKÌL‹LKŒ‹NWWJXY[\
+ÌKÌWKÌ—KJNÜ™YÚ\İ\”\™›Ü›X[˜ÙV›Û™SØš™XİÊ	Ü›ÛÙ‰Ë^\İ[™Ê_CBƒBˆËÈÙ\™[™\]HXXÚ[™CBˆÛÛœİXXÚ[™O[™]È‘QK‘Ü›İ\
+
+NÛXXÚ[™KœÜÚ][Û‹œÙ]
+L‹JNÜØÙ[™K˜Y
+XXÚ[™JNØÛÛœİ˜\ÙO[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JËË‹ŒŠKPU˜œ˜\ÜÊNØ˜\ÙKœÜÚ][Û‹OLKNÛXXÚ[™K˜Y
+˜\ÙJNØÛÛœİ˜XÙO[™]È‘QK“Y\Ú
+™]È‘QKŞ[[™\‘Ù[ÛY]JKŒKKŒKŒNÌŠKPU˜›XÚÊNÙ˜XÙKœ›İ][Û‹SX]”KÌÙ˜XÙKœÜÚ][Û‹œÙ]
+‹ŒKLKŒM
+NÛXXÚ[™K˜Y
+˜XÙJNÙ›ÜŠ]OLÚOLÚJÊÊ^ØÛÛœİXÚÏ[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒKŒËŒJKPU™ÛÛ
+NØÛÛœİOZKÌLŠ“X]”JŒİXÚËœÜÚ][Û‹œÙ]
+X]˜ÛÜÊJJ‹Î‹ŒJÓX]œÚ[ŠJJ‹ÎLKŒÊNİXÚËœ›İ][Û‹XNÛXXÚ[™K˜Y
+XÚÊ_XÛÛœİ]™\”]›İ[™]È‘QK‘Ü›İ\
+
+NÛ]™\”]›İœÜÚ][Û‹œÙ]
+KK‹ŒË
+NÛXXÚ[™K˜Y
+]™\”]›İ
+NØÛÛœİ]™\[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]JŒMK‹ŒMJKPU˜œ˜\ÜÊNÛ]™\‹œÜÚ][Û‹OKÍNÛ]™\”]›İ˜Y
+]™\ŠNØÛÛœİÛ›Ø[™]È‘QK“Y\Ú
+™]È‘QK”Ü\™QÙ[ÛY]JŒÌKML
+KPUÛÛÙŠNÚÛ›Ø‹œÜÚ][Û‹OLKÌÛ]™\”]›İ˜Y
+Û›ØŠNØÛÛœİ˜^O[™]È‘QK“Y\Ú
+™]È‘QK›ŞÙ[ÛY]J‹Œ‹ŒM‹KŒÊKPU˜œ˜\ÜÊNİ˜^KœÜÚ][Û‹œÙ]
+ËLKMJNİ˜^Kœ›İ][Û‹KKŒLÛXXÚ[™K˜Y
+˜^JNØÛÛœİ˜^QÛİÏ[™]È‘QK”Ú[YÚ
+L˜XMMËKŠNİ˜^QÛİËœÜÚ][Û‹œÙ]
+KLK
+NÛXXÚ[™K˜Y
+˜^QÛİÊNÛXXÚ[™K\Ù\‘]O^İ\N‰ÛXXÚ[™IË]N‰ÕHÑT‘S‘TUHPPÒS‘IË]]Ü‰ĞHœ˜\ÜÈ]™\ˆØZ]Ë‰ËXİuŞÚ$z{-®éÜj×rayGlow};for(const part of [base,lever,knob]){part.userData=machine.userData;interactables.push(part)}collider(12,1,4,3);
     // machine label
     const labelTex=canvasTexture((c,w,h)=>{c.fillStyle='#25180d';c.fillRect(0,0,w,h);c.strokeStyle='#c49b5d';c.lineWidth=8;c.strokeRect(12,12,w-24,h-24);c.fillStyle='#d4b275';c.textAlign='center';c.font='24px Georgia';c.fillText('THE SERENDIPITY',w/2,55);c.fillText('MACHINE',w/2,90)},512,120);const label=mesh(new THREE.PlaneGeometry(2.7,.65),new THREE.MeshStandardMaterial({map:labelTex}),12,3.25,-1.12,false);
 
@@ -919,7 +2676,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const target=librarianPath[librarianTarget],v=tmpVector2.copy(target).sub(librarian.position);v.y=0;if(v.length()<.55){librarianTarget=(librarianTarget+1)%librarianPath.length;librarianPause=1.5+Math.random()*3;return}v.normalize();librarian.position.addScaledVector(v,dt*.72);librarian.position.y=THREE.MathUtils.damp(librarian.position.y,floorHeight(librarian.position.x,librarian.position.z)+Math.abs(Math.sin(t*5))*.025,8,dt);librarian.rotation.y=THREE.MathUtils.damp(librarian.rotation.y,Math.atan2(-v.x,-v.z),5,dt);carriedBook.rotation.z=.08+Math.sin(t*3)*.015
     }
     let nextCoverBatchAt=0;
-    function loadNearbyCovers(t){if(t<nextCoverBatchAt||playerIsMoving())return;nextCoverBatchAt=t+.3;collectActiveInteractables();let queued=0;for(const bm of focusCandidates){if(queued>=4)break;const data=bm.userData;if(data?.type!=='book'||data.coverRequested)continue;let root=bm;while(root.parent)root=root.parent;if(root!==scene||!bm.visible)continue;bm.getWorldPosition(tmpWorldPosition);if(tmpWorldPosition.distanceToSquared(camera.position)<144){data.coverRequested=true;queueCoverMesh(bm);queued++}}}
+    function loadNearbyCovers(t){if(t<nextCoverBatchAt||playerIsMoving())return;nextCoverBatchAt=t+.5;collectActiveInteractables();refreshCoverFrustum();let queued=0;for(const bm of focusCandidates){if(queued>=2)break;const data=bm.userData;if(data?.type!=='book')continue;let root=bm;while(root.parent)root=root.parent;if(root!==scene||!bm.visible)continue;bm.getWorldPosition(tmpWorldPosition);if(tmpWorldPosition.distanceToSquared(camera.position)>=144||!coverFrustum.containsPoint(tmpWorldPosition))continue;if(data.coverRequested){if(!lowBandwidth&&!data.realCover)requestRealCover(data.book);continue}data.coverRequested=true;queueCoverMesh(bm);queued++}}
     function syncMobileControls(){if(!touchMode)return;const active=gameActive();document.body.classList.toggle('mobile-controls-active',active);if(!active){touchMoveX=0;touchMoveY=0;touchSprint=false}const button=$('#touchInteract');if(focus){const d=focus.userData||{};focus.getWorldPosition(tmpWorldPosition2);const action=d.action||(d.type==='book'&&tmpWorldPosition2.y-camera.position.y>2?'TAKE':d.type==='book'?'OPEN':'USE');button.textContent=action.length>9?action.split(' ')[0]:action;button.classList.add('ready')}else{button.textContent='LOOK';button.classList.remove('ready')}}
     function worldIsCovered(){return document.hidden||chatOpen||supportOpen||settingsOpen||!ui.reader.classList.contains('hidden')||!ui.journal.classList.contains('hidden')||!ui.pause.classList.contains('hidden')}
     const performanceMonitor=document.createElement('div');performanceMonitor.id='performanceMonitor';performanceMonitor.setAttribute('aria-live','off');performanceMonitor.style.cssText='position:fixed;right:10px;top:10px;z-index:40;padding:6px 9px;border:1px solid rgba(220,190,130,.45);border-radius:4px;background:rgba(10,8,6,.82);color:#ead7aa;font:12px/1.35 ui-monospace,monospace;pointer-events:none;display:none;white-space:pre';document.body.appendChild(performanceMonitor);let performanceMonitorVisible=new URLSearchParams(location.search).has('perf'),monitorStarted=performance.now(),monitorLast=monitorStarted,monitorFrames=0,monitorMax=0,monitorSpikes=0;performanceMonitor.style.display=performanceMonitorVisible?'block':'none';
@@ -930,7 +2687,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     const entranceMessages=['The clock has forgotten the hour.','A page turns somewhere beyond the locked stacks.','The library has been expecting someone, though not necessarily you.','Every lamp is lit. No caretaker admits to lighting them.','The rain stops at the windows, but something wet crossed the floor.','One book is already open to a page bearing todayâ€™s date.','The catalogue records your arrival before you enter.','Quill watches an empty doorway, waiting for it to move.','The fire remembers a conversation no living reader heard.','Tonight, the shelves are arranged in the shape of a warning.','The building settles around you like a held breath.','Somewhere below, a ladder creaks under an invisible weight.','The front door was unlocked, though no one recalls unlocking it.','A single chair has been pulled out from an otherwise empty table.','The last borrower never returned what they took.','Dust does not seem to settle here the way it settles elsewhere.','The lights dim once, briefly, as if in greeting.','A returned book sits on the counter with no record of who brought it back.','Somewhere a shelf sighs under a weight that was not there this morning.','The library door closes behind you on its own, gently, as if by habit.'];
     function enterLibrary(){if(started)return;started=true;window.libraryAnalytics?.track('Library Entered');if(touchMode)document.body.classList.add('mobile-started');ui.veil.classList.add('leaving');setTimeout(()=>ui.veil.classList.add('hidden'),950);requestLookLock();startAudio();showNotice(entranceMessages[Math.floor(Math.random()*entranceMessages.length)],4.5);if(localStorage.getItem('athenaeum-exploration-prompt-seen')!=='1')setTimeout(()=>{const nudge=$('#exploreNudge');if(!nudge)return;nudge.classList.add('show');localStorage.setItem('athenaeum-exploration-prompt-seen','1');setTimeout(()=>nudge.classList.remove('show'),9000)},1700)}
     function syncSettingsForm(){$('#volumeControl').value=Math.round(soundLevel*100);$('#reducedMotion').checked=reducedMotion;$('#lowBandwidth').checked=lowBandwidth;$('#highContrast').checked=highContrast;$('#largeText').checked=largeText}
-    function applySettings(save=false){soundLevel=clamp(Number($('#volumeControl').value)/100,0,1);reducedMotion=$('#reducedMotion').checked;lowBandwidth=$('#lowBandwidth').checked;highContrast=$('#highContrast').checked;largeText=$('#largeText').checked;document.body.classList.toggle('reduced-motion',reducedMotion);document.body.classList.toggle('high-contrast',highContrast);document.body.classList.toggle('large-text',largeText);if(master)master.gain.setTargetAtTime(muted?0:soundLevel,audioCtx.currentTime,.08);if(save){localStorage.setItem('athenaeum-sound-level',Math.round(soundLevel*100));localStorage.setItem('athenaeum-reduced-motion',reducedMotion?'1':'0');localStorage.setItem('athenaeum-low-bandwidth',lowBandwidth?'1':'0');localStorage.setItem('athenaeum-high-contrast',highContrast?'1':'0');localStorage.setItem('athenaeum-large-text',largeText?'1':'0')}}
+    function applySettings(save=false){const bandwidthChanged=lowBandwidth!==$('#lowBandwidth').checked;soundLevel=clamp(Number($('#volumeControl').value)/100,0,1);reducedMotion=$('#reducedMotion').checked;lowBandwidth=$('#lowBandwidth').checked;highContrast=$('#highContrast').checked;largeText=$('#largeText').checked;if(bandwidthChanged){noteCoverMotion();scheduleCoverWork()}document.body.classList.toggle('reduced-motion',reducedMotion);document.body.classList.toggle('high-contrast',highContrast);document.body.classList.toggle('large-text',largeText);if(master)master.gain.setTargetAtTime(muted?0:soundLevel,audioCtx.currentTime,.08);if(save){localStorage.setItem('athenaeum-sound-level',Math.round(soundLevel*100));localStorage.setItem('athenaeum-reduced-motion',reducedMotion?'1':'0');localStorage.setItem('athenaeum-low-bandwidth',lowBandwidth?'1':'0');localStorage.setItem('athenaeum-high-contrast',highContrast?'1':'0');localStorage.setItem('athenaeum-large-text',largeText?'1':'0')}}
     function openSettings(){if(settingsOpen)return;settingsReturnToPause=!ui.pause.classList.contains('hidden');settingsOpen=true;for(const k in keys)keys[k]=false;player.vel.set(0,0,0);syncSettingsForm();ui.pause.classList.add('hidden');$('#settings').classList.remove('hidden');document.exitPointerLock?.();setTimeout(()=>$('#volumeControl').focus(),0)}
     function closeSettings(){if(!settingsOpen)return;applySettings(true);settingsOpen=false;$('#settings').classList.add('hidden');if(settingsReturnToPause)ui.pause.classList.remove('hidden');else if(started)requestLookLock()}
     ui.enter.addEventListener('click',enterLibrary);if(window.__ATHENAEUM_ENTERED__)enterLibrary();
@@ -938,8 +2695,8 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     renderer.domElement.addEventListener('pointerdown',e=>{if(e.button!==0||!gameActive())return;dragging=true;lastPointerX=e.clientX;lastPointerY=e.clientY;renderer.domElement.focus()});
     document.addEventListener('pointerup',()=>dragging=false);window.addEventListener('blur',()=>{dragging=false;for(const k in keys)keys[k]=false});
     document.addEventListener('pointerlockchange',()=>{locked=document.pointerLockElement===renderer.domElement;if(locked){hadPointerLock=true;ui.pause.classList.add('hidden')}else if(started&&hadPointerLock&&!chatOpen&&!supportOpen&&!settingsOpen&&!selected&&ui.reader.classList.contains('hidden')&&ui.journal.classList.contains('hidden'))ui.pause.classList.remove('hidden')});
-    document.addEventListener('mousemove',e=>{if(!locked&&!dragging)return;const dx=locked?e.movementX:e.clientX-lastPointerX,dy=locked?e.movementY:e.clientY-lastPointerY;lastPointerX=e.clientX;lastPointerY=e.clientY;player.yaw-=dx*.00185;player.pitch=clamp(player.pitch-dy*.0017,-1.42,1.42)});
-    document.addEventListener('keydown',e=>{if(supportOpen){if(e.code==='Escape'){e.preventDefault();closeSupport()}else if(e.code==='Tab'){const buttons=[...$('#support').querySelectorAll('a,button')];if(e.shiftKey&&document.activeElement===buttons[0]){e.preventDefault();buttons.at(-1).focus()}else if(!e.shiftKey&&document.activeElement===buttons.at(-1)){e.preventDefault();buttons[0].focus()}}return}if(chatOpen){if(e.code==='Escape'){e.preventDefault();closeChat()}else if(e.code==='Tab'){const buttons=[...$('#conversation').querySelectorAll('button')];if(e.shiftKey&&document.activeElement===buttons[0]){e.preventDefault();buttons.at(-1).focus()}else if(!e.shiftKey&&document.activeElement===buttons.at(-1)){e.preventDefault();buttons[0].focus()}}return}if(e.repeat&&['KeyE','KeyJ'].includes(e.code))return;keys[e.code]=true;if(['KeyW','KeyA','KeyS','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(e.code))e.preventDefault();const reading=!ui.reader.classList.contains('hidden'),journaling=!ui.journal.classList.contains('hidden');if(e.code==='KeyE'&&gameActive())interact();if(e.code==='KeyR'&&started)resetPosition();if(e.code==='KeyJ'&&started&&!reading&&!selected){journaling?closeJournal():openJournal();return}if(reading&&e.code==='ArrowLeft')pageStep(-1);if(reading&&e.code==='ArrowRight')pageStep(1);if(e.code==='Escape'&&journaling)closeJournal();else if(e.code==='Escape'&&reading)closeReader()});document.addEventListener('keyup',e=>keys[e.code]=false);
+    document.addEventListener('mousemove',e=>{if(!locked&&!dragging)return;const dx=locked?e.movementX:e.clientX-lastPointerX,dy=locked?e.movementY:e.clientY-lastPointerY;lastPointerX=e.clientX;lastPointerY=e.clientY;if(dx||dy)noteCoverMotion();player.yaw-=dx*.00185;player.pitch=clamp(player.pitch-dy*.0017,-1.42,1.42)});
+    document.addEventListener('keydown',e=>{if(supportOpen){if(e.code==='Escape'){e.preventDefault();closeSupport()}else if(e.code==='Tab'){const buttons=[...$('#support').querySelectorAll('a,button')];if(e.shiftKey&&document.activeElement===buttons[0]){e.preventDefault();buttons.at(-1).focus()}else if(!e.shiftKey&&document.activeElement===buttons.at(-1)){e.preventDefault();buttons[0].focus()}}return}if(chatOpen){if(e.code==='Escape'){e.preventDefault();closeChat()}else if(e.code==='Tab'){const buttons=[...$('#conversation').querySelectorAll('button')];if(e.shiftKey&&document.activeElement===buttons[0]){e.preventDefault();buttons.at(-1).focus()}else if(!e.shiftKey&&document.activeElement===buttons.at(-1)){e.preventDefault();buttons[0].focus()}}return}if(e.repeat&&['KeyE','KeyJ'].includes(e.code))return;keys[e.code]=true;if(['KeyW','KeyA','KeyS','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(e.code)){e.preventDefault();noteCoverMotion()}const reading=!ui.reader.classList.contains('hidden'),journaling=!ui.journal.classList.contains('hidden');if(e.code==='KeyE'&&gameActive())interact();if(e.code==='KeyR'&&started)resetPosition();if(e.code==='KeyJ'&&started&&!reading&&!selected){journaling?closeJournal():openJournal();return}if(reading&&e.code==='ArrowLeft')pageStep(-1);if(reading&&e.code==='ArrowRight')pageStep(1);if(e.code==='Escape'&&journaling)closeJournal();else if(e.code==='Escape'&&reading)closeReader()});document.addEventListener('keyup',e=>keys[e.code]=false);
     $('#resume').addEventListener('click',()=>{ui.pause.classList.add('hidden');requestLookLock()});$('#openJournal').addEventListener('click',openJournal);$('#closeJournal').addEventListener('click',closeJournal);$('#resetPosition').addEventListener('click',resetPosition);$('#openBook').addEventListener('click',openReader);$('#askLibrarian').addEventListener('click',askLibrarianAboutBook);$('#leaveBook').addEventListener('click',leaveSelectedAtDesk);$('#returnBook').addEventListener('click',returnSelected);$('#closeReader').addEventListener('click',closeReader);$('#finishReading').addEventListener('click',()=>{closeReader();returnSelected()});$('#prevPage').addEventListener('click',()=>pageStep(-1));$('#nextPage').addEventListener('click',()=>pageStep(1));$('#listenBook').addEventListener('click',()=>window.libraryAnalytics?.track('Audiobook Link Opened'));
     if(touchMode){const readerPages=$('.pages');let swipeId=null,swipeStartX=0,swipeStartY=0;readerPages.addEventListener('pointerdown',e=>{if(ui.reader.classList.contains('hidden'))return;swipeId=e.pointerId;swipeStartX=e.clientX;swipeStartY=e.clientY;try{readerPages.setPointerCapture(swipeId)}catch(ignore){}});readerPages.addEventListener('pointerup',e=>{if(e.pointerId!==swipeId)return;const dx=e.clientX-swipeStartX,dy=e.clientY-swipeStartY;swipeId=null;if(Math.abs(dx)>46&&Math.abs(dx)>Math.abs(dy)*1.25){e.preventDefault();pageStep(dx<0?1:-1)}});readerPages.addEventListener('pointercancel',()=>swipeId=null)}
     $('#fontUp').addEventListener('click',()=>{readerSize=clamp(readerSize+1,13,22);document.documentElement.style.setProperty('--reader-size',readerSize+'px');repaginateSelected()});$('#fontDown').addEventListener('click',()=>{readerSize=clamp(readerSize-1,13,22);document.documentElement.style.setProperty('--reader-size',readerSize+'px');repaginateSelected()});
@@ -958,14 +2715,14 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       let moveId=null, moveOrigin={x:0,y:0}, lookId=null, lookLast={x:0,y:0};
       const STICK_MAX=46,DEAD=.12;
       function stickReset(){tStick.style.transform='translate(0,0)';touchMoveX=0;touchMoveY=0}
-      function stickUpdate(dx,dy){const dist=Math.min(Math.hypot(dx,dy),STICK_MAX),ang=Math.atan2(dy,dx),cx=Math.cos(ang)*dist,cy=Math.sin(ang)*dist;tStick.style.transform=`translate(${cx}px,${cy}px)`;const strength=dist/STICK_MAX;if(strength<DEAD){touchMoveX=0;touchMoveY=0}else{touchMoveX=(cx/STICK_MAX-DEAD*Math.sign(cx))/(1-DEAD);touchMoveY=-(cy/STICK_MAX-DEAD*Math.sign(cy))/(1-DEAD)}}
+      function stickUpdate(dx,dy){const dist=Math.min(Math.hypot(dx,dy),STICK_MAX),ang=Math.atan2(dy,dx),cx=Math.cos(ang)*dist,cy=Math.sin(ang)*dist;tStick.style.transform=`translate(${cx}px,${cy}px)`;const strength=dist/STICK_MAX;if(strength<DEAD){touchMoveX=0;touchMoveY=0}else{touchMoveX=(cx/STICK_MAX-DEAD*Math.sign(cx))/(1-DEAD);touchMoveY=-(cy/STICK_MAX-DEAD*Math.sign(cy))/(1-DEAD);noteCoverMotion()}}
       tMove.addEventListener('pointerdown',e=>{if(!gameActive())return;e.preventDefault();moveId=e.pointerId;const r=tMove.getBoundingClientRect();moveOrigin={x:r.left+r.width/2,y:r.top+r.height/2};stickUpdate(e.clientX-moveOrigin.x,e.clientY-moveOrigin.y);try{tMove.setPointerCapture(moveId)}catch(err){}});
       tMove.addEventListener('pointermove',e=>{if(e.pointerId!==moveId)return;e.preventDefault();stickUpdate(e.clientX-moveOrigin.x,e.clientY-moveOrigin.y)});
       function moveEnd(e){if(moveId===null||e.pointerId!==moveId)return;moveId=null;stickReset()}
       tMove.addEventListener('pointerup',moveEnd);tMove.addEventListener('pointercancel',moveEnd);
 
       tLook.addEventListener('pointerdown',e=>{if(!gameActive())return;e.preventDefault();lookId=e.pointerId;lookLast={x:e.clientX,y:e.clientY};try{tLook.setPointerCapture(lookId)}catch(err){}});
-      tLook.addEventListener('pointermove',e=>{if(e.pointerId!==lookId)return;e.preventDefault();const dx=e.clientX-lookLast.x,dy=e.clientY-lookLast.y;lookLast={x:e.clientX,y:e.clientY};player.yaw-=dx*.0034;player.pitch=clamp(player.pitch-dy*.0032,-1.42,1.42)});
+      tLook.addEventListener('pointermove',e=>{if(e.pointerId!==lookId)return;e.preventDefault();const dx=e.clientX-lookLast.x,dy=e.clientY-lookLast.y;lookLast={x:e.clientX,y:e.clientY};if(dx||dy)noteCoverMotion();player.yaw-=dx*.0034;player.pitch=clamp(player.pitch-dy*.0032,-1.42,1.42)});
       function lookEnd(e){if(lookId===null||e.pointerId!==lookId)return;lookId=null}
       tLook.addEventListener('pointerup',lookEnd);tLook.addEventListener('pointercancel',lookEnd);
 
