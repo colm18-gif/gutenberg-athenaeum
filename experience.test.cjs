@@ -163,11 +163,12 @@ test('themed-room exits face clear south walls and return beside their discoveri
   const exits=[
     ['gothic',95,22,0,-27],['inquiry',120,22,14,-27],['chart',145,22,-33,9],
     ['drawing',95,54,-33,-8],['study',120,54,30,-10.5],['garden',145,54,33,-9],
-    ['verne',170,55,34.5,5],['haggard',108,81,-34.5,5],['doyle',138,81,23.5,-10.5]
+    ['haggard',108,81,-34.5,5],['doyle',138,81,23.5,-10.5]
   ];
   for(const [name,x,z,sx,sz] of exits){
     assert.match(game,new RegExp(`memoryDoor\\(${x},${z},'mainhall',\\[${sx},0,${sz}\\][^;]+Math\\.PI/2,true\\)`),`${name} exit should be aligned with its south wall`);
   }
+  assert.match(game,/memoryDoor\(184\.5,70,'mainhall',\[34\.5,0,5\][^;]+1\.9,0,true\)/,'verne exit should sit in its clear west wall');
   for(const oldCall of ["memoryDoor(95,20,'mainhall'","memoryDoor(95,40,'mainhall'","memoryDoor(170,39,'mainhall'","memoryDoor(108,63,'mainhall'","memoryDoor(138,63,'mainhall'"])assert.doesNotMatch(game,new RegExp(oldCall.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
   assert.match(game,/memoryDoor\(138,81,'mainhall',\[23\.5,0,-10\.5\]/);
 });

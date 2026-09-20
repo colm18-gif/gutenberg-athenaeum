@@ -25,13 +25,13 @@ test('every Gutenberg catalogue book has a complete local reading copy',()=>{
 });
 test('Nautilus hull and plinth are blocked but its surrounding walkways and other floor levels remain open',()=>{
   const call=game.match(/collider\(room\.cx,room\.cz,4\.2,1\.95,'Nautilus display',-1,2\.4\)/)?.[0];assert(call);
-  const colliders=[],runtime={room:{cx:170,cz:46},collider:(x,z,w,d,name,minY,maxY)=>colliders.push({minX:x-w/2,maxX:x+w/2,minZ:z-d/2,maxZ:z+d/2,minY,maxY}),colliders,nearbyColliders:()=>colliders,player:{radius:.42},floorHeight:()=>0,memoryZoneAt:()=>null,themeZoneAt:()=>({}),secretOpen:0,tunnelOpen:0,finalDoorOpen:0};
+  const colliders=[],runtime={room:{cx:220,cz:70},collider:(x,z,w,d,name,minY,maxY)=>colliders.push({minX:x-w/2,maxX:x+w/2,minZ:z-d/2,maxZ:z+d/2,minY,maxY}),colliders,nearbyColliders:()=>colliders,player:{radius:.42},floorHeight:()=>0,memoryZoneAt:()=>null,themeZoneAt:()=>({}),secretOpen:0,tunnelOpen:0,finalDoorOpen:0};
   vm.runInNewContext(call+';'+game.split('\n').find(l=>l.includes('function allowed(x,z,y='))+';this.walk=allowed;',runtime);
-  assert(!runtime.walk(170,46));assert(!runtime.walk(171.9,46));assert(runtime.walk(172.7,46));assert(runtime.walk(170,47.6));assert(runtime.walk(170,44.4));
+  assert(!runtime.walk(220,70));assert(!runtime.walk(221.9,70));assert(runtime.walk(223,70));assert(runtime.walk(220,72));assert(runtime.walk(220,68));
   const arrival=game.match(/destination:'verne',spawn:\[([\d.,]+)\]/)[1].split(',').map(Number);
   assert(runtime.walk(arrival[0],arrival[2]),'Verne arrival must not overlap the Nautilus display');
   for(const [dx,dz]of [[.15,0],[-.15,0],[0,.15],[0,-.15]])assert(runtime.walk(arrival[0]+dx,arrival[2]+dz),'Verne arrival must allow movement in every direction');
-  runtime.floorHeight=()=>3;assert(runtime.walk(170,46));
+  runtime.floorHeight=()=>3;assert(runtime.walk(220,70));
 });
 test('stairway panel uses the existing licensed creak, with fallback, without replaying the bell sound',()=>{
   const code=game.split('\n').find(l=>l.includes("interact=function(){if(verneDescent.returning)"));let samples=0,tones=0;
