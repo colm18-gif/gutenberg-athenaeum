@@ -194,7 +194,7 @@ test('H. G. Wells has a complete English-only Project Gutenberg room with librar
   assert(wellsBooks.every(([id])=>wellsContext.window.ATHENAEUM_EXTRA_NOTES[id]?.length>80));
   assert.match(html,/loadScript\('data\/wells-catalog\.js'\)/);
   assert.match(html,/loadScript\('data\/wells-notes\.js'\)/);
-  assert.match(game,/destination:'wells',spawn:\[220,0,104\]/);
+  assert.match(game,/destination:'wells',spawn:\[220,0,106\],yaw:Math\.PI/);
   assert.match(game,/key:'wells',cx:220,cz:115,w:72,d:30/);
   assert.match(game,/def\.books=wellsCatalog\.map\(record=>record\[0\]\)/);
   assert.match(game,/memoryDoor\(220,100,'mainhall'/);
