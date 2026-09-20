@@ -134,11 +134,14 @@ test('Jules Verne has a concealed author-only voyages room',()=>{
 test('Haggard and Conan Doyle have concealed author rooms with distinct period entrances',()=>{
   const doyleContext={window:{}};
   vm.runInNewContext(fs.readFileSync('data/doyle-catalog.js','utf8'),doyleContext);
+  vm.runInNewContext(fs.readFileSync('data/doyle-notes.js','utf8'),doyleContext);
   const doyleBooks=doyleContext.window.ATHENAEUM_DOYLE_BOOKS;
   assert.equal(doyleBooks.length,128);
   assert.equal(new Set(doyleBooks.map(([id])=>id)).size,128);
   assert(doyleBooks.every(([,title])=>!/\((?:Finnish|French|Dutch|Danish|German|Polish|Spanish|Interlingua)/.test(title)));
+  assert(doyleBooks.every(([id])=>doyleContext.window.ATHENAEUM_EXTRA_NOTES[id]?.length>80));
   assert.match(html,/loadScript\('data\/doyle-catalog\.js'\)/);
+  assert.match(html,/loadScript\('data\/doyle-notes\.js'\)/);
   assert.match(game,/function haggardPortalTexture/);
   assert.match(game,/action:'TRACE ROUTE'/);
   assert.match(game,/image:'assets\/painting-haggard-lost-kingdom\.jpg'/);
