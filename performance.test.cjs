@@ -47,7 +47,9 @@ test('movement and interaction use nearby spatial cells instead of whole-library
 });
 
 test('closed rooms are independently detached and expensive rooms warm behind the entrance',()=>{
-  assert.match(game,/registerRoomPerformanceZones\('theme'/);
+  assert.match(game,/registerRoomPerformanceZones\('theme-'\+destination/);
+  assert.match(game,/buildThemeRooms\(hp\.destination\)/);
+  assert.match(game,/themeRoomDefs\.filter\(def=>def\.key===destination\)/);
   assert.match(game,/registerRoomPerformanceZones\('memory'/);
   assert.match(game,/performanceZones\[`\$\{prefix\}-\$\{room\.key\}`\]/);
   assert.match(game,/const openingWarmupTasks=/);
