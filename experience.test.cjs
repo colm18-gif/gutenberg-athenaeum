@@ -166,6 +166,23 @@ test('Haggard and Conan Doyle have concealed author rooms with distinct period e
   for(const id of [1661,244,2097,221,2852,834,139,126,439,1638])assert.match(game,new RegExp('\\['+id+',[^\\r\\n]*Arthur Conan Doyle'));
 });
 
+test('H. G. Wells has a complete English-only Project Gutenberg room with librarian notes',()=>{
+  const wellsContext={window:{}};
+  vm.runInNewContext(fs.readFileSync('data/wells-catalog.js','utf8'),wellsContext);
+  vm.runInNewContext(fs.readFileSync('data/wells-notes.js','utf8'),wellsContext);
+  const wellsBooks=wellsContext.window.ATHENAEUM_WELLS_BOOKS;
+  assert.equal(wellsBooks.length,104);
+  assert.equal(new Set(wellsBooks.map(([id])=>id)).size,104);
+  assert(wellsBooks.every(([,title])=>!/\((?:Dutch|Finnish|French|Hungarian)\)$/.test(title)));
+  assert(wellsBooks.every(([id])=>wellsContext.window.ATHENAEUM_EXTRA_NOTES[id]?.length>80));
+  assert.match(html,/loadScript\('data\/wells-catalog\.js'\)/);
+  assert.match(html,/loadScript\('data\/wells-notes\.js'\)/);
+  assert.match(game,/destination:'wells',spawn:\[220,0,104\]/);
+  assert.match(game,/key:'wells',cx:220,cz:115,w:72,d:30/);
+  assert.match(game,/def\.books=wellsCatalog\.map\(record=>record\[0\]\)/);
+  assert.match(game,/memoryDoor\(220,100,'mainhall'/);
+});
+
 test('hidden doors preserve the configured arrival yaw',()=>{
   assert.match(game,/const hp=\{progress:0,destination:opts\.destination,spawn:opts\.spawn,yaw:opts\.yaw,passageSound:'doorOpen',apply:p=>\{panel\.rotation\.y/);
   assert.doesNotMatch(game,/yaw:opts\.y,/);

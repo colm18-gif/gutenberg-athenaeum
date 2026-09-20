@@ -1,0 +1,14 @@
+/* Librarian commentary for every English-language H. G. Wells edition in the Project Gutenberg catalogue. */
+window.ATHENAEUM_EXTRA_NOTES=window.ATHENAEUM_EXTRA_NOTES||{};
+const wellsThemes=[
+[/Time Machine|Sleeper|World Set Free|War in the Air|War of the Worlds|worlds for old|Future|Coming|Anticipations|prophesying|world is going/i,'Wells uses the future as a laboratory for the present. The machinery is memorable, but the real experiment concerns power, class, war, and what people choose to become.'],
+[/Invisible Man|Moreau|Food of the Gods|Stolen Bacillus|Plattner|Unexpected|Strange Stories|Red Room|Star|Space and Time/i,'A scientific idea escapes its neat hypothesis and begins rearranging human lives. Wells makes the impossible convincing by following its consequences with an almost clinical patience.'],
+[/First Men|Moon/i,'Wells sends human ambition beyond Earth and finds that another world reflects our own appetites back at us. The wonder and the warning travel together.'],
+[/Ann Veronica|Lewisham|Passionate Friends|Marriage|Wife|Secret Places|Christina|dream/i,'This social novel watches private desire collide with the institutions meant to organise it. Wells is at his sharpest when respectable arrangements reveal their hidden costs.'],
+[/Polly|Kipps|Tono-Bungay|Bealby|Wheels of Chance|Quaint Companions|Underground Man/i,'Wells gives an ordinary life room to rebel against its assigned shape. The comedy is generous, though the class system surrounding it receives no such kindness.'],
+[/History|Outline|Biology|Schoolmaster|Civilization|Mankind|Social Forces|Socialism|Teaching/i,'Here Wells writes as educator and world-builder on the largest scale. His confidence invites argument, which is precisely why the volume still earns a place at the table.'],
+[/War|Britling|Russia|Washington|Peace/i,'This work records Wells thinking in public during political crisis. Its urgency is valuable evidence, even where hindsight asks harder questions than the author could answer.'],
+[/God|bishop|Undying Fire|First and Last Things|Wonderful Visit/i,'Wells turns from machines toward belief, conscience, and the possibility of moral purpose. The questions are sincere even when his answers refuse to stay settled.'],
+[/Floor Games|Little Wars/i,'Wells builds a miniature world and then gives it rules. Play becomes a form of thought here: a way to test imagination, conflict, and cooperation safely enough to begin again.']
+];
+for(const [id,title] of window.ATHENAEUM_WELLS_BOOKS||[]){const theme=wellsThemes.find(([pattern])=>pattern.test(title));window.ATHENAEUM_EXTRA_NOTES[id]=window.ATHENAEUM_EXTRA_NOTES[id]||(theme?theme[1]:`“${title}” shows Wells working beyond the narrow label of science fiction. This English Project Gutenberg edition keeps its own place because editions, like futures, arrive by different routes.`)}
