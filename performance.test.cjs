@@ -30,6 +30,13 @@ test('individual cover assets exist for every former shard entry',()=>{
   for(const id of ids)assert.ok(fs.statSync(`covers/books/${id}.jpg`).size>100,`missing cover ${id}`);
 });
 
+test('lightweight illustrated covers remain visible before detailed covers load',()=>{
+  assert.match(game,/function lightweightCoverTexture\(book\)/);
+  assert.match(game,/\},128,188\)/);
+  assert.match(game,/new THREE\.MeshStandardMaterial\(\{map:lightweightCoverTexture\(book\),color:0xffffff,roughness\}\)/);
+  assert.match(game,/if\(lowBandwidth\)data\.loaded=true;else requestRealCover\(data\.book\)/);
+});
+
 test('movement and interaction use nearby spatial cells instead of whole-library scans',()=>{
   assert.match(game,/const SPATIAL_CELL_SIZE=12,colliderCells=new Map\(\)/);
   assert.match(game,/for\(const c of nearbyColliders\(x,z\)\)/);
