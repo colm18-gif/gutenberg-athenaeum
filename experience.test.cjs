@@ -132,6 +132,13 @@ test('Jules Verne has a concealed author-only voyages room',()=>{
 });
 
 test('Haggard and Conan Doyle have concealed author rooms with distinct period entrances',()=>{
+  const doyleContext={window:{}};
+  vm.runInNewContext(fs.readFileSync('data/doyle-catalog.js','utf8'),doyleContext);
+  const doyleBooks=doyleContext.window.ATHENAEUM_DOYLE_BOOKS;
+  assert.equal(doyleBooks.length,128);
+  assert.equal(new Set(doyleBooks.map(([id])=>id)).size,128);
+  assert(doyleBooks.every(([,title])=>!/\((?:Finnish|French|Dutch|Danish|German|Polish|Spanish|Interlingua)/.test(title)));
+  assert.match(html,/loadScript\('data\/doyle-catalog\.js'\)/);
   assert.match(game,/function haggardPortalTexture/);
   assert.match(game,/action:'TRACE ROUTE'/);
   assert.match(game,/image:'assets\/painting-haggard-lost-kingdom\.jpg'/);
@@ -142,14 +149,16 @@ test('Haggard and Conan Doyle have concealed author rooms with distinct period e
   assert.match(game,/image:'assets\/painting-doyle-consulting-room\.jpg'/);
   for(const asset of ['assets/painting-haggard-lost-kingdom.jpg','assets/painting-doyle-consulting-room.jpg'])assert(fs.statSync(asset).size>100000,`${asset} should be a detailed oil painting`);
   assert.match(game,/destination:'haggard',spawn:\[108,0,68\]/);
-  assert.match(game,/destination:'doyle',spawn:\[138,0,68\]/);
+  assert.match(game,/destination:'doyle',spawn:\[140,0,95\]/);
   assert.match(game,/key:'haggard',cx:108,cz:72/);
-  assert.match(game,/key:'doyle',cx:138,cz:72/);
-  assert.match(game,/authorRooms=\{haggard:'H\. Rider Haggard',doyle:'Arthur Conan Doyle'\}/);
+  assert.match(game,/key:'doyle',cx:140,cz:110,w:56,d:38/);
+  assert.match(game,/authorRooms=\{haggard:'H\. Rider Haggard'\}/);
+  assert.match(game,/def\.books=doyleCatalog\.map\(record=>record\[0\]\)/);
+  assert.match(game,/function doyleShelves/);
   assert.match(game,/function haggardRoomDetails/);
   assert.match(game,/function doyleRoomDetails/);
   assert.match(game,/memoryDoor\(108,81,'mainhall'/);
-  assert.match(game,/memoryDoor\(138,81,'mainhall'/);
+  assert.match(game,/memoryDoor\(140,91,'mainhall'/);
   for(const id of [3155,2166,711,5228,6769,1207,2769,2721,5746,2841])assert.match(game,new RegExp('\\['+id+',[^\\r\\n]*H\\. Rider Haggard'));
   for(const id of [1661,244,2097,221,2852,834,139,126,439,1638])assert.match(game,new RegExp('\\['+id+',[^\\r\\n]*Arthur Conan Doyle'));
 });
@@ -164,14 +173,14 @@ test('themed-room exits face clear south walls and return beside their discoveri
   const exits=[
     ['gothic',95,22,0,-27],['inquiry',120,22,14,-27],['chart',145,22,-33,9],
     ['drawing',95,54,-33,-8],['study',120,54,30,-10.5],['garden',145,54,33,-9],
-    ['haggard',108,81,-34.5,5],['doyle',138,81,23.5,-10.5]
+    ['haggard',108,81,-34.5,5],['doyle',140,91,23.5,-10.5]
   ];
   for(const [name,x,z,sx,sz] of exits){
     assert.match(game,new RegExp(`memoryDoor\\(${x},${z},'mainhall',\\[${sx},0,${sz}\\][^;]+Math\\.PI/2,true\\)`),`${name} exit should be aligned with its south wall`);
   }
   assert.match(game,/memoryDoor\(184\.5,70,'mainhall',\[34\.5,0,5\][^;]+1\.9,0,true\)/,'verne exit should sit in its clear west wall');
   for(const oldCall of ["memoryDoor(95,20,'mainhall'","memoryDoor(95,40,'mainhall'","memoryDoor(170,39,'mainhall'","memoryDoor(108,63,'mainhall'","memoryDoor(138,63,'mainhall'"])assert.doesNotMatch(game,new RegExp(oldCall.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
-  assert.match(game,/memoryDoor\(138,81,'mainhall',\[23\.5,0,-10\.5\]/);
+  assert.match(game,/memoryDoor\(140,91,'mainhall',\[23\.5,0,-10\.5\]/);
 });
 
 test('reading-room seats face their shelves and benches use Gothic upholstery',()=>{
