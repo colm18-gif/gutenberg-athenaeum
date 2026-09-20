@@ -114,8 +114,9 @@ test('Jules Verne has a concealed author-only voyages room',()=>{
   const context={window:{}};
   vm.runInNewContext(fs.readFileSync('data/verne-catalog.js','utf8'),context);
   const verneBooks=context.window.ATHENAEUM_VERNE_BOOKS;
-  assert.equal(verneBooks.length,180);
-  assert.equal(new Set(verneBooks.map(([id])=>id)).size,180);
+  assert.equal(verneBooks.length,70);
+  assert.equal(new Set(verneBooks.map(([id])=>id)).size,70);
+  assert(verneBooks.every(([,title])=>!/\((?:French|Dutch|German|Portuguese|Finnish|Icelandic|Danish|Hungarian|Italian|Modern Greek)/.test(title)));
   assert.match(game,/function vernePortalTexture/);
   assert.match(game,/destination:'verne',spawn:\[190,0,70\]/);
   assert.match(game,/key:'verne',cx:220,cz:70,w:72,d:48/);
