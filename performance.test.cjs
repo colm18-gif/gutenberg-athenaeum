@@ -14,7 +14,33 @@ test('real cover art is requested by proximity instead of at startup',()=>{
   assert.match(game,/function requestRealCover\(book\)/);
   assert.match(game,/fetch\(`covers\/shard_\$\{shardIndex\}\.json`\)/);
   assert.doesNotMatch(game,/Promise\.all\(Array\.from\(\{length:9\}/);
-  assert.match(game,/wp\.distanceTo\(camera\.position\)<12/);
+  assert.match(game,/tmpWorldPosition\.distanceToSquared\(camera\.position\)<144/);
+  assert.match(game,/requestIdleCallback/);
+  assert.match(game,/playerIsMoving\(\)/);
+  assert.match(game,/queueCoverMesh\(bm\)/);
+});
+
+test('movement and interaction use nearby spatial cells instead of whole-library scans',()=>{
+  assert.match(game,/const SPATIAL_CELL_SIZE=12,colliderCells=new Map\(\)/);
+  assert.match(game,/for\(const c of nearbyColliders\(x,z\)\)/);
+  assert.match(train,/nearbyColliders\(x,z\)\.some/);
+  assert.match(game,/function collectActiveInteractables\(\)/);
+  assert.match(game,/focusCheckTimer=\.065/);
+  assert.match(game,/raycaster\.intersectObjects\(focusCandidates,false\)/);
+});
+
+test('closed rooms are independently detached and expensive rooms warm behind the entrance',()=>{
+  assert.match(game,/registerRoomPerformanceZones\('theme'/);
+  assert.match(game,/registerRoomPerformanceZones\('memory'/);
+  assert.match(game,/performanceZones\[`\$\{prefix\}-\$\{room\.key\}`\]/);
+  assert.match(game,/const openingWarmupTasks=/);
+  assert.match(game,/setTimeout\(\(\)=>\{if\(!started\)requestLibraryIdle\(warmOpeningWorld\)\},1200\)/);
+});
+
+test('a hidden frame-time monitor reports long frames on demand',()=>{
+  assert.match(game,/performanceMonitor\.id='performanceMonitor'/);
+  assert.match(game,/event\.code!=='F3'/);
+  assert.match(game,/frame spikes >40 ms/);
 });
 
 test('the impossible stair batches its repeated structure',()=>{

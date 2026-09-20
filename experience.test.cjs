@@ -104,8 +104,8 @@ test('held books stay fully visible above world geometry',()=>{
   assert.match(game,/material\.depthTest=false/);
   assert.match(game,/material\.depthWrite=false/);
   assert.match(game,/renderOrder=1000/);
-  assert.match(game,/new THREE\.Vector3\(sway,-\.075\+bob,-1\.95\)/);
-  assert.match(game,/new THREE\.Vector3\(\.98,\.98,\.98\)/);
+  assert.match(game,/tmpVector\.set\(sway,-\.075\+bob,-1\.95\)/);
+  assert.match(game,/tmpVector2\.set\(\.98,\.98,\.98\)/);
   assert.doesNotMatch(html,/loadScript\('held-book-fix\.js'\)/);
 });
 

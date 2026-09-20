@@ -1,7 +1,7 @@
 /* A request-stop railway. Existing rooms, mysteries and train ambience remain intact. */
 (()=>{
   'use strict';
-  window.createNightTrain=function({THREE,scene,MAT,player,collider,colliders,interactables,canvasTexture,wrapText,coverTexture,books,performanceZones,rememberLights,move,notice,home,modelTemplate,isLowBandwidth}){
+  window.createNightTrain=function({THREE,scene,MAT,player,collider,colliders,nearbyColliders=(x,z)=>colliders,interactables,canvasTexture,wrapText,coverTexture,books,performanceZones,rememberLights,move,notice,home,modelTemplate,isLowBandwidth}){
     const regions=[{key:'platform',a:210,b:216,c:-35,d:-5},{key:'carriage',a:218,b:223,c:-30,d:-10},{key:'depot',a:248,b:272,c:-34,d:-6}];
     const solids=[],scenery=[],landscapes=[],groups={},controls={};let built=false,travelling=false,elapsed=0,arrived=false,nextWheel=0,conductorTalk=0;
     const metal=new THREE.MeshStandardMaterial({color:0x253230,roughness:.65,metalness:.4});
@@ -131,7 +131,7 @@
       else if(key.startsWith('drawer-')||key.startsWith('card-'))notice(object.userData.note,12);
       sync();return true;
     }
-    function allowed(x,z){const r=player.radius;if(!zoneAt(x-r,z-r)||!zoneAt(x+r,z+r))return false;return !colliders.some(c=>!c.inactive&&0>=c.minY&&0<=c.maxY&&x+r>c.minX&&x-r<c.maxX&&z+r>c.minZ&&z-r<c.maxZ)}
+    function allowed(x,z){const r=player.radius;if(!zoneAt(x-r,z-r)||!zoneAt(x+r,z+r))return false;return !nearbyColliders(x,z).some(c=>!c.inactive&&0>=c.minY&&0<=c.maxY&&x+r>c.minX&&x-r<c.maxX&&z+r>c.minZ&&z-r<c.maxZ)}
     function clearLine(ray,target,distance){const blockers=solids.filter(m=>m.parent?.visible);const hit=ray.intersectObjects(blockers,false)[0];return !hit||hit.object===target||hit.distance>=distance-.04}
     function update(t,dt,reduced,active,sound){sync();const zone=zoneAt(player.pos.x,player.pos.z)?.key;if(!zone)return false;if(zone!=='carriage'&&travelling)cancel();if(travelling&&active){elapsed+=dt;if(t>nextWheel){nextWheel=t+.7;sound(65,.3,'triangle',.04);sound(115,.1,'sine',.025)}if(elapsed>=60){travelling=false;arrived=true;controls.alight.userData.action='ENTER COLLECTIONS DEPOT';controls.alight.userData.author='The doors open onto books awaiting another reader.';controls.depart.userData.action='ARRIVED';notice('The night train comes to rest. Beyond the carriage door, the forgotten collections depot is waiting.',8)}}
       for(const item of scenery)item.mesh.position.z=reduced?item.base:-35+((item.base+35+elapsed*3)%40);
