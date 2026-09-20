@@ -198,6 +198,9 @@ test('H. G. Wells has a complete English-only Project Gutenberg room with librar
   assert.match(game,/key:'wells',cx:220,cz:115,w:72,d:30/);
   assert.match(game,/def\.books=wellsCatalog\.map\(record=>record\[0\]\)/);
   assert.match(game,/memoryDoor\(220,100,'mainhall'/);
+  assert.match(game,/wells:\(\)=>memoryDoor\(220,100,'mainhall'/);
+  assert.match(game,/exits\[destination\]\?\.\(\)/);
+  assert.doesNotMatch(game,/themeExitsBuilt/);
 });
 
 test('hidden doors preserve the configured arrival yaw',()=>{
