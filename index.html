@@ -79,7 +79,7 @@
     const applyEntryAppearance=()=>{document.body.classList.toggle('reduced-motion',document.getElementById('entryReducedMotion').checked);document.body.classList.toggle('high-contrast',document.getElementById('entryHighContrast').checked);document.body.classList.toggle('large-text',document.getElementById('entryLargeText').checked)};
     for(const [kind,[id,key]] of Object.entries(preferences)){const input=document.getElementById(id),saved=localStorage.getItem(key);if(kind==='volume')input.value=saved??13;else input.checked=saved==='1';input.addEventListener('input',()=>{localStorage.setItem(key,kind==='volume'?input.value:input.checked?'1':'0');applyEntryAppearance()})}applyEntryAppearance();
     const webglAvailable=()=>{try{const canvas=document.createElement('canvas');return !!(canvas.getContext('webgl2')||canvas.getContext('webgl'))}catch(error){return false}};
-    const BUILD='20260920-wells-entry-2';
+    const BUILD='20260920-wells-entry-3';
     const versionedSource=src=>/^https?:\/\//.test(src)?src:`${src}${src.includes('?')?'&':'?'}v=${BUILD}`;
     const loadScript=(src,timeout=15000)=>new Promise((resolve,reject)=>{const script=document.createElement('script'),timer=setTimeout(()=>{script.remove();reject(new Error('Timed out loading '+src))},timeout);script.dataset.athenaeumBoot='1';script.src=versionedSource(src);script.onload=()=>{clearTimeout(timer);resolve()};script.onerror=()=>{clearTimeout(timer);script.remove();reject(new Error('Could not load '+src))};document.head.appendChild(script)});
     const loadFirst=async sources=>{let last;for(const src of sources)try{return await loadScript(src)}catch(error){last=error}throw last};
