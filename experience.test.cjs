@@ -1,6 +1,7 @@
 const test=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
+const vm=require('node:vm');
 
 const html=fs.readFileSync('index.html','utf8');
 const game=fs.readFileSync('game.js','utf8');
@@ -110,16 +111,21 @@ test('held books stay fully visible above world geometry',()=>{
 });
 
 test('Jules Verne has a concealed author-only voyages room',()=>{
+  const context={window:{}};
+  vm.runInNewContext(fs.readFileSync('data/verne-catalog.js','utf8'),context);
+  const verneBooks=context.window.ATHENAEUM_VERNE_BOOKS;
+  assert.equal(verneBooks.length,180);
+  assert.equal(new Set(verneBooks.map(([id])=>id)).size,180);
   assert.match(game,/function vernePortalTexture/);
-  assert.match(game,/destination:'verne',spawn:\[170,0,42\]/);
-  assert.match(game,/key:'verne',cx:170,cz:46/);
+  assert.match(game,/destination:'verne',spawn:\[190,0,70\]/);
+  assert.match(game,/key:'verne',cx:220,cz:70,w:72,d:48/);
   assert.match(game,/themeRoomKeys=new Set\([^\n]*'verne'/);
-  assert.match(game,/authorRooms=\{verne:'Jules Verne'/);
-  assert.match(game,/def\.books=books\.filter\(book=>book\.author===authorRooms\[def\.key\]\)/);
+  assert.match(game,/def\.books=verneCatalog\.map\(record=>record\[0\]\)/);
+  assert.match(game,/function verneShelves/);
+  assert.match(html,/loadScript\('data\/verne-catalog\.js'\)/);
   assert.match(game,/function verneRoomDetails/);
   assert.match(game,/A model of the Nautilus/);
-  assert.match(game,/memoryDoor\(170,55,'mainhall'/);
-  for(const id of [164,103,4552,1268,18857,46597,1842,16457,10339,3808])assert.match(game,new RegExp(`\\[${id},[^\\n]+Jules Verne`));
+  assert.match(game,/memoryDoor\(184\.5,70,'mainhall'/);
   assert.match(game,/An old engraving of impossible voyages/);
   assert.match(game,/nineteenth-century steel engraving/);
 });
@@ -138,7 +144,7 @@ test('Haggard and Conan Doyle have concealed author rooms with distinct period e
   assert.match(game,/destination:'doyle',spawn:\[138,0,68\]/);
   assert.match(game,/key:'haggard',cx:108,cz:72/);
   assert.match(game,/key:'doyle',cx:138,cz:72/);
-  assert.match(game,/authorRooms=\{verne:'Jules Verne',haggard:'H\. Rider Haggard',doyle:'Arthur Conan Doyle'\}/);
+  assert.match(game,/authorRooms=\{haggard:'H\. Rider Haggard',doyle:'Arthur Conan Doyle'\}/);
   assert.match(game,/function haggardRoomDetails/);
   assert.match(game,/function doyleRoomDetails/);
   assert.match(game,/memoryDoor\(108,81,'mainhall'/);
