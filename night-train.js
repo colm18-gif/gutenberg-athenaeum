@@ -28,6 +28,7 @@
       }).catch(error=>console.warn('CC0 railway detail unavailable; keeping procedural fallback.',file,error))
     }
     function rivetLine(g,x,y,z,count,step,axis='z',mat=MAT.brass){for(let i=0;i<count;i++){const r=cylinder(g,.045,.045,.035,8,mat,x,y,z,0,0,Math.PI/2);r.position[axis]+=(i-(count-1)/2)*step}}
+    function carriageEndDoor(g,interactive,x,y,z){interactive.material=paintedGreen;for(const px of [-.78,.78])box(g,.12,3.28,.18,MAT.brass,x+px,y,z+.02);box(g,1.7,.14,.18,MAT.brass,x,y+1.68,z+.02);box(g,1.16,.92,.06,night,x,y+.72,z+.1);box(g,1.24,.07,.08,MAT.brass,x,y+.72,z+.14);for(const py of [-.7,-1.14])box(g,1.15,.08,.08,MAT.brass,x,y+py,z+.14);const knob=cylinder(g,.085,.085,.14,12,MAT.brass,x+.5,y-.38,z+.18,Math.PI/2);knob.userData=interactive.userData;interactables.push(knob)}
     function carriageSeat(g,z){
       const seatGroup=new THREE.Group();seatGroup.position.set(218.72,0,z);g.add(seatGroup);
       const cushion=box(seatGroup,1.22,.28,1.52,leather,0,.62,0);solids.push(cushion);collider(218.72,z,1.22,1.52,'Night railway furniture',-.5,2.2);box(seatGroup,.3,1.55,1.54,MAT.darkWood,-.52,1.28,.02);box(seatGroup,.22,1.25,1.4,leatherDark,-.35,1.25,.02);
@@ -90,7 +91,7 @@
       control(car,'depart','A conductor’s brass punch','The ticket reads: Collections Depot — works awaiting another reader.','BEGIN JOURNEY',220.5,1.6,-28.9);
       conductor(car,220.7,-26.7,Math.PI);
       control(car,'settle','A worn reading seat','Close your eyes for a moment; the next stop will come sooner.','SETTLE · ARRIVE SOONER',218.8,1.1,-18);
-      control(car,'alight','The carriage door','The platform waits until you choose to leave.','BACK TO PLATFORM',220.5,1.7,-10.1,1.2,2.8,.12);
+      const alight=control(car,'alight','The carriage door','The platform waits until you choose to leave.','BACK TO PLATFORM',220.5,1.7,-10.1,1.2,2.8,.12);carriageEndDoor(car,alight,220.5,1.7,-10.1);
       control(car,'car-home','A return ticket beside the window','Valid whenever you wish to go home.','RETURN TO LIBRARY',222.5,1.6,-14);
       label(car,'Some journeys begin with a book left behind.',220.5,3,-29.95,4,.7);for(const z of [-26,-19,-12])lamp(car,220.5,3.25,z);
       for(const x of [217.3,223.7])for(let i=0;i<14;i++){const m=box(car,.12,1.5+(i%4)*.5,.35,metal,x,1.8,-35+i*2);scenery.push({mesh:m,base:-35+i*2})}
@@ -113,7 +114,7 @@
       label(depot,'OTHER PRESSES · UNCOMMON ROUTES',260,2.5,-21.2,7,.55);
       for(let i=3;i<books.length;i++){const n=i-3,row=Math.floor(n/6),x=251+(n%6)*4,z=-18.5+row*5;box(depot,2,.9,1.8,MAT.wood2,x,.45,z,true);volume(depot,books[i],x,1.12,z);if(books[i].depotNote){const card=control(depot,'card-'+i,'A librarian’s depot card',books[i].source||'Open-access acquisition','READ NOTE',x+.72,1.18,z+.45,.34,.18,.28);card.userData.note=books[i].depotNote}}
       box(depot,3.2,1,1.8,MAT.darkWood,268,.5,-10,true);control(depot,'depot-home','A conductor’s return bell','One note will carry you back beneath the library clock.','RING · RETURN TO LIBRARY',268,1.35,-10);
-      control(depot,'reboard','The waiting night train','The reading carriage remains yours for as long as you need it.','BOARD READING CARRIAGE',260,1.9,-6.1,1.5,3,.12);lamp(depot,260,3,-10,true);lamp(depot,260,3,-20,true);lamp(depot,251,3,-15,true);lamp(depot,268,3,-15,true);label(depot,'RETURNS · NO DEADLINE',268,2,-9.9,3,.6,Math.PI);
+      const reboard=control(depot,'reboard','The waiting night train','The reading carriage remains yours for as long as you need it.','BOARD READING CARRIAGE',260,1.9,-6.1,1.5,3,.12);carriageEndDoor(depot,reboard,260,1.9,-6.1);lamp(depot,260,3,-10,true);lamp(depot,260,3,-20,true);lamp(depot,251,3,-15,true);lamp(depot,268,3,-15,true);label(depot,'RETURNS · NO DEADLINE',268,2,-9.9,3,.6,Math.PI);
       depot.add(new THREE.AmbientLight(0xffd4a1,2.6));
       depot.traverse(o=>{if(o.isPointLight)o.intensity*=2});
       for(const g of Object.values(groups))rememberLights(g);sync();

@@ -4,13 +4,15 @@
   window.createLibrarianOffice=function({THREE,scene,MAT,player,interactables,books,coverTexture,canvasTexture,showNotice,move,playSample}){
     const cx=300,cz=-70,w=18,d=16,root=new THREE.Group();root.name='librarian-office';let built=false;
     const brassGlow=new THREE.MeshStandardMaterial({color:0xc39a52,emissive:0x6e4317,emissiveIntensity:.35,metalness:.45,roughness:.46});
-    const paper=new THREE.MeshStandardMaterial({color:0xd4c394,roughness:.94}),ink=new THREE.MeshStandardMaterial({color:0x211713,roughness:.86});
+    const paper=new THREE.MeshStandardMaterial({color:0xd4c394,roughness:.94}),ink=new THREE.MeshStandardMaterial({color:0x211713,roughness:.86}),frostedGlass=new THREE.MeshPhysicalMaterial({color:0xb8c2b2,transparent:true,opacity:.46,roughness:.5,metalness:.05});
     const add=(geometry,material,x,y,z,parent=root)=>{const mesh=new THREE.Mesh(geometry,material);mesh.position.set(x,y,z);parent.add(mesh);return mesh};
     const box=(bw,bh,bd,material,x,y,z,parent=root)=>add(new THREE.BoxGeometry(bw,bh,bd),material,x,y,z,parent);
+    const officeDoorDetails=(parent,x=0,y=0,z=.13)=>{for(const [py,h] of [[1.05,1.32],[-1.05,1.18]]){box(1.72,h,.045,MAT.brass,x,y+py,z,parent);box(1.48,h-.22,.06,py>0?frostedGlass:MAT.wood2,x,y+py,z+.025,parent)}for(const sx of [-.48,0,.48])box(.045,1.08,.04,MAT.brass,x+sx,y+1.05,z+.07,parent);box(.72,.13,.08,MAT.brass,x,y-.15,z+.08,parent);const knob=add(new THREE.SphereGeometry(.11,12,8),MAT.brass,x+.78,y-.42,z+.13,parent);return knob};
     const note=(mesh,title,author,action='EXAMINE')=>{mesh.userData={type:'librarian-office-object',title,author,action};interactables.push(mesh);return mesh};
     const entranceData={type:'librarian-office-door',title:"The Librarian's Office",author:'Appointments are accepted at hours the clock declines to display.',action:'ENTER'};
     const entrance=new THREE.Group();entrance.position.set(36.55,0,0);entrance.rotation.y=-Math.PI/2;scene.add(entrance);
     const entranceDoor=box(2.35,4.2,.22,MAT.darkWood,0,2.1,0,entrance);entranceDoor.userData=entranceData;interactables.push(entranceDoor);
+    officeDoorDetails(entrance,0,2.1);
     for(const x of [-1.28,1.28])box(.18,4.5,.3,MAT.brass,x,2.25,0,entrance);box(2.75,.18,.3,MAT.brass,0,4.48,0,entrance);
     const plaqueTex=canvasTexture((c,cw,ch)=>{c.fillStyle='#24170d';c.fillRect(0,0,cw,ch);c.strokeStyle='#c69a50';c.lineWidth=9;c.strokeRect(7,7,cw-14,ch-14);c.fillStyle='#ead39d';c.textAlign='center';c.font='bold 30px Georgia';c.fillText("THE LIBRARIAN'S OFFICE",cw/2,48)},620,72);
     const plaque=add(new THREE.PlaneGeometry(2.5,.3),new THREE.MeshStandardMaterial({map:plaqueTex,roughness:.72}),0,3.22,.13,entrance);plaque.userData=entranceData;interactables.push(plaque);
@@ -30,7 +32,7 @@
       for(const side of [-1,1]){box(4.4,4.5,.55,MAT.darkWood,cx+side*5.6,2.25,cz+d/2-.6);for(let row=0;row<4;row++)box(4.2,.1,.7,MAT.brass,cx+side*5.6,.55+row*1.05,cz+d/2-.7)}
       const officeBooks=[1497,3207,5740,103,164,19103].map(id=>books.find(book=>book.id===id)).filter(Boolean);officeBooks.forEach((book,i)=>{const x=cx-6.8+(i%3)*1.2,z=cz+d/2-.95-(i>2?1.15:0),bm=box(.72,1,.14,new THREE.MeshStandardMaterial({map:coverTexture(book),roughness:.75}),x,.95+(i>2?1.1:0),z);bm.userData={type:'book',book,loaded:true,home:{position:bm.position.clone(),quaternion:bm.quaternion.clone(),parent:root}};interactables.push(bm)});
       const returnData={type:'librarian-office-exit',title:'Return to the east wing',author:'The office door remembers which side of the wall you entered from.',action:'RETURN'};
-      const exit=box(2.4,3.9,.2,MAT.darkWood,cx,1.95,cz+d/2-.28);exit.userData=returnData;interactables.push(exit);
+      const exit=box(2.4,3.9,.2,MAT.darkWood,cx,1.95,cz+d/2-.28);exit.userData=returnData;interactables.push(exit);officeDoorDetails(root,cx,1.95,cz+d/2-.15);for(const ex of [cx-1.34,cx+1.34])box(.18,4.2,.28,MAT.brass,ex,2.1,cz+d/2-.18);box(2.85,.18,.28,MAT.brass,cx,4.18,cz+d/2-.18);
       const lamp=new THREE.PointLight(0xffc982,19,18,2);lamp.position.set(cx,4.3,cz);root.add(lamp);box(.35,.55,.35,brassGlow,cx,3.95,cz);
     }
     function contains(x,z){return x>cx-w/2&&x<cx+w/2&&z>cz-d/2&&z<cz+d/2}

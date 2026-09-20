@@ -10,11 +10,13 @@
     const add=(geometry,material,x,y,z,parent=root)=>{const mesh=new THREE.Mesh(geometry,material);mesh.position.set(x,y,z);mesh.castShadow=false;mesh.receiveShadow=false;parent.add(mesh);return mesh};
     const box=(w,h,d,material,x,y,z,parent=root)=>add(new THREE.BoxGeometry(w,h,d),material,x,y,z,parent);
     const cylinder=(rt,rb,h,segments,material,x,y,z,parent=root)=>add(new THREE.CylinderGeometry(rt,rb,h,segments),material,x,y,z,parent);
+    function celestialDoorDetails(parent,x,y,z,sideways=false){for(const py of [-.92,.62]){const panel=box(sideways?.06:1.85,1.12,sideways?1.85:.06,MAT.wood2,x,y+py,z,parent);const trim=box(sideways?.08:2.08,1.3,sideways?2.08:.08,MAT.brass,x+(sideways?-.13:0),y+py,z+(sideways?0:.13),parent)}const star=add(new THREE.TorusGeometry(.34,.055,7,18),MAT.brass,x+(sideways?-.15:0),y+1.48,z+(sideways?0:.16),parent);star.rotation.y=sideways?Math.PI/2:0;for(let i=0;i<8;i++){const ray=box(sideways?.04:.045,.36,sideways?.36:.04,MAT.brass,x+(sideways?-.16:Math.sin(i*Math.PI/4)*.42),y+1.48+Math.cos(i*Math.PI/4)*.42,z+(sideways?Math.sin(i*Math.PI/4)*.42:.17),parent);ray.rotation[sideways?'x':'z']=i*Math.PI/4}}
 
     // The entrance is deliberately ordinary in scale; the impossible height is hidden behind it.
     const entranceX=-33.5,entranceZ=-13.58;
     const entrance=new THREE.Group();entrance.position.set(entranceX,0,entranceZ);scene.add(entrance);
     const door=box(2.7,4.35,.24,MAT.darkWood,0,2.18,0,entrance);door.userData={type:'high-stair-door',title:'The stair that is not on the plan',author:'A brass plate reads: ASCENTS, DISTANCES & IMPOSSIBLE HEIGHTS.',action:'ASCEND'};interactables.push(door);
+    celestialDoorDetails(entrance,0,2.18,0);
     for(const x of [-1.48,1.48])box(.22,4.72,.32,MAT.brass,x,2.36,.01,entrance);
     box(3.18,.24,.34,MAT.brass,0,4.66,.01,entrance);
     const plaqueTex=canvasTexture((ctx,w,h)=>{ctx.fillStyle='#21170d';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#c29a50';ctx.lineWidth=12;ctx.strokeRect(8,8,w-16,h-16);ctx.fillStyle='#e1c98d';ctx.textAlign='center';ctx.font='bold 30px Georgia';ctx.fillText('ASCENTS & IMPOSSIBLE HEIGHTS',w/2,52)},640,78);
@@ -72,6 +74,7 @@
     // back onto the spiral. It returns directly to the western wing for clarity.
     const summitExitData={type:'summit-library-exit',title:'Down to the Library',author:'An illuminated brass plate promises a mercifully abbreviated descent.',action:'DESCEND'};
     const summitExit=box(2.3,3.7,.22,MAT.darkWood,cx-4.63,topY+1.85,cz);summitExit.rotation.y=Math.PI/2;summitExit.userData=summitExitData;interactables.push(summitExit);
+    celestialDoorDetails(root,cx-4.63,topY+1.85,cz,true);
     for(const zz of [-1.28,1.28])box(.2,4.05,.3,MAT.brass,cx-4.65,topY+2.02,cz+zz);
     const exitLintel=box(.22,.2,2.75,MAT.brass,cx-4.65,topY+4.02,cz);exitLintel.userData=summitExitData;interactables.push(exitLintel);
     const summitExitTex=canvasTexture((ctx,w,h)=>{ctx.fillStyle='#24170d';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#d7ae60';ctx.lineWidth=10;ctx.strokeRect(7,7,w-14,h-14);ctx.fillStyle='#ffe2a0';ctx.textAlign='center';ctx.font='bold 34px Georgia';ctx.fillText('DOWN TO THE LIBRARY',w/2,49)},620,72);

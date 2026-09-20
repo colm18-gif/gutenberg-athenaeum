@@ -25,7 +25,7 @@
     const pivot=new THREE.Group();pivot.position.set(36,0,9.72);wing.add(pivot);
     const panel=box(pivot,3.95,3.1,.16,MAT.wood2,-2,1.55,0);
     for(const x of [-3.85,-.15])box(pivot,.065,2.85,.06,MAT.darkWood,x,1.55,-.11);
-    box(pivot,3.7,.07,.06,MAT.darkWood,-2,2.9,-.11);
+    box(pivot,3.7,.07,.06,MAT.darkWood,-2,2.9,-.11);for(const y of [.45,2.62])box(pivot,3.55,.16,.08,MAT.brass,-2,y,-.15);for(const x of [-3.62,-.38])for(const y of [.38,1.55,2.72]){const rivet=new THREE.Mesh(new THREE.SphereGeometry(.075,8,6),MAT.brass);rivet.position.set(x,y,-.21);pivot.add(rivet)}const porthole=new THREE.Mesh(new THREE.CylinderGeometry(.46,.46,.08,22),MAT.brass);porthole.position.set(-2,1.75,-.18);porthole.rotation.x=Math.PI/2;pivot.add(porthole);const glass=new THREE.Mesh(new THREE.CircleGeometry(.37,20),new THREE.MeshStandardMaterial({color:0x142f38,emissive:0x102831,emissiveIntensity:.5,roughness:.2}));glass.position.set(-2,1.75,-.225);pivot.add(glass);
     const handle=box(pivot,.09,.25,.08,MAT.brass,-3.7,1.35,-.13,false);
     const doorCollider=collider(34,9.72,4,.2,'uncatalogued panel',-1,3.3);
     panel.userData={type:'verne-descent-panel',title:'A recessed wooden panel',author:'A faint draught stirs the dust at its edge.',action:'OPEN'};
