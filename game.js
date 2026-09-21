@@ -351,17 +351,9 @@ box(.45,.12,.45,MAT.paper,-27,1.72,-3,false);cylinder(.22,.18,.35,16,new THREE.M
     let seatLoaderPromise=null;
     function seatLoader(){return seatLoaderPromise||(seatLoaderPromise=import('https://cdn.jsdelivr.net/npm/three@0.160.1/examples/jsm/loaders/GLTFLoader.js/+esm').then(module=>new module.GLTFLoader()))}
     function seatTemplate(asset){if(!seatModelTemplates.has(asset.url))seatModelTemplates.set(asset.url,seatLoader().then(loader=>new Promise((resolve,reject)=>loader.load(asset.url,gltf=>resolve(gltf.scene),undefined,reject))));return seatModelTemplates.get(asset.url)}
-    function decorateSeat(group,fallbackParts,data,assetName,placement={}){
-      const asset=seatAssets[assetName];if(!asset||lowBandwidth)return;
-      seatTemplate(asset).then(template=>{
-        const model=template.clone(true),bounds=new THREE.Box3().setFromObject(model),size=bounds.getSize(new THREE.Vector3()),scale=(placement.height||asset.height)/Math.max(size.y,.001);
-        model.scale.setScalar(scale);model.rotation.y=asset.yaw+(placement.yaw||0);model.updateMatrixWorld(true);
-        const fitted=new THREE.Box3().setFromObject(model),center=fitted.getCenter(new THREE.Vector3());
-        model.position.x+=-center.x+(placement.x||0);model.position.y+=-fitted.min.y+(placement.y||0);model.position.z+=-center.z+(placement.z||0);
-        model.traverse(node=>{if(!node.isMesh)return;node.castShadow=false;node.receiveShadow=false;if(data){node.userData=data;interactables.push(node)}});
-        fallbackParts.forEach(part=>part.visible=false);group.add(model)
-      }).catch(error=>console.warn('CC0 seating asset unavailable; keeping procedural fallback.',assetName,error))
-    }
+    // The original leather-and-dark-wood chairs are the visual language of the library.
+    // Keep them visible instead of replacing them with late-loading imported furniture.
+    function decorateSeat(){ }
     function decorateReturnDesk(){if(lowBandwidth||!returnDeskGroup)return;seatTemplate({url:'assets/polyhaven/models/WoodenTable_01/WoodenTable_01_1k.gltf'}).then(template=>{for(const x of [-5,0,5]){const model=template.clone(true),bounds=new THREE.Box3().setFromObject(model),size=bounds.getSize(new THREE.Vector3()),scale=1.58/Math.max(size.y,.001);model.scale.setScalar(scale);model.updateMatrixWorld(true);const fitted=new THREE.Box3().setFromObject(model),center=fitted.getCenter(new THREE.Vector3());model.position.set(x-center.x,-fitted.min.y,-center.z);model.traverse(node=>{if(node.isMesh){node.castShadow=false;node.receiveShadow=false}});returnDeskGroup.add(model)}returnDeskFallback.forEach(part=>part.visible=false)}).catch(()=>{})}
     decorateReturnDesk();
     function chair(x,z,rot=0,options={}){const y=floorHeight(x,z),g=new THREE.Group();g.position.set(x,y,z);g.rotation.y=rot;scene.add(g);const seat=new THREE.Mesh(new THREE.BoxGeometry(2.1,.55,1.9),MAT.fabric);seat.position.y=.75;g.add(seat);const back=new THREE.Mesh(new THREE.BoxGeometry(2.1,2.4,.5),MAT.fabric);back.position.set(0,1.65,.72);g.add(back);const parts=[seat,back];for(const dx of [-.84,.84]){const a=new THREE.Mesh(new THREE.BoxGeometry(.3,.75,1.8),MAT.wood);a.position.set(dx,.65,0);g.add(a);parts.push(a)}collider(x,z,2.4,2.2,'armchair',y-1,y+3);const data=registerSeat([seat,back],g,new THREE.Vector3(0,1.35,-.1),rot,options);decorateSeat(g,parts,data,options.model);return g}
