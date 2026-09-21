@@ -205,7 +205,7 @@ test('H. G. Wells has a complete English-only Project Gutenberg room with librar
 });
 
 test('hidden doors preserve the configured arrival yaw',()=>{
-  assert.match(game,/const hp=\{progress:0,destination:opts\.destination,spawn:opts\.spawn,yaw:opts\.yaw,passageSound:'doorOpen',apply:p=>\{panel\.rotation\.y/);
+  assert.match(game,/const hp=\{progress:0,destination:opts\.destination,spawn:opts\.spawn,yaw:opts\.yaw,(?:instantEnter:opts\.instantEnter===true,)?passageSound:'doorOpen',apply:p=>\{panel\.rotation\.y/);
   assert.doesNotMatch(game,/yaw:opts\.y,/);
 });
 

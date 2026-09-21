@@ -15,12 +15,12 @@ test('impossible stair is loaded and integrated with movement, interaction and r
   assert.match(game,/highStaircase\.reset/);
 });
 
-test('stair rises through many walkable turns to a distinct summit room',()=>{
+test('stair rises through many walkable turns to a distinct Rocket Hall',()=>{
   assert.match(stair,/topY=30,steps=180,turns=3\.2/);
   assert.match(stair,/stepPath\.push\(\{x,z,y,a\}\)/);
   assert.match(stair,/function closestStep/);
-  assert.match(stair,/if\(r<4\.85&&player\.pos\.y>topY-2\)return topY/);
-  assert.match(stair,/THE LAST LANDING/);
+  assert.match(stair,/if\(r<9\.4&&player\.pos\.y>topY-2\)return topY/);
+  assert.match(stair,/The Rocket Hall/);
   assert.match(stair,/athenaeum-high-stair-summit/);
 });
 

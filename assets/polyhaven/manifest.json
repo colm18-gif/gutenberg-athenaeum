@@ -1,0 +1,163 @@
+{
+  "generated": "2026-09-21T08:30:56.875Z",
+  "models": [
+    {
+      "id": "Shelf_01",
+      "source": "https://polyhaven.com/a/Shelf_01",
+      "licence": "CC0 1.0",
+      "resolution": "1k"
+    },
+    {
+      "id": "CheeseBox_01",
+      "source": "https://polyhaven.com/a/CheeseBox_01",
+      "licence": "CC0 1.0",
+      "resolution": "1k"
+    },
+    {
+      "id": "wooden_crate_01",
+      "source": "https://polyhaven.com/a/wooden_crate_01",
+      "licence": "CC0 1.0",
+      "resolution": "1k"
+    },
+    {
+      "id": "wooden_crate_02",
+      "source": "https://polyhaven.com/a/wooden_crate_02",
+      "licence": "CC0 1.0",
+      "resolution": "1k"
+    },
+    {
+      "id": "wooden_ladder_02",
+      "source": "https://polyhaven.com/a/wooden_ladder_02",
+      "licence": "CC0 1.0",
+      "resolution": "1k"
+    },
+    {
+      "id": "hand_truck",
+      "source": "https://polyhaven.com/a/hand_truck",
+      "licence": "CC0 1.0",
+      "resolution": "1k"
+    },
+    {
+      "id": "vintage_spacecraft_instrument",
+      "source": "https://polyhaven.com/a/vintage_spacecraft_instrument",
+      "licence": "CC0 1.0",
+      "resolution": "1k"
+    },
+    {
+      "id": "WoodenTable_01",
+      "source": "https://polyhaven.com/a/WoodenTable_01",
+      "licence": "CC0 1.0",
+      "resolution": "1k"
+    },
+    {
+      "id": "ArmChair_01",
+      "source": "https://polyhaven.com/a/ArmChair_01",
+      "licence": "CC0 1.0",
+      "resolution": "1k"
+    },
+    {
+      "id": "seadogs_compass",
+      "source": "https://polyhaven.com/a/seadogs_compass",
+      "licence": "CC0 1.0",
+      "resolution": "1k"
+    },
+    {
+      "id": "vintage_suitcase",
+      "source": "https://polyhaven.com/a/vintage_suitcase",
+      "licence": "CC0 1.0",
+      "resolution": "1k"
+    },
+    {
+      "id": "Sofa_01",
+      "source": "https://polyhaven.com/a/Sofa_01",
+      "licence": "CC0 1.0",
+      "resolution": "1k"
+    },
+    {
+      "id": "WoodenChair_01",
+      "source": "https://polyhaven.com/a/WoodenChair_01",
+      "licence": "CC0 1.0",
+      "resolution": "1k"
+    },
+    {
+      "id": "painted_wooden_chair_01",
+      "source": "https://polyhaven.com/a/painted_wooden_chair_01",
+      "licence": "CC0 1.0",
+      "resolution": "1k"
+    },
+    {
+      "id": "painted_wooden_bench",
+      "source": "https://polyhaven.com/a/painted_wooden_bench",
+      "licence": "CC0 1.0",
+      "resolution": "1k"
+    },
+    {
+      "id": "painted_wooden_sofa",
+      "source": "https://polyhaven.com/a/painted_wooden_sofa",
+      "licence": "CC0 1.0",
+      "resolution": "1k"
+    }
+  ],
+  "materials": [
+    {
+      "id": "smoked_walnut_veneer",
+      "source": "https://polyhaven.com/a/smoked_walnut_veneer",
+      "licence": "CC0 1.0",
+      "resolution": "1k",
+      "files": {
+        "diffuse": "assets/polyhaven/materials/smoked_walnut_veneer/diffuse.jpg",
+        "normal": "assets/polyhaven/materials/smoked_walnut_veneer/normal.jpg",
+        "roughness": "assets/polyhaven/materials/smoked_walnut_veneer/roughness.jpg",
+        "displacement": "assets/polyhaven/materials/smoked_walnut_veneer/displacement.png"
+      }
+    },
+    {
+      "id": "brown_leather",
+      "source": "https://polyhaven.com/a/brown_leather",
+      "licence": "CC0 1.0",
+      "resolution": "1k",
+      "files": {
+        "diffuse": "assets/polyhaven/materials/brown_leather/diffuse.jpg",
+        "normal": "assets/polyhaven/materials/brown_leather/normal.jpg",
+        "roughness": "assets/polyhaven/materials/brown_leather/roughness.jpg",
+        "displacement": "assets/polyhaven/materials/brown_leather/displacement.jpg"
+      }
+    },
+    {
+      "id": "leather_red_02",
+      "source": "https://polyhaven.com/a/leather_red_02",
+      "licence": "CC0 1.0",
+      "resolution": "1k",
+      "files": {
+        "diffuse": "assets/polyhaven/materials/leather_red_02/diffuse.jpg",
+        "normal": "assets/polyhaven/materials/leather_red_02/normal.jpg",
+        "roughness": "assets/polyhaven/materials/leather_red_02/roughness.jpg",
+        "displacement": "assets/polyhaven/materials/leather_red_02/displacement.jpg"
+      }
+    },
+    {
+      "id": "old_stone_wall",
+      "source": "https://polyhaven.com/a/old_stone_wall",
+      "licence": "CC0 1.0",
+      "resolution": "1k",
+      "files": {
+        "diffuse": "assets/polyhaven/materials/old_stone_wall/diffuse.jpg",
+        "normal": "assets/polyhaven/materials/old_stone_wall/normal.jpg",
+        "roughness": "assets/polyhaven/materials/old_stone_wall/roughness.jpg",
+        "displacement": "assets/polyhaven/materials/old_stone_wall/displacement.png"
+      }
+    },
+    {
+      "id": "blue_plaster_weathered",
+      "source": "https://polyhaven.com/a/blue_plaster_weathered",
+      "licence": "CC0 1.0",
+      "resolution": "1k",
+      "files": {
+        "diffuse": "assets/polyhaven/materials/blue_plaster_weathered/diffuse.jpg",
+        "normal": "assets/polyhaven/materials/blue_plaster_weathered/normal.jpg",
+        "roughness": "assets/polyhaven/materials/blue_plaster_weathered/roughness.jpg",
+        "displacement": "assets/polyhaven/materials/blue_plaster_weathered/displacement.png"
+      }
+    }
+  ]
+}

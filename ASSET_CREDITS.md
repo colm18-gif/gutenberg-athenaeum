@@ -1,6 +1,6 @@
 # Third-party asset credits
 
-The Library After Dark uses the following 1K glTF models as progressive visual enhancements. They are loaded from Poly Haven's official CDN; the game retains procedural fallback furniture when assets are unavailable or low-bandwidth mode is enabled.
+The Library After Dark uses the following 1K glTF models as progressive visual enhancements. They are downloaded from Poly Haven during development and served locally from `assets/polyhaven`; the game retains procedural fallback furniture when assets are unavailable or low-bandwidth mode is enabled.
 
 All six models are released under [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/).
 
@@ -12,6 +12,21 @@ All six models are released under [CC0 1.0 Universal](https://creativecommons.or
 | Ordinary catalogue chairs | Painted Wooden Chair 01 | Kuutti Siitonen | https://polyhaven.com/a/painted_wooden_chair_01 |
 | Roof benches | Painted Wooden Bench | Kuutti Siitonen | https://polyhaven.com/a/painted_wooden_bench |
 | Window and constellation seats | Painted Wooden Sofa | Kuutti Siitonen | https://polyhaven.com/a/painted_wooden_sofa |
+| Return-and-discovery table | Wooden Table 01 | Poly Haven | https://polyhaven.com/a/WoodenTable_01 |
+| Sorting-room utility shelves | Shelf 01 | Poly Haven | https://polyhaven.com/a/Shelf_01 |
+| Sorting-room crates | Cheese Box 01, Wooden Crate 01 and 02 | Poly Haven | https://polyhaven.com/a/CheeseBox_01 |
+| Sorting-room ladder | Wooden Ladder 02 | Poly Haven | https://polyhaven.com/a/wooden_ladder_02 |
+| Sorting-room hand truck | Hand Truck | Poly Haven | https://polyhaven.com/a/hand_truck |
+| Rocket Hall console | Vintage Spacecraft Instrument | Poly Haven | https://polyhaven.com/a/vintage_spacecraft_instrument |
+| Departures compass | Seadog's Compass | Poly Haven | https://polyhaven.com/a/seadogs_compass |
+| Departures luggage | Vintage Suitcase | Poly Haven | https://polyhaven.com/a/vintage_suitcase |
+
+The shared 1K materials `smoked_walnut_veneer`, `brown_leather`,
+`leather_red_02`, `old_stone_wall`, and `blue_plaster_weathered` are also
+locally cached from Poly Haven under the same CC0 licence. The exact source
+URLs and generated local file manifest are recorded in
+`assets/polyhaven/manifest.json`; `scripts/fetch-polyhaven-assets.mjs`
+rebuilds that cache and verifies upstream checksums.
 
 Attribution is not legally required for CC0 assets, but is retained here to make provenance and future maintenance clear.
 
