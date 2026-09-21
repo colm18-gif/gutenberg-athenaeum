@@ -17,9 +17,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Expand the verified update
         run: |
-          unzip -o after-dark-expansion-payload-1.zip
-          unzip -o after-dark-expansion-payload-2.zip
-          rm after-dark-expansion-payload-1.zip after-dark-expansion-payload-2.zip
+          for archive in after-dark-expansion-payload-*.zip; do unzip -o "$archive"; done
+          rm after-dark-expansion-payload-*.zip
       - name: Verify the expansion
         run: node --test *.test.cjs
       - name: Publish the expanded library
