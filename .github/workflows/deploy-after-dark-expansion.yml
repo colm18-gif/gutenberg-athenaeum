@@ -3,7 +3,7 @@ name: Deploy After Dark expansion
 on:
   push:
     paths:
-      - "after-dark-expansion-payload-*.zip"
+      - "after-dark-expansion-payload-*-of-6.zip"
 
 permissions:
   contents: write
@@ -15,13 +15,21 @@ jobs:
     steps:
       - name: Check out the current site
         uses: actions/checkout@v4
-      - name: Expand the verified update
+      - name: Check that every payload chunk has arrived
+        id: payload
         run: |
-          for archive in after-dark-expansion-payload-*.zip; do unzip -o "$archive"; done
-          rm after-dark-expansion-payload-*.zip
+          count=$(find . -maxdepth 1 -name 'after-dark-expansion-payload-*-of-6.zip' | wc -l)
+          if [ "$count" -eq 6 ]; then echo "ready=true" >> "$GITHUB_OUTPUT"; else echo "ready=false" >> "$GITHUB_OUTPUT"; fi
+      - name: Expand the verified update
+        if: steps.payload.outputs.ready == 'true'
+        run: |
+          for archive in after-dark-expansion-payload-*-of-6.zip; do unzip -o "$archive"; done
+          rm after-dark-expansion-payload-*-of-6.zip
       - name: Verify the expansion
+        if: steps.payload.outputs.ready == 'true'
         run: node --test *.test.cjs
       - name: Publish the expanded library
+        if: steps.payload.outputs.ready == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
