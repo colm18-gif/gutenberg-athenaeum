@@ -3,7 +3,7 @@ name: Deploy After Dark expansion
 on:
   push:
     paths:
-      - "after-dark-expansion-payload.zip"
+      - "after-dark-expansion-payload-*.zip"
 
 permissions:
   contents: write
@@ -17,8 +17,9 @@ jobs:
         uses: actions/checkout@v4
       - name: Expand the verified update
         run: |
-          unzip -o after-dark-expansion-payload.zip
-          rm after-dark-expansion-payload.zip
+          unzip -o after-dark-expansion-payload-1.zip
+          unzip -o after-dark-expansion-payload-2.zip
+          rm after-dark-expansion-payload-1.zip after-dark-expansion-payload-2.zip
       - name: Verify the expansion
         run: node --test *.test.cjs
       - name: Publish the expanded library
