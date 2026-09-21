@@ -46,20 +46,30 @@ test('movement and interaction use nearby spatial cells instead of whole-library
   assert.match(game,/raycaster\.intersectObjects\(focusCandidates,false\)/);
 });
 
-test('closed rooms are independently detached and expensive rooms warm behind the entrance',()=>{
+test('closed rooms are independently detached and remote rooms build only when entered',()=>{
   assert.match(game,/registerRoomPerformanceZones\('theme-'\+destination/);
   assert.match(game,/buildThemeRooms\(hp\.destination\)/);
   assert.match(game,/themeRoomDefs\.filter\(def=>def\.key===destination\)/);
   assert.match(game,/registerRoomPerformanceZones\('memory'/);
-  assert.match(game,/performanceZones\[`\$\{prefix\}-\$\{room\.key\}`\]/);
-  assert.match(game,/const openingWarmupTasks=/);
-  assert.match(game,/setTimeout\(\(\)=>\{if\(!started\)requestLibraryIdle\(warmOpeningWorld\)\},1200\)/);
+  assert.match(game,/if\(focus\?\.userData\?\.type==='basement-hatch'\)buildBasement\(\)/);
+  assert.match(game,/else if\(themeRoomKeys\.has\(d\.destination\)\)buildThemeRooms\(d\.destination\)/);
+  assert.match(game,/if\(!roofBuilt&&player\.pos\.y>8\.5&&player\.pos\.z>34\)buildRoofGarden\(\)/);
+  assert.doesNotMatch(game,/const openingWarmupTasks=/);
 });
 
 test('a hidden frame-time monitor reports long frames on demand',()=>{
   assert.match(game,/performanceMonitor\.id='performanceMonitor'/);
   assert.match(game,/event\.code!=='F3'/);
   assert.match(game,/frame spikes >40 ms/);
+  assert.match(game,/renderInfo\.calls/);
+  assert.match(game,/function updateAdaptiveQuality/);
+  assert.match(game,/adaptiveRenderScale/);
+});
+
+test('the night-room chandelier uses one real light for its decorative flames',()=>{
+  assert.match(game,/const chandelierGlow=new THREE\.PointLight/);
+  assert.match(game,/const flame=new THREE\.Mesh\(new THREE\.SphereGeometry\(\.13,8,6\),lampShadeMaterial\)/);
+  assert.doesNotMatch(game,/const flame=new THREE\.PointLight\(0xf1c787,3\.2,13,2\)/);
 });
 
 test('the impossible stair batches its repeated structure',()=>{
