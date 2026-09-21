@@ -37,6 +37,13 @@ test('lightweight illustrated covers remain visible before detailed covers load'
   assert.match(game,/if\(lowBandwidth\)data\.loaded=true;else requestRealCover\(data\.book\)/);
 });
 
+test('the library keeps its leather-and-dark-wood procedural seating',()=>{
+  assert.match(game,/const seat=new THREE\.Mesh\(new THREE\.BoxGeometry\(2\.1,\.55,1\.9\),MAT\.fabric\)/);
+  assert.match(game,/const a=new THREE\.Mesh\(new THREE\.BoxGeometry\(\.3,\.75,1\.8\),MAT\.wood\)/);
+  assert.match(game,/function decorateSeat\(\)\{ \}/);
+  assert.doesNotMatch(game,/fallbackParts\.forEach\(part=>part\.visible=false\)/);
+});
+
 test('movement and interaction use nearby spatial cells instead of whole-library scans',()=>{
   assert.match(game,/const SPATIAL_CELL_SIZE=12,colliderCells=new Map\(\)/);
   assert.match(game,/for\(const c of nearbyColliders\(x,z\)\)/);
