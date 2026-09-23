@@ -36,6 +36,12 @@ Poly Haven publishes these models under CC0. The bundled painted white farmhouse
 
 The entrance and western wing now share the hall's masonry, parquet texture and plank scale, plus the same walnut dado runs. The entrance desk chairs and window cushions use the library's wood and burgundy materials. Geometry and collision of shelves, doors, stairs, and book interactions remain in place.
 
-## Review before spreading to the rest
+## Rollout to the remaining rooms
+
+The east wing mirrors the west wing's stone, parquet, and walnut dado. The themed author rooms and the memory rooms use the same board scale and a shared walnut back-wall dado; each retains its accent colour, shelving, and degree of wear. The Sorting Room, Departures room, and librarian’s office now use the public stone and floor materials in their separately built shells. Their furniture, props, doors, and books remain specific to their use.
+
+The basement stays damp stone, the rooftop stays weathered stone, and the Carroll room retains its disorienting checker floor. These are deliberate changes in environment reached from the same library, rather than unrelated public-room finishes.
+
+## Visual review
 
 Compare a view from the entrance toward the west door, a view inside the western reading wing, and the reading desk close up. Check daylight and night, low bandwidth mode, readability, doorway clearance, and frame rate on a modest device. Then carry the same materials into the east wing and themed rooms, adapting only wear and accent colour.

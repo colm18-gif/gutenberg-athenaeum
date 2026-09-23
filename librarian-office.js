@@ -1,7 +1,7 @@
 /* The librarian's working office: a discoverable room, not a menu or catalogue. */
 (()=>{
   'use strict';
-  window.createLibrarianOffice=function({THREE,scene,MAT,player,interactables,books,coverTexture,canvasTexture,showNotice,move,playSample}){
+  window.createLibrarianOffice=function({THREE,scene,MAT,publicStone,publicParquet,player,interactables,books,coverTexture,canvasTexture,showNotice,move,playSample}){
     const cx=300,cz=-70,w=18,d=16,root=new THREE.Group();root.name='librarian-office';let built=false;
     const brassGlow=new THREE.MeshStandardMaterial({color:0xc39a52,emissive:0x6e4317,emissiveIntensity:.35,metalness:.45,roughness:.46});
     const paper=new THREE.MeshStandardMaterial({color:0xd4c394,roughness:.94}),ink=new THREE.MeshStandardMaterial({color:0x211713,roughness:.86}),frostedGlass=new THREE.MeshPhysicalMaterial({color:0xb8c2b2,transparent:true,opacity:.46,roughness:.5,metalness:.05});
@@ -19,7 +19,7 @@
     const entranceLight=new THREE.PointLight(0xffbd72,10,7,2);entranceLight.position.set(0,3.8,.7);entrance.add(entranceLight);
 
     function build(){if(built)return;built=true;scene.add(root);
-      box(w,.42,d,MAT.wood,cx,-.21,cz);box(w,.35,d,MAT.darkWood,cx,6.05,cz);box(w,6,.45,MAT.stone,cx,3,cz-d/2);box(w,6,.45,MAT.stone,cx,3,cz+d/2);box(.45,6,d,MAT.stone,cx-w/2,3,cz);box(.45,6,d,MAT.stone,cx+w/2,3,cz);
+      box(w,.42,d,MAT.wood,cx,-.21,cz);const floorGeometry=new THREE.PlaneGeometry(w-.3,d-.3),floorUV=floorGeometry.attributes.uv;for(let i=0;i<floorUV.count;i++)floorUV.setXY(i,floorUV.getX(i)*(w-.3)/37.8,floorUV.getY(i)*(d-.3)/61.8);const floorOverlay=add(floorGeometry,publicParquet,cx,.006,cz);floorOverlay.rotation.x=-Math.PI/2;box(w,.35,d,MAT.darkWood,cx,6.05,cz);box(w,6,.45,publicStone,cx,3,cz-d/2);box(w,6,.45,publicStone,cx,3,cz+d/2);box(.45,6,d,publicStone,cx-w/2,3,cz);box(.45,6,d,publicStone,cx+w/2,3,cz);box(w-.5,2.1,.12,MAT.wood2,cx,1.05,cz-d/2+.36);box(w-.5,.13,.18,MAT.darkWood,cx,2.06,cz-d/2+.43);
       const rug=add(new THREE.PlaneGeometry(10,7),new THREE.MeshStandardMaterial({color:0x4b2026,roughness:1}),cx,.015,cz);rug.rotation.x=-Math.PI/2;
       box(7,.35,3,MAT.darkWood,cx,1.38,cz-1);for(const dx of [-3,3])for(const dz of [-1.05,1.05])box(.28,1.4,.28,MAT.wood,cx+dx,.7,cz-1+dz);
       note(box(2.15,.08,1.45,paper,cx-1.5,1.61,cz-1),'The appointments ledger','Tomorrow is fully booked in several different handwritings, including yours.','READ');
