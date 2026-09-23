@@ -1,11 +1,41 @@
 {
   "sources": {
-    "standard-ebooks": {"name":"Standard Ebooks","role":"Polished public-domain editions for the principal reading rooms","homepage":"https://standardebooks.org/feeds","defaultRoom":"drawing"},
-    "wikisource": {"name":"Wikisource","role":"Poetry, plays, translations and unusual historical texts","homepage":"https://wikisource.org/wiki/Wikisource:WS_Export","defaultRoom":"garden"},
-    "internet-archive": {"name":"Internet Archive","role":"Forgotten editions, pamphlets, scans and obscure curiosities","homepage":"https://archive.org/developers/metadata.html","defaultRoom":"unread"},
-    "open-library": {"name":"Open Library","role":"Edition metadata, identifiers and locally cached cover discovery","homepage":"https://openlibrary.org/developers/api","defaultRoom":"mainhall"},
-    "doab-oapen": {"name":"DOAB / OAPEN","role":"Peer-reviewed open-access scholarship and literary history","homepage":"https://www.doabooks.org/","defaultRoom":"study"},
-    "librivox": {"name":"LibriVox","role":"Public-domain recordings discovered beside their printed editions","homepage":"https://librivox.org/pages/public-domain/","defaultRoom":"gothic"}
+    "standard-ebooks": {
+      "name": "Standard Ebooks",
+      "role": "Polished public-domain editions for the principal reading rooms",
+      "homepage": "https://standardebooks.org/feeds",
+      "defaultRoom": "drawing"
+    },
+    "wikisource": {
+      "name": "Wikisource",
+      "role": "Poetry, plays, translations and unusual historical texts",
+      "homepage": "https://wikisource.org/wiki/Wikisource:WS_Export",
+      "defaultRoom": "garden"
+    },
+    "internet-archive": {
+      "name": "Internet Archive",
+      "role": "Forgotten editions, pamphlets, scans and obscure curiosities",
+      "homepage": "https://archive.org/developers/metadata.html",
+      "defaultRoom": "unread"
+    },
+    "open-library": {
+      "name": "Open Library",
+      "role": "Edition metadata, identifiers and locally cached cover discovery",
+      "homepage": "https://openlibrary.org/developers/api",
+      "defaultRoom": "mainhall"
+    },
+    "doab-oapen": {
+      "name": "DOAB / OAPEN",
+      "role": "Peer-reviewed open-access scholarship and literary history",
+      "homepage": "https://www.doabooks.org/",
+      "defaultRoom": "study"
+    },
+    "librivox": {
+      "name": "LibriVox",
+      "role": "Public-domain recordings discovered beside their printed editions",
+      "homepage": "https://librivox.org/pages/public-domain/",
+      "defaultRoom": "gothic"
+    }
   },
   "books": [
     {
@@ -97,9 +127,55 @@
       "textPath": "texts/open-access/ghosts-i-have-met.txt",
       "status": "published",
       "depotNote": "APPARITIONS WITH PAPERWORK — Bangs receives the supernatural as though it had arrived late, misplaced its ticket, and wished to complain. The humour is dry enough to keep beside the station stove."
+    },
+    {
+      "id": 900007,
+      "title": "A Library Primer",
+      "author": "John Cotton Dana",
+      "category": "Librarianship",
+      "fame": 7,
+      "source": "wikisource",
+      "sourceUrl": "https://en.wikisource.org/wiki/A_Library_Primer_(1899)",
+      "licence": "CC BY-SA",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "room": "sorting",
+      "textPath": "texts/open-access/a-library-primer.txt",
+      "status": "published"
+    },
+    {
+      "id": 900008,
+      "title": "The Small Library",
+      "author": "James Duff Brown",
+      "category": "Book Care",
+      "fame": 5,
+      "source": "wikisource",
+      "sourceUrl": "https://en.wikisource.org/wiki/The_Small_Library",
+      "licence": "CC BY-SA",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "room": "sorting",
+      "textPath": "texts/open-access/the-small-library.txt",
+      "status": "published"
+    },
+    {
+      "id": 900009,
+      "title": "The Library",
+      "author": "Andrew Lang, with Austin Dobson",
+      "category": "Bibliophilia",
+      "fame": 6,
+      "source": "wikisource",
+      "sourceUrl": "https://en.wikisource.org/wiki/The_Library_(Lang)",
+      "licence": "CC BY-SA",
+      "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "room": "sorting",
+      "textPath": "texts/open-access/the-library-lang.txt",
+      "status": "published"
     }
   ],
   "enrichments": {
-    "345": {"audioSource":"LibriVox","audioPageUrl":"https://librivox.org/dracula-by-bram-stoker/","audioLabel":"Hear a public-domain recording at LibriVox"}
+    "345": {
+      "audioSource": "LibriVox",
+      "audioPageUrl": "https://librivox.org/dracula-by-bram-stoker/",
+      "audioLabel": "Hear a public-domain recording at LibriVox"
+    }
   }
 }
