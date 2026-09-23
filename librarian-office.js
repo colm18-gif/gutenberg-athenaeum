@@ -10,7 +10,7 @@
     const officeDoorDetails=(parent,x=0,y=0,z=.13)=>{for(const [py,h] of [[1.05,1.32],[-1.05,1.18]]){box(1.72,h,.045,MAT.brass,x,y+py,z,parent);box(1.48,h-.22,.06,py>0?frostedGlass:MAT.wood2,x,y+py,z+.025,parent)}for(const sx of [-.48,0,.48])box(.045,1.08,.04,MAT.brass,x+sx,y+1.05,z+.07,parent);box(.72,.13,.08,MAT.brass,x,y-.15,z+.08,parent);const knob=add(new THREE.SphereGeometry(.11,12,8),MAT.brass,x+.78,y-.42,z+.13,parent);return knob};
     const note=(mesh,title,author,action='EXAMINE')=>{mesh.userData={type:'librarian-office-object',title,author,action};interactables.push(mesh);return mesh};
     const entranceData={type:'librarian-office-door',title:"The Librarian's Office",author:'Appointments are accepted at hours the clock declines to display.',action:'ENTER'};
-    const entrance=new THREE.Group();entrance.position.set(36.55,0,0);entrance.rotation.y=-Math.PI/2;scene.add(entrance);
+    const entrance=new THREE.Group();entrance.position.set(35,0,-13.65);entrance.rotation.y=0;scene.add(entrance);
     const entranceDoor=box(2.35,4.2,.22,MAT.darkWood,0,2.1,0,entrance);entranceDoor.userData=entranceData;interactables.push(entranceDoor);
     officeDoorDetails(entrance,0,2.1);
     for(const x of [-1.28,1.28])box(.18,4.5,.3,MAT.brass,x,2.25,0,entrance);box(2.75,.18,.3,MAT.brass,0,4.48,0,entrance);
@@ -38,7 +38,7 @@
     function contains(x,z){return x>cx-w/2&&x<cx+w/2&&z>cz-d/2&&z<cz+d/2}
     function floorAt(x,z){return contains(x,z)?0:null}
     function allowed(x,z){const r=player.radius;if(!contains(x-r,z-r)||!contains(x+r,z+r))return false;const blocked=x>cx-3.9&&x<cx+3.9&&z>cz-2.7&&z<cz+.7;return !blocked}
-    function interact(object){const type=object?.userData?.type;if(type==='librarian-office-door'){build();move(cx,cz+4.8,Math.PI);showNotice('The office smells of dust, cold tea, and rain-damp correspondence. Nothing on the desk appears private enough to be accidental.',8);playSample?.('doorOpen',.85,.96);return true}if(type==='librarian-office-exit'){move(33.8,0,-Math.PI/2);showNotice('The east wing is exactly where the office left it.',5);playSample?.('doorOpen',.85,1);return true}if(type==='librarian-office-object'){showNotice(object.userData.author,10);return true}return false}
+    function interact(object){const type=object?.userData?.type;if(type==='librarian-office-door'){build();move(cx,cz+4.8,Math.PI);showNotice('The office smells of dust, cold tea, and rain-damp correspondence. Nothing on the desk appears private enough to be accidental.',8);playSample?.('doorOpen',.85,.96);return true}if(type==='librarian-office-exit'){move(35, -11.1, Math.PI);showNotice('The east wing is exactly where the office left it.',5);playSample?.('doorOpen',.85,1);return true}if(type==='librarian-office-object'){showNotice(object.userData.author,10);return true}return false}
     return {contains,floorAt,allowed,interact,entrance,get built(){return built}};
   };
 })();
