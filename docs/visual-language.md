@@ -73,6 +73,13 @@ The basement stays damp stone, the rooftop stays weathered stone, and the Carrol
 - The reading-room return doors sit in framed openings. Distinct low-volume procedural cues play on arrival, with a long quiet interval if the visitor lingers. The existing mute setting applies.
 - The conductor also authorizes alighting when the route loops back to the Library Platform. Check the complete platform → signal → tide → fog → depot → platform journey, books and room return doors.
 
+## Picture and portal pass
+
+- All themed-room frames now show subject-specific images. Inquiry and Drawing use small locally drawn period engravings rather than the unrelated stair, botanical portrait, or caravan. Wells receives a clockwork illustration; the Verne engraving is reused from its portal; Haggard and Doyle use their already bundled thematic images.
+- The Philosopher's Study displays Célestin Nanteuil's 1834 etching [Seated Man with Quill in his Right Hand at Desk Littered with Books](https://www.metmuseum.org/art/collection/search/812506). The Met identifies this image as Public Domain. The downloaded JPEG is bundled locally as `assets/met-scholar-1834.jpg`.
+- Picture frames now use shared dark-walnut rails and a thin brass slip. Only the picture portals have a small brass witness rivet; they still require close inspection. Themed pictures build with their rooms; file textures are reused by URL rather than uploaded repeatedly to GPU memory.
+- Review each portal from its approach side, check image contrast at night, the hinged portrait, and the evidence case. Make sure no frame can obscure its interaction surface or doorway.
+
 ## Visual review
 
 Compare a view from the entrance toward the west door, a view inside the western reading wing, and the reading desk close up. Check daylight and night, low bandwidth mode, readability, doorway clearance, and frame rate on a modest device. Then carry the same materials into the east wing and themed rooms, adapting only wear and accent colour.
