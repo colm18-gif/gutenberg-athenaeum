@@ -37,11 +37,14 @@ test('lightweight illustrated covers remain visible before detailed covers load'
   assert.match(game,/if\(lowBandwidth\)data\.loaded=true;else requestRealCover\(data\.book\)/);
 });
 
-test('the library keeps its leather-and-dark-wood procedural seating',()=>{
+test('Arm Chair 01 replaces reading-chair visuals while keeping interaction and a fallback',()=>{
+  assert.match(game,/ArmChair_01\/ArmChair_01_1k\.gltf/);
+  assert.match(game,/if\(modelKey!=='armchair'\|\|lowBandwidth\|\|lowPowerDevice\)return/);
+  assert.match(game,/seatTemplate\(asset\)\.then\(template=>/);
+  assert.match(game,/node\.userData=data;interactables\.push\(node\)/);
+  assert.match(game,/group\.add\(model\);\s*parts\.forEach\(part=>\{part\.visible=false\}\)/);
+  assert.match(game,/\}\)\.catch\(\(\)=>\{\}\)/);
   assert.match(game,/const seat=new THREE\.Mesh\(new THREE\.BoxGeometry\(2\.1,\.55,1\.9\),MAT\.fabric\)/);
-  assert.match(game,/const a=new THREE\.Mesh\(new THREE\.BoxGeometry\(\.3,\.75,1\.8\),MAT\.wood\)/);
-  assert.match(game,/function decorateSeat\(\)\{ \}/);
-  assert.doesNotMatch(game,/fallbackParts\.forEach\(part=>part\.visible=false\)/);
 });
 
 test('movement and interaction use nearby spatial cells instead of whole-library scans',()=>{
