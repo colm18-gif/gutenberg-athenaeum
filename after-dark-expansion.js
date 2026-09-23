@@ -5,8 +5,8 @@
     const {THREE,scene,MAT,player,camera,interactables,books,bookMaterial,canvasTexture,showNotice,playSample,sound,move,modelTemplate,isLowBandwidth,analytics}=options;
     const KEEP_WARM_SECONDS=20,PRELOAD_DISTANCE=8;
     const rooms={
-      sorting:{key:'sorting',cx:-180,cz:-24,w:28,d:23,entrance:{x:-36.72,z:5.2,yaw:Math.PI/2},title:'The Sorting Room'},
-      departures:{key:'departures',cx:-180,cz:28,w:32,d:26,entrance:{x:36.72,z:5.2,yaw:-Math.PI/2},title:'Cabinet of Travel & Expeditions'}
+      sorting:{key:'sorting',cx:-180,cz:-24,w:28,d:23,entrance:{x:-36.72,z:8.5,yaw:Math.PI/2},title:'The Sorting Room'},
+      departures:{key:'departures',cx:-180,cz:28,w:32,d:26,entrance:{x:36.72,z:8.5,yaw:-Math.PI/2},title:'Cabinet of Travel & Expeditions'}
     };
     const roomStates=new Map(),blockers=[],animated=[],sharedGeometries={book:new THREE.BoxGeometry(.82,1.08,.14)};let currentTime=0;
     const emissiveAmber=new THREE.MeshStandardMaterial({color:0xe2b46b,emissive:0xb76d27,emissiveIntensity:2.1,roughness:.8});
@@ -72,7 +72,16 @@
       const root=room.root,g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=rotation;root.add(g),parts=[];
       for(const y of [.3,1.35,2.4,3.45])parts.push(box(4.2,.14,.72,MAT.darkWood,0,y,0,g));
       for(const px of [-1.95,1.95])parts.push(box(.18,3.8,.72,MAT.wood2,px,1.9,0,g));
-      addModel(g,'assets/polyhaven/models/Shelf_01/Shelf_01_1k.gltf',0,0,0,{height:3.85,rotation:Math.PI,fallback:parts});
+      // Stock the existing service shelves without adding individual draw calls per volume.
+      const spines=new THREE.InstancedMesh(new THREE.BoxGeometry(.23,.78,.38),new THREE.MeshStandardMaterial({color:0xffffff,roughness:.84}),36);
+      const dummy=new THREE.Object3D(),colors=[0x493022,0x203c38,0x552b30,0x38405a,0x71512d];let spineCount=0;
+      for(let row=0;row<4;row++)for(let slot=0;slot<11;slot++){
+        if((row*3+slot)%7===0)continue;
+        dummy.position.set(-1.55+slot*.31,[.3,1.35,2.4,3.45][row]+.46,.05);
+        dummy.rotation.set(0,0,((slot+row)%3-1)*.025);dummy.updateMatrix();
+        spines.setMatrixAt(spineCount,dummy.matrix);spines.setColorAt(spineCount,new THREE.Color(colors[(row*5+slot*3)%colors.length]));spineCount++;
+      }
+      spines.count=spineCount;spines.instanceMatrix.needsUpdate=true;g.add(spines);
       const width=Math.abs(Math.cos(rotation))*4.5+Math.abs(Math.sin(rotation))*.95,depth=Math.abs(Math.sin(rotation))*4.5+Math.abs(Math.cos(rotation))*.95;block(room.key,x,z,width,depth);
     }
 
@@ -103,6 +112,15 @@
       const trolleyX=room.cx-1.8,trolleyZ=room.cz+1.3;box(3.6,.18,1.1,MAT.darkWood,trolleyX,1.2,trolleyZ,room.root);box(3.6,.18,1.1,MAT.darkWood,trolleyX,.35,trolleyZ,room.root);for(const dx of [-1.65,1.65])box(.15,1.2,.9,iron,trolleyX+dx,.72,trolleyZ,room.root);for(const dx of [-1.65,1.65])for(const dz of [-.35,.35]){const wheel=cylinder(.18,.18,.1,12,iron,trolleyX+dx,.13,trolleyZ+dz,room.root);wheel.rotation.x=Math.PI/2}block(room.key,trolleyX,trolleyZ,4,1.45);
       const ladderFallback=[box(.22,4.6,.18,MAT.wood,room.cx+11.2,2.3,room.cz-7.4,room.root),box(.22,4.6,.18,MAT.wood,room.cx+9.9,2.3,room.cz-7.4,room.root)];for(let i=0;i<8;i++)ladderFallback.push(box(1.35,.11,.18,MAT.wood,room.cx+10.55,.45+i*.52,room.cz-7.4,room.root));addModel(room.root,'assets/polyhaven/models/wooden_ladder_02/wooden_ladder_02_1k.gltf',room.cx+10.55,0,room.cz-7.4,{height:4.6,rotation:.04,fallback:ladderFallback});
       const truckFallback=[box(.12,2.4,1.1,iron,room.cx-10.8,1.2,room.cz+1.5,room.root),box(1.15,.12,1.1,iron,room.cx-10.25,.18,room.cz+1.5,room.root)];addModel(room.root,'assets/polyhaven/models/hand_truck/hand_truck_1k.gltf',room.cx-10.5,0,room.cz+1.5,{height:2.5,rotation:Math.PI/2,fallback:truckFallback});block(room.key,room.cx-10.4,room.cz+1.5,1.7,1.8);
+      // A half-finished shift leaves labelled trays and incoming volumes on the trolley and desk.
+      const trayX=room.cx-1.8,trayZ=room.cz+1.3;
+      for(const [i,label] of ['TO BE RETURNED','UNCATALOGUED','KEEP FOR THE LIBRARIAN'].entries()){
+        const z=trayZ-.35+i*.32;
+        box(2.7,.08,.27,MAT.wood2,trayX,1.33,z,room.root);
+        const ticket=sign(room.root,trayX,1.43,z+.12,label,'',0,.33);
+        mark(ticket,{type:'after-dark-detail',title:label,author:'The sorting hand has not finished this pile.',action:'READ'});
+      }
+      for(let i=0;i<6;i++){const volume=box(.42,.55,.11,[MAT.green,MAT.fabric,MAT.wood2][i%3],deskX-1.2+i*.38,1.73,deskZ+.25,room.root);volume.rotation.y=(i%2?-.12:.09)}
       const stringLine=add(new THREE.TorusGeometry(.65,.025,6,28),twine,room.cx+1.3,.04,room.cz+6.8,room.root);stringLine.rotation.x=Math.PI/2;
       const roomBooks=books.filter(book=>book.room==='sorting');const spots=[[-7,1.52,-6.2,.15],[-4.8,1.32,1.1,-.8],[-1.4,1.42,1.3,.15],[1.7,.72,5.9,-.35],[4.1,1.58,-6.1,.4],[7.4,1.48,5.5,-.25],[9.2,.82,-.6,.8],[-8.5,.74,5.6,-.4],[3.2,.67,3.5,.22]];roomBooks.forEach((book,index)=>{const p=spots[index%spots.length];placeBook(room,book,room.cx+p[0],p[1],room.cz+p[2],p[3],index%3===0?-.48:-.28)});
       slip(room,room.cx-3.5,room.cz+4.2,'Found in the rain',.12);slip(room,room.cx+4.3,room.cz-5.8,'Reader never returned',-.08);slip(room,room.cx+7.4,room.cz+5.2,'Catalogue disagrees',.04);
