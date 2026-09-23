@@ -56,6 +56,17 @@ The basement stays damp stone, the rooftop stays weathered stone, and the Carrol
 - The Quiet Stacks keep more of the warm stone colour; Unread is a shade darker. The Returning room and metal Repository retain their distinct roles. Low bandwidth mode retains its previous stone material.
 - Check both spaces after entering from the Returning room, including books and signs at night; wall wear should be visible without dimming reading surfaces.
 
+## Shelf and rug finish
+
+- Reading rugs now share one small woven design with a faded burgundy field, brass-toned border, and central medallion. Room tints reuse the texture and material cache.
+- Standard mode adds restrained brass shelf trim and a shared reading-room plaque. Neglected shelves retain their broken planks and use a duller label. Low bandwidth mode avoids the added shelf meshes.
+
+## Night railway and lunar launch
+
+- The conductor starts each railway leg and announces arrivals. Talk to him again to open the carriage door at a stop. The brass punch is now an object to inspect.
+- The route loops from the library through the Signal House, Tidebound Quay, Unmarked Stop, and Collections Depot. The two new stops have small reading rooms with railway and journey books already in the catalogue.
+- Boarding the rocket places the reader inside its cabin. The red button begins a four-count launch and a roughly 25-second flight with changing porthole views and staged arrival messages. The hatch can be used to leave before launch.
+
 ## Visual review
 
 Compare a view from the entrance toward the west door, a view inside the western reading wing, and the reading desk close up. Check daylight and night, low bandwidth mode, readability, doorway clearance, and frame rate on a modest device. Then carry the same materials into the east wing and themed rooms, adapting only wear and accent colour.
