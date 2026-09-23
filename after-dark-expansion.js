@@ -122,7 +122,7 @@
       }
       for(let i=0;i<6;i++){const volume=box(.42,.55,.11,[MAT.green,MAT.fabric,MAT.wood2][i%3],deskX-1.2+i*.38,1.73,deskZ+.25,room.root);volume.rotation.y=(i%2?-.12:.09)}
       const stringLine=add(new THREE.TorusGeometry(.65,.025,6,28),twine,room.cx+1.3,.04,room.cz+6.8,room.root);stringLine.rotation.x=Math.PI/2;
-      const roomBooks=books.filter(book=>book.room==='sorting');const spots=[[-7,1.52,-6.2,.15],[-4.8,1.32,1.1,-.8],[-1.4,1.42,1.3,.15],[1.7,.72,5.9,-.35],[4.1,1.58,-6.1,.4],[7.4,1.48,5.5,-.25],[9.2,.82,-.6,.8],[-8.5,.74,5.6,-.4],[3.2,.67,3.5,.22]];roomBooks.forEach((book,index)=>{const p=spots[index%spots.length];placeBook(room,book,room.cx+p[0],p[1],room.cz+p[2],p[3],index%3===0?-.48:-.28)});
+      const roomBooks=books.filter(book=>book.room==='sorting');const spots=[[-7,1.52,-6.2,.15],[-4.8,1.32,1.1,-.8],[-1.4,1.42,1.3,.15],[1.7,.72,5.9,-.35],[4.1,1.58,-6.1,.4],[7.4,1.48,5.5,-.25],[9.2,.82,-.6,.8],[-8.5,.74,5.6,-.4],[3.2,.67,3.5,.22],[-9,2.96,-7,.12],[-4.2,2.96,-7,-.08],[5.7,1.95,-6.7,.1]];roomBooks.forEach((book,index)=>{const p=spots[index%spots.length];placeBook(room,book,room.cx+p[0],p[1],room.cz+p[2],p[3],index%3===0?-.48:-.28)});
       slip(room,room.cx-3.5,room.cz+4.2,'Found in the rain',.12);slip(room,room.cx+4.3,room.cz-5.8,'Reader never returned',-.08);slip(room,room.cx+7.4,room.cz+5.2,'Catalogue disagrees',.04);
       for(let i=0;i<55;i++){const mote=add(new THREE.SphereGeometry(.014,4,3),new THREE.MeshBasicMaterial({color:0xc9b78d,transparent:true,opacity:.3}),room.cx-room.w/2+1+Math.random()*(room.w-2),.4+Math.random()*4.8,room.cz-room.d/2+1+Math.random()*(room.d-2),room.root);animated.push({kind:'dust',mesh:mote,room,phase:Math.random()*9})}
     }

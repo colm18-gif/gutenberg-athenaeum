@@ -127,6 +127,48 @@ window.ATHENAEUM_OPEN_ACCESS_BOOKS = [
     "textPath": "texts/open-access/ghosts-i-have-met.txt",
     "status": "published",
     "depotNote": "APPARITIONS WITH PAPERWORK — Bangs receives the supernatural as though it had arrived late, misplaced its ticket, and wished to complain. The humour is dry enough to keep beside the station stove."
+  },
+  {
+    "id": 900007,
+    "title": "A Library Primer",
+    "author": "John Cotton Dana",
+    "category": "Librarianship",
+    "fame": 7,
+    "source": "wikisource",
+    "sourceUrl": "https://en.wikisource.org/wiki/A_Library_Primer_(1899)",
+    "licence": "CC BY-SA",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "room": "sorting",
+    "textPath": "texts/open-access/a-library-primer.txt",
+    "status": "published"
+  },
+  {
+    "id": 900008,
+    "title": "The Small Library",
+    "author": "James Duff Brown",
+    "category": "Book Care",
+    "fame": 5,
+    "source": "wikisource",
+    "sourceUrl": "https://en.wikisource.org/wiki/The_Small_Library",
+    "licence": "CC BY-SA",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "room": "sorting",
+    "textPath": "texts/open-access/the-small-library.txt",
+    "status": "published"
+  },
+  {
+    "id": 900009,
+    "title": "The Library",
+    "author": "Andrew Lang, with Austin Dobson",
+    "category": "Bibliophilia",
+    "fame": 6,
+    "source": "wikisource",
+    "sourceUrl": "https://en.wikisource.org/wiki/The_Library_(Lang)",
+    "licence": "CC BY-SA",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "room": "sorting",
+    "textPath": "texts/open-access/the-library-lang.txt",
+    "status": "published"
   }
 ];
 window.ATHENAEUM_BOOK_ENRICHMENTS = {
