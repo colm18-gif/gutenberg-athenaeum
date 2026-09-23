@@ -7,7 +7,7 @@ const game=fs.readFileSync('game.js','utf8');
 const stair=fs.readFileSync('high-staircase.js','utf8');
 
 test('impossible stair is loaded and integrated with movement, interaction and reset',()=>{
-  assert.match(html,/loadScript\('high-staircase\.js'\)/);
+  assert.match(html,/startupScript\('high-staircase\.js'\)/);
   assert.match(game,/window\.createHighStaircase/);
   assert.match(game,/highStaircase\.floorAt/);
   assert.match(game,/highStaircase\.allowed/);
@@ -66,10 +66,15 @@ test('a primitive rocket makes a reversible journey from the summit to the Moon'
   assert.match(stair,/athenaeum-moon-visited/);
   assert.match(game,/playSample,lastSafePosition/);
   assert.match(stair,/playSample\?\.\('rocketLaunch'/);
-  assert.match(stair,/function beginRocketTrip\(direction\)/);
-  assert.match(stair,/Launch in 3…/);
+  // Since #31 the reader boards first, then presses the red launch button inside the cabin.
+  assert.match(stair,/type==='moon-rocket-launch'\)\{boardRocket\('moon'\)/);
+  assert.match(stair,/type==='moon-rocket-return'\)\{boardRocket\('summit'\)/);
+  assert.match(stair,/function boardRocket\(direction\)\{if\(rocketTrip\)return;rocketBoarded=direction/);
+  assert.match(stair,/type==='rocket-start'\)\{beginRocketTrip\(\)/);
+  assert.match(stair,/function beginRocketTrip\(\)\{if\(rocketTrip\|\|!rocketBoarded\)return/);
+  assert.match(stair,/LAUNCH SEQUENCE · 4…/);
   assert.match(stair,/rocketTrip\.elapsed\+=dt/);
-  assert.match(stair,/e>=8\.5/);
+  assert.match(stair,/e>=25/);
 });
 
 test('the rocket cabin is a decorated and inspectable Victorian reading vessel',()=>{

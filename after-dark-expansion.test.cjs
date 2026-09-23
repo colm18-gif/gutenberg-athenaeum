@@ -9,8 +9,8 @@ const stair=fs.readFileSync('high-staircase.js','utf8');
 const books=fs.readFileSync('data/after-dark-books.js','utf8');
 
 test('new rooms are discoverable through physical doors and retain the existing reader contract',()=>{
-  assert.match(html,/loadScript\('data\/after-dark-books\.js'\)/);
-  assert.match(html,/loadScript\('after-dark-expansion\.js'\)/);
+  assert.match(html,/startupScript\('data\/after-dark-books\.js'\)/);
+  assert.match(html,/startupScript\('after-dark-expansion\.js'\)/);
   assert.match(game,/window\.createAfterDarkExpansion/);
   assert.match(expansion,/STAFF · SORTING/);
   assert.match(expansion,/DEPARTURES/);
@@ -21,7 +21,7 @@ test('new rooms are discoverable through physical doors and retain the existing 
 
 test('Sorting Room contains the working archive labels, slips and one-off handling props',()=>{
   for(const label of ['RETURNED WITHOUT EXPLANATION','SHELF UNKNOWN','DO NOT RE-SHELVE','Found in the rain','Reader never returned','Catalogue disagrees'])assert.match(expansion,new RegExp(label));
-  for(const asset of ['Shelf_01','CheeseBox_01','wooden_crate_01','wooden_crate_02','wooden_ladder_02','hand_truck'])assert.match(expansion,new RegExp(asset));
+  for(const asset of ['CheeseBox_01','wooden_crate_01','wooden_crate_02','wooden_ladder_02','hand_truck'])assert.match(expansion,new RegExp(asset));
   assert.equal((expansion.match(/models\/hand_truck\/hand_truck_1k\.gltf/g)||[]).length,1);
   assert.match(books,/room:'sorting'/);
   assert.match(books,/The Book of Were-Wolves/);
@@ -50,7 +50,7 @@ test('sorting shelves visibly contain books with a small number of draw calls',(
 
 test('Cabinet of Travel and Expeditions has distinct books, weather and restrained hero props',()=>{
   for(const title of ['The Narrative of Arthur Gordon Pym','The Voyage of the Beagle','Travels in West Africa','The Innocents Abroad','The Worst Journey in the World'])assert.match(books,new RegExp(title));
-  assert.match(expansion,/blue_plaster_weathered/);
+  assert.match(expansion,/oldStone=publicStone,bluePlaster=publicStone/);
   assert.match(expansion,/seadogs_compass/);
   assert.equal((expansion.match(/models\/seadogs_compass\/seadogs_compass_1k\.gltf/g)||[]).length,1);
   assert.equal((expansion.match(/models\/vintage_suitcase\/vintage_suitcase_1k\.gltf/g)||[]).length,2);

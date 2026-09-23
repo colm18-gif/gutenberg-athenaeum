@@ -30,7 +30,7 @@ test('movement audio is quiet, varied, surface-aware and stops with the visitor'
 
 test("the librarian's office is loaded, explorable and full of inspectable records",()=>{
   const office=fs.readFileSync('librarian-office.js','utf8');
-  assert.match(html,/loadScript\('librarian-office\.js'\)/);
+  assert.match(html,/startupScript\('librarian-office\.js'\)/);
   assert.match(game,/window\.createLibrarianOffice/);
   assert.match(game,/librarianOffice\.floorAt/);
   assert.match(game,/librarianOffice\.allowed/);
@@ -107,7 +107,7 @@ test('held books stay fully visible above world geometry',()=>{
   assert.match(game,/renderOrder=1000/);
   assert.match(game,/tmpVector\.set\(sway,-\.075\+bob,-1\.95\)/);
   assert.match(game,/tmpVector2\.set\(\.98,\.98,\.98\)/);
-  assert.doesNotMatch(html,/loadScript\('held-book-fix\.js'\)/);
+  assert.doesNotMatch(html,/startupScript\('held-book-fix\.js'\)/);
 });
 
 test('Jules Verne has a concealed author-only voyages room',()=>{
@@ -123,7 +123,7 @@ test('Jules Verne has a concealed author-only voyages room',()=>{
   assert.match(game,/themeRoomKeys=new Set\([^\n]*'verne'/);
   assert.match(game,/def\.books=verneCatalog\.map\(record=>record\[0\]\)/);
   assert.match(game,/function verneShelves/);
-  assert.match(html,/loadScript\('data\/verne-catalog\.js'\)/);
+  assert.match(html,/startupScript\('data\/verne-catalog\.js'\)/);
   assert.match(game,/function verneRoomDetails/);
   assert.match(game,/A model of the Nautilus/);
   assert.match(game,/memoryDoor\(184\.5,70,'mainhall'/);
@@ -140,8 +140,8 @@ test('Haggard and Conan Doyle have concealed author rooms with distinct period e
   assert.equal(new Set(haggardBooks.map(([id])=>id)).size,68);
   assert(haggardBooks.every(([,title])=>!/\((?:Portuguese|Dutch|French|Finnish)\)$/.test(title)));
   assert(haggardBooks.every(([id])=>haggardContext.window.ATHENAEUM_EXTRA_NOTES[id]?.length>80));
-  assert.match(html,/loadScript\('data\/haggard-catalog\.js'\)/);
-  assert.match(html,/loadScript\('data\/haggard-notes\.js'\)/);
+  assert.match(html,/startupScript\('data\/haggard-catalog\.js'\)/);
+  assert.match(html,/startupScript\('data\/haggard-notes\.js'\)/);
   const doyleContext={window:{}};
   vm.runInNewContext(fs.readFileSync('data/doyle-catalog.js','utf8'),doyleContext);
   vm.runInNewContext(fs.readFileSync('data/doyle-notes.js','utf8'),doyleContext);
@@ -150,8 +150,8 @@ test('Haggard and Conan Doyle have concealed author rooms with distinct period e
   assert.equal(new Set(doyleBooks.map(([id])=>id)).size,128);
   assert(doyleBooks.every(([,title])=>!/\((?:Finnish|French|Dutch|Danish|German|Polish|Spanish|Interlingua)/.test(title)));
   assert(doyleBooks.every(([id])=>doyleContext.window.ATHENAEUM_EXTRA_NOTES[id]?.length>80));
-  assert.match(html,/loadScript\('data\/doyle-catalog\.js'\)/);
-  assert.match(html,/loadScript\('data\/doyle-notes\.js'\)/);
+  assert.match(html,/startupScript\('data\/doyle-catalog\.js'\)/);
+  assert.match(html,/startupScript\('data\/doyle-notes\.js'\)/);
   assert.match(game,/function haggardPortalTexture/);
   assert.match(game,/action:'TRACE ROUTE'/);
   assert.match(game,/image:'assets\/painting-haggard-lost-kingdom\.jpg'/);
@@ -171,7 +171,7 @@ test('Haggard and Conan Doyle have concealed author rooms with distinct period e
   assert.match(game,/function haggardRoomDetails/);
   assert.match(game,/function doyleRoomDetails/);
   assert.match(game,/def\.books=haggardCatalog\.map\(record=>record\[0\]\)/);
-  assert.match(game,/memoryDoor\(120,57,'mainhall'/);
+  assert.match(game,/haggard:\(\)=>visibleAuthorReturnDoor\(120,57\.45,\[-34\.5,0,5\],-Math\.PI\/2,/);
   assert.match(game,/memoryDoor\(140,91,'mainhall'/);
   for(const id of [3155,2166,711,5228,6769,1207,2769,2721,5746,2841])assert.match(game,new RegExp('\\['+id+',[^\\r\\n]*H\\. Rider Haggard'));
   for(const id of [1661,244,2097,221,2852,834,139,126,439,1638])assert.match(game,new RegExp('\\['+id+',[^\\r\\n]*Arthur Conan Doyle'));
@@ -183,6 +183,17 @@ test('local startup files are build-versioned so room updates cannot mix with ca
   assert.match(html,/script\.src=versionedSource\(src\)/);
 });
 
+test('startup files download together, run in order, and are fetched only once',()=>{
+  assert.doesNotMatch(html,/<link rel="preload" href="game\.js"/,'a bare preload of game.js misses the versioned address and downloads it twice');
+  assert.doesNotMatch(html,/rel="preconnect"[^>]+crossorigin/,'scripts are fetched without CORS, so a crossorigin preconnect is never used');
+  assert.match(html,/const warm=src=>\{const href=versionedSource\(src\)/,'early downloads must use the same versioned address as the real request');
+  assert.match(html,/script\.async=false;script\.src=versionedSource\(src\)/,'ordered execution is what makes parallel download safe');
+  assert.match(html,/STARTUP\.forEach\(warm\);await loadFirst\(THREE_SOURCES\);await Promise\.all\(STARTUP\.map\(src=>loadScript\(src,30000\)\)\)/);
+  const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(match=>match[1]);
+  assert.equal(order.length,20);assert.equal(order.at(-1),'game.js','game.js must run last, after everything it depends on');
+  assert.equal(new Set(order).size,order.length);for(const file of order)assert(fs.existsSync(file),`${file} is listed for startup but missing`);
+});
+
 test('H. G. Wells has a complete English-only Project Gutenberg room with librarian notes',()=>{
   const wellsContext={window:{}};
   vm.runInNewContext(fs.readFileSync('data/wells-catalog.js','utf8'),wellsContext);
@@ -192,14 +203,14 @@ test('H. G. Wells has a complete English-only Project Gutenberg room with librar
   assert.equal(new Set(wellsBooks.map(([id])=>id)).size,104);
   assert(wellsBooks.every(([,title])=>!/\((?:Dutch|Finnish|French|Hungarian)\)$/.test(title)));
   assert(wellsBooks.every(([id])=>wellsContext.window.ATHENAEUM_EXTRA_NOTES[id]?.length>80));
-  assert.match(html,/loadScript\('data\/wells-catalog\.js'\)/);
-  assert.match(html,/loadScript\('data\/wells-notes\.js'\)/);
+  assert.match(html,/startupScript\('data\/wells-catalog\.js'\)/);
+  assert.match(html,/startupScript\('data\/wells-notes\.js'\)/);
   assert.match(game,/destination:'wells',spawn:\[220,0,110\],yaw:Math\.PI,instantEnter:true/);
   assert.match(game,/key:'wells',cx:220,cz:115,w:72,d:30/);
   assert.match(game,/def\.books=wellsCatalog\.map\(record=>record\[0\]\)/);
-  assert.match(game,/memoryDoor\(220,100,'mainhall'/);
-  assert.match(game,/if\(hp\.instantEnter\)\{enterHiddenRoom\(hp\);return\}/);
-  assert.match(game,/wells:\(\)=>memoryDoor\(220,100,'mainhall'/);
+    assert.match(game,/if\(hp\.instantEnter\)\{enterHiddenRoom\(hp\);return\}/);
+  assert.match(game,/wells:\(\)=>visibleAuthorReturnDoor\(220,100\.45,\[-14,0,27\],Math\.PI,/);
+  assert.match(game,/function visibleAuthorReturnDoor\(x,z,spawn,yaw,title,author\)\{const door=memoryDoor\(x,z,'mainhall',spawn,yaw,title,author,1\.9,-Math\.PI\/2,true\)/);
   assert.match(game,/exits\[destination\]\?\.\(\)/);
   assert.doesNotMatch(game,/themeExitsBuilt/);
 });
@@ -214,7 +225,7 @@ test('themed-room exits face clear south walls and return beside their discoveri
   const exits=[
     ['gothic',95,22,0,-27],['inquiry',120,22,14,-27],['chart',145,22,-33,9],
     ['drawing',95,54,-33,-8],['study',120,54,30,-10.5],['garden',145,54,33,-9],
-    ['haggard',120,57,-34.5,5],['doyle',140,91,23.5,-10.5]
+    ['doyle',140,91,23.5,-10.5]
   ];
   for(const [name,x,z,sx,sz] of exits){
     assert.match(game,new RegExp(`memoryDoor\\(${x},${z},'mainhall',\\[${sx},0,${sz}\\][^;]+Math\\.PI/2,true\\)`),`${name} exit should be aligned with its south wall`);
@@ -250,7 +261,7 @@ test('visual repair pass keeps library materials and wayfinding legible',()=>{
   assert.match(game,/whiteVolumeGroup\.position\.y=THREE\.MathUtils\.damp/);
   assert.match(game,/picturePassage:\{src:'assets\/audio\/painting-passage\.ogg'/);
   assert.match(game,/if\(\/Quill\/i\.test\(t\)&&!inMainLibrary\)return/);
-  assert.match(game,/new THREE\.AmbientLight\(0xd0a879,1\.75\)/);
+  assert.match(game,/new THREE\.AmbientLight\(0xd0a879,atmosphericFill\?1\.5:1\.75\)/);
   assert.match(game,/ambient\.intensity=1\.68\+daylight\*\.68/);
   assert.match(game,/toneMappingExposure=1\.95\+daylight\*\.32/);
   assert.match(game,/ambient\.intensity\*=1-depth\*\.62/);

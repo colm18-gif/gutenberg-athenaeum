@@ -39,7 +39,7 @@ test('lightweight illustrated covers remain visible before detailed covers load'
 
 test('Arm Chair 01 replaces reading-chair visuals while keeping interaction and a fallback',()=>{
   assert.match(game,/ArmChair_01\/ArmChair_01_1k\.gltf/);
-  assert.match(game,/if\(modelKey!=='armchair'\|\|lowBandwidth\|\|lowPowerDevice\)return/);
+  assert.match(game,/if\(!\['armchair','sofa','feature'\]\.includes\(modelKey\)\|\|lowBandwidth\|\|lowPowerDevice\)return/);
   assert.match(game,/seatTemplate\(asset\)\.then\(template=>/);
   assert.match(game,/node\.userData=data;interactables\.push\(node\)/);
   assert.match(game,/group\.add\(model\);\s*parts\.forEach\(part=>\{part\.visible=false\}\)/);

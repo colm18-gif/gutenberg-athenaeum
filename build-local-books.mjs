@@ -34,6 +34,11 @@ for (const source of requiredSources) {
 
 const publishedBooks = [];
 const seenIds = new Set();
+// Books defined outside this catalogue also own ids in the 900000 range. Reserve them so a new record can never reuse one.
+const fogSource = await readFile(path.resolve("data/lost-in-the-fog.js"), "utf8");
+const fogId = Number(fogSource.match(/\bid:\s*(\d+)/)?.[1]);
+if (!Number.isInteger(fogId)) throw new Error("Could not read the Lost in the Fog id");
+seenIds.add(fogId);
 for (const record of catalogue.books || []) {
   if (record.status !== "published") continue;
   for (const field of ["id", "title", "author", "category", "source", "sourceUrl", "licence", "licenceUrl", "room"]) {

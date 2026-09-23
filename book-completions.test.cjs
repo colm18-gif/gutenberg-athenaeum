@@ -12,7 +12,7 @@ test('every uncached cover has a local illustrated design, including in low-band
   const coverCode=game.split('\n').find(l=>l.includes('function coverTexture(book)'));
   const ctx=new Proxy({measureText:s=>({width:s.length*12})},{get:(o,k)=>o[k]||(()=>{}),set:(o,k,v)=>(o[k]=v,true)});let emblems=0;
   const runtime={window:{...data.window,drawAthenaeumCoverEmblem:(...args)=>{emblems++;data.window.drawAthenaeumCoverEmblem(...args)}},coverTextureCache:new Map(),lowBandwidth:true,realCovers:covers,bookPalettes:[['#123456','#abcdef']],canvasTexture:draw=>{draw(ctx,384,560);return{}},wrapText:()=>{}};
-  vm.runInNewContext(coverCode+';this.cover=coverTexture;',runtime);for(const b of missing)runtime.cover(b);assert.equal(emblems,missing.length);assert.match(html,/loadScript\('data\/book-completions\.js'\)/);
+  vm.runInNewContext(coverCode+';this.cover=coverTexture;',runtime);for(const b of missing)runtime.cover(b);assert.equal(emblems,missing.length);assert.match(html,/startupScript\('data\/book-completions\.js'\)/);
 });
 test('new Haggard and Conan Doyle books have locally cached scanned covers',()=>{
   for(const id of [711,5228,6769,1207,2769,2721,5746,2841,1690,126,439,1638])assert(covers[id]?.length>3000,`missing scanned cover ${id}`);
