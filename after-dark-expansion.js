@@ -2,7 +2,7 @@
   'use strict';
 
   window.createAfterDarkExpansion=function(options){
-    const {THREE,scene,MAT,player,camera,interactables,books,bookMaterial,canvasTexture,showNotice,playSample,sound,move,modelTemplate,isLowBandwidth,analytics}=options;
+    const {THREE,scene,MAT,publicStone,publicParquet,player,camera,interactables,books,bookMaterial,canvasTexture,showNotice,playSample,sound,move,modelTemplate,isLowBandwidth,analytics}=options;
     const KEEP_WARM_SECONDS=20,PRELOAD_DISTANCE=8;
     const rooms={
       sorting:{key:'sorting',cx:-180,cz:-24,w:28,d:23,entrance:{x:-36.72,z:8.5,yaw:Math.PI/2},title:'The Sorting Room'},
@@ -18,9 +18,7 @@
     const cylinder=(rt,rb,h,segments,material,x,y,z,parent)=>add(new THREE.CylinderGeometry(rt,rb,h,segments),material,x,y,z,parent);
     const mark=(object,data)=>{object.userData=data;interactables.push(object);return object};
     const block=(key,x,z,w,d)=>blockers.push({key,minX:x-w/2,maxX:x+w/2,minZ:z-d/2,maxZ:z+d/2});
-    const textureMaterial=(path,color=0xffffff)=>new THREE.MeshStandardMaterial({color,roughness:.9,map:new THREE.TextureLoader().load(path,texture=>{texture.colorSpace=THREE.SRGBColorSpace;texture.wrapS=texture.wrapT=THREE.RepeatWrapping;texture.repeat.set(3,2)})});
-    const oldStone=textureMaterial('assets/polyhaven/materials/old_stone_wall/diffuse.jpg',0x69645b);
-    const bluePlaster=textureMaterial('assets/polyhaven/materials/blue_plaster_weathered/diffuse.jpg',0x617a7b);
+    const oldStone=publicStone,bluePlaster=publicStone;
 
     function paperTexture(title,subtitle='',width=760,height=170){
       return canvasTexture((ctx,w,h)=>{ctx.fillStyle='#d6c7a2';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#775c34';ctx.lineWidth=7;ctx.strokeRect(8,8,w-16,h-16);ctx.fillStyle='#34271b';ctx.textAlign='center';ctx.font='bold 38px Georgia';ctx.fillText(title,w/2,h*.44);if(subtitle){ctx.font='italic 24px Georgia';ctx.fillText(subtitle,w/2,h*.72)}},width,height);
@@ -43,7 +41,7 @@
 
     function roomShell(room,material){
       const root=room.root;
-      box(room.w,.36,room.d,MAT.wood,room.cx,-.18,room.cz,root);
+      box(room.w,.36,room.d,MAT.wood,room.cx,-.18,room.cz,root);const geometry=new THREE.PlaneGeometry(room.w-.35,room.d-.35),uv=geometry.attributes.uv;for(let i=0;i<uv.count;i++)uv.setXY(i,uv.getX(i)*(room.w-.35)/37.8,uv.getY(i)*(room.d-.35)/61.8);const floorOverlay=add(geometry,publicParquet,room.cx,.006,room.cz,root);floorOverlay.rotation.x=-Math.PI/2;box(room.w-.7,2.1,.12,MAT.wood2,room.cx,1.05,room.cz-room.d/2+.34,root);box(room.w-.7,.13,.19,MAT.darkWood,room.cx,2.07,room.cz-room.d/2+.41,root);
       box(room.w,6,.42,material,room.cx,3,room.cz-room.d/2,root);
       box(.42,6,room.d,material,room.cx-room.w/2,3,room.cz,root);
       box(.42,6,room.d,material,room.cx+room.w/2,3,room.cz,root);
