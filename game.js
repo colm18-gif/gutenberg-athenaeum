@@ -297,7 +297,7 @@ function coverTexture(book){if(coverTextureCache.has(book.id))return coverTextur
     addBox(38,10,.6,MAT.stone,0,5,-31);addBox(30.4,10,.6,MAT.stone,-3.8,5,31);addBox(1.9,10,.6,MAT.stone,18.05,5,31);
     addBox(18,.45,24,MAT.wood,-28,-.2,-2,false);addBox(18,.45,24,MAT.wood,28,-.2,-2,false);addBox(.5,8,8,MAT.stone,-37,4,-10);addBox(.5,8,10,MAT.stone,-37,4,5);addBox(.5,8,9,MAT.stone,37,4,-9.5);addBox(.5,8,9,MAT.stone,37,4,5.5);addBox(18,8,.5,MAT.stone,-28,4,-14);addBox(18,8,.5,MAT.stone,-28,4,10);addBox(18,8,.5,MAT.stone,28,4,-14);addBox(18,8,.5,MAT.stone,28,4,10);
     // openings between wings; the eastern upper wall leaves a concealed portrait passage
-    for(const side of [-1,1]){const x=side*19;addBox(.5,10,22,MAT.stone,x,5,-20);if(side<0)addBox(.5,10,22,MAT.stone,x,5,20);else{addBox(.5,10,4,MAT.stone,x,5,15);addBox(.5,10,8,MAT.stone,x,5,27)}trim(x,7.4,0,.7,.5,8);trim(x,3.7,-4,.7,7.4,.5);trim(x,3.7,4,.7,7.4,.5);addBox(.5,2,26,MAT.stone,x,8.9,0,false);addBox(.5,10,3,MAT.stone,x,5,11.5)}
+    for(const side of [-1,1]){const x=side*19;addBox(.5,10,22,MAT.stone,x,5,-20);if(side<0)addBox(.5,10,22,MAT.stone,x,5,20);else{addBox(.5,10,4,MAT.stone,x,5,15);addBox(.5,10,8,MAT.stone,x,5,27)}trim(x,7.4,0,.7,.5,8);trim(x,3.7,-4,.7,7.4,.5);trim(x,3.7,4,.7,7.4,.5);addBox(.5,2,26,MAT.stone,x,8.9,0,false);addBox(.5,10,3,MAT.stone,x,5,11.5);for(const z of [-6.425,6.425])addBox(.5,7.4,5.15,MAT.stone,x,3.7,z);addBox(.5,1.2,8,MAT.stone,x,7.4,0,false)}
     // Closed wing doors conceal each wing from the entrance. They slide aside as the visitor approaches.
     const wingDoors=[];
     for(const side of [-1,1]){
