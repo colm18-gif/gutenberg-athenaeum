@@ -73,7 +73,7 @@
       for(const y of [.3,1.35,2.4,3.45])parts.push(box(4.2,.14,.72,MAT.darkWood,0,y,0,g));
       for(const px of [-1.95,1.95])parts.push(box(.18,3.8,.72,MAT.wood2,px,1.9,0,g));
       // Stock the existing service shelves without adding individual draw calls per volume.
-      const spines=new THREE.InstancedMesh(new THREE.BoxGeometry(.23,.78,.38),new THREE.MeshStandardMaterial({color:0xffffff,roughness:.84}),36);
+      const spines=new THREE.InstancedMesh(new THREE.BoxGeometry(.23,.78,.38),new THREE.MeshStandardMaterial({color:0xffffff,roughness:.84}),44);
       const dummy=new THREE.Object3D(),colors=[0x493022,0x203c38,0x552b30,0x38405a,0x71512d];let spineCount=0;
       for(let row=0;row<4;row++)for(let slot=0;slot<11;slot++){
         if((row*3+slot)%7===0)continue;
