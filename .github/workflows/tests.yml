@@ -1,0 +1,23 @@
+name: Library tests
+
+# Runs every automated check on each change to main and on every pull request,
+# so a change that breaks a room, a book or the railway is flagged before it goes live.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run every test suite
+        run: node --test *.test.cjs
