@@ -28,6 +28,26 @@ test('Sorting Room contains the working archive labels, slips and one-off handli
   assert.match(books,/Curiosities of Literature/);
 });
 
+test('staff doors clear the hidden paintings and the office sits on the south wall',()=>{
+  const sorting=expansion.match(/sorting:\{[^\n]*entrance:\{x:([-\d.]+),z:([-\d.]+)/);
+  const departures=expansion.match(/departures:\{[^\n]*entrance:\{x:([-\d.]+),z:([-\d.]+)/);
+  assert.ok(sorting&&departures);
+  for(const door of [sorting,departures]){
+    assert.ok(Math.abs(Number(door[2])-5)>(3.5+2.45)/2+.4,'service door must clear its portrait');
+    assert.ok(Number(door[2])+2.85/2<10,'service door frame must fit the wall');
+  }
+  const office=fs.readFileSync('librarian-office.js','utf8');
+  assert.match(office,/entrance\.position\.set\(35,0,-13\.65\)/);
+  assert.match(office,/move\(35, -11\.1, Math\.PI\)/);
+});
+
+test('sorting shelves visibly contain books with a small number of draw calls',()=>{
+  assert.match(expansion,/new THREE\.InstancedMesh\(new THREE\.BoxGeometry\(\.23,\.78,\.38\)/);
+  assert.match(expansion,/spines\.setMatrixAt\(spineCount,dummy\.matrix\)/);
+  assert.match(expansion,/TO BE RETURNED/);
+  assert.match(expansion,/KEEP FOR THE LIBRARIAN/);
+});
+
 test('Cabinet of Travel and Expeditions has distinct books, weather and restrained hero props',()=>{
   for(const title of ['The Narrative of Arthur Gordon Pym','The Voyage of the Beagle','Travels in West Africa','The Innocents Abroad','The Worst Journey in the World'])assert.match(books,new RegExp(title));
   assert.match(expansion,/blue_plaster_weathered/);
