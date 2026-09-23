@@ -6,7 +6,7 @@ const required = ['standard-ebooks', 'wikisource', 'internet-archive', 'open-lib
 assert.deepEqual(Object.keys(catalogue.sources).sort(), required.sort());
 
 const permitted = new Set(['Public Domain', 'CC0', 'CC BY', 'CC BY-SA']);
-const rooms = new Set(['gothic', 'inquiry', 'chart', 'drawing', 'study', 'garden', 'contested', 'returning', 'quiet', 'unread', 'repository', 'mainhall']);
+const rooms = new Set(['gothic', 'inquiry', 'chart', 'drawing', 'study', 'garden', 'contested', 'returning', 'quiet', 'unread', 'repository', 'mainhall', 'sorting']);
 const ids = new Set();
 for (const book of catalogue.books) {
   assert(!ids.has(book.id), `duplicate id ${book.id}`);
@@ -18,6 +18,12 @@ for (const book of catalogue.books) {
   assert(rooms.has(book.room), `unknown room ${book.room}`);
   assert(book.textPath || book.textUrls?.length, `${book.id} has no readable edition`);
   assert(book.sourceUrl && book.licenceUrl && book.room, `${book.id} has incomplete provenance`);
+}
+
+for (const book of catalogue.books.filter(book => book.room === 'sorting')) {
+  const edition = fs.readFileSync(book.textPath, 'utf8');
+  assert(edition.length > 100000, `${book.title} has an incomplete local edition`);
+  assert(edition.includes('Exported from Wikisource'), `${book.title} is missing its source notice`);
 }
 
 console.log('Open-access catalogue is valid.');
