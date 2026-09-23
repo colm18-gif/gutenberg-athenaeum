@@ -51,3 +51,5 @@
     body.high-contrast #hud:after{background:radial-gradient(ellipse,transparent 42%,rgba(0,0,0,.52))}body.high-contrast #notice,body.high-contrast #prompt{background:#090705e8;color:#fff0cf}body.large-text #hud,body.large-text #prompt,body.large-text #notice{font-size:1.12em}body.large-text .settings-card,body.large-text .journal-book{font-size:1.08em}
     @media(max-width:600px){.entry-options-grid{grid-template-columns:1fr}.entry-options-grid label:first-child{grid-column:auto}.explore-nudge{bottom:22px}.journal-map{grid-template-rows:repeat(4,40px);padding:10px;gap:5px}.map-place{font-size:9px}}
 
+
+#bookActions.carrying{left:16px;bottom:16px;transform:none;max-width:min(350px,calc(100vw - 32px));padding:8px 10px;gap:6px;pointer-events:auto}#bookActions.carrying .meta{min-width:0;margin-right:0;max-width:100%}#bookActions.carrying .meta strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px}#bookActions.carrying .meta em,#bookActions.carrying #carryBook,#bookActions.carrying #askLibrarian,#bookActions.carrying #leaveBook{display:none}#bookActions.carrying button{font-size:12px;padding:5px 8px}
