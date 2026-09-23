@@ -26,7 +26,7 @@ const catalogueOutput = path.resolve("data/open-access-catalog.js");
 const catalogue = JSON.parse(await readFile(cataloguePath, "utf8"));
 const requiredSources = ["standard-ebooks", "wikisource", "internet-archive", "open-library", "doab-oapen", "librivox"];
 const permittedLicences = new Set(["Public Domain", "CC0", "CC BY", "CC BY-SA"]);
-const permittedRooms = new Set(["gothic", "inquiry", "chart", "drawing", "study", "garden", "contested", "returning", "quiet", "unread", "repository", "mainhall"]);
+const permittedRooms = new Set(["gothic", "inquiry", "chart", "drawing", "study", "garden", "contested", "returning", "quiet", "unread", "repository", "mainhall", "sorting"]);
 
 for (const source of requiredSources) {
   if (!catalogue.sources?.[source]) throw new Error(`Missing open-access source: ${source}`);
