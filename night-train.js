@@ -1,9 +1,9 @@
 /* A request-stop railway. Existing rooms, mysteries and train ambience remain intact. */
 (()=>{
   'use strict';
-  window.createNightTrain=function({THREE,scene,MAT,player,collider,colliders,nearbyColliders=(x,z)=>colliders,interactables,canvasTexture,wrapText,coverTexture,books,fogBook=window.ATHENAEUM_FOG_BOOK,performanceZones,rememberLights,move,notice,home,modelTemplate,isLowBandwidth}){
+  window.createNightTrain=function({THREE,scene,MAT,player,collider,colliders,nearbyColliders=(x,z)=>colliders,interactables,canvasTexture,wrapText,coverTexture,books,fogBook=window.ATHENAEUM_FOG_BOOK,performanceZones,rememberLights,move,notice,home,sound:playCue=()=>{},modelTemplate,isLowBandwidth}){
     const regions=[{key:'platform',a:210,b:216,c:-35,d:-5},{key:'carriage',a:218,b:223,c:-30,d:-10},{key:'depot',a:248,b:272,c:-34,d:-6},{key:'fog-platform',a:280,b:306,c:-34,d:-6},{key:'fog-room',a:310,b:322,c:-27,d:-13},{key:'signal-platform',a:328,b:354,c:-34,d:-6},{key:'signal-room',a:363,b:379,c:-28,d:-12},{key:'tide-platform',a:380,b:406,c:-34,d:-6},{key:'tide-room',a:415,b:431,c:-28,d:-12}];
-    const solids=[],scenery=[],landscapes=[],groups={},controls={};let built=false,travelling=false,elapsed=0,arrived=false,fogArrived=false,fogVisited=false,fogFound=false,fogBookMesh=null,nextWheel=0,conductorTalk=0,stopIndex=0,targetStop=0,alightCleared=false;const stops=[{key:'platform',name:'the Library Platform',x:213,z:-20},{key:'signal-platform',name:'the Signal House',x:332,z:-20},{key:'tide-platform',name:'Tidebound Quay',x:384,z:-20},{key:'fog-platform',name:'the Unmarked Stop',x:283,z:-20},{key:'depot',name:'the Collections Depot',x:260,z:-9}];
+    const solids=[],scenery=[],landscapes=[],groups={},controls={};let built=false,travelling=false,elapsed=0,arrived=false,fogArrived=false,fogVisited=false,fogFound=false,fogBookMesh=null,nextWheel=0,conductorTalk=0,stopIndex=0,targetStop=0,alightCleared=false,arrivalPending=false,nextStationCue=0,lastStationZone='';const stops=[{key:'platform',name:'the Library Platform',x:213,z:-20},{key:'signal-platform',name:'the Signal House',x:332,z:-20},{key:'tide-platform',name:'Tidebound Quay',x:384,z:-20},{key:'fog-platform',name:'the Unmarked Stop',x:283,z:-20},{key:'depot',name:'the Collections Depot',x:260,z:-9}];
     const metal=new THREE.MeshStandardMaterial({color:0x253230,roughness:.65,metalness:.4});
     const cloth=new THREE.MeshStandardMaterial({color:0x493e32,roughness:1});
     const leather=new THREE.MeshStandardMaterial({color:0x4f1f1a,roughness:.76,metalness:.02});
@@ -13,6 +13,8 @@
     const night=new THREE.MeshStandardMaterial({color:0x111d29,emissive:0x111d29,emissiveIntensity:.5});
     const glow=new THREE.MeshStandardMaterial({color:0xffc881,emissive:0xffb45d,emissiveIntensity:1.3});
     function zoneAt(x,z){return regions.find(r=>x>=r.a&&x<=r.b&&z>=r.c&&z<=r.d)}
+    function stationCue(key){if(key==='signal-platform'||key==='signal-room'){playCue(392,.7,'triangle',.035);playCue(196,1.1,'sine',.015)}else if(key==='tide-platform'||key==='tide-room'){playCue(220,1.25,'sine',.025);playCue(560,.45,'triangle',.016)}else if(key==='fog-platform'||key==='fog-room')playCue(260,1.3,'sine',.018);else if(key==='depot')playCue(610,.55,'triangle',.026)}
+
     function box(g,w,h,d,mat,x,y,z,solid=false){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);m.position.set(x,y,z);g.add(m);if(solid){solids.push(m);collider(x,z,w,d,'Night railway furniture',-.5,h+1)}return m}
     function label(g,text,x,y,z,w=2.8,h=.65,rot=0){const map=canvasTexture((c,cw,ch)=>{c.fillStyle='#282b25';c.fillRect(0,0,cw,ch);c.fillStyle='#d6bd90';c.textAlign='center';c.font='25px Georgia';wrapText(c,text,cw/2,40,cw-30,32)},640,160);const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshStandardMaterial({map}));m.position.set(x,y,z);m.rotation.y=rot;g.add(m);return m}
     function control(g,key,title,author,action,x,y,z,w=.7,h=.45,d=.12){const m=box(g,w,h,d,MAT.brass,x,y,z);m.userData={type:'night-railway',key,title,author,action};interactables.push(m);controls[key]=m;return m}
@@ -134,16 +136,32 @@
         box(platform,26,.4,28,MAT.stone,cx,-.2,-20);for(const z of [-34,-6])box(platform,26,4.8,.3,wall,cx,2.4,z);
         for(const x of [cx-10,cx+10]){box(platform,.16,3.1,.16,MAT.brass,x,1.55,-26);lamp(platform,x,3.25,-26)}
         label(platform,title,cx,3.5,-33.8,8,.7);label(platform,subtitle,cx,2.65,-33.75,9,.45);
-        control(platform,key+'-enter','The station reading room','A small collection waits behind the platform lamps.','ENTER READING ROOM',cx+11.6,1.7,-20,.18,3,1.5);
+        // The first sign faces the alighting position; a worn runner leads to the room.
+        const runner=box(platform,19,.025,1.45,key==='signal'?leatherDark:cloth,cx,.025,-20);
+        for(let x=cx-8;x<cx+9;x+=3)box(platform,.6,.03,.055,MAT.brass,x,.046,-20);
+        label(platform,title,cx-9,2.65,-17.3,4,.6,Math.PI);
+        label(platform,'READING ROOM →',cx+8,2.3,-20,3.3,.5,-Math.PI/2);
+        label(platform,'← BOARD TRAIN',cx-9.1,2,-11.5,3.2,.45,Math.PI);
+        if(key==='signal'){box(platform,.2,3.3,.2,iron,cx+4,1.65,-27);box(platform,2.1,.17,.22,MAT.brass,cx+4.9,3.2,-27);box(platform,.55,.55,.12,glow,cx+5.8,3.2,-27)}
+        else{for(const x of [cx+2,cx+6,cx+10]){cylinder(platform,.22,.26,.9,10,iron,x,.45,-26);box(platform,.6,.07,2.6,MAT.brass,x,.88,-26)}label(platform,'TIDE CLOCK · QUAYSIDE',cx+6,1.9,-27.8,5,.4)}
+        const entry=control(platform,key+'-enter','The station reading room','A small collection waits behind the platform lamps.','ENTER READING ROOM',cx+11.6,1.7,-20,.18,3.1,2.15);entry.material=MAT.darkWood;
+        for(const z of [-21.25,-18.75])box(platform,.28,3.8,.2,MAT.brass,cx+11.5,1.9,z);
+        box(platform,.28,.18,2.7,MAT.brass,cx+11.5,3.85,-20);
         control(platform,key+'-reboard','The waiting train','The conductor will name the next destination once you are aboard.','BOARD TRAIN',cx-10.9,1.7,-10,.18,3,1.5);
         conductor(platform,cx-8,-25);box(inside,14,.4,16,MAT.wood,cx+30,-.2,-20);
         for(const z of [-28,-12])box(inside,14,4.8,.3,wall,cx+30,2.4,z);
-        for(const x of [cx+23,cx+37])box(inside,.3,4.8,16,wall,x,2.4,-20);
+        box(inside,.3,4.8,16,wall,cx+37,2.4,-20);
+        // The return door sits in an actual opening, with lintel and jambs.
+        box(inside,.3,4.8,7.6,wall,cx+23,2.4,-24.2);
+        box(inside,.3,4.8,5.6,wall,cx+23,2.4,-14.8);
+        box(inside,.3,1.4,2.8,wall,cx+23,4.1,-19);
+        for(const z of [-20.4,-17.6])box(inside,.36,3.45,.17,MAT.brass,cx+23.2,1.72,z);
         box(inside,5,.85,2.2,MAT.darkWood,cx+31,.43,-22,true);
         bookIds.forEach((id,i)=>{const book=books.find(b=>b.id===id);if(book)volume(inside,book,cx+29+i*2,1.1,-22)});
         label(inside,title+' · READING ROOM',cx+30,3.6,-27.8,9,.55);
         const relic=control(inside,key+'-relic',propTitle,propNote,'EXAMINE',cx+26,1.5,-16,1.2,.6,.7);relic.userData.note=propNote;
-        control(inside,key+'-exit','The platform door','The carriage lights are still visible outside.','RETURN TO PLATFORM',cx+23.2,1.7,-19,.18,3,1.4);
+        const exit=control(inside,key+'-exit','The platform door','The carriage lights are still visible outside.','RETURN TO PLATFORM',cx+23.2,1.7,-19,.18,3.35,2.55);exit.material=MAT.darkWood;
+        const knob=cylinder(inside,.09,.09,.18,10,MAT.brass,cx+23.4,1.55,-18.3,0,0,Math.PI/2);knob.userData=exit.userData;interactables.push(knob);
         lamp(inside,cx+30,3,-20,true);inside.add(new THREE.AmbientLight(0xffd5a6,1.1));
       }
       requestStop('signal',341,'THE SIGNAL HOUSE','A lamp holds green against the dark.',[27924,1874],'The signalman’s ledger','The last train is marked ARRIVED. The next is marked AWAITING READER.');
@@ -151,33 +169,33 @@
       for(const g of Object.values(groups))rememberLights(g);sync();
     }
     function sync(){const zone=zoneAt(player.pos.x,player.pos.z)?.key;for(const [key,g] of Object.entries(groups))g.visible=key===zone}
-    function cancel(){travelling=false;elapsed=0;nextWheel=0;alightCleared=false}
+    function cancel(){travelling=false;elapsed=0;nextWheel=0;alightCleared=false;arrivalPending=false}
     function interact(object){if(object?.userData?.type!=='night-railway')return false;const key=object.userData.key,zone=zoneAt(player.pos.x,player.pos.z)?.key;
       if(key==='entrance'){build();cancel();stopIndex=0;targetStop=0;move(213,-20,-Math.PI/2);notice('The conductor waits beside the reading carriage. Ask him when you are ready to travel.',7)}
       else if(key==='platform-home'){cancel();home()}
       else if(key==='car-home'||key==='depot-home'){notice('The conductor can take you home by way of the Library Platform. Speak to him to arrange the next departure.',7)}
-      else if(key==='board'||key==='reboard'||key.endsWith('-reboard')){build();move(220.5,-13,0);alightCleared=stopIndex!==0;notice('The carriage door closes softly. Speak to the conductor to request the next station.',7)}
+      else if(key==='board'||key==='reboard'||key.endsWith('-reboard')){build();move(220.5,-13,0);alightCleared=stopIndex!==0;arrivalPending=false;notice('The carriage door closes softly. Speak to the conductor to request the next station.',7)}
       else if(key==='depart'){notice('The brass punch is the conductor’s. Speak to him to request the next stop.',6)}
       else if(key==='settle'){notice(travelling?'The carriage sways through dark scenery. You can read while the conductor watches for the next station.':'The seats are ready; ask the conductor to begin the journey.',6)}
-      else if(key==='alight'){if(travelling)notice('The train is moving. The conductor will announce the station when it stops.',5);else if(stopIndex===0){move(213,-20,-Math.PI/2);notice('The Library Platform welcomes you back.',5)}else if(!alightCleared)notice('The train has stopped. Ask the conductor which platform lies outside.',6);else{const stop=stops[stopIndex];alightCleared=false;move(stop.x,stop.z,0);if(stop.key==='fog-platform')fogVisited=true;notice('You step down at '+stop.name+'. Follow the lamps to its reading room, or speak to the conductor to board again.',8)}}
+      else if(key==='alight'){if(travelling)notice('The train is moving. The conductor will announce the station when it stops.',5);else if(arrivalPending&&!alightCleared)notice('The train has stopped. Ask the conductor which platform lies outside.',6);else if(stopIndex===0){move(213,-20,-Math.PI/2);notice('The Library Platform welcomes you back.',5)}else if(!alightCleared)notice('The train has stopped. Ask the conductor which platform lies outside.',6);else{const stop=stops[stopIndex];alightCleared=false;move(stop.x,stop.z,0);if(stop.key==='fog-platform')fogVisited=true;stationCue(stop.key);notice(stop.key==='signal-platform'?'The Signal House lamps glow green. Follow the brass runner to the ledger and railway books.':stop.key==='tide-platform'?'A tide bell sounds at the quay. Follow the runner to travel books and a clock that keeps impossible time.':stop.key==='fog-platform'?'Fog erases the station name. The waiting room is across the platform; the lit carriage remains behind you.':stop.key==='depot'?'Crates and catalogue drawers mark the Collections Depot. The train waits beyond the return lamps.':'You step onto the Library Platform. The entrance clock is behind you.',9)}}
       else if(key==='conductor'){
         if(zone==='carriage'){
           if(travelling){const lines=['“Mind the sway. The books travel better than some passengers.”','“The lights ahead belong to the next request stop. I will call it when we arrive.”'];notice(lines[conductorTalk++%lines.length],7)}
-          else if(stopIndex!==0&&!alightCleared){alightCleared=true;controls.alight.userData.action='ALIGHT AT '+stops[stopIndex].name.toUpperCase();controls.alight.userData.author='The conductor has opened the vestibule door.';notice('“'+stops[stopIndex].name+'. I have opened the door. Mind the step.”',8)}
-          else{targetStop=(stopIndex+1)%stops.length;travelling=true;elapsed=0;alightCleared=false;controls.alight.userData.action='DOOR LOCKED · TRAIN MOVING';notice('“Next stop: '+stops[targetStop].name+'. All aboard.” The conductor punches your ticket; the doors latch and the wheels begin to turn.',9)}
+          else if(arrivalPending){arrivalPending=false;alightCleared=true;controls.alight.userData.action='ALIGHT AT '+stops[stopIndex].name.toUpperCase();controls.alight.userData.author='The conductor has opened the vestibule door.';notice('“'+stops[stopIndex].name+'. I have opened the door. Mind the step.”',8)}
+          else{targetStop=(stopIndex+1)%stops.length;travelling=true;elapsed=0;alightCleared=false;arrivalPending=false;controls.alight.userData.action='DOOR LOCKED · TRAIN MOVING';notice('“Next stop: '+stops[targetStop].name+'. All aboard.” The conductor punches your ticket; the doors latch and the wheels begin to turn.',9)}
         }else if(zone==='platform'||zone==='depot'||zone==='fog-platform'||zone==='signal-platform'||zone==='tide-platform'){notice('“The reading carriage is waiting. Board through its lit door, then ask me where the next stop lies.”',8)}
         else notice('“A station only exists for as long as someone wants to arrive.”',6)
       }
       else if(key==='fog-waiting'){move(312,-20,-Math.PI/2);notice('A single volume waits beneath the lamp. The room has no clock, and the fog presses blankly against every pane.',8)}
       else if(key==='fog-return'){if(!fogFound)notice('The door has no handle. The book beneath the lamp seems to be waiting for you.',6);else{home();notice('The waiting-room door opens directly into the library. Behind you there is only a bookcase and the faint smell of cold fog.',9)}}
-      else if(key==='signal-enter'||key==='tide-enter'){const cx=key==='signal-enter'?341:393;move(cx+30,-20,0);notice(key==='signal-enter'?'The signal ledger and railway stories wait under green glass.':'The tide clock stands beside books about distant travel.',7)}
-      else if(key==='signal-exit'||key==='tide-exit'){const cx=key==='signal-exit'?341:393;move(cx,-20,0);notice('You return to the platform. The carriage remains at the far lamp.',5)}
+      else if(key==='signal-enter'||key==='tide-enter'){const cx=key==='signal-enter'?341:393;move(cx+30,-20,0);stationCue(key==='signal-enter'?'signal-room':'tide-room');notice(key==='signal-enter'?'The signal ledger and railway stories wait under green glass.':'The tide clock stands beside books about distant travel.',7)}
+      else if(key==='signal-exit'||key==='tide-exit'){const cx=key==='signal-exit'?341:393;move(cx,-20,0);stationCue(key==='signal-exit'?'signal-platform':'tide-platform');notice('You return to the platform. The carriage remains at the far lamp.',5)}
       else if(key==='signal-relic'||key==='tide-relic'||key.startsWith('drawer-')||key.startsWith('card-'))notice(object.userData.note,12);
       sync();return true;
     }
     function allowed(x,z){const r=player.radius;if(!zoneAt(x-r,z-r)||!zoneAt(x+r,z+r))return false;return !nearbyColliders(x,z).some(c=>!c.inactive&&0>=c.minY&&0<=c.maxY&&x+r>c.minX&&x-r<c.maxX&&z+r>c.minZ&&z-r<c.maxZ)}
     function clearLine(ray,target,distance){const blockers=solids.filter(m=>m.parent?.visible);const hit=ray.intersectObjects(blockers,false)[0];return !hit||hit.object===target||hit.distance>=distance-.04}
-    function update(t,dt,reduced,active,sound){sync();const zone=zoneAt(player.pos.x,player.pos.z)?.key;if(!zone)return false;if(fogBookMesh&&!fogFound&&fogBookMesh.parent!==groups['fog-room']){fogFound=true;controls['fog-return'].userData.action='OPEN DOOR · RETURN TO LIBRARY';controls['fog-return'].userData.author='The handle has appeared. Beyond the glass is warm library light.';notice('As you lift Lost in the Fog, a brass handle appears on the waiting-room door.',7)}if(zone!=='carriage'&&travelling)cancel();if(travelling&&active){elapsed+=dt;if(t>nextWheel){nextWheel=t+.7;sound(65,.3,'triangle',.04);sound(115,.1,'sine',.025)}if(elapsed>=32){travelling=false;stopIndex=targetStop;arrived=arrived||stopIndex===4;fogArrived=stopIndex===3;controls.alight.userData.action='ASK CONDUCTOR TO ALIGHT';controls.alight.userData.author='The station waits beyond the locked vestibule.';notice('The train slows beneath the lamps of '+stops[stopIndex].name+'. Speak to the conductor before opening the door.',9)}}
+    function update(t,dt,reduced,active,sound){sync();const zone=zoneAt(player.pos.x,player.pos.z)?.key;if(!zone)return false;if(fogBookMesh&&!fogFound&&fogBookMesh.parent!==groups['fog-room']){fogFound=true;controls['fog-return'].userData.action='OPEN DOOR · RETURN TO LIBRARY';controls['fog-return'].userData.author='The handle has appeared. Beyond the glass is warm library light.';notice('As you lift Lost in the Fog, a brass handle appears on the waiting-room door.',7)}if(zone!==lastStationZone){lastStationZone=zone;nextStationCue=t+35}if(active&&(zone==='signal-platform'||zone==='signal-room'||zone==='tide-platform'||zone==='tide-room')&&t>=nextStationCue){stationCue(zone);nextStationCue=t+42}if(zone!=='carriage'&&travelling)cancel();if(travelling&&active){elapsed+=dt;if(t>nextWheel){nextWheel=t+.7;sound(65,.3,'triangle',.04);sound(115,.1,'sine',.025)}if(elapsed>=32){travelling=false;stopIndex=targetStop;arrivalPending=true;alightCleared=false;arrived=arrived||stopIndex===4;fogArrived=stopIndex===3;controls.alight.userData.action='ASK CONDUCTOR TO ALIGHT';controls.alight.userData.author='The station waits beyond the locked vestibule.';notice('The train slows beneath the lamps of '+stops[stopIndex].name+'. Speak to the conductor before opening the door.',9)}}
       for(const item of scenery)item.mesh.position.z=reduced?item.base:-35+((item.base+35+elapsed*3)%40);
       const stage=reduced?0:Math.min(2,Math.floor(elapsed/10));for(const item of landscapes){item.mesh.visible=item.stage===stage;item.mesh.position.z=reduced?item.base:-35+((item.base+35+elapsed*2)%40)}
       return !!zone;
