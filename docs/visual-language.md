@@ -50,6 +50,12 @@ The basement stays damp stone, the rooftop stays weathered stone, and the Carrol
 - In standard mode, ease the broad ambient and camera fill slightly, use existing lamp positions as two local reading pools in the hall, and warm the wing lights. Themed rooms keep their coloured central light but gain warm reading light. The quiet and unread rooms receive extra local light for legibility.
 - High contrast, low bandwidth, and low power modes retain the prior broad lighting levels.
 
+## Aged walls in the memory rooms
+
+- The Quiet Stacks and Unread room now use a shared 512px worn version of the entrance masonry. Dusty shading and a few hairline cracks are baked into the texture, so they add no mesh or light draw calls.
+- The Quiet Stacks keep more of the warm stone colour; Unread is a shade darker. The Returning room and metal Repository retain their distinct roles. Low bandwidth mode retains its previous stone material.
+- Check both spaces after entering from the Returning room, including books and signs at night; wall wear should be visible without dimming reading surfaces.
+
 ## Visual review
 
 Compare a view from the entrance toward the west door, a view inside the western reading wing, and the reading desk close up. Check daylight and night, low bandwidth mode, readability, doorway clearance, and frame rate on a modest device. Then carry the same materials into the east wing and themed rooms, adapting only wear and accent colour.
