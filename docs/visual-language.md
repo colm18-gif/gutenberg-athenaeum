@@ -42,6 +42,14 @@ The east wing mirrors the west wing's stone, parquet, and walnut dado. The theme
 
 The basement stays damp stone, the rooftop stays weathered stone, and the Carroll room retains its disorienting checker floor. These are deliberate changes in environment reached from the same library, rather than unrelated public-room finishes.
 
+
+## Atmospheric furniture and lighting pass
+
+- Load the already bundled 1K Sofa 01 and Wooden Chair 01 for their specified sofa and feature chair positions in standard mode. Reuse one template per model; low bandwidth and low power retain the procedural fallbacks.
+- Desk chairs with the former painted designation use compact dark-wood frames and burgundy cushions, not the white farmhouse model.
+- In standard mode, ease the broad ambient and camera fill slightly, use existing lamp positions as two local reading pools in the hall, and warm the wing lights. Themed rooms keep their coloured central light but gain warm reading light. The quiet and unread rooms receive extra local light for legibility.
+- High contrast, low bandwidth, and low power modes retain the prior broad lighting levels.
+
 ## Visual review
 
 Compare a view from the entrance toward the west door, a view inside the western reading wing, and the reading desk close up. Check daylight and night, low bandwidth mode, readability, doorway clearance, and frame rate on a modest device. Then carry the same materials into the east wing and themed rooms, adapting only wear and accent colour.
