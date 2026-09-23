@@ -67,6 +67,12 @@ The basement stays damp stone, the rooftop stays weathered stone, and the Carrol
 - The route loops from the library through the Signal House, Tidebound Quay, Unmarked Stop, and Collections Depot. The two new stops have small reading rooms with railway and journey books already in the catalogue.
 - Boarding the rocket places the reader inside its cabin. The red button begins a four-count launch and a roughly 25-second flight with changing porthole views and staged arrival messages. The hatch can be used to leave before launch.
 
+## Station arrival pass
+
+- Signal House and Tidebound Quay now greet the passenger with a near-facing name sign, a short runner toward a framed reading-room entrance, and a visible route back to the train. Signal arm and quay bollards give each stop a distinct silhouette without new texture downloads.
+- The reading-room return doors sit in framed openings. Distinct low-volume procedural cues play on arrival, with a long quiet interval if the visitor lingers. The existing mute setting applies.
+- The conductor also authorizes alighting when the route loops back to the Library Platform. Check the complete platform → signal → tide → fog → depot → platform journey, books and room return doors.
+
 ## Visual review
 
 Compare a view from the entrance toward the west door, a view inside the western reading wing, and the reading desk close up. Check daylight and night, low bandwidth mode, readability, doorway clearance, and frame rate on a modest device. Then carry the same materials into the east wing and themed rooms, adapting only wear and accent colour.
