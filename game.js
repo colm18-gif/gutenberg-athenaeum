@@ -308,9 +308,28 @@ function coverTexture(book){if(coverTextureCache.has(book.id))return coverTextur
       }
       wingDoors.push({side,panels,opening:0});
     }
+    function playWingDoorCreak(){
+      if(!audioCtx||muted)return;
+      playSample('doorOpen',.45,.82);
+      const t=audioCtx.currentTime,osc=audioCtx.createOscillator(),filter=audioCtx.createBiquadFilter(),gain=audioCtx.createGain();
+      osc.type='sawtooth';
+      osc.frequency.setValueAtTime(118,t);
+      osc.frequency.linearRampToValueAtTime(172,t+.22);
+      osc.frequency.linearRampToValueAtTime(95,t+.68);
+      filter.type='bandpass';filter.frequency.value=440;filter.Q.value=1.8;
+      gain.gain.setValueAtTime(.001,t);
+      gain.gain.linearRampToValueAtTime(.055,t+.08);
+      gain.gain.linearRampToValueAtTime(.018,t+.4);
+      gain.gain.exponentialRampToValueAtTime(.001,t+.72);
+      osc.connect(filter).connect(gain).connect(master);
+      osc.start(t);osc.stop(t+.73);
+      osc.onended=()=>{osc.disconnect();filter.disconnect();gain.disconnect()};
+    }
     function updateWingDoors(dt){
       for(const door of wingDoors){
         const near=Math.abs(player.pos.x-door.side*19)<7.5&&Math.abs(player.pos.z)<8;
+        if(near&&!door.wasNear&&started)playWingDoorCreak();
+        door.wasNear=near;
         door.opening=THREE.MathUtils.damp(door.opening,near?1:0,5,dt);
         for(let i=0;i<2;i++)door.panels[i].position.z=(i===0?-1:1)*(1.95+door.opening*2.15);
       }
