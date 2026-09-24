@@ -70,7 +70,9 @@ the full licence texts sit beside the font files.
 `soundscape.js` synthesises the room reverberation, rain on glass, storm thunder
 and the entrance clock's tick in the browser with the Web Audio API, and
 `visual-quality.js` renders its reflection environment from a small procedural
-scene. Neither uses any third-party recording or image.
+scene. `room-ambience.js` likewise synthesises each room's ambience (clocks,
+water, wind, waves, birds, insects, fire). None of them uses any third-party
+recording or image.
 
 ## Texts for the curious-door rooms
 
