@@ -2,7 +2,7 @@
   'use strict';
 
   window.createAfterDarkExpansion=function(options){
-    const {THREE,scene,MAT,publicStone,publicParquet,player,camera,interactables,books,bookMaterial,canvasTexture,showNotice,playSample,sound,move,modelTemplate,isLowBandwidth,analytics}=options;
+    const {doorKit,THREE,scene,MAT,publicStone,publicParquet,player,camera,interactables,books,bookMaterial,canvasTexture,showNotice,playSample,sound,move,modelTemplate,isLowBandwidth,analytics}=options;
     const KEEP_WARM_SECONDS=20,PRELOAD_DISTANCE=8;
     const rooms={
       sorting:{key:'sorting',cx:-180,cz:-24,w:28,d:23,entrance:{x:-36.72,z:8.5,yaw:Math.PI/2},title:'The Sorting Room'},
@@ -63,11 +63,13 @@
       for(const x of [-1.35,1.35])box(.17,4.5,.28,MAT.brass,x,2.25,.01,group);
       box(2.85,.18,.28,MAT.brass,0,4.42,.01,group);
       const plaque=mark(sign(group,0,3.2,.13,label,'',0,.72),data);plaque.material.emissive=new THREE.Color(0x3a210d);plaque.material.emissiveIntensity=.35;
+      // Dress the entrance with a modelled door from the shared kit; the old slab becomes its hit target.
+      if(doorKit){const hit=new THREE.MeshBasicMaterial({visible:false});for(const child of [...group.children]){if(!child.isMesh)continue;if(interactables.includes(child))child.material=hit;else child.visible=false}const kd=doorKit.build(group,{style:room.key==='sorting'?'painted':'walnut',width:2.3,height:3.5,label});kd.group.position.z=.02;data.kit=kd}
       room.entranceGroup=group;
     }
 
     function utilityShelf(room,x,z,rotation=0){
-      const root=room.root,g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=rotation;root.add(g),parts=[];
+      const root=room.root,g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=rotation;root.add(g);const parts=[];
       for(const y of [.3,1.35,2.4,3.45])parts.push(box(4.2,.14,.72,MAT.darkWood,0,y,0,g));
       for(const px of [-1.95,1.95])parts.push(box(.18,3.8,.72,MAT.wood2,px,1.9,0,g));
       // Stock the existing service shelves without adding individual draw calls per volume.
@@ -162,8 +164,9 @@
     function allowed(x,z){const room=zoneAt(x,z);if(!room)return false;const radius=player.radius||.42;if(x-radius<=room.cx-room.w/2+.45||x+radius>=room.cx+room.w/2-.45||z-radius<=room.cz-room.d/2+.45||z+radius>=room.cz+room.d/2-.45)return false;return !blockers.some(item=>item.key===room.key&&x+radius>item.minX&&x-radius<item.maxX&&z+radius>item.minZ&&z-radius<item.maxZ)}
 
     function interact(object){
-      const data=object?.userData;if(data?.type==='after-dark-entrance'){
-        const room=rooms[data.room];activate(room);move(room.cx,room.cz+room.d/2-3,Math.PI);showNotice(data.room==='sorting'?'The staff door closes on a room of rain-marked returns, string, dust, and unresolved shelving.':'Rain combs the tall windows. Every chart on the tables appears to begin here and end elsewhere.',7);playSample?.('doorOpen',.86,.96);analytics?.track('Room Explored',{room:data.room});return true
+      const data=object?.userData;if(data?.type==='after-dark-entrance'&&data.kit&&doorKit&&!data.passing){if(data.opening)return true;data.opening=true;playSample?.('doorOpen',.8,.97);doorKit.open(data.kit,()=>{data.opening=false;data.passing=true;interact(object);data.passing=false});return true}
+      if(data?.type==='after-dark-entrance'){
+        const room=rooms[data.room];activate(room);move(room.cx,room.cz+room.d/2-3,Math.PI);showNotice(data.room==='sorting'?'The staff door closes on a room of rain-marked returns, string, dust, and unresolved shelving.':'Rain combs the tall windows. Every chart on the tables appears to begin here and end elsewhere.',7);if(!data.passing)playSample?.('doorOpen',.86,.96);analytics?.track('Room Explored',{room:data.room});return true
       }
       if(data?.type==='after-dark-exit'){
         const room=rooms[data.room];room.lastNeeded=currentTime;move(room.entrance.x+(data.room==='sorting'?1.8:-1.8),room.entrance.z,room.entrance.yaw+Math.PI);showNotice('The Grand Hall receives you with familiar lamplight.',5);playSample?.('doorOpen',.82,1);return true

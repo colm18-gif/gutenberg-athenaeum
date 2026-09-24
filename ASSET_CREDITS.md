@@ -79,3 +79,17 @@ Children's Attic are public-domain Project Gutenberg editions, fetched from the
 [GITenberg](https://github.com/GITenberg) mirror and stored as `texts/pg<id>.txt`
 with their Project Gutenberg headers intact (the old legal preamble of #778 was
 trimmed to the book itself). The list is in `NEW-BOOKS.md`.
+
+## Railway lamps
+
+Two models from the [Khronos glTF Sample Assets](https://github.com/KhronosGroup/glTF-Sample-Assets),
+with textures downscaled to 512 px for the web. Licence files sit beside each model.
+
+| In-game use | Asset | Creator | Licence |
+|---|---|---|---|
+| Station lamp-posts on the railway platforms | Lantern | © 2017 Microsoft | CC0 1.0 |
+| Tiffany-style table lamps in the reading carriage | Stained Glass Lamp | © 2021 Wayfair LLC, model and textures by Eric Chadwick | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) |
+
+The luggage on the carriage racks reuses Poly Haven's CC0 Vintage Suitcase, and the new
+panelled doors throughout the library are modelled in code using the Poly Haven walnut
+veneer already listed above.
