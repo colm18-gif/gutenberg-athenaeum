@@ -53,3 +53,26 @@
 
 
 #bookActions.carrying{left:16px;bottom:16px;transform:none;max-width:min(350px,calc(100vw - 32px));padding:8px 10px;gap:6px;pointer-events:auto}#bookActions.carrying .meta{min-width:0;margin-right:0;max-width:100%}#bookActions.carrying .meta strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px}#bookActions.carrying .meta em,#bookActions.carrying #carryBook,#bookActions.carrying #askLibrarian,#bookActions.carrying #leaveBook{display:none}#bookActions.carrying button{font-size:12px;padding:5px 8px}
+/* Period typefaces, self-hosted (SIL Open Font License, see assets/fonts). IM Fell reproduces
+   the 17th-century Fell types; Cormorant Garamond carries notes and prompts. Georgia stays the
+   fallback and remains the reading face inside books for long-form comfort. */
+@font-face{font-family:'IM Fell English SC';src:url(assets/fonts/im-fell-english-sc-latin-400-normal.woff2) format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Cormorant Garamond';src:url(assets/fonts/cormorant-garamond-latin-400-normal.woff2) format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Cormorant Garamond';src:url(assets/fonts/cormorant-garamond-latin-400-italic.woff2) format('woff2');font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:'Cormorant Garamond';src:url(assets/fonts/cormorant-garamond-latin-500-normal.woff2) format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Cormorant Garamond';src:url(assets/fonts/cormorant-garamond-latin-600-normal.woff2) format('woff2');font-weight:600;font-style:normal;font-display:swap}
+:root{--display-face:'IM Fell English SC',Georgia,'Times New Roman',serif;--note-face:'Cormorant Garamond',Georgia,'Times New Roman',serif}
+.crest h1,.topmark,#pause h2,.journal-head h2,#settingsTitle,#supportTitle,#chatTitle,.reader-head h2{font-family:var(--display-face);font-weight:400}
+.crest h1{letter-spacing:.12em;text-shadow:0 0 28px rgba(214,160,86,.22)}
+.crest p,#notice,.prompt-title,.prompt-by,#chatReply,.chat-options,.support-card p,#exploreNudge,.journal-book,.settings-note{font-family:var(--note-face);font-weight:500;font-size-adjust:.47}
+#notice{letter-spacing:.03em}
+.prompt-title{letter-spacing:.04em}
+/* Entrance: the lamp slowly brightens behind the crest while the rooms load. */
+#veil:before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 38%,rgba(232,168,86,.16),transparent 55%);animation:veilLamp 6s ease-in-out infinite alternate;pointer-events:none}
+@keyframes veilLamp{from{opacity:.55}to{opacity:1}}
+body.reduced-motion #veil:before{animation:none}
+.entry-progress{height:2px;width:min(280px,70%);margin:14px auto 0;background:rgba(189,149,96,.18);overflow:hidden;opacity:0;transition:opacity .4s}
+.entry-progress.active{opacity:1}
+.entry-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#8c6537,#e8c07e);box-shadow:0 0 10px rgba(232,192,126,.6);transition:width .35s ease-out}
+.settings-card select{display:block;width:100%;margin-top:7px;padding:7px 9px;font:inherit;font-size:14px;color:inherit;background:rgba(255,248,232,.06);border:1px solid rgba(160,126,80,.55);border-radius:2px;accent-color:#815b2e}
+.settings-card select option{color:#1d150d}
