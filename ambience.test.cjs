@@ -48,3 +48,7 @@ test('the Grand Hall and gallery add nothing, and the horologist and Wells rooms
 test('there is no background drone',()=>{
   assert.doesNotMatch(game,/ambientPadGain|padFilter|\[73\.42,'sine'/);
 });
+
+test('there is no continuous rain hiss',()=>{
+  assert.doesNotMatch(game,/soundscape\.makeRainSource\(\)|src\.connect\(filter\)\.connect\(noiseGain\)/);
+});
