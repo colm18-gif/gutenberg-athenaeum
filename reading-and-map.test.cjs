@@ -38,7 +38,7 @@ test('touch reading turns pages by swipe or edge tap and resizes text by pinchin
   assert.match(game,/if\(f>\.68\)pageStep\(1\);else if\(f<\.32\)pageStep\(-1\)/);
 });
 
-test('the map and the finder know every room, including those reached by train, stair and secret door',()=>{
+test('the map knows every room, including those reached by train, stair and secret door',()=>{
   const listed=new Set([...game.matchAll(/\['([a-z-]+)','[^']+'\]/g)].map(m=>m[1]));
   for(const key of ['returning','quiet','unread','repository'])assert.ok(listed.has(key),`memory room ${key}`);
   for(const key of ['curious-parlour','curious-conservatory','curious-horologist','curious-attic','afterdark-sorting','afterdark-departures','moon','rocket','high-staircase','verne-descent','librarian-office','contested'])assert.ok(listed.has(key),key);
@@ -47,16 +47,12 @@ test('the map and the finder know every room, including those reached by train, 
   const railMap=game.match(/const RAIL_PLACES=\{([^}]*)\}/)[1];
   for(const key of railKeys)assert.ok(railMap.includes(key.includes('-')?`'${key}'`:key),`railway region ${key} has a place`);
   assert.match(game,/function analyticsRoom\(\)\{return placeAt\(player\.pos\.x,player\.pos\.y,player\.pos\.z\)\}/);
-  assert.match(game,/found\.add\(placeAt\(at\.x,floorHeight\(at\.x,at\.z\),at\.z\)\)/,'shelved books are placed by the floor they stand on');
 });
 
-test('the finder searches the whole catalogue, shows where books live and can bring one to read',()=>{
-  for(const id of ['tab-discoveries','tab-map','tab-find','panel-map','panel-find','bookSearch','searchResults','hallPlan','journalMap','discoveryStats'])assert.match(html,new RegExp(`id="${id}"`));
-  assert.match(game,/words\.every\(word=>hay\.includes\(word\)\)/);
-  assert.match(game,/function bringBookToReader\(book\)\{closeJournal\(\);if\(selected\)returnSelected\(false\);/);
-  assert.match(game,/seatCopy:true/);
-  assert.match(game,/if\(e\.target\?\.id==='bookSearch'&&e\.code!=='Escape'\)e\.stopImmediatePropagation\(\)/,'typing a J or WASD in the search box does not close the journal or walk');
-  assert.match(game,/'Shelved somewhere you have not found yet'/,'undiscovered rooms are not revealed by the finder');
+test('there is no book search: books are found by exploring',()=>{
+  assert.doesNotMatch(html,/bookSearch|panel-find|tab-find/);
+  assert.doesNotMatch(game,/bookSearch|renderSearch|bringBookToReader/);
+  for(const id of ['tab-discoveries','tab-map','panel-map','hallPlan','journalMap','discoveryStats'])assert.match(html,new RegExp(`id="${id}"`));
 });
 
 test('the discovery journal tallies rooms, secrets, books, mysteries, keepsakes and reasons',()=>{
