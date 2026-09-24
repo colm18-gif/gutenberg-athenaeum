@@ -44,3 +44,7 @@ test('the Grand Hall and gallery add nothing, and the horologist and Wells rooms
   for(const id of ['main-library','upper-floor'])assert.equal((all[id].events||[]).length+(all[id].ticks||[]).length+all[id].beds.length,0,id);
   for(const id of ['curious-horologist','wells'])assert.ok(!(all[id].ticks||[]).length,`${id} has no ticking clock`);
 });
+
+test('there is no background drone',()=>{
+  assert.doesNotMatch(game,/ambientPadGain|padFilter|\[73\.42,'sine'/);
+});
