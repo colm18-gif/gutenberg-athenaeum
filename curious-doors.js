@@ -8,7 +8,7 @@
   'use strict';
 
   window.createCuriousDoors=function(options){
-    const {THREE,scene,MAT,player,camera,interactables,books,bookMaterial,canvasTexture,showNotice,playSample,sound,move,registerSeat,isLowBandwidth=()=>false,isReducedMotion=()=>false,analytics}=options;
+    const {THREE,scene,MAT,player,camera,interactables,books,bookMaterial,canvasTexture,showNotice,playSample,sound,move,registerSeat,doorKit,isLowBandwidth=()=>false,isReducedMotion=()=>false,analytics}=options;
     const KEEP_WARM_SECONDS=25,PRELOAD_DISTANCE=9,TAU=Math.PI*2;
     const rooms={
       horologist:{key:'horologist',cx:-240,cz:-60,w:18,d:14,h:5.4,title:'The Horologist’s Study',door:{x:-18.72,z:22.9,yaw:Math.PI/2}},
@@ -185,26 +185,30 @@
     }
 
     // ---------- the doors in the Grand Hall ----------
+    // Each opening shows a lamplit passage through a stencil portal (from the shared door kit), so the wall
+    // behind the door never shows through; the moving part is drawn after it.
+    const noPortal={set(){}};
+    function portal(parent,geometry,z,moving){if(!doorKit)return noPortal;const p=doorKit.makePortal(parent,geometry,z);if(moving)doorKit.drawAfterPortal(moving);return p}
     function doorGroup(room){const g=new THREE.Group();g.position.set(room.door.x,0,room.door.z);g.rotation.y=room.door.yaw;scene.add(g);return g}
 
     function clockDoor(room){
       const g=doorGroup(room),data={type:'curious-door',room:room.key,title:'A round brass door with a clock for a face',author:'A winding key waits in the keyhole at its centre.',action:'WIND THE KEY'};
       const surround=add(new THREE.TorusGeometry(1.58,.2,10,40),MAT.stone,0,1.72,.05,g);const ring=add(new THREE.TorusGeometry(1.42,.09,8,40),MAT.brass,0,1.72,.16,g);
-      const back=add(new THREE.CircleGeometry(1.4,40),new THREE.MeshBasicMaterial({color:0x0a0604}),0,1.72,.02,g);
+      const clockOpening=new THREE.CircleGeometry(1.38,40);clockOpening.translate(0,1.72,0);
       const disc=new THREE.Group();disc.position.set(0,1.72,.12);g.add(disc);const slab=add(new THREE.CylinderGeometry(1.38,1.38,.14,40),std(0x3a2616,{roughness:.6}),0,0,0,disc);slab.rotation.x=Math.PI/2;
       const face=clock(disc,1.05,0,0,.09,0,true,'#e8d8b0');const key=box(.08,.34,.05,MAT.brass,0,0,.2,disc);
       for(const m of [slab,face.face,key])mark(m,data);
       const gears=[gear(g,.42,14,MAT.brass,-1.55,3.25,.15),gear(g,.3,11,MAT.brass,-1.12,3.62,.18),gear(g,.36,12,MAT.gold||MAT.brass,1.5,3.3,.15)];
       plaque(g,'THE HOROLOGIST','please wind before entering',0,.2,.25,1.7);
       const glowLight=light(g,0xffc27a,0,6,0,1.7,1);
-      doors[room.key]={room,group:g,disc,face,gears,glowLight,state:'closed',t:0,kind:'clock'};
+      doors[room.key]={room,group:g,disc,face,gears,glowLight,state:'closed',t:0,kind:'clock',portal:portal(g,clockOpening,.03,disc)};
     }
     function lancetShape(width,height){const s=new THREE.Shape(),hw=width/2,spring=height-width*.9;s.moveTo(-hw,0);s.lineTo(-hw,spring);s.quadraticCurveTo(-hw,spring+width*.62,0,height);s.quadraticCurveTo(hw,spring+width*.62,hw,spring);s.lineTo(hw,0);s.lineTo(-hw,0);return s}
     function uvFromBounds(geometry){geometry.computeBoundingBox();const b=geometry.boundingBox,p=geometry.attributes.position,uv=geometry.attributes.uv;for(let i=0;i<p.count;i++)uv.setXY(i,(p.getX(i)-b.min.x)/(b.max.x-b.min.x),(p.getY(i)-b.min.y)/(b.max.y-b.min.y));uv.needsUpdate=true;return geometry}
     function glassDoor(room){
       const g=doorGroup(room),data={type:'curious-door',room:room.key,title:'A stained-glass door, green with leaves',author:'The glass is warm. Something beyond it is breathing slowly, like a garden at night.',action:'PUSH THE GLASS'};
       const stained=canvasTexture((c,w,h)=>{c.fillStyle='#0d1f16';c.fillRect(0,0,w,h);const cols=['#2f7a45','#4ea35c','#1f5c3d','#c9a441','#6fb3a3','#8fcf6a'];for(let i=0;i<70;i++){const x=Math.random()*w,y=Math.random()*h,rx=18+Math.random()*30,ry=8+Math.random()*14;c.fillStyle=cols[i%cols.length];c.beginPath();c.ellipse(x,y,rx,ry,Math.random()*Math.PI,0,TAU);c.fill()}c.strokeStyle='#15110c';c.lineWidth=5;for(let i=0;i<70;i++){c.beginPath();c.moveTo(Math.random()*w,Math.random()*h);c.lineTo(Math.random()*w,Math.random()*h);c.stroke()}c.strokeStyle='#e8d38a';c.lineWidth=3;c.beginPath();c.moveTo(w/2,h);for(let y=h;y>h*.12;y-=18)c.lineTo(w/2+Math.sin(y*.05)*18,y);c.stroke();for(let i=0;i<9;i++){const y=h*.2+i*h*.08;c.fillStyle='#c9e39a';c.beginPath();c.ellipse(w/2+(i%2?26:-26),y,22,9,i%2?.5:-.5,0,TAU);c.fill()}},256,512);
-      const pivot=new THREE.Group();pivot.position.set(-1.05,0,.1);g.add(pivot);
+      const pivot=new THREE.Group();pivot.position.set(-1.05,0,.1);g.add(pivot);const glassPortal=portal(g,uvFromBounds(new THREE.ShapeGeometry(lancetShape(1.93,3.93),12)),.01,pivot);
       const glassMat=new THREE.MeshStandardMaterial({map:stained,emissive:0xffffff,emissiveMap:stained,emissiveIntensity:.55,roughness:.35,side:THREE.DoubleSide});
       const pane=add(uvFromBounds(new THREE.ShapeGeometry(lancetShape(1.9,3.9),12)),glassMat,1.05,0,.02,pivot);mark(pane,data);
       const frameShape=lancetShape(2.5,4.35);frameShape.holes.push(new THREE.Path(lancetShape(1.95,3.95).getPoints(24)));const frame=add(new THREE.ExtrudeGeometry(frameShape,{depth:.22,bevelEnabled:false,curveSegments:16}),std(0x1a2320,{metalness:.55,roughness:.5}),0,0,-.02,g);
@@ -213,7 +217,7 @@
       const ivy=std(0x24502c,{side:THREE.DoubleSide,roughness:.8});for(let i=0;i<46;i++){const t=i/45,a=t*Math.PI,x=Math.cos(a)*1.3*(t<.5?1:1)*(i%2?1:-1),y=t<.5?t*2*3.1:3.1+Math.sin((t-.5)*Math.PI)*1.1,l=add(new THREE.CircleGeometry(.13,5),ivy,(i%2?1:-1)*(1.28-Math.max(0,t-.6)*1.6)+Math.sin(i)*.08,y+Math.cos(i*2.1)*.12,.24,g);l.rotation.z=i}
       plaque(g,'THE NIGHT CONSERVATORY','',0,4.75,.1,1.9,0,{bg:'#12211a',ink:'#cfe3bd',rule:'#6f8f5a'});
       const glowLight=light(g,0x9fe3a8,2.5,6,0,1.9,.9);
-      doors[room.key]={room,group:g,pivot,glassMat,glowLight,state:'closed',t:0,kind:'glass'};
+      doors[room.key]={room,group:g,pivot,glassMat,glowLight,state:'closed',t:0,kind:'glass',portal:glassPortal};
     }
     function bookcaseDoor(room){
       const g=doorGroup(room),found=store.get('athenaeum-parlour-found')==='1',caseData={type:'curious-detail',title:'A tall bookcase beside the hearth',author:'One black volume on the middle shelf sits a finger’s width proud of the others.',action:'LOOK CLOSER'};
@@ -224,11 +228,11 @@
       for(let row=0;row<5;row++)for(let slot=0;slot<16;slot++){if(row===2&&slot===8)continue;if(n>=75)break;const h=.52+((row*7+slot*3)%5)*.035;dummy.position.set(.28+slot*.2,[.35,1.2,2.05,2.9,3.75][row]+.04+h/2,.38);dummy.scale.set(1,h/.66,1);dummy.rotation.set(0,0,((slot*5+row)%4===0)?.07:0);dummy.updateMatrix();spines.setMatrixAt(n,dummy.matrix);spines.setColorAt(n,new THREE.Color(palette[(row*3+slot)%palette.length]));n++}
       spines.count=n;swing.add(spines);for(const p of parts)mark(p,caseData);
       const lever=box(.18,.64,.42,std(0x0c0c0c,{roughness:.5}),.28+8*.2,2.05+.04+.32,.52,swing);mark(lever,{type:'curious-door',room:room.key,title:found?'The black volume (the Parlour)':'A black volume with no title',author:found?'Tilt it and the bookcase will swing aside.':'Its spine is cold to the touch, colder than the room.',action:'TILT THE VOLUME'});
-      const passage=add(new THREE.PlaneGeometry(3.3,4.1),new THREE.MeshBasicMaterial({color:0x050303}),0,2.05,-.02,g);const passageData={type:'curious-door',room:room.key,title:'A narrow passage behind the shelves',author:'Firelight moves at the far end, and a chair creaks.',action:'ENTER'};mark(passage,passageData);
+      const passage=add(new THREE.PlaneGeometry(3.3,4.1),new THREE.MeshBasicMaterial({visible:false}),0,2.05,.03,g);const caseOpening=new THREE.PlaneGeometry(3.3,4.1);caseOpening.translate(0,2.05,0);const passageData={type:'curious-door',room:room.key,title:'A narrow passage behind the shelves',author:'Firelight moves at the far end, and a chair creaks.',action:'ENTER'};mark(passage,passageData);
       // A cold draught: pale motes creep out along the floor at the bookcase's foot.
       const motes=new THREE.BufferGeometry(),pos=new Float32Array(40*3);for(let i=0;i<40;i++)pos.set([(Math.random()-.5)*3.2,Math.random()*.5,.5+Math.random()*1.4],i*3);motes.setAttribute('position',new THREE.BufferAttribute(pos,3));const draught=new THREE.Points(motes,new THREE.PointsMaterial({color:0xc9d6e6,size:.05,transparent:true,opacity:.45,depthWrite:false}));g.add(draught);
       const glowLight=light(g,0xff9a4a,0,5,0,1.6,-.6);
-      doors[room.key]={room,group:g,swing,lever,draught,glowLight,state:'closed',t:0,kind:'bookcase',hinted:false};
+      doors[room.key]={room,group:g,swing,lever,draught,glowLight,state:'closed',t:0,kind:'bookcase',hinted:false,portal:portal(g,caseOpening,.02,swing)};
     }
     function nurseryDoor(room){
       const g=doorGroup(room),data={type:'curious-door',room:room.key,title:'A small blue door, painted with stars',author:'It is only just tall enough for a grown-up. There is a brass knocker shaped like a hare.',action:'KNOCK'};
@@ -237,14 +241,14 @@
       const arch=new THREE.Shape();arch.moveTo(-.68,0);arch.lineTo(-.68,2.05);arch.absarc(0,2.05,.68,Math.PI,0,true);arch.lineTo(.68,0);arch.lineTo(-.68,0);
       const hinge=new THREE.Group();hinge.position.set(-.68,0,.08);g.add(hinge);const leaf=add(uvFromBounds(new THREE.ShapeGeometry(arch,16)),new THREE.MeshStandardMaterial({map:painted,roughness:.7,side:THREE.DoubleSide}),.68,0,0,hinge);mark(leaf,data);
       const porthole=add(new THREE.CircleGeometry(.2,20),glow(0xffd08a,1.6),.68,1.95,.02,hinge);add(new THREE.TorusGeometry(.21,.035,6,20),MAT.brass,.68,1.95,.03,hinge);const knocker=add(new THREE.TorusGeometry(.1,.025,6,16),MAT.brass,.68,1.35,.05,hinge);mark(knocker,data);sphere(.05,MAT.brass,1.2,1.1,.06,hinge,8);
-      const back=add(new THREE.ShapeGeometry(arch,16),new THREE.MeshBasicMaterial({color:0x100b06}),0,0,.02,g);
+      const nurseryOpening=uvFromBounds(new THREE.ShapeGeometry(arch,16));
       for(const x of [-.82,.82]){const post=box(.2,2.2,.18,new THREE.MeshStandardMaterial({map:frame,roughness:.9}),x,1.1,.1,g);if(x<0)detail(post,'Pencil marks on the door frame','Heights of children, dated across a century: Wendy, John, Michael — and, near the top, Alice.','READ')}
       add(new THREE.TorusGeometry(.8,.1,8,24,Math.PI),std(0xe7dcc4),0,2.05,.1,g);
       // A ball and a tin soldier left outside, as if someone was called in to bed.
       sphere(.16,std(0xc0392b,{roughness:.5}),1.1,.16,.8,g,14);const soldier=new THREE.Group();soldier.position.set(-1.1,0,.6);g.add(soldier);box(.1,.28,.08,std(0xa31d1d),0,.3,0,soldier);box(.08,.16,.07,std(0x1d2a4a),0,.08,0,soldier);cyl(.05,.05,.14,8,MAT.black,0,.52,0,soldier);
       plaque(g,'NURSERY','knock first',0,3.15,.12,1.2,0,{bg:'#1b2440',ink:'#f1dfae',rule:'#c9a45c'});
       const glowLight=light(g,0xffd08a,0,5,0,1.5,.7);
-      doors[room.key]={room,group:g,hinge,glowLight,state:'closed',t:0,kind:'nursery'};
+      doors[room.key]={room,group:g,hinge,glowLight,state:'closed',t:0,kind:'nursery',portal:portal(g,nurseryOpening,.03,hinge)};
     }
 
     // ---------- lifecycle ----------
@@ -284,6 +288,7 @@
         const nearDoor=Math.hypot(player.pos.x-door.room.door.x,player.pos.z-door.room.door.z)<14;if(!nearDoor&&door.state==='closed')continue;
         if(door.kind==='clock'){const fast=door.state==='opening'?9:.25;door.gears.forEach((g,i)=>g.rotation.z+=dt*fast*(i%2?-1.4:1)*motion);door.face.minute.rotation.z-=dt*(door.state==='opening'?14:.1);door.face.hour.rotation.z-=dt*(door.state==='opening'?1.2:.008)}
         if(door.kind==='bookcase'&&!reduced){const p=door.draught.geometry.attributes.position;for(let i=0;i<p.count;i++){let z=p.getZ(i)+dt*.18;if(z>2.2)z=.45;p.setZ(i,z);p.setY(i,.05+Math.abs(Math.sin(t*.7+i))*.4)}p.needsUpdate=true;if(!door.hinted&&Math.hypot(player.pos.x-door.room.door.x,player.pos.z-door.room.door.z)<4.5){door.hinted=true;if(store.get('athenaeum-parlour-found')!=='1')showNotice('A cold draught stirs the dust along the foot of the bookcase beside the hearth.',6)}}
+        door.portal.set(door.state!=='closed');
         if(door.kind==='glass')door.glassMat.emissiveIntensity=.5+Math.sin(t*1.3)*.08+(door.state==='opening'?.6:0);
         if(door.state==='opening'){door.t+=dt;const k=Math.min(1,door.t/1.3),e=k*k*(3-2*k);door.glowLight.intensity=e*6;
           if(door.kind==='clock'){door.disc.position.x=e*2.9;door.disc.rotation.z=-e*2.1}

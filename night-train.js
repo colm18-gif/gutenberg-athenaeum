@@ -155,7 +155,7 @@
       const fogRoom=room('fog-room');box(fogRoom,12,.4,14,MAT.wood,316,-.2,-20);box(fogRoom,12,.3,14,MAT.darkWood,316,4.8,-20);for(const x of [309.8,322.2])box(fogRoom,.4,4.8,14,fogStone,x,2.4,-20);for(const z of [-27.2,-12.8])box(fogRoom,12,4.8,.4,fogStone,316,2.4,z);
       box(fogRoom,3.5,.85,1.8,MAT.darkWood,318,.43,-20,true);box(fogRoom,2.7,.12,1.25,MAT.brass,318,.92,-20);label(fogRoom,'WAIT HERE UNTIL THE LINE REMEMBERS YOU',316,3.85,-26.95,7,.58);
       if(fogBook){fogBookMesh=volume(fogRoom,fogBook,318,1.15,-20);fogBookMesh.userData.fogDiscovery=true}
-      const fogReturn=control(fogRoom,'fog-return','The waiting-room door','There is no handle on this side. Something in the room is still waiting to be found.','LOCKED',310.05,1.7,-17,.18,3.1,1.7);carriageEndDoor(fogRoom,fogReturn,310.05,1.7,-17);
+      const fogReturn=control(fogRoom,'fog-return','The waiting-room door','It opens back onto the platform. Something in the room is still waiting to be found.','BACK TO PLATFORM',310.05,1.7,-17,.18,3.1,1.7);carriageEndDoor(fogRoom,fogReturn,310.05,1.7,-17);
       control(fogPlatform,'fog-reboard','The waiting train','Its lamps remain lit beyond the fog.','BOARD TRAIN',282.6,1.8,-9,.18,3.1,1.5);conductor(fogPlatform,286,-12);box(fogRoom,2.4,.8,1.1,MAT.wood2,314,.4,-24,true);box(fogRoom,2.2,.14,.9,cloth,314,.88,-24);lamp(fogRoom,318,3,-20,true);lamp(fogRoom,313,2.7,-24);
       fogPlatform.add(new THREE.AmbientLight(0xd9e2df,.58));fogRoom.add(new THREE.AmbientLight(0xc8d0cb,.72));
       // Two request stops carry their own books and small discoveries. Each space is built only after railway discovery.
@@ -224,7 +224,7 @@
         else notice('“A station only exists for as long as someone wants to arrive.”',6)
       }
       else if(key==='fog-waiting'){move(312,-20,-Math.PI/2);notice('A single volume waits beneath the lamp. The room has no clock, and the fog presses blankly against every pane.',8)}
-      else if(key==='fog-return'){if(!fogFound)notice('The door has no handle. The book beneath the lamp seems to be waiting for you.',6);else{home();notice('The waiting-room door opens directly into the library. Behind you there is only a bookcase and the faint smell of cold fog.',9)}}
+      else if(key==='fog-return'){if(!fogFound){move(300,-20,Math.PI/2);notice('The door lets you back onto the fog-bound platform. Behind you, the book beneath the lamp is still waiting to be found.',7)}else{home();notice('The waiting-room door opens directly into the library. Behind you there is only a bookcase and the faint smell of cold fog.',9)}}
       else if(key==='signal-enter'||key==='tide-enter'){const cx=key==='signal-enter'?341:393;move(cx+30,-20,0);stationCue(key==='signal-enter'?'signal-room':'tide-room');notice(key==='signal-enter'?'The signal ledger and railway stories wait under green glass.':'The tide clock stands beside books about distant travel.',7)}
       else if(key==='signal-exit'||key==='tide-exit'){const cx=key==='signal-exit'?341:393;move(cx,-20,0);stationCue(key==='signal-exit'?'signal-platform':'tide-platform');notice('You return to the platform. The carriage remains at the far lamp.',5)}
       else if(key==='signal-relic'||key==='tide-relic'||key.startsWith('drawer-')||key.startsWith('card-'))notice(object.userData.note,12);
