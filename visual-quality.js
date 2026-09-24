@@ -85,7 +85,7 @@
     let sceneTarget=null,brightTarget=null,blurA=null,blurB=null,blurC=null,blurD=null,width=1,height=1,time=0;
     const size=new THREE.Vector2();
     function disposeTargets(){for(const target of [sceneTarget,brightTarget,blurA,blurB,blurC,blurD])target?.dispose();sceneTarget=brightTarget=blurA=blurB=blurC=blurD=null}
-    function makeTarget(w,h,samples=0){const target=new THREE.WebGLRenderTarget(Math.max(1,w),Math.max(1,h),{type:THREE.HalfFloatType,depthBuffer:samples>=0,stencilBuffer:false});if(samples>0&&isWebGL2)target.samples=samples;target.texture.generateMipmaps=false;target.texture.minFilter=THREE.LinearFilter;target.texture.magFilter=THREE.LinearFilter;return target}
+    function makeTarget(w,h,samples=0){const target=new THREE.WebGLRenderTarget(Math.max(1,w),Math.max(1,h),{type:THREE.HalfFloatType,depthBuffer:samples>=0,stencilBuffer:samples>=0});if(samples>0&&isWebGL2)target.samples=samples;target.texture.generateMipmaps=false;target.texture.minFilter=THREE.LinearFilter;target.texture.magFilter=THREE.LinearFilter;return target}
     function buildTargets(){
       disposeTargets();const tier=TIERS[tierIndex];if(tier==='off')return;
       renderer.getDrawingBufferSize(size);width=size.x;height=size.y;

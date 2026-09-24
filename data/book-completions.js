@@ -1,5 +1,6 @@
 /* Original cover designs and librarian marginalia. Existing artwork and notes take precedence. */
-window.ATHENAEUM_EXTRA_NOTES={
+// Merged rather than assigned: the Doyle, Wells and Haggard note files load earlier and must survive.
+window.ATHENAEUM_EXTRA_NOTES=Object.assign({
   900001:'The first half watches roads, fields, and towns disappear under returning forest and water; the second enters a feudal society grown among the ruins. Jefferies is less interested in a single catastrophe than in what nature and power build after neglect. I keep this depot copy where a vanished London can be reached by train.',
   900002:'Maskull travels to Tormance expecting another planet and finds a succession of moral climates, each with its own senses and temptations. The book is austere, strange, and more concerned with metaphysics than machinery. Do not expect the landscape to hold still merely because you have named it.',
   900003:'These tales are doors painted on air: jeweled thieves, impossible cities, patient idols, and gnoles glimpsed just beyond ordinary geography. Dunsany rarely explains a wonder when a well-chosen name can make it feel older than explanation. Read one story at a time and leave the door ajar.',
@@ -43,7 +44,7 @@ window.ATHENAEUM_EXTRA_NOTES={
   66510:'Serviss surveys the Moon as early twentieth-century astronomy understood it: its visible plains and mountains, the arguments over its origin, and the persistent question of whether it ever supported life. Keep its period assumptions beside what later observation corrected.',
   62779:'Locke’s celebrated newspaper hoax claimed that a powerful telescope had revealed lunar forests, animals, and winged inhabitants. Many readers believed it. This copy belongs here as both imagined Moon-life and a warning about scientific authority dressed in convincing detail.',
   19103:'Wilkins argues that the Moon may be another habitable world and seriously considers how a traveller might reach it. Written in 1638, the book stands between astronomy, theology, and speculative fiction, before those shelves had learned to stay separate.'
-};
+},window.ATHENAEUM_EXTRA_NOTES||{});
 window.ATHENAEUM_COVER_DESIGNS={
   900010:['#2f2a22','#d6bf8a','tower'],900011:['#2a3a36','#cdbb8e','knot'],900012:['#3a2833','#d9c08f','moon'],900001:['#263b32','#c8b77e','tree'],900002:['#2d3150','#d1bd87','planet'],900003:['#43314b','#d5bc82','tower'],900004:['#263b47','#d1c39b','ship'],900005:['#3d3030','#c9b17f','moon'],900006:['#384034','#d4c18d','tower'],
   27827:['#482e37','#dec29a','flower'],1399:['#44283a','#d9b78c','flower'],73:['#54302b','#d9b78c','mountain'],82:['#283c49','#d9b78c','tower'],205:['#273d32','#d9c89a','tree'],208:['#493d46','#dbc7a3','flower'],360:['#443527','#cfb383','scales'],451:['#243b46','#d4bf91','ship'],1206:['#61452c','#dec49a','mountain'],
