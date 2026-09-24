@@ -31,7 +31,7 @@ test('memory doors and after-dark entrances use the kit and wait for the swing b
 
 test('after reading in a chair the book can stay on the chair, go back, go to a table, or be carried',()=>{
   assert.match(html,/id="leaveOnChair"/);assert.match(html,/id="placeNearby"/);
-  assert.match(game,/function closeReader\(\)\{stopReaderAside\(\);cancelAmbientRustle\(\);if\(seated\)\{const seat=seated\.seat;leaveSeat\(\);ui\.reader\.classList\.add\('hidden'\);offerAfterReading\(seat\);return\}/);
+  assert.match(game,/function closeReader\(\)\{stopReaderAside\(\);(?:[^;{}]*;){0,3}cancelAmbientRustle\(\);if\(seated\)\{const seat=seated\.seat;leaveSeat\(\);ui\.reader\.classList\.add\('hidden'\);offerAfterReading\(seat\);return\}/);
   assert.match(game,/function leaveBookOnSeat\(\)/);assert.match(game,/function placeOnNearestTable\(\)/);
   assert.match(game,/document\.exitPointerLock\?\.\(\);setTimeout\(\(\)=>\$\('#leaveOnChair'\)\?\.focus\(\),0\)/,'the mouse is free to choose');
   // While carrying, any flat surface takes the book.

@@ -62,11 +62,12 @@ test('exploration remains prompted and discovery-led',()=>{
   assert.match(css,/\.map-place\.unknown/);
 });
 
-test('books warm their editions without presenting a catalogue',()=>{
+test('books warm their editions, and searching lives inside the hidden catalogue rather than a separate screen',()=>{
   assert.match(game,/caches\.open\('athenaeum-editions-v1'\)/);
   assert.match(game,/queueFocusedPrefetch/);
   assert.match(game,/prefetchBook\(bm\.userData\.book\)/);
-  assert.doesNotMatch(html,/id="(?:catalogue|catalog|bookSearch|searchBooks)"/i);
+  assert.doesNotMatch(html,/id="(?:catalogue|catalog|searchBooks)"/i);
+  assert.match(html,/id="panel-find"[^>]*>[\s\S]*?id="bookSearch"/,'the book finder is a tab of the journal');
 });
 
 test('leave at desk persists a central-stand copy and has a working control',()=>{
