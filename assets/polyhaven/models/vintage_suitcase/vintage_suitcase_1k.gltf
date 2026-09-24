@@ -330,27 +330,57 @@
   "textures": [
     {
       "sampler": 0,
-      "source": 0
+      "source": 0,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 6
+        }
+      }
     },
     {
       "sampler": 0,
-      "source": 1
+      "source": 1,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 7
+        }
+      }
     },
     {
       "sampler": 0,
-      "source": 2
+      "source": 2,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 8
+        }
+      }
     },
     {
       "sampler": 0,
-      "source": 3
+      "source": 3,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 9
+        }
+      }
     },
     {
       "sampler": 0,
-      "source": 4
+      "source": 4,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 10
+        }
+      }
     },
     {
       "sampler": 0,
-      "source": 5
+      "source": 5,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 11
+        }
+      }
     }
   ],
   "images": [
@@ -383,6 +413,36 @@
       "mimeType": "image/jpeg",
       "name": "vintage_suitcase_02_metal-vintage_suitcase_02_rough",
       "uri": "textures/vintage_suitcase_02_arm_1k.jpg"
+    },
+    {
+      "uri": "textures/vintage_suitcase_01_nor_gl_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "vintage_suitcase_01_nor_gl_ktx2"
+    },
+    {
+      "uri": "textures/vintage_suitcase_01_diff_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "vintage_suitcase_01_diff_ktx2"
+    },
+    {
+      "uri": "textures/vintage_suitcase_01_arm_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "vintage_suitcase_01_metal-vintage_suitcase_01_rough_ktx2"
+    },
+    {
+      "uri": "textures/vintage_suitcase_02_nor_gl_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "vintage_suitcase_02_nor_gl_ktx2"
+    },
+    {
+      "uri": "textures/vintage_suitcase_02_diff_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "vintage_suitcase_02_diff_ktx2"
+    },
+    {
+      "uri": "textures/vintage_suitcase_02_arm_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "vintage_suitcase_02_metal-vintage_suitcase_02_rough_ktx2"
     }
   ],
   "accessors": [
@@ -816,5 +876,8 @@
       "byteLength": 467856,
       "uri": "vintage_suitcase.bin"
     }
+  ],
+  "extensionsUsed": [
+    "KHR_texture_basisu"
   ]
 }

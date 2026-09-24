@@ -97,3 +97,45 @@ test('distant animation systems pause outside their zones',()=>{
   assert.match(stair,/const active=contains\(player\.pos\.x,player\.pos\.z\)\|\|rocketTrip;if\(!active\)return/);
   assert.match(train,/if\(!zone\)return false/);
 });
+
+test('shaders are compiled behind the entrance veil before the first frame is drawn',()=>{
+  assert.match(game,/async function warmShaders\(progress\)/);
+  assert.match(game,/renderer\.compile\(object,camera,scene\)/);
+  assert.match(game,/renderer\.properties\.get\(material\)\.currentProgram\?\.getUniforms\(\)/,'without parallel compile, linking is finished during warm-up');
+  assert.match(game,/warmShaders\([^)]*\)[^;]*\.finally\(\(\)=>\{shadersWarm=true;animate\(\);if\(window\.__ATHENAEUM_ENTERED__\)enterLibrary\(\);/);
+  assert.doesNotMatch(game,/\n    animate\(\);\n/,'the render loop must not start before warm-up');
+  assert.match(game,/ui\.enter\.addEventListener\('click',\(\)=>\{if\(shadersWarm\)enterLibrary\(\)\}\)/);
+  assert.match(fs.readFileSync('visual-quality.js','utf8'),/function bindSceneTarget\(\)/);
+});
+
+test('static pieces are batched per material without breaking collision rays or animation',()=>{
+  const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(match=>match[1]);
+  assert.ok(order.indexOf('static-batching.js')>-1&&order.indexOf('static-batching.js')<order.indexOf('game.js'));
+  const batching=fs.readFileSync('static-batching.js','utf8');
+  new (require('node:vm').Script)(batching);
+  assert.match(game,/window\.createStaticBatcher\?\.\(\{THREE,scene,exclusions:\(\)=>interactables\}\)/);
+  assert.match(game,/staticBatcher\?\.update\(dt\);if\(visual\)/,'the batch check runs right before rendering, so a moved piece is never drawn stale');
+  // Originals must stay raycastable: hide them from the camera only, never via layers or visibility.
+  assert.match(batching,/function hide\(mesh\)\{mesh\.boundingSphere=hiddenSphere\}/);
+  assert.doesNotMatch(batching,/layers\.mask=|\.visible=false/);
+  for(const rule of [/material\.transparent/,/excluded\.has\(mesh\)/,/for\(const key in mesh\.userData\)return false/,/mesh\.renderOrder!==0/,/material\.stencilWrite/])assert.match(batching,rule);
+  assert.match(batching,/if\(mesh\.boundingSphere!==hiddenSphere\|\|!mesh\.frustumCulled\|\|mesh\.layers\.mask!==1\|\|!unchanged\(mesh,record\.state\)\)release\(mesh\)/);
+});
+
+test('photographic textures ship GPU-compressed copies with the originals kept as fallback',()=>{
+  const path=require('node:path');
+  for(const set of ['smoked_walnut_veneer','leather_red_02'])for(const map of ['diffuse','normal','roughness'])assert.ok(fs.statSync(`assets/polyhaven/materials/${set}/${map}.ktx2`).size>1000,`${set} ${map}.ktx2`);
+  assert.match(game,/compressedTextureFormats=\[/);
+  assert.match(game,/new Promise\(resolve=>setTimeout\(\(\)=>resolve\(null\),8000\)\)/,'a missing decoder falls back to JPG instead of leaving surfaces bare');
+  assert.match(game,/if\(ktx2\)loader\.setKTX2Loader\(ktx2\)/);
+  const gltfs=[];const walk=dir=>{for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const full=path.join(dir,entry.name);if(entry.isDirectory())walk(full);else if(entry.name.endsWith('.gltf'))gltfs.push(full)}};walk('assets/polyhaven/models');walk('assets/models');
+  for(const file of gltfs){
+    const gltf=JSON.parse(fs.readFileSync(file,'utf8'));
+    assert.ok(!(gltf.extensionsRequired||[]).includes('KHR_texture_basisu'),`${file} must stay loadable without KTX2`);
+    for(const texture of gltf.textures||[]){
+      assert.ok(/\.(jpe?g|png)$/i.test(gltf.images[texture.source].uri),`${file} keeps a JPG/PNG fallback`);
+      const ktx=texture.extensions?.KHR_texture_basisu;assert.ok(ktx,`${file} texture has a KTX2 copy`);
+      assert.ok(fs.existsSync(path.join(path.dirname(file),decodeURIComponent(gltf.images[ktx.source].uri))),`${file} KTX2 image exists`);
+    }
+  }
+});

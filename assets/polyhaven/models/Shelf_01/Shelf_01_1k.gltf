@@ -54,15 +54,30 @@
   "textures": [
     {
       "sampler": 0,
-      "source": 0
+      "source": 0,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 3
+        }
+      }
     },
     {
       "sampler": 0,
-      "source": 1
+      "source": 1,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 4
+        }
+      }
     },
     {
       "sampler": 0,
-      "source": 2
+      "source": 2,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 5
+        }
+      }
     }
   ],
   "images": [
@@ -80,6 +95,21 @@
       "mimeType": "image/jpeg",
       "name": "Shelf_01_metallic.png-Shelf_01_roughness",
       "uri": "textures/Shelf_01_arm_1k.jpg"
+    },
+    {
+      "uri": "textures/Shelf_01_nor_gl_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "Shelf_01_nor_gl.png_ktx2"
+    },
+    {
+      "uri": "textures/Shelf_01_diff_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "Shelf_01_diff.png_ktx2"
+    },
+    {
+      "uri": "textures/Shelf_01_arm_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "Shelf_01_metallic.png-Shelf_01_roughness_ktx2"
     }
   ],
   "accessors": [
@@ -151,5 +181,8 @@
       "byteLength": 12676,
       "uri": "Shelf_01.bin"
     }
+  ],
+  "extensionsUsed": [
+    "KHR_texture_basisu"
   ]
 }

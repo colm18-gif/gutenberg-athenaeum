@@ -114,15 +114,30 @@
   "textures": [
     {
       "sampler": 0,
-      "source": 0
+      "source": 0,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 3
+        }
+      }
     },
     {
       "sampler": 0,
-      "source": 1
+      "source": 1,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 4
+        }
+      }
     },
     {
       "sampler": 0,
-      "source": 2
+      "source": 2,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 5
+        }
+      }
     }
   ],
   "images": [
@@ -140,6 +155,21 @@
       "mimeType": "image/jpeg",
       "name": "seadogs_compass_metal-seadogs_compass_rough",
       "uri": "textures/seadogs_compass_arm_1k.jpg"
+    },
+    {
+      "uri": "textures/seadogs_compass_nor_gl_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "seadogs_compass_nor_gl_ktx2"
+    },
+    {
+      "uri": "textures/seadogs_compass_diff_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "seadogs_compass_diff_ktx2"
+    },
+    {
+      "uri": "textures/seadogs_compass_arm_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "seadogs_compass_metal-seadogs_compass_rough_ktx2"
     }
   ],
   "accessors": [
@@ -331,5 +361,8 @@
       "byteLength": 385520,
       "uri": "seadogs_compass.bin"
     }
+  ],
+  "extensionsUsed": [
+    "KHR_texture_basisu"
   ]
 }

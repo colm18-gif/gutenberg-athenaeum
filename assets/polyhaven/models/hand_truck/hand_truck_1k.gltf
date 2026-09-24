@@ -54,15 +54,30 @@
   "textures": [
     {
       "sampler": 0,
-      "source": 0
+      "source": 0,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 3
+        }
+      }
     },
     {
       "sampler": 0,
-      "source": 1
+      "source": 1,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 4
+        }
+      }
     },
     {
       "sampler": 0,
-      "source": 2
+      "source": 2,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 5
+        }
+      }
     }
   ],
   "images": [
@@ -80,6 +95,21 @@
       "mimeType": "image/jpeg",
       "name": "hand_truck_metal-hand_truck_rough",
       "uri": "textures/hand_truck_arm_1k.jpg"
+    },
+    {
+      "uri": "textures/hand_truck_nor_gl_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "hand_truck_nor_gl_ktx2"
+    },
+    {
+      "uri": "textures/hand_truck_diff_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "hand_truck_diff_ktx2"
+    },
+    {
+      "uri": "textures/hand_truck_arm_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "hand_truck_metal-hand_truck_rough_ktx2"
     }
   ],
   "accessors": [
@@ -155,5 +185,8 @@
       "byteLength": 535704,
       "uri": "hand_truck.bin"
     }
+  ],
+  "extensionsUsed": [
+    "KHR_texture_basisu"
   ]
 }
