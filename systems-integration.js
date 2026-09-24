@@ -21,6 +21,9 @@ window.initialiseLibrarySystems=function(){
   return registry;
 };
 
+// Allow both explicit boot-time initialisation and late module loading.
+// This avoids waiting for window.load when the interactive library starts.
+window.initialiseLibrarySystems();
 window.addEventListener('load',()=>{
   if(window.initialiseLibrarySystems) window.initialiseLibrarySystems();
 });
