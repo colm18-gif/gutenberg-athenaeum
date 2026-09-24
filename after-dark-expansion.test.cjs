@@ -87,9 +87,9 @@ test('return-and-discovery table is communal and preserves left-at-desk behavior
 });
 
 test('requested Poly Haven assets are local 1K files with no runtime model hotlinks',()=>{
-  const requested=['Shelf_01','CheeseBox_01','wooden_crate_01','wooden_crate_02','wooden_ladder_02','hand_truck','vintage_spacecraft_instrument','WoodenTable_01','ArmChair_01','seadogs_compass','vintage_suitcase'];
+  const requested=['CheeseBox_01','wooden_crate_01','wooden_crate_02','wooden_ladder_02','hand_truck','vintage_spacecraft_instrument','WoodenTable_01','ArmChair_01','seadogs_compass','vintage_suitcase'];
   for(const asset of requested){const directory=`assets/polyhaven/models/${asset}`;assert.ok(fs.existsSync(directory),`${asset} directory should exist`);const gltf=fs.readdirSync(directory).find(file=>file.endsWith('_1k.gltf'));assert.ok(gltf,`${asset} should have a 1K glTF`);assert.ok(fs.statSync(`${directory}/${gltf}`).size>100,`${asset} glTF should not be empty`)}
-  for(const material of ['smoked_walnut_veneer','brown_leather','leather_red_02','old_stone_wall','blue_plaster_weathered']){const directory=`assets/polyhaven/materials/${material}`;assert.ok(fs.existsSync(directory));assert.ok(fs.readdirSync(directory).every(file=>!/_[248]k\./.test(file)),`${material} must remain 1K`)}
+  for(const material of ['smoked_walnut_veneer','leather_red_02']){const directory=`assets/polyhaven/materials/${material}`;assert.ok(fs.existsSync(directory));assert.ok(fs.readdirSync(directory).every(file=>!/_[248]k\./.test(file)),`${material} must remain 1K`)}
   assert.doesNotMatch(game,/dl\.polyhaven\.org/);
   assert.doesNotMatch(expansion,/dl\.polyhaven\.org/);
   assert.doesNotMatch(stair,/dl\.polyhaven\.org/);

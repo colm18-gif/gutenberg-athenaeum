@@ -13,7 +13,6 @@ All six models are released under [CC0 1.0 Universal](https://creativecommons.or
 | Roof benches | Painted Wooden Bench | Kuutti Siitonen | https://polyhaven.com/a/painted_wooden_bench |
 | Window and constellation seats | Painted Wooden Sofa | Kuutti Siitonen | https://polyhaven.com/a/painted_wooden_sofa |
 | Return-and-discovery table | Wooden Table 01 | Poly Haven | https://polyhaven.com/a/WoodenTable_01 |
-| Sorting-room utility shelves | Shelf 01 | Poly Haven | https://polyhaven.com/a/Shelf_01 |
 | Sorting-room crates | Cheese Box 01, Wooden Crate 01 and 02 | Poly Haven | https://polyhaven.com/a/CheeseBox_01 |
 | Sorting-room ladder | Wooden Ladder 02 | Poly Haven | https://polyhaven.com/a/wooden_ladder_02 |
 | Sorting-room hand truck | Hand Truck | Poly Haven | https://polyhaven.com/a/hand_truck |
@@ -21,8 +20,7 @@ All six models are released under [CC0 1.0 Universal](https://creativecommons.or
 | Departures compass | Seadog's Compass | Poly Haven | https://polyhaven.com/a/seadogs_compass |
 | Departures luggage | Vintage Suitcase | Poly Haven | https://polyhaven.com/a/vintage_suitcase |
 
-The shared 1K materials `smoked_walnut_veneer`, `brown_leather`,
-`leather_red_02`, `old_stone_wall`, and `blue_plaster_weathered` are also
+The shared 1K materials `smoked_walnut_veneer` and `leather_red_02` are also
 locally cached from Poly Haven under the same CC0 licence. The exact source
 URLs and generated local file manifest are recorded in
 `assets/polyhaven/manifest.json`; `scripts/fetch-polyhaven-assets.mjs`
