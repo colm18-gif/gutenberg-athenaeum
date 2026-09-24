@@ -78,15 +78,30 @@
   "textures": [
     {
       "sampler": 0,
-      "source": 0
+      "source": 0,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 3
+        }
+      }
     },
     {
       "sampler": 0,
-      "source": 1
+      "source": 1,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 4
+        }
+      }
     },
     {
       "sampler": 0,
-      "source": 2
+      "source": 2,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 5
+        }
+      }
     }
   ],
   "images": [
@@ -104,6 +119,21 @@
       "mimeType": "image/jpeg",
       "name": "CheeseBox_01_metallic-CheeseBox_01_roughness",
       "uri": "textures/CheeseBox_01_arm_1k.jpg"
+    },
+    {
+      "uri": "textures/CheeseBox_01_nor_gl_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "CheeseBox_01_nor_gl_ktx2"
+    },
+    {
+      "uri": "textures/CheeseBox_01_diff_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "CheeseBox_01_diff_ktx2"
+    },
+    {
+      "uri": "textures/CheeseBox_01_arm_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "CheeseBox_01_metallic-CheeseBox_01_roughness_ktx2"
     }
   ],
   "accessors": [
@@ -229,5 +259,8 @@
       "byteLength": 31960,
       "uri": "CheeseBox_01.bin"
     }
+  ],
+  "extensionsUsed": [
+    "KHR_texture_basisu"
   ]
 }

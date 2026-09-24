@@ -123,6 +123,8 @@
     function update(dt){collectTimer-=dt;if(collectTimer<=0){collectTimer=4;collectTextures()}tuneTimer-=dt;if(tuneTimer<=0){tuneTimer=.2;tuneSomeTextures(3)}}
 
     setTier(TIERS[tierIndex]);
-    return {render,update,setTier,stepDown,resize:buildTargets,get tier(){return TIERS[tierIndex]},get environment(){return scene.environment}};
+    // Shaders are compiled for the target they draw into, so warm-up must bind the same one.
+    function bindSceneTarget(){renderer.setRenderTarget(TIERS[tierIndex]==='off'||!sceneTarget?null:sceneTarget)}
+    return {render,update,setTier,stepDown,resize:buildTargets,bindSceneTarget,get tier(){return TIERS[tierIndex]},get environment(){return scene.environment}};
   };
 })();

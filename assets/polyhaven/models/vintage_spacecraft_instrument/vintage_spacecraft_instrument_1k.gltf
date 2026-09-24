@@ -101,27 +101,57 @@
   "textures": [
     {
       "sampler": 0,
-      "source": 0
+      "source": 0,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 4
+        }
+      }
     },
     {
       "sampler": 0,
-      "source": 1
+      "source": 1,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 5
+        }
+      }
     },
     {
       "sampler": 0,
-      "source": 2
+      "source": 2,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 6
+        }
+      }
     },
     {
       "sampler": 0,
-      "source": 0
+      "source": 0,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 4
+        }
+      }
     },
     {
       "sampler": 0,
-      "source": 3
+      "source": 3,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 5
+        }
+      }
     },
     {
       "sampler": 0,
-      "source": 2
+      "source": 2,
+      "extensions": {
+        "KHR_texture_basisu": {
+          "source": 6
+        }
+      }
     }
   ],
   "images": [
@@ -144,6 +174,21 @@
       "mimeType": "image/jpeg",
       "name": "vintage_spacecraft_instrument_diff-vintage_spacecraft_instrument_alpha",
       "uri": "textures/vintage_spacecraft_instrument_diff_1k.jpg"
+    },
+    {
+      "uri": "textures/vintage_spacecraft_instrument_nor_gl_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "vintage_spacecraft_instrument_nor_gl_ktx2"
+    },
+    {
+      "uri": "textures/vintage_spacecraft_instrument_diff_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "vintage_spacecraft_instrument_diff_ktx2"
+    },
+    {
+      "uri": "textures/vintage_spacecraft_instrument_arm_1k.ktx2",
+      "mimeType": "image/ktx2",
+      "name": "vintage_spacecraft_instrument_metal-vintage_spacecraft_instrument_rough_ktx2"
     }
   ],
   "accessors": [
@@ -541,5 +586,8 @@
       "byteLength": 1723676,
       "uri": "vintage_spacecraft_instrument.bin"
     }
+  ],
+  "extensionsUsed": [
+    "KHR_texture_basisu"
   ]
 }
