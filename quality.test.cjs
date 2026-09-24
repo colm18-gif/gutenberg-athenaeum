@@ -18,7 +18,7 @@ test('visual and sound layers load before the game and are optional',()=>{
 });
 
 test('the number of active lights stays constant so walking never recompiles shaders',()=>{
-  assert.match(game,/LIGHT_BUDGET=touchMode\?6:lowPowerDevice\?8:12/);
+  assert.match(game,/LIGHT_BUDGET=lowPowerDevice\?6:touchMode\?8:12/);
   assert.match(game,/lightCandidates\[i\]\.visible=i<LIGHT_BUDGET/);
   assert.match(game,/light\.parent===camera\?Infinity/,'the reader lantern is never dropped');
 });
@@ -61,4 +61,12 @@ test('lightning respects reduced motion and head bob follows the footstep cadenc
 test('self-hosted typefaces ship with their licences',()=>{
   for(const file of ['im-fell-english-sc-latin-400-normal.woff2','cormorant-garamond-latin-400-normal.woff2','cormorant-garamond-latin-500-normal.woff2','cormorant-garamond-latin-600-normal.woff2','cormorant-garamond-latin-400-italic.woff2','OFL-IM-Fell.txt','OFL-Cormorant.txt'])assert.ok(fs.statSync(`assets/fonts/${file}`).size>1000,file);
   assert.match(fs.readFileSync('styles.css','utf8'),/@font-face\{font-family:'IM Fell English SC'/);
+});
+
+test('tablets render sharply with smoothing and lamp glow, and only weak hardware starts lighter',()=>{
+  assert.match(game,/pixelRatioCap=touchMode\?\(lowPowerDevice\?1:1\.5\)/,'modern tablets are no longer rendered below their CSS resolution');
+  assert.match(game,/automaticTier=lowPowerDevice\?'low':touchMode\?'medium':'high'/);
+  assert.match(game,/lowPowerDevice=weakHardware\|\|\(!touchMode&&/,'being a touch device no longer implies low power');
+  assert.match(visual,/sceneTarget=makeTarget\(width,height,tier==='high'\?4:2\)/,'every post tier multisamples');
+  assert.match(game,/antialias:visualTier==='off',/);
 });

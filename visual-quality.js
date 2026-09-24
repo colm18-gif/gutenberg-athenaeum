@@ -89,7 +89,8 @@
     function buildTargets(){
       disposeTargets();const tier=TIERS[tierIndex];if(tier==='off')return;
       renderer.getDrawingBufferSize(size);width=size.x;height=size.y;
-      sceneTarget=makeTarget(width,height,tier==='high'?4:tier==='medium'?2:0);
+      // Every post-processed tier keeps some multisampling so edges never look jagged.
+      sceneTarget=makeTarget(width,height,tier==='high'?4:2);
       if(tier!=='low'){const hw=width>>1,hh=height>>1,qw=width>>2,qh=height>>2,ew=width>>3,eh=height>>3;brightTarget=makeTarget(hw,hh,-1);blurA=makeTarget(qw,qh,-1);blurB=makeTarget(qw,qh,-1);blurC=makeTarget(ew,eh,-1);blurD=makeTarget(ew,eh,-1)}
     }
     function pass(material,target){quad.material=material;renderer.setRenderTarget(target);renderer.render(fullscreen,postCamera)}

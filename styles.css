@@ -108,3 +108,6 @@ body.in-flight #exploreNudge,body.in-flight #hint{opacity:0!important}
 #railHud .flight-line b{position:absolute;top:50%;left:0;transform:translate(-50%,-50%);font-size:12px;color:#ffe2ad;font-weight:400}
 #railHud .flight-readout{margin-top:7px;font-size:10px;color:#9f8e6f;font-family:ui-monospace,monospace;letter-spacing:.1em}
 @media (max-width:600px){#railHud .flight-track span{display:none}}
+/* On touch layouts the sound button sits under the title; keep the settings cog beside it
+   rather than underneath the journal button in the top-right corner. */
+@media (hover:none) and (pointer:coarse){#settingsButton{right:auto;left:calc(55px + env(safe-area-inset-left,0px));top:calc(48px + env(safe-area-inset-top,0px))}}
