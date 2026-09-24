@@ -64,8 +64,9 @@
     // beds: [kind, gain, options]; events: [type, per minute, gain, pitch spread]; ticks: [interval s, type, gain].
     const QUIET_ROOM={beds:[['air',.05]],events:[['creak',.8,.05],['rustle',1,.04]]};
     const RECIPES={
-      'main-library':{beds:[],events:[['creak',1,.05],['rustle',1.6,.035]]},
-      'upper-floor':{beds:[['air',.04]],events:[['creak',1.6,.06]]},
+      // The Grand Hall and its gallery keep only their own rain, fire and lamplit hum: nothing chirps or creaks there.
+      'main-library':{beds:[]},
+      'upper-floor':{beds:[]},
       'east-wing':QUIET_ROOM,'west-wing':QUIET_ROOM,
       'restricted-stacks':{beds:[['air',.06]],events:[['whisper',1.2,.04],['creak',.8,.05]]},
       'roof-garden':{beds:[['wind',.14]],events:[['chimes',2.2,.08],['owl',.4,.06]]},
@@ -88,11 +89,12 @@
       study:{beds:[['fire',.05],['air',.03]],ticks:[[1,'tick',.045]],events:[['rustle',1.5,.04]]},
       garden:{beds:[['wind',.06],['fountain',.07]],events:[['bird',3,.05],['cricket',6,.035]]},
       verne:{beds:[['rumble',.08],['waves',.05]],events:[['bubble',8,.05],['creak',1,.05]]},
-      wells:{beds:[['hum',.05]],ticks:[[.5,'tick',.05]],events:[['telegraph',1.2,.05]]},
+      wells:{beds:[['hum',.05]],events:[['telegraph',.6,.04]]},
       haggard:{beds:[['wind',.08],['insects',.07]],events:[['thump',.6,.045]]},
       doyle:{beds:[['fire',.06]],ticks:[[1,'tock',.04]],events:[['clop',.8,.045],['rustle',1,.035]]},
       contested:{beds:[['air',.06]],events:[['whisper',2.2,.035],['scratch',.8,.035]]},
-      'curious-horologist':{beds:[['air',.03]],ticks:[[1,'tick',.1],[.5,'tick',.05],[1.5,'tock',.08],[.75,'tick',.04]],events:[['chime',.7,.08]]},
+      // No ticking: it pulled attention from the page. The clocks only chime, softly and rarely.
+      'curious-horologist':{beds:[['air',.04]],events:[['chime',.35,.05]]},
       'curious-conservatory':{beds:[['fountain',.12],['insects',.08]],events:[['cricket',14,.04],['owl',.6,.045],['drip',3,.035]]},
       'curious-parlour':{beds:[['fire',.12]],ticks:[[1.2,'tock',.035]],events:[['creak',.8,.05],['clink',.4,.035]]},
       'curious-attic':{beds:[['wind',.12]],events:[['creak',3,.07],['musicbox',.6,.04]]},

@@ -38,3 +38,9 @@ test('rooms left behind are torn down once silent, and menus soften the sound',(
   assert.match(source,/if\(now-room\.silentSince>6\)teardown\(room\)/);
   assert.match(source,/const target=state\.covered\?\.25:state\.reading\?\.7:1/);
 });
+
+test('the Grand Hall and gallery add nothing, and the horologist and Wells rooms do not tick',()=>{
+  const all=recipes();
+  for(const id of ['main-library','upper-floor'])assert.equal((all[id].events||[]).length+(all[id].ticks||[]).length+all[id].beds.length,0,id);
+  for(const id of ['curious-horologist','wells'])assert.ok(!(all[id].ticks||[]).length,`${id} has no ticking clock`);
+});
