@@ -87,3 +87,24 @@ body.reduced-motion #veil:before{animation:none}
 #flightHud .flight-readout{margin-top:7px;font-size:10px;color:#9f8e6f;font-family:ui-monospace,monospace;letter-spacing:.1em}
 body.in-flight #exploreNudge,body.in-flight #hint{opacity:0!important}
 @media (max-width:600px){#flightHud .flight-track span{display:none}}
+/* After reading in a chair: a short, clear list of places the book can go. */
+#bookActions .hidden-unless-seat{display:none}
+#bookActions.after-seat .hidden-unless-seat:not(.hidden){display:inline-block}
+#bookActions.after-seat #openBook,#bookActions.after-seat #askLibrarian{display:none}
+#bookActions.after-seat .meta em{color:#d8c39b;font-style:italic}
+#bookActions.after-seat .meta{order:-3}#bookActions.after-seat #leaveOnChair{order:-2}#bookActions.after-seat #returnBook{order:-1}
+/* Railway destination picker and journey gauge. */
+#journeyPicker{position:fixed;inset:0;z-index:39;display:grid;place-items:center;background:rgba(5,9,8,.68);backdrop-filter:blur(5px);padding:24px}
+#journeyPicker.hidden{display:none}
+.journey-options button{display:grid;gap:4px}
+.journey-options button strong{font-weight:500;letter-spacing:.06em;color:#f0dfbd}
+.journey-options button span{font-size:.9em;color:#bfb29a;font-style:italic}
+#railHud{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top,0px));transform:translate(-50%,-8px);z-index:12;width:min(560px,86vw);padding:10px 16px 11px;background:rgba(12,18,15,.74);border:1px solid rgba(198,154,80,.55);color:#ead39d;font-family:var(--display-face,Georgia,serif);text-align:center;letter-spacing:.14em;opacity:0;pointer-events:none;transition:opacity .5s,transform .5s}
+#railHud.active{opacity:1;transform:translate(-50%,0)}
+#railHud .flight-phase{font-size:15px;margin-bottom:8px}
+#railHud .flight-track{display:flex;align-items:center;gap:10px;font-size:10px;color:#bfa77a}
+#railHud .flight-line{position:relative;flex:1;height:2px;background:rgba(198,154,80,.25)}
+#railHud .flight-line i{position:absolute;left:0;top:0;height:100%;width:0;background:linear-gradient(90deg,#3d6b4f,#e8c07e)}
+#railHud .flight-line b{position:absolute;top:50%;left:0;transform:translate(-50%,-50%);font-size:12px;color:#ffe2ad;font-weight:400}
+#railHud .flight-readout{margin-top:7px;font-size:10px;color:#9f8e6f;font-family:ui-monospace,monospace;letter-spacing:.1em}
+@media (max-width:600px){#railHud .flight-track span{display:none}}
