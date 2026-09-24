@@ -53,3 +53,21 @@ and materials while the imported hardware supplies accurate rail proportions.
 The H. Rider Haggard lost-kingdom painting and Arthur Conan Doyle consulting-room painting were generated specifically for this project with OpenAI image generation and then locally optimized for the game.
 
 Scans used for the twelve newly added Haggard and Doyle covers are cached locally from the Open Library Covers API. Their Open Library cover identifiers are: 830243, 12640128, 8228482, 3064908, 1748730, 6477640, 2009278, 5815386, 5659856, 5788361, 9987819, and 9987794.
+
+## Typefaces
+
+Self-hosted from `assets/fonts` (Latin subsets, WOFF2, via the Fontsource packages).
+Both are licensed under the [SIL Open Font License 1.1](https://openfontlicense.org);
+the full licence texts sit beside the font files.
+
+| Use | Typeface | Designer | Licence file |
+|---|---|---|---|
+| Title, headings, HUD mark | IM Fell English SC | Igino Marini (after the Fell types) | `assets/fonts/OFL-IM-Fell.txt` |
+| Notes, prompts, dialogue | Cormorant Garamond | Christian Thalmann / Catharsis Fonts | `assets/fonts/OFL-Cormorant.txt` |
+
+## Generated sound and light
+
+`soundscape.js` synthesises the room reverberation, rain on glass, storm thunder
+and the entrance clock's tick in the browser with the Web Audio API, and
+`visual-quality.js` renders its reflection environment from a small procedural
+scene. Neither uses any third-party recording or image.
