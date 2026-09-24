@@ -159,16 +159,31 @@
     function thrustAt(e){if(e<4)return 0;if(e<9)return (e-4)/5;if(e<20)return 1;if(e<25)return .55-(e-20)*.08;return 0}
     function speedAt(e){if(e<4)return 0;if(e<12)return Math.pow((e-4)/8,1.6);if(e<18)return 1;if(e<25)return Math.max(.06,1-(e-18)/7);return 0}
     const streakStars=Array.from({length:70},(_,i)=>({x:(i*83+17)%256,y:(i*151+37)%256,r:.6+(i%3)*.55,warm:i%5===0}));
+    // Painted worlds for the porthole, drawn once and reused: Earth with oceans, continents, cloud and a thin
+    // blue atmosphere; the Moon grey with dark seas and craters. Both are lit from the upper left.
+    const worldImages={};
+    function worldImage(kind){if(worldImages[kind])return worldImages[kind];const size=256,canvas=document.createElement('canvas');canvas.width=canvas.height=size;const c=canvas.getContext('2d'),r=size/2,seeded=(i=>()=>(i=(i*9301+49297)%233280)/233280)(kind==='earth'?11:5);
+      c.save();c.beginPath();c.arc(r,r,r-1,0,Math.PI*2);c.clip();
+      if(kind==='earth'){const sea=c.createRadialGradient(r*.7,r*.6,10,r,r,r);sea.addColorStop(0,'#3f86b8');sea.addColorStop(1,'#12385a');c.fillStyle=sea;c.fillRect(0,0,size,size);
+        for(let i=0;i<14;i++){c.fillStyle=['#4f7a3a','#6b7f45','#8a7a4e','#3f6a34'][i%4];c.beginPath();const x=seeded()*size,y=size*.15+seeded()*size*.7;for(let k=0;k<7;k++)c.ellipse(x+(seeded()-.5)*50,y+(seeded()-.5)*34,10+seeded()*26,6+seeded()*16,seeded()*3,0,Math.PI*2);c.fill()}
+        c.fillStyle='rgba(235,242,250,.85)';c.beginPath();c.ellipse(r,1,r*.45,6,0,0,Math.PI*2);c.ellipse(r,size-1,r*.4,5,0,0,Math.PI*2);c.fill();
+        for(let i=0;i<26;i++){c.fillStyle=`rgba(255,255,255,${.25+seeded()*.45})`;c.beginPath();c.ellipse(seeded()*size,seeded()*size,18+seeded()*42,3+seeded()*6,(seeded()-.5)*.5,0,Math.PI*2);c.fill()}}
+      else{c.fillStyle='#b8b3a8';c.fillRect(0,0,size,size);for(let i=0;i<7;i++){c.fillStyle='rgba(88,86,84,.55)';c.beginPath();c.ellipse(size*.2+seeded()*size*.55,size*.2+seeded()*size*.5,14+seeded()*34,10+seeded()*22,seeded()*3,0,Math.PI*2);c.fill()}
+        for(let i=0;i<46;i++){const x=seeded()*size,y=seeded()*size,cr=2+Math.pow(seeded(),2)*14;c.fillStyle='rgba(70,68,66,.35)';c.beginPath();c.arc(x,y,cr,0,Math.PI*2);c.fill();c.strokeStyle='rgba(235,232,222,.45)';c.lineWidth=1;c.beginPath();c.arc(x-cr*.15,y-cr*.15,cr,Math.PI*.9,Math.PI*1.7);c.stroke()}}
+      const shade=c.createRadialGradient(r*.55,r*.5,r*.35,r*.75,r*.75,r*1.45);shade.addColorStop(0,'rgba(0,0,0,0)');shade.addColorStop(.55,'rgba(0,0,0,.25)');shade.addColorStop(1,'rgba(0,0,0,.92)');c.fillStyle=shade;c.fillRect(0,0,size,size);c.restore();
+      return worldImages[kind]=canvas}
+    function drawWorld(c,kind,x,y,r){if(kind==='earth'){const halo=c.createRadialGradient(x,y,r*.92,x,y,r*1.16);halo.addColorStop(0,'rgba(120,180,255,.55)');halo.addColorStop(1,'rgba(120,180,255,0)');c.fillStyle=halo;c.beginPath();c.arc(x,y,r*1.16,0,Math.PI*2);c.fill()}c.drawImage(worldImage(kind),x-r,y-r,r*2,r*2)}
+    const fixedStars=Array.from({length:70},(_,i)=>({x:(i*97.13)%256,y:(i*57.71+i*i*.37)%256,a:.25+((i*37)%10)/14}));
     function paintFlightWindow(trip,e,dt){
       const c=windowTexture.image.getContext('2d'),w=256,speed=speedAt(e),toMoon=trip.direction==='moon';
-      const sky=c.createLinearGradient(0,0,0,w),lift=Math.min(1,Math.max(0,(e-4)/6));sky.addColorStop(0,'#040914');sky.addColorStop(1,lift<1?`rgba(${40-lift*33|0},${54-lift*44|0},${82-lift*62|0},1)`:'#070d1c');c.fillStyle=sky;c.fillRect(0,0,w,w);
+      const sky=c.createLinearGradient(0,0,0,w),lift=Math.min(1,Math.max(0,(e-4)/6));sky.addColorStop(0,'#040914');sky.addColorStop(1,lift<1?`rgba(${40-lift*33|0},${54-lift*44|0},${82-lift*62|0},1)`:'#070d1c');c.fillStyle=sky;c.fillRect(0,0,w,w);for(const star of fixedStars){c.fillStyle=`rgba(235,238,250,${star.a*lift})`;c.fillRect(star.x,star.y,1.2,1.2)}
       // Stars stream past the glass: still on the pad, long streaks at full speed.
       const travel=dt*speed*420,streak=2+speed*38;
       for(const star of streakStars){star.y+=travel*(.55+star.r*.35);if(star.y>w+streak){star.y-=w+streak;star.x=(star.x+97)%w}c.strokeStyle=star.warm?'rgba(246,223,168,.9)':'rgba(200,214,230,.9)';c.lineWidth=star.r;c.beginPath();c.moveTo(star.x,star.y);c.lineTo(star.x,star.y-streak*(.5+star.r*.4));c.stroke()}
       // The world left behind sinks away below; the destination swells from above.
-      const leave=Math.min(1,Math.max(0,(e-4)/9)),origin=toMoon?'#3d7292':'#a7a29a',target=toMoon?'#b3aea3':'#3f7aa0';
-      if(leave<1){const r=190*(1-leave)+10,cy=w+r*.72+leave*120;c.fillStyle=origin;c.beginPath();c.arc(w/2,cy,r,0,Math.PI*2);c.fill();if(toMoon){c.fillStyle='rgba(255,196,110,.8)';for(let i=0;i<9;i++){c.beginPath();c.arc(w/2-60+i*15,cy-r+6+(i%3)*3,1.6,0,Math.PI*2);c.fill()}}}
-      const arrive=Math.min(1,Math.max(0,(e-13)/12));if(arrive>0){const r=8+Math.pow(arrive,2.2)*210,cy=-r*.35+arrive*(w*.55);c.fillStyle=target;c.beginPath();c.arc(w/2+18*(1-arrive),cy,r,0,Math.PI*2);c.fill();c.fillStyle='rgba(255,248,225,.18)';c.beginPath();c.arc(w/2+18*(1-arrive)-r*.28,cy-r*.28,r*.45,0,Math.PI*2);c.fill()}
+      const leave=Math.min(1,Math.max(0,(e-4)/9));
+      if(leave<1){const r=190*(1-leave)+10,cy=w+r*.72+leave*120;drawWorld(c,toMoon?'earth':'moon',w/2,cy,r);if(toMoon){c.fillStyle='rgba(255,196,110,.8)';for(let i=0;i<9;i++){c.beginPath();c.arc(w/2-60+i*15,cy-r+6+(i%3)*3,1.6,0,Math.PI*2);c.fill()}}}
+      const arrive=Math.min(1,Math.max(0,(e-13)/12));if(arrive>0)drawWorld(c,toMoon?'moon':'earth',w/2+18*(1-arrive),-(8+Math.pow(arrive,2.2)*210)*.35+arrive*(w*.55),8+Math.pow(arrive,2.2)*210);
       // Exhaust glow licks the lower rim while the engine burns.
       const burn=thrustAt(e);if(burn>0){const g=c.createRadialGradient(w/2,w+30,10,w/2,w+30,150);g.addColorStop(0,`rgba(255,170,70,${.55*burn})`);g.addColorStop(1,'rgba(255,120,40,0)');c.fillStyle=g;c.fillRect(0,0,w,w)}
       windowTexture.needsUpdate=true;

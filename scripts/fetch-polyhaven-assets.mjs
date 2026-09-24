@@ -3,7 +3,6 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const models = [
-  'Shelf_01',
   'CheeseBox_01',
   'wooden_crate_01',
   'wooden_crate_02',
@@ -23,10 +22,7 @@ const models = [
 
 const materials = [
   'smoked_walnut_veneer',
-  'brown_leather',
-  'leather_red_02',
-  'old_stone_wall',
-  'blue_plaster_weathered'
+  'leather_red_02'
 ];
 
 const root = path.resolve('assets/polyhaven');
@@ -87,8 +83,7 @@ async function fetchMaterial(id) {
   const channels = {
     diffuse: findTexture(files, ['_diff_', '_albedo_', '_coll1_']),
     normal: findTexture(files, '_nor_gl_'),
-    roughness: findTexture(files, '_rough_'),
-    displacement: findTexture(files, '_disp_')
+    roughness: findTexture(files, '_rough_')
   };
   const saved = {};
   for (const [channel, file] of Object.entries(channels)) {
