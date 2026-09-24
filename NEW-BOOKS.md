@@ -113,3 +113,42 @@
 - King Solomon's Mines — H. Rider Haggard ([Project Gutenberg](https://www.gutenberg.org/ebooks/2166))
 - The Coming Race — Edward Bulwer-Lytton ([Project Gutenberg](https://www.gutenberg.org/ebooks/1951))
 - Erewhon — Samuel Butler ([Project Gutenberg](https://www.gutenberg.org/ebooks/1906))
+
+
+# Behind the curious doors
+
+Twenty-two books in four new rooms off the Grand Hall. Texts are bundled in `texts/` from the Project Gutenberg editions (via the GITenberg mirror), so they open offline.
+
+## The Horologist’s Study (behind the round clockwork door, west wall)
+
+- Flatland: A Romance of Many Dimensions — Edwin A. Abbott ([Project Gutenberg](https://www.gutenberg.org/ebooks/201))
+- Looking Backward: 2000–1887 — Edward Bellamy ([Project Gutenberg](https://www.gutenberg.org/ebooks/624))
+- The Sketch Book of Geoffrey Crayon, Gent. — Washington Irving ([Project Gutenberg](https://www.gutenberg.org/ebooks/2048))
+- The Last Man — Mary Shelley ([Project Gutenberg](https://www.gutenberg.org/ebooks/18247))
+- The Story of the Amulet — E. Nesbit ([Project Gutenberg](https://www.gutenberg.org/ebooks/837))
+
+## The Night Conservatory (behind the stained-glass door, east wall)
+
+- Mosses from an Old Manse — Nathaniel Hawthorne ([Project Gutenberg](https://www.gutenberg.org/ebooks/512))
+- The Enchanted April — Elizabeth von Arnim ([Project Gutenberg](https://www.gutenberg.org/ebooks/16389))
+- The Garden Party, and Other Stories — Katherine Mansfield ([Project Gutenberg](https://www.gutenberg.org/ebooks/1429))
+- Green Mansions — W. H. Hudson ([Project Gutenberg](https://www.gutenberg.org/ebooks/942))
+- Monday or Tuesday — Virginia Woolf ([Project Gutenberg](https://www.gutenberg.org/ebooks/29220))
+
+## The Ghost-Story Parlour (secret: tilt the black volume in the bookcase beside the hearth)
+
+- Ghost Stories of an Antiquary — M. R. James ([Project Gutenberg](https://www.gutenberg.org/ebooks/8486))
+- Carmilla — J. Sheridan Le Fanu ([Project Gutenberg](https://www.gutenberg.org/ebooks/10007))
+- The Haunted Hotel — Wilkie Collins ([Project Gutenberg](https://www.gutenberg.org/ebooks/170))
+- The Canterville Ghost — Oscar Wilde ([Project Gutenberg](https://www.gutenberg.org/ebooks/14522))
+
+## The Children’s Attic (behind the small blue nursery door, east wall)
+
+- Just So Stories — Rudyard Kipling ([Project Gutenberg](https://www.gutenberg.org/ebooks/2781))
+- The Blue Fairy Book — Andrew Lang (ed.) ([Project Gutenberg](https://www.gutenberg.org/ebooks/503))
+- The Velveteen Rabbit — Margery Williams ([Project Gutenberg](https://www.gutenberg.org/ebooks/11757))
+- The Tale of Peter Rabbit — Beatrix Potter ([Project Gutenberg](https://www.gutenberg.org/ebooks/14838))
+- The Princess and the Goblin — George MacDonald ([Project Gutenberg](https://www.gutenberg.org/ebooks/708))
+- Five Children and It — E. Nesbit ([Project Gutenberg](https://www.gutenberg.org/ebooks/778))
+- At the Back of the North Wind — George MacDonald ([Project Gutenberg](https://www.gutenberg.org/ebooks/225))
+- The Wind in the Willows — Kenneth Grahame ([Project Gutenberg](https://www.gutenberg.org/ebooks/289))

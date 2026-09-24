@@ -76,3 +76,14 @@ body.reduced-motion #veil:before{animation:none}
 .entry-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#8c6537,#e8c07e);box-shadow:0 0 10px rgba(232,192,126,.6);transition:width .35s ease-out}
 .settings-card select{display:block;width:100%;margin-top:7px;padding:7px 9px;font:inherit;font-size:14px;color:inherit;background:rgba(255,248,232,.06);border:1px solid rgba(160,126,80,.55);border-radius:2px;accent-color:#815b2e}
 .settings-card select option{color:#1d150d}
+/* Rocket flight gauge: shows the journey is under way and how far it has come. */
+#flightHud{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top,0px));transform:translate(-50%,-8px);z-index:12;width:min(560px,86vw);padding:10px 16px 11px;background:rgba(10,8,6,.72);border:1px solid rgba(198,154,80,.55);color:#ead39d;font-family:var(--display-face,Georgia,serif);text-align:center;letter-spacing:.14em;opacity:0;pointer-events:none;transition:opacity .5s,transform .5s}
+#flightHud.active{opacity:1;transform:translate(-50%,0)}
+#flightHud .flight-phase{font-size:15px;margin-bottom:8px}
+#flightHud .flight-track{display:flex;align-items:center;gap:10px;font-size:10px;color:#bfa77a}
+#flightHud .flight-line{position:relative;flex:1;height:2px;background:rgba(198,154,80,.25)}
+#flightHud .flight-line i{position:absolute;left:0;top:0;height:100%;width:0;background:linear-gradient(90deg,#8c6537,#ffcf87);box-shadow:0 0 8px rgba(255,190,110,.7)}
+#flightHud .flight-line b{position:absolute;top:50%;left:0;transform:translate(-50%,-50%) rotate(90deg);font-size:12px;color:#ffe2ad;font-weight:400;text-shadow:0 0 8px #ff9a3c}
+#flightHud .flight-readout{margin-top:7px;font-size:10px;color:#9f8e6f;font-family:ui-monospace,monospace;letter-spacing:.1em}
+body.in-flight #exploreNudge,body.in-flight #hint{opacity:0!important}
+@media (max-width:600px){#flightHud .flight-track span{display:none}}

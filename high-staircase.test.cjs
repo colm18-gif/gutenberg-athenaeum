@@ -90,7 +90,8 @@ test('stair containment checks the full player radius and current vertical turn'
   assert.match(stair,/samples=\[\[0,0\],\[radius,0\]/);
   assert.match(stair,/stepY=from\.y\+\(to\.y-from\.y\)\*u/);
   assert.match(stair,/const pathStep=closestStep\(x,z\);if\(pathStep\)return true/);
-  assert.match(stair,/if\(rocketTrip\)return false/);
+  // In flight the cabin floor stays walkable; refusing every position made the game spam "returns you to firm ground".
+  assert.match(stair,/if\(rocketTrip\)return inTransit\(x,z\)&&Math\.hypot\(x-tx,z-tz\)<2\.45/);
 });
 
 test('continuous spiral collision has no impassable gaps between outer treads',()=>{

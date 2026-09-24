@@ -2,7 +2,9 @@
   'use strict';
 
   window.createHighStaircase=function(options){
-    const {THREE,scene,MAT,player,camera,interactables,books,coverTexture,canvasTexture,showNotice,sound,playSample,lastSafePosition,modelTemplate,isLowBandwidth}=options;
+    const {THREE,scene,MAT,player,camera,interactables,books,coverTexture,canvasTexture,showNotice:gameNotice,sound,playSample,lastSafePosition,modelTemplate,isLowBandwidth,isReducedMotion=()=>false}=options;
+    // During a flight only the rocket's own messages reach the screen; the game asks noticeAllowed() first.
+    let speaking=false;function showNotice(text,seconds){speaking=true;try{gameNotice(text,seconds)}finally{speaking=false}}
     const root=new THREE.Group();root.name='the-impossible-stair';scene.add(root);
     const cx=224,cz=30,topY=30,steps=180,turns=3.2,outerRadius=12,innerRadius=4.35,mx=340,mz=30,moonRadius=18,tx=380,tz=30;
     const stepPath=[],topBooks=[],moonBooks=[],animatedLights=[];let rocketTrip=null,rocketBoarded=null,lastSpaceTone=-30,hallStarField=null;
@@ -115,11 +117,11 @@
     // A small riveted cabin makes launch a journey rather than a teleport. The player
     // is boarded here for a countdown, ignition and a short flight in either direction.
     cylinder(3.1,3.1,.35,28,iron,tx,-.18,tz);const cabinWall=add(new THREE.CylinderGeometry(3.05,3.05,4.6,28,1,true),rocketMetal,tx,2.3,tz);cabinWall.material.side=THREE.BackSide;
-    cylinder(3.1,3.1,.3,28,iron,tx,4.65,tz);for(let i=0;i<12;i++){const a=i/12*Math.PI*2;cylinder(.05,.05,4.1,8,MAT.brass,tx+Math.cos(a)*2.88,2.25,tz+Math.sin(a)*2.88)}
+    cylinder(3.1,3.1,.3,28,iron,tx,4.65,tz);for(let i=0;i<12;i++){if(i===9)continue;/* keep the porthole clear */const a=i/12*Math.PI*2;cylinder(.05,.05,4.1,8,MAT.brass,tx+Math.cos(a)*2.88,2.25,tz+Math.sin(a)*2.88)}
     const windowTexture=canvasTexture((c,w,h)=>{c.fillStyle='#07101e';c.fillRect(0,0,w,h)},256,256);
-    const porthole=add(new THREE.CircleGeometry(.78,24),new THREE.MeshStandardMaterial({map:windowTexture,emissive:0x102544,emissiveIntensity:.45,side:THREE.DoubleSide}),tx,2.65,tz-3.01);
+    const porthole=add(new THREE.CircleGeometry(.98,32),new THREE.MeshStandardMaterial({map:windowTexture,emissive:0x102544,emissiveIntensity:.45,side:THREE.DoubleSide}),tx,2.65,tz-2.78);
     function paintJourneyWindow(stage){const c=windowTexture.image.getContext('2d'),w=256;c.fillStyle='#07101e';c.fillRect(0,0,w,w);for(let i=0;i<48;i++){const x=(i*83+17)%w,y=(i*151+37)%w,r=1+i%3;c.fillStyle=i%4?'#c8d2dc':'#f6dfa8';c.beginPath();c.arc(x,y,r,0,Math.PI*2);c.fill()}if(stage>=3){const radius=stage===3?76:stage===4?48:23;c.fillStyle=rocketBoarded==='moon'?'#3d7292':'#a7a29a';c.beginPath();c.arc(stage===3?155:173,176,radius,0,Math.PI*2);c.fill();c.fillStyle='rgba(247,240,213,.23)';c.beginPath();c.arc(153,156,radius*.5,0,Math.PI*2);c.fill()}windowTexture.needsUpdate=true}porthole.userData={type:'rocket-transit-window',title:'The rocket porthole',author:'Stars wait beyond the glass for the engine to remember which way is up.',action:'LOOK'};interactables.push(porthole);
-    const countdownTex=canvasTexture((ctx,w,h)=>{ctx.fillStyle='#24170d';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#c69a50';ctx.lineWidth=10;ctx.strokeRect(8,8,w-16,h-16);ctx.fillStyle='#ead39d';ctx.textAlign='center';ctx.font='bold 34px Georgia';ctx.fillText('LUNAR POST · COUNTDOWN',w/2,50)},640,78);const countdownPlate=add(new THREE.PlaneGeometry(2.8,.36),new THREE.MeshStandardMaterial({map:countdownTex,roughness:.7}),tx,3.85,tz-3.02);countdownPlate.userData=porthole.userData;interactables.push(countdownPlate);
+    const countdownTex=canvasTexture((ctx,w,h)=>{ctx.fillStyle='#24170d';ctx.fillRect(0,0,w,h);ctx.strokeStyle='#c69a50';ctx.lineWidth=10;ctx.strokeRect(8,8,w-16,h-16);ctx.fillStyle='#ead39d';ctx.textAlign='center';ctx.font='bold 34px Georgia';ctx.fillText('LUNAR POST · COUNTDOWN',w/2,50)},640,78);const countdownPlate=add(new THREE.PlaneGeometry(2.1,.27),new THREE.MeshStandardMaterial({map:countdownTex,roughness:.7}),tx,3.85,tz-2.76);countdownPlate.userData=porthole.userData;interactables.push(countdownPlate);
     const cabinDetail=(mesh,title,author,action='EXAMINE')=>{mesh.userData={type:'rocket-interior-detail',title,author,action};interactables.push(mesh);return mesh},cabinLeather=new THREE.MeshStandardMaterial({color:0x4b1d1b,roughness:.82}),gaugeFace=new THREE.MeshStandardMaterial({color:0xd8c89c,roughness:.72}),pipeMetal=new THREE.MeshStandardMaterial({color:0x7d5b2c,metalness:.7,roughness:.36}),cabinGlow=new THREE.MeshStandardMaterial({color:0xe8ba68,emissive:0xc77a28,emissiveIntensity:2.2,roughness:.72});
     // The projectile interior is a compact Victorian reading cabin rather than an empty shell.
     for(const side of [-1,1]){const bench=box(.58,.7,2.35,cabinLeather,tx+side*2.35,.5,tz+.45);cabinDetail(bench,'A buttoned launch couch','Horsehair padding, library-red leather, and straps labelled PLEASE REMAIN SEATED DURING GRAVITY.','SIT');for(const z of [tz-.5,tz+.2,tz+.9]){const button=cylinder(.035,.035,.04,8,MAT.brass,tx+side*2.04,.62,z);button.rotation.z=Math.PI/2}}
@@ -147,29 +149,66 @@
     function contains(x,z){return Math.hypot(x-cx,z-cz)<14.2||onMoon(x,z)||inTransit(x,z)}
     function closestStep(x,z,y=player.pos.y){let nearest=null,best=Infinity;for(let i=0;i<stepPath.length-1;i++){const from=stepPath[i],to=stepPath[i+1],dx=to.x-from.x,dz=to.z-from.z,lengthSquared=dx*dx+dz*dz,u=Math.max(0,Math.min(1,((x-from.x)*dx+(z-from.z)*dz)/lengthSquared)),stepY=from.y+(to.y-from.y)*u;if(Math.abs(stepY-y)>1.35)continue;const stepX=from.x+dx*u,stepZ=from.z+dz*u,d=(x-stepX)**2+(z-stepZ)**2;if(d<best){best=d;nearest={x:stepX,z:stepZ,y:stepY,a:from.a+(to.a-from.a)*u,distance:Math.sqrt(d)}}}return best<.48*.48?nearest:null}
     function floorAt(x,z){if(onMoon(x,z)||inTransit(x,z))return 0;if(!contains(x,z))return null;const r=Math.hypot(x-cx,z-cz);if(r<9.4&&player.pos.y>topY-2)return topY;if(Math.hypot(x-bottomX,z-bottomZ)<2.7&&player.pos.y<2)return 0;return closestStep(x,z)?.y??null}
-    function allowed(x,z){if(rocketTrip)return false;if(onMoon(x,z))return Math.hypot(x-mx,z-mz)<moonRadius-1;if(inTransit(x,z))return Math.hypot(x-tx,z-tz)<2.45;const pathStep=closestStep(x,z);if(pathStep)return true;const radius=player.radius||.42,samples=[[0,0],[radius,0],[-radius,0],[0,radius],[0,-radius],[radius*.707,radius*.707],[-radius*.707,radius*.707],[radius*.707,-radius*.707],[-radius*.707,-radius*.707]];const summit=Math.hypot(x-cx,z-cz)<9.05&&player.pos.y>topY-2,bottom=Math.hypot(x-bottomX,z-bottomZ)<2.2&&player.pos.y<2;if(summit||bottom)return samples.every(([dx,dz])=>summit?Math.hypot(x+dx-cx,z+dz-cz)<9.08:Math.hypot(x+dx-bottomX,z+dz-bottomZ)<2.38);return false}
+    function allowed(x,z){if(rocketTrip)return inTransit(x,z)&&Math.hypot(x-tx,z-tz)<2.45;if(onMoon(x,z))return Math.hypot(x-mx,z-mz)<moonRadius-1;if(inTransit(x,z))return Math.hypot(x-tx,z-tz)<2.45;const pathStep=closestStep(x,z);if(pathStep)return true;const radius=player.radius||.42,samples=[[0,0],[radius,0],[-radius,0],[0,radius],[0,-radius],[radius*.707,radius*.707],[-radius*.707,radius*.707],[radius*.707,-radius*.707],[-radius*.707,-radius*.707]];const summit=Math.hypot(x-cx,z-cz)<9.05&&player.pos.y>topY-2,bottom=Math.hypot(x-bottomX,z-bottomZ)<2.2&&player.pos.y<2;if(summit||bottom)return samples.every(([dx,dz])=>summit?Math.hypot(x+dx-cx,z+dz-cz)<9.08:Math.hypot(x+dx-bottomX,z+dz-bottomZ)<2.38);return false}
     function moveTo(x,y,z,yaw){player.pos.set(x,y,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,y+1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld()}
-    function boardRocket(direction){if(rocketTrip)return;rocketBoarded=direction;moveTo(tx,0,tz-.55,Math.PI);paintJourneyWindow(0);showNotice('The hatch closes behind you. The red launch button is on the navigation desk ahead. Press it to begin.',8);if(!playSample?.('doorOpen',.65,.9))sound(120,.5,'triangle',.08)}
-    function beginRocketTrip(){if(rocketTrip||!rocketBoarded)return;rocketTrip={direction:rocketBoarded,elapsed:0,stage:0};showNotice('LAUNCH SEQUENCE · 4…',2);if(!playSample?.('rocketLaunch',.25,.85))sound(80,.7,'sine',.06)}
+    function boardRocket(direction){if(rocketTrip)return;rocketBoarded=direction;moveTo(tx,0,tz+.35,0);player.pitch=.12;paintJourneyWindow(0);showNotice('The hatch closes behind you. The red launch button is on the navigation desk ahead, beneath the porthole. Press it to begin.',8);if(!playSample?.('doorOpen',.65,.9))sound(120,.5,'triangle',.08)}
+    function beginRocketTrip(){if(rocketTrip||!rocketBoarded)return;rocketTrip={direction:rocketBoarded,elapsed:0,stage:0,nextRumble:6.3};flightHud.show(rocketBoarded);showNotice('LAUNCH SEQUENCE · 4…',2);if(!playSample?.('rocketLaunch',.25,.85))sound(80,.7,'sine',.06)}
     function interact(object){const type=object?.userData?.type;if(type==='high-stair-door'){moveTo(bottomX,0,bottomZ+1.25,Math.PI);showNotice('The door shuts below you. The first rising tread is directly ahead; follow the brass rail upward.',7);if(!playSample?.('doorOpen',.9,.96))sound(92,1.1,'triangle',.15);localStorage.setItem('athenaeum-high-stair-discovered','1');return true}if(type==='high-stair-exit'||type==='summit-library-exit'){moveTo(entranceX,0,-11.15,0);showNotice(type==='summit-library-exit'?'The marked door folds thirty impossible floors into one quiet step. The western wing is waiting.':'The western wing receives you at the same hour you left it.',5);if(!playSample?.('doorOpen',.9,1))sound(145,.7,'triangle',.1);return true}if(type==='high-stair-inscription'){showNotice('The catalogue calls this the top. A narrow continuation vanishes into the dome, proving the catalogue optimistic.',7);sound(523,.7,'sine',.07);return true}if(type==='moon-rocket-launch'){boardRocket('moon');return true}if(type==='moon-rocket-return'){boardRocket('summit');return true}if(type==='rocket-start'){beginRocketTrip();return true}if(type==='rocket-cabin-exit'){if(rocketTrip){showNotice('The hatch is sealed during flight.',4)}else if(rocketBoarded==='moon'){rocketBoarded=null;moveTo(cx+2,topY,cz+3,Math.PI);showNotice('You step back into the Rocket Hall. The projectile waits.',5)}else if(rocketBoarded){rocketBoarded=null;moveTo(mx,0,mz+7,Math.PI);showNotice('You step back beneath the lunar sky. The projectile waits.',5)}return true}if(type==='rocket-transit-window'){showNotice(rocketTrip?'The stars move with unnerving deliberation beyond the riveted glass.':'The porthole reflects an empty cabin awaiting its next impossible journey.',5);return true}if(type==='rocket-interior-detail'){showNotice(object.userData.author,7);sound(310,.12,'triangle',.035);return true}if(type==='moon-sign'){showNotice('Only books that imagined other worlds before anyone could reach them are admitted here.',6);return true}return false}
+    // ---------- Making the flight read as a flight ----------
+    // Thrust over the 25-second trip: countdown, hard ignition, cruise, then a braking descent.
+    function thrustAt(e){if(e<4)return 0;if(e<9)return (e-4)/5;if(e<20)return 1;if(e<25)return .55-(e-20)*.08;return 0}
+    function speedAt(e){if(e<4)return 0;if(e<12)return Math.pow((e-4)/8,1.6);if(e<18)return 1;if(e<25)return Math.max(.06,1-(e-18)/7);return 0}
+    const streakStars=Array.from({length:70},(_,i)=>({x:(i*83+17)%256,y:(i*151+37)%256,r:.6+(i%3)*.55,warm:i%5===0}));
+    function paintFlightWindow(trip,e,dt){
+      const c=windowTexture.image.getContext('2d'),w=256,speed=speedAt(e),toMoon=trip.direction==='moon';
+      const sky=c.createLinearGradient(0,0,0,w),lift=Math.min(1,Math.max(0,(e-4)/6));sky.addColorStop(0,'#040914');sky.addColorStop(1,lift<1?`rgba(${40-lift*33|0},${54-lift*44|0},${82-lift*62|0},1)`:'#070d1c');c.fillStyle=sky;c.fillRect(0,0,w,w);
+      // Stars stream past the glass: still on the pad, long streaks at full speed.
+      const travel=dt*speed*420,streak=2+speed*38;
+      for(const star of streakStars){star.y+=travel*(.55+star.r*.35);if(star.y>w+streak){star.y-=w+streak;star.x=(star.x+97)%w}c.strokeStyle=star.warm?'rgba(246,223,168,.9)':'rgba(200,214,230,.9)';c.lineWidth=star.r;c.beginPath();c.moveTo(star.x,star.y);c.lineTo(star.x,star.y-streak*(.5+star.r*.4));c.stroke()}
+      // The world left behind sinks away below; the destination swells from above.
+      const leave=Math.min(1,Math.max(0,(e-4)/9)),origin=toMoon?'#3d7292':'#a7a29a',target=toMoon?'#b3aea3':'#3f7aa0';
+      if(leave<1){const r=190*(1-leave)+10,cy=w+r*.72+leave*120;c.fillStyle=origin;c.beginPath();c.arc(w/2,cy,r,0,Math.PI*2);c.fill();if(toMoon){c.fillStyle='rgba(255,196,110,.8)';for(let i=0;i<9;i++){c.beginPath();c.arc(w/2-60+i*15,cy-r+6+(i%3)*3,1.6,0,Math.PI*2);c.fill()}}}
+      const arrive=Math.min(1,Math.max(0,(e-13)/12));if(arrive>0){const r=8+Math.pow(arrive,2.2)*210,cy=-r*.35+arrive*(w*.55);c.fillStyle=target;c.beginPath();c.arc(w/2+18*(1-arrive),cy,r,0,Math.PI*2);c.fill();c.fillStyle='rgba(255,248,225,.18)';c.beginPath();c.arc(w/2+18*(1-arrive)-r*.28,cy-r*.28,r*.45,0,Math.PI*2);c.fill()}
+      // Exhaust glow licks the lower rim while the engine burns.
+      const burn=thrustAt(e);if(burn>0){const g=c.createRadialGradient(w/2,w+30,10,w/2,w+30,150);g.addColorStop(0,`rgba(255,170,70,${.55*burn})`);g.addColorStop(1,'rgba(255,120,40,0)');c.fillStyle=g;c.fillRect(0,0,w,w)}
+      windowTexture.needsUpdate=true;
+    }
+    const flightHud=(()=>{
+      let el=null;const phases=[[4,'COUNTDOWN'],[9,'IGNITION · CLIMBING'],[18,'CRUISING BETWEEN WORLDS'],[22,'BRAKING'],[25,'LANDING']];
+      function ensure(){if(el)return el;el=document.createElement('div');el.id='flightHud';el.setAttribute('aria-live','off');el.innerHTML='<div class="flight-phase"></div><div class="flight-track"><span class="flight-from"></span><div class="flight-line"><i></i><b>▲</b></div><span class="flight-to"></span></div><div class="flight-readout"></div>';document.body.appendChild(el);return el}
+      return {
+        show(direction){const h=ensure();h.querySelector('.flight-from').textContent=direction==='moon'?'ROCKET HALL':'SELENITE OUTPOST';h.querySelector('.flight-to').textContent=direction==='moon'?'SELENITE OUTPOST':'ROCKET HALL';h.classList.add('active');document.body.classList.add('in-flight')},
+        hide(){if(el)el.classList.remove('active');document.body.classList.remove('in-flight')},
+        update(e){if(!el)return;const progress=Math.min(1,Math.max(0,(e-4)/21)),eased=progress*progress*(3-2*progress),phase=phases.find(([until])=>e<until)?.[1]||'LANDING';el.querySelector('.flight-phase').textContent=e<4?`LAUNCH IN ${Math.ceil(4-e)}`:phase;el.querySelector('.flight-line i').style.width=`${eased*100}%`;el.querySelector('.flight-line b').style.left=`${eased*100}%`;const miles=Math.round(eased*238900);el.querySelector('.flight-readout').textContent=e<4?'ALL READERS SEATED':`${miles.toLocaleString('en-GB')} MILES · ${Math.round(speedAt(e)*2400).toLocaleString('en-GB')} MPH`}
+      };
+    })();
+    function flightMotion(trip,e,time){
+      const dt=Math.min(.05,Math.max(0,e-(trip.lastE??e)));trip.lastE=e;
+      paintFlightWindow(trip,e,dt);flightHud.update(e);
+      // The cabin shudders hardest at ignition and on landing; Reduce motion keeps it still.
+      const burn=thrustAt(e),shake=isReducedMotion()?0:(e>=4&&e<6.5?.045*(1-(e-4)/2.5)+.012:burn*.009+(e>21&&e<25?.012:0));
+      if(shake>0){camera.position.x+=(Math.sin(time*63.1)+Math.sin(time*41.7))*.5*shake;camera.position.y+=(Math.sin(time*57.3)+Math.sin(time*29.9))*.5*shake;camera.updateMatrixWorld()}
+      // The engine keeps roaring for as long as it burns, not only at ignition.
+      if(e>=trip.nextRumble&&burn>.05){trip.nextRumble=e+2.3;if(!playSample?.('rocketLaunch',.35+burn*.45,.82+burn*.12))sound(46,2.3,'sawtooth',.05*burn)}
+    }
     function update(time,dt=.016){
       const active=contains(player.pos.x,player.pos.z)||rocketTrip;if(!active)return;
       for(const item of animatedLights)item.light.intensity=5.3+Math.sin(time*2.1+item.phase)*.8;
       summitLight.intensity=13+Math.sin(time*.7)*1.2;outpostLight.intensity=11+Math.sin(time*.8)*1.1;earth.rotation.y=time*.025;if(hallStarField)hallStarField.rotation.y=time*.004;
-      if(rocketTrip){rocketTrip.elapsed+=dt;const e=rocketTrip.elapsed;cabinLight.intensity=12+(e>4&&e<20?Math.sin(e*8)*2:0);
+      if(rocketTrip){rocketTrip.elapsed+=dt;const e=rocketTrip.elapsed;cabinLight.intensity=12+(e>4&&e<20?Math.sin(e*8)*2:0);flightMotion(rocketTrip,e,time);
         if(e>=1&&rocketTrip.stage===0){rocketTrip.stage=1;showNotice('3…',1)}
         else if(e>=2&&rocketTrip.stage===1){rocketTrip.stage=2;showNotice('2…',1)}
         else if(e>=3&&rocketTrip.stage===2){rocketTrip.stage=3;showNotice('1…',1)}
-        else if(e>=4&&rocketTrip.stage===3){rocketTrip.stage=4;showNotice('IGNITION · the cabin shudders and the launch tower sinks below the porthole.',5);paintJourneyWindow(1);if(!playSample?.('rocketLaunch',1,.94))sound(48,2.4,'sawtooth',.13)}
-        else if(e>=9&&rocketTrip.stage===4){rocketTrip.stage=5;showNotice('The engine settles into a steady roar. The library is now a patch of light far below.',5);paintJourneyWindow(2)}
-        else if(e>=15&&rocketTrip.stage===5){rocketTrip.stage=6;showNotice(rocketTrip.direction==='moon'?'The Moon grows in the porthole. Rows of lamps appear beneath its dust.':'Earth fills the glass; the impossible staircase finds its roof again.',5);paintJourneyWindow(3)}
-        else if(e>=20&&rocketTrip.stage===6){rocketTrip.stage=7;showNotice('Descent thrusters fire. The floor tilts gently as a landing place comes into view.',4);paintJourneyWindow(4)}
-        else if(e>=25){const direction=rocketTrip.direction;rocketTrip=null;rocketBoarded=null;cabinLight.intensity=12;if(direction==='moon'){moveTo(mx,0,mz+6,Math.PI);showNotice('The landing legs settle. The hatch opens at the Selenite Reading Outpost.',7);localStorage.setItem('athenaeum-moon-visited','1');window.libraryAnalytics?.track('Room Explored',{room:'selenite-outpost'})}else{moveTo(cx-1.3,topY,cz+1.6,Math.PI);showNotice('The hatch opens onto the Rocket Hall. According to the clock below, no time has passed.',6)}}}
+        else if(e>=4&&rocketTrip.stage===3){rocketTrip.stage=4;showNotice('IGNITION · the cabin shudders and the launch tower sinks below the porthole.',5);if(!playSample?.('rocketLaunch',1,.94))sound(48,2.4,'sawtooth',.13)}
+        else if(e>=9&&rocketTrip.stage===4){rocketTrip.stage=5;showNotice('The engine settles into a steady roar. The library is now a patch of light far below.',5)}
+        else if(e>=15&&rocketTrip.stage===5){rocketTrip.stage=6;showNotice(rocketTrip.direction==='moon'?'The Moon grows in the porthole. Rows of lamps appear beneath its dust.':'Earth fills the glass; the impossible staircase finds its roof again.',5)}
+        else if(e>=20&&rocketTrip.stage===6){rocketTrip.stage=7;showNotice('Descent thrusters fire. The floor tilts gently as a landing place comes into view.',4)}
+        else if(e>=25){const direction=rocketTrip.direction;rocketTrip=null;flightHud.hide();rocketBoarded=null;cabinLight.intensity=12;if(direction==='moon'){moveTo(mx,0,mz+6,Math.PI);showNotice('The landing legs settle. The hatch opens at the Selenite Reading Outpost.',7);localStorage.setItem('athenaeum-moon-visited','1');window.libraryAnalytics?.track('Room Explored',{room:'selenite-outpost'})}else{moveTo(cx-1.3,topY,cz+1.6,Math.PI);showNotice('The hatch opens onto the Rocket Hall. According to the clock below, no time has passed.',6)}}}
       const moonActive=onMoon(player.pos.x,player.pos.z)||inTransit(player.pos.x,player.pos.z);if(moonActive){scene.background.setHex(0x03050b);scene.fog.color.setHex(0x070910);scene.fog.density=.004}
       const r=Math.hypot(player.pos.x-cx,player.pos.z-cz),inHall=r<9.25&&player.pos.y>topY-1;if(inHall&&time-lastSpaceTone>18){lastSpaceTone=time;sound(64,2.6,'sine',.012)}
       if(inHall&&!localStorage.getItem('athenaeum-high-stair-summit')){localStorage.setItem('athenaeum-high-stair-summit','1');showNotice('The Rocket Hall: a glass-and-iron observatory above the roof, built around one impossible destination.',7);window.libraryAnalytics?.track('Room Explored',{room:'rocket-hall'})}
     }
-    function reset(){root.visible=true;rocketTrip=null;rocketBoarded=null}
-    return {contains,floorAt,allowed,interact,update,reset,onMoon,center:{x:cx,z:cz},topY,topBooks,moonBooks};
+    function reset(){root.visible=true;rocketTrip=null;rocketBoarded=null;flightHud.hide()}
+    return {contains,floorAt,allowed,interact,update,reset,onMoon,noticeAllowed:()=>!rocketTrip||speaking,get inFlight(){return !!rocketTrip},center:{x:cx,z:cz},topY,topBooks,moonBooks};
   };
 })();

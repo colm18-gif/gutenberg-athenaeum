@@ -71,3 +71,11 @@ the full licence texts sit beside the font files.
 and the entrance clock's tick in the browser with the Web Audio API, and
 `visual-quality.js` renders its reflection environment from a small procedural
 scene. Neither uses any third-party recording or image.
+
+## Texts for the curious-door rooms
+
+The 22 books in the Horologist's Study, Night Conservatory, Ghost-Story Parlour and
+Children's Attic are public-domain Project Gutenberg editions, fetched from the
+[GITenberg](https://github.com/GITenberg) mirror and stored as `texts/pg<id>.txt`
+with their Project Gutenberg headers intact (the old legal preamble of #778 was
+trimmed to the book itself). The list is in `NEW-BOOKS.md`.
