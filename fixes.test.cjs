@@ -40,3 +40,15 @@ test('the Moon has low gravity: loping bounds, a Space leap, drifting momentum a
   assert.match(game,/spawnDustPuff\(tmpVector\.set\(player\.pos\.x,player\.pos\.y\+\.05,player\.pos\.z\)\)/);
   assert.match(game,/player\.pos\.y\+1\.72\+bobLift\+moonHop/);
 });
+
+test('every startup script parses',()=>{
+  const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(m=>m[1]);
+  for(const file of order){try{new vm.Script(fs.readFileSync(file,'utf8'),{filename:file})}catch(error){assert.fail(`${file} does not parse: ${error.message}`)}}
+});
+
+test('no one is left stuck on a spot the walls consider solid',()=>{
+  assert.match(game,/function nearestWalkable\(x,z,maxRadius=5\)/);
+  assert.match(game,/const spot=nearestWalkable\(x,z\)\|\|\{x,z\};x=spot\.x;z=spot\.z;/,'doorway arrivals are set down on open floor');
+  assert.match(game,/if\(!allowed\(player\.pos\.x,player\.pos\.z\)\)\{const spot=nearestWalkable/,'a blocked safe position is itself repaired');
+  assert.match(game,/const south=i===2\?\[room\.cx-room\.w\/2\+\.55,room\.cz-5,Math\.PI\/2\]/,'Doyle shelves no longer stand in front of the exit');
+});
