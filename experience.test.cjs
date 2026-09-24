@@ -236,8 +236,9 @@ test('themed-room exits face clear south walls and return beside their discoveri
 });
 
 test('reading-room seats face their shelves and benches use Gothic upholstery',()=>{
-  assert.match(game,/chair\(room\.cx,room\.cz\+3,0,Object\.assign/);
-  assert.match(game,/chair\(contested\.cx,contested\.cz\+3,0,/);
+  // Seats face their shelves from one side, off the centre line, so the exit door stays in view.
+  assert.match(game,/chair\(room\.cx-5\.4,room\.cz\+2\.4,\.35,Object\.assign/);
+  assert.match(game,/chair\(contested\.cx-5\.4,contested\.cz\+2\.4,\.35,/);
   assert.match(game,/options\.model\|\|'sofa'/);
   assert.doesNotMatch(game,/bench\([^;\n]*model:'paintedSofa'/);
 });
