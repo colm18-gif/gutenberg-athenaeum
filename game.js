@@ -1305,7 +1305,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     const carriedBookInteract=interact;interact=function(){if(carryingBook){if(focus?.userData?.type==='seat')return sitWithBook(focus.userData);if(focus?.userData?.type==='book-table'||focus?.userData?.type==='book-shelf')return placeSelected(focus);placeOnSurface();return}return carriedBookInteract()};
     const preStairReset=resetPosition;resetPosition=function(){highStaircase.reset();return preStairReset()};
     const preStairWorld=updateWorld;updateWorld=function(t,dt){preStairWorld(t,dt);highStaircase.update(t,dt);afterDarkExpansion.update(t,dt,reducedMotion);curiousDoors?.update(t,dt,reducedMotion);getDoorKit()?.update(dt);dressExitDoors(dt)};
-    // ---- Where things are: one register of every room, used by the map, the book finder and the discovery tallies.
+    // ---- Where things are: one register of every room, used by the map and the discovery tallies.
     const titleCase=text=>text.toLowerCase().replace(/(^|[\s—-])([a-z])/g,(m,a,b)=>a+b.toUpperCase()).replace(/\b(The|Of|In|A|For|Where|After|Past)\b/g,(w,_,i)=>i?w.toLowerCase():w).replace(/^./,c=>c.toUpperCase());
     const PLACE_GROUPS=[
       {title:'The Grand Hall and its wings',places:[['main-library','The Grand Hall'],['upper-floor','The upper gallery'],['roof-garden','The roof garden'],['east-wing','The east wing'],['west-wing','The west wing'],['restricted-stacks','The restricted stacks'],['librarian-office','The librarian’s office']]},
@@ -1328,16 +1328,6 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       return baseModulePlace(x,y,z)}}
     const placeLabel=id=>PLACE_INFO[id]?.label||'the library';
     const placeKnown=id=>id==='main-library'||exploredRooms.has(id);
-    // Every place a book can be found: where its copies sit right now, plus the rooms that are built on demand.
-    function bookPlaces(book){const found=new Set(),at=new THREE.Vector3();
-      for(const object of interactables){const data=object.userData;if(data?.type!=='book'||data.book?.id!==book.id||data.seatCopy||!object.parent)continue;if(object===selected&&data.home?.worldPos)at.copy(data.home.worldPos);else object.getWorldPosition(at);/* Classify by the floor beneath the book, so tall shelves are not mistaken for the gallery above. */found.add(placeAt(at.x,floorHeight(at.x,at.z),at.z))}
-      for(const def of themeRoomDefs)if(def.books?.includes(book.id))found.add(def.key);
-      for(const [key,ids] of Object.entries(memoryCollections))if(ids.includes(book.id))found.add(key);
-      if(book.room){if(curiousDoors?.rooms?.[book.room])found.add('curious-'+book.room);else if(afterDarkExpansion.rooms?.[book.room])found.add('afterdark-'+book.room)}
-      if((window.ATHENAEUM_RAILWAY_BOOKS||[]).some(entry=>entry.id===book.id))found.add('railway-carriage');
-      if(window.ATHENAEUM_FOG_BOOK?.id===book.id)found.add('fog-stop');
-      return [...found].filter(id=>PLACE_INFO[id])}
-    let mapPins=new Set(),mapPinTitle='';
 
     // The Grand Hall plan is drawn to scale from the same bounds the walking code uses; north (away from the entrance) is up.
     const HALL_AREAS=[
@@ -1346,17 +1336,17 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       {id:'roof-garden',x:[-16.7,16.7],z:[37,61],label:'Roof garden (up the east stair)',kind:'above'},{id:'upper-floor',x:[19,28],z:[16,24],label:'Upper gallery',kind:'above'},
       {id:'below-catalogue',x:[-17.8,17.8],z:[-67.8,-40.2],label:'Below the catalogue (through the hatch)',kind:'below',secret:true}];
     function renderHallPlan(here){const plan=$('#hallPlan');if(!plan)return;const svg=[],bounds={x0:-24,x1:24,z0:-35,z1:36};
-      for(const area of HALL_AREAS){const known=placeKnown(area.id)||here===area.id;if(!known&&area.secret)continue;bounds.x0=Math.min(bounds.x0,area.x[0]-3);bounds.x1=Math.max(bounds.x1,area.x[1]+3);bounds.z0=Math.min(bounds.z0,area.z[0]-3);bounds.z1=Math.max(bounds.z1,area.z[1]+3);const w=area.x[1]-area.x[0],d=area.z[1]-area.z[0],cls=['area',area.kind||'',known?'':'uncharted',here===area.id?'here':'',mapPins.has(area.id)?'pinned':''].join(' ');
+      for(const area of HALL_AREAS){const known=placeKnown(area.id)||here===area.id;if(!known&&area.secret)continue;bounds.x0=Math.min(bounds.x0,area.x[0]-3);bounds.x1=Math.max(bounds.x1,area.x[1]+3);bounds.z0=Math.min(bounds.z0,area.z[0]-3);bounds.z1=Math.max(bounds.z1,area.z[1]+3);const w=area.x[1]-area.x[0],d=area.z[1]-area.z[0],cls=['area',area.kind||'',known?'':'uncharted',here===area.id?'here':''].join(' ');
         svg.push(`<rect class="${cls}" x="${area.x[0]}" y="${area.z[0]}" width="${w}" height="${d}" rx="1"><title>${known?area.label:'Uncharted'}</title></rect>`);
         const small=w<14||d<6;svg.push(`<text class="${small||!known?'small':''}" x="${area.x[0]+w/2}" y="${area.z[0]+d/2}">${known?area.label.replace(/ \(.*/,''):'?'}</text>`)}
       svg.push('<text class="small" x="0" y="33.5">entrance</text>');
       if(HALL_AREAS.some(area=>area.id===here)){const deg=-player.yaw*180/Math.PI;svg.push(`<g transform="translate(${player.pos.x.toFixed(2)} ${player.pos.z.toFixed(2)}) rotate(${deg.toFixed(1)})"><path class="you" d="M0 -3.4 L2.4 2.6 L0 1.3 L-2.4 2.6 Z"/></g>`)}
       /* Frame only what has been found, so an early map is not a speck in a sea of blank paper. */const w=bounds.x1-bounds.x0,d=bounds.z1-bounds.z0;plan.innerHTML=`<svg viewBox="${bounds.x0} ${bounds.z0} ${w} ${d}" role="img" aria-label="Plan of the Grand Hall and the rooms found around it">${svg.join('')}</svg>`}
     var renderLibraryAtlas=function(){const here=analyticsRoom();renderHallPlan(here);
-      $('#mapWhere').textContent=(mapPins.size?`Marked: ${mapPinTitle} — ${[...mapPins].map(placeLabel).join(', ')}. `:'')+`You are in ${placeLabel(here)}.`;
+      $('#mapWhere').textContent=`You are in ${placeLabel(here)}.`;
       const atlas=$('#journalMap');if(!atlas)return;atlas.replaceChildren();
       for(const group of PLACE_GROUPS){if(group===PLACE_GROUPS[0])continue;const found=group.places.filter(([id])=>placeKnown(id)||id===here).length,section=document.createElement('section'),heading=document.createElement('h4'),cards=document.createElement('div');section.className='atlas-group';heading.textContent=group.title;const tally=document.createElement('small');tally.textContent=`${found} of ${group.places.length} found`;heading.append(tally);cards.className='atlas-cards';
-        for(const [id,label] of group.places){const card=document.createElement('div'),known=placeKnown(id)||here===id;card.className='atlas-card'+(known?'':' unknown')+(here===id?' here':'')+(mapPins.has(id)?' pinned':'');card.textContent=known?label:group.secret?'A place not on any plan':'Uncharted';if(here===id){const note=document.createElement('small');note.textContent='You are here';card.append(note)}if(mapPins.has(id)){const note=document.createElement('small');note.textContent=`${mapPinTitle} is shelved here`;card.append(note)}cards.append(card)}
+        for(const [id,label] of group.places){const card=document.createElement('div'),known=placeKnown(id)||here===id;card.className='atlas-card'+(known?'':' unknown')+(here===id?' here':'');card.textContent=known?label:group.secret?'A place not on any plan':'Uncharted';if(here===id){const note=document.createElement('small');note.textContent='You are here';card.append(note)}cards.append(card)}
         section.append(heading,cards);atlas.append(section)}};
 
     // Discovery tallies at the top of the catalogue.
@@ -1365,25 +1355,9 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       box.replaceChildren(...tiles.map(([label,value,total])=>{const tile=document.createElement('div'),number=document.createElement('strong'),name=document.createElement('span'),bar=document.createElement('i'),fill=document.createElement('b');tile.className='stat-tile';number.textContent=`${value} / ${total}`;name.textContent=label;fill.style.width=`${total?Math.round(value/total*100):0}%`;bar.append(fill);tile.append(number,name,bar);return tile}))};
     var announceCharted=function(room){const info=PLACE_INFO[room];if(!info||room==='main-library')return;const all=Object.keys(PLACE_INFO);showNotice(`New room charted: ${info.label}. ${all.filter(placeKnown).length} of ${all.length} rooms found.`,4)};
 
-    // The book finder: search the whole catalogue, see where a book lives, have it brought, or mark it on the map.
-    const normalise=text=>String(text||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’']/g,'');
-    function readingStatus(book){return book.progress>=.95?'Finished':book.progress>.001?`Read ${Math.round(book.progress*100)}%`:'Not yet opened'}
-    function bringBookToReader(book){closeJournal();if(selected)returnSelected(false);const bm=new THREE.Mesh(new THREE.BoxGeometry(1.25,1.65,.22),new THREE.MeshStandardMaterial({map:coverTexture(book),roughness:.75}));scene.add(bm);bm.userData={type:'book',book,seatCopy:true,home:{parent:scene,position:bm.position.clone(),quaternion:bm.quaternion.clone()}};selectBook(bm);showNotice(`The librarian’s cart rattles up with ${book.title}.`,4);openReader()}
-    function renderSearch(){const query=normalise($('#bookSearch').value.trim()),results=$('#searchResults'),summary=$('#searchSummary');results.replaceChildren();let list;
-      if(!query){list=books.filter(book=>book.progress>.001&&book.progress<.95).sort((a,b)=>b.progress-a.progress).slice(0,12);summary.textContent=list.length?'Continue reading — books you have started:':'Type a title, an author or a subject such as “ghosts” or “voyages”.'}
-      else{const words=query.split(/\s+/);list=books.filter(book=>{const hay=normalise(`${book.title} ${book.author} ${book.category}`);return words.every(word=>hay.includes(word))}).sort((a,b)=>(normalise(a.title).startsWith(query)?0:1)-(normalise(b.title).startsWith(query)?0:1)||(b.fame||0)-(a.fame||0));summary.textContent=list.length?`${list.length} ${list.length===1?'book':'books'} found${list.length>30?' — showing the first 30':''}.`:'Nothing in the catalogue matches that. Try part of a title or a surname.';list=list.slice(0,30)}
-      for(const book of list){const places=bookPlaces(book),known=places.filter(placeKnown),row=document.createElement('div'),info=document.createElement('div'),title=document.createElement('h5'),by=document.createElement('p'),where=document.createElement('p'),status=document.createElement('p'),actions=document.createElement('div'),read=document.createElement('button');
-        row.className='search-result';title.textContent=book.title;by.textContent=`${book.author||'Unknown author'} · ${book.category||'Uncatalogued'}`;where.className='where';where.textContent=known.length?`Shelved in ${known.map(placeLabel).join(', ')}`:places.length?'Shelved somewhere you have not found yet':'Kept in the stacks — the librarian can fetch it';status.className='status';status.textContent=readingStatus(book);
-        actions.className='search-actions';read.className='primary';read.textContent=book.progress>.001&&book.progress<.95?'Continue reading':'Read now';read.addEventListener('click',()=>bringBookToReader(book));actions.append(read);
-        if(known.length){const show=document.createElement('button');show.textContent='Show on map';show.addEventListener('click',()=>{mapPins=new Set(known);mapPinTitle=book.title;selectJournalTab('map')});actions.append(show)}
-        info.append(title,by,where,status);row.append(info,actions);results.append(row)}}
-    function selectJournalTab(tab){for(const button of document.querySelectorAll('.journal-tabs [role="tab"]')){const on=button.dataset.tab===tab;button.setAttribute('aria-selected',String(on));button.tabIndex=on?0:-1;$('#panel-'+button.dataset.tab).hidden=!on}if(tab==='map')renderLibraryAtlas();if(tab==='find'){renderSearch();if(!touchMode)setTimeout(()=>$('#bookSearch').focus(),0)}}
+    function selectJournalTab(tab){for(const button of document.querySelectorAll('.journal-tabs [role="tab"]')){const on=button.dataset.tab===tab;button.setAttribute('aria-selected',String(on));button.tabIndex=on?0:-1;$('#panel-'+button.dataset.tab).hidden=!on}if(tab==='map')renderLibraryAtlas()}
     for(const button of document.querySelectorAll('.journal-tabs [role="tab"]'))button.addEventListener('click',()=>selectJournalTab(button.dataset.tab));
     $('.journal-tabs').addEventListener('keydown',e=>{if(e.code!=='ArrowRight'&&e.code!=='ArrowLeft')return;const tabs=[...document.querySelectorAll('.journal-tabs [role="tab"]')],i=tabs.findIndex(tab=>tab.getAttribute('aria-selected')==='true'),next=tabs[(i+(e.code==='ArrowRight'?1:tabs.length-1))%tabs.length];e.preventDefault();selectJournalTab(next.dataset.tab);next.focus()});
-    $('#bookSearch').addEventListener('input',renderSearch);
-    /* Typing in the finder must not walk, turn pages or close the catalogue. */
-    window.addEventListener('keydown',e=>{if(e.target?.id==='bookSearch'&&e.code!=='Escape')e.stopImmediatePropagation()},true);
-    window.addEventListener('keyup',e=>{if(e.target?.id==='bookSearch')e.stopImmediatePropagation()},true);
     $('#journalHome').addEventListener('click',()=>resetPosition());
     renderJournal();
     // Pieces that never move are merged per material into single draw calls (see static-batching.js).
@@ -1407,7 +1381,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       }finally{renderer.setRenderTarget(previousTarget);warmingShaders=false}
     }
     // Opt-in inspection hook for automated visual and performance checks (?debug).
-    if(new URLSearchParams(location.search).has('debug'))window.__athenaeum={THREE,MAT,staticBatcher,bookPlaces,placeAt:(x,y,z)=>placeAt(x,y,z),resetPosition:()=>resetPosition(),afterDarkExpansion,librarianOffice,verneDescent,analyticsRoom:()=>analyticsRoom(),floorAt:(x,z)=>floorHeight(x,z),renderer,scene,camera,player,visual,books,curiousDoors,get librarianNotes(){return librarianNotes},interactables,zones:()=>({memoryZones,themeZones}),buildTheme:key=>buildThemeRooms(key),dressExits(){exitDressTimer=0;dressExitDoors(0)},allowedAt:(x,z)=>allowed(x,z),wallFaceOffset,buildAll(){buildBasement();buildMemoryRooms();for(const z of themeZones)try{buildThemeRooms(z.key)}catch(e){}try{buildContestedRoom()}catch(e){}},nightRailway,highStaircase,interact:()=>interact(),get focus(){return focus},get soundscape(){return soundscape},get audioCtx(){return audioCtx},playSample,teleport(x,y,z,yaw=0,pitch=0){player.pos.set(x,y,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=pitch;lastSafePosition.copy(player.pos)}};
+    if(new URLSearchParams(location.search).has('debug'))window.__athenaeum={THREE,MAT,staticBatcher,placeAt:(x,y,z)=>placeAt(x,y,z),resetPosition:()=>resetPosition(),afterDarkExpansion,librarianOffice,verneDescent,analyticsRoom:()=>analyticsRoom(),floorAt:(x,z)=>floorHeight(x,z),renderer,scene,camera,player,visual,books,curiousDoors,get librarianNotes(){return librarianNotes},interactables,zones:()=>({memoryZones,themeZones}),buildTheme:key=>buildThemeRooms(key),dressExits(){exitDressTimer=0;dressExitDoors(0)},allowedAt:(x,z)=>allowed(x,z),wallFaceOffset,buildAll(){buildBasement();buildMemoryRooms();for(const z of themeZones)try{buildThemeRooms(z.key)}catch(e){}try{buildContestedRoom()}catch(e){}},nightRailway,highStaircase,interact:()=>interact(),get focus(){return focus},get soundscape(){return soundscape},get audioCtx(){return audioCtx},playSample,teleport(x,y,z,yaw=0,pitch=0){player.pos.set(x,y,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=pitch;lastSafePosition.copy(player.pos)}};
     // Compiling every shader on the first frame froze the page for seconds, longest on tablets.
     // Compile them behind the entrance veil instead, a few at a time so the progress bar keeps
     // moving, then keep warming the materials of rooms that are built later, before they are seen.

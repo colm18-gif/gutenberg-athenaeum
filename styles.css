@@ -144,7 +144,7 @@ body.in-flight #exploreNudge,body.in-flight #hint{opacity:0!important}
 #reader.tone-night .pref-row>span,#reader.tone-night .pref-tip{color:#b09c78}
 @media (hover:none) and (pointer:coarse){#reader.tone-night{background:#1c1813}#reader.tone-sepia{background:#f0dfbc}.reader-prefs{right:8px;bottom:58px}}
 
-/* Hidden catalogue: tabs, discovery tallies, the hall plan and room atlas, and the book finder. */
+/* Hidden catalogue: tabs, discovery tallies, the hall plan and room atlas. */
 .journal-head-actions{display:flex;align-items:center;gap:8px}
 .journal-home{border:1px solid #8c7049;background:transparent;color:#4b3620;padding:7px 11px;font:13px Georgia,serif;cursor:pointer;white-space:nowrap}
 .journal-home:hover{background:rgba(126,93,51,.12)}
@@ -164,7 +164,6 @@ body.in-flight #exploreNudge,body.in-flight #hint{opacity:0!important}
 .hall-plan .area.below,.hall-plan .area.above{fill:rgba(243,234,212,.55);stroke-dasharray:1.6 1.1}
 .hall-plan .area.uncharted{fill:transparent;stroke:#9b8665;stroke-dasharray:1 1.2}
 .hall-plan .area.here{fill:#f8e6b8;stroke:#6e2224;stroke-width:.8}
-.hall-plan .area.pinned{fill:#f1d9a0;stroke:#9a5a14;stroke-width:.9}
 .hall-plan text{font:3.1px Georgia,serif;fill:#3f2d1b;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
 .hall-plan text.small{font-size:2.4px;fill:#6c5639;font-style:italic}
 .hall-plan .you{fill:#6e2224;stroke:#f7eed8;stroke-width:.4}
@@ -177,19 +176,6 @@ body.in-flight #exploreNudge,body.in-flight #hint{opacity:0!important}
 .atlas-card.unknown{border-style:dashed;background:transparent;color:#8a7658;font-style:italic;box-shadow:none}
 .atlas-card.here{border-color:#6e2224;box-shadow:0 0 0 1px #6e2224 inset}
 .atlas-card.here small:first-of-type{color:#6e2224}
-.atlas-card.pinned{background:#f1d9a0;border-color:#9a5a14}
-.search-label{display:block;font-size:13px;letter-spacing:.06em;color:#735c40;margin-bottom:6px}
-#bookSearch{width:100%;padding:11px 12px;font:16px Georgia,serif;color:#2d2014;background:#fbf6ea;border:1px solid #9d8058;outline-offset:2px}
-.search-summary{margin:9px 0 6px;color:#735c40;font-size:13px;font-style:italic}
-.search-results{display:grid;gap:8px}
-.search-result{display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center;border-bottom:1px solid rgba(91,67,39,.18);padding:8px 0 10px}
-.search-result h5{margin:0;font:500 16px/1.25 Georgia,serif;color:#2d2014}
-.search-result p{margin:2px 0 0;font-size:13px;color:#6f5a40}
-.search-result .where{color:#4b3620}
-.search-result .status{font-size:11.5px;letter-spacing:.05em;color:#8a6232}
-.search-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-.search-actions button{border:1px solid #8c7049;background:transparent;color:#3b2a17;padding:7px 10px;min-height:36px;font:13px Georgia,serif;cursor:pointer;white-space:nowrap}
-.search-actions button.primary{background:#5b3f1f;border-color:#5b3f1f;color:#f7ecd4}
-@media(max-width:700px){.search-result{grid-template-columns:1fr}.search-actions{justify-content:flex-start}.journal-tabs button{padding:8px 10px;font-size:13px}.journal-home{padding:6px 8px;font-size:12px}}
+@media(max-width:700px){.journal-tabs button{padding:8px 10px;font-size:13px}.journal-home{padding:6px 8px;font-size:12px}}
 /* Tablets: a touch screen wide enough for a proper page gets book-sized type by default. */
 @media (hover:none) and (pointer:coarse) and (min-width:900px){.page{padding:16px 30px 12px;font-size:calc(17px*var(--reader-scale,1));line-height:calc(1.5*var(--reader-leading,1))}.chapter{font-size:10.5px}}
