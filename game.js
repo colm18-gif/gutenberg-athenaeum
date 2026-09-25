@@ -892,7 +892,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     function updatePerformanceVisibility(dt){if(!roofBuilt&&player.pos.y>8.5&&player.pos.z>34)buildRoofGarden();for(const zone of Object.values(performanceZones)){const needed=zone.isNeeded();if(needed&&!zone.active){scene.add(zone.group);zone.active=true}else if(!needed&&zone.active){zone.group.removeFromParent();zone.active=false}}lightVisibilityTimer-=dt;if(lightVisibilityTimer>0)return;lightVisibilityTimer=.3;refreshBudgetLights();lightCandidates.length=0;camera.getWorldDirection(budgetViewDirection);for(const light of performanceLights){let root=light,shown=true;while(root.parent){root=root.parent;if(!root.visible)shown=false}const attached=root===scene;light.castShadow=false;if(!attached||!shown){light.visible=false;continue}light.getWorldPosition(tmpWorldPosition);const distance=tmpWorldPosition.distanceTo(camera.position),range=Math.max(14,(light.distance||10)+4),facing=distance<4?1:clamp(.75+tmpWorldPosition.sub(camera.position).dot(budgetViewDirection)/distance,.35,1.5),reach=distance<range?facing*light.intensity/(1+distance*distance*.05)*(1-distance/range):-distance*.001;light.userData.lightScore=light.parent===camera?Infinity:reach*(light.visible?1.3:1);lightCandidates.push(light)}lightCandidates.sort((a,b)=>b.userData.lightScore-a.userData.lightScore);for(let i=0;i<lightCandidates.length;i++)lightCandidates[i].visible=i<LIGHT_BUDGET}
     // Every material shader is compiled for an exact number of lights, so the budget keeps that
     // number constant: the strongest nearby lamps win, and walking never triggers a recompile.
-    function refreshBudgetLights(){budgetRefreshTimer-=.3;if(budgetRefreshTimer>0)return;budgetRefreshTimer=2;const known=new Set(performanceLights);const add=root=>root.traverse(object=>{if((object.isPointLight||object.isSpotLight)&&!known.has(object)){known.add(object);performanceLights.push(object)}});add(scene);for(const zone of Object.values(performanceZones))add(zone.group)}
+    function refreshBudgetLights(){budgetRefreshTimer-=.3;if(budgetRefreshTimer>0)return;budgetRefreshTimer=2;/* New lights only arrive with new rooms, so skip the scene walk unless it has changed. */const stamp=`${scene.children.length}:${renderer.info.memory.geometries}`;if(stamp===refreshBudgetLights.stamp)return;refreshBudgetLights.stamp=stamp;const known=new Set(performanceLights);const add=root=>root.traverse(object=>{if((object.isPointLight||object.isSpotLight)&&!known.has(object)){known.add(object);performanceLights.push(object)}});add(scene);for(const zone of Object.values(performanceZones))add(zone.group)}
 
     // Conversations keep the visitor in the room, with explicit, repeatable topics.
     const SUPPORT_URL='https://buy.stripe.com/cNicN54M40hnejYdS283C00';let supportOpen=false;
@@ -1516,8 +1516,10 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       /* Typing a quote must not turn pages or walk: keys stay inside the text box, and Escape closes the dialog. */
       window.addEventListener('keydown',e=>{if(dialog.classList.contains('hidden'))return;if(e.code==='Escape'){e.preventDefault();e.stopImmediatePropagation();close();return}if(e.target===text||dialog.contains(e.target))e.stopImmediatePropagation()},true);
       return {open,close,get isOpen(){return !dialog.classList.contains('hidden')}}})();
+    // A cheap fingerprint of the scene: it changes when rooms are built, zones swap in or new geometry is first drawn.
+    const sceneStamp=()=>`${scene.children.length}:${renderer.info.memory.geometries}`;
     // Pieces that never move are merged per material into single draw calls (see static-batching.js).
-    const staticBatcher=new URLSearchParams(location.search).has('nobatch')?null:window.createStaticBatcher?.({THREE,scene,exclusions:()=>interactables})||null;
+    const staticBatcher=new URLSearchParams(location.search).has('nobatch')?null:window.createStaticBatcher?.({THREE,scene,exclusions:()=>interactables,changeStamp:sceneStamp})||null;
     const warmedMaterials=new WeakSet();let shadersWarm=false,warmingShaders=false;
     function materialsOf(object){return Array.isArray(object.material)?object.material:object.material?[object.material]:[]}
     async function warmShaders(progress){
@@ -1542,6 +1544,6 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // Compile them behind the entrance veil instead, a few at a time so the progress bar keeps
     // moving, then keep warming the materials of rooms that are built later, before they are seen.
     const bootProgress=document.querySelector('#entryProgress i');
-    warmShaders(fraction=>{if(bootProgress)bootProgress.style.width=`${80+Math.round(fraction*20)}%`}).catch(error=>console.warn('Shader warm-up skipped',error)).finally(()=>{shadersWarm=true;animate();if(window.__ATHENAEUM_ENTERED__)enterLibrary();setInterval(()=>{if(!warmingShaders)warmShaders().catch(()=>{})},1500)});
+    warmShaders(fraction=>{if(bootProgress)bootProgress.style.width=`${80+Math.round(fraction*20)}%`}).catch(error=>console.warn('Shader warm-up skipped',error)).finally(()=>{shadersWarm=true;animate();if(window.__ATHENAEUM_ENTERED__)enterLibrary();let warmedStamp=sceneStamp();setInterval(()=>{const stamp=sceneStamp();if(warmingShaders||stamp===warmedStamp)return;warmedStamp=stamp;warmShaders().catch(()=>{})},1500)});
   })();
 

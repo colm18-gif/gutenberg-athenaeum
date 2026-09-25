@@ -100,7 +100,7 @@
     // Sharper textures at grazing angles (floors, long shelves) where the hardware allows it.
     // Re-uploading a texture costs a little, so the work is spread over several frames.
     const tunedTextures=new WeakSet(),pendingTextures=[];
-    function collectTextures(){if(maxAnisotropy<=1)return;scene.traverse(object=>{const material=object.material;if(!material)return;for(const m of Array.isArray(material)?material:[material]){for(const key of ['map','normalMap','roughnessMap']){const texture=m[key];if(!texture||tunedTextures.has(texture))continue;tunedTextures.add(texture);if((texture.anisotropy||1)<maxAnisotropy)pendingTextures.push(texture)}}})}
+    function collectTextures(){if(maxAnisotropy<=1)return;/* Only look again once new textures exist. */const count=renderer.info.memory.textures;if(count===collectTextures.count)return;collectTextures.count=count;scene.traverse(object=>{const material=object.material;if(!material)return;for(const m of Array.isArray(material)?material:[material]){for(const key of ['map','normalMap','roughnessMap']){const texture=m[key];if(!texture||tunedTextures.has(texture))continue;tunedTextures.add(texture);if((texture.anisotropy||1)<maxAnisotropy)pendingTextures.push(texture)}}})}
     function tuneSomeTextures(limit){while(limit-->0&&pendingTextures.length){const texture=pendingTextures.pop();texture.anisotropy=maxAnisotropy;if(texture.image&&texture.version>0)texture.needsUpdate=true}}
 
     function render(dt=0){

@@ -20,18 +20,26 @@
 
     // ---------- Buffers (built once, on first use) ----------
     const cache=new Map();
-    function once(key,build){if(!cache.has(key))cache.set(key,build());return cache.get(key)}
-    function buffer(seconds,fill,channels=1){const length=Math.max(1,Math.floor(sr*seconds)),b=ctx.createBuffer(channels,length,sr);for(let c=0;c<channels;c++)fill(b.getChannelData(c),length,c);return b}
+    // Big buffers are filled by generator functions that pause every few thousand samples, so they can be
+    // built a slice at a time while the reader walks (see warmUp) instead of freezing a frame on room entry.
+    const jobs=new Map();
+    function once(key,build){if(!cache.has(key)){const job=jobs.get(key);if(job){for(const _ of job.steps);jobs.delete(key);cache.set(key,job.buffer)}else cache.set(key,build())}return cache.get(key)}
+    function startBuffer(seconds,fill,channels=1){const length=Math.max(1,Math.floor(sr*seconds)),b=ctx.createBuffer(channels,length,sr);const steps=(function*(){for(let c=0;c<channels;c++){const r=fill(b.getChannelData(c),length,c);if(r&&typeof r.next==='function')yield* r}})();return {buffer:b,steps}}
+    function buffer(seconds,fill,channels=1){const job=startBuffer(seconds,fill,channels);for(const _ of job.steps);return job.buffer}
     // Loopable noise; the seam is crossfaded so it never clicks.
     function seamless(data,length){const fade=Math.floor(sr*.08);for(let i=0;i<fade;i++){const w=i/fade;data[i]=data[i]*w+data[length-fade+i]*(1-w)}}
     function normalise(data,length,rms){let sum=0;for(let i=0;i<length;i++)sum+=data[i]*data[i];const scale=rms/Math.max(1e-6,Math.sqrt(sum/length));for(let i=0;i<length;i++)data[i]*=scale}
-    const noise=color=>once('noise-'+color,()=>buffer(6,(d,n)=>{let pink=0,brown=0;for(let i=0;i<n;i++){const w=Math.random()*2-1;pink=pink*.97+w*.03;brown=brown*.996+w*.004;d[i]=color==='white'?w:color==='pink'?pink*3:brown*9}seamless(d,n);normalise(d,n,.25)},2));
+    const NOISE_FILL=color=>function*(d,n){let pink=0,brown=0;for(let i=0;i<n;i++){if((i&16383)===0)yield;const w=Math.random()*2-1;pink=pink*.97+w*.03;brown=brown*.996+w*.004;d[i]=color==='white'?w:color==='pink'?pink*3:brown*9}seamless(d,n);yield;normalise(d,n,.25)};
+    const noise=color=>once('noise-'+color,()=>buffer(6,NOISE_FILL(color),2));
     // Water falling into a basin: noise whose level flickers like breaking bubbles.
-    const fountain=()=>once('fountain',()=>buffer(5,(d,n)=>{let flicker=.6,target=.6;for(let i=0;i<n;i++){if(i%64===0)target=.35+Math.random()*.65;flicker+=(target-flicker)*.02;d[i]=(Math.random()*2-1)*flicker}seamless(d,n);normalise(d,n,.25)},2));
+    const FOUNTAIN_FILL=function*(d,n){let flicker=.6,target=.6;for(let i=0;i<n;i++){if((i&16383)===0)yield;if(i%64===0)target=.35+Math.random()*.65;flicker+=(target-flicker)*.02;d[i]=(Math.random()*2-1)*flicker}seamless(d,n);yield;normalise(d,n,.25)};
+    const fountain=()=>once('fountain',()=>buffer(5,FOUNTAIN_FILL,2));
     // Waves: two swells per loop, so the loop edges fall in the quiet trough between them.
-    const waves=()=>once('waves',()=>buffer(12,(d,n,c)=>{let pink=0,brown=0;for(let i=0;i<n;i++){const t=i/sr,w=Math.random()*2-1;pink=pink*.97+w*.03;brown=brown*.996+w*.004;const swell=Math.pow(Math.sin(Math.PI*(t+c*.4)/6),2),hiss=Math.pow(Math.max(0,Math.sin(Math.PI*(t+c*.4)/6-.35)),6);d[i]=(brown*7+pink*2)*(.25+swell*.9)+w*hiss*.35}seamless(d,n);normalise(d,n,.25)},2));
+    const WAVES_FILL=function*(d,n,c){let pink=0,brown=0;for(let i=0;i<n;i++){if((i&16383)===0)yield;const t=i/sr,w=Math.random()*2-1;pink=pink*.97+w*.03;brown=brown*.996+w*.004;const swell=Math.pow(Math.sin(Math.PI*(t+c*.4)/6),2),hiss=Math.pow(Math.max(0,Math.sin(Math.PI*(t+c*.4)/6-.35)),6);d[i]=(brown*7+pink*2)*(.25+swell*.9)+w*hiss*.35}seamless(d,n);yield;normalise(d,n,.25)};
+    const waves=()=>once('waves',()=>buffer(12,WAVES_FILL,2));
     // Embers: a hiss with pops, the same recipe as the hall fireplace.
-    const embers=()=>once('embers',()=>buffer(4,(d,n)=>{let ember=0;for(let i=0;i<n;i++){if(Math.random()<.0014)ember=.45+Math.random()*.85;ember*=.994;d[i]=(Math.random()*2-1)*(.02+ember)}seamless(d,n);normalise(d,n,.2)},1));
+    const EMBERS_FILL=function*(d,n){let ember=0;for(let i=0;i<n;i++){if((i&16383)===0)yield;if(Math.random()<.0014)ember=.45+Math.random()*.85;ember*=.994;d[i]=(Math.random()*2-1)*(.02+ember)}seamless(d,n);yield;normalise(d,n,.2)};
+    const embers=()=>once('embers',()=>buffer(4,EMBERS_FILL,1));
 
     // One-shot sounds, each a short synthesised buffer replayed at slightly different pitches.
     const decay=(t,rate)=>Math.exp(-t*rate);
@@ -61,6 +69,16 @@
       thump:()=>buffer(.5,(d,n)=>{let lp=0;for(let i=0;i<n;i++){const t=i/sr,w=Math.random()*2-1;lp+=(w-lp)*.04;d[i]=(lp*3+Math.sin(t*2*Math.PI*55))*decay(t,9)*.5}})
     };
     const eventBuffer=type=>once('event-'+type,EVENTS[type]);
+
+    // ---------- Warm-up: build every sound in the background, a few milliseconds at a time ----------
+    const WARM=[['noise-brown',6,NOISE_FILL('brown'),2],['noise-pink',6,NOISE_FILL('pink'),2],['embers',4,EMBERS_FILL,1],['fountain',5,FOUNTAIN_FILL,2],['noise-white',6,NOISE_FILL('white'),2],['waves',12,WAVES_FILL,2]];
+    const warmQueue=[...WARM.map(([key,seconds,fill,channels])=>()=>{if(!cache.has(key)&&!jobs.has(key))jobs.set(key,startBuffer(seconds,fill,channels));return key}),...Object.keys(EVENTS).map(type=>()=>{eventBuffer(type);return null})];
+    const idle=cb=>window.requestIdleCallback?window.requestIdleCallback(cb,{timeout:400}):typeof setTimeout==='function'?setTimeout(()=>cb({timeRemaining:()=>6}),120):null;
+    let warming=null;
+    function warmUp(deadline){if(typeof performance==='undefined')return;const until=performance.now()+Math.min(6,Math.max(2,deadline?.timeRemaining?.()??4));
+      while(performance.now()<until){if(warming){const job=jobs.get(warming);if(!job){warming=null;continue}if(job.steps.next().done){jobs.delete(warming);cache.set(warming,job.buffer);warming=null}continue}const next=warmQueue.shift();if(!next)return;warming=next()}
+      idle(warmUp)}
+    idle(warmUp);
 
     // ---------- Room recipes ----------
     // beds: [kind, gain, options]; events: [type, per minute, gain, pitch spread]; ticks: [interval s, type, gain].

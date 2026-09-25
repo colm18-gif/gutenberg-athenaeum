@@ -113,7 +113,9 @@ test('static pieces are batched per material without breaking collision rays or 
   assert.ok(order.indexOf('static-batching.js')>-1&&order.indexOf('static-batching.js')<order.indexOf('game.js'));
   const batching=fs.readFileSync('static-batching.js','utf8');
   new (require('node:vm').Script)(batching);
-  assert.match(game,/window\.createStaticBatcher\?\.\(\{THREE,scene,exclusions:\(\)=>interactables\}\)/);
+  assert.match(game,/window\.createStaticBatcher\?\.\(\{THREE,scene,exclusions:\(\)=>interactables,changeStamp:sceneStamp\}\)/);
+  assert.match(batching,/if\(stamp===undefined\|\|stamp!==lastStamp\)\{lastStamp=stamp;scansLeft=3\}if\(scansLeft>0\)\{scansLeft--;scan\(\)\}/,'the scene is only walked after it changes');
+  assert.match(game,/if\(warmingShaders\|\|stamp===warmedStamp\)return;/,'shader warm-up also waits for a change');
   assert.match(game,/staticBatcher\?\.update\(dt\);if\(visual\)/,'the batch check runs right before rendering, so a moved piece is never drawn stale');
   // Originals must stay raycastable: hide them from the camera only, never via layers or visibility.
   assert.match(batching,/function hide\(mesh\)\{mesh\.boundingSphere=hiddenSphere\}/);

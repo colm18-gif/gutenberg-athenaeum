@@ -52,3 +52,9 @@ test('there is no background drone',()=>{
 test('there is no continuous rain hiss',()=>{
   assert.doesNotMatch(game,/soundscape\.makeRainSource\(\)|src\.connect\(filter\)\.connect\(noiseGain\)/);
 });
+
+test('room sounds are built in the background, a few milliseconds at a time',()=>{
+  assert.match(source,/function warmUp\(deadline\)/);
+  assert.match(source,/if\(\(i&16383\)===0\)yield;/,'long buffers pause regularly while being built');
+  assert.match(source,/const job=jobs\.get\(key\);if\(job\)\{for\(const _ of job\.steps\);/,'a room entered early still gets its sound, finishing the build on the spot');
+});
