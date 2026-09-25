@@ -10,7 +10,7 @@ function fixture(){const scene=new Object3D(),player={pos:new Vector(153,0,-20),
   vm.runInNewContext(fs.readFileSync('data/open-access-catalog.js','utf8'),{window});vm.runInNewContext(fs.readFileSync('data/book-completions.js','utf8'),{window});vm.runInNewContext(fs.readFileSync('data/night-railway-books.js','utf8'),{window});vm.runInNewContext(fs.readFileSync('night-train.js','utf8'),{window,Math});
   const sources=window.ATHENAEUM_OPEN_ACCESS_SOURCES,depotAcquisitions=window.ATHENAEUM_OPEN_ACCESS_BOOKS.filter(book=>book.room!=='sorting').map(book=>({...book,source:sources[book.source].name}));
   const fogBook={id:900007,title:'Lost in the Fog',author:'J. D. Beresford'};
-  const railway=window.createNightTrain({THREE,scene,MAT:{wood:{},wood2:{},darkWood:{},stone:{},brass:{}},player,colliders,interactables,performanceZones,books:gameRailwayIds.map(id=>window.ATHENAEUM_RAILWAY_BOOKS.concat(depotAcquisitions).find(b=>b.id===id)||{id}),fogBook,canvasTexture:()=>({}),wrapText:()=>{},coverTexture:()=>({}),rememberLights:()=>{},notice:t=>notices.push(t),move:(x,z)=>player.pos.set(x,0,z),home:()=>{returns++;player.pos.set(0,0,24)},collider:(x,z,w,d,name,minY,maxY)=>colliders.push({minX:x-w/2,maxX:x+w/2,minZ:z-d/2,maxZ:z+d/2,name,minY,maxY})});
+  const railway=window.createNightTrain({THREE,scene,MAT:{wood:{},wood2:{},darkWood:{},stone:{},brass:{}},player,colliders,interactables,performanceZones,books:gameRailwayIds.map(id=>window.ATHENAEUM_RAILWAY_BOOKS.concat(depotAcquisitions).find(b=>b.id===id)||{id}),fogBook,canvasTexture:()=>({}),wrapText:()=>{},coverTexture:()=>({}),rememberLights:()=>{},notice:t=>notices.push(t),move:(x,z)=>player.pos.set(x,0,z),home:()=>{returns++;player.pos.set(0,0,24)},collider:(x,z,w,d,name,minY,maxY)=>colliders.push({minX:x-w/2,maxX:x+w/2,minZ:z-d/2,maxZ:z+d/2,name,minY,maxY}),chooseDestination:globalThis.__picker});
   return{railway,player,scene,interactables,performanceZones,window,notices,get returns(){return returns}};
 }
 // Journeys start from the conductor (or the route map); without a destination picker he names the next stop. The door opens by itself on arrival.
@@ -26,7 +26,7 @@ test('journey pauses with settings, permits reading, stops at every station and 
 test('the route map lets a passenger choose any stop, and the conductor offers the same choice',()=>{const f=fixture();let offered=null;const r=f.railway;r.interact(r.entrance);r.interact(r.controls.board);assert(r.controls['route-map'],'a route map hangs in the carriage');
   // Re-create with a destination picker to check the choice.
   const g=fixture(),picks=[];g.railway.interact(g.railway.entrance);g.railway.build();
-  const source=fs.readFileSync('night-train.js','utf8');assert.match(source,/chooseDestination\(destinations\(\),index=>depart\(index\)\)/);
+  const source=fs.readFileSync('night-train.js','utf8');assert.match(source,/chooseDestination\(\[\{index:'loop',name:'Keep travelling'[^\]]*\},\.\.\.destinations\(\)\],index=>depart\(index\)\)/);
   assert.match(source,/else offerDestinations\(\)/,'speaking to the conductor offers the destinations');
   assert.match(source,/function speedAt\(e\)/,'the train accelerates and brakes');
   assert.match(source,/kind:'panorama'/,'painted country scrolls past the windows');
@@ -46,4 +46,19 @@ test('actual reader-overlay wrapper advances the train, respects pause and mute,
   now+=50;assert(context.worldIsCovered());const audio=context.samplePools.get('nightRideRumble').pool[0];assert(!audio.paused);assert(audio.loop);assert.equal(audio.volume,.12);
   context.settingsOpen=true;now+=50;context.worldIsCovered();assert(audio.paused);assert(!r.arrived);context.settingsOpen=false;context.muted=true;now+=50;context.worldIsCovered();assert(audio.paused);context.muted=false;assert(r.travelling);
   for(let i=0;i<700;i++){now+=50;context.worldIsCovered()}assert(!r.travelling,'the 32-second run completes while reading');assert(audio.paused);assert.equal(audio.currentTime,0);
+});
+
+test('the route map offers a loop: the train keeps running with no stops until the reader picks one',()=>{
+  let offer=null;globalThis.__picker=(options,pick)=>{offer={options,pick}};
+  try{const f=fixture(),r=f.railway;r.interact(r.entrance);r.interact(r.controls.board);r.interact(conductorIn(f));
+    assert.equal(offer.options[0].index,'loop');assert.equal(offer.options[0].name,'Keep travelling');
+    offer.pick('loop');assert(r.travelling&&r.looping,'the loop has begun');
+    for(let i=0;i<40;i++)r.update(i,2.5,false,true,()=>{});
+    assert(r.travelling&&r.looping,'after 100 s the train is still running');
+    r.interact(conductorIn(f));assert(offer.options.length>=4&&offer.options.every(o=>typeof o.index==='number'),'on the loop the choice is where to get off');
+    offer.pick(2);assert(!r.looping&&r.travelling,'the train heads for the chosen stop');
+    for(let i=0;i<20;i++)r.update(200+i,1,false,true,()=>{});
+    assert(!r.travelling,'and arrives');assert.match(r.controls.alight.userData.action,/^ALIGHT AT /);
+    r.interact(r.controls.alight);
+  }finally{delete globalThis.__picker}
 });
