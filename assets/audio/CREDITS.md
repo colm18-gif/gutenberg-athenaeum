@@ -14,6 +14,7 @@ terms can be checked before public release.
 | `machine-flap.ogg` | `split-flap-display-announcement-pragotron-solariboard-barcelona-airport-crooner.mp3` |
 | `train-rumble-distant.ogg` | `vadim_makes_sound-underground-subway-station-distant-train-rumble-1-546578.mp3` |
 | `train-carriage-loop.ogg` | `209972__jrosin__wales-steam-train.flac` (Freesound sound 209972 by jrosin) |
+| `train-whistle.ogg` | same recording, the whistle at 3:02 |
 | `painting-passage.ogg` | Kenney Impact Sounds: `impactWood_heavy_000.ogg` |
 | `rocket-launch.ogg` | Kenney Sci-Fi Sounds: `thrusterFire_001.ogg` |
 
@@ -62,3 +63,7 @@ Freesound (https://freesound.org/s/209972/), mixed to mono, high-passed at
 30 Hz, crossfaded at the loop point and encoded as Opus at about 40 kb/s.
 Its licence has not yet been checked against the Freesound page; confirm it
 (and add the required attribution if it is CC BY) before public release.
+
+`train-whistle.ogg` is the two-second whistle from the same recording
+(3:02–3:04), faded out and encoded as Opus. It plays as the carriage departs;
+the steam sigh on arrival is synthesised in `game.js`.
