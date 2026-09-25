@@ -62,6 +62,10 @@
     function room(key){const g=new THREE.Group();g.name='night-railway-'+key;groups[key]=g;scene.add(g);performanceZones['nightRail'+key]={group:g,isNeeded:()=>zoneAt(player.pos.x,player.pos.z)?.key===key,active:true};return g}
     function build(){if(built)return;built=true;
       const platform=room('platform');box(platform,6,.4,30,MAT.stone,213,-.2,-20);box(platform,.4,5,30,metal,209.8,2.5,-20);box(platform,6,5,.4,metal,213,2.5,-35.2);box(platform,6,5,.4,metal,213,2.5,-4.8);box(platform,6,.3,30,metal,213,5,-20);
+      // The waiting train (track, reading carriage and locomotive) drawn up beside a platform, centred on x. The Library
+      // Platform's train stands east of it; at the request stops it is turned round to stand west, windows facing the platform.
+      function exteriorTrain(host,x=220.5,west=false){const platform=new THREE.Group();if(west){platform.rotation.y=Math.PI;platform.position.set(x+220.5,0,-40)}else platform.position.x=x-220.5;host.add(platform);
+        box(platform,8,.3,64,trackBed,220.5,-1.15,-24);
       // The CC0 track adds correctly proportioned sleepers and rail chairs; these boxes remain as a fallback.
       for(const x of [219.6,221.4])box(platform,.1,.1,48,MAT.brass,x,-.8,-23);for(let z=-45;z<0;z+=1.5)box(platform,4,.12,.25,MAT.darkWood,220.5,-.9,z);for(let z=-43;z<-1;z+=4)railModel(platform,'track-detailed.glb',220.5,-.98,z,{x:4,y:.42,z:4});
       // Exterior carriage: panelled body, clerestory roof, running boards, suspension and lit compartment windows.
@@ -79,6 +83,8 @@
       const headlamp=box(platform,.58,.56,.4,glow,220.5,2.15,-43.14);box(platform,.78,.12,.5,MAT.brass,220.5,2.5,-43.12);const bufferBeam=box(platform,4.35,.32,.36,new THREE.MeshStandardMaterial({color:0x59201a,roughness:.7}),220.5,.18,-43.3);for(const x of [219.08,221.92]){box(platform,.18,.18,.52,iron,x,.2,-43.55);const buffer=cylinder(platform,.24,.24,.14,16,iron,x,.2,-43.87,Math.PI/2)}for(const x of [218.7,219.6,220.5,221.4,222.3]){const bar=box(platform,.09,.09,2.5,MAT.brass,x,-.42,-44.05);bar.rotation.x=-.32}
       for(const z of [-41,-38,-35])for(const x of [218.15,222.85]){const wheel=cylinder(platform,z===-38?.92:.72,z===-38?.92:.72,.3,24,iron,x,-.28,z,0,0,Math.PI/2);const hub=cylinder(platform,.18,.18,.38,14,MAT.brass,x+(x<220?-.1:.1),-.28,z,0,0,Math.PI/2)}for(const x of [218.03,222.97]){box(platform,.13,.13,6.6,MAT.brass,x,-.2,-38);for(const z of [-41,-38,-35])cylinder(platform,.15,.15,.1,12,MAT.brass,x,-.2,z,0,0,Math.PI/2)}
       label(platform,'NIGHT COLLECTIONS · No. 1874',217.93,2.08,-38.5,3.6,.42,Math.PI/2);railModel(platform,'train-connector.glb',220.5,-.67,-30.45,{x:1.7,y:.9,z:.55},Math.PI/2);
+        return platform}
+      const trackBed=new THREE.MeshStandardMaterial({color:0x201a15,roughness:1});exteriorTrain(platform);
       // The boarding control is now a brass-framed carriage vestibule attached to the train.
       const board=control(platform,'board','The reading carriage','A proper vestibule door; beyond its glass, a lamp is already burning.','BOARD',217.79,1.82,-20,.14,3.1,1.72);board.material=MAT.darkWood;
       box(platform,.08,3.46,.18,MAT.brass,217.7,1.82,-20.98);box(platform,.08,3.46,.18,MAT.brass,217.7,1.82,-19.02);box(platform,.08,.18,2.12,MAT.brass,217.7,3.51,-20);box(platform,.07,1.06,1.18,night,217.68,2.58,-20);box(platform,.055,.08,1.24,MAT.brass,217.63,2.58,-20);box(platform,.07,.08,1.12,MAT.brass,217.62,1.32,-20);box(platform,.07,.08,1.12,MAT.brass,217.62,.9,-20);cylinder(platform,.08,.08,.18,12,MAT.brass,217.58,1.68,-19.42,0,0,Math.PI/2);
@@ -167,7 +173,7 @@
       box(fogRoom,3.5,.85,1.8,MAT.darkWood,318,.43,-20,true);box(fogRoom,2.7,.12,1.25,MAT.brass,318,.92,-20);label(fogRoom,'WAIT HERE UNTIL THE LINE REMEMBERS YOU',316,3.85,-26.95,7,.58);
       if(fogBook){fogBookMesh=volume(fogRoom,fogBook,318,1.15,-20);fogBookMesh.userData.fogDiscovery=true}
       const fogReturn=control(fogRoom,'fog-return','The waiting-room door','It opens back onto the platform. Something in the room is still waiting to be found.','BACK TO PLATFORM',310.05,1.7,-17,.18,3.1,1.7);carriageEndDoor(fogRoom,fogReturn,310.05,1.7,-17);
-      control(fogPlatform,'fog-reboard','The waiting train','Its lamps remain lit beyond the fog.','BOARD TRAIN',282.6,1.8,-9,.18,3.1,1.5);conductor(fogPlatform,286,-12);box(fogRoom,2.4,.8,1.1,MAT.wood2,314,.4,-24,true);box(fogRoom,2.2,.14,.9,cloth,314,.88,-24);lamp(fogRoom,318,3,-20,true);lamp(fogRoom,313,2.7,-24);
+      exteriorTrain(fogPlatform,277.3,true);control(fogPlatform,'fog-reboard','The waiting train','Its lamps remain lit beyond the fog.','BOARD TRAIN',280.35,1.8,-12.5,.18,3.1,1.5);conductor(fogPlatform,286,-12);box(fogRoom,2.4,.8,1.1,MAT.wood2,314,.4,-24,true);box(fogRoom,2.2,.14,.9,cloth,314,.88,-24);lamp(fogRoom,318,3,-20,true);lamp(fogRoom,313,2.7,-24);
       fogPlatform.add(new THREE.AmbientLight(0xd9e2df,.58));fogRoom.add(new THREE.AmbientLight(0xc8d0cb,.72));
       // Two request stops carry their own books and small discoveries. Each space is built only after railway discovery.
       function requestStop(key,cx,title,subtitle,bookIds,propTitle,propNote){
@@ -186,7 +192,7 @@
         const entry=control(platform,key+'-enter','The station reading room','A small collection waits behind the platform lamps.','ENTER READING ROOM',cx+11.6,1.7,-20,.18,3.1,2.15);entry.material=MAT.darkWood;
         for(const z of [-21.25,-18.75])box(platform,.28,3.8,.2,MAT.brass,cx+11.5,1.9,z);
         box(platform,.28,.18,2.7,MAT.brass,cx+11.5,3.85,-20);
-        control(platform,key+'-reboard','The waiting train','The conductor will name the next destination once you are aboard.','BOARD TRAIN',cx-10.9,1.7,-10,.18,3,1.5);
+        exteriorTrain(platform,cx-15.7,true);control(platform,key+'-reboard','The waiting train','The conductor will name the next destination once you are aboard.','BOARD TRAIN',cx-13.05,1.7,-12.5,.18,3,1.5);
         conductor(platform,cx-8,-25);box(inside,14,.4,16,MAT.wood,cx+30,-.2,-20);
         for(const z of [-28,-12])box(inside,14,4.8,.3,wall,cx+30,2.4,z);
         box(inside,.3,4.8,16,wall,cx+37,2.4,-20);
