@@ -63,19 +63,42 @@ export function textMatches(text,title,author){const h=header(text);return title
 
 // ---------- network ----------
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-async function get(url,type='text'){for(let attempt=0;attempt<3;attempt++){try{const response=await fetch(url,{headers:{'user-agent':USER_AGENT},redirect:'follow',signal:AbortSignal.timeout(45000)});if(response.status===404)return null;if(response.ok)return type==='json'?await response.json():await response.text()}catch(error){}await sleep(2000*(attempt+1))}return null}
-async function download(id){for(const url of [`https://www.gutenberg.org/cache/epub/${id}/pg${id}.txt`,`https://www.gutenberg.org/ebooks/${id}.txt.utf-8`]){await sleep(PAUSE_MS);const text=await get(url);if(text&&text.length>2000)return text}return null}
+const say=line=>console.log(line);
+// A slow or refusing server must not stall the whole night: requests time out after 20 seconds, and a host
+// that fails four times in a row is skipped for the rest of the run.
+const hostFailures=new Map(),TIMEOUT_MS=Number(process.env.DAILY_ROOM_TIMEOUT_MS??20000);
+const hostOf=url=>new URL(url).host,hostDown=url=>(hostFailures.get(hostOf(url))||0)>=4;
+async function get(url,type='text'){
+  if(hostDown(url))return null;const host=hostOf(url);
+  for(let attempt=0;attempt<2;attempt++){
+    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(Object.assign(new Error('timed out'),{name:'TimeoutError'})),TIMEOUT_MS);
+    try{const response=await fetch(url,{headers:{'user-agent':USER_AGENT},redirect:'follow',signal:controller.signal});
+      if(response.status===404){hostFailures.set(host,0);return null}
+      if(response.ok){const body=type==='json'?await response.json():await response.text();hostFailures.set(host,0);return body}
+      say(`    ${host} answered ${response.status}`)}
+    catch(error){say(`    ${host}: ${controller.signal.aborted?'timed out':error.message}`)}
+    finally{clearTimeout(timer)}
+    hostFailures.set(host,(hostFailures.get(host)||0)+1);if(hostDown(url)){say(`    ${host} is not responding; skipping it for the rest of this run`);return null}
+    await sleep(1500*(attempt+1));
+  }
+  return null;
+}
+// Project Gutenberg's own site first, then its official mirrors.
+const TEXT_URLS=id=>[`https://www.gutenberg.org/cache/epub/${id}/pg${id}.txt`,`https://gutenberg.pglaf.org/cache/epub/${id}/pg${id}.txt`,`https://aleph.gutenberg.org/cache/epub/${id}/pg${id}.txt`,`https://www.gutenberg.org/ebooks/${id}.txt.utf-8`];
+async function download(id){for(const url of TEXT_URLS(id)){if(hostDown(url))continue;await sleep(PAUSE_MS);const text=await get(url);if(text&&text.length>2000)return text}return null}
 async function search(title,author){
   const query=`${words(title).slice(0,6).join(' ')} ${/anonymous/i.test(author)?'':surname(author)}`.trim();
-  await sleep(PAUSE_MS);const result=await get(`https://gutendex.com/books?languages=en&search=${encodeURIComponent(query)}`,'json');
+  await sleep(PAUSE_MS);let result=await get(`https://gutendex.com/books?languages=en&search=${encodeURIComponent(query)}`,'json');
+  // Gutendex is sometimes slow or down; Project Gutenberg's own catalogue search (OPDS) is the fallback.
+  if(!result){await sleep(PAUSE_MS);const feed=await get(`https://www.gutenberg.org/ebooks/search.opds/?query=${encodeURIComponent(query)}`);if(feed)result={results:feed.split('<entry>').slice(1).map(entry=>({id:Number(entry.match(/\/ebooks\/(\d+)/)?.[1]),title:(entry.match(/<title>([^<]*)<\/title>/)?.[1]||'').replace(/&amp;/g,'&'),authors:[{name:author}],copyright:false,download_count:0})).filter(book=>book.id)}}
   return (result?.results||[]).filter(book=>!book.copyright&&titleMatches(title,book.title)&&authorMatches(author,(book.authors||[]).map(a=>a.name).join(' '))).sort((a,b)=>extraWords(title,a.title)-extraWords(title,b.title)||(b.download_count||0)-(a.download_count||0)).map(book=>book.id);
 }
 const hasText=id=>fs.existsSync(path.join(root,`texts/pg${id}.txt`))||fs.existsSync(path.join(BUNDLED,`pg${id}.txt.gz`));
 // A text already in the repository is checked like a download, so a wrong id cannot slip through.
 function localText(id){const plain=path.join(root,`texts/pg${id}.txt`),packed=path.join(BUNDLED,`pg${id}.txt.gz`);try{if(fs.existsSync(plain))return fs.readFileSync(plain,'utf8');if(fs.existsSync(packed))return zlib.gunzipSync(fs.readFileSync(packed)).toString('utf8')}catch(error){}return null}
 const localMatches=(id,title,author)=>{const text=localText(id);return !!text&&textMatches(text,title,author)};
-async function resolve([id,title,author],log){
-  if(id){if(localMatches(id,title,author))return {id,text:null};const text=hasText(id)?localText(id):await download(id);if(!hasText(id)&&text&&textMatches(text,title,author))return {id,text};if(text)log.push(`  id ${id} is not "${title}" (${header(text).title}); searching`)}
+async function resolve([id,title,author]){
+  if(id){if(localMatches(id,title,author))return {id,text:null};const text=hasText(id)?localText(id):await download(id);if(!hasText(id)&&text&&textMatches(text,title,author))return {id,text};if(text)say(`  id ${id} is not "${title}" (${header(text).title}); searching`)}
   for(const candidate of (await search(title,author)).slice(0,3)){if(localMatches(candidate,title,author))return {id:candidate,text:null};if(hasText(candidate))continue;const text=await download(candidate);if(text&&textMatches(text,title,author))return {id:candidate,text}}
   return null;
 }
@@ -87,29 +110,33 @@ async function main(){
   if(args.includes('--validate')){console.log(`Schedule OK: ${schedule.days.length} days from ${schedule.start}.`);return}
   const today=args.includes('--date')?args[args.indexOf('--date')+1]:new Date().toISOString().slice(0,10);
   const previous=fs.existsSync(RESOLVED)?loadScript(RESOLVED,'ATHENAEUM_DAILY_RESOLVED')||{days:{}}:{days:{}},tracked=new Set(fs.existsSync(TRACKED)?JSON.parse(fs.readFileSync(TRACKED,'utf8')).ids:[]);
-  const archive=schedule.archiveDays||14,entries=new Map();
-  for(let n=-(archive-1);n<=AHEAD;n++){const entry=entryFor(schedule,addDays(today,n));if(entry)entries.set(entry.date,entry)}
+  const archive=schedule.archiveDays||14,entries=new Map(),started=Date.now(),budgetMs=Number(process.env.DAILY_ROOM_BUDGET_MIN??40)*60000;
+  // Today and the next two days first, then back through the archive, so a short night still covers today.
+  const order=[0,1,2];for(let n=1;n<archive;n++)order.push(-n);
+  for(const n of order){const entry=entryFor(schedule,addDays(today,n));if(entry&&!entries.has(entry.date))entries.set(entry.date,entry)}
   fs.mkdirSync(BUNDLED,{recursive:true});
-  const days={},log=[];
+  const days={},header='// Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the\n// days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.\n';
+  // Saved after every day, so whatever is done is kept even if the run is cut short.
+  const save=()=>{const kept={};for(const date of [...entries.keys()].sort())if(days[date]||previous.days?.[date])kept[date]=days[date]||previous.days[date];fs.writeFileSync(RESOLVED,header+'window.ATHENAEUM_DAILY_RESOLVED='+JSON.stringify({updated:today,days:kept},null,1)+';\n');fs.writeFileSync(TRACKED,JSON.stringify({ids:[...tracked].sort((a,b)=>a-b)},null,1)+'\n');return kept};
+  let outOfTime=false;
   for(const [date,entry] of entries){
-    const before=previous.days?.[date],books=[],missing=[];log.push(`${date} ${entry.title}`);
+    if(Date.now()-started>budgetMs){if(!outOfTime)say(`Time budget used; the remaining days keep their earlier lists and are finished on the next run.`);outOfTime=true;continue}
+    const before=previous.days?.[date],books=[],missing=[];say(`${date} ${entry.title}`);
     for(const book of entry.books){
       const [,title,author]=book,known=before?.books?.find(b=>b.title===title);
       let found=known&&localMatches(known.id,title,author)?{id:known.id,text:null}:null;
-      if(!found)found=await resolve(known?[known.id,title,author]:book,log);
-      if(!found){missing.push(title);log.push(`  missing: ${title} (${author})`);continue}
-      if(found.text&&!hasText(found.id)){fs.writeFileSync(path.join(BUNDLED,`pg${found.id}.txt.gz`),zlib.gzipSync(found.text,{level:9}));tracked.add(found.id);log.push(`  + ${found.id} ${title}`)}
+      if(!found)found=await resolve(known?[known.id,title,author]:book);
+      if(!found){missing.push(title);say(`  missing: ${title} (${author})`);continue}
+      if(found.text&&!hasText(found.id)){fs.writeFileSync(path.join(BUNDLED,`pg${found.id}.txt.gz`),zlib.gzipSync(found.text,{level:9}));tracked.add(found.id);say(`  + ${found.id} ${title}`)}
+      else say(`  = ${found.id} ${title}`);
       books.push({id:found.id,title,author});
     }
-    days[date]={books,missing};
+    days[date]={books,missing};save();
   }
   // Remove texts this job added that no day in the window still uses.
-  const inUse=new Set(Object.values(days).flatMap(day=>day.books.map(book=>book.id)));
-  for(const id of [...tracked])if(!inUse.has(id)){fs.rmSync(path.join(BUNDLED,`pg${id}.txt.gz`),{force:true});tracked.delete(id);log.push(`- removed ${id}`)}
-  const header='// Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the\n// days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.\n';
-  fs.writeFileSync(RESOLVED,header+'window.ATHENAEUM_DAILY_RESOLVED='+JSON.stringify({updated:today,days},null,1)+';\n');
-  fs.writeFileSync(TRACKED,JSON.stringify({ids:[...tracked].sort((a,b)=>a-b)},null,1)+'\n');
-  console.log(log.join('\n'));
+  const kept=save(),inUse=new Set(Object.values(kept).flatMap(day=>day.books.map(book=>book.id)));
+  for(const id of [...tracked])if(!inUse.has(id)){fs.rmSync(path.join(BUNDLED,`pg${id}.txt.gz`),{force:true});tracked.delete(id);say(`- removed ${id}`)}
+  save();
   const total=Object.values(days).reduce((sum,day)=>sum+day.books.length,0),lost=Object.values(days).reduce((sum,day)=>sum+day.missing.length,0);
   console.log(`\n${entries.size} days, ${total} books ready, ${lost} not found, ${tracked.size} texts held for the room.`);
 }
