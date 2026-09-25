@@ -90,6 +90,7 @@
       'east-wing':QUIET_ROOM,'west-wing':QUIET_ROOM,
       'restricted-stacks':{beds:[['air',.06]],events:[['whisper',1.2,.04],['creak',.8,.05]]},
       'roof-garden':{beds:[['wind',.14]],events:[['chimes',2.2,.08],['owl',.4,.06]]},
+      'daily-room':{beds:[['air',.04]],events:[['rustle',1.2,.04]]},
       'librarian-office':{beds:[['air',.04]],ticks:[[1,'tick',.06]],events:[['scratch',2.5,.05],['rustle',1.5,.04]]},
       'portrait-room':{beds:[['air',.06]],events:[['whisper',1.4,.035],['creak',.7,.05]]},
       'tunnel':{beds:[['rumble',.12],['air',.05]],events:[['drip',9,.07]]},
