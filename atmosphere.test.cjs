@@ -72,3 +72,10 @@ test('the tour leads to a real shelf and never hides behind the book panel',()=>
   assert.match(game,/box\.classList\.toggle\('tour-top',!ui\.actions\.classList\.contains\('hidden'\)\)/);
   assert.match(css,/\.tour\.tour-top\{top:/);
 });
+
+test('the roof garden has a night sky, a town around it, a fuller garden and somewhere to read',()=>{
+  assert.match(game,/roofNight=dressRoofGarden\(\);registerPerformanceZoneObjects\('roof',existing\)/,'everything new is only drawn while the reader is on the roof');
+  for(const piece of ['new THREE.SphereGeometry(112','const COUNT=78,houses=new THREE.InstancedMesh','const spire=new THREE.Group()','const lavender=new THREE.InstancedMesh','const bulbs=new THREE.InstancedMesh','const flies=new THREE.Points',"chair(-12.6,58.4,Math.PI*.82,{model:'armchair'",'A star falls over the rooftops'])assert.ok(game.includes(piece),piece);
+  assert.match(game,/if\(roofNight&&player\.pos\.y>8\.5&&player\.pos\.z>34\)roofNight\.update\(t,dt\)/);
+  assert.match(game,/const still=reducedMotion;/,'fireflies, lights and falling stars hold still under Reduce motion');
+});

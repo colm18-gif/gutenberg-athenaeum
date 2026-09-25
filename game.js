@@ -772,8 +772,71 @@ const verneEngraving=plateTexture('assets/plates/verne-nautilus-window.jpg',vern
     const roofBook=looseBook(books[46],-13.2,10.44,41.15,.18,'roof-book');roofBook.userData.machineNote='Rain has blurred one sentence into a map of the roof.';
     const vanePole=cylinder(.1,.16,3.6,10,MAT.brass,11.5,11.8,48);vaneArrow=box(2.4,.12,.12,MAT.gold,11.5,13.45,48,false);const vaneTail=mesh(new THREE.ConeGeometry(.42,.9,3),MAT.gold,10.5,13.45,48,false);vaneTail.rotation.z=Math.PI/2;vanePole.userData={type:'weather-vane',title:'The library weather vane',author:'Its arrow refuses to point north.',action:'READ WEATHER'};interactables.push(vanePole);
     for(let i=0;i<5;i++){const chime=cylinder(.055,.07,.75+i*.11,8,MAT.brass,5.3+i*.3,13.65-i*.08,43.8);windChimes.push(chime)}
-    for(const p of [[-12,11.2,39],[12,11.2,39],[-12,11.2,59],[12,11.2,59]])addLamp(p[0],p[1],p[2],.65);registerPerformanceZoneObjects('roof',existing)}
+    for(const p of [[-12,11.2,39],[12,11.2,39],[-12,11.2,59],[12,11.2,59]])addLamp(p[0],p[1],p[2],.65);roofNight=dressRoofGarden();registerPerformanceZoneObjects('roof',existing)}
 
+    // ---- The roof garden at night: a starry sky with a moon and the odd falling star, the rooftops of the old
+    // town all around, lavender, roses and lemon trees, string lights under the canopy, fireflies over the beds
+    // and an armchair looking out over it all. Built with the roof and only drawn while the reader is up here.
+    let roofNight=null;
+    function dressRoofGarden(){
+      const C=new THREE.Vector3(0,10,49),rnd=(i=>()=>(i=(i*9301+49297)%233280)/233280)(17);
+      // Sky dome: stars, a faint galaxy band, the moon and a warm glow over the town's horizon.
+      const skyUniforms={uTime:{value:0},uDay:{value:0}};
+      const sky=new THREE.Mesh(new THREE.SphereGeometry(112,40,20),new THREE.ShaderMaterial({uniforms:skyUniforms,side:THREE.BackSide,depthWrite:false,vertexShader:'varying vec3 vDir;void main(){vDir=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',fragmentShader:`uniform float uTime,uDay;varying vec3 vDir;
+        float hash(vec3 p){return fract(sin(dot(p,vec3(127.1,311.7,74.7)))*43758.5453);}
+        void main(){vec3 d=normalize(vDir);float h=d.y;
+          vec3 col=mix(vec3(.05,.06,.12),vec3(.006,.008,.03),smoothstep(0.,.55,h));
+          col=mix(col,vec3(.32,.17,.09),(1.-smoothstep(-.02,.16,h))*.6);
+          vec3 cell=floor(d*260.);float star=step(.9975,hash(cell))*smoothstep(.02,.2,h)*(.55+.45*sin(uTime*1.3+hash(cell+3.)*40.));
+          float band=exp(-pow(dot(d,normalize(vec3(.6,.3,-.75))),2.)*18.)*smoothstep(.05,.4,h);col+=vec3(.09,.09,.13)*band*(.5+.5*hash(floor(d*90.)));col+=vec3(.95,.93,.85)*star*(1.+band);
+          vec3 m=normalize(vec3(-.45,.42,.78));float md=distance(d,m);col+=vec3(.98,.95,.84)*smoothstep(.034,.03,md)+vec3(.35,.34,.3)*smoothstep(.28,.03,md)*.35;
+          col=mix(col,vec3(.36,.52,.72)*(.4+.6*h),uDay*.85);
+          gl_FragColor=vec4(col,1.);
+          #include <tonemapping_fragment>
+          #include <colorspace_fragment>
+        }`}));sky.position.copy(C);sky.renderOrder=-10;sky.frustumCulled=false;sky.userData={type:'roof-sky'};scene.add(sky);
+      // The old town: rooftops, chimneys and lit windows in a ring around the library, and a church spire.
+      const facade=canvasTexture((c,w,h)=>{c.fillStyle='#0c0e15';c.fillRect(0,0,w,h);for(let y=10;y<h-8;y+=22)for(let x=6;x<w-6;x+=16){const lit=rnd();c.fillStyle=lit>.78?`rgba(255,${190+rnd()*40|0},110,${.55+rnd()*.4})`:lit>.7?'rgba(120,150,190,.35)':'rgba(30,34,44,.9)';c.fillRect(x,y,8,12)}},96,192);
+      const townMat=new THREE.MeshBasicMaterial({map:facade,fog:false}),roofMat=new THREE.MeshBasicMaterial({color:0x07090e,fog:false});
+      const COUNT=78,houses=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),townMat,COUNT),roofs=new THREE.InstancedMesh(new THREE.ConeGeometry(.75,1,4),roofMat,COUNT),chimneys=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),roofMat,COUNT),m=new THREE.Matrix4(),q=new THREE.Quaternion(),e=new THREE.Euler(),v=new THREE.Vector3(),sc=new THREE.Vector3();
+      for(let i=0;i<COUNT;i++){const a=i/COUNT*Math.PI*2+rnd()*.05,r=48+rnd()*38,w=5+rnd()*7,d=5+rnd()*6,top=3+rnd()*9+(r<60?-2:2),x=C.x+Math.cos(a)*r,z=C.z+Math.sin(a)*r,yaw=-a+(rnd()-.5)*.3,base=-30;
+        e.set(0,yaw,0);q.setFromEuler(e);m.compose(v.set(x,(base+top)/2,z),q,sc.set(w,top-base,d));houses.setMatrixAt(i,m);
+        e.set(0,yaw+Math.PI/4,0);q.setFromEuler(e);m.compose(v.set(x,top+1.4,z),q,sc.set(w*1.05,2.8+rnd()*1.6,d*1.05));roofs.setMatrixAt(i,m);
+        e.set(0,yaw,0);q.setFromEuler(e);m.compose(v.set(x+(rnd()-.5)*w*.5,top+2.2,z+(rnd()-.5)*d*.5),q,sc.set(.7,2.2+rnd()*1.5,.7));chimneys.setMatrixAt(i,m)}
+      for(const mesh of [houses,roofs,chimneys]){mesh.instanceMatrix.needsUpdate=true;mesh.frustumCulled=false;mesh.userData={type:'roof-town'};scene.add(mesh)}
+      const spire=new THREE.Group();spire.position.set(C.x-34,0,C.z+62);scene.add(spire);const tower=new THREE.Mesh(new THREE.BoxGeometry(6,44,6),townMat);tower.position.y=-8;spire.add(tower);const point=new THREE.Mesh(new THREE.ConeGeometry(4.4,16,4),roofMat);point.position.y=22;point.rotation.y=Math.PI/4;spire.add(point);
+      const clockFace=new THREE.Mesh(new THREE.CircleGeometry(1.6,24),new THREE.MeshBasicMaterial({color:0xf2d9a2,fog:false}));clockFace.position.set(0,10,-3.05);clockFace.rotation.y=Math.PI;spire.add(clockFace);spire.lookAt(C.x,0,C.z);
+      // Garden: flowers on the old planters, lavender along both side walls, and two lemon trees in pots.
+      const flowerCount=64,flowers=new THREE.InstancedMesh(new THREE.IcosahedronGeometry(.09,0),new THREE.MeshStandardMaterial({roughness:.8}),flowerCount),petals=[0xc2344b,0xe8a3b5,0xf3efe2,0xd46a2a].map(c=>new THREE.Color(c));
+      let fi=0;for(const x of [-12,-8,8,12])for(let k=0;k<16;k++){m.compose(v.set(x-1.2+rnd()*2.4,11.05+rnd()*.55,57+(rnd()-.5)*.9),q.identity(),sc.setScalar(.8+rnd()*.6));flowers.setMatrixAt(fi,m);flowers.setColorAt(fi++,petals[k%petals.length])}flowers.instanceMatrix.needsUpdate=true;scene.add(flowers);
+      const stalks=[];for(const x of [-16.2,16.2]){addBox(.9,.55,13,MAT.darkWood,x,10.28,49,false);collider(x,49,.9,13,'lavender bed',9,13);for(let k=0;k<150;k++)stalks.push([x+(rnd()-.5)*.7,43+rnd()*12,.45+rnd()*.35])}
+      const lavender=new THREE.InstancedMesh(new THREE.CylinderGeometry(.018,.028,1,4),new THREE.MeshStandardMaterial({color:0x6a7f55,roughness:1}),stalks.length),blooms=new THREE.InstancedMesh(new THREE.CylinderGeometry(.045,.03,1,5),new THREE.MeshStandardMaterial({color:0x7a5fb3,roughness:.9,emissive:0x1c1230}),stalks.length);
+      stalks.forEach(([x,z,h],k)=>{e.set((rnd()-.5)*.3,0,(rnd()-.5)*.3);q.setFromEuler(e);m.compose(v.set(x,10.55+h/2,z),q,sc.set(1,h,1));lavender.setMatrixAt(k,m);m.compose(v.set(x+(h*e.z*-.5),10.55+h+.09,z+h*e.x*.5),q,sc.set(1,.22,1));blooms.setMatrixAt(k,m)});
+      for(const mesh of [lavender,blooms]){mesh.instanceMatrix.needsUpdate=true;scene.add(mesh)}
+      const leafMat=new THREE.MeshStandardMaterial({color:0x3f6b3a,roughness:.95}),lemonMat=new THREE.MeshStandardMaterial({color:0xf0cf3c,roughness:.6,emissive:0x2a2000});
+      for(const [x,z] of [[-5.2,42.6],[5.2,55.4]]){cylinder(.55,.42,.8,14,new THREE.MeshStandardMaterial({color:0x8d4a2c,roughness:.9}),x,10.4,z);cylinder(.08,.11,1.6,8,MAT.wood2,x,11.55,z);for(let k=0;k<7;k++){const leaf=mesh(new THREE.IcosahedronGeometry(.55+rnd()*.25,1),leafMat,x+(rnd()-.5)*.9,12.55+(rnd()-.3)*.6,z+(rnd()-.5)*.9,false);leaf.scale.y=.8}for(let k=0;k<9;k++)mesh(new THREE.SphereGeometry(.09,8,6),lemonMat,x+(rnd()-.5)*1.3,12.3+rnd()*.8,z+(rnd()-.5)*1.3,false);collider(x,z,1.2,1.2,'lemon tree',9,13)}
+      // String lights between the canopy posts, sagging a little between each pair.
+      const posts=[[-8,44],[8,44],[8,54],[-8,54]],bulbSpots=[];for(let i=0;i<4;i++){const [ax,az]=posts[i],[bx,bz]=posts[(i+1)%4];for(let k=1;k<18;k++){const t=k/18;bulbSpots.push([ax+(bx-ax)*t,14.3-Math.sin(Math.PI*t)*.55,az+(bz-az)*t])}}for(let k=1;k<18;k++){const t=k/18;bulbSpots.push([-8+16*t,14.3-Math.sin(Math.PI*t)*.7,44+10*t])}
+      const bulbs=new THREE.InstancedMesh(new THREE.SphereGeometry(.075,8,6),new THREE.MeshBasicMaterial({color:0xffffff}),bulbSpots.length),warm=new THREE.Color(0xffc56b);bulbSpots.forEach(([x,y,z],k)=>{m.compose(v.set(x,y,z),q.identity(),sc.setScalar(1));bulbs.setMatrixAt(k,m);bulbs.setColorAt(k,warm)});bulbs.instanceMatrix.needsUpdate=true;scene.add(bulbs);
+      // Fireflies over the beds and planters.
+      const flyCount=46,flyBase=new Float32Array(flyCount*4),flyPos=new Float32Array(flyCount*3),flyCol=new Float32Array(flyCount*3);for(let k=0;k<flyCount;k++){const side=k%3;flyBase.set([side===0?-15+rnd()*2:side===1?13+rnd()*2:-13+rnd()*26,10.6+rnd()*1.6,side===2?55.5+rnd()*3:43+rnd()*12,rnd()],k*4)}
+      const flyGeometry=new THREE.BufferGeometry();flyGeometry.setAttribute('position',new THREE.BufferAttribute(flyPos,3).setUsage(THREE.DynamicDrawUsage));flyGeometry.setAttribute('color',new THREE.BufferAttribute(flyCol,3).setUsage(THREE.DynamicDrawUsage));flyGeometry.boundingSphere=new THREE.Sphere(C.clone(),30);
+      const flies=new THREE.Points(flyGeometry,new THREE.PointsMaterial({color:0xd8ff8a,size:.16,map:softParticleTexture(),vertexColors:true,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,fog:false}));scene.add(flies);
+      // An armchair by the wall, looking out over the town.
+      chair(-12.6,58.4,Math.PI*.82,{model:'armchair',title:'The rooftop armchair',author:'Someone carried it up here and never carried it down. The town lamps make good company for poetry.',categories:['Poetry','Wonder','Philosophy','Memory']});
+      box(.9,.08,.9,MAT.darkWood,-14.6,10.72,56.9,false);for(const [dx,dz] of [[-.35,-.35],[.35,-.35],[-.35,.35],[.35,.35]])box(.07,.7,.07,MAT.darkWood,-14.6+dx,10.35,56.9+dz,false);cylinder(.09,.07,.14,12,MAT.paper,-14.4,10.83,56.8);
+      // A falling star now and then, drawn as a short fading streak across the dome.
+      const streak=new THREE.Mesh(new THREE.PlaneGeometry(9,.12),new THREE.MeshBasicMaterial({map:canvasTexture((c,w,h)=>{const g=c.createLinearGradient(0,0,w,0);g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(.85,'rgba(255,248,225,.9)');g.addColorStop(1,'rgba(255,255,255,1)');c.fillStyle=g;c.fillRect(0,0,w,h)},256,8),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,fog:false}));streak.visible=false;streak.frustumCulled=false;scene.add(streak);
+      let nextStarAt=performance.now()+12000+Math.random()*15000,starStart=-1,starFrom=new THREE.Vector3(),starDir=new THREE.Vector3(),wished=false,twinkleTimer=0;
+      return {update(t,dt){
+        skyUniforms.uTime.value=reducedMotion?0:t;skyUniforms.uDay.value=clamp(Math.sin(clamp(dayPhase/.62,0,1)*Math.PI),0,1);
+        const still=reducedMotion;for(let k=0;k<flyCount;k++){const bx=flyBase[k*4],by=flyBase[k*4+1],bz=flyBase[k*4+2],s=flyBase[k*4+3],w=still?s*20:t*.4+s*30;flyPos[k*3]=bx+Math.sin(w)*.6+Math.sin(w*.37)*.3;flyPos[k*3+1]=by+Math.sin(w*.8+s*7)*.35;flyPos[k*3+2]=bz+Math.cos(w*.9)*.6;const glow=still?.5:Math.pow(Math.max(0,Math.sin(t*(1.1+s)+s*50)),6);flyCol[k*3]=flyCol[k*3+1]=flyCol[k*3+2]=glow}
+        flyGeometry.attributes.position.needsUpdate=true;flyGeometry.attributes.color.needsUpdate=true;
+        twinkleTimer-=dt;if(twinkleTimer<=0&&!still){twinkleTimer=.25;const c=new THREE.Color();for(let k=0;k<bulbSpots.length;k++){c.copy(warm).multiplyScalar(.8+.25*Math.sin(t*2.3+k*1.7));bulbs.setColorAt(k,c)}bulbs.instanceColor.needsUpdate=true}
+        const now=performance.now();if(!still&&starStart<0&&now>=nextStarAt){starStart=now;const a=Math.random()*Math.PI*2;starFrom.set(C.x+Math.cos(a)*70,C.y+34+Math.random()*16,C.z+Math.sin(a)*70);starDir.set(-Math.sin(a),-.35,Math.cos(a)).normalize();streak.visible=true;nextStarAt=now+25000+Math.random()*35000;if(!wished){wished=true;showNotice('A star falls over the rooftops. Somewhere below, a book is being finished.',5)}}
+        if(starStart>=0){const k=(now-starStart)/1100;if(k>=1){starStart=-1;streak.visible=false}else{streak.position.copy(starFrom).addScaledVector(starDir,k*40);streak.lookAt(camera.position);streak.rotateZ(Math.atan2(starDir.y,Math.hypot(starDir.x,starDir.z)));streak.material.opacity=Math.sin(Math.PI*k)}}}}
+    }
+    {const preRoofWorld=updateWorld;updateWorld=function(t,dt){preRoofWorld(t,dt);if(roofNight&&player.pos.y>8.5&&player.pos.z>34)roofNight.update(t,dt)}}
     // serendipity machine
     const machine=new THREE.Group();machine.position.set(12,0,1);scene.add(machine);const base=new THREE.Mesh(new THREE.BoxGeometry(3.4,3.8,2.2),MAT.brass);base.position.y=1.9;machine.add(base);const face=new THREE.Mesh(new THREE.CylinderGeometry(1.05,1.05,.18,32),MAT.black);face.rotation.x=Math.PI/2;face.position.set(0,2.25,-1.14);machine.add(face);for(let i=0;i<12;i++){const tick=new THREE.Mesh(new THREE.BoxGeometry(.05,.3,.05),MAT.gold);const a=i/12*Math.PI*2;tick.position.set(Math.cos(a)*.78,2.25+Math.sin(a)*.78,-1.27);tick.rotation.z=a;machine.add(tick)}const leverPivot=new THREE.Group();leverPivot.position.set(1.9,2.3,0);machine.add(leverPivot);const lever=new THREE.Mesh(new THREE.BoxGeometry(.15,2,.15),MAT.brass);lever.position.y=.75;leverPivot.add(lever);const knob=new THREE.Mesh(new THREE.SphereGeometry(.31,14,10),MAT.wood2);knob.position.y=1.72;leverPivot.add(knob);const tray=new THREE.Mesh(new THREE.BoxGeometry(2.2,.16,1.3),MAT.brass);tray.position.set(0,.7,-1.55);tray.rotation.x=-.12;machine.add(tray);const trayGlow=new THREE.PointLight(0xe2aa57,0,5,2);trayGlow.position.set(0,1,-1.8);machine.add(trayGlow);machine.userData={type:'machine',title:'THE SERENDIPITY MACHINE',author:'A brass lever waits.',action:'PULL LEVER',lever:leverPivot,tray,trayGlow};for(const part of [base,lever,knob]){part.userData=machine.userData;interactables.push(part)}collider(12,1,4,3);
     // machine label
