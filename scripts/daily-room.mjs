@@ -108,6 +108,16 @@ async function main(){
   const args=process.argv.slice(2),schedule=loadScript(SCHEDULE,'ATHENAEUM_DAILY_ROOMS'),errors=validate(schedule);
   if(errors.length){console.error(errors.join('\n'));process.exit(1)}
   if(args.includes('--validate')){console.log(`Schedule OK: ${schedule.days.length} days from ${schedule.start}.`);return}
+  // --check-all: look up every book in the whole schedule and report the ones that cannot be found or whose
+  // id is wrong. Nothing is written; the report is for whoever edits data/daily-rooms.js.
+  if(args.includes('--check-all')){
+    const problems=[];
+    for(const day of schedule.days){say(`${day.date} ${day.title}`);for(const book of day.books){const [id,title,author]=book,found=await resolve(book);
+      if(!found){problems.push(`${day.date}  NOT FOUND  ${title} (${author})`);say(`  missing: ${title}`)}
+      else if(found.id!==id){problems.push(`${day.date}  id ${id??'null'} -> ${found.id}  ${title}`);say(`  ${found.id} ${title} (listed as ${id??'null'})`)}
+      else say(`  = ${id} ${title}`)}}
+    console.log(`\nREPORT (${problems.length} to look at)\n`+problems.join('\n'));return;
+  }
   const today=args.includes('--date')?args[args.indexOf('--date')+1]:new Date().toISOString().slice(0,10);
   const previous=fs.existsSync(RESOLVED)?loadScript(RESOLVED,'ATHENAEUM_DAILY_RESOLVED')||{days:{}}:{days:{}},tracked=new Set(fs.existsSync(TRACKED)?JSON.parse(fs.readFileSync(TRACKED,'utf8')).ids:[]);
   const archive=schedule.archiveDays||14,entries=new Map(),started=Date.now(),budgetMs=Number(process.env.DAILY_ROOM_BUDGET_MIN??40)*60000;
