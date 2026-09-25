@@ -187,3 +187,22 @@ body.in-flight #exploreNudge,body.in-flight #hint{opacity:0!important}
 .tour p{margin:0 0 6px}
 .tour-skip{border:0;background:transparent;color:#a8987a;font:12px Georgia,serif;text-decoration:underline;cursor:pointer;padding:4px 8px}
 @media (hover:none) and (pointer:coarse){.tour{bottom:calc(150px + env(safe-area-inset-bottom,0px));width:min(460px,70vw)}}
+
+/* Share a quote: a square image of a passage, ready for social posts. */
+.reader-foot .share-quote{white-space:nowrap}
+#quoteShare{position:fixed;inset:0;z-index:46;display:grid;place-items:center;background:rgba(6,4,3,.8);backdrop-filter:blur(8px);padding:3vh 3vw}
+#quoteShare.hidden{display:none}
+.quote-card{width:min(900px,96vw);max-height:94vh;overflow:auto;background:#e9dfc8;color:#241a10;border:1px solid #9e865f;box-shadow:0 30px 90px #000;padding:18px 22px 20px}
+.quote-card header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(79,57,31,.25);padding-bottom:10px;margin-bottom:14px}
+.quote-card h2{margin:0;font:400 22px var(--display-face);letter-spacing:.06em}
+.quote-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start}
+#quoteCanvas{width:100%;height:auto;aspect-ratio:1;border:1px solid #9e865f;background:#15100b}
+.quote-side label{display:block;font-size:13px;color:#5b4631;margin-bottom:6px}.quote-side label small{color:#8a7458;font-style:italic}
+#quoteText{width:100%;resize:vertical;padding:10px;font:16px/1.45 Georgia,serif;color:#2b1f14;background:#fbf6ea;border:1px solid #9d8058}
+.quote-count{margin:4px 0 10px;font-size:12px;color:#8a7458;text-align:right}
+.quote-actions{display:flex;flex-wrap:wrap;gap:8px}
+.quote-actions button{border:1px solid #806945;background:transparent;color:#3b2a17;padding:9px 12px;min-height:40px;font:14px Georgia,serif;cursor:pointer}
+.quote-actions button.primary{background:#5b3f1f;border-color:#5b3f1f;color:#f7ecd4}
+.quote-status{min-height:1.2em;margin:10px 0 0;font-size:13px;color:#5b4631;font-style:italic}
+@media(max-width:700px){.quote-body{grid-template-columns:1fr}}
+@media (hover:none) and (pointer:coarse){.reader-foot .share-quote{display:inline-block}}
