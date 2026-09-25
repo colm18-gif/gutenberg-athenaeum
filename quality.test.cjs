@@ -18,8 +18,12 @@ test('visual and sound layers load before the game and are optional',()=>{
 });
 
 test('the number of active lights stays constant so walking never recompiles shaders',()=>{
-  assert.match(game,/LIGHT_BUDGET=lowPowerDevice\?6:touchMode\?8:12/);
-  assert.match(game,/lightCandidates\[i\]\.visible=i<LIGHT_BUDGET/);
+  assert.match(game,/LIGHT_BUDGET=lowPowerDevice\?6:touchMode\?8:10/);
+  assert.match(game,/const on=i<LIGHT_BUDGET;lightCandidates\[i\]\.visible=on/);
+  // Where fewer lamps are near than the budget allows, dark fillers make up the number, so the count never changes.
+  assert.match(game,/const budgetFillers=Array\.from\(\{length:LIGHT_BUDGET\}/);
+  assert.match(game,/budgetFillers\[i\]\.visible=i<LIGHT_BUDGET-shownPoints/);
+  assert.match(game,/!object\.userData\.budgetFiller&&!known\.has\(object\)/,'fillers are never budgeted themselves');
   assert.match(game,/light\.parent===camera\?Infinity/,'the reader lantern is never dropped');
 });
 
