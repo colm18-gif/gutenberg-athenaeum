@@ -209,3 +209,4 @@ body.in-flight #exploreNudge,body.in-flight #hint{opacity:0!important}
 @media(max-width:700px){.quote-body{grid-template-columns:1fr}}
 @media (hover:none) and (pointer:coarse){.reader-foot .share-quote{display:inline-block}}
 .tour.tour-top{top:calc(150px + env(safe-area-inset-top,0px));bottom:auto}
+.tour-skip{touch-action:manipulation;pointer-events:auto}#pauseSkipTour.hidden{display:none}
