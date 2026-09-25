@@ -1,0 +1,38 @@
+name: Room of the Day
+
+# Every night: check the books for the days around today, bundle their texts, drop texts for days that
+# have left the two-week window, and publish the result. Can also be run by hand from the Actions tab.
+on:
+  schedule:
+    - cron: '17 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-room
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check and bundle the books
+        run: node scripts/daily-room.mjs
+      - name: Run the tests
+        run: node --test *.test.cjs
+      - name: Publish
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/daily-rooms-resolved.js data/daily-room-texts.json texts/bundled-gzip
+          if git diff --cached --quiet; then echo "Nothing new today."; exit 0; fi
+          git commit -m "Room of the Day: books for $(date -u +%Y-%m-%d)"
+          for attempt in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0; sleep 10; done
+          exit 1

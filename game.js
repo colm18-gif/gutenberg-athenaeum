@@ -1415,6 +1415,16 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const preCuriousInteract=interact;interact=function(){if(focus&&!selected&&curiousDoors.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preCuriousInteract()};
       
     }
+    // The Room of the Day: one reusable room, dressed each day with ten books (daily-room.js, data/daily-rooms.js).
+    const dailyRoom=window.createDailyRoom?.({THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,playSample,sound,analytics:window.libraryAnalytics,
+      registerBook:record=>{if(!record?.id)return null;let book=books.find(b=>b.id===record.id);if(book)return book;book={...record,category:'daily',fame:1,source:'Project Gutenberg',sourceUrl:`https://www.gutenberg.org/ebooks/${record.id}`,licence:'Public Domain',textUrl:`https://www.gutenberg.org/cache/epub/${record.id}/pg${record.id}.txt`,progress:loadSavedProgress(record.id),index:books.length};books.push(book);return book},
+      move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
+    });
+    if(dailyRoom){
+      const preDailyFloor=floorHeight;floorHeight=function(x,z){return dailyRoom.floorAt(x,z)??preDailyFloor(x,z)};
+      const preDailyAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return dailyRoom.contains(x,z)?dailyRoom.allowed(x,z):preDailyAllowed(x,z,y)};
+      const preDailyInteract=interact;interact=function(){if(focus&&!selected&&dailyRoom.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preDailyInteract()};
+    }
     // The western door opens onto a spatially separate stair, allowing its many turns to rise
     // far beyond the existing roof without changing the carefully packed library floor plan.
     const highStaircase=window.createHighStaircase({THREE,scene,MAT,player,camera,interactables,books,coverTexture,canvasTexture,showNotice,sound,playSample,lastSafePosition,modelTemplate:url=>seatTemplate({url}),isLowBandwidth:()=>lowBandwidth,isReducedMotion:()=>reducedMotion,slideSound:level=>slideWhoosh(level)});showNotice.gate=()=>highStaircase.noticeAllowed();
@@ -1423,11 +1433,11 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     const preStairInteract=interact;interact=function(){if(focus&&!selected&&highStaircase.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preStairInteract()};
     const carriedBookInteract=interact;interact=function(){if(carryingBook){if(focus?.userData?.type==='seat')return sitWithBook(focus.userData);if(focus?.userData?.type==='book-table'||focus?.userData?.type==='book-shelf')return placeSelected(focus);placeOnSurface();return}return carriedBookInteract()};
     const preStairReset=resetPosition;resetPosition=function(){highStaircase.reset();return preStairReset()};
-    const preStairWorld=updateWorld;updateWorld=function(t,dt){preStairWorld(t,dt);highStaircase.update(t,dt);afterDarkExpansion.update(t,dt,reducedMotion);curiousDoors?.update(t,dt,reducedMotion);getDoorKit()?.update(dt);dressExitDoors(dt)};
+    const preStairWorld=updateWorld;updateWorld=function(t,dt){preStairWorld(t,dt);highStaircase.update(t,dt);afterDarkExpansion.update(t,dt,reducedMotion);curiousDoors?.update(t,dt,reducedMotion);dailyRoom?.update(t);getDoorKit()?.update(dt);dressExitDoors(dt)};
     // ---- Where things are: one register of every room, used by the map and the discovery tallies.
     const titleCase=text=>text.toLowerCase().replace(/(^|[\s—-])([a-z])/g,(m,a,b)=>a+b.toUpperCase()).replace(/\b(The|Of|In|A|For|Where|After|Past)\b/g,(w,_,i)=>i?w.toLowerCase():w).replace(/^./,c=>c.toUpperCase());
     const PLACE_GROUPS=[
-      {title:'The Grand Hall and its wings',places:[['main-library','The Grand Hall'],['upper-floor','The upper gallery'],['roof-garden','The roof garden'],['east-wing','The east wing'],['west-wing','The west wing'],['restricted-stacks','The restricted stacks'],['librarian-office','The librarian’s office']]},
+      {title:'The Grand Hall and its wings',places:[['main-library','The Grand Hall'],['upper-floor','The upper gallery'],['roof-garden','The roof garden'],['east-wing','The east wing'],['west-wing','The west wing'],['restricted-stacks','The restricted stacks'],['librarian-office','The librarian’s office'],['daily-room','The room of the day']]},
       {title:'Hidden ways',secret:true,places:[['portrait-room','The hidden reading room'],['tunnel','The breathing tunnel'],['archive','The final archive'],['below-catalogue','Below the catalogue'],['rabbit-room','The rabbit room'],['afterdark-sorting','Staff · Sorting'],['afterdark-departures','Departures']]},
       {title:'Memory rooms',places:[['returning','Names in the Dust'],['quiet','The Longer Silence'],['unread','St—ll W—ting'],['repository','What Was Kept']]},
       {title:'Reading rooms',places:[...themeRoomDefs.map(def=>[def.key,titleCase(def.sign[0])]),['contested','The Unwelcome Spines']]},
@@ -1442,6 +1452,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const rail=nightRailway.zoneAt(x,z)?.key;if(rail)return RAIL_PLACES[rail]||'railway-platform';
       if(librarianOffice.contains(x,z))return 'librarian-office';
       const curious=curiousDoors?.zoneAt(x,z);if(curious)return 'curious-'+curious.key;
+      if(dailyRoom?.contains(x,z))return 'daily-room';
       const room=afterDarkExpansion.zoneAt(x,z);if(room)return 'afterdark-'+room.key;
       if(z>10&&verneDescent.contains(x,z))return 'verne-descent';
       return baseModulePlace(x,y,z)}}
@@ -1618,7 +1629,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       }finally{renderer.setRenderTarget(previousTarget);warmingShaders=false}
     }
     // Opt-in inspection hook for automated visual and performance checks (?debug).
-    if(new URLSearchParams(location.search).has('debug'))window.__athenaeum={THREE,MAT,hallLightmap,quoteShare,selectBook:bm=>selectBook(bm),staticBatcher,tour,continueDisplay,lampSpots,get dayPhase(){return dayPhase},set dayPhase(v){dayPhase=v},get roomAmbience(){return roomAmbience},placeAt:(x,y,z)=>placeAt(x,y,z),resetPosition:()=>resetPosition(),afterDarkExpansion,librarianOffice,verneDescent,analyticsRoom:()=>analyticsRoom(),floorAt:(x,z)=>floorHeight(x,z),renderer,scene,camera,player,visual,books,curiousDoors,get librarianNotes(){return librarianNotes},interactables,zones:()=>({memoryZones,themeZones}),buildTheme:key=>buildThemeRooms(key),dressExits(){exitDressTimer=0;dressExitDoors(0)},allowedAt:(x,z)=>allowed(x,z),wallFaceOffset,buildAll(){buildBasement();buildMemoryRooms();for(const z of themeZones)try{buildThemeRooms(z.key)}catch(e){}try{buildContestedRoom()}catch(e){}},nightRailway,highStaircase,interact:()=>interact(),get focus(){return focus},get soundscape(){return soundscape},get audioCtx(){return audioCtx},playSample,teleport(x,y,z,yaw=0,pitch=0){player.pos.set(x,y,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=pitch;lastSafePosition.copy(player.pos)}};
+    if(new URLSearchParams(location.search).has('debug'))window.__athenaeum={THREE,MAT,hallLightmap,quoteShare,selectBook:bm=>selectBook(bm),staticBatcher,tour,continueDisplay,lampSpots,get dayPhase(){return dayPhase},set dayPhase(v){dayPhase=v},get roomAmbience(){return roomAmbience},placeAt:(x,y,z)=>placeAt(x,y,z),resetPosition:()=>resetPosition(),afterDarkExpansion,librarianOffice,dailyRoom,verneDescent,analyticsRoom:()=>analyticsRoom(),floorAt:(x,z)=>floorHeight(x,z),renderer,scene,camera,player,visual,books,curiousDoors,get librarianNotes(){return librarianNotes},interactables,zones:()=>({memoryZones,themeZones}),buildTheme:key=>buildThemeRooms(key),dressExits(){exitDressTimer=0;dressExitDoors(0)},allowedAt:(x,z)=>allowed(x,z),wallFaceOffset,buildAll(){buildBasement();buildMemoryRooms();for(const z of themeZones)try{buildThemeRooms(z.key)}catch(e){}try{buildContestedRoom()}catch(e){}},nightRailway,highStaircase,interact:()=>interact(),get focus(){return focus},get soundscape(){return soundscape},get audioCtx(){return audioCtx},playSample,teleport(x,y,z,yaw=0,pitch=0){player.pos.set(x,y,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=pitch;lastSafePosition.copy(player.pos)}};
     // Compiling every shader on the first frame froze the page for seconds, longest on tablets.
     // Compile them behind the entrance veil instead, a few at a time so the progress bar keeps
     // moving, then keep warming the materials of rooms that are built later, before they are seen.
