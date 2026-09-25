@@ -64,3 +64,11 @@ test('journeys: rain and passing lights on the train, painted worlds in the rock
   assert.match(stair,/drawWorld\(c,toMoon\?'earth':'moon'/);
   assert.match(stair,/drawWorld\(c,toMoon\?'moon':'earth'/);
 });
+
+test('the tour leads to a real shelf and never hides behind the book panel',()=>{
+  assert.match(game,/if\(data\?\.type!=='book'\|\|data\.secret\|\|data\.secretId\|\|data\.seatCopy\|\|!shelf\?\.userData\?\.collider\|\|object\.parent!==shelf\)continue;/,'never a hidden, secret or loose book');
+  assert.match(game,/const stand=at\.clone\(\)\.addScaledVector\(forward,1\.7\)\.setY\(0\);if\(!allowed\(stand\.x,stand\.z\)\)continue;/,'Quill waits somewhere the reader can stand');
+  assert.match(game,/lastHintAt=performance\.now\(\);lastDiscoveryAt=performance\.now\(\)\}/,'the mystery hints do not pull Quill away mid-tour');
+  assert.match(game,/box\.classList\.toggle\('tour-top',!ui\.actions\.classList\.contains\('hidden'\)\)/);
+  assert.match(css,/\.tour\.tour-top\{top:/);
+});
