@@ -13,6 +13,7 @@ terms can be checked before public release.
 | `cat-meow.ogg` | `dragon-studio-cat-meow-401729.mp3` |
 | `machine-flap.ogg` | `split-flap-display-announcement-pragotron-solariboard-barcelona-airport-crooner.mp3` |
 | `train-rumble-distant.ogg` | `vadim_makes_sound-underground-subway-station-distant-train-rumble-1-546578.mp3` |
+| `train-carriage-loop.ogg` | `209972__jrosin__wales-steam-train.flac` (Freesound sound 209972 by jrosin) |
 | `painting-passage.ogg` | Kenney Impact Sounds: `impactWood_heavy_000.ogg` |
 | `rocket-launch.ogg` | Kenney Sci-Fi Sounds: `thrusterFire_001.ogg` |
 
@@ -54,3 +55,10 @@ Source verified 2026-09-16: TanwerAman, “Old Door Sound Night Time”,
 https://pixabay.com/sound-effects/household-old-door-sound-night-time-505140/
 Available under the Pixabay Content License:
 https://pixabay.com/service/license-summary/
+
+`train-carriage-loop.ogg` is a 40-second seamless loop cut from the steady
+running section (0:38–1:18) of jrosin's “Wales Steam Train” recording on
+Freesound (https://freesound.org/s/209972/), mixed to mono, high-passed at
+30 Hz, crossfaded at the loop point and encoded as Opus at about 40 kb/s.
+Its licence has not yet been checked against the Freesound page; confirm it
+(and add the required attribution if it is CC BY) before public release.
