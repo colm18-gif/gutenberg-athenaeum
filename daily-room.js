@@ -49,6 +49,9 @@
     function light(parent,color,intensity,distance,x,y,z){const l=new THREE.PointLight(color,intensity,distance,2);l.position.set(x,y,z);l.castShadow=false;parent.add(l);return l}
     function wrap(c,text,x,y,maxWidth,lineHeight,maxLines=9){const words=String(text).split(/\s+/);let line='',lines=0;for(const word of words){const test=line?line+' '+word:word;if(c.measureText(test).width>maxWidth&&line){c.fillText(line,x,y);y+=lineHeight;line=word;if(++lines>=maxLines-1)break}else line=test}if(line)c.fillText(line,x,y);return y+lineHeight}
     const displayGeometry=new THREE.BoxGeometry(.82,1.08,.14);
+    // The librarian's note for each daily book (data/daily-room-notes.js). A note the library already has for
+    // that edition wins; the rest are filed where "Ask the librarian" looks for them.
+    function attachNote(book,title){const note=window.ATHENAEUM_DAILY_NOTES?.[title];if(!note)return;window.ATHENAEUM_EXTRA_NOTES=window.ATHENAEUM_EXTRA_NOTES||{};window.ATHENAEUM_EXTRA_NOTES[book.id]=window.ATHENAEUM_EXTRA_NOTES[book.id]||note}
 
     // ---------- the door in the Grand Hall ----------
     function calendarTexture(found){return canvasTexture((c,w,h)=>{
@@ -128,7 +131,7 @@
       const spots=[];for(let i=0;i<5;i++)spots.push({x:cx-w/2+.36,z:cz-4.6+i*1.7,yaw:Math.PI/2});for(let i=0;i<4;i++)spots.push({x:cx+w/2-.36,z:cz-3.75+i*1.7,yaw:-Math.PI/2});
       let spot=0;
       list.forEach((record,i)=>{
-        const book=registerBook(record);if(!book)return;const material=own(bookMaterial(book));
+        const book=registerBook(record);if(!book)return;attachNote(book,record.title);const material=own(bookMaterial(book));
         let mesh;
         if(i===featured){mesh=add(displayGeometry,material,cx,1.32,cz-2.5,dressing);mesh.rotation.order='YXZ';mesh.rotation.x=-.9}
         else{const s=spots[spot++];if(!s)return;mesh=add(displayGeometry,material,s.x,1.5,s.z,dressing);mesh.rotation.order='YXZ';mesh.rotation.y=s.yaw;mesh.rotation.x=-.08}

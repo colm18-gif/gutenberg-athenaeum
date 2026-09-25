@@ -28,7 +28,7 @@ test('the schedule alternates all eight kinds of room, one a day, with ten books
 });
 
 test('the room is one reusable space behind a Grand Hall door, freed when the reader leaves',()=>{
-  assert.match(html,/startupScript\('data\/daily-rooms\.js'\);startupScript\('data\/daily-rooms-resolved\.js'\);startupScript\('daily-room\.js'\)/);
+  assert.match(html,/startupScript\('data\/daily-rooms\.js'\);startupScript\('data\/daily-rooms-resolved\.js'\);startupScript\('data\/daily-room-notes\.js'\);startupScript\('daily-room\.js'\)/);
   assert.match(game,/const dailyRoom=window\.createDailyRoom\?\.\(/);
   assert.match(game,/if\(dailyRoom\?\.contains\(x,z\)\)return 'daily-room'/);
   assert.match(game,/\['daily-room','The room of the day'\]/);
@@ -80,4 +80,16 @@ test('a workflow runs the job every night and publishes what changed',()=>{
   assert.match(flow,/schedule:\s*\n\s*- cron:/);assert.match(flow,/workflow_dispatch:/);
   assert.match(flow,/node scripts\/daily-room\.mjs/);assert.match(flow,/node --test \*\.test\.cjs/);
   assert.match(flow,/git add data\/daily-rooms-resolved\.js data\/daily-room-texts\.json texts\/bundled-gzip/);
+});
+
+test('every book in the schedule has a librarian note',()=>{
+  const context={window:{}};vm.createContext(context);
+  for(const file of [...html.matchAll(/startupScript\('(data\/[^']+)'\)/g)].map(match=>match[1]))try{vm.runInContext(fs.readFileSync(file,'utf8'),context)}catch(error){}
+  const daily=context.window.ATHENAEUM_DAILY_NOTES,extra=context.window.ATHENAEUM_EXTRA_NOTES||{},json=JSON.parse(fs.readFileSync('data/librarian-notes.json','utf8'));
+  const titles=new Set(schedule.days.flatMap(day=>day.books.map(book=>book[1])));
+  for(const day of schedule.days)for(const [id,title] of day.books)assert(daily[title]||id&&(json[id]||extra[id]),`${day.date}: no note for ${title}`);
+  for(const title of Object.keys(daily)){assert(titles.has(title),`note for a book not in the schedule: ${title}`);assert(daily[title].length>80,`note for ${title} is too short`)}
+  // Notes are filed by id once the book is known; existing notes are never replaced.
+  assert.match(room,/attachNote\(book,record\.title\)/);
+  assert.match(room,/window\.ATHENAEUM_EXTRA_NOTES\[book\.id\]=window\.ATHENAEUM_EXTRA_NOTES\[book\.id\]\|\|note/);
 });
