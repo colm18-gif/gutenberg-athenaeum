@@ -93,3 +93,27 @@ test('every book in the schedule has a librarian note',()=>{
   assert.match(room,/attachNote\(book,record\.title\)/);
   assert.match(room,/window\.ATHENAEUM_EXTRA_NOTES\[book\.id\]=window\.ATHENAEUM_EXTRA_NOTES\[book\.id\]\|\|note/);
 });
+
+test('a Gutenberg server that never answers is skipped, and the mirrors finish the job',()=>{
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'daily-room-slow-'));
+  for(const file of ['scripts/daily-room.mjs','data/daily-rooms.js'])fs.mkdirSync(path.join(dir,path.dirname(file)),{recursive:true}),fs.copyFileSync(file,path.join(dir,file));
+  const byId={};for(const day of schedule.days)for(const [id,title,author] of day.books)if(id)byId[id]=[title,author];
+  const mock=path.join(dir,'mock.mjs');
+  // www.gutenberg.org and gutendex hang until the request times out; the pglaf mirror answers.
+  fs.writeFileSync(mock,`const byId=${JSON.stringify(byId)};let hung=0;
+    globalThis.fetch=async(url,options)=>{url=String(url);
+      if(url.includes('www.gutenberg.org')||url.includes('gutendex')){hung++;globalThis.__hung=hung;return new Promise((_,reject)=>options.signal.addEventListener('abort',()=>reject(Object.assign(new Error('timeout'),{name:'TimeoutError'}))))}
+      const m=url.match(/pglaf\\.org\\/cache\\/epub\\/(\\d+)\\//);if(m&&byId[m[1]])return {ok:true,status:200,text:async()=>'Title: '+byId[m[1]][0]+'\\nAuthor: '+byId[m[1]][1]+'\\n\\n'+'Words. '.repeat(900)};
+      return {ok:false,status:404}};
+    process.on('exit',()=>console.log('HUNG '+hung));`);
+  const began=Date.now(),r=spawnSync(process.execPath,['--import',mock,path.join(dir,'scripts/daily-room.mjs'),'--date','2026-09-25'],{encoding:'utf8',env:{...process.env,DAILY_ROOM_PAUSE_MS:'0',DAILY_ROOM_TIMEOUT_MS:'150'}});
+  assert.equal(r.status,0,r.stderr+r.stdout);
+  assert(Date.now()-began<30000,'the run must not stall on a silent server');
+  assert.match(r.stdout,/www\.gutenberg\.org is not responding; skipping it for the rest of this run/);
+  assert(Number(r.stdout.match(/HUNG (\d+)/)[1])<=12,'a dead host is given up on after a few tries, not asked about every book');
+  const resolved=vm.runInNewContext(fs.readFileSync(path.join(dir,'data/daily-rooms-resolved.js'),'utf8')+';window',{window:{}}).ATHENAEUM_DAILY_RESOLVED;
+  const today=resolved.days['2026-09-25'].books;
+  assert(today.some(book=>book.title==='The Woman in White'),'books with ids are fetched from the mirror');
+  assert.match(r.stdout,/^2026-09-25 A Rainy Evening/m,'progress is logged as it goes, today first');
+  fs.rmSync(dir,{recursive:true,force:true});
+});
