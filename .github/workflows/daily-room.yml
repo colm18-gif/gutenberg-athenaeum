@@ -6,6 +6,11 @@ on:
   schedule:
     - cron: '17 2 * * *'
   workflow_dispatch:
+    inputs:
+      check_all:
+        description: 'Only check every book in the schedule and report problems (publishes nothing)'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -17,7 +22,7 @@ concurrency:
 jobs:
   prepare:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -25,15 +30,20 @@ jobs:
           node-version: 22
       # The script stops itself after 40 minutes and saves after every day; the step limit is a backstop.
       # Whatever was finished is still tested and published, and the next night carries on from there.
+      - name: Check every book in the schedule
+        if: inputs.check_all
+        timeout-minutes: 60
+        run: node scripts/daily-room.mjs --check-all
       - name: Check and bundle the books
+        if: ${{ !inputs.check_all }}
         timeout-minutes: 45
         run: node scripts/daily-room.mjs
       - name: Run the tests
         id: tests
-        if: always()
+        if: always() && !inputs.check_all
         run: node --test *.test.cjs
       - name: Publish
-        if: always() && steps.tests.outcome == 'success'
+        if: always() && !inputs.check_all && steps.tests.outcome == 'success'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
