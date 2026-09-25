@@ -9,7 +9,7 @@
 // same frame) and its batch is rebuilt without it, so animated or scripted pieces keep working.
 // Originals are hidden by giving them an empty culling sphere rather than by changing layers or
 // visibility, so collision and picking rays (which use the geometry itself) still find them.
-window.createStaticBatcher=function({THREE,scene,exclusions=()=>[],cell=14,scanEvery=2}){
+window.createStaticBatcher=function({THREE,scene,exclusions=()=>[],cell=14,scanEvery=2,changeStamp=null}){
   const MERGEABLE=new Set(['MeshStandardMaterial','MeshPhysicalMaterial','MeshBasicMaterial','MeshLambertMaterial','MeshPhongMaterial']);
   const ALLOWED_ATTRIBUTES=new Set(['position','normal','uv','uv1','uv2','color']);
   const defaultBeforeRender=THREE.Object3D.prototype.onBeforeRender;
@@ -18,7 +18,7 @@ window.createStaticBatcher=function({THREE,scene,exclusions=()=>[],cell=14,scanE
   const released=new WeakSet();   // pieces that moved after batching: never batched again
   const batches=new Map();        // key -> batch
   const dirty=new Set();
-  let nextScan=performance.now()+500,enabled=true;
+  let nextScan=performance.now()+500,enabled=true,lastStamp=null,scansLeft=3;
   const matrix=new THREE.Matrix3(),vector=new THREE.Vector3(),hiddenSphere=new THREE.Sphere(new THREE.Vector3(0,-1e9,0),0);
   function hide(mesh){mesh.boundingSphere=hiddenSphere}
   function show(mesh){delete mesh.boundingSphere}
@@ -91,7 +91,10 @@ window.createStaticBatcher=function({THREE,scene,exclusions=()=>[],cell=14,scanE
   function update(dt){
     if(!enabled)return;
     for(const [mesh,record] of members)if(mesh.boundingSphere!==hiddenSphere||!mesh.frustumCulled||mesh.layers.mask!==1||!unchanged(mesh,record.state))release(mesh);
-    /* Wall-clock timing: a slow device's clamped frame times would otherwise delay every scan. */const now=performance.now();if(now>=nextScan){nextScan=now+scanEvery*1000;scan()}
+    /* Wall-clock timing: a slow device's clamped frame times would otherwise delay every scan. */const now=performance.now();if(now>=nextScan){nextScan=now+scanEvery*1000;
+      /* Walking the whole scene every couple of seconds caused regular hitches. Scan only after something
+         changes (a room is built or a zone swapped in), a few times so newly placed pieces can settle. */
+      const stamp=changeStamp?changeStamp():undefined;if(stamp===undefined||stamp!==lastStamp){lastStamp=stamp;scansLeft=3}if(scansLeft>0){scansLeft--;scan()}}
     if(dirty.size){for(const batch of dirty)rebuild(batch);dirty.clear()}
   }
   function setEnabled(on){enabled=on;if(!on){for(const mesh of members.keys())show(mesh);members.clear();for(const batch of batches.values())if(batch.mesh){batch.mesh.parent?.remove(batch.mesh);batch.mesh.geometry.dispose()}batches.clear();sightings.clear()}}
