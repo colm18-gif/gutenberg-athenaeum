@@ -102,7 +102,7 @@
     const applyEntryAppearance=()=>{document.body.classList.toggle('reduced-motion',document.getElementById('entryReducedMotion').checked);document.body.classList.toggle('high-contrast',document.getElementById('entryHighContrast').checked);document.body.classList.toggle('large-text',document.getElementById('entryLargeText').checked)};
     for(const [kind,[id,key]] of Object.entries(preferences)){const input=document.getElementById(id),saved=localStorage.getItem(key);if(kind==='volume')input.value=saved??13;else input.checked=saved==='1';input.addEventListener('input',()=>{localStorage.setItem(key,kind==='volume'?input.value:input.checked?'1':'0');applyEntryAppearance()})}applyEntryAppearance();
     const webglAvailable=()=>{try{const canvas=document.createElement('canvas');return !!(canvas.getContext('webgl2')||canvas.getContext('webgl'))}catch(error){return false}};
-    const BUILD='20260925-stairwell-1';
+    const BUILD='20260925-stair-slide-1';
     const versionedSource=src=>/^https?:\/\//.test(src)?src:`${src}${src.includes('?')?'&':'?'}v=${BUILD}`;
     // Warm a file into the browser cache using the exact versioned address the game will request.
     const warm=src=>{const href=versionedSource(src);if([...document.querySelectorAll('link[rel="preload"]')].some(link=>link.getAttribute('href')===href))return;const link=document.createElement('link');link.rel='preload';link.as='script';link.href=href;document.head.appendChild(link)};

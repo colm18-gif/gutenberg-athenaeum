@@ -92,7 +92,7 @@ test('the reading carriage has window seats that offer railway books',()=>{
 test('the rocket flight faces the porthole, shows its progress and keeps other messages away',()=>{
   assert.match(stair,/moveTo\(tx,0,tz\+\.35,0\)/,'boarding faces the porthole');
   assert.match(stair,/if\(i===9\)continue;/,'no rail stands in front of the porthole');
-  assert.match(stair,/noticeAllowed:\(\)=>!rocketTrip\|\|speaking/);
+  assert.match(stair,/noticeAllowed:\(\)=>\(!rocketTrip&&!slide\)\|\|speaking/);
   assert.match(game,/showNotice\.gate=\(\)=>highStaircase\.noticeAllowed\(\)/);
   assert.match(game,/function showNotice\(t,seconds=3\)\{if\(showNotice\.gate&&!showNotice\.gate\(\)\)return;/);
   assert.match(stair,/function paintFlightWindow\(trip,e,dt\)/);
