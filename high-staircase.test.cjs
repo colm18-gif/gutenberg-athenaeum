@@ -89,7 +89,7 @@ test('stair containment checks the full player radius and current vertical turn'
   assert.match(stair,/Math\.abs\(stepY-y\)>1\.35/);
   assert.match(stair,/samples=\[\[0,0\],\[radius,0\]/);
   assert.match(stair,/stepY=from\.y\+\(to\.y-from\.y\)\*u/);
-  assert.match(stair,/const pathStep=closestStep\(x,z\);if\(pathStep\)return true/);
+  assert.match(stair,/const pathStep=closestStep\(x,z\);.*if\(inStairwell\(x,z\)\)return !!pathStep&&Math\.abs\(pathStep\.y-player\.pos\.y\)<\.7;if\(pathStep\)return true/);
   // In flight the cabin floor stays walkable; refusing every position made the game spam "returns you to firm ground".
   assert.match(stair,/if\(rocketTrip\)return inTransit\(x,z\)&&Math\.hypot\(x-tx,z-tz\)<2\.45/);
 });
@@ -114,7 +114,7 @@ test('stair entrance faces along the first ascending turn',()=>{
 test('the spiral path takes priority across the landing safety boundary',()=>{
   const playerRadius=.42,landingLimit=2.38-playerRadius,oldSwitch=2.2;
   assert(landingLimit<oldSwitch,'the previous landing-only rules created a locked ring');
-  const pathPriority=stair.indexOf('const pathStep=closestStep(x,z);if(pathStep)return true');
+  const pathPriority=stair.indexOf('if(pathStep)return true');
   const landingCheck=stair.indexOf('const summit=Math.hypot');
   assert(pathPriority>0&&pathPriority<landingCheck,'the overlapping stair path must be accepted before the landing perimeter is checked');
 });
