@@ -1447,12 +1447,20 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
         {text:'That is everything. There is no required route: follow a lamp, Quill, or a book left out of place. Press R, or ⌂, if you ever want to come back to the Grand Hall.',done:s=>s.shownFor>9}
       ];
       let step=-1,state=null;
-      function leadToShelf(){let best=null,bestD=Infinity;const at=new THREE.Vector3();for(const object of interactables){if(object.userData?.type!=='book'||!object.parent)continue;object.getWorldPosition(at);if(Math.abs(at.y-player.pos.y)>3)continue;const d=at.distanceTo(player.pos);if(d<bestD&&d>2){bestD=d;best=at.clone()}}if(!best)return;const toward=player.pos.clone().sub(best).setY(0).normalize();catGuideTarget=new THREE.Vector3(best.x+toward.x*1.6,0,best.z+toward.z*1.6);catGuideLabel='a shelf';catPause=0}
+      // Quill leads to a real, reachable shelf: a visible book standing on a shelf in the room the reader is in
+      // (never a hidden or secret one), and waits in front of that shelf rather than beside the book itself.
+      function leadToShelf(){const here=analyticsRoom(),at=new THREE.Vector3(),forward=new THREE.Vector3();let best=null,bestD=Infinity;
+        for(const object of interactables){const data=object.userData,shelf=data?.home?.parent;if(data?.type!=='book'||data.secret||data.secretId||data.seatCopy||!shelf?.userData?.collider||object.parent!==shelf)continue;
+          let shown=true;for(let n=object;n;n=n.parent){if(!n.visible)shown=false;if(!n.parent&&n!==scene)shown=false}if(!shown)continue;
+          object.getWorldPosition(at);if(at.y>3.2||placeAt(at.x,floorHeight(at.x,at.z),at.z)!==here)continue;
+          forward.set(0,0,1).applyQuaternion(shelf.getWorldQuaternion(tmpQuaternion)).setY(0).normalize();const stand=at.clone().addScaledVector(forward,1.7).setY(0);if(!allowed(stand.x,stand.z))continue;
+          const d=stand.distanceTo(player.pos);if(d>2.5&&d<bestD){bestD=d;best=stand}}
+        if(!best)return;catGuideTarget=best;catGuideLabel='a shelf of books';catPause=0;lastHintAt=performance.now();lastDiscoveryAt=performance.now()}
       function show(i){step=i;if(i>=STEPS.length){finish();return}state={turned:0,walked:0,shownFor:0,yaw:player.yaw,pitch:player.pitch,x:player.pos.x,z:player.pos.z};stepLabel.textContent=i<STEPS.length-1?`Your first visit · ${i+1} of ${STEPS.length-1}`:'Welcome to the library';text.textContent=STEPS[i].text;box.classList.remove('hidden');STEPS[i].start?.()}
       function finish(){step=STEPS.length;box.classList.add('hidden');localStorage.setItem('athenaeum-tour-done','1')}
       $('#tourSkip').addEventListener('click',e=>{e.stopPropagation();finish();if(started&&gameActive())requestLookLock()});
-      setInterval(()=>{if(step<0||step>=STEPS.length||!started)return;box.classList.toggle('hidden',chatOpen||supportOpen||settingsOpen||!ui.pause.classList.contains('hidden'));state.turned+=Math.abs(player.yaw-state.yaw)+Math.abs(player.pitch-state.pitch);state.yaw=player.yaw;state.pitch=player.pitch;state.walked+=Math.hypot(player.pos.x-state.x,player.pos.z-state.z);state.x=player.pos.x;state.z=player.pos.z;state.shownFor+=.3;if(STEPS[step].done(state))show(step+1)},300);
-      return {begin(){if(pending&&step<0)setTimeout(()=>show(0),1400)},get step(){return step},finish}})();
+      setInterval(()=>{if(step<0||step>=STEPS.length||!started)return;/* Stay out from under other panels: hide while a book is open, move to the top while the book's own buttons show. */box.classList.toggle('hidden',chatOpen||supportOpen||settingsOpen||!ui.pause.classList.contains('hidden')||!ui.reader.classList.contains('hidden')||!ui.journal.classList.contains('hidden'));box.classList.toggle('tour-top',!ui.actions.classList.contains('hidden'));state.turned+=Math.abs(player.yaw-state.yaw)+Math.abs(player.pitch-state.pitch);state.yaw=player.yaw;state.pitch=player.pitch;state.walked+=Math.hypot(player.pos.x-state.x,player.pos.z-state.z);state.x=player.pos.x;state.z=player.pos.z;state.shownFor+=.3;if(step===2&&!catGuideTarget&&Math.floor(state.shownFor/20)>Math.floor((state.shownFor-.3)/20))leadToShelf();/* if Quill has sat down and no book has been taken, lead again */if(STEPS[step].done(state))show(step+1)},300);
+      return {begin(){if(pending&&step<0)setTimeout(()=>show(0),1400)},get step(){return step},get guide(){return catGuideTarget},cat:()=>cat.position,finish}})();
     // ---- Continue reading: a slanted book rest just inside the entrance holding the books the reader has
     // started, each with how far they have got. Taking one down resumes it where they left off.
     const continueDisplay=(()=>{const x=-10,z=19.6,yaw=.9,group=new THREE.Group();group.position.set(x,0,z);group.rotation.y=yaw;scene.add(group);

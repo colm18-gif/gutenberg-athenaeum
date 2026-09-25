@@ -208,3 +208,4 @@ body.in-flight #exploreNudge,body.in-flight #hint{opacity:0!important}
 .quote-status{min-height:1.2em;margin:10px 0 0;font-size:13px;color:#5b4631;font-style:italic}
 @media(max-width:700px){.quote-body{grid-template-columns:1fr}}
 @media (hover:none) and (pointer:coarse){.reader-foot .share-quote{display:inline-block}}
+.tour.tour-top{top:calc(150px + env(safe-area-inset-top,0px));bottom:auto}
