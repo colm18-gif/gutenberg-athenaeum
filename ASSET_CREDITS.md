@@ -93,3 +93,20 @@ with textures downscaled to 512 px for the web. Licence files sit beside each mo
 The luggage on the carriage racks reuses Poly Haven's CC0 Vintage Suitcase, and the new
 panelled doors throughout the library are modelled in code using the Poly Haven walnut
 veneer already listed above.
+
+## Period plates
+
+Five drawn stand-ins were replaced by real nineteenth-century illustrations.
+The drawings remain as the low-bandwidth fallback. The scans come from Project
+Gutenberg's illustrated editions, taken from the GITenberg mirror on GitHub.
+All are public domain. Each was converted to greyscale, printed onto a toned
+paper ground with a plate mark and its original caption, and saved in
+`assets/plates` at about 60–140 KB.
+
+| In-game use | Plate | Source |
+|---|---|---|
+| Verne portal and Verne room | Alphonse de Neuville, “Une fenêtre ouverte sur ces abîmes inexplorés”, *Vingt mille lieues sous les mers* (Hetzel, 1871) | Project Gutenberg #54873 |
+| The Time Laboratory (Wells) | “The Great Orrery … made by Tho: Wright”, frontispiece to Thomas Wright's *The Description and Use of the Globes and the Orrery* (1731) | Project Gutenberg #61683 |
+| The Unfinished Question (Inquiry door) | Sidney Paget, “A man entered”, *A Scandal in Bohemia* (1891) | Project Gutenberg #48320 |
+| After the Conversation (Parlour door) | Sidney Paget, “I will wish you all a very good night”, *The Noble Bachelor* (1892) | Project Gutenberg #48320 |
+| Map on the Lost Kingdoms chest | The da Silvestra map from H. Rider Haggard's *King Solomon's Mines* (1885) | Project Gutenberg #2166 |

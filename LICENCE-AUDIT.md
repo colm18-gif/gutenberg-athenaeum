@@ -21,6 +21,7 @@ source page. Open each link and record the licence shown there.
 | `met-scholar-1834.jpg` | The Met, object 812506 | Public domain (Met Open Access) | Courtesy line in Credits |
 | Fonts | Fontsource | SIL OFL 1.1 (licence files bundled) | Licence files kept beside fonts |
 | Books | Project Gutenberg, Wikisource, Standard Ebooks, Internet Archive | Public domain | Gutenberg headers kept in `texts/` |
+| `assets/plates/*` (de Neuville, Paget, Wright's orrery, Haggard's map) | Project Gutenberg illustrated editions #54873, #48320, #61683, #2166 (via the GITenberg mirror) | Public domain (artists died 1885–1908; works published 1731–1892) | Credited in Settings → Credits |
 | Procedural room sound, rain, thunder, clock, steam hiss | Written in code | Project's own | — |
 
 ## Owner to confirm
