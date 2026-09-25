@@ -46,6 +46,8 @@ test('the nightly job checks every book, bundles the texts for the window, and r
   const dir=fs.mkdtempSync(path.join(os.tmpdir(),'daily-room-'));
   for(const file of ['scripts/daily-room.mjs','data/daily-rooms.js'])fs.mkdirSync(path.join(dir,path.dirname(file)),{recursive:true}),fs.copyFileSync(file,path.join(dir,file));
   fs.mkdirSync(path.join(dir,'texts/bundled-gzip'),{recursive:true});
+  // One book listed without an id, to be found by title.
+  const copy=path.join(dir,'data/daily-rooms.js');fs.writeFileSync(copy,fs.readFileSync(copy,'utf8').replace("[14851,'Uncle Silas'","[null,'Uncle Silas'"));assert.match(fs.readFileSync(copy,'utf8'),/\[null,'Uncle Silas'/);
   // A fake Project Gutenberg: listed ids serve their own book, except 2014, which serves the wrong one;
   // searches find a made-up id for any title.
   const byId={};for(const day of schedule.days)for(const [id,title,author] of day.books)if(id)byId[id]=[title,author];
