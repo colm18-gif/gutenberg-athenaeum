@@ -66,6 +66,11 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "author": "Jules Verne"
     },
     {
+     "id": 46597,
+     "title": "In Search of the Castaways",
+     "author": "Jules Verne"
+    },
+    {
      "id": 2895,
      "title": "Following the Equator",
      "author": "Mark Twain"
@@ -106,21 +111,34 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "author": "Jonathan Swift"
     }
    ],
-   "missing": [
-    "Around the World in Seventy-Two Days"
-   ]
+   "missing": []
   },
   "2026-09-27": {
    "books": [
+    {
+     "id": 1342,
+     "title": "Pride and Prejudice",
+     "author": "Jane Austen"
+    },
     {
      "id": 14314,
      "title": "Etiquette",
      "author": "Emily Post"
     },
     {
+     "id": 208,
+     "title": "Daisy Miller: A Study",
+     "author": "Henry James"
+    },
+    {
      "id": 8399,
      "title": "Manners and Social Usages",
      "author": "Mrs. John Sherwood"
+    },
+    {
+     "id": 2641,
+     "title": "A Room with a View",
+     "author": "E. M. Forster"
     },
     {
      "id": 67799,
@@ -148,11 +166,7 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "author": "John H. Young"
     }
    ],
-   "missing": [
-    "Hints on Etiquette and the Usages of Society",
-    "The Habits of Good Society",
-    "Don't: A Manual of Mistakes and Improprieties"
-   ]
+   "missing": []
   }
  }
 };
