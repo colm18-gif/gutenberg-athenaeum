@@ -67,11 +67,13 @@ test('the two new rooms preload at their thresholds, stay warm and detach when d
 });
 
 test('Rocket Hall is spacious, astronomical and uses its spacecraft instrument once',()=>{
-  assert.match(stair,/cylinder\(9\.45,9\.45/);
+  assert.match(stair,/absarc\(0,0,9\.45,0,Math\.PI\*2/);
+  // The summit floor has a stairwell cut into it, so the stair arrives through an opening, not the boards.
+  assert.match(stair,/floorShape\.holes\.push\(wellPath\(\)\)/);
   assert.match(stair,/SphereGeometry\(9\.72,48,24/);
-  assert.match(stair,/RingGeometry\(2\.25,7\.1,64\)/);
+  assert.match(stair,/absarc\(0,0,7\.1,0,Math\.PI\*2/);
   assert.match(stair,/hallStarField\.rotation\.y/);
-  assert.match(stair,/platformX=cx\+6\.25,platformZ=cz\+4\.85/);
+  assert.match(stair,/platformX=cx\+6\.75,platformZ=cz\+5\.25/);
   assert.equal((stair.match(/models\/vintage_spacecraft_instrument\/vintage_spacecraft_instrument_1k\.gltf/g)||[]).length,1);
 });
 
