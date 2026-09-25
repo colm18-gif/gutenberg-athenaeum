@@ -79,3 +79,10 @@ test('the roof garden has a night sky, a town around it, a fuller garden and som
   assert.match(game,/if\(roofNight&&player\.pos\.y>8\.5&&player\.pos\.z>34\)roofNight\.update\(t,dt\)/);
   assert.match(game,/const still=reducedMotion;/,'fireflies, lights and falling stars hold still under Reduce motion');
 });
+
+test('the tour can always be skipped: X, the pause menu, or a tap',()=>{
+  assert.match(html,/id="pauseSkipTour"/);
+  assert.match(game,/e\.code==='KeyX'&&step>=0&&step<STEPS\.length/);
+  assert.match(game,/\$\('#tourSkip'\)\.textContent=touchMode\?'Skip tour':'Skip tour \(press X\)'/);
+  assert.match(game,/\$\('#pauseSkipTour'\)\.addEventListener\('click'/);
+});
