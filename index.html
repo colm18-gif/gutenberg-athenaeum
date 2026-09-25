@@ -33,6 +33,7 @@
       <div id="entryProgress" class="entry-progress" aria-hidden="true"><i></i></div>
       <p id="entryStatus" class="entry-status" role="status" aria-live="polite"></p>
       <p class="small kb-intro">WASD or arrows to walk · mouse to look · E interact · J journal · O settings · R if lost</p>
+      <p class="touch-intro rotation-reminder"><strong>Before you enter:</strong> unlock your screen rotation (turn off orientation lock) — the library is explored in landscape.</p>
       <p class="small touch-intro">Left thumb to walk · drag to look · tap E to interact · tap &#9776; for menu</p>
     </div>
   </div>
@@ -53,7 +54,7 @@
     <button id="touchReturn" class="touch-ui" aria-label="Return to the Grand Hall">⌂</button>
     <button id="touchMenu" class="touch-ui" aria-label="Menu">&#9776;</button>
   </div>
-  <div id="rotateDevice" role="status"><div><strong>Turn the key sideways</strong>Rotate your device to landscape to explore the library.</div></div>
+  <div id="rotateDevice" role="status"><div><strong>Turn the key sideways</strong>Rotate your device to landscape to explore the library.<small>Nothing happening? Turn off rotation lock in your device’s quick settings, then turn it again.</small></div></div>
   <div id="bookActions" class="hidden"><div class="meta"><strong></strong><em></em></div><button class="primary" id="openBook">Open book</button><button class="ghost" id="carryBook">Carry to a chair</button><button class="ghost" id="askLibrarian">Ask the librarian</button><button class="primary hidden-unless-seat" id="leaveOnChair">Leave on the chair</button><button class="ghost hidden-unless-seat hidden" id="placeNearby">Set on the nearest table</button><button class="ghost" id="leaveBook">Leave at desk</button><button class="ghost" id="returnBook">Return</button></div>
   <div id="reader" class="comfort hidden">
     <div class="book-spread">

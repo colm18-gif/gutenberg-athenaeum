@@ -36,6 +36,7 @@
     #touchMenu{right:calc(20px + env(safe-area-inset-right,0px));font-size:17px}#touchJournal{right:calc(72px + env(safe-area-inset-right,0px))}#touchReturn{right:calc(124px + env(safe-area-inset-right,0px));font-size:19px}
     #rotateDevice{position:fixed;inset:0;z-index:70;align-items:center;justify-content:center;text-align:center;padding:34px;background:radial-gradient(circle,#241a11,#080604 72%);color:#eadfc7;letter-spacing:.08em;line-height:1.6}#rotateDevice strong{display:block;color:#e0bd82;font-size:22px;font-weight:400;margin-bottom:8px}
     .touch-intro{display:none}
+    .rotation-reminder{margin:14px auto 4px;max-width:30em;padding:9px 12px;border:1px solid rgba(224,189,130,.45);background:rgba(224,189,130,.08);color:#eadfc7;font-size:13px;line-height:1.5}.rotation-reminder strong{color:#e0bd82;font-weight:600}#rotateDevice small{display:block;margin-top:14px;font-size:12px;letter-spacing:.04em;opacity:.75}
     @media (hover:none) and (pointer:coarse){
       body.mobile-controls-active .touch-ui{display:block}
       #hint{display:none}
