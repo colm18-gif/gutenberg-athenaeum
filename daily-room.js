@@ -172,7 +172,9 @@
       time=t;
       if(t>=nextDayCheck){nextDayCheck=t+30;const key=dateKey(now());if(key!==todayKey){todayKey=key;refreshCalendar();/* A new day: re-dress when the reader is not standing in the old one. */if(!contains(player.pos.x,player.pos.z)){shownOffset=0;if(active)dress(0)}}}
       const near=Math.hypot(player.pos.x-door.x,player.pos.z-door.z)<PRELOAD_DISTANCE,inside=contains(player.pos.x,player.pos.z);
-      if(inside||near&&root)activate();else if(active&&t-lastNeeded>KEEP_WARM_SECONDS)unload();
+      // Built and dressed as the reader walks up to the door, not when it opens, so the game can compile its
+      // shaders in the background and stepping inside is instant.
+      if(inside||near)activate();else if(active&&t-lastNeeded>KEEP_WARM_SECONDS)unload();
     }
     buildDoor();
     return {contains,floorAt,allowed,interact,update,enter,door,room,get todayKey(){return todayKey},entryFor,booksFor,get shownOffset(){return shownOffset},get active(){return active},get dayBooks(){return dayBooks.slice()},zoneAt:(x,z)=>contains(x,z)?room:null};

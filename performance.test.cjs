@@ -99,7 +99,7 @@ test('distant animation systems pause outside their zones',()=>{
 });
 
 test('shaders are compiled behind the entrance veil before the first frame is drawn',()=>{
-  assert.match(game,/async function warmShaders\(progress\)/);
+  assert.match(game,/async function warmShaders\(progress,\{roots=\[scene\],chunkSize=3,pause=0\}=\{\}\)/);
   assert.match(game,/renderer\.compile\(object,camera,scene\)/);
   assert.match(game,/renderer\.properties\.get\(material\)\.currentProgram\?\.getUniforms\(\)/,'without parallel compile, linking is finished during warm-up');
   assert.match(game,/warmShaders\([^)]*\)[^;]*\.finally\(\(\)=>\{shadersWarm=true;animate\(\);if\(window\.__ATHENAEUM_ENTERED__\)enterLibrary\(\);/);
@@ -140,4 +140,29 @@ test('photographic textures ship GPU-compressed copies with the originals kept a
       assert.ok(fs.existsSync(path.join(path.dirname(file),decodeURIComponent(gltf.images[ktx.source].uri))),`${file} KTX2 image exists`);
     }
   }
+});
+
+test('rooms and wings are compiled before the reader reaches them',()=>{
+  const curious=fs.readFileSync('curious-doors.js','utf8'),daily=fs.readFileSync('daily-room.js','utf8');
+  // Areas built but not yet in the scene are compiled in the background after entering, with their own lamps off.
+  assert.match(game,/const detachedAreas=\(\)=>Object\.values\(performanceZones\)\.filter\(zone=>!zone\.active&&zone\.group\)/);
+  assert.match(game,/warmShaders\(null,\{roots:detachedAreas\(\),chunkSize:2,pause:16\}\)/);
+  assert.match(game,/if\(root!==scene\)root\.traverse\(object=>\{if\(object\.isLight&&object\.visible\)\{object\.visible=false;hidden\.push\(object\)\}\}\)/);
+  assert.match(game,/refreshBudgetLights\.stamp=null;budgetRefreshTimer=0;applyLightBudget\(\);/,'warming uses the light count that will be drawn');
+  // Door rooms are built as the reader approaches, so the regular warm-up catches them before they are seen.
+  assert.match(curious,/if\(near\|\|inside\)\{activate\(room\)\}/);
+  assert.match(daily,/if\(inside\|\|near\)activate\(\)/);
+});
+
+test('paintings and plates download when the reader comes near, not all at entry',()=>{
+  assert.match(game,/else if\(imageUrl\)pendingPaintings\.push\(\{group,load:/);
+  assert.match(game,/const PAINTING_LOAD_DISTANCE=30/);
+  assert.match(game,/loadNearbyCovers\(t\);loadNearbyPaintings\(t\);/);
+  assert.match(game,/let requested=false;t\.onUpdate=\(\)=>\{if\(requested\)return;requested=true;const img=new Image\(\)/,'plates wait until first drawn');
+});
+
+test('the leather fallback textures are compressed sensibly',()=>{
+  // Most devices use the .ktx2 versions; these JPEGs are the fallback and were 1.8 MB together.
+  const total=['diffuse','normal','roughness'].reduce((sum,map)=>sum+fs.statSync(`assets/polyhaven/materials/leather_red_02/${map}.jpg`).size,0);
+  assert(total<1.1*1024*1024,`leather JPEGs are ${Math.round(total/1024)} KB`);
 });

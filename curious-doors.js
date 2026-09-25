@@ -282,7 +282,7 @@
     function update(t,dt,reduced=isReducedMotion()){
       time=t;const motion=reduced?0:1;
       // Keep rooms warm near their doors; free them when the reader has been away a while.
-      for(const room of Object.values(rooms)){const near=Math.hypot(player.pos.x-room.door.x,player.pos.z-room.door.z)<PRELOAD_DISTANCE,inside=zoneAt(player.pos.x,player.pos.z)===room;if(near||inside){if(inside||room.built)activate(room)}else if(room.active&&t-room.lastNeeded>KEEP_WARM_SECONDS)unload(room)}
+      for(const room of Object.values(rooms)){const near=Math.hypot(player.pos.x-room.door.x,player.pos.z-room.door.z)<PRELOAD_DISTANCE,inside=zoneAt(player.pos.x,player.pos.z)===room;/* Built as the reader approaches rather than when the door opens, so its shaders are compiled in the background before it is seen. */if(near||inside){activate(room)}else if(room.active&&t-room.lastNeeded>KEEP_WARM_SECONDS)unload(room)}
       // Door mechanisms.
       for(const door of Object.values(doors)){
         const nearDoor=Math.hypot(player.pos.x-door.room.door.x,player.pos.z-door.room.door.z)<14;if(!nearDoor&&door.state==='closed')continue;
