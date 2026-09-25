@@ -14,9 +14,10 @@ test('the Grand Hall floor carries painted contact shadows and lamp pools',()=>{
 
 test('links to the library unfurl with a title, description and picture',()=>{
   for(const tag of ['og:title','og:description','og:image','og:url','og:image:width','og:image:height'])assert.match(html,new RegExp(`property="${tag}"`));
-  for(const tag of ['twitter:card','twitter:title','twitter:description','twitter:image'])assert.match(html,new RegExp(`name="${tag}"`));
-  assert.match(html,/content="https:\/\/libraryafterdark\.space\/assets\/share-card\.jpg"/);
-  const jpg=fs.readFileSync('assets/share-card.jpg');assert.equal(jpg.readUInt16BE(0),0xffd8);assert.ok(jpg.length<300000,'small enough for every preview crawler');
+  assert.match(html,/name="twitter:card" content="summary_large_image"/);
+  assert.equal((html.match(/property="og:title"/g)||[]).length,1,'one set of preview tags');
+  const image=html.match(/property="og:image" content="https:\/\/libraryafterdark\.space\/([^"]+)"/)[1];
+  const jpg=fs.readFileSync(image);assert.equal(jpg.readUInt16BE(0),0xffd8);assert.ok(jpg.length<300000,'small enough for every preview crawler');
 });
 
 test('a passage can be shared as a square image, as text, or through the device share sheet',()=>{
