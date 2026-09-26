@@ -63,7 +63,7 @@ test('the player starts at the chapter being read and plays inside the library',
 
 test('files the nightly jobs rewrite are re-fetched within the hour, not held under an old build',()=>{
   const html=fs.readFileSync('index.html','utf8');
-  assert.match(html,/const LIVE_DATA=new Set\(\['data\/daily-rooms-resolved\.js','data\/audiobooks\.js'\]\)/);
+  assert.match(html,/const LIVE_DATA=new Set\(\['data\/daily-rooms-resolved\.js','data\/audiobooks\.js','data\/reader-traces\.js'\]\)/);
   assert.match(html,/LIVE_DATA\.has\(src\)\?'\.'\+new Date\(\)\.toISOString\(\)\.slice\(0,13\)/);
 });
 
