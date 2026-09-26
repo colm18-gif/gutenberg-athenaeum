@@ -92,3 +92,12 @@ test('a split in the basalt looks down on the underground sea, and its sound fol
   f.player.pos.set(35,-52,205);f.descent.update(5,.016,false,()=>{});assert(f.descent.seaLevel<.6&&f.descent.seaLevel>0);
   f.player.pos.set(40,-10,60);f.descent.update(6,.016,false,()=>{});assert.equal(f.descent.seaLevel,0);
 });
+
+test('the east wing panelling stops at the descent doorway and the office door instead of running across them',()=>{
+  const game=require('node:fs').readFileSync('game.js','utf8');
+  assert.doesNotMatch(game,/publicDado\(28,9\.62,17\.6\)/);assert.doesNotMatch(game,/publicDado\(28,-13\.62,17\.6\)/);
+  // x 19.2 to 32 and 36 to 36.8 on the south wall; the descent opens between x 32 and 36.
+  assert.match(game,/publicDado\(25\.6,9\.62,12\.8\);publicDado\(36\.4,9\.62,\.8\)/);
+  // x 19.2 to 33.8 and 36.2 to 36.8 on the north wall, either side of the Librarian's Office door.
+  assert.match(game,/publicDado\(26\.5,-13\.62,14\.6\);publicDado\(36\.5,-13\.62,\.6\)/);
+});
