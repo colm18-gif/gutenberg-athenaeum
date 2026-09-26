@@ -202,3 +202,10 @@ test('the descent rumbles, echoes and shows its depth without new lamps',()=>{
   // The layers, markers and shaft add no lights of their own.
   const additions=descent.slice(descent.indexOf('// ---------- The layers of the earth'),descent.indexOf('    function build(){'));assert.doesNotMatch(additions,/PointLight/);
 });
+
+test('deep down the view narrows, the air warms and the sea is heard, all without lamps',()=>{
+  assert.match(game,/const baseFov=67-\(camera\.userData\.pressing\|\|0\)/);assert.match(game,/camera\.userData\.pressing=7\*clamp\(metres\/58,0,1\);/);
+  assert.match(game,/const warmth=clamp\(\(verneDescent\.metres-24\)\/32,0,1\);if\(warmth>0\)scene\.background\.lerp\(skyTarget\.setHex\(0x2c1608\),warmth\);/);
+  assert.match(fs.readFileSync('soundscape.js','utf8'),/function setSea\(level\)\{\s*if\(!sea\)\{if\(level<=0\)return;/);
+  const descent=fs.readFileSync('verne-descent.js','utf8');assert.doesNotMatch(descent.slice(descent.indexOf('// ---------- Warmth'),descent.indexOf('    function build(){')),/PointLight/);
+});

@@ -99,6 +99,14 @@
         rumble={gain,noise,hum}}
       rumble.gain.gain.setTargetAtTime(muted?0:clamp(depth,0,1)**1.4*.34,ctx.currentTime,.8);
     }
+    // Far below, through a crack: an underground sea breaking slowly on a shore.
+    let sea=null;
+    function setSea(level){
+      if(!sea){if(level<=0)return;const source=ctx.createBufferSource(),tone=ctx.createBiquadFilter(),swell=ctx.createGain(),gain=ctx.createGain(),lfo=ctx.createOscillator(),depth=ctx.createGain();
+        source.buffer=noiseBuffer(6,false);source.loop=true;tone.type='lowpass';tone.frequency.value=520;swell.gain.value=.55;lfo.frequency.value=.11;depth.gain.value=.45;lfo.connect(depth).connect(swell.gain);gain.gain.value=0;
+        source.connect(tone).connect(swell).connect(gain).connect(master);source.start();lfo.start();sea={gain}}
+      sea.gain.gain.setTargetAtTime(muted?0:clamp(level,0,1)*.2,ctx.currentTime,.7);
+    }
     function tremor(strength=1){
       if(muted||ctx.state!=='running')return;const now=ctx.currentTime,source=ctx.createBufferSource(),tone=ctx.createBiquadFilter(),gain=ctx.createGain();
       source.buffer=noiseBuffer(3.2);tone.type='lowpass';tone.frequency.value=95;gain.gain.setValueAtTime(0,now);gain.gain.linearRampToValueAtTime(.9*strength,now+.7);gain.gain.exponentialRampToValueAtTime(.001,now+3.1);
@@ -140,6 +148,6 @@
       else if(state.weather!=='STORM')nextThunderAt=Math.max(nextThunderAt,ctx.currentTime+12);
     }
 
-    return {preload,play,stop,stopAll,setMuted,setSpace,update,setDepth,tremor,makeRainSource,thunder,onLightning(handler){lightningHandler=handler},get space(){return space}};
+    return {preload,play,stop,stopAll,setMuted,setSpace,update,setDepth,tremor,setSea,makeRainSource,thunder,onLightning(handler){lightningHandler=handler},get space(){return space}};
   };
 })();

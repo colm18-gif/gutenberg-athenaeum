@@ -9,7 +9,7 @@ THREE.CylinderGeometry=Geometry;
 THREE.BufferGeometry=class{constructor(){this.attributes={}}setAttribute(name,value){this.attributes[name]=value}setIndex(index){this.index=index}computeVertexNormals(){}};
 THREE.Float32BufferAttribute=class{constructor(array,size){this.array=array;this.size=size}setXYZ(i,x,y,z){this.array[i*3]=x;this.array[i*3+1]=y;this.array[i*3+2]=z}getY(i){return this.array[i*3+1]}setY(i,y){this.array[i*3+1]=y}};
 THREE.Vector3=class extends Vector{cross(v){const {x,y,z}=this;return this.set(y*v.z-z*v.y,z*v.x-x*v.z,x*v.y-y*v.x)}dot(v){return this.x*v.x+this.y*v.y+this.z*v.z}};
-THREE.MeshBasicMaterial=THREE.MeshStandardMaterial;THREE.RepeatWrapping=1;THREE.ClampToEdgeWrapping=2;
+THREE.MeshBasicMaterial=class{constructor(p){Object.assign(this,p);this.color={value:p?.color,setRGB(r,g,b){this.rgb=[r,g,b]}}}};THREE.RepeatWrapping=1;THREE.ClampToEdgeWrapping=2;
 function fixture(callbacks={}){const scene=new Object3D(),wing=new Object3D(),colliders=[],interactables=[];scene.add(wing);const wall=new Mesh(new Geometry(18,8,.5),{});wall.position.set(28,4,10);wing.add(wall);
   function collider(x,z,w,d,name='furniture',minY=-Infinity,maxY=Infinity){const c={minX:x-w/2,maxX:x+w/2,minZ:z-d/2,maxZ:z+d/2,minY,maxY,inactive:false,name};colliders.push(c);return c}collider(28,10,18,.5);
   const sandbox={window:{},Math};vm.runInNewContext(fs.readFileSync('verne-descent.js','utf8'),sandbox);
@@ -74,4 +74,21 @@ test('tremors drop grit only on someone who is down there, and depth is reported
   const f=fixture();f.descent.build();
   f.player.pos.set(0,0,24);f.descent.tremor();let grit=null;f.descent.group.traverse(m=>{if(m instanceof THREE.Points)grit=m});assert.equal(grit,null);assert.equal(f.descent.metres,0);
   f.player.pos.set(40,-30,150);f.descent.tremor();f.descent.group.traverse(m=>{if(m instanceof THREE.Points)grit=m});assert(grit&&grit.visible);assert.equal(f.descent.metres,30);
+});
+test('the last six flights close in without narrowing the walk, and glow warmer at the bottom',()=>{
+  const f=fixture();f.descent.build();const walls={};
+  f.descent.group.traverse(m=>{const a=m.geometry?.attributes;if(!a?.uv)return;const p=a.position.array;if(p[0]===p[3]&&p[0]===p[6]&&p[2]!==p[5]&&p[4]<p[1]+1){}});
+  const source=fs.readFileSync('verne-descent.js','utf8');assert.match(source,/const press=Math\.max\(0,i-5\),inset=1\.99-press\*\.04,roof=3\.15-press\*\.07;/);
+  // Deepest flight: walls 1.75 m from the centre, still outside a reader's 0.42 m reach from the 2 m walking half-width limit.
+  assert(1.99-6*.04>2-.42+.1);
+  const seams=[];f.descent.group.traverse(m=>{if(m.material?.color?.setRGB&&m.geometry?.attributes?.position&&!m.geometry.attributes.uv)seams.push(m)});assert.equal(seams.length,5*2,'flights 7 to 11, both walls');
+  f.player.pos.set(40,-30,150);f.descent.update(3,.016,false,()=>{});assert(seams[0].material.color.rgb[0]>seams[0].material.color.rgb[2],'the seams glow orange');
+});
+test('a split in the basalt looks down on the underground sea, and its sound follows distance',()=>{
+  const notices=[];const f=fixture({notice:text=>notices.push(text)});f.descent.build();
+  const views=[];f.descent.group.traverse(m=>{if(m.geometry?.parameters?.width===46)views.push(m)});assert.equal(views.length,1);assert.equal(views[0].rotation.y,-Math.PI/2);
+  assert(views[0].position.x>50,'the view lies far beyond the wall');
+  f.player.pos.set(41,-52.8,210);f.descent.update(4,.016,false,()=>{});assert(f.descent.seaLevel>.9);assert.equal(notices.length,1);
+  f.player.pos.set(35,-52,205);f.descent.update(5,.016,false,()=>{});assert(f.descent.seaLevel<.6&&f.descent.seaLevel>0);
+  f.player.pos.set(40,-10,60);f.descent.update(6,.016,false,()=>{});assert.equal(f.descent.seaLevel,0);
 });
