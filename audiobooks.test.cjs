@@ -66,3 +66,10 @@ test('files the nightly jobs rewrite are re-fetched within the hour, not held un
   assert.match(html,/const LIVE_DATA=new Set\(\['data\/daily-rooms-resolved\.js','data\/audiobooks\.js'\]\)/);
   assert.match(html,/LIVE_DATA\.has\(src\)\?'\.'\+new Date\(\)\.toISOString\(\)\.slice\(0,13\)/);
 });
+
+test('a picked-up book with a recording offers Listen right beside Open book',()=>{
+  const html=fs.readFileSync('index.html','utf8'),game=fs.readFileSync('game.js','utf8');
+  assert.match(html,/<button class="ghost hidden" id="listenAction" type="button">Listen<\/button><button class="ghost" id="carryBook">/);
+  assert.match(game,/refreshListenAction\(bm\.userData\.book\);document\.exitPointerLock/);
+  assert.match(game,/\$\('#listenAction'\)\.addEventListener\('click',\(\)=>\{const book=selected\?\.userData\?\.book;if\(book\)audiobooks\?\.start\(book\)\}\)/);
+});
