@@ -1,0 +1,40 @@
+name: Traces of other readers
+
+# Every night: fetch yesterday's reader count and the week's most-opened books from Plausible (totals only)
+# and publish them for the library to show. Needs the PLAUSIBLE_API_KEY secret; does nothing without it.
+on:
+  schedule:
+    - cron: '41 1 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: reader-traces
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Fetch the totals
+        env:
+          PLAUSIBLE_API_KEY: ${{ secrets.PLAUSIBLE_API_KEY }}
+        run: node scripts/reader-traces.mjs
+      - name: Run the tests
+        run: node --test *.test.cjs
+      - name: Publish
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/reader-traces.js
+          if git diff --cached --quiet; then echo "Nothing new tonight."; exit 0; fi
+          git commit -m "Reader traces for $(date -u -d yesterday +%Y-%m-%d)"
+          for attempt in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0; sleep 10; done
+          exit 1
