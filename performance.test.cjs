@@ -190,3 +190,15 @@ test('shared wood and leather keep one shader while their textures load',()=>{
 test('no material needs the physical shader or a transmission pass',()=>{
   for(const file of fs.readdirSync('.').filter(name=>name.endsWith('.js')&&name!=='static-batching.js'))assert.doesNotMatch(fs.readFileSync(file,'utf8'),/MeshPhysicalMaterial|transmission:/,file);
 });
+
+test('the descent rumbles, echoes and shows its depth without new lamps',()=>{
+  const sound=fs.readFileSync('soundscape.js','utf8'),descent=fs.readFileSync('verne-descent.js','utf8');
+  assert.match(sound,/deep:\{wet:1\.2,send:\.8,echo:\.34\}/);assert.match(sound,/function setDepth\(depth\)\{\s*if\(!rumble\)\{if\(depth<=0\)return;/,'the rumble is only built once someone goes down');
+  assert.match(sound,/return \{preload,play,stop,stopAll,setMuted,setSpace,update,setDepth,tremor,/);
+  assert.match(game,/if\(room==='verne-descent'\)return verneDescent\.metres>2\?'deep':'cellar';/);
+  assert.match(game,/updateDeep\(t,dt,verneDescent\.metres\);/);
+  assert.match(game,/if\(!reducedMotion\)camera\.userData\.shake=1\.5;/,'the view only trembles when motion is allowed');
+  assert.match(game,/depthGauge\.className='depth-gauge'/);assert.match(fs.readFileSync('styles.css','utf8'),/@media \(prefers-reduced-motion:reduce\)\{\.depth-gauge\.shiver svg\{animation:none\}\}/);
+  // The layers, markers and shaft add no lights of their own.
+  const additions=descent.slice(descent.indexOf('// ---------- The layers of the earth'),descent.indexOf('    function build(){'));assert.doesNotMatch(additions,/PointLight/);
+});

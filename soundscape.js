@@ -79,9 +79,33 @@
 
     // ---------- Room acoustics ----------
     // Wet level and tail brightness follow the kind of space the reader is standing in.
-    const SPACES={hall:{wet:.75,send:.55},room:{wet:.4,send:.45},wing:{wet:.55,send:.5},cellar:{wet:1,send:.65},outdoor:{wet:.12,send:.3},carriage:{wet:.2,send:.35},stair:{wet:.85,send:.6}};
+    const SPACES={hall:{wet:.75,send:.55},room:{wet:.4,send:.45},wing:{wet:.55,send:.5},cellar:{wet:1,send:.65},outdoor:{wet:.12,send:.3},carriage:{wet:.2,send:.35},stair:{wet:.85,send:.6},deep:{wet:1.2,send:.8,echo:.34}};
+    // Deep underground a short slap echo comes back off the rock after every footstep and drip.
+    const echoSend=ctx.createGain(),echoDelay=ctx.createDelay(1),echoFeedback=ctx.createGain(),echoTone=ctx.createBiquadFilter();
+    echoSend.gain.value=0;echoDelay.delayTime.value=.26;echoFeedback.gain.value=.32;echoTone.type='lowpass';echoTone.frequency.value=1700;
+    sampleBus.connect(echoSend);master.connect(echoSend);echoSend.connect(echoDelay).connect(echoTone).connect(echoFeedback).connect(echoDelay);echoTone.connect(destination);
     let space='hall';
-    function setSpace(name){if(!SPACES[name]||name===space)return;space=name;const s=SPACES[name],now=ctx.currentTime;reverbReturn.gain.setTargetAtTime(s.wet,now,.6);masterSend.gain.setTargetAtTime(s.send,now,.6)}
+    function setSpace(name){if(!SPACES[name]||name===space)return;space=name;const s=SPACES[name],now=ctx.currentTime;reverbReturn.gain.setTargetAtTime(s.wet,now,.6);masterSend.gain.setTargetAtTime(s.send,now,.6);echoSend.gain.setTargetAtTime(s.echo||0,now,.6)}
+
+    // ---------- The deep ----------
+    // A low rumble of the earth that grows with depth (built the first time anyone goes down), and now and
+    // then a distant tremor.
+    let rumble=null;
+    function noiseBuffer(seconds,brown=true){const length=Math.floor(ctx.sampleRate*seconds),buffer=ctx.createBuffer(1,length,ctx.sampleRate),data=buffer.getChannelData(0);let last=0;for(let i=0;i<length;i++){const white=Math.random()*2-1;last=brown?(last+.02*white)/1.02:white;data[i]=brown?last*3.5:white}return buffer}
+    function setDepth(depth){
+      if(!rumble){if(depth<=0)return;const gain=ctx.createGain(),tone=ctx.createBiquadFilter();gain.gain.value=0;tone.type='lowpass';tone.frequency.value=140;tone.connect(gain).connect(master);
+        const noise=ctx.createBufferSource();noise.buffer=noiseBuffer(4);noise.loop=true;noise.connect(tone);noise.start();
+        const hum=[37,41.5].map(frequency=>{const o=ctx.createOscillator(),level=ctx.createGain();o.frequency.value=frequency;level.gain.value=.22;o.connect(level).connect(tone);o.start();return o});
+        rumble={gain,noise,hum}}
+      rumble.gain.gain.setTargetAtTime(muted?0:clamp(depth,0,1)**1.4*.34,ctx.currentTime,.8);
+    }
+    function tremor(strength=1){
+      if(muted||ctx.state!=='running')return;const now=ctx.currentTime,source=ctx.createBufferSource(),tone=ctx.createBiquadFilter(),gain=ctx.createGain();
+      source.buffer=noiseBuffer(3.2);tone.type='lowpass';tone.frequency.value=95;gain.gain.setValueAtTime(0,now);gain.gain.linearRampToValueAtTime(.9*strength,now+.7);gain.gain.exponentialRampToValueAtTime(.001,now+3.1);
+      source.connect(tone).connect(gain).connect(master);source.start(now);source.stop(now+3.2);source.onended=()=>{source.disconnect();tone.disconnect();gain.disconnect()};
+      // Loosened grit pattering down a moment later.
+      for(let i=0;i<7;i++){const at=now+.9+Math.random()*1.6,o=ctx.createOscillator(),g=ctx.createGain();o.type='triangle';o.frequency.value=900+Math.random()*1600;g.gain.setValueAtTime(0,at);g.gain.linearRampToValueAtTime(.025*strength,at+.004);g.gain.exponentialRampToValueAtTime(.0005,at+.07);o.connect(g).connect(sampleBus);o.start(at);o.stop(at+.08);o.onended=()=>{o.disconnect();g.disconnect()}}
+    }
 
     // ---------- Weather ----------
     function makeRainSource(){const source=ctx.createBufferSource();source.buffer=rainBuffer(ctx);source.loop=true;return source}
@@ -116,6 +140,6 @@
       else if(state.weather!=='STORM')nextThunderAt=Math.max(nextThunderAt,ctx.currentTime+12);
     }
 
-    return {preload,play,stop,stopAll,setMuted,setSpace,update,makeRainSource,thunder,onLightning(handler){lightningHandler=handler},get space(){return space}};
+    return {preload,play,stop,stopAll,setMuted,setSpace,update,setDepth,tremor,makeRainSource,thunder,onLightning(handler){lightningHandler=handler},get space(){return space}};
   };
 })();

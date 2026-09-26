@@ -6,6 +6,10 @@ class Geometry{constructor(width,height,depth){this.parameters={width,height,dep
 class Mesh extends Object3D{constructor(geometry,material){super();this.geometry=geometry;this.material=material;this.isMesh=true}}
 const THREE={Group:Object3D,Mesh,BoxGeometry:Geometry,PlaneGeometry:Geometry,DodecahedronGeometry:Geometry,IcosahedronGeometry:Geometry,CircleGeometry:Geometry,SphereGeometry:Geometry,ConeGeometry:Geometry,MeshStandardMaterial:class{constructor(p){Object.assign(this,p)}},PointLight:class extends Object3D{constructor(color,intensity,distance){super();Object.assign(this,{color,intensity,distance,isPointLight:true})}},MathUtils:{damp:(a,b,l,d)=>b+(a-b)*Math.exp(-l*d)}};
 THREE.CylinderGeometry=Geometry;
+THREE.BufferGeometry=class{constructor(){this.attributes={}}setAttribute(name,value){this.attributes[name]=value}setIndex(index){this.index=index}computeVertexNormals(){}};
+THREE.Float32BufferAttribute=class{constructor(array,size){this.array=array;this.size=size}setXYZ(i,x,y,z){this.array[i*3]=x;this.array[i*3+1]=y;this.array[i*3+2]=z}getY(i){return this.array[i*3+1]}setY(i,y){this.array[i*3+1]=y}};
+THREE.Vector3=class extends Vector{cross(v){const {x,y,z}=this;return this.set(y*v.z-z*v.y,z*v.x-x*v.z,x*v.y-y*v.x)}dot(v){return this.x*v.x+this.y*v.y+this.z*v.z}};
+THREE.MeshBasicMaterial=THREE.MeshStandardMaterial;THREE.RepeatWrapping=1;THREE.ClampToEdgeWrapping=2;
 function fixture(callbacks={}){const scene=new Object3D(),wing=new Object3D(),colliders=[],interactables=[];scene.add(wing);const wall=new Mesh(new Geometry(18,8,.5),{});wall.position.set(28,4,10);wing.add(wall);
   function collider(x,z,w,d,name='furniture',minY=-Infinity,maxY=Infinity){const c={minX:x-w/2,maxX:x+w/2,minZ:z-d/2,maxZ:z+d/2,minY,maxY,inactive:false,name};colliders.push(c);return c}collider(28,10,18,.5);
   const sandbox={window:{},Math};vm.runInNewContext(fs.readFileSync('verne-descent.js','utf8'),sandbox);
@@ -44,4 +48,30 @@ test('subterranean companions are readable, locally complete and leave chamber c
 test('last six flights have two intermediate warm lamps with usable range and no new collision',()=>{
   const f=fixture();f.descent.build();const lights=[];f.descent.group.traverse(o=>{if(o.isPointLight)lights.push(o)});
 for(let i=6;i<12;i++){const x=i%2?40:34,z=14+i*18;for(const offset of [5,10]){const light=lights.find(l=>l.position.z===z+offset&&Math.abs(Math.abs(l.position.x-x)-1.7)<.001);assert(light,`missing lower-flight lamp ${i}/${offset}`);assert(light.intensity>=6);assert(light.distance>=8);assert(canWalk(f,x,z+offset));}}
+});
+test('the walls below the first flight show the layers of the earth, facing into the stair',()=>{
+  const f=fixture();f.descent.build();const facings=[];f.scene.traverse(()=>{});f.descent.group.traverse(m=>{if(m.geometry?.attributes?.uv)facings.push(m)});
+  assert(facings.length>=11*2+11*2,'both walls of every flight but the first, and the landings');
+  const strata=f.descent.strata;assert.equal(strata.length,12);assert.equal(strata[0][0],0);for(let i=1;i<strata.length;i++)assert.equal(strata[i][0],strata[i-1][1],'layers meet without gaps');
+  // A facing on the west wall of flight 1 (x 40, so the wall is at 38.01) must face east, into the stair.
+  const west=facings.find(m=>m.geometry.attributes.position.array[0]===38.01);assert(west);const p=west.geometry.attributes.position.array,i=west.geometry.index;
+  const at=k=>[p[k*3],p[k*3+1],p[k*3+2]],[a,b,c]=[at(i[0]),at(i[1]),at(i[2])],u=[b[0]-a[0],b[1]-a[1],b[2]-a[2]],v=[c[0]-a[0],c[1]-a[1],c[2]-a[2]];
+  assert(u[1]*v[2]-u[2]*v[1]>0,'front face points +x');
+  // UVs follow world depth: v = 1 at the reading room floor, 0 sixty-two metres down.
+  const uv=west.geometry.attributes.uv.array;assert(Math.abs(uv[1]-(1+p[1]/62))<1e-9);
+});
+test('every landing carries a depth marker and the chalk landing opens on a shaft to daylight',()=>{
+  const f=fixture();const drawn=[];f.descent.build();
+  const plates=[];f.descent.group.traverse(m=>{if(m.geometry?.parameters?.width===1.15&&m.geometry.parameters.height===.65)plates.push(m)});assert.equal(plates.length,12);
+  plates.forEach((plate,i)=>{assert(Math.abs(plate.position.y-(-(i+1)*4.8+1.85))<1e-9);assert.equal(plate.rotation.y,Math.PI)});
+  const source=fs.readFileSync('verne-descent.js','utf8');assert.match(source,/\['Chalk','A warm sea, 80 million years ago · look up'\]/);assert.match(source,/Arne Saknussemm/);
+  const sky=[];
+  // The daylight disc hangs at the top of the shaft, well above the landing it lights.
+  f.descent.group.traverse(m=>{if(m.geometry instanceof THREE.CircleGeometry&&m.position.y===-3.02)sky.push(m)});assert(sky.some(m=>m.position.y===-3.02&&m.position.z===120));
+});
+test('tremors drop grit only on someone who is down there, and depth is reported in metres',()=>{
+  THREE.Points=class extends Object3D{constructor(geometry,material){super();this.geometry=geometry;this.material=material}};THREE.PointsMaterial=THREE.MeshStandardMaterial;
+  const f=fixture();f.descent.build();
+  f.player.pos.set(0,0,24);f.descent.tremor();let grit=null;f.descent.group.traverse(m=>{if(m instanceof THREE.Points)grit=m});assert.equal(grit,null);assert.equal(f.descent.metres,0);
+  f.player.pos.set(40,-30,150);f.descent.tremor();f.descent.group.traverse(m=>{if(m instanceof THREE.Points)grit=m});assert(grit&&grit.visible);assert.equal(f.descent.metres,30);
 });
