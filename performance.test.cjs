@@ -99,7 +99,7 @@ test('distant animation systems pause outside their zones',()=>{
 });
 
 test('shaders are compiled behind the entrance veil before the first frame is drawn',()=>{
-  assert.match(game,/async function warmShaders\(progress,\{roots=\[scene\],chunkSize=3,pause=0\}=\{\}\)/);
+  assert.match(game,/async function warmShaders\(progress,\{roots=\[scene\],chunkSize=3,pause=0,whenIdle=false\}=\{\}\)/);
   assert.match(game,/renderer\.compile\(object,camera,scene\)/);
   assert.match(game,/renderer\.properties\.get\(material\)\.currentProgram\?\.getUniforms\(\)/,'without parallel compile, linking is finished during warm-up');
   assert.match(game,/warmShaders\([^)]*\)[^;]*\.finally\(\(\)=>\{shadersWarm=true;animate\(\);if\(window\.__ATHENAEUM_ENTERED__\)enterLibrary\(\);/);
@@ -146,8 +146,13 @@ test('rooms and wings are compiled before the reader reaches them',()=>{
   const curious=fs.readFileSync('curious-doors.js','utf8'),daily=fs.readFileSync('daily-room.js','utf8');
   // Areas built but not yet in the scene are compiled in the background after entering, with their own lamps off.
   assert.match(game,/const detachedAreas=\(\)=>Object\.values\(performanceZones\)\.filter\(zone=>!zone\.active&&zone\.group\)/);
-  assert.match(game,/warmShaders\(null,\{roots:detachedAreas\(\),chunkSize:2,pause:16\}\)/);
-  assert.match(game,/if\(root!==scene\)root\.traverse\(object=>\{if\(object\.isLight&&object\.visible\)\{object\.visible=false;hidden\.push\(object\)\}\}\)/);
+  assert.match(game,/roots=parallel\?detachedAreas\(\):detachedAreas\(\)\.filter\(group=>areaNear\(group,45\)\)/);
+  assert.match(game,/chunkSize:parallel\?2:1,pause:parallel\?16:40,whenIdle:!parallel/,'where compiling blocks the page it happens only while standing still');
+  assert.match(game,/if\(whenIdle\)while\(playerIsMoving\(\)\|\|document\.hidden\)await/);
+  assert.match(game,/setTimeout\(warmUnvisitedAreas,4000\);setInterval\(warmUnvisitedAreas,6000\)/);
+  // An area's lamps are only switched off for the moment its pieces compile.
+  assert.match(game,/try\{for\(const object of batch\)if\(!detached\.length\|\|object\.parent\)renderer\.compile\(object,camera,scene\)\}finally\{for\(const light of hidden\)light\.visible=true\}/);
+  assert.match(game,/hideLamps=\(\)=>\{const hidden=\[\];for\(const root of detached\)root\.traverse\(object=>\{if\(object\.isLight&&object\.visible\)\{object\.visible=false;hidden\.push\(object\)\}\}\);return hidden\}/);
   assert.match(game,/refreshBudgetLights\.stamp=null;budgetRefreshTimer=0;applyLightBudget\(\);/,'warming uses the light count that will be drawn');
   // Door rooms are built as the reader approaches, so the regular warm-up catches them before they are seen.
   assert.match(curious,/if\(near\|\|inside\)\{activate\(room\)\}/);
@@ -165,4 +170,9 @@ test('the leather fallback textures are compressed sensibly',()=>{
   // Most devices use the .ktx2 versions; these JPEGs are the fallback and were 1.8 MB together.
   const total=['diffuse','normal','roughness'].reduce((sum,map)=>sum+fs.statSync(`assets/polyhaven/materials/leather_red_02/${map}.jpg`).size,0);
   assert(total<1.1*1024*1024,`leather JPEGs are ${Math.round(total/1024)} KB`);
+});
+
+test('shader error checks, which stall the first frames, run only with ?debug',()=>{
+  const game=require('node:fs').readFileSync(require('node:path').join(__dirname,'game.js'),'utf8');
+  assert.match(game,/renderer\.debug\.checkShaderErrors=new URLSearchParams\(location\.search\)\.has\('debug'\)/);
 });
