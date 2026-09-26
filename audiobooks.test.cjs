@@ -43,3 +43,20 @@ test('the audiobook job matches recordings by Gutenberg id, prefers solo reading
   assert.equal(again.status,0,again.stderr);assert.match(again.stdout,/2 already have a recording, 0 to look up/);assert.match(again.stdout,/Nothing to do\./);
   fs.rmSync(dir,{recursive:true,force:true});
 });
+
+test('the player starts at the chapter being read and plays inside the library',()=>{
+  const context={window:{ATHENAEUM_AUDIOBOOKS:{345:[55000,'Carol',3]},addEventListener(){}},document:{getElementById:()=>null,body:{classList:{toggle(){}}}},navigator:{},localStorage:{getItem:()=>null,setItem(){}},Audio:class{addEventListener(){}},performance:{now:()=>0}};
+  context.window.document=context.document;vm.createContext(context);vm.runInContext(fs.readFileSync('audiobook-player.js','utf8'),context);
+  const player=context.window.createAudiobookPlayer({});
+  assert.equal(player.available({id:345}),true);assert.equal(player.available({id:1}),false);
+  assert.equal(player.label({id:345}),'Listen · 15 h 17 min');
+  assert.equal(player.chapterNumber('CHAPTER XIV — The Return'),14);assert.equal(player.chapterNumber('Chapter 3: Storm'),3);assert.equal(player.chapterNumber('Stave II'),2);assert.equal(player.chapterNumber('Preface'),null);
+  const data={chapters:[{title:'Preface'},{title:'Chapter 01 - Jonathan Harker’s Journal'},{title:'Chapter 02'},{title:'Chapter IV'}]};
+  assert.equal(player.chapterFor(data,'CHAPTER II'),2);assert.equal(player.chapterFor(data,'CHAPTER 4 ...'),3);assert.equal(player.chapterFor(data,'Gothic'),-1);
+  const game=fs.readFileSync('game.js','utf8'),html=fs.readFileSync('index.html','utf8');
+  assert.match(html,/<button id="listenBook" class="ghost listen-book hidden" type="button">Listen<\/button>/,'the Listen control no longer links away');
+  assert.doesNotMatch(game,/listen\.href=/);
+  assert.match(game,/audiobooks\?\.start\(book,\{heading:\$\('#chapter'\)\.textContent\}\)/);
+  assert.match(game,/focus\?\.userData\?\.type==='gramophone'/);
+  assert.match(fs.readFileSync('room-ambience.js','utf8'),/state\.listening\?\.5/,'room sounds dip while a book is read aloud');
+});
