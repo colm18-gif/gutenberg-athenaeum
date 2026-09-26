@@ -1,7 +1,7 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-09-25",
+ "updated": "2026-09-26",
  "days": {
   "2026-09-25": {
    "books": [
@@ -164,6 +164,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 17609,
      "title": "Our Deportment",
      "author": "John H. Young"
+    }
+   ],
+   "missing": []
+  },
+  "2026-09-28": {
+   "books": [
+    {
+     "id": 107,
+     "title": "Far from the Madding Crowd",
+     "author": "Thomas Hardy"
+    },
+    {
+     "id": 507,
+     "title": "Adam Bede",
+     "author": "George Eliot"
+    },
+    {
+     "id": 1408,
+     "title": "The Natural History of Selborne",
+     "author": "Gilbert White"
+    },
+    {
+     "id": 34238,
+     "title": "Rural Rides",
+     "author": "William Cobbett"
+    },
+    {
+     "id": 232,
+     "title": "The Georgics",
+     "author": "Virgil"
+    },
+    {
+     "id": 9092,
+     "title": "The Farmer's Boy",
+     "author": "Robert Bloomfield"
+    },
+    {
+     "id": 110,
+     "title": "Tess of the d'Urbervilles",
+     "author": "Thomas Hardy"
+    },
+    {
+     "id": 482,
+     "title": "The Woodlanders",
+     "author": "Thomas Hardy"
+    },
+    {
+     "id": 349,
+     "title": "The Harvester",
+     "author": "Gene Stratton-Porter"
+    },
+    {
+     "id": 242,
+     "title": "My Antonia",
+     "author": "Willa Cather"
     }
    ],
    "missing": []
