@@ -1503,29 +1503,10 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const preIsleSurface=footstepSurface;footstepSurface=function(){return crusoeIsland.onSand(player.pos.x,player.pos.z)?'carpet':preIsleSurface()};
       const preIsleSpace=acousticSpace;acousticSpace=function(){const zone=crusoeIsland.zoneAt(player.pos.x,player.pos.z);return zone==='crusoe-island'?'outdoor':zone==='boathouse'?'room':preIsleSpace()};
     }
-    // Traces of other readers (data/reader-traces.js, written nightly from Plausible totals): a notice board by the
-    // entrance with yesterday's visitors and the week's most-opened books, and a line on any book several people
-    // have opened this week. Nothing is shown until there is something worth showing.
-    const otherReaders=(()=>{
-      const data=window.ATHENAEUM_READER_TRACES,counts=data?.books||{},readers=Number(data?.readers)||0;
-      const weekly=id=>Number(counts[id])||0;
-      const popular=Object.entries(counts).map(([id,n])=>[books.find(b=>String(b.id)===id),n]).filter(([b])=>b).sort((a,b)=>b[1]-a[1]);
-      if(readers>=5&&data?.date){
-        const yesterday=new Date(Date.now()-86400000).toISOString().slice(0,10),when=data.date===yesterday?'YESTERDAY':'ON '+new Date(data.date+'T12:00:00Z').toLocaleDateString('en-GB',{day:'numeric',month:'long',timeZone:'UTC'}).toUpperCase();
-        const fit=(c,text,max)=>{let t=text;while(c.measureText(t).width>max&&t.length>4)t=t.slice(0,-2);return t===text?t:t.trimEnd()+'…'};
-        const map=canvasTexture((c,W,H)=>{c.fillStyle='#1d2a24';c.fillRect(0,0,W,H);c.strokeStyle='rgba(231,210,160,.5)';c.lineWidth=3;c.strokeRect(14,14,W-28,H-28);c.textAlign='center';c.fillStyle='#f1dfb0';
-          c.font='bold 30px Georgia';c.fillText(`${when} IN THE LIBRARY`,W/2,66);c.font='italic 34px Georgia';c.fillStyle='#fff3d2';c.fillText(`${readers.toLocaleString('en-GB')} readers came in`,W/2,128);
-          if(popular.length){c.font='22px Georgia';c.fillStyle='#d8c79c';c.fillText('Most opened this week',W/2,188);c.font='italic 26px Georgia';c.fillStyle='#f4e8c8';popular.slice(0,3).forEach(([b],i)=>c.fillText(fit(c,b.title,W-90),W/2,232+i*40))}
-          c.font='italic 18px Georgia';c.fillStyle='rgba(216,199,156,.7)';c.fillText('Counted without names. Updated each night.',W/2,H-30)},640,400);
-        const board=new THREE.Group();board.position.set(4.5,0,30.45);board.rotation.y=Math.PI;scene.add(board);
-        const face=new THREE.Mesh(new THREE.PlaneGeometry(1.6,1),new THREE.MeshStandardMaterial({map,emissive:0x3a2a14,emissiveIntensity:.35,roughness:.9}));face.position.set(0,1.85,.09);board.add(face);
-        for(const [w,h,x,y] of [[1.76,.08,0,2.39],[1.76,.08,0,1.31],[.08,1.16,-.84,1.85],[.08,1.16,.84,1.85]]){const edge=new THREE.Mesh(new THREE.BoxGeometry(w,h,.06),MAT.darkWood);edge.position.set(x,y,.09);board.add(edge)}
-        face.userData={type:'reader-traces',title:'Traces of other readers',author:'A board by the entrance, chalked up each night.',action:'READ'};interactables.push(face);
-      }
-      return {weekly,note(){const lines=popular.slice(0,5).map(([b,n])=>`${b.title} (${n})`);return `${readers.toLocaleString('en-GB')} readers came into the library${data?.date?` on ${data.date}`:''}.${lines.length?` Opened most this week: ${lines.join(', ')}.`:''}`}};
-    })();
-    {const preTraceInteract=interact;interact=function(){if(focus?.userData?.type==='reader-traces'&&!selected){showNotice(otherReaders.note(),9);focus=null;ui.prompt.style.opacity=0;return}return preTraceInteract()}}
-    {const preTraceSelect=selectBook;selectBook=function(bm){const result=preTraceSelect(bm),book=bm?.userData?.book,n=book?otherReaders.weekly(book.id):0;if(n>=3)ui.actions.querySelector('em').textContent=`${book.author} · opened by ${n} readers this week`;return result}}
+    // Traces of other readers (other-readers.js): invented, but the same for everyone on a given day.
+    const otherReaders=window.createOtherReaders?.({THREE,scene,MAT,interactables,canvasTexture,showNotice,playSample,findBook:id=>books.find(b=>b.id===id),
+      isQuietMoment:()=>gameActive()&&ui.reader.classList.contains('hidden')&&Math.abs(player.pos.x)<58&&Math.abs(player.pos.z)<32&&player.pos.y>-1&&player.pos.y<12});
+    if(otherReaders){const preTraceInteract=interact;interact=function(){if(focus&&!selected&&otherReaders.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preTraceInteract()}}
     // The gramophone: pause or resume what is playing, else read aloud the last book opened, else any recorded book.
     {const preGramophoneInteract=interact;interact=function(){if(focus?.userData?.type==='gramophone'&&!selected&&audiobooks){if(audiobooks.active)audiobooks.toggle();else{const shelved=books.filter(book=>audiobooks.available(book)),choice=lastListenable||shelved[Math.floor(Math.random()*shelved.length)];if(!choice)showNotice('The record is blank tonight. Try again when the recordings have arrived.',5);else{audiobooks.start(choice);showNotice(`The needle drops. ${choice.title}, by ${choice.author}, read aloud.`,6)}}focus=null;ui.prompt.style.opacity=0;return}return preGramophoneInteract()}}
     // The western door opens onto a spatially separate stair, allowing its many turns to rise
@@ -1615,7 +1596,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       lampShadeMaterial.emissiveIntensity=2.35*flame(0);
       flickerLights.forEach((light,i)=>{const d=light.userData,factor=flame(i+1);if(d.flickerApplied!==undefined&&light.intensity!==d.flickerApplied)d.flickerBase=light.intensity/(d.flickerFactor||1);if(d.flickerBase===undefined)d.flickerBase=light.intensity;light.intensity=d.flickerBase*factor;d.flickerApplied=light.intensity;d.flickerFactor=factor})
     }
-    {const preLampWorld=updateWorld;updateWorld=function(t,dt){preLampWorld(t,dt);updateLamplight(t);crusoeIsland?.update(t,dt)}}
+    {const preLampWorld=updateWorld;updateWorld=function(t,dt){preLampWorld(t,dt);updateLamplight(t);crusoeIsland?.update(t,dt);otherReaders?.update(dt)}}
     // ---- First visit: a short tour that moves on as the reader does each thing, with Quill leading to a shelf.
     const tour=(()=>{const box=$('#tour'),stepLabel=$('#tourStep'),text=$('#tourText');
       const pending=!localStorage.getItem('athenaeum-tour-done')&&exploredRooms.size<3&&!awakenedBooks.size;
@@ -1751,7 +1732,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       }finally{renderer.setRenderTarget(previousTarget);warmingShaders=false}
     }
     // Opt-in inspection hook for automated visual and performance checks (?debug).
-    if(new URLSearchParams(location.search).has('debug'))window.__athenaeum={THREE,MAT,hallLightmap,quoteShare,selectBook:bm=>selectBook(bm),staticBatcher,tour,continueDisplay,lampSpots,get dayPhase(){return dayPhase},set dayPhase(v){dayPhase=v},get roomAmbience(){return roomAmbience},placeAt:(x,y,z)=>placeAt(x,y,z),resetPosition:()=>resetPosition(),afterDarkExpansion,librarianOffice,dailyRoom,crusoeIsland,verneDescent,analyticsRoom:()=>analyticsRoom(),floorAt:(x,z)=>floorHeight(x,z),renderer,scene,camera,player,visual,books,curiousDoors,get librarianNotes(){return librarianNotes},interactables,zones:()=>({memoryZones,themeZones}),buildTheme:key=>buildThemeRooms(key),dressExits(){exitDressTimer=0;dressExitDoors(0)},allowedAt:(x,z)=>allowed(x,z),wallFaceOffset,buildAll(){buildBasement();buildMemoryRooms();for(const z of themeZones)try{buildThemeRooms(z.key)}catch(e){}try{buildContestedRoom()}catch(e){}},nightRailway,highStaircase,interact:()=>interact(),get focus(){return focus},get soundscape(){return soundscape},get audioCtx(){return audioCtx},playSample,teleport(x,y,z,yaw=0,pitch=0){player.pos.set(x,y,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=pitch;lastSafePosition.copy(player.pos)}};
+    if(new URLSearchParams(location.search).has('debug'))window.__athenaeum={THREE,MAT,hallLightmap,quoteShare,selectBook:bm=>selectBook(bm),staticBatcher,tour,continueDisplay,lampSpots,get dayPhase(){return dayPhase},set dayPhase(v){dayPhase=v},get roomAmbience(){return roomAmbience},placeAt:(x,y,z)=>placeAt(x,y,z),resetPosition:()=>resetPosition(),afterDarkExpansion,librarianOffice,dailyRoom,crusoeIsland,otherReaders,verneDescent,analyticsRoom:()=>analyticsRoom(),floorAt:(x,z)=>floorHeight(x,z),renderer,scene,camera,player,visual,books,curiousDoors,get librarianNotes(){return librarianNotes},interactables,zones:()=>({memoryZones,themeZones}),buildTheme:key=>buildThemeRooms(key),dressExits(){exitDressTimer=0;dressExitDoors(0)},allowedAt:(x,z)=>allowed(x,z),wallFaceOffset,buildAll(){buildBasement();buildMemoryRooms();for(const z of themeZones)try{buildThemeRooms(z.key)}catch(e){}try{buildContestedRoom()}catch(e){}},nightRailway,highStaircase,interact:()=>interact(),get focus(){return focus},get soundscape(){return soundscape},get audioCtx(){return audioCtx},playSample,teleport(x,y,z,yaw=0,pitch=0){player.pos.set(x,y,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=pitch;lastSafePosition.copy(player.pos)}};
     // Compiling every shader on the first frame froze the page for seconds, longest on tablets.
     // Compile them behind the entrance veil instead, a few at a time so the progress bar keeps
     // moving, then keep warming the materials of rooms that are built later, before they are seen.
