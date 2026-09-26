@@ -133,6 +133,48 @@
       shaft.fall+=dt;const y=shaft.top-.1-4.9*shaft.fall*shaft.fall;shaft.pebble.position.set(shaft.x+.18,Math.max(y,shaft.floor+.035),shaft.z-.1);
       if(y<=shaft.floor+.035){click();shaft.fall=-1;shaft.nextPebble=t+22+Math.random()*30;setTimeout(()=>{if(shaft.fall<0)shaft.pebble.visible=false},1600)}
     }
+    // ---------- Warmth ----------
+    // Towards the bottom thin seams in the rock glow and slowly breathe, like embers under ash. No lamps: one
+    // shared unlit material whose colour is changed once a frame.
+    const seamMaterial=new THREE.MeshBasicMaterial({color:0xff7a2a});
+    function seams(parent,x,side,inset,z,slope,count){
+      const positions=[],wx=x+side*(inset-.012),quad=(a,b,c,d)=>{for(const [p,q,r] of [[a,b,c],[a,c,d],[a,c,b],[a,d,c]])positions.push(...p,...q,...r)};
+      for(let k=0;k<count;k++){let cz=z+1.5+Math.random()*11,cy=slope(cz)+.35+Math.random()*.8;const width=.02+Math.random()*.025;
+        for(let j=0;j<7;j++){const nz=cz+(Math.random()-.5)*.55,ny=cy+.16+Math.random()*.2;quad([wx,cy-width,cz],[wx,ny-width,nz],[wx,ny+width,nz],[wx,cy+width,cz]);cz=nz;cy=ny}}
+      const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));parent.add(new THREE.Mesh(geometry,seamMaterial));
+    }
+    // ---------- The crack ----------
+    // Near the bottom a split in the basalt looks out and down on Verne's underground sea: a painted cavern,
+    // lit by its own pale light, with the forest of giant mushrooms on the shore.
+    const CRACK_LANDING=10,crack={x:42,y:-(CRACK_LANDING+1)*4.8,z:14+CRACK_LANDING*18+16,told:false,level:0};
+    function seaPainting(){
+      // Laid out for the view through the split: cavern roof and its pale light, far cliffs on the horizon at
+      // eye level, the sea below them and the near shore with its mushrooms at the bottom of the view.
+      return canvasTexture((c,w,h)=>{
+        const sky=c.createLinearGradient(0,0,0,h*.37);sky.addColorStop(0,'#081110');sky.addColorStop(1,'#1d4541');c.fillStyle=sky;c.fillRect(0,0,w,h);
+        const haze=c.createRadialGradient(w*.5,h*.12,10,w*.5,h*.12,w*.5);haze.addColorStop(0,'rgba(220,245,230,.6)');haze.addColorStop(1,'rgba(220,245,230,0)');c.fillStyle=haze;c.fillRect(0,0,w,h*.4);
+        c.fillStyle='#0a1414';c.beginPath();c.moveTo(0,h*.38);for(let x=0;x<=w;x+=12)c.lineTo(x,h*(.33+Math.sin(x*.012)*.025+Math.sin(x*.047)*.012+Math.random()*.006));c.lineTo(w,h*.38);c.fill();
+        const sea=c.createLinearGradient(0,h*.37,0,h*.64);sea.addColorStop(0,'#5aa89c');sea.addColorStop(.2,'#2a6e67');sea.addColorStop(1,'#11312f');c.fillStyle=sea;c.fillRect(0,h*.37,w,h*.27);
+        c.strokeStyle='rgba(200,248,232,.4)';for(let k=0;k<260;k++){const y=h*.375+Math.pow(Math.random(),1.8)*h*.25,len=6+(y-h*.37)*.35;c.lineWidth=y>h*.5?1.5:1;c.beginPath();const x=Math.random()*w;c.moveTo(x,y);c.lineTo(x+len,y);c.stroke()}
+        c.fillStyle='rgba(215,245,230,.5)';c.beginPath();c.moveTo(0,h*.64);for(let x=0;x<=w;x+=16)c.lineTo(x,h*(.62+Math.sin(x*.008+1)*.02));c.lineTo(w,h*.66);c.lineTo(0,h*.66);c.fill();
+        const shore=c.createLinearGradient(0,h*.62,0,h);shore.addColorStop(0,'#2a2a22');shore.addColorStop(1,'#0c0d0b');c.fillStyle=shore;c.beginPath();c.moveTo(0,h*.65);for(let x=0;x<=w;x+=16)c.lineTo(x,h*(.635+Math.sin(x*.008+1)*.02));c.lineTo(w,h);c.lineTo(0,h);c.fill();
+        // Verne's forest of giant mushrooms, pale and faintly glowing, on the near shore.
+        c.shadowColor='rgba(225,248,205,.9)';c.shadowBlur=22;
+        for(const [mx,size] of [[.1,1.1],[.19,.75],[.27,1.35],[.36,.6],[.45,.9],[.58,.7],[.67,1.2],[.77,.85],[.86,1.4],[.95,.9]]){const x=mx*w,base=h*(.74+size*.1),stalk=h*.2*size,cap=h*.13*size;
+          c.fillStyle='#bdb8a0';c.fillRect(x-h*.012*size,base-stalk,h*.024*size,stalk);c.fillStyle='#ece6cc';c.beginPath();c.ellipse(x,base-stalk,cap,cap*.42,0,Math.PI,0);c.fill();c.fillStyle='#cfc8ac';c.fillRect(x-cap,base-stalk-1,cap*2,3)}
+        c.shadowBlur=0;
+      },1024,640);
+    }
+    function buildCrack(parent,mat){
+      const {x,y,z}=crack;
+      for(const [dz,dy,r] of [[-.62,1.0,.32],[-.58,2.1,.3],[.6,.8,.34],[.63,1.8,.28],[.6,2.45,.3],[-.2,.58,.26],[.25,2.56,.27],[-.6,2.5,.26]]){const tooth=new THREE.Mesh(new THREE.DodecahedronGeometry(r,0),mat);tooth.position.set(x+.1,y+dy,z+dz);tooth.scale.set(.7,1.2,1);parent.add(tooth)}
+      box(parent,1,.2,1.2,mat,43,y+.5,z,false);box(parent,1,.3,1.2,mat,43,y+2.65,z,false);for(const dz of [-.7,.7])box(parent,1,2.2,.2,mat,43,y+1.55,z+dz,false);
+      const view=new THREE.Mesh(new THREE.PlaneGeometry(46,20),new THREE.MeshBasicMaterial({map:seaPainting()}));view.position.set(58,y-.1,z);view.rotation.y=-Math.PI/2;parent.add(view);
+    }
+    function updateCrack(){
+      const d=Math.hypot(player.pos.x-crack.x,player.pos.z-crack.z),level=Math.abs(player.pos.y-crack.y)<8?Math.max(0,1-d/14):0;crack.level=level;
+      if(!crack.told&&d<4.5&&Math.abs(player.pos.y-crack.y)<2){crack.told=true;notice('Through a split in the basalt: a sea beneath the earth, and a light that is not a lamp.')}
+    }
     function build(){
       if(built)return;built=true;
       const start=new THREE.Group();group.add(start);segments.push({group:start,z:11.5});
@@ -144,6 +186,8 @@
       for(let i=0;i<12;i++){
         const parent=new THREE.Group();group.add(parent);
         const x=i%2?40:34,z=14+i*18,y=-i*4.8,mat=i<3?MAT.stone:rock;
+        // The last six flights close in: a little narrower and lower each time (the walking width is unchanged).
+        const press=Math.max(0,i-5),inset=1.99-press*.04,roof=3.15-press*.07;
         segments.push({group:parent,z:z+9});
         // Visual treads and a continuous walking envelope share exactly the same endpoints.
         for(let s=0;s<28;s++){
@@ -152,18 +196,22 @@
           box(parent,5,.6,.51,mat,x,sy+3.4,sz);
           for(const side of [-1,1]){
             box(parent,.5,3.8,.51,mat,x+side*2.25,sy+1.5,sz);
-            if(i>2&&s%3===0){const r=new THREE.Mesh(new THREE.DodecahedronGeometry(.4+i*.025,0),mat);r.position.set(x+side*2.2,sy+1.6,sz);r.scale.set(.6,1.6,1.4);parent.add(r)}
+            if(i>2&&s%3===0){const r=new THREE.Mesh(new THREE.DodecahedronGeometry(.4+i*.025,0),mat);r.position.set(x+side*(inset+.21),sy+1.6,sz);r.scale.set(.6,1.6,1.4);parent.add(r)}
             if(i<2&&s%4===0)box(parent,.12,.14,2,MAT.darkWood,x+side*2.03,sy+2.6,sz,false);
           }
         }
         // The walls of the flight, faced with the layers it cuts through (the first flight is still the building's own masonry).
-        if(i>0)for(const side of [-1,1]){const wx=x+side*1.99,slope=(zz)=>y-(zz-z)/14*4.8;facing(parent,[[wx,slope(z)-.3,z],[wx,slope(z+14)-.3,z+14],[wx,slope(z+14)+3.15,z+14],[wx,slope(z)+3.15,z]],[-side,0,0])}
+        const slope=zz=>y-(zz-z)/14*4.8;
+        if(i>0)for(const side of [-1,1]){const wx=x+side*inset;facing(parent,[[wx,slope(z)-.3,z],[wx,slope(z+14)-.3,z+14],[wx,slope(z+14)+roof,z+14],[wx,slope(z)+roof,z]],[-side,0,0]);if(i>=7)seams(parent,x,side,inset,z,slope,i-5)}
+        if(press)facing(parent,[[x-inset,slope(z)+roof,z],[x+inset,slope(z)+roof,z],[x+inset,slope(z+14)+roof,z+14],[x-inset,slope(z+14)+roof,z+14]],[0,-1,0]);
         const ly=y-4.8,lz=z+16;
         box(parent,10,.5,4,mat,37,ly-.25,lz);
         if(i===SHAFT_LANDING){box(parent,4.2,.6,4,mat,34.1,ly+3.4,lz);box(parent,4.2,.6,4,mat,39.9,ly+3.4,lz);box(parent,1.6,.6,1.2,mat,37,ly+3.4,lz-1.4);box(parent,1.6,.6,1.2,mat,37,ly+3.4,lz+1.4);buildShaft(parent)}
         else box(parent,10,.6,4,mat,37,ly+3.4,lz);
-        if(i>0){facing(parent,[[32.01,ly-.1,z+14],[32.01,ly-.1,z+18],[32.01,ly+3.15,z+18],[32.01,ly+3.15,z+14]],[1,0,0]);facing(parent,[[41.99,ly-.1,z+14],[41.99,ly-.1,z+18],[41.99,ly+3.15,z+18],[41.99,ly+3.15,z+14]],[-1,0,0])}
-        for(const sx of [31.75,42.25])box(parent,.5,3.8,4,mat,sx,ly+1.5,lz);
+        if(i>0){facing(parent,[[32.01,ly-.1,z+14],[32.01,ly-.1,z+18],[32.01,ly+3.15,z+18],[32.01,ly+3.15,z+14]],[1,0,0]);if(i===CRACK_LANDING)for(const [a,b,lo,hi] of [[z+14,lz-.55,-.1,3.15],[lz+.55,z+18,-.1,3.15],[lz-.55,lz+.55,-.1,.6],[lz-.55,lz+.55,2.5,3.15]])facing(parent,[[41.99,ly+lo,a],[41.99,ly+lo,b],[41.99,ly+hi,b],[41.99,ly+hi,a]],[-1,0,0]);
+          else facing(parent,[[41.99,ly-.1,z+14],[41.99,ly-.1,z+18],[41.99,ly+3.15,z+18],[41.99,ly+3.15,z+14]],[-1,0,0])}
+        if(i===CRACK_LANDING){box(parent,.5,3.8,4,mat,31.75,ly+1.5,lz);box(parent,.5,3.8,1.45,mat,42.25,ly+1.5,lz-1.275);box(parent,.5,3.8,1.45,mat,42.25,ly+1.5,lz+1.275);box(parent,.5,1,1.1,mat,42.25,ly+.1,lz);box(parent,.5,.9,1.1,mat,42.25,ly+2.95,lz);buildCrack(parent,mat)}
+        else for(const sx of [31.75,42.25])box(parent,.5,3.8,4,mat,sx,ly+1.5,lz);
         // Every return is walled off except its two offset openings. No view into other rooms.
         for(const edge of [0,1]){const ox=edge?(i===11?37:(i%2?34:40)):x,ez=z+14+edge*4;
           for(const [a,b] of [[32,ox-2],[ox+2,42]])if(b>a){box(parent,b-a,3.8,.4,mat,(a+b)/2,ly+1.5,ez);if(i>0){const fz=edge?ez-.21:ez+.21;facing(parent,[[a,ly-.1,fz],[b,ly-.1,fz],[b,ly+3.15,fz],[a,ly+3.15,fz]],[0,0,edge?-1:1])}}
@@ -240,11 +288,11 @@
       const below=contains(player.pos.x,player.pos.z),depth=below?clamp(-player.pos.y/14,0,1):0;
       if(built){for(const s of segments)s.group.visible=below?Math.abs(player.pos.z-s.z)<30:opened&&s.z<30;
         for(const d of drops)d.mesh.position.y=d.y+2.7-(reduced?1.1:(t*.8+d.phase)%2.7);
-        if(below){updateShaft(t,dt,reduced);updateGrit(dt)}
+        if(below){updateShaft(t,dt,reduced);updateGrit(dt);updateCrack();const glow=.62+.38*Math.sin(t*(reduced?.25:.7));seamMaterial.color.setRGB(1.5*glow,.48*glow,.12*glow)}else crack.level=0;
         if(depth>.2&&t>nextDrip){nextDrip=t+2+Math.random()*5;if(!reduced)sound(700+Math.random()*450,.13,'sine',.035*depth)}
       }
       return depth;
     }
-    return {floorAt,contains,build,interact,update,clearLine,tremor,group,panel,regions,strata:STRATA,get metres(){return built&&contains(player.pos.x,player.pos.z)?Math.max(0,-player.pos.y):0},get built(){return built},get returning(){return returnTime!==null}};
+    return {floorAt,contains,build,interact,update,clearLine,tremor,group,panel,regions,strata:STRATA,get seaLevel(){return crack.level},get metres(){return built&&contains(player.pos.x,player.pos.z)?Math.max(0,-player.pos.y):0},get built(){return built},get returning(){return returnTime!==null}};
   };
 })();
