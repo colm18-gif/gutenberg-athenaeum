@@ -81,7 +81,7 @@
       // Grandfather clock with a real swinging pendulum.
       const gx=cx+w/2-1.1,gz=cz-d/2+1.1;box(1.05,4.1,.7,panel,gx,2.05,gz,r);const gc=clock(r,.38,gx-.53,3.4,gz,-Math.PI/2);animated.push({kind:'clock',room,hands:gc,speed:.5,phase:0});
       const pendulum=new THREE.Group();pendulum.position.set(gx-.37,2.95,gz);r.add(pendulum);box(.03,1.3,.03,MAT.brass,0,-.65,0,pendulum);const bob=cyl(.16,.16,.04,16,MAT.gold||MAT.brass,0,-1.32,0,pendulum);bob.rotation.z=Math.PI/2;animated.push({kind:'pendulum',room,object:pendulum,phase:0});
-      box(.02,1.7,.5,new THREE.MeshPhysicalMaterial({color:0x9fb0b4,transparent:true,opacity:.18,roughness:.05}),gx-.54,2.2,gz,r);block(room,gx,gz,1.3,1);
+      box(.02,1.7,.5,new THREE.MeshStandardMaterial({color:0x9fb0b4,transparent:true,opacity:.18,roughness:.05}),gx-.54,2.2,gz,r);block(room,gx,gz,1.3,1);
       detail(box(1.05,4.1,.72,new THREE.MeshBasicMaterial({visible:false}),gx,2.05,gz,r),'A long-case clock','Its pendulum keeps perfect time for a day that has not happened yet.');
       // The orrery: brass planets turning about a lamp-bright sun.
       const tx=cx,tz=cz+.4;cyl(1.2,1.25,.1,24,MAT.darkWood,tx,1.02,tz,r);cyl(.22,.34,1,12,MAT.darkWood,tx,.5,tz,r);block(room,tx,tz,2.7,2.7);
@@ -98,7 +98,7 @@
 
     // ---------- 2. The Night Conservatory ----------
     function buildConservatory(room){
-      const r=room.root,{cx,cz,w,d,h}=room,iron=std(0x1a2320,{metalness:.55,roughness:.5}),glass=new THREE.MeshPhysicalMaterial({color:0x6f93a0,transparent:true,opacity:.16,roughness:.08,metalness:0,depthWrite:false});
+      const r=room.root,{cx,cz,w,d,h}=room,iron=std(0x1a2320,{metalness:.55,roughness:.5}),glass=new THREE.MeshStandardMaterial({color:0x6f93a0,transparent:true,opacity:.16,roughness:.08,metalness:0,depthWrite:false});
       box(w,.3,d,MAT.stone,cx,-.15,cz,r);
       // Glass walls and a pitched glass roof on iron ribs, with the night sky beyond.
       for(const [x,z,gw,gd] of [[cx,cz-d/2,w,.06],[cx-w/2,cz,.06,d],[cx+w/2,cz,.06,d]])box(gw,h,gd,glass,x,h/2,z,r);

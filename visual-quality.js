@@ -82,15 +82,24 @@
         gl_FragColor.rgb+=(n-.5)*(grain+1./255.);
       }`,depthTest:false,depthWrite:false,toneMapped:true});
 
+    // The plainest tier still draws the scene into a target and copies it to the screen with the same tone
+    // mapping. Drawing straight to the screen would need every material's shader compiled a second time
+    // (shaders differ by where they draw), and stepping down to it mid-walk would freeze the page to do so.
+    const copyMaterial=new THREE.ShaderMaterial({uniforms:{tDiffuse:{value:null}},vertexShader,fragmentShader:`
+      uniform sampler2D tDiffuse;varying vec2 vUv;
+      void main(){gl_FragColor=vec4(max(texture2D(tDiffuse,vUv).rgb,0.),1.);
+        #include <tonemapping_fragment>
+        #include <colorspace_fragment>
+      }`,depthTest:false,depthWrite:false,toneMapped:true});
     let sceneTarget=null,brightTarget=null,blurA=null,blurB=null,blurC=null,blurD=null,width=1,height=1,time=0;
     const size=new THREE.Vector2();
     function disposeTargets(){for(const target of [sceneTarget,brightTarget,blurA,blurB,blurC,blurD])target?.dispose();sceneTarget=brightTarget=blurA=blurB=blurC=blurD=null}
     function makeTarget(w,h,samples=0){const target=new THREE.WebGLRenderTarget(Math.max(1,w),Math.max(1,h),{type:THREE.HalfFloatType,depthBuffer:samples>=0,stencilBuffer:samples>=0});if(samples>0&&isWebGL2)target.samples=samples;target.texture.generateMipmaps=false;target.texture.minFilter=THREE.LinearFilter;target.texture.magFilter=THREE.LinearFilter;return target}
     function buildTargets(){
-      disposeTargets();const tier=TIERS[tierIndex];if(tier==='off')return;
+      disposeTargets();const tier=TIERS[tierIndex];if(!canFloat)return;
       renderer.getDrawingBufferSize(size);width=size.x;height=size.y;
       // Every post-processed tier keeps some multisampling so edges never look jagged.
-      sceneTarget=makeTarget(width,height,tier==='high'?4:2);
+      sceneTarget=makeTarget(width,height,tier==='high'?4:2);if(tier==='off')return;
       if(tier!=='low'){const hw=width>>1,hh=height>>1,qw=width>>2,qh=height>>2,ew=width>>3,eh=height>>3;brightTarget=makeTarget(hw,hh,-1);blurA=makeTarget(qw,qh,-1);blurB=makeTarget(qw,qh,-1);blurC=makeTarget(ew,eh,-1);blurD=makeTarget(ew,eh,-1)}
     }
     function pass(material,target){quad.material=material;renderer.setRenderTarget(target);renderer.render(fullscreen,postCamera)}
@@ -105,10 +114,11 @@
 
     function render(dt=0){
       const tier=TIERS[tierIndex];
-      if(tier==='off'||!sceneTarget){renderer.setRenderTarget(null);renderer.render(scene,camera);return}
+      if(!sceneTarget){renderer.setRenderTarget(null);renderer.render(scene,camera);return}
       renderer.getDrawingBufferSize(size);if(size.x!==width||size.y!==height)buildTargets();
       time=(time+dt)%1000;
       renderer.setRenderTarget(sceneTarget);renderer.render(scene,camera);
+      if(tier==='off'){copyMaterial.uniforms.tDiffuse.value=sceneTarget.texture;pass(copyMaterial,null);return}
       const bloom=tier!=='low'&&brightTarget;
       if(bloom){brightMaterial.uniforms.tDiffuse.value=sceneTarget.texture;pass(brightMaterial,brightTarget);blur(brightTarget,blurA,blurB);blur(blurB,blurC,blurD)}
       const u=compositeMaterial.uniforms;u.tDiffuse.value=sceneTarget.texture;u.tBloomA.value=bloom?blurB.texture:null;u.tBloomB.value=bloom?blurD.texture:null;u.useBloom.value=bloom?1:0;u.time.value=reducedMotion()?0:time;u.grain.value=reducedMotion()?.008:.022;
@@ -124,7 +134,7 @@
 
     setTier(TIERS[tierIndex]);
     // Shaders are compiled for the target they draw into, so warm-up must bind the same one.
-    function bindSceneTarget(){renderer.setRenderTarget(TIERS[tierIndex]==='off'||!sceneTarget?null:sceneTarget)}
+    function bindSceneTarget(){renderer.setRenderTarget(sceneTarget||null)}
     return {render,update,setTier,stepDown,resize:buildTargets,bindSceneTarget,get tier(){return TIERS[tierIndex]},get environment(){return scene.environment}};
   };
 })();

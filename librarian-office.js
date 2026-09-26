@@ -4,7 +4,7 @@
   window.createLibrarianOffice=function({THREE,scene,MAT,publicStone,publicParquet,player,interactables,books,coverTexture,canvasTexture,showNotice,move,playSample}){
     const cx=300,cz=-70,w=18,d=16,root=new THREE.Group();root.name='librarian-office';let built=false;
     const brassGlow=new THREE.MeshStandardMaterial({color:0xc39a52,emissive:0x6e4317,emissiveIntensity:.35,metalness:.45,roughness:.46});
-    const paper=new THREE.MeshStandardMaterial({color:0xd4c394,roughness:.94}),ink=new THREE.MeshStandardMaterial({color:0x211713,roughness:.86}),frostedGlass=new THREE.MeshPhysicalMaterial({color:0xb8c2b2,transparent:true,opacity:.46,roughness:.5,metalness:.05});
+    const paper=new THREE.MeshStandardMaterial({color:0xd4c394,roughness:.94}),ink=new THREE.MeshStandardMaterial({color:0x211713,roughness:.86}),frostedGlass=new THREE.MeshStandardMaterial({color:0xb8c2b2,transparent:true,opacity:.46,roughness:.5,metalness:.05});
     const add=(geometry,material,x,y,z,parent=root)=>{const mesh=new THREE.Mesh(geometry,material);mesh.position.set(x,y,z);parent.add(mesh);return mesh};
     const box=(bw,bh,bd,material,x,y,z,parent=root)=>add(new THREE.BoxGeometry(bw,bh,bd),material,x,y,z,parent);
     const officeDoorDetails=(parent,x=0,y=0,z=.13)=>{for(const [py,h] of [[1.05,1.32],[-1.05,1.18]]){box(1.72,h,.045,MAT.brass,x,y+py,z,parent);box(1.48,h-.22,.06,py>0?frostedGlass:MAT.wood2,x,y+py,z+.025,parent)}for(const sx of [-.48,0,.48])box(.045,1.08,.04,MAT.brass,x+sx,y+1.05,z+.07,parent);box(.72,.13,.08,MAT.brass,x,y-.15,z+.08,parent);const knob=add(new THREE.SphereGeometry(.11,12,8),MAT.brass,x+.78,y-.42,z+.13,parent);return knob};

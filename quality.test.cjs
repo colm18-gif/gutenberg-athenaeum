@@ -35,17 +35,30 @@ test('post-processing tone maps once, dithers, and steps down on slow machines',
   assert.match(visual,/scene\.environment=buildEnvironment\(\)/);
 });
 
-test('visual quality renders directly when post-processing is off',()=>{
-  let direct=0,targets=0;
+function plainQuality(isWebGL2){
+  const counts={renders:0,targets:0,targetRenders:0};let bound=null;
   const Base=class{constructor(){this.position={set(){},y:0};this.scale={set(){}};this.material=null}add(){}traverse(){}dispose(){}};
-  const THREE={Scene:Base,Mesh:Base,BoxGeometry:Base,PlaneGeometry:Base,OrthographicCamera:Base,MeshBasicMaterial:Base,Color:class{multiplyScalar(){return this}},ShaderMaterial:class{constructor(p){Object.assign(this,p)}},Vector2:class{set(){return this}},WebGLRenderTarget:class{constructor(){targets++;this.texture={}}dispose(){}},PMREMGenerator:class{fromScene(){return {texture:{}}}dispose(){}},BackSide:1,HalfFloatType:1,LinearFilter:1};
-  const renderer={getContext:()=>({}),capabilities:{isWebGL2:true,getMaxAnisotropy:()=>8},render:()=>direct++,setRenderTarget(){},getDrawingBufferSize:v=>v};
+  const THREE={Scene:Base,Mesh:Base,BoxGeometry:Base,PlaneGeometry:Base,OrthographicCamera:Base,MeshBasicMaterial:Base,Color:class{multiplyScalar(){return this}},ShaderMaterial:class{constructor(p){Object.assign(this,p)}},Vector2:class{set(){return this}},WebGLRenderTarget:class{constructor(){counts.targets++;this.texture={}}dispose(){}},PMREMGenerator:class{fromScene(){return {texture:{}}}dispose(){}},BackSide:1,HalfFloatType:1,LinearFilter:1};
+  const renderer={getContext:()=>({}),capabilities:{isWebGL2,getMaxAnisotropy:()=>8},render:()=>{counts.renders++;if(bound)counts.targetRenders++},setRenderTarget(target){bound=target},getDrawingBufferSize:v=>v};
   const scene={traverse(){},environment:null},context={window:{}};
   vm.runInNewContext(visual,context);
   const quality=context.window.createVisualQuality({THREE,renderer,scene,camera:{},initialTier:'off'});
   quality.render(.016);
-  assert.equal(direct,1);assert.equal(targets,0);assert.equal(quality.tier,'off');
+  return {quality,scene,counts};
+}
+
+test('without post-processing the scene is still drawn into a target, so stepping down compiles nothing new',()=>{
+  const {quality,scene,counts}=plainQuality(true);
+  assert.equal(quality.tier,'off');assert.equal(counts.targets,1,'one scene target, no bloom targets');
+  assert.equal(counts.targetRenders,1,'the scene is drawn into the target');assert.equal(counts.renders,2,'then copied to the screen');
   assert.ok(scene.environment,'reflections stay on even without post-processing');
+  assert.match(visual,/if\(tier==='off'\)\{copyMaterial\.uniforms\.tDiffuse\.value=sceneTarget\.texture;pass\(copyMaterial,null\);return\}/);
+  assert.match(visual,/function bindSceneTarget\(\)\{renderer\.setRenderTarget\(sceneTarget\|\|null\)\}/);
+});
+
+test('WebGL1 draws straight to the screen',()=>{
+  const {counts}=plainQuality(false);
+  assert.equal(counts.targets,0);assert.equal(counts.renders,1);assert.equal(counts.targetRenders,0);
 });
 
 test('recorded effects prefer low-latency buffers but keep the HTML audio fallback',()=>{
@@ -72,5 +85,5 @@ test('tablets render sharply with smoothing and lamp glow, and only weak hardwar
   assert.match(game,/automaticTier=lowPowerDevice\?'low':touchMode\?'medium':'high'/);
   assert.match(game,/lowPowerDevice=weakHardware\|\|\(!touchMode&&/,'being a touch device no longer implies low power');
   assert.match(visual,/sceneTarget=makeTarget\(width,height,tier==='high'\?4:2\)/,'every post tier multisamples');
-  assert.match(game,/antialias:visualTier==='off',/);
+  assert.match(game,/antialias:!window\.WebGL2RenderingContext,/,'edges are smoothed in the scene target instead');
 });

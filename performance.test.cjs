@@ -176,3 +176,17 @@ test('shader error checks, which stall the first frames, run only with ?debug',(
   const game=require('node:fs').readFileSync(require('node:path').join(__dirname,'game.js'),'utf8');
   assert.match(game,/renderer\.debug\.checkShaderErrors=new URLSearchParams\(location\.search\)\.has\('debug'\)/);
 });
+
+test('a lamp added anywhere is budgeted before the next frame, so the lamp count never jumps',()=>{
+  assert.match(game,/THREE\.Object3D\.prototype\.add=function\(\.\.\.objects\)\{if\(!lampsAdded&&objects\.some\(holdsLight\)\)lampsAdded=true;return add\.apply\(this,objects\)\}/);
+  assert.match(game,/if\(lampsAdded\)\{lampsAdded=false;refreshBudgetLights\.stamp=null;budgetRefreshTimer=0;applyLightBudget\(\)\}staticBatcher\?\.update\(dt\);if\(visual\)/);
+});
+
+test('shared wood and leather keep one shader while their textures load',()=>{
+  assert.match(game,/material\.map=standInTexture\(\[255,255,255\],THREE\.SRGBColorSpace\);if\(normal\)material\.normalMap=standInTexture\(\[128,128,255\]\);if\(roughness\)material\.roughnessMap=standInTexture\(\[255,255,255\]\);material\.bumpMap=null/);
+  assert.match(game,/if\(m\.normalMap\)\{if\(m\.map\?\.userData\.standIn\)m\.map=grain;continue\}/,'walnut takes its grain from the normal map, not an extra bump map');
+});
+
+test('no material needs the physical shader or a transmission pass',()=>{
+  for(const file of fs.readdirSync('.').filter(name=>name.endsWith('.js')&&name!=='static-batching.js'))assert.doesNotMatch(fs.readFileSync(file,'utf8'),/MeshPhysicalMaterial|transmission:/,file);
+});
