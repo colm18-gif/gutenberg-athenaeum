@@ -210,3 +210,27 @@ body.in-flight #exploreNudge,body.in-flight #hint{opacity:0!important}
 @media (hover:none) and (pointer:coarse){.reader-foot .share-quote{display:inline-block}}
 .tour.tour-top{top:calc(150px + env(safe-area-inset-top,0px));bottom:auto}
 .tour-skip{touch-action:manipulation;pointer-events:auto}#pauseSkipTour.hidden{display:none}
+
+/* Now playing: a book being read aloud (audiobook-player.js). Stays up while the reader walks about. */
+.now-playing{position:fixed;left:24px;bottom:108px;z-index:40;width:min(340px,calc(100vw - 32px));padding:12px 14px 10px;border:1px solid #9c7a45;border-radius:6px;background:linear-gradient(180deg,rgba(32,22,13,.94),rgba(20,14,9,.94));box-shadow:0 10px 30px rgba(0,0,0,.45),inset 0 0 0 1px rgba(255,220,160,.06);color:#efe0bf;font-family:'Cormorant Garamond',Georgia,serif;pointer-events:auto}
+.now-playing.hidden{display:none}
+.now-playing .np-text{display:flex;flex-direction:column;gap:2px;margin-bottom:8px}
+.now-playing .np-book{font-size:17px;font-weight:700;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.now-playing .np-chapter{font-size:15px;font-style:italic;color:#e3c98f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.now-playing .np-reader{font:600 10px/1.3 system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#a88c5e}
+.now-playing .np-controls{display:flex;gap:6px}
+.now-playing button{min-width:38px;height:32px;border:1px solid #7d6440;border-radius:4px;background:rgba(255,230,180,.06);color:#f1dfb6;font:14px/1 system-ui,sans-serif;cursor:pointer}
+.now-playing button:hover:not(:disabled){background:rgba(255,230,180,.16)}
+.now-playing button:disabled{opacity:.35;cursor:default}
+.now-playing .np-close{margin-left:auto}
+.now-playing .np-progress{height:3px;margin-top:9px;background:rgba(255,230,180,.12);border-radius:2px;overflow:hidden}
+.now-playing .np-progress i{display:block;height:100%;width:0;background:#d7ae60;transition:width .4s linear}
+.now-playing.np-buffering .np-chapter:after{content:' · loading';color:#a88c5e}
+.now-playing.np-error .np-chapter{color:#e7a58f}
+@media (max-width:640px){.now-playing{left:16px;bottom:96px;width:calc(100vw - 32px)}}
+body.reader-open .now-playing{left:auto;bottom:auto;top:calc(2vh + 12px);right:calc(2vw + 64px);width:min(330px,46vw);padding:7px 10px 6px;z-index:45}
+body.reader-open .now-playing .np-text{flex-direction:row;align-items:baseline;gap:8px;margin-bottom:5px}
+body.reader-open .now-playing .np-book,body.reader-open .now-playing .np-reader{display:none}
+body.reader-open .now-playing .np-chapter{font-size:14px}
+body.reader-open .now-playing button{height:26px;min-width:32px;font-size:12px}
+@media (max-width:640px){body.reader-open .now-playing{top:auto;bottom:calc(1vh + 64px);right:auto;left:16px;width:calc(100vw - 32px)}}

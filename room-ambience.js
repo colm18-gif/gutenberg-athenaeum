@@ -171,7 +171,7 @@
       const now=ctx.currentTime,id=RECIPES[state.place]?state.place:null;
       if(id&&!rooms.has(id))buildRoom(id);current=id;
       // Menus soften the room; a book keeps it, a little quieter, as company while reading.
-      const target=state.covered?.25:state.reading?.7:1;if(target!==duck){duck=target;bus.gain.setTargetAtTime(duck,now,.4)}
+      const target=state.covered?.25:state.listening?.5:state.reading?.7:1;/* Quieter still while a book is being read aloud. */if(target!==duck){duck=target;bus.gain.setTargetAtTime(duck,now,.4)}
       for(const room of [...rooms.values()]){
         const on=room.id===current;room.out.gain.setTargetAtTime(on?1:0,now,on?.9:.6);
         if(on){room.silentSince=0;schedule(room);for(const bed of room.beds)if(bed.rises)bed.gain.gain.setTargetAtTime(bed.level*(1+clamp(state.height/30,0,1)*2.5),now,.8)}
