@@ -232,7 +232,7 @@
     // Desktop machines render through the post pipeline, which does its own multisampling, so the
     // default framebuffer skips it. Touch devices keep the simpler direct path.
     const VISUAL_TIERS=['off','low','medium','high'],automaticTier=lowPowerDevice?'low':touchMode?'medium':'high',savedTier=localStorage.getItem('athenaeum-visual-quality'),requestedTier=[new URLSearchParams(location.search).get('quality'),savedTier].find(tier=>VISUAL_TIERS.includes(tier))||null,visualTier=!window.createVisualQuality?'off':requestedTier||automaticTier;
-    try{renderer=new THREE.WebGLRenderer({antialias:visualTier==='off',powerPreference:'high-performance'})}catch(error){window.__ATHENAEUM_BOOT_FAILED__?.(error);return}renderer.setSize(innerWidth,innerHeight);applyAdaptiveRenderScale();renderer.shadowMap.enabled=false;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.95;renderer.domElement.tabIndex=0;renderer.domElement.setAttribute('aria-label','Explorable library');renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();window.__ATHENAEUM_BOOT_FAILED__?.(new Error('The WebGL context was lost'))},{once:true});document.body.prepend(renderer.domElement);
+    try{renderer=new THREE.WebGLRenderer({antialias:visualTier==='off',powerPreference:'high-performance'})}catch(error){window.__ATHENAEUM_BOOT_FAILED__?.(error);return}renderer.setSize(innerWidth,innerHeight);applyAdaptiveRenderScale();renderer.shadowMap.enabled=false;renderer.debug.checkShaderErrors=new URLSearchParams(location.search).has('debug');renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.95;renderer.domElement.tabIndex=0;renderer.domElement.setAttribute('aria-label','Explorable library');renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();window.__ATHENAEUM_BOOT_FAILED__?.(new Error('The WebGL context was lost'))},{once:true});document.body.prepend(renderer.domElement);
     let visualTierPinned=!!requestedTier;const visual=window.createVisualQuality?.({THREE,renderer,scene,camera,initialTier:visualTier,reducedMotion:()=>reducedMotion})||null;
     const clock=new THREE.Clock(), raycaster=new THREE.Raycaster();raycaster.far=6.5;
     const seats=[],colliders=[], interactables=[], coverQueue=[],pullSequence=[];
@@ -975,10 +975,11 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     preparePerformanceZone('basement',object=>(object.position.y<-2||(object.position.z<-39&&Math.abs(object.position.x)<20)),()=>player.pos.y<-2);
     preparePerformanceZone('roof',object=>object.position.y>8.8&&object.position.z>35,()=>player.pos.y>8.5&&player.pos.z>34);
     const performanceLights=[];const rememberLights=root=>root.traverse(object=>{if(object.isPointLight){object.userData.performanceShadow=object.castShadow;performanceLights.push(object)}});rememberLights(scene);for(const zone of Object.values(performanceZones))rememberLights(zone.group);
-    let lightVisibilityTimer=0,budgetRefreshTimer=0;const lightCandidates=[],budgetViewDirection=new THREE.Vector3(),LIGHT_BUDGET=lowPowerDevice?6:touchMode?8:10;
+    let lightVisibilityTimer=0,budgetRefreshTimer=0;const lightCandidates=[],budgetViewDirection=new THREE.Vector3(),LIGHT_BUDGET=lowPowerDevice?4:touchMode?6:7;
     // Three.js builds a separate shader for every number of lights, so when fewer lamps were near (6 in one
     // room, 11 in the next) every material in view was recompiled: the stutter on walking into a new area.
     // Dark filler lights far below the world top the count up, so exactly LIGHT_BUDGET point lights are always on.
+    // Every lit pixel pays for every one of them, so the budget is kept small: the nearest lamps carry the look.
     const budgetFillers=Array.from({length:LIGHT_BUDGET},()=>{const filler=new THREE.PointLight(0x000000,0,1,2);filler.position.set(0,-5000,0);filler.castShadow=false;filler.userData.budgetFiller=true;scene.add(filler);return filler});
     function updatePerformanceVisibility(dt){if(!roofBuilt&&player.pos.y>8.5&&player.pos.z>34)buildRoofGarden();for(const zone of Object.values(performanceZones)){const needed=zone.isNeeded();if(needed&&!zone.active){scene.add(zone.group);zone.active=true}else if(!needed&&zone.active){zone.group.removeFromParent();zone.active=false}}lightVisibilityTimer-=dt;if(lightVisibilityTimer>0)return;lightVisibilityTimer=.3;applyLightBudget()}
     function applyLightBudget(){refreshBudgetLights();lightCandidates.length=0;camera.getWorldDirection(budgetViewDirection);for(const light of performanceLights){let root=light,shown=true;while(root.parent){root=root.parent;if(!root.visible)shown=false}const attached=root===scene;light.castShadow=false;if(!attached||!shown){light.visible=false;continue}light.getWorldPosition(tmpWorldPosition);const distance=tmpWorldPosition.distanceTo(camera.position),range=Math.max(14,(light.distance||10)+4),facing=distance<4?1:clamp(.75+tmpWorldPosition.sub(camera.position).dot(budgetViewDirection)/distance,.35,1.5),reach=distance<range?facing*light.intensity/(1+distance*distance*.05)*(1-distance/range):-distance*.001;light.userData.lightScore=light.parent===camera?Infinity:reach*(light.visible?1.3:1);lightCandidates.push(light)}lightCandidates.sort((a,b)=>b.userData.lightScore-a.userData.lightScore);let shownPoints=0;for(let i=0;i<lightCandidates.length;i++){const on=i<LIGHT_BUDGET;lightCandidates[i].visible=on;if(on&&lightCandidates[i].isPointLight)shownPoints++}for(let i=0;i<budgetFillers.length;i++)budgetFillers[i].visible=i<LIGHT_BUDGET-shownPoints}
@@ -1647,26 +1648,35 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     function materialsOf(object){return Array.isArray(object.material)?object.material:object.material?[object.material]:[]}
     // Areas that are built but not yet in the scene (wings and rooms added as the reader arrives).
     const detachedAreas=()=>Object.values(performanceZones).filter(zone=>!zone.active&&zone.group).map(zone=>zone.group);
-    async function warmShaders(progress,{roots=[scene],chunkSize=3,pause=0}={}){
+    // Chrome and Edge compile shaders off the main thread, so every unvisited area is warmed in the background.
+    // Elsewhere (Safari on every iPhone and iPad, some Firefox) compiling freezes the page, so only areas within
+    // about 45 m are warmed, one piece at a time, and only while the reader is standing still.
+    const areaCentres=new WeakMap();
+    function areaNear(group,range){let centre=areaCentres.get(group);if(!centre){const box=new THREE.Box3().setFromObject(group);centre=box.isEmpty()?null:box.getCenter(new THREE.Vector3());areaCentres.set(group,centre)}return !!centre&&centre.distanceTo(player.pos)<range}
+    function warmUnvisitedAreas(){if(warmingShaders||!started)return;const parallel=renderer.extensions.has('KHR_parallel_shader_compile'),roots=parallel?detachedAreas():detachedAreas().filter(group=>areaNear(group,45));if(roots.length)warmShaders(null,{roots,chunkSize:parallel?2:1,pause:parallel?16:40,whenIdle:!parallel}).catch(()=>{})}
+    async function warmShaders(progress,{roots=[scene],chunkSize=3,pause=0,whenIdle=false}={}){
       /* Compile for the light count that will really be used (see budgetFillers), not every lamp in the building. */
       refreshBudgetLights.stamp=null;budgetRefreshTimer=0;applyLightBudget();
       const pending=[];for(const root of roots)root.traverse(object=>{if(object.isLight)return;const fresh=materialsOf(object).filter(material=>!warmedMaterials.has(material));if(!fresh.length)return;fresh.forEach(material=>warmedMaterials.add(material));pending.push(object)});
       if(!pending.length){progress?.(1);return}
       // An area not yet in the scene brings its own lamps; while compiling they are switched off, because once
       // it is added the light budget keeps the total the same, and the shaders must match that total.
-      const hidden=[];for(const root of roots)if(root!==scene)root.traverse(object=>{if(object.isLight&&object.visible){object.visible=false;hidden.push(object)}});
+      // (Only for the moment of compiling, piece by piece: an area may be walked into while a slow warm-up waits.)
+      const detached=roots.filter(root=>root!==scene),hideLamps=()=>{const hidden=[];for(const root of detached)root.traverse(object=>{if(object.isLight&&object.visible){object.visible=false;hidden.push(object)}});return hidden};
       warmingShaders=true;const parallel=renderer.extensions.has('KHR_parallel_shader_compile'),chunk=parallel?pending.length:chunkSize,previousTarget=renderer.getRenderTarget();
       try{
         for(let i=0;i<pending.length;i+=chunk){
-          const batch=pending.slice(i,i+chunk);visual?.bindSceneTarget?.();
-          for(const object of batch)renderer.compile(object,camera,scene);
+          /* Where compiling blocks the page, wait for the reader to stand still (or look away) before each piece. */
+          if(whenIdle)while(playerIsMoving()||document.hidden)await new Promise(resolve=>setTimeout(resolve,250));
+          const batch=pending.slice(i,i+chunk),hidden=hideLamps();visual?.bindSceneTarget?.();
+          try{for(const object of batch)if(!detached.length||object.parent)renderer.compile(object,camera,scene)}finally{for(const light of hidden)light.visible=true}
           /* Without parallel compilation the driver finishes linking on first use; do that now, here. */
           if(!parallel)for(const object of batch)for(const material of materialsOf(object))renderer.properties.get(material).currentProgram?.getUniforms();
           renderer.setRenderTarget(previousTarget);progress?.((i+batch.length)/pending.length*(parallel?.3:1));
           await new Promise(resolve=>setTimeout(resolve,pause));
         }
         if(parallel){const programs=[...new Set(pending.flatMap(object=>materialsOf(object).map(material=>renderer.properties.get(material).currentProgram).filter(Boolean)))],started=performance.now();for(;;){const ready=programs.filter(program=>program.isReady()).length;progress?.(.3+.7*ready/programs.length);if(ready===programs.length||performance.now()-started>12000)break;await new Promise(resolve=>setTimeout(resolve,30))}}
-      }finally{renderer.setRenderTarget(previousTarget);for(const light of hidden)light.visible=true;warmingShaders=false}
+      }finally{renderer.setRenderTarget(previousTarget);warmingShaders=false}
     }
     // Opt-in inspection hook for automated visual and performance checks (?debug).
     if(new URLSearchParams(location.search).has('debug'))window.__athenaeum={THREE,MAT,hallLightmap,quoteShare,selectBook:bm=>selectBook(bm),staticBatcher,tour,continueDisplay,lampSpots,get dayPhase(){return dayPhase},set dayPhase(v){dayPhase=v},get roomAmbience(){return roomAmbience},placeAt:(x,y,z)=>placeAt(x,y,z),resetPosition:()=>resetPosition(),afterDarkExpansion,librarianOffice,dailyRoom,verneDescent,analyticsRoom:()=>analyticsRoom(),floorAt:(x,z)=>floorHeight(x,z),renderer,scene,camera,player,visual,books,curiousDoors,get librarianNotes(){return librarianNotes},interactables,zones:()=>({memoryZones,themeZones}),buildTheme:key=>buildThemeRooms(key),dressExits(){exitDressTimer=0;dressExitDoors(0)},allowedAt:(x,z)=>allowed(x,z),wallFaceOffset,buildAll(){buildBasement();buildMemoryRooms();for(const z of themeZones)try{buildThemeRooms(z.key)}catch(e){}try{buildContestedRoom()}catch(e){}},nightRailway,highStaircase,interact:()=>interact(),get focus(){return focus},get soundscape(){return soundscape},get audioCtx(){return audioCtx},playSample,teleport(x,y,z,yaw=0,pitch=0){player.pos.set(x,y,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=pitch;lastSafePosition.copy(player.pos)}};
@@ -1674,6 +1684,6 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // Compile them behind the entrance veil instead, a few at a time so the progress bar keeps
     // moving, then keep warming the materials of rooms that are built later, before they are seen.
     const bootProgress=document.querySelector('#entryProgress i');
-    warmShaders(fraction=>{if(bootProgress)bootProgress.style.width=`${80+Math.round(fraction*20)}%`}).catch(error=>console.warn('Shader warm-up skipped',error)).finally(()=>{shadersWarm=true;animate();if(window.__ATHENAEUM_ENTERED__)enterLibrary();/* Then, a few seconds in, the wings and rooms not yet visited, two objects at a time, so walking into them later does not stall. */setTimeout(()=>{if(!warmingShaders)warmShaders(null,{roots:detachedAreas(),chunkSize:2,pause:16}).catch(()=>{})},4000);let warmedStamp=sceneStamp();setInterval(()=>{const stamp=sceneStamp();if(warmingShaders||stamp===warmedStamp)return;warmedStamp=stamp;warmShaders().catch(()=>{})},1500)});
+    warmShaders(fraction=>{if(bootProgress)bootProgress.style.width=`${80+Math.round(fraction*20)}%`}).catch(error=>console.warn('Shader warm-up skipped',error)).finally(()=>{shadersWarm=true;animate();if(window.__ATHENAEUM_ENTERED__)enterLibrary();/* Then the wings and rooms not yet visited, so walking into them later does not stall (see warmUnvisitedAreas). */setTimeout(warmUnvisitedAreas,4000);setInterval(warmUnvisitedAreas,6000);let warmedStamp=sceneStamp();setInterval(()=>{const stamp=sceneStamp();if(warmingShaders||stamp===warmedStamp)return;warmedStamp=stamp;warmShaders().catch(()=>{})},1500)});
   })();
 
