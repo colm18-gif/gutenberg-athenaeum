@@ -36,6 +36,10 @@ test('the audiobook job matches recordings by Gutenberg id, prefers solo reading
   assert.match(dracula.chapters[0].url,/^https:\/\//,'chapters stream over https');
   assert.equal(dracula.chapters[0].seconds,1800);
   assert.equal(index[11][1],'Dee','a recording without a text source is matched by title and author');
-  assert.match(r.stdout,/4 books: 2 with a recording \(1 matched by title\), 2 without/);
+  assert.match(r.stdout,/This run: 2 matched \(1 by title\), 2 without a recording, 0 to retry\. In total 2 of 4 books have a recording\./);
+  // The next run carries on: nothing is looked up again, and books without a recording are remembered.
+  const missing=JSON.parse(fs.readFileSync(path.join(dir,'data/audiobooks-missing.json'),'utf8'));assert.deepEqual(Object.keys(missing).sort(),['5','84']);
+  const again=spawnSync(process.execPath,['--import',mock,path.join(dir,'scripts/audiobooks.mjs')],{encoding:'utf8',env:{...process.env,AUDIOBOOKS_PAUSE_MS:'0'}});
+  assert.equal(again.status,0,again.stderr);assert.match(again.stdout,/2 already have a recording, 0 to look up/);assert.match(again.stdout,/Nothing to do\./);
   fs.rmSync(dir,{recursive:true,force:true});
 });
