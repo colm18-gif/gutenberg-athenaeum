@@ -1,10 +1,11 @@
 name: Audiobooks
 
 # Matches the library's books to LibriVox recordings (scripts/audiobooks.mjs) and publishes the index and
-# chapter lists. Run by hand from the Actions tab, and monthly to pick up new recordings and new books.
+# chapter lists. LibriVox is slow, so each run does about 40 minutes of work and the next carries on; once
+# every book is covered a run takes seconds. Nightly, and by hand from the Actions tab.
 on:
   schedule:
-    - cron: '41 3 1 * *'
+    - cron: '41 3 * * *'
   workflow_dispatch:
 
 permissions:
@@ -23,16 +24,20 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      # The script stops itself after 40 minutes and saves after every book; whatever it finished is published.
       - name: Match books to LibriVox recordings
         timeout-minutes: 50
         run: node scripts/audiobooks.mjs
       - name: Run the tests
+        id: tests
+        if: always()
         run: node --test *.test.cjs
       - name: Publish
+        if: always() && steps.tests.outcome == 'success'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A data/audiobooks.js data/audio
+          git add -A data/audiobooks.js data/audiobooks-missing.json data/audio
           if git diff --cached --quiet; then echo "No changes."; exit 0; fi
           git commit -m "Audiobooks: LibriVox recordings for the library's books"
           for attempt in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0; sleep 10; done

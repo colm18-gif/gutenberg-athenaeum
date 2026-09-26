@@ -14,7 +14,7 @@ test('room ambience loads before the game and runs on its own timer, so clocks k
   const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(match=>match[1]);
   assert.ok(order.indexOf('room-ambience.js')>-1&&order.indexOf('room-ambience.js')<order.indexOf('game.js'));
   assert.match(game,/roomAmbience=window\.createRoomAmbience\?\.\(\{audioCtx,master\}\)/);
-  assert.match(game,/roomAmbience\.update\(\{place:analyticsRoom\(\),covered:worldIsCovered\(\)&&!reading,reading,height:player\.pos\.y\}\)\},250\)/);
+  assert.match(game,/roomAmbience\.update\(\{place:analyticsRoom\(\),covered:worldIsCovered\(\)&&!reading,reading,listening:!!audiobooks\?\.playing,height:player\.pos\.y\}\)\},250\)/);
   assert.doesNotMatch(source,/fetch\(|new Audio\(|\.ogg|\.mp3/,'every sound is generated, so nothing is downloaded');
 });
 
@@ -36,7 +36,7 @@ test('recipes only use sounds the module can make',()=>{
 
 test('rooms left behind are torn down once silent, and menus soften the sound',()=>{
   assert.match(source,/if\(now-room\.silentSince>6\)teardown\(room\)/);
-  assert.match(source,/const target=state\.covered\?\.25:state\.reading\?\.7:1/);
+  assert.match(source,/const target=state\.covered\?\.25:state\.listening\?\.5:state\.reading\?\.7:1/);
 });
 
 test('the Grand Hall and gallery add nothing, and the horologist and Wells rooms do not tick',()=>{
