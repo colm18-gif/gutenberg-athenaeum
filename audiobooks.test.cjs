@@ -60,3 +60,9 @@ test('the player starts at the chapter being read and plays inside the library',
   assert.match(game,/focus\?\.userData\?\.type==='gramophone'/);
   assert.match(fs.readFileSync('room-ambience.js','utf8'),/state\.listening\?\.5/,'room sounds dip while a book is read aloud');
 });
+
+test('files the nightly jobs rewrite are re-fetched within the hour, not held under an old build',()=>{
+  const html=fs.readFileSync('index.html','utf8');
+  assert.match(html,/const LIVE_DATA=new Set\(\['data\/daily-rooms-resolved\.js','data\/audiobooks\.js'\]\)/);
+  assert.match(html,/LIVE_DATA\.has\(src\)\?'\.'\+new Date\(\)\.toISOString\(\)\.slice\(0,13\)/);
+});
