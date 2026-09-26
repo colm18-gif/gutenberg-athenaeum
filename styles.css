@@ -239,3 +239,19 @@ body.reader-open .now-playing .np-book,body.reader-open .now-playing .np-reader{
 body.reader-open .now-playing .np-chapter{font-size:14px}
 body.reader-open .now-playing button{height:26px;min-width:32px;font-size:12px}
 @media (max-width:640px){body.reader-open .now-playing{top:auto;bottom:calc(1vh + 64px);right:auto;left:16px;width:calc(100vw - 32px)}}
+/* Depth gauge in the Verne descent */
+.depth-gauge{display:none;align-items:center;gap:9px;margin-bottom:8px;opacity:0;transition:opacity .8s}
+.depth-gauge.visible{display:flex;opacity:1}
+.depth-gauge svg{width:50px;height:50px;overflow:visible;filter:drop-shadow(0 2px 4px #000)}
+.depth-gauge .dg-rim{fill:#6d5330;stroke:#c9a15f;stroke-width:2}
+.depth-gauge .dg-face{fill:#e6d8b4;stroke:#8a6a3a;stroke-width:1}
+.depth-gauge line{stroke:#3a2a18;stroke-width:1.6;stroke-linecap:round}
+.depth-gauge .dg-needle{transition:transform .6s ease-out}
+.depth-gauge .dg-needle line{stroke:#8e1f14;stroke-width:1.8}
+.depth-gauge .dg-hub{fill:#3a2a18}
+.depth-gauge div{display:flex;flex-direction:column;line-height:1.25}
+.depth-gauge small{font-size:10px;color:rgba(238,222,193,.6)}
+.depth-gauge b{font-size:17px;font-weight:600;letter-spacing:.06em;color:#f0dcae}
+.depth-gauge.shiver svg{animation:gauge-shiver 1.4s linear}
+@keyframes gauge-shiver{0%,100%{transform:none}10%{transform:rotate(-4deg)}20%{transform:rotate(3deg)}30%{transform:rotate(-3deg)}45%{transform:rotate(2deg)}60%{transform:rotate(-1.5deg)}80%{transform:rotate(.8deg)}}
+@media (prefers-reduced-motion:reduce){.depth-gauge.shiver svg{animation:none}}

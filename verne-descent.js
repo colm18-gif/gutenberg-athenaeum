@@ -1,7 +1,7 @@
 /* An additive, uncatalogued discovery. No existing rooms or book records are replaced. */
 (()=>{
   'use strict';
-  window.createVerneDescent=function({THREE,scene,MAT,collider,colliders,interactables,canvasTexture,wrapText,player,camera,book,companionBooks=[],performanceZones,rememberLights,onReturn=()=>{},onFade=()=>{},onBell=()=>{}}){
+  window.createVerneDescent=function({THREE,scene,MAT,collider,colliders,interactables,canvasTexture,wrapText,player,camera,book,companionBooks=[],performanceZones,rememberLights,onReturn=()=>{},onFade=()=>{},onBell=()=>{},notice=()=>{},click=()=>{}}){
     const regions=[],segments=[],drops=[],lamps=[],solidMeshes=[];
     const group=new THREE.Group();group.name='uncatalogued-verne-descent';
     let built=false,opened=false,doorAngle=0,nextDrip=0,returnTime=null,returned=false,returnBell=null;
@@ -37,6 +37,102 @@
       box(parent,.15,.32,.15,glow,x,y,z,false);box(parent,.25,.05,.25,MAT.brass,x,y-.2,z,false);
       const light=new THREE.PointLight(0xffb367,final?34:Math.max(6,10-stage*.35),final?10:8,1.7);light.position.set(x,y,z);parent.add(light);lamps.push(light);
     }
+    // ---------- The layers of the earth ----------
+    // One tall painting of the ground from the cellars to the bottom (1 px = 3 cm, the same across and down),
+    // laid on the walls in world space so each layer sits at its true depth and the stair cuts down through
+    // them. Flights and landings keep their stone; these are thin facings just in front of it.
+    const DEPTH=62,STRATA=[
+      [0,7,'Topsoil and roots','#3b2b1d','#4a3524','roots'],[7,12,'London clay','#5c3e28','#6b4a2f','brick'],
+      [12,17,'The Roman layer','#4a3a2d','#594536','roman'],[17,22,'River gravels','#39413a','#465046','wet'],
+      [22,27,'Ice-age gravels','#6a5a45','#786650','pebbles'],[27,32,'Chalk','#aaa088','#bdb298','flint'],
+      [32,37,'Jurassic clay','#474e57','#566069','ammonites'],[37,41,'Coal measures','#1d1b19','#2f2b27','seams'],
+      [41,46,'Slate','#333843','#3f4550','slate'],[46,51,'Granite','#4a4040','#574b49','granite'],
+      [51,56,'Basalt','#1f1f22','#2b2b2e','basalt'],[56,62,'Crystal caverns','#241e2c','#2f2739','crystals']];
+    function strataTexture(){
+      return canvasTexture((c,w,h)=>{
+        const m=h/DEPTH,rand=(a,b)=>a+Math.random()*(b-a),wave=(depth,seed)=>x=>depth*m+Math.sin(x/w*Math.PI*2*2+seed)*5+Math.sin(x/w*Math.PI*2*5+seed*3)*2.5;
+        const edges=STRATA.map(([top],i)=>i?wave(top,i*1.7):()=>0);edges.push(()=>h+10);
+        STRATA.forEach(([top,bottom,,base,light,kind],i)=>{
+          const upper=edges[i],lower=edges[i+1],y0=top*m,y1=bottom*m;
+          c.save();c.beginPath();c.moveTo(0,upper(0));for(let x=8;x<=w;x+=8)c.lineTo(x,upper(x));for(let x=w;x>=0;x-=8)c.lineTo(x,lower(x));c.closePath();c.clip();
+          const g=c.createLinearGradient(0,y0-8,0,y1+8);g.addColorStop(0,light);g.addColorStop(1,base);c.fillStyle=g;c.fillRect(0,y0-12,w,y1-y0+24);
+          // Fine bedding lines and grit in every layer.
+          c.globalAlpha=.18;for(let k=0;k<(y1-y0)/5;k++){const y=rand(y0,y1);c.strokeStyle=Math.random()<.5?'#000':'#fff';c.lineWidth=rand(.5,1.4);c.beginPath();c.moveTo(0,y);for(let x=0;x<=w;x+=32)c.lineTo(x,y+Math.sin(x*.03+k)*1.5);c.stroke()}
+          c.globalAlpha=.2;for(let k=0;k<(y1-y0)*5;k++){c.fillStyle=Math.random()<.5?'#0c0a08':'#d8cdb8';c.fillRect(rand(0,w),rand(y0,y1),1,1)}c.globalAlpha=1;
+          const blob=(x,y,rx,ry,fill,rot=0)=>{c.fillStyle=fill;c.beginPath();c.ellipse(x,y,rx,ry,rot,0,7);c.fill()};
+          if(kind==='roots'){c.strokeStyle='#1a110a';for(let k=0;k<26;k++){let x=rand(0,w),y=y0-4;c.lineWidth=rand(1,3.2);c.beginPath();c.moveTo(x,y);const n=rand(6,14);for(let j=0;j<n;j++){x+=rand(-7,7);y+=rand(6,16);c.lineTo(x,y)}c.stroke()}}
+          if(kind==='brick'){for(let k=0;k<14;k++){c.save();c.translate(rand(0,w),rand(y0+6,y1-6));c.rotate(rand(-.6,.6));c.fillStyle=['#6e3a26','#7a452d','#5e3222'][k%3];c.fillRect(-7,-3,rand(8,15),rand(4,6));c.restore()}
+            const px=rand(60,w-60),py=(y0+y1)/2;c.strokeStyle='#8f5a3a';c.lineWidth=5;c.beginPath();c.arc(px,py,14,0,7);c.stroke();blob(px,py,11,11,'#140e0a')}
+          if(kind==='roman'){for(let k=0;k<14;k++){c.save();c.translate(rand(0,w),rand(y0+4,y1-4));c.rotate(rand(0,3));c.fillStyle=['#7e4a30','#8a5a3a','#6e3f2a'][k%3];c.fillRect(-5,-2,rand(6,12),3);c.restore()}
+            for(let k=0;k<5;k++)blob(rand(0,w),rand(y0+6,y1-6),2.4,2.4,'#b08c42');for(let k=0;k<4;k++)blob(rand(0,w),rand(y0+6,y1-6),3.2,1.8,'#a9a291',rand(0,3))}
+          if(kind==='wet'||kind==='pebbles'){const tones=kind==='wet'?['#59625a','#6f766b','#2e3530','#7d837a']:['#8d7b61','#a08d72','#5f5344','#b3a58c'];for(let k=0;k<230;k++)blob(rand(0,w),rand(y0,y1),rand(1.5,5),rand(1.2,3.6),tones[k%4],rand(0,3));
+            if(kind==='wet'){c.globalAlpha=.25;c.strokeStyle='#9fb4b0';for(let k=0;k<30;k++){const x=rand(0,w),y=rand(y0,y1);c.lineWidth=1;c.beginPath();c.moveTo(x,y);c.lineTo(x+rand(-2,2),y+rand(10,30));c.stroke()}c.globalAlpha=1}}
+          if(kind==='flint'){for(let row=0;row<4;row++){const y=y0+(row+.6)*(y1-y0)/4.2;for(let x=rand(0,20);x<w;x+=rand(18,40))blob(x,y+rand(-3,3),rand(4,9),rand(2.5,4.5),'#26262a',rand(-.3,.3))}
+            c.strokeStyle='#8d846e';c.lineWidth=1;for(let k=0;k<8;k++){const x=rand(0,w),y=rand(y0,y1);c.beginPath();c.arc(x,y,5,Math.PI,0);for(let r=-4;r<=4;r+=2){c.moveTo(x,y);c.lineTo(x+r,y-4.5)}c.stroke()}}
+          if(kind==='ammonites'){c.strokeStyle='#9aa3a8';for(let k=0;k<12;k++){const x=rand(10,w-10),y=rand(y0+12,y1-12),size=rand(6,12);c.lineWidth=1.3;c.beginPath();for(let a=0;a<Math.PI*6;a+=.2){const r=size*a/(Math.PI*6);c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r)}c.stroke();for(let a=Math.PI*3;a<Math.PI*6;a+=.5){const r=size*a/(Math.PI*6);c.beginPath();c.moveTo(x+Math.cos(a)*r*.82,y+Math.sin(a)*r*.82);c.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);c.stroke()}}}
+          if(kind==='seams'){for(let k=0;k<7;k++){const y=rand(y0,y1),t=rand(2,8);c.fillStyle='#0b0a09';c.fillRect(0,y,w,t);c.fillStyle='rgba(190,190,200,.35)';for(let j=0;j<30;j++)c.fillRect(rand(0,w),y+rand(0,t),1,1)}}
+          if(kind==='slate'){c.strokeStyle='rgba(15,18,25,.8)';c.lineWidth=1;for(let k=0;k<80;k++){const x=rand(-40,w),y=rand(y0,y1);c.beginPath();c.moveTo(x,y);c.lineTo(x+60,y+14);c.stroke()}}
+          if(kind==='granite'){c.globalAlpha=.55;for(let k=0;k<(y1-y0)*5;k++){c.fillStyle=['#161212','#9c8f8a','#7a5552','#141111'][k%4];c.fillRect(rand(0,w),rand(y0,y1),rand(1,2),rand(1,2))}c.globalAlpha=1}
+          if(kind==='basalt'){c.strokeStyle='#0a0a0b';c.lineWidth=2;for(let x=0;x<w;x+=rand(12,22)){c.beginPath();let y=y0;c.moveTo(x,y);while(y<y1){y+=rand(10,24);c.lineTo(x+rand(-3,3),y)}c.stroke()}for(let k=0;k<40;k++){const x=rand(0,w),y=rand(y0,y1);c.beginPath();c.moveTo(x,y);c.lineTo(x+rand(8,16),y+rand(-2,2));c.stroke()}}
+          if(kind==='crystals'){for(let k=0;k<60;k++){const x=rand(0,w),y=rand(y0+4,y1),s=rand(2,7);c.fillStyle=['#8a6fb8','#b89ce0','#e2d8ff','#6f8fb8'][k%4];c.beginPath();c.moveTo(x,y-s*1.8);c.lineTo(x+s*.6,y);c.lineTo(x,y+s*.5);c.lineTo(x-s*.6,y);c.closePath();c.fill()}for(let k=0;k<160;k++){c.fillStyle='#fff';c.fillRect(rand(0,w),rand(y0,y1),1,1)}}
+          c.restore();
+        });
+        // Dark hairline between layers.
+        c.strokeStyle='rgba(8,6,4,.55)';c.lineWidth=1.5;for(let i=1;i<STRATA.length;i++){c.beginPath();for(let x=0;x<=w;x+=8)c.lineTo(x,edges[i](x));c.stroke()}
+      },512,Math.round(512*DEPTH/15.5));
+    }
+    let strata=null;
+    // A flat facing between four world-space corners, textured by depth. corners: bottom-a, bottom-b, top-b, top-a.
+    function facing(parent,corners,normal){
+      if(!strata){const map=strataTexture();map.wrapS=THREE.RepeatWrapping;map.wrapT=THREE.ClampToEdgeWrapping;strata=new THREE.MeshStandardMaterial({map,roughness:.94})}
+      const positions=[],uvs=[];for(const [x,y,z] of corners){positions.push(x,y,z);uvs.push((x+z)/15.5,1+y/DEPTH)}
+      const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));
+      const [a,b,,d]=corners,cross=new THREE.Vector3(b[0]-a[0],b[1]-a[1],b[2]-a[2]).cross(new THREE.Vector3(d[0]-a[0],d[1]-a[1],d[2]-a[2]));
+      geometry.setIndex(cross.dot(new THREE.Vector3(...normal))>0?[0,1,2,0,2,3]:[0,2,1,0,3,2]);geometry.computeVertexNormals();
+      const mesh=new THREE.Mesh(geometry,strata);parent.add(mesh);return mesh;
+    }
+    // ---------- Depth markers ----------
+    const MARKERS=[['The cellars end here','Below this line the building has no say.'],['London clay','Victorian drains, 1860s'],['The Roman layer','Coins of Claudius, AD 50'],
+      ['River gravels','Below the water table'],['Ice-age gravels','Mammoth country, 20,000 years ago'],['Chalk','A warm sea, 80 million years ago · look up'],
+      ['Jurassic clay','Ammonites, 160 million years ago'],['Coal measures','Forests turned to stone, 310 million years ago'],['Slate','Mud of an older ocean, 450 million years ago'],
+      ['Granite','Cooled from fire, 500 million years ago'],['Basalt','The old fire, still warm to the hand'],['Further than the catalogue goes','“Descend, bold traveller, and you will reach the centre of the earth.” — Arne Saknussemm']];
+    function marker(parent,index,x,y,z){
+      const metres=Math.round((index+1)*4.8),[layer,line]=MARKERS[index];
+      const map=canvasTexture((c,w,h)=>{c.fillStyle='#2b2318';c.fillRect(0,0,w,h);c.strokeStyle='#b8925a';c.lineWidth=6;c.strokeRect(10,10,w-20,h-20);c.lineWidth=1.5;c.strokeRect(22,22,w-44,h-44);
+        c.fillStyle='#d9b878';c.textAlign='center';c.font='600 20px Georgia';c.fillText('DEPTH BELOW THE READING ROOM',w/2,62);c.font='bold 64px Georgia';c.fillText(`${metres} m`,w/2,132);
+        c.font='italic 30px Georgia';c.fillText(layer,w/2,180);c.fillStyle='#b69f78';c.font='20px Georgia';wrapText(c,line,w/2,216,w-80,25)},512,288);
+      const plate=new THREE.Mesh(new THREE.PlaneGeometry(1.15,.65),new THREE.MeshStandardMaterial({map,roughness:.5,metalness:.25}));plate.position.set(x,y,z);plate.rotation.y=Math.PI;parent.add(plate);return plate;
+    }
+    // ---------- The shaft ----------
+    // Half-way down, a grating in a landing's ceiling opens on a shaft climbing through every layer already
+    // passed, with a coin of daylight at the top. Now and then a pebble comes down it.
+    const SHAFT_LANDING=5,shaft={x:37,z:14+SHAFT_LANDING*18+16,floor:-(SHAFT_LANDING+1)*4.8,top:-3,pebble:null,nextPebble:0,fall:-1,told:false};
+    function buildShaft(parent){
+      const {x,z,floor,top}=shaft,h=.8,bottom=floor+3.1;
+      for(const [nx,nz] of [[1,0],[-1,0],[0,1],[0,-1]]){const px=x-nx*h,pz=z-nz*h,ax=nz*h,az=nx*h;facing(parent,[[px-ax,bottom,pz-az],[px+ax,bottom,pz+az],[px+ax,top,pz+az],[px-ax,top,pz-az]],[nx,0,nz])}
+      const sky=new THREE.Mesh(new THREE.CircleGeometry(.62,24),new THREE.MeshBasicMaterial({color:0xe4eeff}));sky.position.set(x,top-.02,z);sky.rotation.x=Math.PI/2;parent.add(sky);
+      const cap=new THREE.Mesh(new THREE.PlaneGeometry(1.6,1.6),new THREE.MeshBasicMaterial({color:0x060606}));cap.position.set(x,top-.01,z);cap.rotation.x=Math.PI/2;parent.add(cap);
+      const iron=new THREE.MeshStandardMaterial({color:0x1c1d1e,metalness:.6,roughness:.5});
+      for(let k=-2;k<=2;k++){box(parent,1.6,.06,.06,iron,x,bottom+.03,z+k*.32,false);box(parent,.06,.06,1.6,iron,x+k*.32,bottom+.03,z,false)}
+      const pool=new THREE.Mesh(new THREE.CircleGeometry(.85,24),new THREE.MeshBasicMaterial({color:0x9fb6d8,transparent:true,opacity:.07,depthWrite:false}));pool.position.set(x,floor+.02,z);pool.rotation.x=-Math.PI/2;parent.add(pool);
+      shaft.pebble=new THREE.Mesh(new THREE.SphereGeometry(.035,6,4),damp);shaft.pebble.visible=false;parent.add(shaft.pebble);
+    }
+    // ---------- Falling grit ----------
+    const GRAINS=90,grit={points:null,life:0,speeds:new Float32Array(GRAINS)};
+    function tremor(){
+      if(!built||!contains(player.pos.x,player.pos.z))return;
+      if(!grit.points){const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(new Float32Array(GRAINS*3),3));grit.points=new THREE.Points(geometry,new THREE.PointsMaterial({color:0x9d8a70,size:.035,transparent:true,opacity:.85,depthWrite:false}));grit.points.frustumCulled=false;group.add(grit.points)}
+      const p=grit.points.geometry.attributes.position;for(let k=0;k<GRAINS;k++){p.setXYZ(k,player.pos.x+(Math.random()-.5)*3.6,player.pos.y+2.6+Math.random()*.5,player.pos.z+(Math.random()-.2)*5);grit.speeds[k]=.8+Math.random()*2.2}
+      p.needsUpdate=true;grit.life=2.6;grit.delay=.6;grit.points.visible=true;
+    }
+    function updateGrit(dt){if(!grit.points||grit.life<=0)return;if(grit.delay>0){grit.delay-=dt;return}grit.life-=dt;const p=grit.points.geometry.attributes.position;for(let k=0;k<GRAINS;k++){const y=p.getY(k)-grit.speeds[k]*dt;p.setY(k,Math.max(y,player.pos.y-.02))}p.needsUpdate=true;grit.points.material.opacity=.85*Math.min(1,grit.life);if(grit.life<=0)grit.points.visible=false}
+    function updateShaft(t,dt,reduced){
+      if(!shaft.pebble)return;const near=Math.hypot(player.pos.x-shaft.x,player.pos.z-shaft.z)<9&&Math.abs(player.pos.y-shaft.floor)<3;
+      if(near&&!shaft.told){shaft.told=true;notice('A cold draught falls from somewhere high above. Look up.')}
+      if(shaft.fall<0){if(near&&!reduced&&t>shaft.nextPebble){shaft.fall=0;shaft.pebble.visible=true}return}
+      shaft.fall+=dt;const y=shaft.top-.1-4.9*shaft.fall*shaft.fall;shaft.pebble.position.set(shaft.x+.18,Math.max(y,shaft.floor+.035),shaft.z-.1);
+      if(y<=shaft.floor+.035){click();shaft.fall=-1;shaft.nextPebble=t+22+Math.random()*30;setTimeout(()=>{if(shaft.fall<0)shaft.pebble.visible=false},1600)}
+    }
     function build(){
       if(built)return;built=true;
       const start=new THREE.Group();group.add(start);segments.push({group:start,z:11.5});
@@ -56,18 +152,25 @@
           box(parent,5,.6,.51,mat,x,sy+3.4,sz);
           for(const side of [-1,1]){
             box(parent,.5,3.8,.51,mat,x+side*2.25,sy+1.5,sz);
-            if(i>2&&s%3===0){const r=new THREE.Mesh(new THREE.DodecahedronGeometry(.4+i*.025,0),mat);r.position.set(x+side*2.35,sy+1.6,sz);r.scale.set(.6,1.6,1.4);parent.add(r)}
+            if(i>2&&s%3===0){const r=new THREE.Mesh(new THREE.DodecahedronGeometry(.4+i*.025,0),mat);r.position.set(x+side*2.2,sy+1.6,sz);r.scale.set(.6,1.6,1.4);parent.add(r)}
             if(i<2&&s%4===0)box(parent,.12,.14,2,MAT.darkWood,x+side*2.03,sy+2.6,sz,false);
           }
         }
+        // The walls of the flight, faced with the layers it cuts through (the first flight is still the building's own masonry).
+        if(i>0)for(const side of [-1,1]){const wx=x+side*1.99,slope=(zz)=>y-(zz-z)/14*4.8;facing(parent,[[wx,slope(z)-.3,z],[wx,slope(z+14)-.3,z+14],[wx,slope(z+14)+3.15,z+14],[wx,slope(z)+3.15,z]],[-side,0,0])}
         const ly=y-4.8,lz=z+16;
-        box(parent,10,.5,4,mat,37,ly-.25,lz);box(parent,10,.6,4,mat,37,ly+3.4,lz);
+        box(parent,10,.5,4,mat,37,ly-.25,lz);
+        if(i===SHAFT_LANDING){box(parent,4.2,.6,4,mat,34.1,ly+3.4,lz);box(parent,4.2,.6,4,mat,39.9,ly+3.4,lz);box(parent,1.6,.6,1.2,mat,37,ly+3.4,lz-1.4);box(parent,1.6,.6,1.2,mat,37,ly+3.4,lz+1.4);buildShaft(parent)}
+        else box(parent,10,.6,4,mat,37,ly+3.4,lz);
+        if(i>0){facing(parent,[[32.01,ly-.1,z+14],[32.01,ly-.1,z+18],[32.01,ly+3.15,z+18],[32.01,ly+3.15,z+14]],[1,0,0]);facing(parent,[[41.99,ly-.1,z+14],[41.99,ly-.1,z+18],[41.99,ly+3.15,z+18],[41.99,ly+3.15,z+14]],[-1,0,0])}
         for(const sx of [31.75,42.25])box(parent,.5,3.8,4,mat,sx,ly+1.5,lz);
         // Every return is walled off except its two offset openings. No view into other rooms.
         for(const edge of [0,1]){const ox=edge?(i===11?37:(i%2?34:40)):x,ez=z+14+edge*4;
-          for(const [a,b] of [[32,ox-2],[ox+2,42]])if(b>a)box(parent,b-a,3.8,.4,mat,(a+b)/2,ly+1.5,ez);
+          for(const [a,b] of [[32,ox-2],[ox+2,42]])if(b>a){box(parent,b-a,3.8,.4,mat,(a+b)/2,ly+1.5,ez);if(i>0){const fz=edge?ez-.21:ez+.21;facing(parent,[[a,ly-.1,fz],[b,ly-.1,fz],[b,ly+3.15,fz],[a,ly+3.15,fz]],[0,0,edge?-1:1])}}
         }
-        lamp(parent,x-1.7,y+1.8,z+1,i);lamp(parent,37,ly+2.3,lz,i+2);
+        // Where the stair arrives, the wall ahead says how far down this is.
+        marker(parent,i,i===11?40.5:(i%2?39:35),ly+1.85,z+17.77);
+        lamp(parent,x-1.7,y+1.8,z+1,i);lamp(parent,i===SHAFT_LANDING?35.3:37,ly+2.3,lz,i+2);
         // Lower rock-cut flights need intermediate lanterns, not just lights at their ends.
         // Keep fixtures outside the walking envelope and register lights for distance culling.
         if(i>=6){
@@ -137,10 +240,11 @@
       const below=contains(player.pos.x,player.pos.z),depth=below?clamp(-player.pos.y/14,0,1):0;
       if(built){for(const s of segments)s.group.visible=below?Math.abs(player.pos.z-s.z)<30:opened&&s.z<30;
         for(const d of drops)d.mesh.position.y=d.y+2.7-(reduced?1.1:(t*.8+d.phase)%2.7);
+        if(below){updateShaft(t,dt,reduced);updateGrit(dt)}
         if(depth>.2&&t>nextDrip){nextDrip=t+2+Math.random()*5;if(!reduced)sound(700+Math.random()*450,.13,'sine',.035*depth)}
       }
       return depth;
     }
-    return {floorAt,contains,build,interact,update,clearLine,group,panel,regions,get built(){return built},get returning(){return returnTime!==null}};
+    return {floorAt,contains,build,interact,update,clearLine,tremor,group,panel,regions,strata:STRATA,get metres(){return built&&contains(player.pos.x,player.pos.z)?Math.max(0,-player.pos.y):0},get built(){return built},get returning(){return returnTime!==null}};
   };
 })();

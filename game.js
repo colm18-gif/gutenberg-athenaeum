@@ -1091,7 +1091,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     }
     // With the recorded-style rain loop the filter only softens clear nights; the older plain noise keeps its original tone.
     function rainCutoff(){return soundscape?(weather==='CLEAR'?1600:weather==='STORM'?7000:5200):weather==='RAIN'?850:240}
-    function acousticSpace(){if(nightRailway?.zoneAt(player.pos.x,player.pos.z))return 'carriage';if(highStaircase?.contains(player.pos.x,player.pos.z))return 'stair';const room=analyticsRoom();if(room==='main-library'||room==='upper-floor')return 'hall';if(room==='roof-garden')return 'outdoor';if(room==='below-catalogue'||room==='tunnel'||room==='archive')return 'cellar';if(room==='west-wing'||room==='east-wing'||room==='restricted-stacks')return 'wing';return 'room'}
+    function acousticSpace(){if(nightRailway?.zoneAt(player.pos.x,player.pos.z))return 'carriage';if(highStaircase?.contains(player.pos.x,player.pos.z))return 'stair';const room=analyticsRoom();if(room==='main-library'||room==='upper-floor')return 'hall';if(room==='roof-garden')return 'outdoor';if(room==='below-catalogue'||room==='tunnel'||room==='archive')return 'cellar';if(room==='verne-descent')return verneDescent.metres>2?'deep':'cellar';if(room==='west-wing'||room==='east-wing'||room==='restricted-stacks')return 'wing';return 'room'}
     function updateSoundscape(dt){if(!soundscape)return;soundscapeTimer-=dt;if(soundscapeTimer>0)return;soundscapeTimer=.2;const space=acousticSpace();soundscape.update({x:player.pos.x,y:player.pos.y,z:player.pos.z,yaw:player.yaw,space,weather,hearsSky:player.pos.y>-.5&&(space==='hall'||space==='wing'||space==='outdoor'),covered:worldIsCovered(),clock:clockGroup.position})}
     // A storm flash lights the windows first; the thunder follows after the distance delay.
     function flashLightning(strength){if(reducedMotion)return;lightningFlash=Math.max(lightningFlash,.6+strength*.8);setTimeout(()=>{if(!reducedMotion)lightningFlash=Math.max(lightningFlash,.35+strength*.5)},110+Math.random()*120)}
@@ -1163,7 +1163,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     function requestLookLock(){renderer.domElement.focus();if(touchMode)return;try{const request=renderer.domElement.requestPointerLock?.();if(request&&request.catch)request.catch(()=>showNotice('WASD still works — hold the mouse button and drag to look.',4))}catch(err){showNotice('WASD still works — hold the mouse button and drag to look.',4)}}
     function movePlayer(dt){const keyForward=((keys.KeyW||keys.ArrowUp)?1:0)-((keys.KeyS||keys.ArrowDown)?1:0),keySide=((keys.KeyD||keys.ArrowRight)?1:0)-((keys.KeyA||keys.ArrowLeft)?1:0),forward=clamp(keyForward+touchMoveY,-1,1),side=clamp(keySide+touchMoveX,-1,1),magnitude=Math.max(1,Math.hypot(forward,side)),boost=(keys.ShiftLeft||keys.ShiftRight||touchSprint)?1.45:1,onMoon=!!highStaircase?.onMoon?.(player.pos.x,player.pos.z)&&player.pos.y<2,speed=3.65*boost*(onMoon?1.12:1);const targetX=(-Math.sin(player.yaw)*forward+Math.cos(player.yaw)*side)*speed/magnitude,targetZ=(-Math.cos(player.yaw)*forward-Math.sin(player.yaw)*side)*speed/magnitude;const grip=onMoon?(moonHop>.02?.55:2.2):12;player.vel.x=THREE.MathUtils.damp(player.vel.x,targetX,grip,dt);player.vel.z=THREE.MathUtils.damp(player.vel.z,targetZ,grip,dt);updateMoonGravity(onMoon,dt);let nx=player.pos.x+player.vel.x*dt,nz=player.pos.z+player.vel.z*dt;if(allowed(nx,player.pos.z))player.pos.x=nx;else player.vel.x=0;if(allowed(player.pos.x,nz))player.pos.z=nz;else player.vel.z=0;const fy=floorHeight(player.pos.x,player.pos.z);player.pos.y=THREE.MathUtils.damp(player.pos.y,fy,12,dt);if(allowed(player.pos.x,player.pos.z,fy))lastSafePosition.copy(player.pos);else{player.pos.copy(lastSafePosition);player.vel.set(0,0,0);if(!allowed(player.pos.x,player.pos.z)){const spot=nearestWalkable(player.pos.x,player.pos.z);if(spot){player.pos.x=spot.x;player.pos.z=spot.z;lastSafePosition.copy(player.pos)}}showNotice('The library returns you to firm ground.',3)}{/* Pushing to move but going nowhere for a few seconds: offer the way home. */const trying=Math.hypot(forward,side)>.3,moved=Math.hypot(player.pos.x-movePlayer.lastX,player.pos.z-movePlayer.lastZ);movePlayer.lastX=player.pos.x;movePlayer.lastZ=player.pos.z;movePlayer.stuckFor=trying&&moved<.004?(movePlayer.stuckFor||0)+dt:0;if(movePlayer.stuckFor>3&&performance.now()-(movePlayer.hintAt||-1e9)>45000){movePlayer.hintAt=performance.now();movePlayer.stuckFor=0;showNotice(touchMode?'Stuck? Tap ⌂ to return to the Grand Hall.':'Stuck? Press R to return to the Grand Hall.',5)}}const stride=Math.hypot(player.vel.x,player.vel.z),stepSeconds=clamp(.54-stride*.055,.27,.48);headBobAmount=THREE.MathUtils.damp(headBobAmount,reducedMotion||onMoon||stride<.32?0:clamp(stride/3.65,0,1.35),stride<.32?5:3,dt);if(headBobAmount>.001)headBobPhase+=dt*Math.PI/stepSeconds;else headBobPhase=0;
       // One gentle dip per footstep and a slight side-to-side weight shift, in step with the footstep sounds.
-      const bobLift=(Math.abs(Math.sin(headBobPhase))-.6)*.05*headBobAmount,bobSway=Math.sin(headBobPhase)*.022*headBobAmount;camera.position.set(player.pos.x+Math.cos(player.yaw)*bobSway,player.pos.y+1.72+bobLift+moonHop,player.pos.z-Math.sin(player.yaw)*bobSway);camera.rotation.order='YXZ';camera.rotation.y=player.yaw;camera.rotation.x=player.pitch;camera.rotation.z=-bobSway*.3;
+      const bobLift=(Math.abs(Math.sin(headBobPhase))-.6)*.05*headBobAmount,bobSway=Math.sin(headBobPhase)*.022*headBobAmount;camera.position.set(player.pos.x+Math.cos(player.yaw)*bobSway,player.pos.y+1.72+bobLift+moonHop,player.pos.z-Math.sin(player.yaw)*bobSway);if(camera.userData.shake>0){const k=Math.min(1,camera.userData.shake)*.045;camera.position.x+=(Math.random()-.5)*k;camera.position.y+=(Math.random()-.5)*k*.8;camera.position.z+=(Math.random()-.5)*k};camera.rotation.order='YXZ';camera.rotation.y=player.yaw;camera.rotation.x=player.pitch;camera.rotation.z=-bobSway*.3;
       const targetFov=reducedMotion?67:67+clamp((stride-3.9)/1.4,0,1)*3.5;if(Math.abs(camera.fov-targetFov)>.01){camera.fov=THREE.MathUtils.damp(camera.fov,targetFov,4,dt);camera.updateProjectionMatrix()}}
     // The nearest open floor to a point: used when a doorway sets the reader down beside furniture,
     // and as a safety net so no one is ever frozen on a spot the walls consider solid.
@@ -1373,8 +1373,30 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     const verneDescent=window.createVerneDescent({THREE,scene,MAT,collider,colliders,interactables,canvasTexture,wrapText,player,camera,book:expeditionBook,companionBooks:subterraneanBooks,performanceZones,rememberLights,
       onFade:opacity=>{returnFade.style.opacity=String(opacity)},
       onBell:()=>{for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.vel.set(0,0,0);sound(880,1.2,'sine',.16);sound(1320,.85,'sine',.055)},
-      onReturn:()=>{resetPosition();showNotice('The bell answers from the entrance clock. You are back among the shelves.',5)}
+      onReturn:()=>{resetPosition();showNotice('The bell answers from the entrance clock. You are back among the shelves.',5)},
+      notice:text=>showNotice(text,5),click:()=>{sound(1500,.05,'triangle',.06);setTimeout(()=>sound(1150,.05,'triangle',.035),110)}
     });
+    // Going down: the earth's rumble grows, a brass gauge shows the depth, and every minute or so a distant
+    // tremor shakes loose some grit (the view trembles only if motion is allowed).
+    let nextTremorAt=0,depthGauge=null,gaugeShown=-1;
+    function showDepth(metres){
+      if(!depthGauge){if(metres<=0)return;depthGauge=document.createElement('div');depthGauge.className='depth-gauge';depthGauge.setAttribute('role','img');
+        depthGauge.innerHTML='<svg viewBox="-30 -30 60 60" aria-hidden="true"><circle r="27" class="dg-rim"/><circle r="23" class="dg-face"/>'+Array.from({length:7},(_,i)=>{const a=(-135+i*45)*Math.PI/180;return `<line x1="${(Math.sin(a)*17).toFixed(1)}" y1="${(-Math.cos(a)*17).toFixed(1)}" x2="${(Math.sin(a)*22).toFixed(1)}" y2="${(-Math.cos(a)*22).toFixed(1)}"/>`}).join('')+'<g class="dg-needle"><line x1="0" y1="4" x2="0" y2="-19"/></g><circle r="2.6" class="dg-hub"/></svg><div><small>Depth</small><b></b></div>';
+        ui.status.prepend(depthGauge)}
+      const shown=Math.round(metres);depthGauge.classList.toggle('visible',metres>.5);if(shown===gaugeShown)return;gaugeShown=shown;
+      depthGauge.querySelector('b').textContent=`${shown} m`;depthGauge.setAttribute('aria-label',`Depth ${shown} metres below the reading room`);
+      depthGauge.querySelector('.dg-needle').style.transform=`rotate(${-135+clamp(metres/60,0,1)*270}deg)`;
+    }
+    function updateDeep(t,dt,metres){
+      soundscape?.setDepth?.(clamp(metres/58,0,1));showDepth(metres);
+      camera.userData.shake=Math.max(0,(camera.userData.shake||0)-dt);
+      if(metres<12){nextTremorAt=0;return}
+      if(!nextTremorAt)nextTremorAt=t+14+Math.random()*14;
+      if(t<nextTremorAt)return;nextTremorAt=t+50+Math.random()*45;
+      const strength=clamp(.55+metres/60,.6,1);soundscape?.tremor?.(strength);verneDescent.tremor();
+      if(!reducedMotion)camera.userData.shake=1.5;
+      if(depthGauge){depthGauge.classList.remove('shiver');void depthGauge.offsetWidth;depthGauge.classList.add('shiver')}
+    }
     const libraryGameActive=gameActive;
     gameActive=function(){return !verneDescent.returning&&libraryGameActive()};
     const libraryFloorHeight=floorHeight;
@@ -1400,6 +1422,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     updateWorld=function(t,dt){
       libraryWorldUpdate(t,dt);
       const depth=verneDescent.update(t,dt,reducedMotion,sound);
+      updateDeep(t,dt,verneDescent.metres);
       ambient.intensity*=1-depth*.62;moon.intensity*=1-depth*.8;
       for(const {light,intensity} of fillLights)light.intensity=intensity*(1-depth*.65);
       readerLantern.intensity=selected?6.4:6.4*(1-depth*.45);
