@@ -67,7 +67,7 @@
     <button id="touchMenu" class="touch-ui" aria-label="Menu">&#9776;</button>
   </div>
   <div id="rotateDevice" role="status"><div><strong>Turn the key sideways</strong>Rotate your device to landscape to explore the library.<small>Nothing happening? Turn off rotation lock in your device’s quick settings, then turn it again.</small></div></div>
-  <div id="bookActions" class="hidden"><div class="meta"><strong></strong><em></em></div><button class="primary" id="openBook">Open book</button><button class="ghost" id="carryBook">Carry to a chair</button><button class="ghost" id="askLibrarian">Ask the librarian</button><button class="primary hidden-unless-seat" id="leaveOnChair">Leave on the chair</button><button class="ghost hidden-unless-seat hidden" id="placeNearby">Set on the nearest table</button><button class="ghost" id="leaveBook">Leave at desk</button><button class="ghost" id="returnBook">Return</button></div>
+  <div id="bookActions" class="hidden"><div class="meta"><strong></strong><em></em></div><button class="primary" id="openBook">Open book</button><button class="ghost hidden" id="listenAction" type="button">Listen</button><button class="ghost" id="carryBook">Carry to a chair</button><button class="ghost" id="askLibrarian">Ask the librarian</button><button class="primary hidden-unless-seat" id="leaveOnChair">Leave on the chair</button><button class="ghost hidden-unless-seat hidden" id="placeNearby">Set on the nearest table</button><button class="ghost" id="leaveBook">Leave at desk</button><button class="ghost" id="returnBook">Return</button></div>
   <div id="reader" class="comfort hidden">
     <div class="book-spread">
       <header class="reader-head"><div><h2 id="readerTitle"></h2><p id="readerAuthor"></p><a id="readerSource" class="reader-source hidden" target="_blank" rel="noopener noreferrer"></a></div><button class="iconbtn" id="closeReader" aria-label="Close reader">×</button></header>
@@ -102,7 +102,7 @@
     const applyEntryAppearance=()=>{document.body.classList.toggle('reduced-motion',document.getElementById('entryReducedMotion').checked);document.body.classList.toggle('high-contrast',document.getElementById('entryHighContrast').checked);document.body.classList.toggle('large-text',document.getElementById('entryLargeText').checked)};
     for(const [kind,[id,key]] of Object.entries(preferences)){const input=document.getElementById(id),saved=localStorage.getItem(key);if(kind==='volume')input.value=saved??13;else input.checked=saved==='1';input.addEventListener('input',()=>{localStorage.setItem(key,kind==='volume'?input.value:input.checked?'1':'0');applyEntryAppearance()})}applyEntryAppearance();
     const webglAvailable=()=>{try{const canvas=document.createElement('canvas');return !!(canvas.getContext('webgl2')||canvas.getContext('webgl'))}catch(error){return false}};
-    const BUILD='20260926-listen-2';
+    const BUILD='20260926-listen-3';
     // Files the nightly jobs rewrite without a new BUILD (new Room of the Day books, new recordings): their address
     // changes every hour, so a browser holding an older copy picks up the new one within the hour.
     const LIVE_DATA=new Set(['data/daily-rooms-resolved.js','data/audiobooks.js']);
