@@ -33,7 +33,7 @@
     // ---------- the now-playing card ----------
     function ensureCard(){
       if(card)return card;card=document.createElement('div');card.id='nowPlaying';card.className='now-playing hidden';card.setAttribute('role','region');card.setAttribute('aria-label','Reading aloud');
-      card.innerHTML='<div class="np-text"><b class="np-book"></b><span class="np-chapter"></span><small class="np-reader"></small></div><div class="np-controls"><button class="np-prev" aria-label="Previous chapter">⏮</button><button class="np-play" aria-label="Pause">⏸</button><button class="np-next" aria-label="Next chapter">⏭</button><button class="np-speed" aria-label="Reading speed">1×</button><button class="np-close" aria-label="Stop reading aloud">✕</button></div><div class="np-progress"><i></i></div>';
+      card.innerHTML='<div class="np-text"><b class="np-book"></b><span class="np-chapter"></span><small class="np-reader"></small></div><div class="np-controls"><button class="np-prev" aria-label="Previous chapter">⏮</button><button class="np-play" aria-label="Pause">⏸</button><button class="np-next" aria-label="Next chapter">⏭</button><button class="np-speed" aria-label="Reading speed">1×</button><button class="np-close" aria-label="Stop reading aloud" title="Stop (Shift+L)">■ Stop</button></div><div class="np-progress"><i></i></div><small class="np-hint">Press <kbd>L</kbd> to pause · <kbd>Shift</kbd>+<kbd>L</kbd> to stop</small>';
       document.body.appendChild(card);
       const stop=event=>event.stopPropagation();for(const button of card.querySelectorAll('button')){button.addEventListener('pointerdown',stop);button.addEventListener('mousedown',stop)}
       card.querySelector('.np-play').addEventListener('click',toggle);card.querySelector('.np-prev').addEventListener('click',()=>step(-1));card.querySelector('.np-next').addEventListener('click',()=>step(1));
@@ -45,7 +45,7 @@
       const current=recording?.chapters[chapter];c.querySelector('.np-book').textContent=book.title;
       c.querySelector('.np-chapter').textContent=state==='loading'?'Finding the recording…':state==='error'?'This recording could not be reached just now.':current?`${current.title} · ${chapter+1} of ${recording.chapters.length}`:'';
       c.querySelector('.np-reader').textContent=current?.reader?`Read by ${current.reader} · LibriVox`:'LibriVox';
-      const play=c.querySelector('.np-play');play.textContent=state==='playing'?'⏸':'▶';play.setAttribute('aria-label',state==='playing'?'Pause':'Play');
+      const play=c.querySelector('.np-play');play.textContent=state==='playing'?'⏸':'▶';play.setAttribute('aria-label',state==='playing'?'Pause':'Play');play.title=state==='playing'?'Pause (L)':'Play (L)';
       c.querySelector('.np-speed').textContent=`${speed}×`;c.querySelector('.np-prev').disabled=!recording||chapter<=0;c.querySelector('.np-next').disabled=!recording||chapter>=recording.chapters.length-1;
       c.classList.toggle('np-error',state==='error');
       if('mediaSession'in navigator&&current&&window.MediaMetadata){navigator.mediaSession.metadata=new MediaMetadata({title:`${book.title}: ${current.title}`,artist:current.reader||book.author,album:'The Library After Dark'});navigator.mediaSession.playbackState=state==='playing'?'playing':'paused'}
@@ -80,6 +80,9 @@
     audio.addEventListener('waiting',()=>{if(state==='playing'){card?.classList.add('np-buffering')}});audio.addEventListener('playing',()=>card?.classList.remove('np-buffering'));
     if('mediaSession'in navigator)try{navigator.mediaSession.setActionHandler('play',toggle);navigator.mediaSession.setActionHandler('pause',toggle);navigator.mediaSession.setActionHandler('previoustrack',()=>step(-1));navigator.mediaSession.setActionHandler('nexttrack',()=>step(1))}catch(error){}
     window.addEventListener('pagehide',savePlace);
+    // L pauses and resumes, Shift+L stops, from anywhere in the library (the mouse is often steering the view,
+    // so the card's buttons cannot be clicked). Esc is left alone: it closes menus and releases the mouse.
+    window.addEventListener('keydown',event=>{if(event.code!=='KeyL'||state==='idle'||event.ctrlKey||event.metaKey||event.altKey||event.repeat)return;const target=event.target;if(target&&(/^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)||target.isContentEditable))return;event.preventDefault();if(event.shiftKey)stop_();else toggle()});
     // With the book open the card moves up into the reader's header, beside the title, clear of the text.
     const reader=document.getElementById('reader');if(reader&&window.MutationObserver){const sync=()=>document.body.classList.toggle('reader-open',!reader.classList.contains('hidden'));new MutationObserver(sync).observe(reader,{attributes:true,attributeFilter:['class']});sync()}
 

@@ -73,3 +73,12 @@ test('a picked-up book with a recording offers Listen right beside Open book',()
   assert.match(game,/refreshListenAction\(bm\.userData\.book\);document\.exitPointerLock/);
   assert.match(game,/\$\('#listenAction'\)\.addEventListener\('click',\(\)=>\{const book=selected\?\.userData\?\.book;if\(book\)audiobooks\?\.start\(book\)\}\)/);
 });
+
+test('the reading-aloud card says how to pause and stop, and L / Shift+L work while walking',()=>{
+  const player=require('node:fs').readFileSync(require('node:path').join(__dirname,'audiobook-player.js'),'utf8');
+  assert.match(player,/<small class="np-hint">Press <kbd>L<\/kbd> to pause · <kbd>Shift<\/kbd>\+<kbd>L<\/kbd> to stop<\/small>/);
+  assert.match(player,/title="Stop \(Shift\+L\)">■ Stop<\/button>/);
+  assert.match(player,/if\(event\.code!=='KeyL'\|\|state==='idle'/);
+  assert.match(player,/if\(event\.shiftKey\)stop_\(\);else toggle\(\)/);
+  assert.match(player,/INPUT\|TEXTAREA\|SELECT/,'typing L in a text box does nothing');
+});
