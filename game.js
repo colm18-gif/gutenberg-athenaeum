@@ -1517,6 +1517,20 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const preLearnersAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return learnersRoom.contains(x,z)?learnersRoom.allowed(x,z):preLearnersAllowed(x,z,y)};
       const preLearnersInteract=interact;interact=function(){if(focus&&!selected&&learnersRoom.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preLearnersInteract()};
     }
+    // The Evening Room (evening-room.js), off the east wing: books to finish in one sitting, each with a note.
+    const eveningRoom=window.createEveningRoom?.({THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,playSample,
+      // A book the main shelves do not list (some live only in the Room of the Day's schedule) is brought in, as the daily room does.
+      findBook:(id,record)=>books.find(b=>b.id===id)||(record?.title?(()=>{const book={...record,category:'evening',fame:1,source:'Project Gutenberg',sourceUrl:`https://www.gutenberg.org/ebooks/${id}`,licence:'Public Domain',textUrl:`https://www.gutenberg.org/cache/epub/${id}/pg${id}.txt`,progress:loadSavedProgress(id),index:books.length};books.push(book);return book})():null),
+      levels:window.ATHENAEUM_LEARNER_LEVELS||{},analytics:window.libraryAnalytics,isHolding:()=>!!selected,
+      move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
+    });
+    if(eveningRoom){
+      const preEveningFloor=floorHeight;floorHeight=function(x,z){return eveningRoom.floorAt(x,z)??preEveningFloor(x,z)};
+      const preEveningAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return eveningRoom.contains(x,z)?eveningRoom.allowed(x,z):preEveningAllowed(x,z,y)};
+      const preEveningInteract=interact;interact=function(){if(focus&&!selected&&eveningRoom.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preEveningInteract()};
+      // Taking a book down in the Evening Room: its reading time under the title, and the librarian's note.
+      const preEveningSelect=selectBook;selectBook=function(bm){const result=preEveningSelect(bm);const d=bm?.userData;if(d?.evening){const book=d.book;ui.actions.querySelector('em').textContent=`${book.author} · about ${d.readingTime}`;const note=librarianNotes[book.id]||window.ATHENAEUM_EXTRA_NOTES?.[book.id];if(note)showNotice(`The librarian’s note: “${note}”`,11)}return result};
+    }
     // Traces of other readers (other-readers.js): invented, but the same for everyone on a given day.
     const otherReaders=window.createOtherReaders?.({THREE,scene,MAT,interactables,canvasTexture,showNotice,playSample,findBook:id=>books.find(b=>b.id===id),
       isQuietMoment:()=>gameActive()&&ui.reader.classList.contains('hidden')&&Math.abs(player.pos.x)<58&&Math.abs(player.pos.z)<32&&player.pos.y>-1&&player.pos.y<12});
@@ -1535,7 +1549,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // ---- Where things are: one register of every room, used by the map and the discovery tallies.
     const titleCase=text=>text.toLowerCase().replace(/(^|[\s—-])([a-z])/g,(m,a,b)=>a+b.toUpperCase()).replace(/\b(The|Of|In|A|For|Where|After|Past)\b/g,(w,_,i)=>i?w.toLowerCase():w).replace(/^./,c=>c.toUpperCase());
     const PLACE_GROUPS=[
-      {title:'The Grand Hall and its wings',places:[['main-library','The Grand Hall'],['upper-floor','The upper gallery'],['roof-garden','The roof garden'],['east-wing','The east wing'],['west-wing','The west wing'],['restricted-stacks','The restricted stacks'],['librarian-office','The librarian’s office'],['daily-room','The room of the day'],['learners-room','The English reading room']]},
+      {title:'The Grand Hall and its wings',places:[['main-library','The Grand Hall'],['upper-floor','The upper gallery'],['roof-garden','The roof garden'],['east-wing','The east wing'],['west-wing','The west wing'],['restricted-stacks','The restricted stacks'],['librarian-office','The librarian’s office'],['daily-room','The room of the day'],['learners-room','The English reading room'],['evening-room','The evening room']]},
       {title:'Hidden ways',secret:true,places:[['portrait-room','The hidden reading room'],['tunnel','The breathing tunnel'],['archive','The final archive'],['below-catalogue','Below the catalogue'],['rabbit-room','The rabbit room'],['afterdark-sorting','Staff · Sorting'],['afterdark-departures','Departures']]},
       {title:'Memory rooms',places:[['returning','Names in the Dust'],['quiet','The Longer Silence'],['unread','St—ll W—ting'],['repository','What Was Kept']]},
       {title:'Reading rooms',places:[...themeRoomDefs.map(def=>[def.key,titleCase(def.sign[0])]),['contested','The Unwelcome Spines']]},
@@ -1555,6 +1569,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       if(dailyRoom?.contains(x,z))return 'daily-room';
       const isle=crusoeIsland?.zoneAt(x,z);if(isle)return isle;
       if(learnersRoom?.contains(x,z))return 'learners-room';
+      if(eveningRoom?.contains(x,z))return 'evening-room';
       const room=afterDarkExpansion.zoneAt(x,z);if(room)return 'afterdark-'+room.key;
       if(z>10&&verneDescent.contains(x,z))return 'verne-descent';
       return baseModulePlace(x,y,z)}}
@@ -1611,7 +1626,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       lampShadeMaterial.emissiveIntensity=2.35*flame(0);
       flickerLights.forEach((light,i)=>{const d=light.userData,factor=flame(i+1);if(d.flickerApplied!==undefined&&light.intensity!==d.flickerApplied)d.flickerBase=light.intensity/(d.flickerFactor||1);if(d.flickerBase===undefined)d.flickerBase=light.intensity;light.intensity=d.flickerBase*factor;d.flickerApplied=light.intensity;d.flickerFactor=factor})
     }
-    {const preLampWorld=updateWorld;updateWorld=function(t,dt){preLampWorld(t,dt);updateLamplight(t);crusoeIsland?.update(t,dt);otherReaders?.update(dt);learnersRoom?.update(t,dt)}}
+    {const preLampWorld=updateWorld;updateWorld=function(t,dt){preLampWorld(t,dt);updateLamplight(t);crusoeIsland?.update(t,dt);otherReaders?.update(dt);learnersRoom?.update(t,dt);eveningRoom?.update(t,dt,reducedMotion)}}
     // ---- First visit: a short tour that moves on as the reader does each thing, with Quill leading to a shelf.
     const tour=(()=>{const box=$('#tour'),stepLabel=$('#tourStep'),text=$('#tourText');
       const pending=!localStorage.getItem('athenaeum-tour-done')&&exploredRooms.size<3&&!awakenedBooks.size;
@@ -1747,7 +1762,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       }finally{renderer.setRenderTarget(previousTarget);warmingShaders=false}
     }
     // Opt-in inspection hook for automated visual and performance checks (?debug).
-    if(new URLSearchParams(location.search).has('debug'))window.__athenaeum={THREE,MAT,hallLightmap,quoteShare,selectBook:bm=>selectBook(bm),staticBatcher,tour,continueDisplay,lampSpots,get dayPhase(){return dayPhase},set dayPhase(v){dayPhase=v},get roomAmbience(){return roomAmbience},placeAt:(x,y,z)=>placeAt(x,y,z),resetPosition:()=>resetPosition(),afterDarkExpansion,librarianOffice,dailyRoom,crusoeIsland,otherReaders,learnersRoom,wordHelp:window.libraryWordHelp,verneDescent,analyticsRoom:()=>analyticsRoom(),floorAt:(x,z)=>floorHeight(x,z),renderer,scene,camera,player,visual,books,curiousDoors,get librarianNotes(){return librarianNotes},interactables,zones:()=>({memoryZones,themeZones}),buildTheme:key=>buildThemeRooms(key),dressExits(){exitDressTimer=0;dressExitDoors(0)},allowedAt:(x,z)=>allowed(x,z),wallFaceOffset,buildAll(){buildBasement();buildMemoryRooms();for(const z of themeZones)try{buildThemeRooms(z.key)}catch(e){}try{buildContestedRoom()}catch(e){}},nightRailway,highStaircase,interact:()=>interact(),get focus(){return focus},get soundscape(){return soundscape},get audioCtx(){return audioCtx},playSample,teleport(x,y,z,yaw=0,pitch=0){player.pos.set(x,y,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=pitch;lastSafePosition.copy(player.pos)}};
+    if(new URLSearchParams(location.search).has('debug'))window.__athenaeum={THREE,MAT,hallLightmap,quoteShare,selectBook:bm=>selectBook(bm),staticBatcher,tour,continueDisplay,lampSpots,get dayPhase(){return dayPhase},set dayPhase(v){dayPhase=v},get roomAmbience(){return roomAmbience},placeAt:(x,y,z)=>placeAt(x,y,z),resetPosition:()=>resetPosition(),afterDarkExpansion,librarianOffice,dailyRoom,crusoeIsland,otherReaders,learnersRoom,eveningRoom,wordHelp:window.libraryWordHelp,verneDescent,analyticsRoom:()=>analyticsRoom(),floorAt:(x,z)=>floorHeight(x,z),renderer,scene,camera,player,visual,books,curiousDoors,get librarianNotes(){return librarianNotes},interactables,zones:()=>({memoryZones,themeZones}),buildTheme:key=>buildThemeRooms(key),dressExits(){exitDressTimer=0;dressExitDoors(0)},allowedAt:(x,z)=>allowed(x,z),wallFaceOffset,buildAll(){buildBasement();buildMemoryRooms();for(const z of themeZones)try{buildThemeRooms(z.key)}catch(e){}try{buildContestedRoom()}catch(e){}},nightRailway,highStaircase,interact:()=>interact(),get focus(){return focus},get soundscape(){return soundscape},get audioCtx(){return audioCtx},playSample,teleport(x,y,z,yaw=0,pitch=0){player.pos.set(x,y,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=pitch;lastSafePosition.copy(player.pos)}};
     // Compiling every shader on the first frame froze the page for seconds, longest on tablets.
     // Compile them behind the entrance veil instead, a few at a time so the progress bar keeps
     // moving, then keep warming the materials of rooms that are built later, before they are seen.
