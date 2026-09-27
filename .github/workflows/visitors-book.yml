@@ -74,7 +74,13 @@ jobs:
           if [ -n "$ADMIN_TOKEN" ]; then printf '%s' "$ADMIN_TOKEN" | npx --yes wrangler@4 secret put ADMIN_TOKEN; fi
       - name: Check it answers
         if: steps.ready.outputs.ok == 'true'
-        run: curl -fsS "${{ steps.deploy.outputs.url }}/entries" | head -c 300
+        # A brand-new workers.dev address can answer 404 for a minute or so while it spreads, so give it time.
+        run: |
+          for attempt in $(seq 1 12); do
+            if body=$(curl -fsS "${{ steps.deploy.outputs.url }}/entries"); then echo "${body:0:300}"; exit 0; fi
+            echo "Not answering yet (attempt $attempt); waiting."; sleep 10
+          done
+          echo "::error::The service did not answer at ${{ steps.deploy.outputs.url }}/entries."; exit 1
       - name: Point the library at it
         if: steps.ready.outputs.ok == 'true'
         env:
@@ -85,6 +91,7 @@ jobs:
             "window.ATHENAEUM_VISITORS_BOOK={endpoint:'$URL'};" > data/visitors-book-config.js
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -- worker/visitors-book/wrangler.toml   # the storage ID was only filled in for this deploy
           git add data/visitors-book-config.js
           if git diff --cached --quiet; then echo "Already pointing at $URL."; exit 0; fi
           git commit -m "Visitors' book: use the service at $URL"
