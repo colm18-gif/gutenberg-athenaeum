@@ -1,0 +1,45 @@
+name: Repair texts
+
+# Checks every text bundled in texts/bundled-gzip and downloads a fresh, checked copy of any that is damaged.
+# Runs when the repair script changes on main, every Monday, or by hand from the Actions tab.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '41 3 * * 1'
+  push:
+    branches: [main]
+    paths: ['scripts/repair-texts.mjs']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: library-texts   # shared with the other jobs that write texts/bundled-gzip
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check and repair the bundled texts
+        run: node scripts/repair-texts.mjs
+      - name: Run the tests
+        id: tests
+        if: always()
+        run: node --test *.test.cjs
+      # Whatever was repaired is kept even if a text could not be fetched, but only when the tests pass.
+      - name: Publish
+        if: always() && steps.tests.outcome == 'success'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add texts/bundled-gzip
+          if git diff --cached --quiet; then echo "Nothing to repair."; exit 0; fi
+          git commit -m "Repair damaged bundled texts"
+          for attempt in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0; sleep 10; done
+          exit 1

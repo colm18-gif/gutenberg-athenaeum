@@ -87,7 +87,7 @@ async function get(url,type='text'){
 }
 // Project Gutenberg's own site first, then its official mirrors.
 const TEXT_URLS=id=>[`https://www.gutenberg.org/cache/epub/${id}/pg${id}.txt`,`https://gutenberg.pglaf.org/cache/epub/${id}/pg${id}.txt`,`https://aleph.gutenberg.org/cache/epub/${id}/pg${id}.txt`,`https://www.gutenberg.org/ebooks/${id}.txt.utf-8`];
-async function download(id){for(const url of TEXT_URLS(id)){if(hostDown(url))continue;await sleep(PAUSE_MS);const text=await get(url);if(text&&text.length>2000)return text}return null}
+export async function download(id){for(const url of TEXT_URLS(id)){if(hostDown(url))continue;await sleep(PAUSE_MS);const text=await get(url);if(text&&text.length>2000)return text}return null}
 async function search(title,author){
   const query=`${words(title).slice(0,6).join(' ')} ${/anonymous/i.test(author)?'':surname(author)}`.trim();
   await sleep(PAUSE_MS);let result=await get(`https://gutendex.com/books?languages=en&search=${encodeURIComponent(query)}`,'json');
