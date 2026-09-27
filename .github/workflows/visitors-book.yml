@@ -40,6 +40,19 @@ jobs:
       - name: Run the tests
         if: steps.ready.outputs.ok == 'true'
         run: node --test *.test.cjs
+      # Asks Cloudflare directly whether the token works and can reach Workers storage, and prints Cloudflare's own
+      # answer (never the token) so a wrong token, account ID or permission is easy to spot.
+      - name: Check the Cloudflare token
+        if: steps.ready.outputs.ok == 'true'
+        run: |
+          api() { curl -sS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "https://api.cloudflare.com/client/v4$1"; }
+          report() { node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{let r;try{r=JSON.parse(s)}catch(e){console.log(process.argv[1]+": no answer");process.exit(1)}
+            const errs=(r.errors||[]).map(e=>e.code+" "+e.message).join("; ");console.log(process.argv[1]+": "+(r.success?"ok"+(r.result&&r.result.status?" ("+r.result.status+")":""):"failed - "+errs));process.exit(r.success?0:1)})' "$1"; }
+          if [ ${#CLOUDFLARE_ACCOUNT_ID} -ne 32 ]; then echo "::warning::The account ID is ${#CLOUDFLARE_ACCOUNT_ID} characters long; a Cloudflare account ID is 32."; fi
+          api /user/tokens/verify | report "Token (user)" || api "/accounts/$CLOUDFLARE_ACCOUNT_ID/tokens/verify" | report "Token (account)" || true
+          api "/accounts/$CLOUDFLARE_ACCOUNT_ID" | report "Account" || true
+          api "/accounts/$CLOUDFLARE_ACCOUNT_ID/storage/kv/namespaces?per_page=5" | report "Workers KV storage" || { echo "::error::Cloudflare refused the token (see the lines above). Check the token has Workers Scripts: Edit and Workers KV Storage: Edit for this account."; exit 1; }
+          api "/accounts/$CLOUDFLARE_ACCOUNT_ID/workers/scripts" | report "Workers scripts" || { echo "::error::The token cannot manage Workers scripts; it needs Workers Scripts: Edit."; exit 1; }
       - name: Find or create the storage
         if: steps.ready.outputs.ok == 'true'
         working-directory: worker/visitors-book
