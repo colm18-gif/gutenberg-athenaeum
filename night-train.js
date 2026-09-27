@@ -1,7 +1,7 @@
 /* A request-stop railway. Existing rooms, mysteries and train ambience remain intact. */
 (()=>{
   'use strict';
-  window.createNightTrain=function({ride=()=>{},whistle=null,steam=null,THREE,scene,MAT,player,collider,colliders,nearbyColliders=(x,z)=>colliders,interactables,canvasTexture,wrapText,coverTexture,books,fogBook=window.ATHENAEUM_FOG_BOOK,performanceZones,rememberLights,move,notice,home,sound:playCue=()=>{},modelTemplate,isLowBandwidth,registerSeat,camera,chooseDestination}){
+  window.createNightTrain=function({ride=()=>{},whistle=null,steam=null,THREE,scene,MAT,player,collider,colliders,nearbyColliders=(x,z)=>colliders,interactables,canvasTexture,wrapText,coverTexture,books,arrivals={},fogBook=window.ATHENAEUM_FOG_BOOK,performanceZones,rememberLights,move,notice,home,sound:playCue=()=>{},modelTemplate,isLowBandwidth,registerSeat,camera,chooseDestination}){
     const regions=[{key:'platform',a:210,b:216,c:-35,d:-5},{key:'carriage',a:218,b:223,c:-30,d:-10},{key:'depot',a:248,b:272,c:-34,d:-6},{key:'fog-platform',a:280,b:306,c:-34,d:-6},{key:'fog-room',a:310,b:322,c:-27,d:-13},{key:'signal-platform',a:328,b:354,c:-34,d:-6},{key:'signal-room',a:363,b:379,c:-28,d:-12},{key:'tide-platform',a:380,b:406,c:-34,d:-6},{key:'tide-room',a:415,b:431,c:-28,d:-12}];
     const solids=[],scenery=[],landscapes=[],groups={},controls={};let rainGlass=null,passLight=null,nextPassAt=0,passStart=-1,passSide=1;let looping=false;let built=false,travelling=false,elapsed=0,travelDistance=0,swayTime=0,departedFrom=0,arrived=false,fogArrived=false,fogVisited=false,fogFound=false,fogBookMesh=null,nextWheel=0,conductorTalk=0,stopIndex=0,targetStop=0,alightCleared=false,arrivalPending=false,nextStationCue=0,lastStationZone='';const stops=[{key:'platform',name:'the Library Platform',x:213,z:-20},{key:'signal-platform',name:'the Signal House',x:332,z:-20},{key:'tide-platform',name:'Tidebound Quay',x:384,z:-20},{key:'fog-platform',name:'the Unmarked Stop',x:283,z:-20},{key:'depot',name:'the Collections Depot',x:260,z:-9}];
     const metal=new THREE.MeshStandardMaterial({color:0x253230,roughness:.65,metalness:.4});
@@ -203,6 +203,11 @@
         for(const z of [-20.4,-17.6])box(inside,.36,3.45,.17,MAT.brass,cx+23.2,1.72,z);
         box(inside,5,.85,2.2,MAT.darkWood,cx+31,.43,-22,true);
         bookIds.forEach((id,i)=>{const book=books.find(b=>b.id===id);if(book)volume(inside,book,cx+29+i*2,1.1,-22)});
+        // The station shelf on the far wall: new arrivals for this stop (data/new-books.js), standing face-out.
+        const shelfBooks=(arrivals[key]||[]).slice(0,10);
+        if(shelfBooks.length){const sx=cx+36.6;box(inside,.42,.06,11.4,MAT.darkWood,sx,.95,-20,true);box(inside,.42,.06,11.4,MAT.darkWood,sx,2.35,-20);
+          label(inside,key==='signal'?'THE STATION SHELF · STORIES OF THE LINE':'THE STATION SHELF · FOR THE CROSSING',sx+.12,3.9,-20,6,.55,-Math.PI/2);
+          shelfBooks.forEach((book,i)=>{const row=i<5?0:1,m=volume(inside,book,sx-.06,row?2.97:1.57,-25+(i%5)*2.5);m.scale.setScalar(.7);m.rotation.set(-.08,-Math.PI/2,0,'YXZ');m.userData.home.position.copy(m.position);m.userData.home.quaternion.copy(m.quaternion)})}
         label(inside,title+' · READING ROOM',cx+30,3.6,-27.8,9,.55);
         const relic=control(inside,key+'-relic',propTitle,propNote,'EXAMINE',cx+26,1.5,-16,1.2,.6,.7);relic.userData.note=propNote;
         const exit=control(inside,key+'-exit','The platform door','The carriage lights are still visible outside.','RETURN TO PLATFORM',cx+23.2,1.7,-19,.18,3.35,2.55);exit.material=MAT.darkWood;

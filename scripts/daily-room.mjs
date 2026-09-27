@@ -24,6 +24,8 @@ const BUNDLED=path.join(root,'texts/bundled-gzip'),AHEAD=2,DAY_MS=86400000,PAUSE
 const KINDS=['mood','journeys','curiosities','seasons','on-this-day','short-reads','deep-dive','firsts'];
 const USER_AGENT='LibraryAfterDark-RoomOfTheDay/1.0 (+https://libraryafterdark.space)';
 
+const NEW_BOOKS_RESOLVED=path.join(root,'data/new-books-resolved.js');
+function keptForGood(){try{return Object.values(loadScript(NEW_BOOKS_RESOLVED,'ATHENAEUM_NEW_BOOKS_RESOLVED')?.books||{}).map(book=>book.id)}catch(error){return []}}
 export function loadScript(file,name){const context={window:{}};vm.runInNewContext(fs.readFileSync(file,'utf8'),context,{filename:file});return context.window[name]}
 const utc=key=>{const [y,m,d]=key.split('-').map(Number);return Date.UTC(y,m-1,d)};
 const addDays=(key,n)=>new Date(utc(key)+n*DAY_MS).toISOString().slice(0,10);
@@ -97,7 +99,7 @@ const hasText=id=>fs.existsSync(path.join(root,`texts/pg${id}.txt`))||fs.existsS
 // A text already in the repository is checked like a download, so a wrong id cannot slip through.
 function localText(id){const plain=path.join(root,`texts/pg${id}.txt`),packed=path.join(BUNDLED,`pg${id}.txt.gz`);try{if(fs.existsSync(plain))return fs.readFileSync(plain,'utf8');if(fs.existsSync(packed))return zlib.gunzipSync(fs.readFileSync(packed)).toString('utf8')}catch(error){}return null}
 const localMatches=(id,title,author)=>{const text=localText(id);return !!text&&textMatches(text,title,author)};
-async function resolve([id,title,author]){
+export async function resolve([id,title,author]){
   if(id){if(localMatches(id,title,author))return {id,text:null};const text=hasText(id)?localText(id):await download(id);if(!hasText(id)&&text&&textMatches(text,title,author))return {id,text};if(text)say(`  id ${id} is not "${title}" (${header(text).title}); searching`)}
   for(const candidate of (await search(title,author)).slice(0,3)){if(localMatches(candidate,title,author))return {id:candidate,text:null};if(hasText(candidate))continue;const text=await download(candidate);if(text&&textMatches(text,title,author))return {id:candidate,text}}
   return null;
@@ -144,7 +146,8 @@ async function main(){
     days[date]={books,missing};save();
   }
   // Remove texts this job added that no day in the window still uses.
-  const kept=save(),inUse=new Set(Object.values(kept).flatMap(day=>day.books.map(book=>book.id)));
+  // Texts the new-arrivals job (scripts/new-books.mjs) keeps for good are never removed.
+  const kept=save(),inUse=new Set([...Object.values(kept).flatMap(day=>day.books.map(book=>book.id)),...keptForGood()]);
   for(const id of [...tracked])if(!inUse.has(id)){fs.rmSync(path.join(BUNDLED,`pg${id}.txt.gz`),{force:true});tracked.delete(id);say(`- removed ${id}`)}
   save();
   const total=Object.values(days).reduce((sum,day)=>sum+day.books.length,0),lost=Object.values(days).reduce((sum,day)=>sum+day.missing.length,0);
