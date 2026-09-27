@@ -43,6 +43,7 @@
       </details>
       <button class="primary" id="enter">Enter the library</button>
       <div id="entryProgress" class="entry-progress" aria-hidden="true"><i></i></div>
+      <p class="entry-catalogue"><a href="/book/">Browse the catalogue</a> · every book, with the librarian’s notes</p>
       <p id="entryStatus" class="entry-status" role="status" aria-live="polite"></p>
       <p class="small kb-intro">WASD or arrows to walk · mouse to look · E interact · J journal · O settings · R if lost</p>
       <p class="touch-intro rotation-reminder"><strong>Before you enter:</strong> unlock your screen rotation (turn off orientation lock) — the library is explored in landscape.</p>
@@ -102,7 +103,7 @@
     const applyEntryAppearance=()=>{document.body.classList.toggle('reduced-motion',document.getElementById('entryReducedMotion').checked);document.body.classList.toggle('high-contrast',document.getElementById('entryHighContrast').checked);document.body.classList.toggle('large-text',document.getElementById('entryLargeText').checked)};
     for(const [kind,[id,key]] of Object.entries(preferences)){const input=document.getElementById(id),saved=localStorage.getItem(key);if(kind==='volume')input.value=saved??13;else input.checked=saved==='1';input.addEventListener('input',()=>{localStorage.setItem(key,kind==='volume'?input.value:input.checked?'1':'0');applyEntryAppearance()})}applyEntryAppearance();
     const webglAvailable=()=>{try{const canvas=document.createElement('canvas');return !!(canvas.getContext('webgl2')||canvas.getContext('webgl'))}catch(error){return false}};
-    const BUILD='20260928-periodicals-1';
+    const BUILD='20260928-bookpages-1';
     // Files the jobs rewrite without a new BUILD (new Room of the Day books, new recordings, new arrivals): their address
     // changes every hour, so a browser holding an older copy picks up the new one within the hour.
     const LIVE_DATA=new Set(['data/daily-rooms-resolved.js','data/audiobooks.js','data/visitors-book-config.js','data/new-books-resolved.js']);
