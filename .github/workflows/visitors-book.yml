@@ -1,0 +1,71 @@
+name: Visitors' book service
+
+# Deploys the visitors' book worker (worker/visitors-book) to Cloudflare, creating its storage the first time,
+# and writes the worker's address into data/visitors-book-config.js so the library switches the real book on.
+# Needs the CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets; see worker/visitors-book/README.md.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['worker/visitors-book/**']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: visitors-book
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      ADMIN_TOKEN: ${{ secrets.VISITORS_BOOK_ADMIN_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check the secrets are set
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::error::Add the CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets first (see worker/visitors-book/README.md)."; exit 1
+          fi
+      - name: Run the tests
+        run: node --test *.test.cjs
+      - name: Find or create the storage
+        working-directory: worker/visitors-book
+        run: |
+          find_id() { npx --yes wrangler@4 kv namespace list | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const list=JSON.parse(s.slice(s.indexOf("[")));const hit=list.find(n=>n.title==="library-visitors-book"||n.title.endsWith("-library-visitors-book"));process.stdout.write(hit?hit.id:"")})'; }
+          id=$(find_id)
+          if [ -z "$id" ]; then npx --yes wrangler@4 kv namespace create library-visitors-book; id=$(find_id); fi
+          if [ -z "$id" ]; then echo "::error::Could not find or create the KV namespace."; exit 1; fi
+          sed -i "s/KV_NAMESPACE_ID/$id/" wrangler.toml
+      - name: Deploy the worker
+        id: deploy
+        working-directory: worker/visitors-book
+        run: |
+          npx --yes wrangler@4 deploy | tee deploy.log
+          url=$(grep -oE 'https://[a-z0-9.-]+\.workers\.dev' deploy.log | head -1)
+          if [ -z "$url" ]; then echo "::error::The deploy did not report a workers.dev address. Has a workers.dev subdomain been chosen in the dashboard?"; exit 1; fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          if [ -n "$ADMIN_TOKEN" ]; then printf '%s' "$ADMIN_TOKEN" | npx --yes wrangler@4 secret put ADMIN_TOKEN; fi
+      - name: Check it answers
+        run: curl -fsS "${{ steps.deploy.outputs.url }}/entries" | head -c 300
+      - name: Point the library at it
+        env:
+          URL: ${{ steps.deploy.outputs.url }}
+        run: |
+          printf '%s\n' "// Where the visitors' book service lives (worker/visitors-book). Written by .github/workflows/visitors-book.yml" \
+            "// when the service is deployed. While empty, the library shows its invented visitors' book instead." \
+            "window.ATHENAEUM_VISITORS_BOOK={endpoint:'$URL'};" > data/visitors-book-config.js
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/visitors-book-config.js
+          if git diff --cached --quiet; then echo "Already pointing at $URL."; exit 0; fi
+          git commit -m "Visitors' book: use the service at $URL"
+          for attempt in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0; sleep 10; done
+          exit 1

@@ -51,7 +51,7 @@
   ];
 
   window.createOtherReaders=function(options){
-    const {THREE,scene,MAT,interactables,canvasTexture,findBook,showNotice,playSample,isQuietMoment=()=>true,today=()=>new Date()}=options;
+    const {THREE,scene,MAT,interactables,canvasTexture,findBook,showNotice,playSample,isQuietMoment=()=>true,today=()=>new Date(),visitorsBook=null}=options;
     const dayKey=()=>today().toISOString().slice(0,10);
     // A small repeatable shuffle, so each day's choice is the same for everyone.
     function seeded(key){let h=2166136261;for(const ch of key){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return()=>{h=Math.imul(h^h>>>15,2246822507);h=Math.imul(h^h>>>13,3266489909);return((h^=h>>>16)>>>0)/4294967296}}
@@ -116,25 +116,34 @@
       }
       return out;
     }
-    const signed=entries();
-    const pageMap=canvasTexture((c,W,H)=>{
+    // Once the real visitors' book is set up (visitors-book.js), the lectern shows real signatures and can be signed;
+    // until then it holds the invented entries above.
+    const signed=entries();let shown=visitorsBook?[]:signed;
+    function drawPage(c,W,H){
       c.fillStyle='#efe4c8';c.fillRect(0,0,W,H);c.fillStyle='rgba(120,90,50,.18)';c.fillRect(W/2-3,0,6,H);
-      c.fillStyle='#3a2a1a';c.textAlign='center';c.font='bold 22px Georgia';c.fillText('VISITORS',W/4,40);c.fillText('— tonight —',W*.75,40);
-      c.textAlign='left';signed.forEach((entry,i)=>{const x=i<3?26:W/2+22,y=86+(i%3)*104;c.font='italic 20px Georgia';c.fillStyle='#2c3e66';c.fillText(`${entry.name}, ${entry.place}`,x,y);c.font='16px Georgia';c.fillStyle='#4a3a28';
+      c.fillStyle='#3a2a1a';c.textAlign='center';c.font='bold 22px Georgia';c.fillText('VISITORS',W/4,40);c.fillText(visitorsBook?'— sign the book —':'— tonight —',W*.75,40);
+      if(!shown.length){c.font='italic 22px Georgia';c.fillStyle='#4a3a28';c.fillText('Be the first to sign.',W/4,190);return}
+      c.textAlign='left';shown.slice(0,6).forEach((entry,i)=>{const x=i<3?26:W/2+22,y=86+(i%3)*104;c.font='italic 20px Georgia';c.fillStyle='#2c3e66';c.fillText(`${entry.name}, ${entry.place}`.slice(0,30),x,y);c.font='16px Georgia';c.fillStyle='#4a3a28';
         const words=`“${entry.note}”`.split(' ');let line='',row=0;for(const w of words){if(c.measureText(line+w).width>W/2-54){c.fillText(line,x,y+24+row*20);line='';row++}line+=w+' '}c.fillText(line,x,y+24+row*20);
         if(entry.book){c.font='italic 14px Georgia';c.fillStyle='#7a5a38';c.fillText(entry.book.length>34?entry.book.slice(0,33)+'…':entry.book,x,y+70)}});
-    },640,400);
+    }
+    const pageMap=canvasTexture(drawPage,640,400);
+    if(visitorsBook){
+      visitorsBook.onChange(list=>{shown=list;const canvas=pageMap?.image;if(canvas?.getContext){drawPage(canvas.getContext('2d'),canvas.width,canvas.height);pageMap.needsUpdate=true}});
+      setTimeout(()=>visitorsBook.refresh().catch(()=>{}),6000);
+    }
     const lectern=new THREE.Group();lectern.position.set(4.5,0,29.7);lectern.rotation.y=Math.PI;scene.add(lectern);
     box(.5,1.05,.4,MAT.darkWood,0,.52,0,lectern);box(.9,.06,.7,MAT.darkWood,0,.08,0,lectern);
     const desk=box(.86,.05,.58,MAT.darkWood,0,1.12,.02,lectern);desk.rotation.x=.32;
     const pages=part(new THREE.PlaneGeometry(.8,.5),std({map:pageMap,color:0x9e9582,roughness:1}),0,1.155,.03,lectern);pages.rotation.x=-Math.PI/2+.32;
     const pen=cyl(.006,.006,.2,colours.metal,.3,1.17,-.1,lectern,5);pen.rotation.set(Math.PI/2+.32,0,.6);
     let page=0;
-    const bookData={type:'reader-trace',id:'visitors-book',title:'The visitors’ book',author:'Signed by readers who came in after dark.',action:'READ'};
+    const bookData={type:'reader-trace',id:'visitors-book',title:'The visitors’ book',author:visitorsBook?'Signed by readers from all over the world. Add your name.':'Signed by readers who came in after dark.',action:visitorsBook?'READ & SIGN':'READ'};
     for(const m of [pages,desk]){m.userData=bookData;interactables.push(m)}
 
     function interact(object){
       const data=object?.userData;if(data?.type!=='reader-trace')return false;
+      if(data.id==='visitors-book'&&visitorsBook){visitorsBook.open();playSample?.('pageTurn',.5,.95);return true}
       if(data.id==='visitors-book'){const entry=signed[page++%signed.length];showNotice(`${entry.date} — ${entry.name}, ${entry.place}: “${entry.note}”${entry.book?` (${entry.book})`:''}`,7);playSample?.('pageTurn',.5,.95);return true}
       showNotice(data.text,8);return true;
     }

@@ -269,3 +269,17 @@ body.reader-open .now-playing button{height:26px;min-width:32px;font-size:12px}
 .word-card .wc-save:disabled{background:transparent;color:#6b4a22;cursor:default}
 #reader.tone-night .word-card{background:#262019;color:#e3d6ba;border-color:#6a5638}#reader.tone-night .old-word{text-decoration-color:rgba(196,154,90,.8)}
 #reader.tone-night .reader-foot .word-help-toggle.on{background:#c49a5a;color:#1c1813;border-color:#c49a5a}
+/* The visitors' book (visitors-book.js): the signatures and the form to sign, in the same dress as the support card. */
+#visitorsBook{position:fixed;inset:0;z-index:42;display:grid;place-items:center;background:radial-gradient(circle at 50% 42%,rgba(55,39,22,.34),rgba(5,7,6,.86));backdrop-filter:blur(6px);padding:18px}
+#visitorsBook.hidden{display:none}
+.vb-card{position:relative;width:min(640px,94vw);max-height:92vh;overflow:auto;padding:30px 34px 24px;background:linear-gradient(145deg,#281b12,#111b18 62%,#0c1210);border:1px solid #b18b51;box-shadow:0 24px 100px #000;color:#ded1b9;font-family:Georgia,serif}
+.vb-card small{color:#c9a46b;letter-spacing:.22em}.vb-card h2{font-weight:normal;font-size:30px;color:#f0dfbd;margin:8px 0 6px}.vb-card h3{font-weight:normal;color:#f0dfbd;margin:18px 0 8px;font-size:21px}
+.vb-intro{margin:0 0 10px;color:#bfae8e;font-style:italic}
+.vb-list{list-style:none;margin:0;padding:10px 14px;max-height:34vh;overflow:auto;background:#efe4c8;color:#2a1d10;border-radius:4px}
+.vb-list li{padding:8px 0;border-bottom:1px solid rgba(120,90,50,.2);display:grid;gap:2px}.vb-list li:last-child{border-bottom:0}
+.vb-list strong{color:#2c3e66;font-style:italic;font-weight:600}.vb-list q{color:#3a2a1a}.vb-list small{color:#7a5a38;letter-spacing:0;font-size:13px}.vb-list .vb-empty{font-style:italic;color:#5a4630}
+.vb-form label{display:grid;gap:4px;margin:10px 0;font-size:15px;color:#e6d6b6}.vb-form em{color:#a8987a;font-size:13px}
+.vb-form input,.vb-form select{font:inherit;font-size:16px;padding:9px 10px;border:1px solid #8a6a3e;border-radius:6px;background:#f6ecd4;color:#2a1d10;max-width:100%}
+.vb-privacy{font-size:13px;color:#a8987a;margin:8px 0 0}.vb-status{min-height:1.3em;color:#f0c27a;margin:8px 0 0}
+.vb-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.vb-signed p{font-style:italic;color:#e6c98f}.vb-signed.hidden,.vb-form.hidden{display:none}
+@media(max-width:560px){.vb-card{padding:24px 18px 18px}.vb-card h2{font-size:25px}}
