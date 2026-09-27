@@ -314,9 +314,39 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "The Wreck of the Grosvenor": {
    "id": 44497,
    "words": 43849
+  },
+  "The Gods of Mars": {
+   "id": 64,
+   "words": 83194
+  },
+  "The Warlord of Mars": {
+   "id": 68,
+   "words": 57568
+  },
+  "The Chessmen of Mars": {
+   "id": 1153,
+   "words": 89426
+  },
+  "Edison’s Conquest of Mars": {
+   "id": 19141,
+   "words": 65403
+  },
+  "Across the Zodiac": {
+   "id": 10165,
+   "words": 165516
+  },
+  "Mars": {
+   "id": 47015,
+   "words": 84860
+  },
+  "The Certainty of a Future Life in Mars": {
+   "id": 13289,
+   "words": 55625
   }
  },
  "missing": [
-  "Benito Cereno"
+  "Benito Cereno",
+  "Mars as the Abode of Life",
+  "Lieut. Gullivar Jones: His Vacation"
  ]
 };
