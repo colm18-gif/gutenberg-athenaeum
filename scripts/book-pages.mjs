@@ -55,6 +55,9 @@ const ROOM_NAMES={secret:'The secret bookcase in the west wing','evening-quick':
   signal:'The Signal House, on the night railway',tide:'Tidebound Quay, on the night railway',mars:'The Reading Room of Helium, on Mars',periodicals:'The Periodicals Room'};
 const CURIOUS={horologist:'The Horologist’s Study',conservatory:'The Night Conservatory',parlour:'The Ghost-Story Parlour',attic:'The attic behind the curious doors',
   repository:'The Repository',unread:'The Unread Room',returning:'The Room of Returning Names',quiet:'The Quiet Stacks',sorting:'The Sorting Room',departures:'Departures'};
+// Places with a link straight into them (/?room=…, handled in game.js).
+const ROOM_LINKS={'The Evening Room':'evening-room','The English Reading Room':'learners-room','The Periodicals Room':'periodicals-room','The Reading Room of Helium, on Mars':'mars',
+  'The Selenite Reading Outpost, on the Moon':'moon','The Consulting Room':'consulting-room','The Time Laboratory':'time-laboratory','The Lost Kingdoms':'lost-kingdoms','The Verne rooms':'verne-rooms'};
 const CATEGORY_ROOMS={'Extraordinary Voyages':'The Verne rooms','The Consulting Room':'The Consulting Room','The Time Laboratory':'The Time Laboratory','The Lost Kingdoms':'The Lost Kingdoms'};
 function idsIn(file,pattern){const source=read(file),match=source.match(pattern);return match?[...match[1].matchAll(/\d+/g)].map(m=>Number(m[0])):[]}
 function roomsFrom(books){
@@ -134,7 +137,7 @@ ${note?`<blockquote><p>${escape(note)}</p><cite>The librarian</cite></blockquote
 <a class="read" href="/?book=${book.id}">Read it in the Library After Dark</a>
 <dl>
 ${time?`<dt>Reading time</dt><dd>About ${time}</dd>`:''}
-${places.length?`<dt>Where to find it</dt><dd>${places.map(escape).join('; ')}</dd>`:`<dt>Where to find it</dt><dd>On the ${escape(book.category||'library')} shelves</dd>`}
+${places.length?`<dt>Where to find it</dt><dd>${places.map(place=>ROOM_LINKS[place]?`<a href="/?room=${ROOM_LINKS[place]}">${escape(place)}</a>`:escape(place)).join('; ')}</dd>`:`<dt>Where to find it</dt><dd>On the ${escape(book.category||'library')} shelves</dd>`}
 <dt>Edition</dt><dd>${sourceLink(book)}. ${book.sourceKey&&book.licence?`Licence: ${escape(book.licence)}.`:'In the public domain in the United States.'}</dd>
 </dl>
 </div>

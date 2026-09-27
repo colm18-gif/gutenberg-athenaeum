@@ -39,7 +39,16 @@ test('the published pages are up to date with the catalogue',()=>{
 test('a link from a book page opens that book in the reader',()=>{
   const game=fs.readFileSync('game.js','utf8'),html=fs.readFileSync('index.html','utf8');
   assert.match(game,/const linkedBook=\(\(\)=>\{try\{const id=Number\(new URLSearchParams\(location\.search\)\.get\('book'\)\)/);
-  assert.match(game,/if\(linkedBook\)openLinkedBook\(\);else tour\?\.begin\(\);/);
+  assert.match(game,/if\(linkedBook\)openLinkedBook\(\);else if\(!\(linkedRoom&&goToLinkedRoom\(\)\)\)tour\?\.begin\(\);/);
   assert.match(game,/selectBook\(bm\);openReader\(\)/);
   assert.match(html,/<a href="\/book\/">Browse the catalogue<\/a>/);
+});
+
+test('room links take the reader straight to a room, and book pages use them',()=>{
+  const game=fs.readFileSync('game.js','utf8');
+  assert.match(game,/const linkedRoom=\(\(\)=>\{try\{return \(new URLSearchParams\(location\.search\)\.get\('room'\)/);
+  for(const key of ['boathouse','evening-room','learners-room','periodicals-room','daily-room','mars','moon','rocket-hall'])assert.ok(game.includes(`'${key}':`)||game.includes(`${key}:`),key);
+  assert.match(game,/'consulting-room':'doyle'/);
+  const page=fs.readFileSync(path.join(out,'book/62-a-princess-of-mars.html'),'utf8');
+  assert.match(page,/<a href="\/\?room=mars">The Reading Room of Helium, on Mars<\/a>/);
 });
