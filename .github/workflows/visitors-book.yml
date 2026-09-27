@@ -29,14 +29,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      # Until the Cloudflare secrets are added, a push skips quietly; running it by hand says what is missing.
       - name: Check the secrets are set
+        id: ready
         run: |
-          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
-            echo "::error::Add the CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets first (see worker/visitors-book/README.md)."; exit 1
-          fi
+          if [ -n "$CLOUDFLARE_API_TOKEN" ] && [ -n "$CLOUDFLARE_ACCOUNT_ID" ]; then echo "ok=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          echo "ok=false" >> "$GITHUB_OUTPUT"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then echo "::error::Add the CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID secrets first (see worker/visitors-book/README.md)."; exit 1; fi
+          echo "::notice::The visitors' book service is not set up yet (no Cloudflare secrets); nothing to deploy."
       - name: Run the tests
+        if: steps.ready.outputs.ok == 'true'
         run: node --test *.test.cjs
       - name: Find or create the storage
+        if: steps.ready.outputs.ok == 'true'
         working-directory: worker/visitors-book
         run: |
           find_id() { npx --yes wrangler@4 kv namespace list | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const list=JSON.parse(s.slice(s.indexOf("[")));const hit=list.find(n=>n.title==="library-visitors-book"||n.title.endsWith("-library-visitors-book"));process.stdout.write(hit?hit.id:"")})'; }
@@ -45,6 +50,7 @@ jobs:
           if [ -z "$id" ]; then echo "::error::Could not find or create the KV namespace."; exit 1; fi
           sed -i "s/KV_NAMESPACE_ID/$id/" wrangler.toml
       - name: Deploy the worker
+        if: steps.ready.outputs.ok == 'true'
         id: deploy
         working-directory: worker/visitors-book
         run: |
@@ -54,8 +60,10 @@ jobs:
           echo "url=$url" >> "$GITHUB_OUTPUT"
           if [ -n "$ADMIN_TOKEN" ]; then printf '%s' "$ADMIN_TOKEN" | npx --yes wrangler@4 secret put ADMIN_TOKEN; fi
       - name: Check it answers
+        if: steps.ready.outputs.ok == 'true'
         run: curl -fsS "${{ steps.deploy.outputs.url }}/entries" | head -c 300
       - name: Point the library at it
+        if: steps.ready.outputs.ok == 'true'
         env:
           URL: ${{ steps.deploy.outputs.url }}
         run: |
