@@ -1642,6 +1642,9 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const preMarsInteract=interact;interact=function(){if(focus&&!selected&&marsWorld.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preMarsInteract()};
       const preMarsReset=resetPosition;resetPosition=function(){marsWorld.reset();return preMarsReset()};
       const preMarsSurface=footstepSurface;footstepSurface=function(){return marsWorld.onSand(player.pos.x,player.pos.z)?'carpet':preMarsSurface()};
+      // The library's own ambient notes (a page turning, the midnight rabbit) do not reach Mars.
+      const preMarsAmbient=triggerAmbientEvent;triggerAmbientEvent=function(){if(marsWorld.contains(player.pos.x,player.pos.z)){nextAmbientAt=performance.now()+90000;return}return preMarsAmbient()};
+      const preMarsMidnight=triggerMidnight;triggerMidnight=function(){if(marsWorld.contains(player.pos.x,player.pos.z))return;return preMarsMidnight()};
       const preMarsSpace=acousticSpace;acousticSpace=function(){return marsWorld.contains(player.pos.x,player.pos.z)?'outdoor':preMarsSpace()};
     }showNotice.gate=()=>highStaircase.noticeAllowed();
     const preStairFloor=floorHeight;floorHeight=function(x,z){return highStaircase.floorAt(x,z)??preStairFloor(x,z)};

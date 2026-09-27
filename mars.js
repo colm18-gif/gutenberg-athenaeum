@@ -50,7 +50,7 @@
       const rand=seeded('mars');
       const dust=texture((c,Wd,H)=>{c.fillStyle='#9a4a2a';c.fillRect(0,0,Wd,H);for(let k=0;k<4200;k++){c.fillStyle=['#8a3f22','#a8583a','#b86a44','#7a361d','#c27a52'][k%5];c.globalAlpha=.35;c.fillRect(rand()*Wd,rand()*H,1+rand()*3,1+rand()*3)}c.globalAlpha=1},256,256);
       dust.wrapS=dust.wrapT=THREE.RepeatWrapping;dust.repeat.set(14,14);
-      const ground=add(new THREE.CircleGeometry(RADIUS+46,48),std({map:dust,color:0xc98a6a,roughness:1}),0,0,0);ground.rotation.x=-Math.PI/2;
+      const ground=add(new THREE.CircleGeometry(RADIUS+46,48),std({map:dust,color:0x9c6a55,roughness:1}),0,0,0);ground.rotation.x=-Math.PI/2;
       // Mesas and low hills ring the plain, far enough out to fade into the dust.
       const rock=std({color:0x5e2a18,roughness:1}),darkRock=std({color:0x3e1a10,roughness:1});
       for(let i=0;i<14;i++){const a=i/14*Math.PI*2+rand()*.2,d=RADIUS+10+rand()*22,h=3+rand()*8,r=4+rand()*7;add(new THREE.CylinderGeometry(r*.7,r,h,7),i%3?rock:darkRock,Math.cos(a)*d,h/2-.3,Math.sin(a)*d)}
@@ -122,15 +122,15 @@
       const map=texture((c,Wd,H)=>{const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#020306');g.addColorStop(.38,'#07060b');g.addColorStop(.49,'#2a140e');g.addColorStop(.52,'#3a1c12');g.addColorStop(1,'#1a0c08');c.fillStyle=g;c.fillRect(0,0,Wd,H);
         for(let i=0;i<900;i++){const y=rand()*H*.47,a=.25+rand()*.75*(1-y/(H*.5));c.fillStyle=`rgba(${230+rand()*25|0},${220+rand()*30|0},${200+rand()*40|0},${a})`;c.fillRect(rand()*Wd,y,rand()<.08?2:1,rand()<.08?2:1)}
         const ex=Wd*.75,ey=H*.43,halo=c.createRadialGradient(ex,ey,0,ex,ey,9);halo.addColorStop(0,'rgba(190,220,255,1)');halo.addColorStop(1,'rgba(120,170,255,0)');c.fillStyle=halo;c.beginPath();c.arc(ex,ey,9,0,Math.PI*2);c.fill()},2048,512);
-      sky=add(new THREE.SphereGeometry(300,32,16),own(new THREE.MeshBasicMaterial({map,side:THREE.BackSide,fog:false,depthWrite:false})),0,0,0,scene);sky.renderOrder=-1;
+      sky=add(new THREE.SphereGeometry(118,32,16),own(new THREE.MeshBasicMaterial({map,side:THREE.BackSide,fog:false,depthWrite:false})),0,0,0,scene);sky.renderOrder=-1;
       const moonMat=own(new THREE.MeshBasicMaterial({color:0xcfc2ae,fog:false}));
-      phobos=add(new THREE.SphereGeometry(4.2,14,10),moonMat,0,0,0,scene);phobos.scale.set(1.3,1,1);deimos=add(new THREE.SphereGeometry(1.8,10,8),moonMat,0,0,0,scene);
+      phobos=add(new THREE.SphereGeometry(2.4,14,10),moonMat,0,0,0,scene);phobos.scale.set(1.3,1,1);deimos=add(new THREE.SphereGeometry(1,10,8),moonMat,0,0,0,scene);
     }
     function placeSky(t){
-      const x=camera.position.x,y=camera.position.y,z=camera.position.z;sky.position.set(x,0,z);
+      const x=camera.position.x,y=camera.position.y,z=camera.position.z;sky.position.set(x,y,z);
       // Phobos rises in the west and sets in the east; Deimos barely moves.
       const pa=Math.PI*.15+((t*.02)%1)*Math.PI*.7,da=Math.PI*.35+Math.sin(t*.003)*.2;
-      phobos.position.set(x-Math.cos(pa)*180,y+Math.sin(pa)*120,z-40);deimos.position.set(x+Math.cos(da)*160,y+Math.sin(da)*130,z+60);
+      phobos.position.set(x-Math.cos(pa)*95,y+10+Math.sin(pa)*60,z-30);deimos.position.set(x+Math.cos(da)*85,y+10+Math.sin(da)*65,z+35);
     }
 
     // ---------- the Martian night ----------
