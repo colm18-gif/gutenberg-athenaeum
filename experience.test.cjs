@@ -157,7 +157,7 @@ test('Haggard and Conan Doyle have concealed author rooms with distinct period e
   assert.match(game,/image:'assets\/painting-haggard-lost-kingdom\.jpg'/);
   assert.match(game,/function hiddenEvidenceCase/);
   assert.match(game,/action:'ALIGN CLUES'/);
-  assert.match(game,/hiddenEvidenceCase\(23\.5,4,-13\.65,0,/);
+  assert.match(game,/hiddenEvidenceCase\(20,4,-13\.65,0,/);
   assert.doesNotMatch(game,/hiddenEvidenceCase\(36\.65,4,-1,/);
   assert.match(game,/image:'assets\/painting-doyle-consulting-room\.jpg'/);
   for(const asset of ['assets/painting-haggard-lost-kingdom.jpg','assets/painting-doyle-consulting-room.jpg'])assert(fs.statSync(asset).size>100000,`${asset} should be a detailed oil painting`);
@@ -225,14 +225,14 @@ test('themed-room exits face clear south walls and return beside their discoveri
   const exits=[
     ['gothic',95,22,0,-27],['inquiry',120,22,14,-27],['chart',145,22,-33,9],
     ['drawing',95,54,-33,-8],['study',120,54,30,-10.5],['garden',145,54,33,-9],
-    ['doyle',140,91,23.5,-10.5]
+    ['doyle',140,91,20,-10.5]
   ];
   for(const [name,x,z,sx,sz] of exits){
     assert.match(game,new RegExp(`memoryDoor\\(${x},${z},'mainhall',\\[${sx},0,${sz}\\][^;]+Math\\.PI/2,true\\)`),`${name} exit should be aligned with its south wall`);
   }
   assert.match(game,/memoryDoor\(184\.5,70,'mainhall',\[34\.5,0,5\][^;]+1\.9,0,true\)/,'verne exit should sit in its clear west wall');
   for(const oldCall of ["memoryDoor(95,20,'mainhall'","memoryDoor(95,40,'mainhall'","memoryDoor(170,39,'mainhall'","memoryDoor(108,63,'mainhall'","memoryDoor(138,63,'mainhall'"])assert.doesNotMatch(game,new RegExp(oldCall.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
-  assert.match(game,/memoryDoor\(140,91,'mainhall',\[23\.5,0,-10\.5\]/);
+  assert.match(game,/memoryDoor\(140,91,'mainhall',\[20,0,-10\.5\]/);
 });
 
 test('reading-room seats face their shelves and benches use Gothic upholstery',()=>{
