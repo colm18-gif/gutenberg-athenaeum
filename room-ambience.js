@@ -133,6 +133,8 @@
       'rocket':{beds:[['hum',.05]],events:[['telegraph',1,.04]]},
       // Almost nothing on the Moon: a faint rush in the helmet and the reader's own heartbeat.
       'moon':{beds:[['air',.02]],ticks:[[1.1,'thump',.025]]},
+      // Mars: a thin, cold wind over the dust.
+      'mars':{beds:[['wind',.07],['air',.03]]},
       'verne-descent':{beds:[['rumble',.14]],events:[['drip',10,.07],['bubble',3,.04]]}
     };
 

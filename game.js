@@ -1627,7 +1627,26 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     {const preGramophoneInteract=interact;interact=function(){if(focus?.userData?.type==='gramophone'&&!selected&&audiobooks){if(audiobooks.active)audiobooks.toggle();else{const shelved=books.filter(book=>audiobooks.available(book)),choice=lastListenable||shelved[Math.floor(Math.random()*shelved.length)];if(!choice)showNotice('The record is blank tonight. Try again when the recordings have arrived.',5);else{audiobooks.start(choice);showNotice(`The needle drops. ${choice.title}, by ${choice.author}, read aloud.`,6)}}focus=null;ui.prompt.style.opacity=0;return}return preGramophoneInteract()}}
     // The western door opens onto a spatially separate stair, allowing its many turns to rise
     // far beyond the existing roof without changing the carefully packed library floor plan.
-    const highStaircase=window.createHighStaircase({THREE,scene,MAT,player,camera,interactables,books,coverTexture,canvasTexture,showNotice,sound,playSample,lastSafePosition,modelTemplate:url=>seatTemplate({url}),isLowBandwidth:()=>lowBandwidth,isReducedMotion:()=>reducedMotion,slideSound:level=>slideWhoosh(level)});showNotice.gate=()=>highStaircase.noticeAllowed();
+    // Mars (mars.js): reached by turning the Rocket Hall projectile's course dial. Built only when the reader lands.
+    let marsWorld=null;
+    const highStaircase=window.createHighStaircase({THREE,scene,MAT,player,camera,interactables,books,coverTexture,canvasTexture,showNotice,sound,playSample,lastSafePosition,modelTemplate:url=>seatTemplate({url}),isLowBandwidth:()=>lowBandwidth,isReducedMotion:()=>reducedMotion,slideSound:level=>slideWhoosh(level),
+      mars:window.createMars?{arrive:()=>marsWorld?.arrive(),stepOut:()=>marsWorld?.stepOut()}:null});
+    marsWorld=window.createMars?.({THREE,scene,MAT,player,camera,interactables,canvasTexture,bookMaterial,renderer,ambient,moon,showNotice,playSample,sound,
+      findBook:id=>books.find(b=>b.id===id),arrivals:()=>newArrivals.list('mars').map(book=>book.id),boardHome:()=>highStaircase.board('summit-mars'),analytics:window.libraryAnalytics,
+      isReducedMotion:()=>reducedMotion,isHolding:()=>!!selected,storage:(()=>{try{return localStorage}catch(e){return null}})(),
+      move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
+    });
+    if(marsWorld){
+      const preMarsFloor=floorHeight;floorHeight=function(x,z){return marsWorld.floorAt(x,z)??preMarsFloor(x,z)};
+      const preMarsAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return marsWorld.contains(x,z)?marsWorld.allowed(x,z):preMarsAllowed(x,z,y)};
+      const preMarsInteract=interact;interact=function(){if(focus&&!selected&&marsWorld.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preMarsInteract()};
+      const preMarsReset=resetPosition;resetPosition=function(){marsWorld.reset();return preMarsReset()};
+      const preMarsSurface=footstepSurface;footstepSurface=function(){return marsWorld.onSand(player.pos.x,player.pos.z)?'carpet':preMarsSurface()};
+      // The library's own ambient notes (a page turning, the midnight rabbit) do not reach Mars.
+      const preMarsAmbient=triggerAmbientEvent;triggerAmbientEvent=function(){if(marsWorld.contains(player.pos.x,player.pos.z)){nextAmbientAt=performance.now()+90000;return}return preMarsAmbient()};
+      const preMarsMidnight=triggerMidnight;triggerMidnight=function(){if(marsWorld.contains(player.pos.x,player.pos.z))return;return preMarsMidnight()};
+      const preMarsSpace=acousticSpace;acousticSpace=function(){return marsWorld.contains(player.pos.x,player.pos.z)?'outdoor':preMarsSpace()};
+    }showNotice.gate=()=>highStaircase.noticeAllowed();
     const preStairFloor=floorHeight;floorHeight=function(x,z){return highStaircase.floorAt(x,z)??preStairFloor(x,z)};
     const preStairAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return highStaircase.contains(x,z)?highStaircase.allowed(x,z):preStairAllowed(x,z,y)};
     const preStairInteract=interact;interact=function(){if(focus&&!selected&&highStaircase.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preStairInteract()};
@@ -1643,14 +1662,14 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       {title:'Reading rooms',places:[...themeRoomDefs.map(def=>[def.key,titleCase(def.sign[0])]),['contested','The Unwelcome Spines']]},
       {title:'Curious rooms',secret:true,places:[['curious-parlour','The ghost-story parlour'],['curious-conservatory','The night conservatory'],['curious-horologist','The horologist’s study'],['curious-attic','The children’s attic']]},
       {title:'The night railway',places:[['railway-platform','The night platform'],['railway-carriage','The reading carriage'],['railway-depot','The depot'],['fog-stop','The unmarked fog stop'],['signal-stop','The signal box'],['tide-stop','The tide station']]},
-      {title:'Heights and depths',places:[['high-staircase','The high staircase'],['rocket','The rocket'],['moon','The Moon'],['verne-descent','The Verne descent']]},
+      {title:'Heights and depths',places:[['high-staircase','The high staircase'],['rocket','The rocket'],['moon','The Moon'],['mars','Mars'],['verne-descent','The Verne descent']]},
       {title:'Across the water',places:[['boathouse','The boathouse'],['crusoe-island','Crusoe’s island']]}
     ];
     const PLACE_INFO={};for(const group of PLACE_GROUPS)for(const [id,label] of group.places)PLACE_INFO[id]={id,label,group};
     window.libraryAnalytics?.allowRooms?.([...Object.keys(PLACE_INFO),'rocket-hall','selenite-outpost','sorting','departures']);
     const RAIL_PLACES={platform:'railway-platform',carriage:'railway-carriage',depot:'railway-depot','fog-platform':'fog-stop','fog-room':'fog-stop','signal-platform':'signal-stop','signal-room':'signal-stop','tide-platform':'tide-stop','tide-room':'tide-stop'};
     {const baseModulePlace=placeAt;placeAt=function(x,y,z){
-      if(highStaircase.onMoon(x,z))return 'moon';if(highStaircase.contains(x,z))return Math.hypot(x-highStaircase.center.x,z-highStaircase.center.z)<14.2?'high-staircase':'rocket';
+      if(marsWorld?.contains(x,z))return 'mars';if(highStaircase.onMoon(x,z))return 'moon';if(highStaircase.contains(x,z))return Math.hypot(x-highStaircase.center.x,z-highStaircase.center.z)<14.2?'high-staircase':'rocket';
       const rail=nightRailway.zoneAt(x,z)?.key;if(rail)return RAIL_PLACES[rail]||'railway-platform';
       if(librarianOffice.contains(x,z))return 'librarian-office';
       const curious=curiousDoors?.zoneAt(x,z);if(curious)return 'curious-'+curious.key;
@@ -1714,7 +1733,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       lampShadeMaterial.emissiveIntensity=2.35*flame(0);
       flickerLights.forEach((light,i)=>{const d=light.userData,factor=flame(i+1);if(d.flickerApplied!==undefined&&light.intensity!==d.flickerApplied)d.flickerBase=light.intensity/(d.flickerFactor||1);if(d.flickerBase===undefined)d.flickerBase=light.intensity;light.intensity=d.flickerBase*factor;d.flickerApplied=light.intensity;d.flickerFactor=factor})
     }
-    {const preLampWorld=updateWorld;updateWorld=function(t,dt){preLampWorld(t,dt);updateLamplight(t);crusoeIsland?.update(t,dt);otherReaders?.update(dt);learnersRoom?.update(t,dt);eveningRoom?.update(t,dt,reducedMotion)}}
+    {const preLampWorld=updateWorld;updateWorld=function(t,dt){preLampWorld(t,dt);updateLamplight(t);crusoeIsland?.update(t,dt);marsWorld?.update(t);otherReaders?.update(dt);learnersRoom?.update(t,dt);eveningRoom?.update(t,dt,reducedMotion)}}
     // ---- First visit: a short tour that moves on as the reader does each thing, with Quill leading to a shelf.
     const tour=(()=>{const box=$('#tour'),stepLabel=$('#tourStep'),text=$('#tourText');
       const pending=!localStorage.getItem('athenaeum-tour-done')&&exploredRooms.size<3&&!awakenedBooks.size;
@@ -1850,7 +1869,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       }finally{renderer.setRenderTarget(previousTarget);warmingShaders=false}
     }
     // Opt-in inspection hook for automated visual and performance checks (?debug).
-    if(new URLSearchParams(location.search).has('debug'))window.__athenaeum={THREE,MAT,hallLightmap,quoteShare,selectBook:bm=>selectBook(bm),staticBatcher,tour,continueDisplay,lampSpots,get dayPhase(){return dayPhase},set dayPhase(v){dayPhase=v},get roomAmbience(){return roomAmbience},placeAt:(x,y,z)=>placeAt(x,y,z),resetPosition:()=>resetPosition(),afterDarkExpansion,librarianOffice,dailyRoom,crusoeIsland,otherReaders,learnersRoom,eveningRoom,visitorsBook,wordHelp:window.libraryWordHelp,verneDescent,analyticsRoom:()=>analyticsRoom(),floorAt:(x,z)=>floorHeight(x,z),renderer,scene,camera,player,visual,books,curiousDoors,get librarianNotes(){return librarianNotes},interactables,zones:()=>({memoryZones,themeZones}),buildTheme:key=>buildThemeRooms(key),dressExits(){exitDressTimer=0;dressExitDoors(0)},allowedAt:(x,z)=>allowed(x,z),wallFaceOffset,buildAll(){buildBasement();buildMemoryRooms();for(const z of themeZones)try{buildThemeRooms(z.key)}catch(e){}try{buildContestedRoom()}catch(e){}},nightRailway,highStaircase,interact:()=>interact(),get focus(){return focus},get soundscape(){return soundscape},get audioCtx(){return audioCtx},playSample,teleport(x,y,z,yaw=0,pitch=0){player.pos.set(x,y,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=pitch;lastSafePosition.copy(player.pos)}};
+    if(new URLSearchParams(location.search).has('debug'))window.__athenaeum={THREE,MAT,hallLightmap,quoteShare,selectBook:bm=>selectBook(bm),staticBatcher,tour,continueDisplay,lampSpots,get dayPhase(){return dayPhase},set dayPhase(v){dayPhase=v},get roomAmbience(){return roomAmbience},placeAt:(x,y,z)=>placeAt(x,y,z),resetPosition:()=>resetPosition(),afterDarkExpansion,librarianOffice,dailyRoom,crusoeIsland,otherReaders,learnersRoom,eveningRoom,visitorsBook,wordHelp:window.libraryWordHelp,verneDescent,analyticsRoom:()=>analyticsRoom(),floorAt:(x,z)=>floorHeight(x,z),renderer,scene,camera,player,visual,books,curiousDoors,get librarianNotes(){return librarianNotes},interactables,zones:()=>({memoryZones,themeZones}),buildTheme:key=>buildThemeRooms(key),dressExits(){exitDressTimer=0;dressExitDoors(0)},allowedAt:(x,z)=>allowed(x,z),wallFaceOffset,buildAll(){buildBasement();buildMemoryRooms();for(const z of themeZones)try{buildThemeRooms(z.key)}catch(e){}try{buildContestedRoom()}catch(e){}},nightRailway,highStaircase,marsWorld,interact:()=>interact(),get focus(){return focus},get soundscape(){return soundscape},get audioCtx(){return audioCtx},playSample,teleport(x,y,z,yaw=0,pitch=0){player.pos.set(x,y,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=pitch;lastSafePosition.copy(player.pos)}};
     // Compiling every shader on the first frame froze the page for seconds, longest on tablets.
     // Compile them behind the entrance veil instead, a few at a time so the progress bar keeps
     // moving, then keep warming the materials of rooms that are built later, before they are seen.
