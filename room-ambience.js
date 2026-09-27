@@ -91,6 +91,7 @@
       'restricted-stacks':{beds:[['air',.06]],events:[['whisper',1.2,.04],['creak',.8,.05]]},
       'roof-garden':{beds:[['wind',.14]],events:[['chimes',2.2,.08],['owl',.4,.06]]},
       'daily-room':{beds:[['air',.04]],events:[['rustle',1.2,.04]]},
+      'learners-room':{beds:[['air',.035]],events:[['rustle',1.6,.035],['creak',.5,.04]]},
       boathouse:{beds:[['waves',.08],['air',.03]],events:[['creak',1.4,.06],['drip',3,.035]]},
       'crusoe-island':{beds:[['waves',.13],['wind',.05]],events:[['gull',1.4,.05],['bird',2.5,.04]]},
       'librarian-office':{beds:[['air',.04]],ticks:[[1,'tick',.06]],events:[['scratch',2.5,.05],['rustle',1.5,.04]]},

@@ -110,3 +110,19 @@ paper ground with a plate mark and its original caption, and saved in
 | The Unfinished Question (Inquiry door) | Sidney Paget, “A man entered”, *A Scandal in Bohemia* (1891) | Project Gutenberg #48320 |
 | After the Conversation (Parlour door) | Sidney Paget, “I will wish you all a very good night”, *The Noble Bachelor* (1892) | Project Gutenberg #48320 |
 | Map on the Lost Kingdoms chest | The da Silvestra map from H. Rider Haggard's *King Solomon's Mines* (1885) | Project Gutenberg #2166 |
+
+## Pocket dictionary (English Reading Room)
+
+Word meanings in `data/learner-dictionary.json` come from WordNet 3.0, built by `scripts/build-learner-data.mjs`
+from the `wordnet-db` npm package. WordNet's licence requires this notice on all copies:
+
+> WordNet 3.0 Copyright 2006 by Princeton University. All rights reserved.
+>
+> THIS SOFTWARE AND DATABASE IS PROVIDED "AS IS" AND PRINCETON UNIVERSITY MAKES NO REPRESENTATIONS OR
+> WARRANTIES, EXPRESS OR IMPLIED. BY WAY OF EXAMPLE, BUT NOT LIMITATION, PRINCETON UNIVERSITY MAKES NO
+> REPRESENTATIONS OR WARRANTIES OF MERCHANTABILITY OR FITNESS FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE
+> LICENSED SOFTWARE, DATABASE OR DOCUMENTATION WILL NOT INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS
+> OR OTHER RIGHTS.
+
+The meanings are shortened, and the words chosen and ranked by how often they appear in the library's own books.
+A few meanings are rewritten by hand where WordNet's first sense is unusual (see `OVERRIDES` in the build script).
