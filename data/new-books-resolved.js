@@ -342,11 +342,75 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "The Certainty of a Future Life in Mars": {
    "id": 13289,
    "words": 55625
+  },
+  "Punch, or the London Charivari, Volume 1, July 17, 1841": {
+   "id": 13639,
+   "words": 15226
+  },
+  "The Atlantic Monthly, Vol. 01, No. 01, November, 1857": {
+   "id": 8498,
+   "words": 84399
+  },
+  "Notes and Queries, Number 01, November 3, 1849": {
+   "id": 8603,
+   "words": 11277
+  },
+  "The Germ: Thoughts towards Nature in Poetry, Literature and Art": {
+   "id": 17649,
+   "words": 86271
+  },
+  "The Idler Magazine, Vol. III, May 1893": {
+   "id": 23734,
+   "words": 32484
+  },
+  "St. Nicholas Magazine for Boys and Girls, Vol. 5, No. 5, March, 1878": {
+   "id": 16173,
+   "words": 43115
+  },
+  "Harper's Young People, January 20, 1880": {
+   "id": 28313,
+   "words": 16480
+  },
+  "Blackwood's Edinburgh Magazine, Vol. 55, No. 339, January, 1844": {
+   "id": 13306,
+   "words": 94621
+  },
+  "Godey's Lady's Book, Vol. 42, January, 1851": {
+   "id": 15080,
+   "words": 59726
+  },
+  "The Crisis, Vol. 1, No. 1, November, 1910": {
+   "id": 71222,
+   "words": 12888
+  },
+  "The Mirror of Literature, Amusement, and Instruction, Vol. 10, No. 287, December 22, 1827": {
+   "id": 12496,
+   "words": 12538
+  },
+  "The Continental Monthly, Vol. 1, No. 1, January, 1862": {
+   "id": 18977,
+   "words": 74082
+  },
+  "Birds, Illustrated by Color Photography, Vol. 1, No. 1, January 1897": {
+   "id": 30221,
+   "words": 8174
+  },
+  "The Great Round World and What Is Going On In It, Vol. 1, No. 1, November 4, 1896": {
+   "id": 15827,
+   "words": 12104
   }
  },
  "missing": [
   "Benito Cereno",
   "Mars as the Abode of Life",
-  "Lieut. Gullivar Jones: His Vacation"
+  "Lieut. Gullivar Jones: His Vacation",
+  "The Strand Magazine, Vol. 01, Issue 01, January 1891",
+  "The Yellow Book, Volume 1, April 1894",
+  "Scientific American, Vol. 17, No. 1, July 6, 1867",
+  "Chambers's Edinburgh Journal, No. 419, New Series, January 3, 1852",
+  "Astounding Stories of Super-Science, January 1930",
+  "McClure's Magazine, Vol. 1, No. 1, June, 1893",
+  "The Spectator, Volume 1",
+  "The Nursery, April 1873, Vol. XIII. No. 4"
  ]
 };
