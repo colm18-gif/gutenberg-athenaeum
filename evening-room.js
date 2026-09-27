@@ -30,7 +30,7 @@
   }
 
   window.createEveningRoom=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,levels={},showNotice,playSample,move,analytics,isHolding=()=>false}=options;
+    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,levels={},arrivals={},showNotice,playSample,move,analytics,isHolding=()=>false}=options;
     const DOOR={x:21.8,z:9.45,yaw:Math.PI};
     const ROOM={cx:-330,cz:20,w:14,d:12,h:4.6};
     const PRELOAD=7,KEEP=25;
@@ -47,9 +47,11 @@
       return add(own(new THREE.PlaneGeometry(w,h)),own(new THREE.MeshStandardMaterial({map,emissive:0x6b461e,emissiveIntensity:.3,roughness:.85})),x,y,z,parent);
     }
 
-    // The books, with their measured reading times. A book the library does not hold is simply left out.
+    // The books, with their measured reading times, and the new arrivals for each group (data/new-books.js).
+    // A book the library does not hold is simply left out, and each group keeps to the room it has on the walls.
+    const ROOM_FOR=[10,10,16],ARRIVALS=[arrivals.quick,arrivals.hour,arrivals.evening];
     function catalogue(){
-      return GROUPS.map(group=>({...group,books:group.ids.map(id=>{const [title,author]=RECORDS[id]||[],book=findBook(id,{id,title,author}),words=levels[id]?.[2];return book&&words?{book,words,time:readingTime(words)}:null}).filter(Boolean)}));
+      return GROUPS.map((group,g)=>({...group,books:[...new Set([...group.ids,...(ARRIVALS[g]||[])])].map(id=>{const [title,author]=RECORDS[id]||[],book=findBook(id,{id,title,author}),words=levels[id]?.[2];return book&&words?{book,words,time:readingTime(words)}:null}).filter(Boolean).slice(0,ROOM_FOR[g])}));
     }
 
     // ---------- the door, off the east wing ----------
@@ -95,14 +97,14 @@
       box(.6,.06,.6,MAT.darkWood,cx+3.3,.72,cz+.6,root);box(.1,.7,.1,MAT.darkWood,cx+3.3,.36,cz+.6,root);block(cx+3.3,cz+.6,.7,.7);
       // Books face-out on ledges, in three groups: west wall, east wall, and either side of the fireplace.
       const groups=catalogue(),geometry=own(new THREE.BoxGeometry(.72,.96,.13));
-      const wallSpots=(side,count)=>{const out=[],x=side<0?cx-w/2+.3:cx+w/2-.3,yaw=side<0?Math.PI/2:-Math.PI/2;for(let i=0;i<count;i++){const row=i<4?0:1,col=i%4;out.push({x,z:cz-3.3+col*2.2,y:row?2.75:1.45,yaw})}return out};
-      const northSpots=count=>{const out=[];for(let i=0;i<count;i++){const half=i%2,k=Math.floor(i/2),row=k<3?0:1,col=k%3;out.push({x:(half?cx+2.35:cx-2.35)+(half?1:-1)*col*1.2,z:cz-d/2+.3,y:row?2.9:1.55,yaw:0})}return out};
+      const wallSpots=(side,count)=>{const out=[],x=side<0?cx-w/2+.3:cx+w/2-.3,yaw=side<0?Math.PI/2:-Math.PI/2;for(let i=0;i<count;i++){const row=i<5?0:1,col=i%5;out.push({x,z:cz-3.6+col*1.8,y:row?2.75:1.45,yaw})}return out};
+      const northSpots=count=>{const out=[];for(let i=0;i<count;i++){const half=i%2,k=Math.floor(i/2),row=k<4?0:1,col=k%4;out.push({x:(half?cx+2.35:cx-2.35)+(half?1:-1)*col*1.2,z:cz-d/2+.3,y:row?2.9:1.55,yaw:0})}return out};
       const spots=[wallSpots(-1,groups[0].books.length),wallSpots(1,groups[1].books.length),northSpots(groups[2].books.length)];
       groups.forEach((group,g)=>{
         group.books.forEach((entry,i)=>placeBook(entry,spots[g][i],geometry));
         // Ledges under each row, and the group's sign above.
-        if(g<2){const s=spots[g][0];for(const y of [1.45,2.75])box(.34,.05,8.2,MAT.darkWood,s.x,y-.5,cz,root);const label=sign(root,group.name,group.sub,2.9,.5,s.x+(g?-.08:.08),3.95,cz);label.rotation.y=s.yaw;mark(label,{type:'evening-card',title:group.name[0]+group.name.slice(1).toLowerCase(),author:group.sub+'.',action:'READ'});block(s.x,cz,.7,8.6)}
-        else{for(const side of [-1,1])for(const y of [1.55,2.9]){box(3.6,.05,.34,MAT.darkWood,cx+side*3.55,y-.5,cz-d/2+.34,root)}const label=sign(root,group.name,group.sub,3,.5,cx,3.75,cz-d/2+.2);mark(label,{type:'evening-card',title:'An evening',author:group.sub+'.',action:'READ'});block(cx-3.55,cz-d/2+.4,3.7,.6);block(cx+3.55,cz-d/2+.4,3.7,.6)}
+        if(g<2){const s=spots[g][0];for(const y of [1.45,2.75])box(.34,.05,8.8,MAT.darkWood,s.x,y-.5,cz,root);const label=sign(root,group.name,group.sub,2.9,.5,s.x+(g?-.08:.08),3.95,cz);label.rotation.y=s.yaw;mark(label,{type:'evening-card',title:group.name[0]+group.name.slice(1).toLowerCase(),author:group.sub+'.',action:'READ'});block(s.x,cz,.7,9.2)}
+        else{for(const side of [-1,1])for(const y of [1.55,2.9]){box(4.8,.05,.34,MAT.darkWood,cx+side*4.15,y-.5,cz-d/2+.34,root)}const label=sign(root,group.name,group.sub,3,.5,cx,3.75,cz-d/2+.2);mark(label,{type:'evening-card',title:'An evening',author:group.sub+'.',action:'READ'});block(cx-4.15,cz-d/2+.4,4.9,.6);block(cx+4.15,cz-d/2+.4,4.9,.6)}
       });
       // Lamps: one standard lamp in a corner and the fire.
       const shade=own(new THREE.MeshStandardMaterial({color:0xf2d6a0,emissive:0xffb35c,emissiveIntensity:1.1,roughness:.7}));

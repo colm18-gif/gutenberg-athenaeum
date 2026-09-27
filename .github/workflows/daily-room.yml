@@ -16,7 +16,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: daily-room
+  group: library-texts   # shared with new-books.yml: both write texts/bundled-gzip
   cancel-in-progress: false
 
 jobs:

@@ -41,7 +41,7 @@
   const BANNER=['Welcome','Bienvenidos','Bienvenue','Boas-vindas','Willkommen','Karibu','Witamy','Hoş geldiniz','Selamat datang','Chào mừng','欢迎','ようこそ','환영합니다','स्वागत है','أهلاً وسهلاً','Добро пожаловать','Fáilte'];
 
   window.createLearnersRoom=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,levels={},wordHelp=null,showNotice,playSample,sound,move,analytics,language=()=>'en',today=()=>new Date(),isHolding=()=>false}=options;
+    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,levels={},arrivals={},wordHelp=null,showNotice,playSample,sound,move,analytics,language=()=>'en',today=()=>new Date(),isHolding=()=>false}=options;
     const DOOR={x:-23,z:9.45,yaw:Math.PI};
     const ROOM={cx:-330,cz:-60,w:16,d:14,h:5};
     const PRELOAD=7,KEEP=25;
@@ -75,8 +75,9 @@
       const rand=seeded('learners:'+key),entry=(id,level)=>{const book=findBook(id);if(!book)return null;const measured=levels[id];return {book,level,minutes:measured?.[1]||null,note:NOTES[id]||null}};
       // Four of each shelf's books are out on a given day, a different four tomorrow.
       const pick=(ids,level)=>ids.map(id=>({id,w:rand()})).sort((a,b)=>a.w-b.w).map(x=>entry(x.id,level)).filter(Boolean).slice(0,4);
-      const graded=SHELVES.map((ids,i)=>pick(ids,i+1));
-      const short=SHORT.map(id=>entry(id,levels[id]?.[0]||1)).filter(e=>e&&e.minutes).sort((a,b)=>a.minutes-b.minutes);
+      // New arrivals (data/new-books.js) join each shelf's pool and the short-reads table, which also shows four a day.
+      const graded=SHELVES.map((ids,i)=>pick([...new Set([...ids,...(arrivals[i+1]||[])])],i+1));
+      const short=[...new Set([...SHORT,...(arrivals.short||[])])].map(id=>({id,w:rand()})).sort((a,b)=>a.w-b.w).map(x=>entry(x.id,levels[x.id]?.[0]||1)).filter(e=>e&&e.minutes).slice(0,4).sort((a,b)=>a.minutes-b.minutes);
       return {graded,short};
     }
 
