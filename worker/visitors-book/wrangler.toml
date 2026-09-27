@@ -1,0 +1,9 @@
+# The visitors' book service. Deployed by .github/workflows/visitors-book.yml, which fills in the KV namespace id.
+name = "library-visitors-book"
+main = "worker.js"
+compatibility_date = "2026-09-01"
+workers_dev = true
+
+[[kv_namespaces]]
+binding = "BOOK"
+id = "KV_NAMESPACE_ID"
