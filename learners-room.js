@@ -60,19 +60,24 @@
     function greeting(){const tag=String(language()||'en').toLowerCase(),code=tag.split(/[-_]/)[0];return WELCOME[tag]||WELCOME[code]||null}
 
     // ---------- which books go on which shelf ----------
-    const unsuitable=/\b(index|catalogue|catalog|bibliograph|manifesto|orations?)\b/i;
+    // Every book in this room is chosen by hand for readers learning English: warm, well-loved and not grim
+    // for the sake of it. The measured levels decide reading times; the shelves were set with them in mind.
+    // One darker classic is kept, with a pencilled note so nobody is taken by surprise.
+    const SHELVES=[
+      [11,46,55,16,1874,1597,2591],             // Gentle: Alice, A Christmas Carol, Oz, Peter Pan, The Railway Children, Andersen, Grimm
+      [2781,289,45,74,120,113],                 // Steady: Just So Stories, The Wind in the Willows, Anne of Green Gables, Tom Sawyer, Treasure Island, The Secret Garden
+      [236,1661,514,1448,103],                  // Richer: The Jungle Book, Sherlock Holmes, Little Women, Heidi, Around the World in Eighty Days
+      [1342,1260,1400,161,158,43]               // Challenging: Austen, Jane Eyre, Great Expectations … and Jekyll and Hyde
+    ];
+    const SHORT=[14838,11757,13,14522];         // Peter Rabbit, The Velveteen Rabbit, The Hunting of the Snark, The Canterville Ghost
+    const NOTES={43:'A darker story: a respected doctor and the monster he lets out. Short, gripping, and one of the great English classics.'};
     function shelves(key=dayKey()){
-      const rand=seeded('learners:'+key),pool=[[],[],[],[]],short=[];
-      for(const [id,[level,minutes]] of Object.entries(levels)){
-        const book=findBook(+id);if(!book||unsuitable.test(book.title||''))continue;
-        // The gentler shelves only hold books a learner can hope to finish.
-        if(level<=2&&minutes>900)continue;
-        pool[level-1].push({book,minutes,level});if(minutes<=45&&level<=3)short.push({book,minutes,level});
-      }
-      // Better-known and shorter books are likelier to be out, and the choice changes day by day.
-      const pick=(list,n)=>list.map(e=>({e,w:(e.book.fame||20)*(0.4+rand())/(1+e.minutes/600)})).sort((a,b)=>b.w-a.w).slice(0,n).map(x=>x.e);
-      const graded=pool.map(list=>pick(list,4)),shown=new Set(graded.flat().map(e=>e.book.id));
-      return {graded,short:pick(short.filter(e=>!shown.has(e.book.id)),4).sort((a,b)=>a.minutes-b.minutes)};
+      const rand=seeded('learners:'+key),entry=(id,level)=>{const book=findBook(id);if(!book)return null;const measured=levels[id];return {book,level,minutes:measured?.[1]||null,note:NOTES[id]||null}};
+      // Four of each shelf's books are out on a given day, a different four tomorrow.
+      const pick=(ids,level)=>ids.map(id=>({id,w:rand()})).sort((a,b)=>a.w-b.w).map(x=>entry(x.id,level)).filter(Boolean).slice(0,4);
+      const graded=SHELVES.map((ids,i)=>pick(ids,i+1));
+      const short=SHORT.map(id=>entry(id,levels[id]?.[0]||1)).filter(e=>e&&e.minutes).sort((a,b)=>a.minutes-b.minutes);
+      return {graded,short};
     }
 
     // ---------- the door, off the west wing ----------
@@ -130,9 +135,9 @@
         list.forEach((entry,i)=>{const row=i<2?0:1,col=i%2;placeBook(entry,s.x,row?2.9:1.5,s.z-1+col*2,s.yaw,displayGeometry)});
         block(s.x,s.z,.8,4.4);
       });
-      // One sitting: short books on a table by the door, each with its reading time.
+      // Short reads: books on a table by the door, each with its reading time.
       const tx=cx+3.4,tz=cz+d/2-2.2;box(3.8,.1,1.1,MAT.wood,tx,1.02,tz,root);for(const dx of [-1.75,1.75])for(const dz of [-.45,.45])box(.1,1,.1,MAT.darkWood,tx+dx,.5,tz+dz,root);block(tx,tz,4,1.3);
-      const oneSign=sign(root,'ONE SITTING','Stories you can finish tonight',2.2,.4,tx,2.55,tz+.3);oneSign.rotation.y=Math.PI;
+      const oneSign=sign(root,'SHORT READS','Stories you can finish in an evening',2.2,.4,tx,2.55,tz+.3);oneSign.rotation.y=Math.PI;
       short.forEach((entry,i)=>{const bx=tx+1.35-i*.9;placeBook(entry,bx,1.64,tz+.1,Math.PI,displayGeometry,-.12);
         const card=own(canvasTexture((c,W,H)=>{c.fillStyle='#f1e6c8';c.fillRect(0,0,W,H);c.fillStyle='#3a2a1d';c.textAlign='center';c.font='bold 34px Georgia';c.fillText(`${entry.minutes} min`,W/2,44)},160,64));
         const tag=add(own(new THREE.PlaneGeometry(.42,.17)),own(new THREE.MeshStandardMaterial({map:card,roughness:.9})),bx,1.075,tz-.38,root);tag.rotation.x=-Math.PI/2;tag.rotation.z=Math.PI});
@@ -157,7 +162,7 @@
     }
     function placeBook(entry,x,y,z,yaw,geometry,tilt=-.08){
       const material=own(bookMaterial(entry.book)),mesh=add(geometry,material,x,y,z,root);mesh.rotation.order='YXZ';mesh.rotation.y=yaw;mesh.rotation.x=tilt;
-      mesh.userData={type:'book',book:entry.book,loaded:false,learners:true,level:entry.level,minutes:entry.minutes,home:{position:mesh.position.clone(),quaternion:mesh.quaternion.clone(),parent:root}};
+      mesh.userData={type:'book',book:entry.book,loaded:false,learners:true,level:entry.level,minutes:entry.minutes,...(entry.note?{machineNote:entry.note}:{}),home:{position:mesh.position.clone(),quaternion:mesh.quaternion.clone(),parent:root}};
       interactables.push(mesh);ours.push(mesh);books.push(mesh);return mesh;
     }
 
@@ -183,7 +188,7 @@
         case 'learners-door':enter();return true;
         case 'learners-exit':move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The west wing again.',3);return true;
         case 'learners-word':wordHelp?.speak?.(data.word);showNotice(`${data.word}: ${data.meaning}.`,6);return true;
-        case 'learners-level':showNotice(`${data.title}: ${data.author} Levels compare the library’s books with each other, measured from their sentences and words.`,8);return true;
+        case 'learners-level':showNotice(`${data.title}: ${data.author} Every book in this room was chosen for readers learning English.`,8);return true;
         case 'learners-notebook':{const list=wordHelp?.notebook?.()||[];showNotice(list.length?`My words (${list.length}): ${list.slice(0,12).map(e=>e.m?`${e.w} (${e.m.split(/[;(]/)[0].trim()})`:e.w).join(' · ')}${list.length>12?' …':''}`:'Your notebook is empty. While reading, tap a word and choose “Save to my words”.',12);return true}
         case 'learners-globe':{root.userData.spin=2.4;sound?.(420,.2,'triangle',.03);const hello=greeting();showNotice(hello&&!/^Welcome/.test(hello)?`${hello} Readers come to this room from all over the world.`:'Readers come to this room from all over the world. Welcome!',5);return true}
       }

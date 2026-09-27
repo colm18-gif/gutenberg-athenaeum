@@ -56,7 +56,7 @@ let disposed=0;const G=class{dispose(){disposed++}},M=class{constructor(p){Objec
 const THREE={Group:O,Mesh,BoxGeometry:G,CylinderGeometry:G,SphereGeometry:G,PlaneGeometry:G,MeshStandardMaterial:M,MeshBasicMaterial:M,PointLight:class extends O{constructor(c,i){super();this.isPointLight=true;this.intensity=i}}};
 function room(language='es-ES'){
   const context={window:{},Math,Date};vm.runInNewContext(fs.readFileSync('learners-room.js','utf8'),context);
-  const scene=new O(),interactables=[],notices=[],player={pos:new V(),radius:.42},catalogue=Object.keys(levels).map(id=>({id:+id,title:'Book '+id,author:'A',fame:30}));
+  const scene=new O(),interactables=[],notices=[],player={pos:new V(),radius:.42},catalogue=[...new Set([...Object.keys(levels).map(Number),1448])].map(id=>({id,title:'Book '+id,author:'A'}));
   const r=context.window.createLearnersRoom({THREE,scene,MAT:{wood:new M({}),darkWood:new M({}),brass:new M({})},player,interactables,canvasTexture:()=>({dispose(){disposed++}}),bookMaterial:()=>new M({}),
     findBook:id=>catalogue.find(b=>b.id===id),levels,wordHelp:{notebook:()=>[{w:'lantern',m:'a lamp you can carry'}],speak:()=>true},showNotice:t=>notices.push(t),playSample:()=>{},sound:()=>{},
     move:(x,z)=>player.pos.set(x,0,z),language:()=>language,today:()=>new Date('2026-09-27T12:00:00Z')});
@@ -66,8 +66,9 @@ test('the room builds on approach with graded shelves, and is freed after the re
   const {r,scene,interactables,notices,player}=room();const doorOnly=scene.children.length;
   assert.equal(r.built,false);player.pos.set(-23,0,5);r.update(1,.1);assert.equal(r.built,true);
   const {graded,short}=r.shelves('2026-09-27');assert.equal(JSON.stringify(graded.map(s=>s.length)),'[4,4,4,4]');
-  graded.forEach((list,i)=>list.forEach(e=>{assert.equal(e.level,i+1);if(i<2)assert(e.minutes<=900,'gentle shelves hold books a learner can finish')}));
-  assert(short.every(e=>e.minutes<=45));assert(r.books.every(b=>b.userData.learners===true),'books from here open with word help');
+  graded.forEach((list,i)=>list.forEach(e=>assert.equal(e.level,i+1)));
+  assert.notEqual(JSON.stringify(r.shelves('2026-09-28').graded.map(l=>l.map(e=>e.book.id))),JSON.stringify(graded.map(l=>l.map(e=>e.book.id))),'a different selection tomorrow');
+  assert.deepEqual([...short.map(e=>e.book.id)],[14838,11757,13,14522]);assert(short.every(e=>e.minutes<=90));assert(r.books.every(b=>b.userData.learners===true),'books from here open with word help');
   let lights=0;scene.traverse(o=>{if(o.isPointLight)lights++});assert(lights<=4,'three lamps and the door glow');
   r.interact(interactables.find(o=>o.userData.type==='learners-door'));assert.equal(r.contains(player.pos.x,player.pos.z),true);assert.match(notices.at(-1),/^¡Bienvenidos!/);
   r.interact(interactables.find(o=>o.userData.type==='learners-notebook'));assert.match(notices.at(-1),/lantern \(a lamp you can carry\)/);
@@ -79,4 +80,13 @@ test('the room builds on approach with graded shelves, and is freed after the re
 test('an English browser gets a plain welcome, and the walls keep readers inside',()=>{
   const {r,notices,interactables}=room('en-GB');r.interact(interactables.find(o=>o.userData.type==='learners-door'));assert.match(notices.at(-1),/^The English Reading Room/);
   assert.equal(r.allowed(-330,-60+8),false);assert.equal(r.allowed(-340,-60),false);assert.equal(r.floorAt(-330,-60),0);assert.equal(r.floorAt(0,0),null);
+});
+
+test('only hand-picked books for learners, with one darker classic and its note',()=>{
+  const {r}=room();const all=new Set();for(let d=1;d<=30;d++)for(const list of r.shelves(`2026-10-${String(d).padStart(2,'0')}`).graded)for(const e of list)all.add(e.book.id);
+  for(const id of all)assert([11,46,55,16,1874,1597,2591,2781,289,45,74,120,113,236,1661,514,1448,103,1342,1260,1400,161,158,43].includes(id),`${id} was not chosen by hand`);
+  assert(all.has(43),'Jekyll and Hyde appears some days');
+  for(const dark of [5200,526,1952,10007,23218,389,64031])assert(!all.has(dark)&&!r.shelves('2026-10-01').short.some(e=>e.book.id===dark),`book ${dark} is not in the room`);
+  const shelf=r.shelves('2026-10-01');let jekyll=null;for(let d=1;d<=30&&!jekyll;d++)for(const e of r.shelves(`2026-10-${String(d).padStart(2,'0')}`).graded[3])if(e.book.id===43)jekyll=e;
+  assert.match(jekyll.note,/darker story/);assert.equal(shelf.graded[3].every(e=>e.level===4),true);
 });
