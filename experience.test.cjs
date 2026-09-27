@@ -44,6 +44,8 @@ test('the librarian discusses the railway, staircase, Moon, office and recent ad
   for(const topic of ['Tell me about the night train','What is at the top of the spiral stair','Why is there a rocket','May I see your office','What have you added lately'])assert.match(game,new RegExp(topic.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
   assert.match(game,/Collections Depot/);
   assert.match(game,/Selenite reading outpost/);
+  for(const topic of ['Where are the new rooms?','Something I can finish tonight?','I am learning English','Should I sign the visitors’ book?','What is in tonight’s paper?'])assert.ok(game.includes(`['${topic}',`),topic);
+  assert.match(game,/turn the course dial on the navigation desk from MOON to MARS/);
 });
 
 test('entry offers comfort settings and a recoverable WebGL failure',()=>{
