@@ -46,7 +46,7 @@ test('first visit: a skippable tour that follows the reader and hands over to th
   for(const id of ['tour','tourStep','tourText','tourSkip'])assert.match(html,new RegExp(`id="${id}"`));
   assert.match(game,/localStorage\.setItem\('athenaeum-tour-done','1'\)/);
   assert.match(game,/function leadToShelf\(\)/);
-  assert.match(game,/function enterLibrary\(\)\{if\(started\)return;started=true;if\(linkedBook\)openLinkedBook\(\);else tour\?\.begin\(\);/,'the tour begins unless a book page sent the reader straight to a book');
+  assert.match(game,/function enterLibrary\(\)\{if\(started\)return;started=true;if\(linkedBook\)openLinkedBook\(\);else if\(!\(linkedRoom&&goToLinkedRoom\(\)\)\)tour\?\.begin\(\);/,'the tour begins unless a book page sent the reader straight to a book');
   assert.match(css,/\.tour\{/);
 });
 
