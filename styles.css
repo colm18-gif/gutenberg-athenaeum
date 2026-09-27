@@ -255,3 +255,17 @@ body.reader-open .now-playing button{height:26px;min-width:32px;font-size:12px}
 .depth-gauge.shiver svg{animation:gauge-shiver 1.4s linear}
 @keyframes gauge-shiver{0%,100%{transform:none}10%{transform:rotate(-4deg)}20%{transform:rotate(3deg)}30%{transform:rotate(-3deg)}45%{transform:rotate(2deg)}60%{transform:rotate(-1.5deg)}80%{transform:rotate(.8deg)}}
 @media (prefers-reduced-motion:reduce){.depth-gauge.shiver svg{animation:none}}
+/* Word help (word-help.js): tap a word for its meaning, old words underlined, a small card by the word. */
+.reader-foot .word-help-toggle{font-family:Georgia,serif;letter-spacing:.02em;white-space:nowrap}
+.reader-foot .word-help-toggle.on{background:#6b4a22;color:#f6ead0;border-color:#6b4a22}
+#reader.word-help .page{cursor:help}
+#reader.word-help .old-word{text-decoration:underline dotted rgba(122,78,32,.75);text-underline-offset:3px;text-decoration-thickness:1.5px}
+.word-card{position:absolute;z-index:45;max-width:calc(100vw - 24px);background:#fbf4e3;color:#2a1d10;border:1px solid #b8955e;border-radius:10px;box-shadow:0 14px 40px rgba(0,0,0,.35);padding:10px 14px 12px;font-family:Georgia,serif;font-size:15px;line-height:1.4}
+.word-card.hidden{display:none}
+.word-card .wc-head{display:flex;align-items:center;gap:8px}.word-card .wc-head strong{flex:1;font-size:18px;font-weight:600}
+.word-card .wc-head button{border:1px solid #c8a978;background:transparent;color:inherit;border-radius:8px;min-width:34px;min-height:32px;font-size:16px;cursor:pointer}
+.word-card .wc-body p{margin:8px 0 0}.word-card .wc-body em{color:#8a6434;font-size:13px;margin-right:4px}
+.word-card .wc-foot{margin-top:10px}.word-card .wc-save{border:1px solid #6b4a22;background:#6b4a22;color:#f6ead0;border-radius:8px;padding:6px 12px;font-family:inherit;font-size:14px;cursor:pointer}
+.word-card .wc-save:disabled{background:transparent;color:#6b4a22;cursor:default}
+#reader.tone-night .word-card{background:#262019;color:#e3d6ba;border-color:#6a5638}#reader.tone-night .old-word{text-decoration-color:rgba(196,154,90,.8)}
+#reader.tone-night .reader-foot .word-help-toggle.on{background:#c49a5a;color:#1c1813;border-color:#c49a5a}
