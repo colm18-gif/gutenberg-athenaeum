@@ -21,7 +21,7 @@ const PLAUSIBLE_SCRIPT_URL = 'https://plausible.io/js/pa-nD_g44fQQBbeVFD1ofS4k.j
   script.src = PLAUSIBLE_SCRIPT_URL;
   // Only fixed event names and finite, non-personal properties are ever sent: room and place names the
   // library itself registers, short fixed labels for journeys and secrets, and Project Gutenberg book numbers.
-  const allowed = ['Library Entered', 'Room Explored', 'Book Picked Up', 'Book Opened',
+  const allowed = ['Library Entered', 'Room Explored', 'Book Picked Up', 'Book Opened', 'Book Link Opened',
     'Reading Started', 'Book Returned', 'Book Left at Desk', 'Secret Discovered', 'Secret Found',
     'Journey Taken', 'Stair Slide', 'Librarian Talked To', 'Cat Petted', 'Rabbit Door Entered',
     'Quote Opened', 'Quote Shared', 'Audiobook Played', 'Audiobook Link Opened',
