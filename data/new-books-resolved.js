@@ -255,6 +255,10 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 1869,
    "words": 65306
   },
+  "Stories of the Railroad": {
+   "id": 37038,
+   "words": 50224
+  },
   "The Wrong Box": {
    "id": 1585,
    "words": 58122
@@ -313,7 +317,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   }
  },
  "missing": [
-  "The Death of Ivan Ilych",
-  "Thrilling Stories of the Railway"
+  "Benito Cereno"
  ]
 };
