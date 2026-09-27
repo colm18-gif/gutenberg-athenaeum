@@ -61,8 +61,9 @@ test('journeys: rain and passing lights on the train, painted worlds in the rock
   assert.match(train,/rainGlass\.uniforms\.uSpeed\.value=reduced\?0:moving/);
   assert.match(train,/passLight\.intensity=Math\.sin\(Math\.PI\*k\)\*16/);
   assert.match(stair,/function drawWorld\(c,kind,x,y,r\)/);
-  assert.match(stair,/drawWorld\(c,toMoon\?'earth':'moon'/);
-  assert.match(stair,/drawWorld\(c,toMoon\?'moon':'earth'/);
+  assert.match(stair,/drawWorld\(c,flight\.from,/);
+  assert.match(stair,/drawWorld\(c,flight\.to,/);
+  assert.match(stair,/mars:\{from:'earth',to:'mars'/,'the rocket can also fly to Mars');
 });
 
 test('the tour leads to a real shelf and never hides behind the book panel',()=>{
