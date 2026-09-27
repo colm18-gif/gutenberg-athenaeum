@@ -135,11 +135,29 @@
     const lectern=new THREE.Group();lectern.position.set(4.5,0,29.7);lectern.rotation.y=Math.PI;scene.add(lectern);
     box(.5,1.05,.4,MAT.darkWood,0,.52,0,lectern);box(.9,.06,.7,MAT.darkWood,0,.08,0,lectern);
     const desk=box(.86,.05,.58,MAT.darkWood,0,1.12,.02,lectern);desk.rotation.x=.32;
-    const pages=part(new THREE.PlaneGeometry(.8,.5),std({map:pageMap,color:0x9e9582,roughness:1}),0,1.155,.03,lectern);pages.rotation.x=-Math.PI/2+.32;
+    // The open pages glow a little, as if a reading lamp were on them, so the book catches the eye from the hall.
+    const pages=part(new THREE.PlaneGeometry(.8,.5),std({map:pageMap,color:0x9e9582,roughness:1,emissive:0xffffff,emissiveMap:pageMap,emissiveIntensity:.28}),0,1.155,.03,lectern);pages.rotation.x=-Math.PI/2+.32;
     const pen=cyl(.006,.006,.2,colours.metal,.3,1.17,-.1,lectern,5);pen.rotation.set(Math.PI/2+.32,0,.6);
     let page=0;
     const bookData={type:'reader-trace',id:'visitors-book',title:'The visitors’ book',author:visitorsBook?'Signed by readers from all over the world. Add your name.':'Signed by readers who came in after dark.',action:visitorsBook?'READ & SIGN':'READ'};
-    for(const m of [pages,desk]){m.userData=bookData;interactables.push(m)}
+    // A lit sign on a brass stand beside the lectern, so nobody walks past the book without noticing it.
+    const signMap=canvasTexture((c,W,H)=>{c.fillStyle='#24170d';c.fillRect(0,0,W,H);c.strokeStyle='#d7ae60';c.lineWidth=8;c.strokeRect(8,8,W-16,H-16);c.lineWidth=2;c.strokeRect(20,20,W-40,H-40);
+      c.fillStyle='#ffe2a0';c.textAlign='center';c.font='bold 46px Georgia';c.fillText('THE VISITORS’ BOOK',W/2,92);c.fillStyle='#d7ae60';c.fillRect(W/2-90,112,180,3);
+      c.fillStyle='#f3dcae';c.font='italic 30px Georgia';
+      const lines=visitorsBook?['Please sign your name','and tell us where you are reading from']:['Read the names of readers','who came in after dark'];lines.forEach((line,i)=>c.fillText(line,W/2,168+i*40));
+      c.font='34px Georgia';c.fillStyle='#d7ae60';c.fillText('✒',W/2,H-34)},640,300);
+    const stand=new THREE.Group();stand.position.set(-.95,0,.05);lectern.add(stand);
+    const signMaterial=std({map:signMap,emissive:0xffffff,emissiveMap:signMap,emissiveIntensity:.55,roughness:.8});
+    cyl(.025,.025,1.7,colours.metal,0,.85,0,stand,8);cyl(.2,.24,.04,colours.metal,0,.02,0,stand,16);
+    const board=box(1.04,.52,.04,MAT.darkWood,0,1.86,0,stand);board.rotation.x=-.12;
+    const sign=part(new THREE.PlaneGeometry(.96,.45),signMaterial,0,1.865,.025,stand);sign.rotation.x=-.12;
+    // And a larger plaque on the wall above, which can be read from across the Grand Hall.
+    const plaqueMap=canvasTexture((c,W,H)=>{c.fillStyle='#24170d';c.fillRect(0,0,W,H);c.strokeStyle='#d7ae60';c.lineWidth=10;c.strokeRect(10,10,W-20,H-20);
+      c.fillStyle='#ffe2a0';c.textAlign='center';c.font='bold 64px Georgia';c.fillText(visitorsBook?'PLEASE SIGN THE VISITORS’ BOOK':'THE VISITORS’ BOOK',W/2,H/2+10);
+      c.fillStyle='#d7ae60';c.font='italic 30px Georgia';c.fillText(visitorsBook?'Readers from every corner of the world have signed ↓':'Readers who came in after dark ↓',W/2,H-40)},1280,220);
+    box(2.5,.48,.06,MAT.darkWood,0,3.05,-.68,lectern);
+    const plaque=part(new THREE.PlaneGeometry(2.4,.41),std({map:plaqueMap,emissive:0xffffff,emissiveMap:plaqueMap,emissiveIntensity:.6,roughness:.8}),0,3.05,-.645,lectern);
+    for(const m of [pages,desk,board,sign,plaque]){m.userData=bookData;interactables.push(m)}
 
     function interact(object){
       const data=object?.userData;if(data?.type!=='reader-trace')return false;
