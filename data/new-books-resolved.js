@@ -1118,6 +1118,146 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Arsène Lupin, gentleman-cambrioleur [fr]": {
    "id": 32854,
    "words": 55374
+  },
+  "Aeneidos [la]": {
+   "id": 227,
+   "words": 63791
+  },
+  "The Bucolics and Eclogues [la]": {
+   "id": 229,
+   "words": 5750
+  },
+  "Georgicon [la]": {
+   "id": 231,
+   "words": 14206
+  },
+  "C. Iuli Caesaris De Bello Gallico, I-IV [la]": {
+   "id": 218,
+   "words": 20542
+  },
+  "Commentarii de Bello Gallico, Libri V-VIII [la]": {
+   "id": 18837,
+   "words": 30880
+  },
+  "Cicero's Orations [la]": {
+   "id": 226,
+   "words": 13204
+  },
+  "Cato Maior de Senectute [la]": {
+   "id": 14945,
+   "words": 50602
+  },
+  "Horace: Odes and Epodes [la]": {
+   "id": 9646,
+   "words": 16354
+  },
+  "Catulli Carmina [la]": {
+   "id": 23294,
+   "words": 14033
+  },
+  "Fasti [la]": {
+   "id": 8738,
+   "words": 92375
+  },
+  "Sexti Properti Elegiarvm: Liber Primvs [la]": {
+   "id": 237,
+   "words": 4423
+  },
+  "The Satires of A. Persius Flaccus [la]": {
+   "id": 22119,
+   "words": 73341
+  },
+  "M. Fabi Quintiliani institutionis oratoriae liber decimus [la]": {
+   "id": 21827,
+   "words": 171852
+  },
+  "Apicii librorum X qui dicuntur De re coquinaria quae extant [la]": {
+   "id": 16439,
+   "words": 31214
+  },
+  "Vitruvii De architectura libri decem [la]": {
+   "id": 51812,
+   "words": 168546
+  },
+  "Punicorum Libri Septemdecim [la]": {
+   "id": 27219,
+   "words": 88235
+  },
+  "C. Sallusti Crispi De Bello Catilinario Et Jugurthino [la]": {
+   "id": 7402,
+   "words": 69192
+  },
+  "Germania and Agricola [la]": {
+   "id": 9090,
+   "words": 62759
+  },
+  "Amphitryo, Asinaria, Aulularia, Bacchides, Captivi [la]": {
+   "id": 16564,
+   "words": 119599
+  },
+  "Monumentum Ancyranum: The Deeds of Augustus [la]": {
+   "id": 66595,
+   "words": 32887
+  },
+  "Confessiones [la]": {
+   "id": 33849,
+   "words": 135590
+  },
+  "The Theological Tractates and The Consolation of Philosophy [la]": {
+   "id": 13316,
+   "words": 98755
+  },
+  "Omnia Opera Sancti Patricii [la]": {
+   "id": 45527,
+   "words": 16961
+  },
+  "Meditationes de prima philosophia [la]": {
+   "id": 23306,
+   "words": 20809
+  },
+  "Philosophiae Naturalis Principia Mathematica [la]": {
+   "id": 28233,
+   "words": 116849
+  },
+  "Species Plantarum, Sections I-III [la]": {
+   "id": 20771,
+   "words": 21399
+  },
+  "Pvcna porcorvm [la]": {
+   "id": 70569,
+   "words": 2033
+  },
+  "Insula thesauraria [la]": {
+   "id": 68935,
+   "words": 70257
+  },
+  "Rebilius Crūsō [la]": {
+   "id": 70468,
+   "words": 41225
+  },
+  "Fabulae, virginibus puerisque aut narrandae aut recitandae [la]": {
+   "id": 57615,
+   "words": 27992
+  },
+  "Ritchie's Fabulae Faciles: A First Latin Reader [la]": {
+   "id": 8997,
+   "words": 34822
+  },
+  "Stories from Aulus Gellius [la]": {
+   "id": 25861,
+   "words": 46971
+  },
+  "Julius Cæsar [la]": {
+   "id": 46768,
+   "words": 16555
+  },
+  "Platonis Apologia Socratis [la]": {
+   "id": 51139,
+   "words": 10993
+  },
+  "The Hymns of Prudentius [la]": {
+   "id": 14959,
+   "words": 29535
   }
  },
  "missing": [

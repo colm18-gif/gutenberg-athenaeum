@@ -45,18 +45,19 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   red door, the Chinese Reading Room (`chinese`, notes in traditional characters; authors written `曹雪芹 (Cao Xueqin)`
   because Gutenberg's headers give titles in characters but authors in pinyin; Chinese is counted by the character,
   book pages keep the characters in their file names, and the reader breaks lines between characters) and, through
-  the blue door between them, the French Reading Room (`french`, notes in French). Rooms in `ROOM_LANGUAGES` (`scripts/new-books.mjs`, and in `game.js`) are
+  the blue door between them, the French Reading Room (`french`, notes in French), and through the stone door in
+  the Spanish room's south wall, the Latin Reading Room (`latin`, notes and book pages in English, signs in Latin). Rooms in `ROOM_LANGUAGES` (`scripts/new-books.mjs`, and in `game.js`) are
   searched on Gutendex in their language, get `book.language` (word help steps aside) and book pages in it;
-  `/es/`, `/pt/`, `/fr/` and `/zh/` are the landing pages. Their books are keyed
+  `/es/`, `/pt/`, `/fr/`, `/la/` and `/zh/` are the landing pages. Their books are keyed
   in `data/new-books-resolved.js` as `Title [lang]` (`resolvedKey`), so a French *Madame Bovary* and the English one
   can both stand. The rooms share two lamps
   that move to the reader's room, so adding a room adds no lights. Their reading-table chairs are the library's
-  own seats (`registerSeat`), opening one of the room's books. Rooms stand at x −410 and −470: keep them clear of
+  own seats (`registerSeat`), opening one of the room's books. Rooms stand at x −410 and −470 (the Latin room at z 164): keep them clear of
   Crusoe's island (x −420, z 165–199; a test checks).
   For these rooms the text's own `Language:` line must match (a title alone lets translations through). Gutendex
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
-- `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, evening-room, periodicals-room, learners-room, boathouse,
+- `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, evening-room, periodicals-room, learners-room, boathouse,
   daily-room, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text.
 - The Room of the Day runs nightly from `data/daily-rooms.js` (`scripts/daily-room.mjs`).
@@ -79,6 +80,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 
 - Periodicals Room: 8 of 22 titles were not found on Gutenberg; replacements could fill the racks.
 - Mars: *Mars as the Abode of Life* and *Gullivar Jones* were not found.
+- Gutenberg has no Hindi, Urdu or Bengali texts (Wikisource would be the source; Urdu needs right-to-left reading)
+  and only six in Irish. An Irish Room was suggested: mostly English (myth, folklore, the Revival, Irish writers)
+  with a small Irish-language shelf; CELT (celt.ucc.ie) needs permission to republish.
 - Ideas offered but not started: a Halloween night, a plain text mode, reading progress across devices.
 - International Wing: outreach in Spanish, Portuguese, Chinese and French sent 28 September (no Quebec address
   found yet for the French batch). For mainland Chinese readers, host Three.js on the site:

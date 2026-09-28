@@ -149,7 +149,7 @@ test('the French Reading Room: classics in French behind the blue door, kept apa
   assert.ok(textMatches(head('French'),'Madame Bovary','Gustave Flaubert','fr'));assert.ok(!textMatches(head('English'),'Madame Bovary','Gustave Flaubert','fr'));
   // The blue door stands between the green and the red in the Spanish room's east wall.
   assert.match(wing,/french:\{cx:-470,cz:132,w:24,d:15,h:6,language:'fr'/);assert.match(wing,/type:'intl-go',room:'french'/);
-  assert.match(wing,/ROOM_DOORS=\{portuguese:\{x:EAST,z:ROOM\.cz-4\.7\},french:\{x:EAST,z:ROOM\.cz\},chinese:\{x:EAST,z:ROOM\.cz\+4\.7\}\}/);
+  assert.match(wing,/ROOM_DOORS=\{portuguese:\{x:EAST,z:ROOM\.cz-4\.7,yaw:-Math\.PI\/2\},french:\{x:EAST,z:ROOM\.cz,yaw:-Math\.PI\/2\},\s*chinese:\{x:EAST,z:ROOM\.cz\+4\.7,yaw:-Math\.PI\/2\}/);
   assert.match(game,/fr:'french-room',french:'french-room',francais:'french-room'/);assert.match(game,/'french-room':internationalWing&&\(\(\)=>internationalWing\.enter\('french'\)\)/);
   assert.match(html,/rooms:\['fr','french','francais','français','french-room'\]/);assert.match(html,/enter:'Entrer dans la bibliothèque'/);
   const out=fs.mkdtempSync(path.join(os.tmpdir(),'fr-pages-'));
@@ -163,7 +163,7 @@ test('the French Reading Room: classics in French behind the blue door, kept apa
 
 test('the wing’s rooms stand clear of every other place, Crusoe’s island included',()=>{
   const rooms=[...wing.matchAll(/(\w+):\{cx:(-?\d+),cz:(-?\d+),w:(\d+),d:(\d+)/g)].map(m=>({key:m[1],cx:+m[2],cz:+m[3],w:+m[4],d:+m[5]}));
-  assert.equal(rooms.length,4);
+  assert.equal(rooms.length,5);
   const isle=fs.readFileSync('crusoe-island.js','utf8'),[,ix,iz]=isle.match(/ISLE=\{x:(-?\d+),z:(-?\d+)/),[,rx,rz]=isle.match(/SAND=\{rx:(\d+),rz:(\d+)\}/);
   for(const a of rooms){
     // The nearest point of the room to the island's centre must lie outside its sand.
@@ -175,4 +175,22 @@ test('the wing’s rooms stand clear of every other place, Crusoe’s island inc
   assert.match(wing,/registerSeat\(\[seat,back\],chair,new THREE\.Vector3\(0,1\.28,\.08\),yaw\+Math\.PI,\{title:def\.seat\[0\],author:def\.seat\[1\],bookIds,wingRoom:key\}\);room\.ours\.push\(seat,back\)/);
   assert.match(game,/isHolding:\(\)=>!!selected,registerSeat,/);
   assert.match(game,/bm\?\.userData\?\.seatCopy\?seated\?\.seat\?\.wingRoom/);
+});
+
+test('the Latin Reading Room: Latin texts behind a stone door in the south wall, with notes and pages in English',async()=>{
+  const latin=shelves.filter(entry=>entry[4]==='latin');
+  const {ROOMS,ROOM_LANGUAGES}=await import('./scripts/new-books.mjs');assert.ok(ROOMS.includes('latin'));assert.equal(ROOM_LANGUAGES.latin,'la');
+  assert.ok(latin.length>=30&&latin.length<=48,`${latin.length} Latin books`);
+  assert.equal(new Set(latin.map(entry=>entry[1])).size,latin.length,'each title once');
+  for(const [id,title] of latin)assert.ok(Number.isInteger(id),`${title}: give its number from Gutenberg's catalogue`);
+  const {textMatches}=await import('./scripts/daily-room.mjs'),head=lang=>`Title: Aeneidos\nAuthor: Virgil\nLanguage: ${lang}\n`;
+  assert.ok(textMatches(head('Latin'),'Aeneidos','Virgil','la'));assert.ok(!textMatches(head('English'),'Aeneidos','Virgil','la'),'a translation is not the text');
+  assert.match(wing,/latin:\{cx:-470,cz:164,w:24,d:15,h:6,language:'la'/);assert.match(wing,/latin:\{x:ROOM\.cx\+7,z:SOUTH,yaw:0\}/);assert.match(wing,/room:'latin'/);
+  assert.match(game,/la:'latin-room',latin:'latin-room',latina:'latin-room'/);assert.match(game,/'latin-room':internationalWing&&\(\(\)=>internationalWing\.enter\('latin'\)\)/);
+  const out=fs.mkdtempSync(path.join(os.tmpdir(),'la-pages-'));
+  execFileSync(process.execPath,['scripts/book-pages.mjs'],{env:{...process.env,OUT:out}});
+  const la=fs.readFileSync(path.join(out,'la/index.html'),'utf8');
+  assert.match(la,/<html lang="en">/);assert.match(la,/<h1>Libri Latini<\/h1>/);assert.match(la,/href="\/\?room=latin-room"/);
+  assert.equal(fs.readFileSync('la/index.html','utf8'),la,'run: node scripts/book-pages.mjs');
+  assert.match(fs.readFileSync(path.join(out,'sitemap.xml'),'utf8'),/<loc>https:\/\/libraryafterdark\.space\/la\/<\/loc>/);
 });

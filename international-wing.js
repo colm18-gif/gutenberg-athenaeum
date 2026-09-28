@@ -1,10 +1,12 @@
 // The International Wing: behind a door on the Grand Hall's south wall, beside the visitors' book. Its rooms hold
 // classics in their own languages, face-out on racks above a dado of tiles, each book with a librarian's note in
-// that language (data/new-books.js, rooms 'spanish', 'portuguese', 'chinese' and 'french'), and one on the lectern each night:
+// that language (data/new-books.js, rooms 'spanish', 'portuguese', 'chinese', 'french' and 'latin'), and one on the lectern each night:
 //   the Sala de lectura en español, entered from the Grand Hall;
 //   the Sala de leitura em português, through the green door in the Spanish room's east wall;
 //   the Salle de lecture en français, through the blue door between them;
-//   the 中文閱覽室 (the Chinese Reading Room), through the red door.
+//   the 中文閱覽室 (the Chinese Reading Room), through the red door;
+//   the Latin Reading Room (Conclave Latinum), through the stone door in the Spanish room's south wall. Its notes
+//   are in English: Latin's readers today read it from every other language.
 //
 // Like the other rooms behind doors, each room is built only when the reader walks up to it and freed a little
 // while after they leave. The wing's two lamps are moved to whichever room the reader is in, so the number of
@@ -33,7 +35,12 @@
       card:['Salle de lecture en français','Des classiques de France et de toute la francophonie, chacun avec une note de la bibliothécaire. Le livre du soir est sur le lutrin. (The French Reading Room: classics from France and the French-speaking world.)'],
       lectern:'LE LIVRE DU SOIR',shade:0x2a3f6e,tiles:'toile',
       welcome:pick=>`Salle de lecture en français. Bienvenue : des classiques en français, chacun avec une note de la bibliothécaire.${pick?` Sur le lutrin ce soir : ${pick.title}.`:''} (The International Wing: the French Reading Room.)`,
-      note:'La note de la bibliothécaire',seat:['Une chaise près de la table','Asseyez-vous et lisez un livre de cette salle. (Sit and read a book from this room.)']}
+      note:'La note de la bibliothécaire',seat:['Une chaise près de la table','Asseyez-vous et lisez un livre de cette salle. (Sit and read a book from this room.)']},
+    latin:{cx:-470,cz:164,w:24,d:15,h:6,language:'la',sign:'CONCLAVE LATINVM',sub:'The Latin Reading Room · Ala Internationalis',
+      card:['Conclave Latinum','The Latin Reading Room: Virgil, Ovid, Caesar, Cicero and the rest, in the words they wrote, each with a note from the librarian. Tonight’s book is on the lectern. (Salvete, lectores.)'],
+      lectern:'LIBER NOCTIS',shade:0x7a5a2a,tiles:'roman',
+      welcome:pick=>`Salvete! The Latin Reading Room: the Romans in their own words, each with a note from the librarian.${pick?` On the lectern tonight: ${pick.title}.`:''}`,
+      note:'The librarian’s note',seat:['Sella ad mensam','Sit and read a book from this room.']}
   };
 
   window.createInternationalWing=function(options){
@@ -41,11 +48,13 @@
       wallMaterial=null,finishWalls=null,registerSeat=null}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
     const DOOR={x:8.6,z:30.45,yaw:Math.PI};
     // The doors in the Spanish room's east wall, to the other rooms.
-    const ROOM=ROOMS.spanish,EAST=ROOM.cx+ROOM.w/2-.2,ROOM_DOORS={portuguese:{x:EAST,z:ROOM.cz-4.7},french:{x:EAST,z:ROOM.cz},chinese:{x:EAST,z:ROOM.cz+4.7}};
+    // yaw: which way the reader faces when they come back out through it.
+    const ROOM=ROOMS.spanish,EAST=ROOM.cx+ROOM.w/2-.2,SOUTH=ROOM.cz+ROOM.d/2-.2,ROOM_DOORS={portuguese:{x:EAST,z:ROOM.cz-4.7,yaw:-Math.PI/2},french:{x:EAST,z:ROOM.cz,yaw:-Math.PI/2},
+      chinese:{x:EAST,z:ROOM.cz+4.7,yaw:-Math.PI/2},latin:{x:ROOM.cx+7,z:SOUTH,yaw:0}};
     const PRELOAD=7,KEEP=25;
     let time=0,lamps=null;
     const built={},lastNeeded=Object.fromEntries(Object.keys(ROOMS).map(key=>[key,-1e9]));
-    const doorData={type:'intl-door',title:'The International Wing',author:'Clásicos en español · Clássicos em português · Classiques en français · 中文經典. Each book with a note from the librarian in its own language.',action:'ENTER'};
+    const doorData={type:'intl-door',title:'The International Wing',author:'Clásicos en español · Clássicos em português · Classiques en français · 中文經典 · Libri Latini. Each book with a note from the librarian in its own language.',action:'ENTER'};
     function add(geometry,material,x,y,z,parent){const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);parent.add(m);return m}
     const dayNumber=()=>Math.floor(Date.parse(today().toISOString().slice(0,10)+'T12:00:00Z')/86400000);
     function plaque(text,sub,w,h,dark='#1d2a3d',font='Georgia'){return canvasTexture((c,W,H)=>{c.fillStyle=dark;c.fillRect(0,0,W,H);c.strokeStyle='#d7ae60';c.lineWidth=6;c.strokeRect(5,5,W-10,H-10);c.fillStyle='#ffe2a0';c.textAlign='center';
@@ -54,6 +63,10 @@
     // for France a gold fleur-de-lis on French blue, and for China a red lacquer panel with a gold key-fret border and a
     // round window.
     function tileTexture(kind){return canvasTexture((c,W,H)=>{
+      if(kind==='roman'){c.fillStyle='#d9c7a0';c.fillRect(0,0,W,H);c.strokeStyle='#7a2e18';c.fillStyle='#7a2e18';c.lineWidth=7;
+        // A running meander along top and bottom, and a rosette of eight petals in the middle, as on a Roman floor.
+        for(const y of [14,H-14]){c.beginPath();for(let x=0;x<W;x+=32){const s=y<H/2?1:-1;c.moveTo(x,y+6*s);c.lineTo(x,y-8*s);c.lineTo(x+22,y-8*s);c.lineTo(x+22,y+2*s);c.lineTo(x+10,y+2*s);c.lineTo(x+10,y-2*s)}c.stroke()}
+        c.save();c.translate(W/2,H/2);for(let k=0;k<8;k++){c.rotate(Math.PI/4);c.beginPath();c.ellipse(0,-21,8,18,0,0,Math.PI*2);c.fill()}c.fillStyle='#c79a3a';c.beginPath();c.arc(0,0,9,0,Math.PI*2);c.fill();c.restore();return}
       if(kind==='toile'){c.fillStyle='#24386a';c.fillRect(0,0,W,H);c.strokeStyle='#d6b35a';c.fillStyle='#d6b35a';c.lineWidth=4;c.strokeRect(5,5,W-10,H-10);
         // A fleur-de-lis: a tall middle petal, two curling side petals and a band across.
         const lily=(x,y,k)=>{c.save();c.translate(x,y);c.scale(k,k);c.beginPath();c.moveTo(0,-26);c.bezierCurveTo(9,-14,8,-2,0,6);c.bezierCurveTo(-8,-2,-9,-14,0,-26);c.fill();
@@ -85,7 +98,7 @@
       for(const px of [-.46,.46])add(new THREE.BoxGeometry(.72,1.2,.04),MAT.darkWood,px,.95,.17,g);
       for(const px of [-1.07,1.07])add(new THREE.BoxGeometry(.22,3.45,.3),MAT.brass,px,1.72,.1,g);add(new THREE.BoxGeometry(2.36,.22,.3),MAT.brass,0,3.44,.1,g);
       mark(add(new THREE.SphereGeometry(.08,10,8),MAT.brass,.68,1.45,.22,g),doorData);
-      const plate=plaque('THE INTERNATIONAL WING','Español · Português · Français · 中文',640,100);// the door's plaque stays for good
+      const plate=plaque('THE INTERNATIONAL WING','Español · Português · Français · 中文 · Latina',640,100);// the door's plaque stays for good
       mark(add(new THREE.PlaneGeometry(2.3,.36),new THREE.MeshStandardMaterial({map:plate,emissive:0xffffff,emissiveMap:plate,emissiveIntensity:.35}),0,3.8,.12,g),doorData);
       const l=new THREE.PointLight(0xffc27a,1.1,5,2);l.position.set(0,3.9,1.1);g.add(l);
     }
@@ -131,6 +144,10 @@
       if(key==='spanish'){
         eastDoor(ROOM_DOORS.portuguese.z,0x1f4a33,{type:'intl-go',room:'portuguese',title:'Sala de leitura em português',author:'Clássicos em português, cada um com uma nota da bibliotecária. (The Portuguese Reading Room.)',action:'ENTER'},'SALA DE LEITURA EM PORTUGUÊS','Entre · The Portuguese Reading Room');
         eastDoor(ROOM_DOORS.french.z,0x1f3160,{type:'intl-go',room:'french',title:'Salle de lecture en français',author:'Des classiques en français, chacun avec une note de la bibliothécaire. (The French Reading Room.)',action:'ENTER'},'SALLE DE LECTURE EN FRANÇAIS','Entrez · The French Reading Room');
+        {const d=ROOM_DOORS.latin,data={type:'intl-go',room:'latin',title:'Conclave Latinum',author:'The Latin Reading Room: the Romans in their own words. (Intrate.)',action:'ENTER'};
+          mark(box(1.9,3.1,.16,own(new THREE.MeshStandardMaterial({color:0x8c8272,roughness:.85})),d.x,1.55,d.z),data);for(const px of [-1.05,1.05])box(.16,3.35,.24,MAT.brass,d.x+px,1.68,d.z-.02);box(2.3,.16,.24,MAT.brass,d.x,3.3,d.z-.02);
+          const board=add(own(new THREE.PlaneGeometry(2.6,.5)),own(new THREE.MeshStandardMaterial({map:own(plaque('CONCLAVE LATINVM','Intrate · The Latin Reading Room',780,150,'#23170e')),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.25})),d.x,3.85,d.z-.14,root);
+          board.rotation.y=Math.PI;mark(board,data);block(d.x,d.z-.3,2.4,.6)}
         eastDoor(ROOM_DOORS.chinese.z,0x5a1c1a,{type:'intl-go',room:'chinese',title:'中文閱覽室',author:'中文經典，每一本都附有館員的短評。(The Chinese Reading Room.)',action:'ENTER'},'中文閱覽室','請進 · The Chinese Reading Room',CJK);
       }
       // The reading table, with a lamp, and the lectern by the door with tonight's book.
@@ -147,7 +164,7 @@
         const mesh=placeBook(pick,{x:lx,y:1.42,z:lz-.02,yaw:0});mesh.rotation.x=-1.05;mesh.userData.home.quaternion.copy(mesh.quaternion);mesh.userData.featured=true}
       // The way out: to the Grand Hall from the Spanish room, back to the Spanish room from the others.
       const exit=key==='spanish'?{type:'intl-exit',title:'Back to the Grand Hall',author:'The visitors’ book is just outside.',action:'RETURN'}
-        :{type:'intl-go',room:'spanish',back:key,title:'Sala de lectura en español',author:({chinese:'回到西班牙文閱覽室。',french:'Retour à la salle espagnole. '}[key]||'')+'Back to the Spanish Reading Room.',action:'RETURN'};
+        :{type:'intl-go',room:'spanish',back:key,title:'Sala de lectura en español',author:({chinese:'回到西班牙文閱覽室。',french:'Retour à la salle espagnole. ',latin:'Redi. '}[key]||'')+'Back to the Spanish Reading Room.',action:'RETURN'};
       mark(box(1.9,3.1,.16,MAT.darkWood,cx,1.55,cz+d/2-.2),exit);for(const px of [-1.05,1.05])box(.16,3.35,.24,MAT.brass,cx+px,1.68,cz+d/2-.22);box(2.3,.16,.24,MAT.brass,cx,3.3,cz+d/2-.22);
       scene.add(root);
     }
@@ -181,7 +198,7 @@
       if(data.type==='intl-door'){enter('spanish');return true}
       if(data.type==='intl-go'){
         // Back from the Portuguese or Chinese room: out through its door, into the Spanish room.
-        if(data.back){const from=ROOM_DOORS[data.back]||ROOM_DOORS.portuguese;activate('spanish');placeLamps('spanish');move(from.x-1.8,from.z,-Math.PI/2);playSample?.('doorOpen',.8,1);showNotice('Sala de lectura en español.',3)}
+        if(data.back){const from=ROOM_DOORS[data.back]||ROOM_DOORS.portuguese;activate('spanish');placeLamps('spanish');move(from.x-Math.sin(-from.yaw)*1.8,from.z-Math.cos(from.yaw)*1.8,from.yaw);playSample?.('doorOpen',.8,1);showNotice('Sala de lectura en español.',3)}
         else enter(data.room);
         return true;
       }

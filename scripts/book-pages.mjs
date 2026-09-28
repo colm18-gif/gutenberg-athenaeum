@@ -54,11 +54,11 @@ export function loadCatalogue(){
 // ---------- where each book lives ----------
 const ROOM_NAMES={secret:'The secret bookcase in the west wing','evening-quick':'The Evening Room','evening-hour':'The Evening Room','evening-evening':'The Evening Room',
   'learners-1':'The English Reading Room','learners-2':'The English Reading Room','learners-3':'The English Reading Room','learners-4':'The English Reading Room','learners-short':'The English Reading Room',
-  signal:'The Signal House, on the night railway',tide:'Tidebound Quay, on the night railway',mars:'The Reading Room of Helium, on Mars',periodicals:'The Periodicals Room',spanish:'The International Wing',portuguese:'The Portuguese Reading Room',chinese:'The Chinese Reading Room',french:'The French Reading Room'};
+  signal:'The Signal House, on the night railway',tide:'Tidebound Quay, on the night railway',mars:'The Reading Room of Helium, on Mars',periodicals:'The Periodicals Room',spanish:'The International Wing',portuguese:'The Portuguese Reading Room',chinese:'The Chinese Reading Room',french:'The French Reading Room',latin:'The Latin Reading Room'};
 const CURIOUS={horologist:'The Horologist’s Study',conservatory:'The Night Conservatory',parlour:'The Ghost-Story Parlour',attic:'The attic behind the curious doors',
   repository:'The Repository',unread:'The Unread Room',returning:'The Room of Returning Names',quiet:'The Quiet Stacks',sorting:'The Sorting Room',departures:'Departures'};
 // Places with a link straight into them (/?room=…, handled in game.js).
-const ROOM_LINKS={'The International Wing':'international-wing','The Portuguese Reading Room':'portuguese-room','The Chinese Reading Room':'chinese-room','The French Reading Room':'french-room','The Evening Room':'evening-room','The English Reading Room':'learners-room','The Periodicals Room':'periodicals-room','The Reading Room of Helium, on Mars':'mars',
+const ROOM_LINKS={'The International Wing':'international-wing','The Portuguese Reading Room':'portuguese-room','The Chinese Reading Room':'chinese-room','The French Reading Room':'french-room','The Latin Reading Room':'latin-room','The Evening Room':'evening-room','The English Reading Room':'learners-room','The Periodicals Room':'periodicals-room','The Reading Room of Helium, on Mars':'mars',
   'The Selenite Reading Outpost, on the Moon':'moon','The Consulting Room':'consulting-room','The Time Laboratory':'time-laboratory','The Lost Kingdoms':'lost-kingdoms','The Verne rooms':'verne-rooms'};
 const CATEGORY_ROOMS={'Extraordinary Voyages':'The Verne rooms','The Consulting Room':'The Consulting Room','The Time Laboratory':'The Time Laboratory','The Lost Kingdoms':'The Lost Kingdoms'};
 function idsIn(file,pattern){const source=read(file),match=source.match(pattern);return match?[...match[1].matchAll(/\d+/g)].map(m=>Number(m[0])):[]}
@@ -116,6 +116,9 @@ const WORDS={
     nav:'<a href="/zh/">中文書</a><a href="/book/">Catalogue</a><a class="enter" href="/?room=chinese-room">進入圖書館</a>',
     footer:'The Library After Dark 是一座可以在瀏覽器裡走進去的 3D 圖書館，館裡的公有領域書籍都可以免費閱讀。<a href="/?room=chinese-room">進去看看</a>。'}
 };
+// Latin books have their pages in English, like their notes, with a way back to the Latin shelf.
+WORDS.la={...WORDS.en,also:()=>'More Latin books',place:place=>place,onShelves:()=>'In the International Wing',
+  nav:'<a href="/la/">Libri Latini</a><a href="/book/">Catalogue</a><a class="enter" href="/?room=latin-room">Enter the library</a>'};
 const wordsFor=book=>WORDS[book?.language]||WORDS.en;
 function description(note,book){const first=(note||'').match(/^.{40,}?[.!?](\s|$)/)?.[0]?.trim()||(note||'').match(/^.{20,}?[。！？]/)?.[0]||note||`${book.title} by ${book.author}.`;return first.length>158?first.slice(0,155).replace(/\s+\S*$/,'')+'…':first}
 const PALETTES=[['#182d2a','#c49a53'],['#4a1618','#d6b36c'],['#18243d','#c59b56'],['#432612','#d2ad68'],['#24201d','#ba8741']];
@@ -212,6 +215,7 @@ ${authors.map(author=>`<section class="shelf-list"><h2 id="${slug(author)}">${es
 const SHELVES_ES={Comedy:'Comedia',Society:'Novela y sociedad',Drama:'Teatro',Satire:'Picaresca y sátira',Poetry:'Poesía',Legend:'Leyendas',History:'Historia',Philosophy:'Ideas',Conscience:'Conciencia',Romance:'Amor',Ghosts:'Cuentos de miedo',Strange:'Lo extraño',Wonder:'Para los más jóvenes',Epic:'Epopeya'};
 const SHELVES_PT={Romance:'Amor',Satire:'Sátira',Society:'Romance e sociedade',Poetry:'Poesia',Legend:'Lendas',Adventure:'Aventura',Epic:'Epopeia',Strange:'O estranho',Drama:'Teatro',Journey:'Viagens',History:'História',Philosophy:'Ideias'};
 const SHELVES_FR={Society:'Roman et société',Romance:'Amour',Adventure:'Aventure',Poetry:'Poésie',Drama:'Théâtre',Philosophy:'Idées',Satire:'Satire et conte philosophique',Strange:'L’étrange',Mystery:'Mystère',Wonder:'Contes',History:'Histoire',Journey:'Voyages',Essays:'Essais'};
+const SHELVES_LA={Epic:'Epic',Poetry:'Poetry',History:'History',Oratory:'Oratory',Philosophy:'Philosophy and faith',Drama:'Drama',Science:'Science',Food:'The kitchen',Learners:'For learners'};
 const SHELVES_ZH={Society:'世情小說',Epic:'歷史演義',Legend:'神魔與奇想',Satire:'諷刺小說',Ghosts:'志怪',Essays:'散文與筆記',Modern:'魯迅',Philosophy:'諸子與經典',Poetry:'詩詞',History:'史書',Drama:'戲曲',Adventure:'俠義',Wonder:'蒙學'};
 const LANDINGS={
   es:{path:'es',shelves:SHELVES_ES,other:'Otros',h1:'Libros en español',room:'international-wing',button:'Entrar en la Sala de lectura en español',
@@ -223,6 +227,9 @@ const LANDINGS={
   fr:{path:'fr',shelves:SHELVES_FR,other:'Autres',h1:'Livres en français',room:'french-room',button:'Entrer dans la Salle de lecture en français',
     intro:n=>`${n} classiques de France et de la francophonie, de Molière à Proust, à lire gratuitement dans une bibliothèque en 3D que l’on parcourt dans son navigateur, sur ordinateur comme sur téléphone. Ils sont rangés dans la Salle de lecture en français, dans l’aile internationale, chacun avec une note de la bibliothécaire. Sans téléchargement, sans inscription et sans publicité.`,
     title:'Livres en français · The Library After Dark',description:n=>`${n} classiques en français à lire gratuitement dans une bibliothèque en 3D, chacun avec une note de la bibliothécaire : Hugo, Flaubert, Balzac, Zola, Maupassant, Baudelaire et bien d’autres.`},
+  la:{path:'la',shelves:SHELVES_LA,other:'Other',h1:'Libri Latini',room:'latin-room',button:'Enter the Latin Reading Room',
+    intro:n=>`${n} books in Latin, from Virgil, Caesar and Cicero to Augustine, Saint Patrick, Descartes and Newton, and Treasure Island for learners, to read free in a 3D library you walk through in your browser, on a phone too. They are in the Latin Reading Room in the International Wing, each with a note from the librarian. No downloads, no sign-up and no adverts.`,
+    title:'Libri Latini: Latin books · The Library After Dark',description:n=>`${n} Latin classics to read free in a 3D library, each with a librarian’s note: Virgil, Caesar, Cicero, Horace, Catullus, Ovid, Augustine and more.`},
   zh:{path:'zh',shelves:SHELVES_ZH,other:'其他',h1:'中文書',room:'chinese-room',button:'進入中文閱覽室',
     intro:n=>`${n} 部中文經典，從《詩經》、《論語》到《紅樓夢》和魯迅，都可以在一座 3D 圖書館裡免費閱讀，用瀏覽器就能走進去，手機也可以。這些書放在國際館的中文閱覽室，每一本都附有館員的短評。不用下載，不用註冊，也沒有廣告。`,
     title:'中文書 · The Library After Dark',description:n=>`${n} 部中文經典，在一座 3D 圖書館裡免費閱讀，每一本都附有館員的短評：紅樓夢、三國志演義、西遊記、水滸傳、聊齋志異、魯迅等。`}
@@ -271,7 +278,7 @@ export function build(){
   for(const book of listed)fs.writeFileSync(path.join(dir,pageName(book)),bookPage(book,{whereIs,byAuthor,byShelf,byLanguage,editions}));
   for(const lang of Object.keys(LANDINGS)){const out=path.join(OUT,LANDINGS[lang].path);fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'index.html'),languagePage(lang,byLanguage.get(lang)||[]))}
   fs.writeFileSync(path.join(dir,'index.html'),cataloguePage(listed,byShelf));fs.writeFileSync(path.join(dir,'authors.html'),authorsPage(byAuthor));fs.writeFileSync(path.join(dir,'book.css'),CSS);
-  const urls=[`${SITE}/`,`${SITE}/book/`,`${SITE}/book/authors.html`,`${SITE}/es/`,`${SITE}/pt/`,`${SITE}/fr/`,`${SITE}/zh/`,...listed.map(b=>`${SITE}/book/${pageName(b)}`)];
+  const urls=[`${SITE}/`,`${SITE}/book/`,`${SITE}/book/authors.html`,`${SITE}/es/`,`${SITE}/pt/`,`${SITE}/fr/`,`${SITE}/la/`,`${SITE}/zh/`,...listed.map(b=>`${SITE}/book/${pageName(b)}`)];
   fs.writeFileSync(path.join(OUT,'sitemap.xml'),`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u=>`  <url><loc>${encodeURI(u)}</loc></url>`).join('\n')}\n</urlset>\n`);
   fs.writeFileSync(path.join(OUT,'robots.txt'),`User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
   return {pages:listed.length,withNotes:listed.filter(b=>b.note).length};
