@@ -1677,6 +1677,14 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       finishWalls:wallFinish&&(walls=>{for(const [mesh,w,h,d] of walls)wallFinish.finishBox(mesh,w,h,d);wallFinish.settle(walls.map(([mesh])=>mesh),{ceiling:true})}),
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
     });
+    // Halloween night (halloween.js): lanterns and a table of ghost stories in the Grand Hall, 24 October to 2 November.
+    const halloween=window.createHalloween?.({THREE,scene,MAT,interactables,canvasTexture,bookMaterial,findBook:id=>books.find(b=>b.id===id),showNotice,collider});
+    if(halloween?.active){
+      const preHalloweenInteract=interact;interact=function(){if(focus&&!selected&&halloween.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preHalloweenInteract()};
+      let greeted=false;const preHalloweenWorld=updateWorld;updateWorld=function(t,dt){preHalloweenWorld(t,dt);halloween.update(t);
+        // Once, a little after the reader steps in, so it does not talk over the first-visit tour's opening words.
+        if(started&&!greeted){greeted=true;setTimeout(()=>showNotice(halloween.greeting,9),tour.step>=0||!localStorage.getItem('athenaeum-tour-done')?20000:5000)}};
+    }
     // The wing's books (data/new-books-wing.js) are fetched on the way there: near its door, at one of its doors, or on
     // a link into it. Until they arrive the rooms are not built, so no shelf is ever made empty.
     const wingBooks={ready:!!window.ATHENAEUM_NEW_BOOKS_WING,loading:null,
