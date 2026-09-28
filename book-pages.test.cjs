@@ -16,7 +16,7 @@ test('every book in the library has a page with its note and a way in',()=>{
     const html=fs.readFileSync(path.join(out,'book',file),'utf8'),id=file.split('-')[0];
     assert.match(html,new RegExp(`<link rel="canonical" href="https://libraryafterdark\\.space/book/${file}">`),file);
     assert.match(html,new RegExp(`<a class="read" href="/\\?book=${id}">`),file);
-    assert.match(html,/<blockquote><p>.{40,}<\/p><cite>(The librarian|La bibliotecaria)<\/cite><\/blockquote>/s,`${file} has the librarian’s note`);
+    assert.match(html,/<blockquote><p>.{40,}<\/p><cite>(The librarian|La bibliotecaria|A bibliotecária)<\/cite><\/blockquote>/s,`${file} has the librarian’s note`);
     assert.match(html,/<meta name="description" content=".{20,}">/,file);
     const ld=JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/)[1]);assert.equal(ld['@type'],'Book');
     const title=html.match(/<title>(.*?)<\/title>/)[1];assert.ok(!titles.has(title),`two pages share the title ${title}`);titles.add(title);
