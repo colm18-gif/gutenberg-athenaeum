@@ -73,6 +73,6 @@ test('Spanish books are known to be Spanish: word help steps aside, and their pa
   if(found){
     const page=fs.readdirSync(path.join(out,'book')).find(f=>f.startsWith(`${found.id}-`)),text=fs.readFileSync(path.join(out,'book',page),'utf8');
     assert.match(text,/<html lang="es">/);assert.match(text,/<cite>La bibliotecaria<\/cite>/);assert.match(text,/"inLanguage":"es"/);
-    assert.match(text,/<a href="\/\?room=international-wing">The International Wing<\/a>/);
+    assert.match(text,/<a href="\/\?room=international-wing">El ala internacional: Sala de lectura en español<\/a>/);assert.doesNotMatch(text,/<p class="shelf">(Society|Comedy|Poetry|History)<\/p>/);
   }
 });

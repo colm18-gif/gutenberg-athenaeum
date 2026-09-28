@@ -87,10 +87,12 @@ export function readingTime(words,lang='en'){if(!words)return null;const es=lang
 const WORDS={
   en:{lang:'en',by:'by',read:'Read it in the Library After Dark',time:'Reading time',about:'About',where:'Where to find it',onShelves:shelf=>`On the ${shelf} shelves`,edition:'Edition',
     pd:'In the public domain in the United States.',licence:'Licence',librarian:'The librarian',moreBy:author=>`More by ${author}`,also:shelf=>`Also on the ${shelf} shelves`,
+    shelf:shelf=>shelf,place:place=>place,
     nav:'<a href="/book/">Catalogue</a><a href="/book/authors.html">Authors</a><a class="enter" href="/">Enter the library</a>',
     footer:'The Library After Dark is a 3D library you can walk through in your browser, with public-domain books to read. <a href="/">Step inside</a>.'},
   es:{lang:'es',by:'de',read:'Léelo en la Library After Dark',time:'Tiempo de lectura',about:'Unos',where:'Dónde encontrarlo',onShelves:()=>'En el ala internacional',edition:'Edición',
     pd:'De dominio público en los Estados Unidos.',licence:'Licencia',librarian:'La bibliotecaria',moreBy:author=>`Más de ${author}`,also:()=>'Más libros en español',
+    shelf:shelf=>SHELVES_ES[shelf]||shelf,place:place=>({'The International Wing':'El ala internacional: Sala de lectura en español'})[place]||place,
     nav:'<a href="/es/">Libros en español</a><a href="/book/">Catalogue</a><a class="enter" href="/?room=international-wing">Entrar en la biblioteca</a>',
     footer:'The Library After Dark es una biblioteca en 3D que se recorre desde el navegador, con libros de dominio público para leer. <a href="/?room=international-wing">Entrar</a>.'}
 };
@@ -145,14 +147,14 @@ function bookPage(book,{whereIs,byAuthor,byShelf,byLanguage,editions}){
   const body=`<main class="book">
 ${coverHtml(book)}
 <div class="about">
-<p class="shelf">${escape(book.category||'')}</p>
+<p class="shelf">${escape(T.shelf(book.category||''))}</p>
 <h1>${escape(book.title)}${edition?`<small>${escape(edition.trim())}</small>`:''}</h1>
 <p class="author">${T.by} <a href="/book/authors.html#${slug(book.author)}">${escape(book.author)}</a></p>
 ${note?`<blockquote><p>${escape(note)}</p><cite>${T.librarian}</cite></blockquote>`:''}
 <a class="read" href="/?book=${book.id}">${T.read}</a>
 <dl>
 ${time?`<dt>${T.time}</dt><dd>${T.about} ${time}</dd>`:''}
-${places.length?`<dt>${T.where}</dt><dd>${places.map(place=>ROOM_LINKS[place]?`<a href="/?room=${ROOM_LINKS[place]}">${escape(place)}</a>`:escape(place)).join('; ')}</dd>`:`<dt>${T.where}</dt><dd>${escape(T.onShelves(book.category||'library'))}</dd>`}
+${places.length?`<dt>${T.where}</dt><dd>${places.map(place=>ROOM_LINKS[place]?`<a href="/?room=${ROOM_LINKS[place]}">${escape(T.place(place))}</a>`:escape(T.place(place))).join('; ')}</dd>`:`<dt>${T.where}</dt><dd>${escape(T.onShelves(book.category||'library'))}</dd>`}
 <dt>${T.edition}</dt><dd>${sourceLink(book)}. ${book.sourceKey&&book.licence?`${T.licence}: ${escape(book.licence)}.`:T.pd}</dd>
 </dl>
 </div>
