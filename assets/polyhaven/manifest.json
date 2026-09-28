@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-21T08:30:56.875Z",
+  "generated": "2026-09-28T09:06:08.767Z",
   "models": [
     {
       "id": "CheeseBox_01",
@@ -113,6 +113,28 @@
         "diffuse": "assets/polyhaven/materials/leather_red_02/diffuse.jpg",
         "normal": "assets/polyhaven/materials/leather_red_02/normal.jpg",
         "roughness": "assets/polyhaven/materials/leather_red_02/roughness.jpg"
+      }
+    },
+    {
+      "id": "sandstone_blocks_08",
+      "source": "https://polyhaven.com/a/sandstone_blocks_08",
+      "licence": "CC0 1.0",
+      "resolution": "1k",
+      "files": {
+        "diffuse": "assets/polyhaven/materials/sandstone_blocks_08/diffuse.jpg",
+        "normal": "assets/polyhaven/materials/sandstone_blocks_08/normal.jpg",
+        "roughness": "assets/polyhaven/materials/sandstone_blocks_08/roughness.jpg"
+      }
+    },
+    {
+      "id": "plastered_wall_04",
+      "source": "https://polyhaven.com/a/plastered_wall_04",
+      "licence": "CC0 1.0",
+      "resolution": "1k",
+      "files": {
+        "diffuse": "assets/polyhaven/materials/plastered_wall_04/diffuse.jpg",
+        "normal": "assets/polyhaven/materials/plastered_wall_04/normal.jpg",
+        "roughness": "assets/polyhaven/materials/plastered_wall_04/roughness.jpg"
       }
     }
   ]
