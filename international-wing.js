@@ -17,7 +17,8 @@
   ];
 
   window.createInternationalWing=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date()}=options;
+    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),
+      wallMaterial=null,finishWalls=null}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
     const DOOR={x:8.6,z:30.45,yaw:Math.PI};
     const ROOM={cx:-410,cz:100,w:24,d:15,h:5.2};
     const PRELOAD=7,KEEP=25;
@@ -61,9 +62,10 @@
     // ---------- the room ----------
     function buildRoom(){
       root=new THREE.Group();root.name='international-wing';const {cx,cz,w,d,h}=ROOM;
-      const wall=own(new THREE.MeshStandardMaterial({color:0x8c5f3c,roughness:.92})),tiles=own(tileTexture());tiles.wrapS=tiles.wrapT=THREE.RepeatWrapping;
+      const wall=wallMaterial||own(new THREE.MeshStandardMaterial({color:0x7a5236,roughness:.92})),tiles=own(tileTexture());tiles.wrapS=tiles.wrapT=THREE.RepeatWrapping;
       box(w,.3,d,MAT.wood,cx,-.15,cz,root);box(w,.25,d,MAT.darkWood,cx,h+.12,cz,root);
-      box(w,h,.3,wall,cx,h/2,cz-d/2,root);box(w,h,.3,wall,cx,h/2,cz+d/2,root);box(.3,h,d,wall,cx-w/2,h/2,cz,root);box(.3,h,d,wall,cx+w/2,h/2,cz,root);
+      const walls=[box(w,h,.3,wall,cx,h/2,cz-d/2,root),box(w,h,.3,wall,cx,h/2,cz+d/2,root),box(.3,h,d,wall,cx-w/2,h/2,cz,root),box(.3,h,d,wall,cx+w/2,h/2,cz,root)];
+      finishWalls?.(walls.map((mesh,i)=>[mesh,...(i<2?[w,h,.3]:[.3,h,d])]));
       // The tiled dado, 1.1 m high all round, capped with a wooden rail.
       for(const [x,z,sw,sd,len] of [[cx,cz-d/2+.17,w-.4,.05,w],[cx,cz+d/2-.17,w-.4,.05,w],[cx-w/2+.17,cz,.05,d-.4,d],[cx+w/2-.17,cz,.05,d-.4,d]]){
         const t=own(tiles.clone());t.repeat.set(Math.round(len/.55),2);box(sw,1.1,sd,own(new THREE.MeshStandardMaterial({map:t,roughness:.45})),x,.55,z,root);box(sw,.07,sd+.06,MAT.darkWood,x,1.13,z,root)}
@@ -73,6 +75,10 @@
       const spots=[];
       for(let row=0;row<3;row++)for(let i=0;i<10;i++)spots.push({x:cx-9.9+i*2.2,z:cz-d/2+.42,y:1.62+row*1.12,yaw:0});
       for(let row=0;row<3;row++)for(let i=0;i<6;i++)spots.push({x:cx-w/2+.42,z:cz-5.5+i*2.05,y:1.62+row*1.12,yaw:Math.PI/2});
+      // Dark wooden bookcases behind the racks, with uprights between the columns and a cornice along the top.
+      box(22.6,3.45,.06,MAT.darkWood,cx,2.84,cz-d/2+.2,root);box(.06,3.45,12.8,MAT.darkWood,cx-w/2+.2,2.84,cz,root);
+      box(22.8,.14,.46,MAT.darkWood,cx,4.6,cz-d/2+.36,root);box(.46,.14,13,MAT.darkWood,cx-w/2+.36,4.6,cz,root);
+      for(let i=0;i<=10;i++)box(.07,3.45,.4,MAT.darkWood,cx-11+i*2.2,2.84,cz-d/2+.38,root);for(let i=0;i<=6;i++)box(.4,3.45,.07,MAT.darkWood,cx-w/2+.38,2.84,cz-6.52+i*2.05,root);
       for(let row=0;row<3;row++){const y=1.1+row*1.12;box(22.4,.05,.36,MAT.darkWood,cx,y,cz-d/2+.36,root);box(.36,.05,12.6,MAT.darkWood,cx-w/2+.36,y,cz,root)}
       block(cx,cz-d/2+.4,w,.8);block(cx-w/2+.4,cz,.8,d);
       const list=shelf(),geometry=own(new THREE.BoxGeometry(.78,1.04,.05));

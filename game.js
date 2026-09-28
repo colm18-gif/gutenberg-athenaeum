@@ -1664,6 +1664,8 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // book: the Spanish Reading Room, with rooms for Portuguese and Chinese to follow.
     const internationalWing=window.createInternationalWing?.({THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,playSample,
       findBook:id=>books.find(b=>b.id===id),arrivals:()=>newArrivals.list('spanish').map(book=>book.id),analytics:window.libraryAnalytics,isHolding:()=>!!selected,
+      wallMaterial:wallFinish?photoWall('sandstone_blocks_08',[2.4,2.4],0xb07a50,2):null,
+      finishWalls:wallFinish&&(walls=>{for(const [mesh,w,h,d] of walls)wallFinish.finishBox(mesh,w,h,d);wallFinish.settle(walls.map(([mesh])=>mesh),{ceiling:true})}),
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
     });
     if(internationalWing){
