@@ -16,10 +16,10 @@ import {loadScript,resolve,textMatches} from './daily-room.mjs';
 const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),'..');
 const LIST=path.join(root,'data/new-books.js'),RESOLVED=path.join(root,'data/new-books-resolved.js'),TRACKED=path.join(root,'data/daily-room-texts.json');
 const BUNDLED=path.join(root,'texts/bundled-gzip');
-export const ROOMS=['secret','shelves','evening-quick','evening-hour','evening-evening','learners-1','learners-2','learners-3','learners-4','learners-short','signal','tide','mars','periodicals','spanish','portuguese'];
+export const ROOMS=['secret','shelves','evening-quick','evening-hour','evening-evening','learners-1','learners-2','learners-3','learners-4','learners-short','signal','tide','mars','periodicals','spanish','portuguese','chinese'];
 // Rooms whose books are not in English: the language of their texts (used to search Gutendex, and by the reader
 // and the book pages). Every other room is English.
-export const ROOM_LANGUAGES={spanish:'es',portuguese:'pt'};
+export const ROOM_LANGUAGES={spanish:'es',portuguese:'pt',chinese:'zh'};
 
 export function validate(list){
   const errors=[],notes=new Map();
@@ -43,7 +43,9 @@ export function validate(list){
 export function countWords(text){
   const start=text.search(/\*\*\*\s*START OF (THE|THIS) PROJECT GUTENBERG/i),end=text.search(/\*\*\*\s*END OF (THE|THIS) PROJECT GUTENBERG/i);
   const body=text.slice(start>=0?text.indexOf('\n',start)+1:0,end>start?end:text.length);
-  return (body.toLowerCase().replace(/[’‘]/g,"'").match(/\p{L}+(?:'\p{L}+)?/gu)||[]).length;   // letters in any alphabet: “canción” is one word
+  // Chinese is counted by the character, as Chinese readers count it; other letters by the word (“canción” is one).
+  const han=(body.match(/\p{Script=Han}/gu)||[]).length;
+  return han+(body.replace(/\p{Script=Han}/gu,' ').toLowerCase().replace(/[’‘]/g,"'").match(/\p{L}+(?:'\p{L}+)?/gu)||[]).length;
 }
 function localText(id){
   const plain=path.join(root,`texts/pg${id}.txt`),packed=path.join(BUNDLED,`pg${id}.txt.gz`);

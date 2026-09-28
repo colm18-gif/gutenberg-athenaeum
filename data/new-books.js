@@ -10,6 +10,8 @@
 //   periodicals the Periodicals Room, beneath the clock in the Grand Hall (periodicals-room.js)
 //   spanish    the Spanish Reading Room in the International Wing (international-wing.js): Spanish texts, notes in Spanish
 //   portuguese the Portuguese Reading Room, through the green door of the Spanish room: Portuguese texts and notes
+//   chinese    the Chinese Reading Room, through the red door of the Spanish room: Chinese texts, notes in traditional
+//              Chinese, authors written 曹雪芹 (Cao Xueqin) so the pinyin in Gutenberg's header can be checked
 //
 // Each entry is [Gutenberg number or null, title, author, category, room, note]. The numbers are only a first
 // guess: scripts/new-books.mjs (run by .github/workflows/new-books.yml) checks every one against the text's own
@@ -227,5 +229,54 @@ window.ATHENAEUM_NEW_BOOKS=[
   [8698,'O Livro de Cesario Verde','Cesário Verde','Poetry','portuguese','Os poemas de Cesário Verde, reunidos pelo amigo Silva Pinto e publicados em 1887, um ano depois da morte do poeta, com tuberculose. Lisboa ao fim da tarde, as varinas, as lojas e os candeeiros, vistos por um poeta que era também comerciante. Aqui está “O Sentimento dum Ocidental”.'],
   [17193,'Só','António Nobre','Poetry','portuguese','O único livro que António Nobre publicou em vida, em Paris, em 1892, cheio de saudades de Coimbra, do Porto e do mar. É melancólico, íntimo e cheio de nomes de terras portuguesas. O poeta morreu de tuberculose em 1900, com trinta e dois anos.'],
   [17610,'Livro de Máguas','Florbela Espanca','Poetry','portuguese','O primeiro livro de Florbela Espanca, de 1919: sonetos de amor, de solidão e de uma saudade sem objeto. Florbela escreveu como poucos sobre o que é querer demais. Morreu em 1930, no dia em que fazia trinta e seis anos.'],
-  [39618,'Humus','Raul Brandão','Philosophy','portuguese','Uma vila pequena e cinzenta, velhas que esperam a morte e um diário que pergunta o que é viver. Raul Brandão publicou-o em 1917, e não se parece com nada que se escrevia então em Portugal. É um livro estranho, sombrio e inesquecível.']
+  [39618,'Humus','Raul Brandão','Philosophy','portuguese','Uma vila pequena e cinzenta, velhas que esperam a morte e um diário que pergunta o que é viver. Raul Brandão publicou-o em 1917, e não se parece com nada que se escrevia então em Portugal. É um livro estranho, sombrio e inesquecível.'],
+  // ---------- the Chinese Reading Room (international-wing.js): texts in Chinese, notes in traditional Chinese ----------
+  [24264,'紅樓夢','曹雪芹 (Cao Xueqin)','Society','chinese','賈府的興衰，寫在一塊補天不成的石頭上，也寫在寶玉、黛玉和寶釵之間。曹雪芹生前只留下八十回的稿本，後四十回一般認為出自他人之手。讀者為它爭論了兩百多年，至今還沒有停。'],
+  [23950,'三國志演義','羅貫中 (Luo Guanzhong)','Epic','chinese','從桃園結義到三分歸晉，將近一百年的戰爭、計謀和友情。羅貫中根據陳壽的《三國志》和民間說書寫成，所謂「七分事實，三分虛構」。諸葛亮的智慧、關羽的義氣和曹操的奸雄，大多是從這本書裡來的。'],
+  [23962,'西遊記','吳承恩 (Wu Cheng\'en)','Legend','chinese','唐僧往西天取經，一路上有孫悟空、豬八戒和沙僧保護，九九八十一難，一難也不能少。故事本於玄奘法師真實的旅程，卻變成了一部充滿妖怪與笑話的奇書。傳統上認為作者是吳承恩，但學者至今仍有爭論。'],
+  [23863,'水滸傳','施耐庵 (Shi Nai\'an)','Epic','chinese','一百零八位好漢，因為各種冤屈和意外，先後落草梁山泊。武松打虎、林沖風雪山神廟、魯智深倒拔垂楊柳，都是中國人從小聽到大的故事。書中的英雄快意恩仇，也殺人不眨眼，讀的時候不必全都佩服。'],
+  [24032,'儒林外史','吳敬梓 (Wu Jingzi)','Satire','chinese','一部寫讀書人的諷刺小說：有人為了科舉考到頭髮白了，有人中了舉就喜極而瘋。吳敬梓出身望族，後來家道中落，寫的都是他熟悉的人。范進中舉那一段，至今還在課本裡。'],
+  [51828,'聊齋志異','蒲松齡 (Pu Songling)','Ghosts','chinese','近五百篇短短的故事，裡面的狐仙、鬼魂和花妖，往往比人還有情有義。蒲松齡一輩子考不上舉人，在鄉下教書，據說還在路邊擺茶，請過路人講奇聞。「寫鬼寫妖高人一等，刺貪刺虐入骨三分」，是郭沫若對它的評語。'],
+  [23818,'鏡花緣','李汝珍 (Li Ruzhen)','Legend','chinese','唐敖出海遊歷，經過君子國、女兒國、兩面國和大人國，每個國家都像一面哈哈鏡。後半部寫一百位才女赴考，談琴棋書畫，也談音韻和算學。李汝珍是個學問很雜的人，這本書就是他的百寶箱。'],
+  [23850,'老殘遊記','劉鶚 (Liu E)','Society','chinese','一位搖著串鈴的江湖郎中，一路行醫，一路看清末山東的官場和人情。劉鶚最痛恨的不是貪官，而是自以為清廉、因此更加殘忍的「清官」。大明湖和白妞說書那幾段，寫景寫聲，都是名篇。'],
+  [23910,'封神演義','陸西星 (Lu Xixing)','Legend','chinese','商紂無道，姜子牙奉命封神，神仙分成兩派，各顯法寶，打得天翻地覆。哪吒鬧海、楊戩變化和姜太公釣魚，很多人都是從這裡認識的。作者是誰，至今沒有定論，有人說是許仲琳，有人說是陸西星。'],
+  [25192,'浮生六記','沈復 (Shen Fu)','Essays','chinese','一個清代的普通讀書人，寫他和妻子芸娘的日子：插花、品茶、布置小屋，也寫貧困、誤會和別離。原來有六記，流傳下來的只有四記。林語堂說芸娘是中國文學中最可愛的女人。'],
+  [27166,'吶喊','魯迅 (Lu Xun)','Modern','chinese','魯迅的第一本小說集，收了〈狂人日記〉、〈孔乙己〉、〈故鄉〉和〈阿Q正傳〉。他在自序裡說起一間「鐵屋子」：裡面的人都熟睡了，要不要把他們叫醒？中國的現代小說，大致從這裡開始。'],
+  [24042,'徬徨','魯迅 (Lu Xun)','Modern','chinese','魯迅的第二本小說集，比《吶喊》更安靜，也更悲涼。〈祝福〉裡的祥林嫂，一遍又一遍地講她的阿毛，沒有人再願意聽。〈傷逝〉寫一對自由戀愛的年輕人，後來怎樣走散。'],
+  [25271,'朝花夕拾','魯迅 (Lu Xun)','Modern','chinese','魯迅回憶童年和青年的散文：百草園裡的蟋蟀和何首烏，三味書屋的先生，還有日本的藤野先生。他說這些是「從記憶中抄出來的」。這是他寫得最溫柔的一本書。'],
+  [25242,'野草','魯迅 (Lu Xun)','Poetry','chinese','二十幾篇散文詩，寫夢、寫影子、寫求乞者和過客。〈秋夜〉開頭那句「在我的後園，可以看見牆外有兩株樹，一株是棗樹，還有一株也是棗樹」，許多人都背得出來。這是魯迅最晦澀、也最個人的作品。'],
+  [25559,'中國小說史略','魯迅 (Lu Xun)','History','chinese','魯迅在北京大學講課的講義，從神話傳說一直講到清末的譴責小說。「譴責小說」這個名稱就是他取的。要知道這間閱覽室裡的小說從哪裡來，這本書是最好的導遊。'],
+  [23839,'論語','孔子 (Confucius)','Philosophy','chinese','孔子和弟子的談話，由弟子和再傳弟子記錄下來，一共二十篇。「學而時習之」「三人行，必有我師焉」，兩千五百年來說了又說。讀原文會發現，孔子其實常常開玩笑，也常常嘆氣。'],
+  [24178,'孟子','孟子 (Mencius)','Philosophy','chinese','孟子周遊列國，對國君講仁政，對論敵毫不客氣。「民為貴，社稷次之，君為輕」，是兩千多年前說出來的話。他相信人性本善，並用一個快要掉進井裡的孩子來說明。'],
+  [7337,'道德經','老子 (Laozi)','Philosophy','chinese','五千來字，八十一章，是翻譯成外文次數最多的中文書之一。「道可道，非常道」，開頭第一句就讓讀者停下來。它講的是柔弱勝剛強，無為而無不為。'],
+  [23864,'孫子兵法','孫子 (Sunzi)','Philosophy','chinese','十三篇，講的是打仗，最推崇的卻是不戰而屈人之兵。「知彼知己，百戰不殆」，今天商學院和球隊教練也愛引用。孫武是春秋時人，這本書成於何時，學者仍在討論。'],
+  [23873,'詩經','佚名 (Anonymous)','Poetry','chinese','中國最早的詩歌總集，三百零五篇，大多是兩千五百多年前的民歌和宮廷樂歌。第一篇〈關雎〉寫一個睡不著覺的男子，想念河邊採荇菜的女子。孔子說讀詩可以興、觀、群、怨，也可以多認識鳥獸草木之名。'],
+  [25501,'易經','佚名 (Anonymous)','Philosophy','chinese','六十四卦，每卦六爻，原是占卜的書，後來成了儒家的經典。歷代讀書人在裡面讀出了天文、政治和人生。今天打開它，仍然可以問一個問題，看看它怎麼回答。'],
+  [24226,'史記','司馬遷 (Sima Qian)','History','chinese','從黃帝一直寫到漢武帝，一百三十篇，是中國第一部紀傳體通史。司馬遷為李陵辯護，受了宮刑，忍辱把書寫完。刺客、遊俠和商人都有傳，魯迅稱它為「史家之絕唱，無韻之離騷」。'],
+  [24047,'世說新語','劉義慶 (Liu Yiqing)','Essays','chinese','魏晉名士的言行，一段只有幾行字：王子猷雪夜訪友，到了門口又回去，因為「乘興而行，興盡而返」。劉義慶是南朝宋的宗室，和門下的文人一起編成這本書。一千多則小故事，是中國最早的名人軼事，也是最雅的。'],
+  [25288,'山海經','佚名 (Anonymous)','Legend','chinese','一本古老的地理書，記錄了山川和礦物，也記錄了九尾狐、精衛和刑天。有些怪獸一個頭三個身子，有些國家的人胸口有個洞。魯迅小時候最想要的，就是一部繪圖的《山海經》。'],
+  [52323,'唐诗三百首','蘅塘退士 (Hengtangtuishi)','Poetry','chinese','清代孫洙（號蘅塘退士）從數萬首唐詩中選出三百來首，當作家塾的課本。「熟讀唐詩三百首，不會吟詩也會吟」，就是他序裡引的俗語。李白、杜甫、王維都在，一夜讀不完，一生也讀不膩。'],
+  [24060,'李太白集','李白 (Li Bai)','Poetry','chinese','李白的詩集。「床前明月光」「天生我材必有用」「桃花潭水深千尺」，隨手一翻就是熟悉的句子。賀知章叫他謫仙人，他也就喝酒、求仙、漫遊，一生都不太安分。'],
+  [25367,'漱玉詞','李清照 (Li Qingzhao)','Poetry','chinese','宋代最出色的女詞人。前半生和丈夫趙明誠收藏金石書畫，南渡以後國破家亡，詞也從「綠肥紅瘦」變成了「尋尋覓覓，冷冷清清」。她的作品散佚很多，這是後人輯錄的集子。'],
+  [23849,'牡丹亭','湯顯祖 (Tang Xianzu)','Drama','chinese','杜麗娘在花園裡做了一個夢，夢見一個書生，醒來相思而死，三年後又為愛復生。湯顯祖在題詞裡說：「情不知所起，一往而深。」他和莎士比亞死在同一年。'],
+  [23906,'西廂記','王實甫 (Wang Shifu)','Drama','chinese','書生張生在寺廟裡遇見崔鶯鶯，靠著丫鬟紅娘穿針引線，有情人終成眷屬。「紅娘」這個名字，後來就成了媒人的代稱。《紅樓夢》裡寶玉和黛玉偷偷一起讀的，就是這本。'],
+  [24234,'桃花扇','孔尚任 (Kong Shangren)','Drama','chinese','明朝滅亡前後，侯方域和秦淮名妓李香君的故事，扇子上的血點被畫成了桃花。孔尚任是孔子的後代，他說這齣戲是「借離合之情，寫興亡之感」。結尾兩人重逢，卻雙雙入道，沒有團圓。'],
+  [52270,'長生殿','洪昇 (Hong Sheng)','Drama','chinese','唐明皇和楊貴妃的故事，從七夕的誓言，到馬嵬坡的死別，再到月宮的重逢。洪昇寫了十多年，三易其稿。據說因為在國喪期間演出，他和許多看戲的人都受了處分。'],
+  [24004,'竇娥寃','關漢卿 (Guan Hanqing)','Drama','chinese','一個年輕的寡婦被冤枉殺人，臨刑前發下三樁誓願：血飛白練、六月飛雪、大旱三年，後來一一應驗。「六月飛雪」從此成了冤屈的代名詞。關漢卿是元代最重要的劇作家，一生寫了六十多種雜劇。'],
+  [25245,'子不語','袁枚 (Yuan Mei)','Ghosts','chinese','書名來自《論語》的「子不語怪力亂神」：孔子不談的，袁枚偏偏要談。幾百則鬼怪故事，常常帶著幾分調侃。袁枚是乾隆年間的名士，四十歲不到就辭官，住進了南京的隨園。'],
+  [23817,'閱微草堂筆記','紀昀 (Ji Yun)','Ghosts','chinese','紀曉嵐晚年寫下的狐鬼故事和見聞，一千多則，文字簡淡。他是《四庫全書》的總纂官，讀過的書比誰都多。和《聊齋》不同，他的鬼常常在講道理。'],
+  [25401,'陶庵夢憶','張岱 (Zhang Dai)','Essays','chinese','明朝亡了以後，張岱躲進山裡，回憶從前的繁華：看燈、看戲、品茶，雪夜去湖心亭看雪。他自己說，這些往事像一場夢。〈湖心亭看雪〉一篇不到二百字，是中國散文裡最安靜的一場雪。'],
+  [7420,'幽夢影','張潮 (Zhang Chao)','Philosophy','chinese','一本清言小品，每則只有一兩句，像「花不可以無蝶，山不可以無泉」。張潮的朋友們在旁邊寫下評語，有時比原文還好玩。適合睡前隨手翻幾頁。'],
+  [24050,'菜根譚','洪自誠 (Hong Zicheng)','Philosophy','chinese','明代洪應明（字自誠）寫的處世格言，書名一般認為取自「咬得菜根，則百事可做」。儒家、道家、佛家的道理，都化成了對仗工整的短句。它在日本也很流行，不少人放在案頭。'],
+  [7406,'茶經','陸羽 (Lu Yu)','Essays','chinese','世界上第一部關於茶的專著，從茶樹、茶具一直寫到煮茶和飲茶。陸羽是個棄嬰，在寺院裡長大，後來被尊為「茶聖」。讀這本書最好的時候，當然是泡一壺茶的時候。'],
+  [24141,'警世通言','馮夢龍 (Feng Menglong)','Society','chinese','「三言」之一，四十篇白話短篇小說。白娘子永鎮雷峰塔、杜十娘怒沉百寶箱，都在這裡。馮夢龍把宋元明以來的說書故事收集、改寫，編成了這部書。'],
+  [25349,'東周列國志','馮夢龍 (Feng Menglong)','History','chinese','從周宣王一直寫到秦始皇統一天下，五百多年的春秋戰國，一百零八回。臥薪嘗膽、完璧歸趙、荊軻刺秦，一個接一個。原是馮夢龍的《新列國志》，清代蔡元放修訂後，改成了現在的名字。'],
+  [26872,'海上花列傳','韓邦慶 (Han Bangqing)','Society','chinese','清末上海租界裡的長三書寓，一群妓女和她們的客人，吃酒、打牌、爭風吃醋。對白用的是吳語，張愛玲後來把它譯成了國語和英文。胡適說它是「吳語文學的第一部傑作」。'],
+  [24138,'官場現形記','李伯元 (Li Boyuan)','Satire','chinese','清末官場的眾生相：買官、賣官、送禮、鑽營，一個故事接著一個，像一串連起來的笑話。李伯元在上海辦報，這部小說就在他自己的報紙上連載。魯迅把它和另外三部歸為「譴責小說」。'],
+  [24099,'二十年目睹之怪現狀','吳趼人 (Wu Jianren)','Satire','chinese','一個自號「九死一生」的年輕人，二十年間在各地遇見的，只有蛇蟲鼠蟻、豺狼虎豹和魑魅魍魎。吳趼人用第一人稱來寫，這在當時的長篇小說裡還很少見。書裡的騙子和怪事，今天讀來仍然眼熟。'],
+  [25376,'三俠五義','石玉崑 (Shi Yukun)','Adventure','chinese','包公斷案，展昭、白玉堂等俠客相助，是中國武俠小說的老祖宗之一。石玉崑是道光年間的說書藝人，書是從他的說唱整理出來的。錦毛鼠白玉堂闖沖霄樓那一段，不知讓多少讀者掉過眼淚。'],
+  [24112,'人間詞話','王國維 (Wang Guowei)','Poetry','chinese','王國維論詞的札記，提出了「境界」之說。最有名的是古今成大事業、大學問者必經的三種境界，借三首宋詞的句子說出來。篇幅不長，卻影響了一百年的文學批評。'],
+  [25273,'天工開物','宋應星 (Song Yingxing)','Essays','chinese','明代的一部技術百科，寫種稻、織布、燒瓷、鑄錢、造船，一直寫到採珠和製墨。宋應星六次赴京會試都沒考上，他在序裡說，這本書「於功名進取，毫不相關也」。書在中國一度失傳，後來從日本找了回來。'],
+  [12479,'三字經','佚名 (Anonymous)','Wonder','chinese','「人之初，性本善」，三個字一句，好念好背，幾百年來是中國孩子的第一本書。裡面講歷史、講經書，也講勤學的故事。作者一般認為是宋代的王應麟，但沒有定論。'],
+  [23912,'千字文','周興嗣 (Zhou Xingsi)','Wonder','chinese','一千個字，幾乎沒有一個重複，從「天地玄黃，宇宙洪荒」開始。據說梁武帝從王羲之的字帖中拓出一千個不同的字，讓周興嗣編成韻文，他一夜編成，頭髮都白了。一千多年來，它是孩子們認字、書法家練字的範本。']
 ];

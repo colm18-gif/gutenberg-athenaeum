@@ -76,7 +76,7 @@ test('the International Wing is a room behind its own door, built only when need
 });
 
 test('Spanish books are known to be Spanish: word help steps aside, and their pages are in Spanish',()=>{
-  assert.match(game,/ROOM_LANGUAGES=\{spanish:'es',portuguese:'pt'\}/);assert.match(game,/if\(ROOM_LANGUAGES\[room\]\)book\.language=ROOM_LANGUAGES\[room\]/);
+  assert.match(game,/ROOM_LANGUAGES=\{spanish:'es',portuguese:'pt'[,}]/);assert.match(game,/if\(ROOM_LANGUAGES\[room\]\)book\.language=ROOM_LANGUAGES\[room\]/);
   const help=fs.readFileSync('word-help.js','utf8');
   assert.match(help,/function enabled\(\)\{return !foreign&&/);assert.match(help,/foreign=!!book\?\.language&&book\.language!=='en'/);
   const out=fs.mkdtempSync(path.join(os.tmpdir(),'intl-pages-'));
@@ -95,4 +95,37 @@ test('Spanish books are known to be Spanish: word help steps aside, and their pa
     assert.match(text,/<html lang="es">/);assert.match(text,/<cite>La bibliotecaria<\/cite>/);assert.match(text,/"inLanguage":"es"/);
     assert.match(text,/<a href="\/\?room=international-wing">El ala internacional: Sala de lectura en español<\/a>/);assert.doesNotMatch(text,/<p class="shelf">(Society|Comedy|Poetry|History)<\/p>/);
   }
+});
+
+test('the Chinese Reading Room: classics in Chinese behind the red door, matched and counted by the character',async()=>{
+  const chinese=shelves.filter(entry=>entry[4]==='chinese');
+  const {ROOMS,ROOM_LANGUAGES,countWords}=await import('./scripts/new-books.mjs');assert.ok(ROOMS.includes('chinese'));assert.equal(ROOM_LANGUAGES.chinese,'zh');
+  assert.ok(chinese.length>=35&&chinese.length<=48,`${chinese.length} Chinese books`);
+  assert.equal(new Set(chinese.map(entry=>entry[1])).size,chinese.length,'each title once');
+  for(const [id,title,author,,,note] of chinese){
+    assert.ok(Number.isInteger(id),`${title}: give its number from Gutenberg's catalogue`);
+    assert.match(author,/^\p{Script=Han}+ \([A-Za-z' ]+\)$/u,`${title}: write the author as 曹雪芹 (Cao Xueqin), so the pinyin in the text's header can be checked`);
+    assert.ok(note&&note.length>=40,`${title} needs a librarian’s note`);assert.match(note,/[。」]$/,`${title}: the note should be in Chinese`);
+    assert.doesNotMatch(note,/[简这说书们对]/,`${title}: the note should be in traditional characters`);
+  }
+  const {textMatches}=await import('./scripts/daily-room.mjs'),head=(title,author,lang)=>`Title: ${title}\nAuthor: ${author}\nLanguage: ${lang}\n`;
+  assert.ok(textMatches(head('紅樓夢','Xueqin Cao','Chinese'),'紅樓夢','曹雪芹 (Cao Xueqin)','zh'));
+  assert.ok(!textMatches(head('紅樓夢','Xueqin Cao','English'),'紅樓夢','曹雪芹 (Cao Xueqin)','zh'),'a translation is not the text');
+  assert.ok(!textMatches(head('三國志演義','Guanzhong Luo','Chinese'),'紅樓夢','曹雪芹 (Cao Xueqin)','zh'));
+  assert.ok(!textMatches(head('紅樓夢','Guanzhong Luo','Chinese'),'紅樓夢','曹雪芹 (Cao Xueqin)','zh'));
+  assert.equal(countWords('*** START OF THE PROJECT GUTENBERG EBOOK X ***\n滿紙荒唐言，一把辛酸淚。\n*** END OF THE PROJECT GUTENBERG EBOOK X ***'),10,'Chinese is counted by the character');
+  // The red door in the Spanish room opens now, onto a room of its own.
+  assert.match(wing,/chinese:\{cx:-410,cz:164,w:24,d:15,h:6,language:'zh'/);assert.match(wing,/type:'intl-go',room:'chinese'/);assert.doesNotMatch(wing,/intl-coming/);
+  assert.match(game,/ROOM_LANGUAGES=\{spanish:'es',portuguese:'pt',chinese:'zh'\}/);
+  assert.match(game,/zh:'chinese-room',chinese:'chinese-room'/);assert.match(game,/'chinese-room':internationalWing&&\(\(\)=>internationalWing\.enter\('chinese'\)\)/);
+  // The reader breaks Chinese lines between characters, since there are no spaces to break at.
+  assert.match(game,/if\(CJK_CHAR\.test\(paragraph\)\)/);
+  assert.match(html,/rooms:\['zh','chinese','zhongwen','chinese-room'\]/);assert.match(html,/enter:'進入圖書館'/);
+  const out=fs.mkdtempSync(path.join(os.tmpdir(),'zh-pages-'));
+  execFileSync(process.execPath,['scripts/book-pages.mjs'],{env:{...process.env,OUT:out}});
+  const zh=fs.readFileSync(path.join(out,'zh/index.html'),'utf8');
+  assert.match(zh,/<html lang="zh-Hant">/);assert.match(zh,/<h1>中文書<\/h1>/);assert.match(zh,/href="\/\?room=chinese-room"/);
+  assert.equal(fs.readFileSync('zh/index.html','utf8'),zh,'run: node scripts/book-pages.mjs');
+  assert.match(fs.readFileSync(path.join(out,'sitemap.xml'),'utf8'),/<loc>https:\/\/libraryafterdark\.space\/zh\/<\/loc>/);
+  const {readingTime,slug}=await import('./scripts/book-pages.mjs');assert.equal(readingTime(700000,'zh-Hant'),'33 小時 20 分鐘');assert.equal(slug('紅樓夢'),'紅樓夢');
 });

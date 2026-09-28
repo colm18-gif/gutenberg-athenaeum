@@ -51,11 +51,15 @@ export function validate(schedule){
 // ---------- matching ----------
 const STOP=new Set(['the','a','an','of','and','or','other','in','on','to','with','by','its','his','her','from','for','at','complete','volume','vol','being','or,']);
 export function words(text){return String(text||'').normalize('NFKD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/&/g,' and ').replace(/['’]s\b/g,'').replace(/[^a-z0-9]+/g,' ').split(' ').filter(word=>word&&!STOP.has(word))}
-export function titleMatches(expected,candidate){const want=words(expected),have=new Set(words(candidate));if(!want.length)return false;const hit=want.filter(word=>have.has(word)).length;return hit/want.length>=.75}
+// Chinese titles are compared character by character (Gutenberg's own titles are in characters, with no spaces).
+const HAN=/\p{Script=Han}/gu;export const hanOf=text=>String(text||'').match(HAN)||[];
+export function titleMatches(expected,candidate){if(hanOf(expected).length){const want=[...new Set(hanOf(expected))],have=new Set(hanOf(candidate));return want.filter(c=>have.has(c)).length/want.length>=.75}const want=words(expected),have=new Set(words(candidate));if(!want.length)return false;const hit=want.filter(word=>have.has(word)).length;return hit/want.length>=.75}
 // Words in a candidate title beyond the ones asked for: "Dracula" prefers Dracula to Dracula's Guest.
 export function extraWords(expected,candidate){const want=new Set(words(expected));return words(candidate.split(/[;:]/)[0]).filter(word=>!want.has(word)).length}
 export function surname(author){const parts=words(author.replace(/\b(jr|sr|mrs?|professor|earl|baroness|sir|lord|lady|madame)\b\.?/gi,''));return parts[parts.length-1]||''}
-export function authorMatches(expected,candidate){if(/anonymous|an[oó]nimo/i.test(expected))return true;const name=surname(expected),have=words(candidate),joined=words(expected).slice(-2).join('');/* "Le Fanu" and "LeFanu" are the same writer. */return !!name&&(have.includes(name)||have.join('').includes(joined))}
+export function authorMatches(expected,candidate){if(/anonymous|an[oó]nimo/i.test(expected))return true;
+  // A Chinese author is shelved as 曹雪芹 (Cao Xueqin); Gutenberg's header gives the pinyin, in either order.
+  if(hanOf(expected).length){const latin=words(expected.match(/\(([^)]+)\)/)?.[1]||''),have=new Set(words(candidate));return latin.length>0&&latin.every(word=>have.has(word))}const name=surname(expected),have=words(candidate),joined=words(expected).slice(-2).join('');/* "Le Fanu" and "LeFanu" are the same writer. */return !!name&&(have.includes(name)||have.join('').includes(joined))}
 export function header(text){
   const head=text.slice(0,6000),title=head.match(/^Title:\s*(.+(?:\r?\n[ \t]+.+)*)/m)?.[1]||head.match(/Project Gutenberg (?:EBook|eBook) of ([^\r\n]+)/)?.[1]||'';
   const people=[...head.matchAll(/^(?:Author|Editor|Translator|Contributor|Compiler|Illustrator):\s*(.+)$/gm)].map(match=>match[1]).join(' ');
