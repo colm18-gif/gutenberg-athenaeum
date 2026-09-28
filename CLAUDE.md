@@ -15,6 +15,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `crusoe-island.js`, `mars.js`)
   are built only when the reader approaches and freed ~25 s after they leave. Each gets an ambience recipe in
   `room-ambience.js` and a place in `PLACE_GROUPS` in `game.js`.
+- Every chair, sofa and bench is one of the library's seats: build it with `chair()`/`sofa()`/`bench()` in game.js, or
+  pass `registerSeat` into a room module and call it (with a `bookIds` getter for that room's books; push the parts
+  onto the room's list so they are freed with it). `?debug` exposes `__athenaeum.seats`.
 - Performance matters (many visitors are on phones): merge static parts by material, use `InstancedMesh`, avoid
   adding lights where the library's own can be borrowed.
 - To check things visually, serve the repo (`python3 -m http.server 8765`) and drive it with Playwright using

@@ -30,7 +30,7 @@
   }
 
   window.createEveningRoom=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,levels={},arrivals={},showNotice,playSample,move,analytics,isHolding=()=>false}=options;
+    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,levels={},arrivals={},showNotice,playSample,move,analytics,isHolding=()=>false,registerSeat=null}=options;
     const DOOR={x:21.8,z:9.45,yaw:Math.PI};
     const ROOM={cx:-330,cz:20,w:14,d:12,h:4.6};
     const PRELOAD=7,KEEP=25;
@@ -92,7 +92,10 @@
       const fabric=own(new THREE.MeshStandardMaterial({color:0x6d2b24,roughness:.9}));
       for(const [x,z,yaw] of [[cx-2.2,cz-.8,.6],[cx+2.2,cz-.8,-.6],[cx,cz+1.2,0]]){
         const chair=new THREE.Group();chair.position.set(x,0,z);chair.rotation.y=yaw;root.add(chair);
-        box(1.1,.45,1,fabric,0,.42,0,chair);box(1.1,.9,.22,fabric,0,1,.42,chair);for(const sx of [-.5,.5])box(.16,.35,1,fabric,sx,.78,0,chair);block(x,z,1.3,1.3);
+        const seat=box(1.1,.45,1,fabric,0,.42,0,chair),back=box(1.1,.9,.22,fabric,0,1,.42,chair);for(const sx of [-.5,.5])box(.16,.35,1,fabric,sx,.78,0,chair);block(x,z,1.3,1.3);
+        // The library's own seats (game.js): sitting opens one of the books on this room's shelves.
+        if(registerSeat){const data=registerSeat([seat,back],chair,new THREE.Vector3(0,1.3,.12),yaw,{title:'An armchair by the fire',author:'Sit and read one of the Evening Room’s books, short enough to finish tonight.'});
+          Object.defineProperty(data,'bookIds',{get:()=>books.map(mesh=>mesh.userData.book.id),configurable:true});ours.push(seat,back)}
       }
       box(.6,.06,.6,MAT.darkWood,cx+3.3,.72,cz+.6,root);box(.1,.7,.1,MAT.darkWood,cx+3.3,.36,cz+.6,root);block(cx+3.3,cz+.6,.7,.7);
       // Books face-out on ledges, in three groups: west wall, east wall, and either side of the fireplace.
