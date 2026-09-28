@@ -1,0 +1,21 @@
+name: Temporary Spanish lookup
+on:
+  push:
+    branches: ['claude/**']
+    paths: ['.github/workflows/tmp-spanish-lookup.yml']
+permissions:
+  contents: read
+jobs:
+  lookup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: List Spanish books by the authors of the missing titles
+        run: |
+          cat > lookup.mjs <<'JS'
+          const authors=['Calderón','Quevedo','Moratín','Bécquer','Pérez Galdós','Unamuno','Blasco Ibáñez','Valera','Alarcón','Isaacs','Mármol','Hernández','Matto','Blest Gana','Martí','Lugones','Cid'];
+          const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+          for(const a of authors){let url=`https://gutendex.com/books?languages=es&search=${encodeURIComponent(a)}`;console.log(`\n## ${a}`);
+            for(let page=0;url&&page<4;page++){let r=null;for(let t=0;t<3&&!r;t++){try{const res=await fetch(url,{headers:{'user-agent':'Gutenberg-Athenaeum lookup'}});if(res.ok)r=await res.json();else console.log('  status',res.status)}catch(e){console.log('  error',e.message)}if(!r)await sleep(3000)}
+              if(!r)break;for(const b of r.results)console.log(`  ${b.id}\t${b.title.replace(/\s+/g,' ').slice(0,90)}\t${(b.authors||[]).map(x=>x.name).join('; ')}`);url=r.next;await sleep(1500)}}
+          JS
+          node lookup.mjs
