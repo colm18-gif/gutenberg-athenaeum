@@ -408,28 +408,32 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "words": 188486
   },
   "Lazarillo de Tormes": {
-   "id": 53489,
-   "words": 25385
+   "id": 320,
+   "words": 20096
   },
   "La Celestina": {
    "id": 1619,
    "words": 105718
   },
-  "Don Juan Tenorio": {
-   "id": 5201,
-   "words": 47476
+  "Historia de la vida del Buscón": {
+   "id": 32315,
+   "words": 42981
+  },
+  "El sí de las niñas": {
+   "id": 50027,
+   "words": 19792
   },
   "Marianela": {
-   "id": 48818,
-   "words": 60775
+   "id": 17340,
+   "words": 50991
   },
   "Misericordia": {
    "id": 21831,
    "words": 83859
   },
   "Trafalgar": {
-   "id": 47980,
-   "words": 56776
+   "id": 16961,
+   "words": 51266
   },
   "Fortunata y Jacinta": {
    "id": 17013,
@@ -439,9 +443,17 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 49836,
    "words": 57342
   },
+  "Abel Sánchez": {
+   "id": 44512,
+   "words": 29549
+  },
   "La barraca": {
    "id": 14944,
    "words": 56591
+  },
+  "Cañas y barro": {
+   "id": 57781,
+   "words": 75562
   },
   "Sangre y arena": {
    "id": 26983,
@@ -459,13 +471,21 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 17073,
    "words": 308261
   },
+  "Pepita Jiménez": {
+   "id": 17223,
+   "words": 56657
+  },
   "El sombrero de tres picos": {
    "id": 29506,
    "words": 62983
   },
+  "El capitán Veneno": {
+   "id": 29731,
+   "words": 52142
+  },
   "La gaviota": {
-   "id": 48698,
-   "words": 74103
+   "id": 23600,
+   "words": 92135
   },
   "La hermana San Sulpicio": {
    "id": 31013,
@@ -478,6 +498,10 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Cantos de vida y esperanza": {
    "id": 50341,
    "words": 12677
+  },
+  "El gaucho Martín Fierro": {
+   "id": 14765,
+   "words": 12126
   },
   "Facundo": {
    "id": 33267,
@@ -496,8 +520,8 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "words": 25716
   },
   "Noli me tangere": {
-   "id": 21848,
-   "words": 136536
+   "id": 47584,
+   "words": 140403
   },
   "El filibusterismo": {
    "id": 30903,
@@ -510,6 +534,38 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "La edad de oro": {
    "id": 19898,
    "words": 66827
+  },
+  "Las fuerzas extrañas": {
+   "id": 65689,
+   "words": 45447
+  },
+  "Obras escogidas": {
+   "id": 53552,
+   "words": 94734
+  },
+  "Miau": {
+   "id": 52392,
+   "words": 97244
+  },
+  "Tristana": {
+   "id": 66979,
+   "words": 52688
+  },
+  "La tía Tula": {
+   "id": 44358,
+   "words": 31176
+  },
+  "Amistad funesta": {
+   "id": 18166,
+   "words": 60776
+  },
+  "Prosas profanas": {
+   "id": 47650,
+   "words": 14979
+  },
+  "Mi último adiós": {
+   "id": 18600,
+   "words": 715
   }
  },
  "missing": [
@@ -523,24 +579,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Astounding Stories of Super-Science, January 1930",
   "McClure's Magazine, Vol. 1, No. 1, June, 1893",
   "The Spectator, Volume 1",
-  "The Nursery, April 1873, Vol. XIII. No. 4",
-  "La vida es sueño",
-  "Historia de la vida del Buscón",
-  "El sí de las niñas",
-  "Rimas",
-  "Leyendas",
-  "Doña Perfecta",
-  "Abel Sánchez",
-  "Cañas y barro",
-  "Pepita Jiménez",
-  "El capitán Veneno",
-  "María",
-  "Amalia",
-  "El gaucho Martín Fierro",
-  "Aves sin nido",
-  "Martín Rivas",
-  "Versos sencillos",
-  "Las fuerzas extrañas",
-  "Poema de mio Cid"
+  "The Nursery, April 1873, Vol. XIII. No. 4"
  ]
 };
