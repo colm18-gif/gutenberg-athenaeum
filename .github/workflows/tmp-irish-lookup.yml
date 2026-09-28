@@ -1,0 +1,26 @@
+name: Temporary Irish lookup
+on:
+  push:
+    branches: ['claude/**']
+    paths: ['.github/workflows/tmp-irish-lookup.yml']
+permissions:
+  contents: read
+jobs:
+  lookup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: List Irish-language texts, and texts with Irish or Gaelic subjects
+        run: |
+          curl -sSL --max-time 180 -o pg.csv https://www.gutenberg.org/cache/epub/feeds/pg_catalog.csv
+          python3 - <<'PY'
+          import csv
+          rows=[r for r in csv.DictReader(open('pg.csv',encoding='utf-8')) if r.get('Type')=='Text']
+          print('## Irish language')
+          for r in rows:
+            if 'ga' in r['Language'].replace(' ','').split(';'):print(' ',r['Text#'],'|',' '.join(r['Title'].split())[:90],'|',r['Authors'][:60],'|',r['Language'])
+          print('\n## Irish Gaelic, Irish language or Irish literature in the subjects (first 80)')
+          hits=[r for r in rows if any(k in r.get('Subjects','') for k in ['Irish language','Irish literature','Irish poetry','Mythology, Celtic','Tales -- Ireland','Folklore -- Ireland','Legends -- Ireland'])]
+          print(len(hits))
+          for r in hits[:80]:print(' ',r['Text#'],'|',' '.join(r['Title'].split())[:80],'|',r['Authors'][:45],'|',r['Language'])
+          PY
