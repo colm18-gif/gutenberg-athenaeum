@@ -16,8 +16,8 @@ jobs:
           wc -l pg.csv
           cat > lookup.py <<'PY'
           import csv
-          authors=['Calderón','Quevedo','Moratín','Bécquer','Pérez Galdós','Unamuno','Blasco Ibáñez','Valera','Alarcón','Isaacs','Mármol','Hernández, José','Matto','Blest Gana','Martí, José','Lugones','Cid']
-          rows=[r for r in csv.DictReader(open('pg.csv',encoding='utf-8')) if r.get('Language','').strip()=='es' and r.get('Type')=='Text']
+          authors=['Lazarillo','Caballero, Fern','Rizal','Noli','Tenorio','Bécquer','Calderón de la Barca','Darío','Isaacs','Palma, Ricardo']
+          rows=[r for r in csv.DictReader(open('pg.csv',encoding='utf-8')) if 'es' in r.get('Language','').replace(' ','').split(';') and r.get('Type')=='Text']
           print(len(rows),'Spanish texts')
           for a in authors:
             print('\n##',a)
