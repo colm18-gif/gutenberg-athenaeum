@@ -201,10 +201,12 @@
     // New arrivals (data/new-books.js), grouped by the room they were bought for. Only books whose text has been
     // checked and bundled (data/new-books-resolved.js) are brought in; each brings its librarian's note.
     const newArrivals=(()=>{const resolved=window.ATHENAEUM_NEW_BOOKS_RESOLVED?.books||{},rooms={},words={},ROOM_LANGUAGES={spanish:'es',portuguese:'pt',chinese:'zh',french:'fr',latin:'la'};window.ATHENAEUM_EXTRA_NOTES=window.ATHENAEUM_EXTRA_NOTES||{};
-      for(const [,title,author,category,room,note] of window.ATHENAEUM_NEW_BOOKS||[]){const found=resolved[ROOM_LANGUAGES[room]?`${title} [${ROOM_LANGUAGES[room]}]`:title];if(!found?.id)continue;const id=found.id;
+      // add() runs again when the International Wing's books arrive (data/new-books-wing.js, loaded on the way there).
+      const add=list=>{for(const [,title,author,category,room,note] of list||[]){const found=resolved[ROOM_LANGUAGES[room]?`${title} [${ROOM_LANGUAGES[room]}]`:title];if(!found?.id)continue;const id=found.id;
         let book=books.find(b=>b.id===id);if(!book){book={id,title,author,category,fame:30,source:'Project Gutenberg',sourceUrl:`https://www.gutenberg.org/ebooks/${id}`,licence:'Public Domain',textUrl:`https://www.gutenberg.org/cache/epub/${id}/pg${id}.txt`,progress:loadSavedProgress(id),index:books.length,newArrival:true};books.push(book);knownBookIds.add(id)}
-        if(ROOM_LANGUAGES[room])book.language=ROOM_LANGUAGES[room];if(note&&!window.ATHENAEUM_EXTRA_NOTES[id])window.ATHENAEUM_EXTRA_NOTES[id]=note;if(found.words)words[id]=found.words;(rooms[room]||(rooms[room]=[])).push(book)}
-      return {rooms,words,list:room=>rooms[room]||[]}})();
+        if(ROOM_LANGUAGES[room])book.language=ROOM_LANGUAGES[room];if(note&&!window.ATHENAEUM_EXTRA_NOTES[id])window.ATHENAEUM_EXTRA_NOTES[id]=note;if(found.words)words[id]=found.words;(rooms[room]||(rooms[room]=[])).push(book);Object.assign(book,bookEnrichments[book.id]||{})}};
+      add(window.ATHENAEUM_NEW_BOOKS);add(window.ATHENAEUM_NEW_BOOKS_WING);
+      return {rooms,words,add,list:room=>rooms[room]||[]}})();
     for(const book of books)Object.assign(book,bookEnrichments[book.id]||{});
     // Links from the book pages (book/*.html, scripts/book-pages.mjs): /?book=ID opens that book in the reader as soon
     // as the reader steps inside, instead of the first-visit tour.
@@ -1407,7 +1409,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     function roomLink(key){
       if(themeRoomKeys.has(key)){const hp=hiddenPassages.find(h=>h.destination===key);return hp?()=>enterHiddenRoom(hp):null}
       return {boathouse:crusoeIsland&&(()=>crusoeIsland.enter()),'evening-room':eveningRoom&&(()=>eveningRoom.enter()),'learners-room':learnersRoom&&(()=>learnersRoom.enter()),
-        'periodicals-room':periodicalsRoom&&(()=>periodicalsRoom.enter()),'international-wing':internationalWing&&(()=>internationalWing.enter('spanish')),'portuguese-room':internationalWing&&(()=>internationalWing.enter('portuguese')),'chinese-room':internationalWing&&(()=>internationalWing.enter('chinese')),'french-room':internationalWing&&(()=>internationalWing.enter('french')),'latin-room':internationalWing&&(()=>internationalWing.enter('latin')),'daily-room':dailyRoom&&(()=>dailyRoom.enter()),mars:marsWorld&&(()=>marsWorld.arrive()),
+        'periodicals-room':periodicalsRoom&&(()=>periodicalsRoom.enter()),'international-wing':internationalWing&&(()=>enterWing('spanish')),'portuguese-room':internationalWing&&(()=>enterWing('portuguese')),'chinese-room':internationalWing&&(()=>enterWing('chinese')),'french-room':internationalWing&&(()=>enterWing('french')),'latin-room':internationalWing&&(()=>enterWing('latin')),'daily-room':dailyRoom&&(()=>dailyRoom.enter()),mars:marsWorld&&(()=>marsWorld.arrive()),
         moon:()=>moveReaderTo(340,0,36,Math.PI),'rocket-hall':()=>moveReaderTo(highStaircase.center.x-1.3,highStaircase.topY,highStaircase.center.z+1.6,Math.PI)}[key]||null;
     }
     function goToLinkedRoom(){const key=ROOM_ALIASES[linkedRoom]||linkedRoom,go=roomLink(key);if(!go)return false;tour?.finish?.();window.libraryAnalytics?.track('Room Link Opened',{room:key});setTimeout(go,600);return true}
@@ -1675,10 +1677,19 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       finishWalls:wallFinish&&(walls=>{for(const [mesh,w,h,d] of walls)wallFinish.finishBox(mesh,w,h,d);wallFinish.settle(walls.map(([mesh])=>mesh),{ceiling:true})}),
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
     });
+    // The wing's books (data/new-books-wing.js) are fetched on the way there: near its door, at one of its doors, or on
+    // a link into it. Until they arrive the rooms are not built, so no shelf is ever made empty.
+    const wingBooks={ready:!!window.ATHENAEUM_NEW_BOOKS_WING,loading:null,
+      load(){if(this.ready)return Promise.resolve();return this.loading||(this.loading=new Promise(done=>{const script=document.createElement('script');
+        script.src=(window.libraryVersionedSource||(src=>src))('data/new-books-wing.js');
+        script.onload=()=>{newArrivals.add(window.ATHENAEUM_NEW_BOOKS_WING);this.ready=true;done()};script.onerror=()=>{script.remove();this.loading=null;done()};document.head.appendChild(script)}))},
+      near(){if(internationalWing&&Math.hypot(player.pos.x-internationalWing.door.x,player.pos.z-internationalWing.door.z)<9)this.load()}};
+    function enterWing(key){wingBooks.load().then(()=>internationalWing.enter(key))}
     if(internationalWing){
       const preWingFloor=floorHeight;floorHeight=function(x,z){return internationalWing.floorAt(x,z)??preWingFloor(x,z)};
       const preWingAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return internationalWing.contains(x,z)?internationalWing.allowed(x,z):preWingAllowed(x,z,y)};
-      const preWingInteract=interact;interact=function(){if(focus&&!selected&&internationalWing.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preWingInteract()};
+      const preWingInteract=interact;interact=function(){if(focus&&!selected&&!wingBooks.ready&&String(focus.userData?.type).startsWith('intl-')){const door=focus;wingBooks.load().then(()=>internationalWing.interact(door));focus=null;ui.prompt.style.opacity=0;return}
+        if(focus&&!selected&&internationalWing.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preWingInteract()};
       // Taking a book down: the librarian's note, in Spanish.
       const preWingSelect=selectBook;selectBook=function(bm){const result=preWingSelect(bm);
         // A book from the racks, or one opened by sitting in one of the wing's chairs: its note in the room's language.
@@ -1805,7 +1816,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       lampShadeMaterial.emissiveIntensity=2.35*flame(0);
       flickerLights.forEach((light,i)=>{const d=light.userData,factor=flame(i+1);if(d.flickerApplied!==undefined&&light.intensity!==d.flickerApplied)d.flickerBase=light.intensity/(d.flickerFactor||1);if(d.flickerBase===undefined)d.flickerBase=light.intensity;light.intensity=d.flickerBase*factor;d.flickerApplied=light.intensity;d.flickerFactor=factor})
     }
-    {const preLampWorld=updateWorld;updateWorld=function(t,dt){preLampWorld(t,dt);updateLamplight(t);crusoeIsland?.update(t,dt);marsWorld?.update(t);otherReaders?.update(dt);learnersRoom?.update(t,dt);eveningRoom?.update(t,dt,reducedMotion);periodicalsRoom?.update(t);internationalWing?.update(t)}}
+    {const preLampWorld=updateWorld;updateWorld=function(t,dt){preLampWorld(t,dt);updateLamplight(t);crusoeIsland?.update(t,dt);marsWorld?.update(t);otherReaders?.update(dt);learnersRoom?.update(t,dt);eveningRoom?.update(t,dt,reducedMotion);periodicalsRoom?.update(t);(wingBooks.ready?internationalWing?.update(t):wingBooks.near())}}
     // ---- First visit: a short tour that moves on as the reader does each thing, with Quill leading to a shelf.
     const tour=(()=>{const box=$('#tour'),stepLabel=$('#tourStep'),text=$('#tourText');
       const pending=!localStorage.getItem('athenaeum-tour-done')&&exploredRooms.size<3&&!awakenedBooks.size;

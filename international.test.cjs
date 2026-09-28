@@ -8,7 +8,7 @@ const {execFileSync}=require('node:child_process');
 
 const wing=fs.readFileSync('international-wing.js','utf8'),game=fs.readFileSync('game.js','utf8'),html=fs.readFileSync('index.html','utf8');
 const load=(file,name)=>{const c={window:{}};vm.runInNewContext(fs.readFileSync(file,'utf8'),c);return c.window[name]};
-const shelves=load('data/new-books.js','ATHENAEUM_NEW_BOOKS'),spanish=shelves.filter(entry=>entry[4]==='spanish'),portuguese=shelves.filter(entry=>entry[4]==='portuguese');
+const shelves=[...load('data/new-books.js','ATHENAEUM_NEW_BOOKS'),...load('data/new-books-wing.js','ATHENAEUM_NEW_BOOKS_WING')],spanish=shelves.filter(entry=>entry[4]==='spanish'),portuguese=shelves.filter(entry=>entry[4]==='portuguese');
 
 test('the Spanish Reading Room has its classics, each with a note in Spanish',()=>{
   assert.ok(spanish.length>=40,`${spanish.length} Spanish books`);
@@ -66,7 +66,7 @@ test('the International Wing is a room behind its own door, built only when need
   assert.match(game,/if\(internationalWing\?\.contains\(x,z\)\)return 'international-wing';/);
   assert.match(game,/\['international-wing','The International Wing'\]/);
   assert.match(game,/internationalWing\?\.update\(t\)/);
-  assert.match(game,/'international-wing':internationalWing&&\(\(\)=>internationalWing\.enter\('spanish'\)\),'portuguese-room':internationalWing&&\(\(\)=>internationalWing\.enter\('portuguese'\)\)/);
+  assert.match(game,/'international-wing':internationalWing&&\(\(\)=>enterWing\('spanish'\)\),'portuguese-room':internationalWing&&\(\(\)=>enterWing\('portuguese'\)\)/);
   assert.match(game,/pt:'portuguese-room',portuguese:'portuguese-room'/);
   assert.match(game,/spanish:'international-wing',espanol:'international-wing',es:'international-wing'/);
   assert.match(fs.readFileSync('room-ambience.js','utf8'),/'international-wing':\{beds:/);
@@ -117,7 +117,7 @@ test('the Chinese Reading Room: classics in Chinese behind the red door, matched
   // The red door in the Spanish room opens now, onto a room of its own.
   assert.match(wing,/chinese:\{cx:-470,cz:100,w:24,d:15,h:6,language:'zh'/);assert.match(wing,/type:'intl-go',room:'chinese'/);assert.doesNotMatch(wing,/intl-coming/);
   assert.match(game,/ROOM_LANGUAGES=\{spanish:'es',portuguese:'pt',chinese:'zh'[,}]/);
-  assert.match(game,/zh:'chinese-room',chinese:'chinese-room'/);assert.match(game,/'chinese-room':internationalWing&&\(\(\)=>internationalWing\.enter\('chinese'\)\)/);
+  assert.match(game,/zh:'chinese-room',chinese:'chinese-room'/);assert.match(game,/'chinese-room':internationalWing&&\(\(\)=>enterWing\('chinese'\)\)/);
   // The reader breaks Chinese lines between characters, since there are no spaces to break at.
   assert.match(game,/if\(CJK_CHAR\.test\(paragraph\)\)/);
   assert.match(html,/rooms:\['zh','chinese','zhongwen','chinese-room'\]/);assert.match(html,/enter:'進入圖書館'/);
@@ -150,7 +150,7 @@ test('the French Reading Room: classics in French behind the blue door, kept apa
   // The blue door stands between the green and the red in the Spanish room's east wall.
   assert.match(wing,/french:\{cx:-470,cz:132,w:24,d:15,h:6,language:'fr'/);assert.match(wing,/type:'intl-go',room:'french'/);
   assert.match(wing,/ROOM_DOORS=\{portuguese:\{x:EAST,z:ROOM\.cz-4\.7,yaw:-Math\.PI\/2\},french:\{x:EAST,z:ROOM\.cz,yaw:-Math\.PI\/2\},\s*chinese:\{x:EAST,z:ROOM\.cz\+4\.7,yaw:-Math\.PI\/2\}/);
-  assert.match(game,/fr:'french-room',french:'french-room',francais:'french-room'/);assert.match(game,/'french-room':internationalWing&&\(\(\)=>internationalWing\.enter\('french'\)\)/);
+  assert.match(game,/fr:'french-room',french:'french-room',francais:'french-room'/);assert.match(game,/'french-room':internationalWing&&\(\(\)=>enterWing\('french'\)\)/);
   assert.match(html,/rooms:\['fr','french','francais','français','french-room'\]/);assert.match(html,/enter:'Entrer dans la bibliothèque'/);
   const out=fs.mkdtempSync(path.join(os.tmpdir(),'fr-pages-'));
   execFileSync(process.execPath,['scripts/book-pages.mjs'],{env:{...process.env,OUT:out}});
@@ -186,11 +186,28 @@ test('the Latin Reading Room: Latin texts behind a stone door in the south wall,
   const {textMatches}=await import('./scripts/daily-room.mjs'),head=lang=>`Title: Aeneidos\nAuthor: Virgil\nLanguage: ${lang}\n`;
   assert.ok(textMatches(head('Latin'),'Aeneidos','Virgil','la'));assert.ok(!textMatches(head('English'),'Aeneidos','Virgil','la'),'a translation is not the text');
   assert.match(wing,/latin:\{cx:-470,cz:164,w:24,d:15,h:6,language:'la'/);assert.match(wing,/latin:\{x:ROOM\.cx\+7,z:SOUTH,yaw:0\}/);assert.match(wing,/room:'latin'/);
-  assert.match(game,/la:'latin-room',latin:'latin-room',latina:'latin-room'/);assert.match(game,/'latin-room':internationalWing&&\(\(\)=>internationalWing\.enter\('latin'\)\)/);
+  assert.match(game,/la:'latin-room',latin:'latin-room',latina:'latin-room'/);assert.match(game,/'latin-room':internationalWing&&\(\(\)=>enterWing\('latin'\)\)/);
   const out=fs.mkdtempSync(path.join(os.tmpdir(),'la-pages-'));
   execFileSync(process.execPath,['scripts/book-pages.mjs'],{env:{...process.env,OUT:out}});
   const la=fs.readFileSync(path.join(out,'la/index.html'),'utf8');
   assert.match(la,/<html lang="en">/);assert.match(la,/<h1>Libri Latini<\/h1>/);assert.match(la,/href="\/\?room=latin-room"/);
   assert.equal(fs.readFileSync('la/index.html','utf8'),la,'run: node scripts/book-pages.mjs');
   assert.match(fs.readFileSync(path.join(out,'sitemap.xml'),'utf8'),/<loc>https:\/\/libraryafterdark\.space\/la\/<\/loc>/);
+});
+
+test('the wing’s books load only on the way there, or on a link that may lead there',()=>{
+  const main=load('data/new-books.js','ATHENAEUM_NEW_BOOKS'),wingList=load('data/new-books-wing.js','ATHENAEUM_NEW_BOOKS_WING');
+  const WING=new Set(['spanish','portuguese','french','latin','chinese']);
+  assert.ok(main.every(entry=>!WING.has(entry[4])),'the wing’s books belong in data/new-books-wing.js');
+  assert.ok(wingList.length>150&&wingList.every(entry=>WING.has(entry[4])),'only the wing’s books in data/new-books-wing.js');
+  // Not among the files every visitor downloads: only for a ?book= or a ?room= in the wing.
+  assert.match(html,/if\(q\.has\('book'\)\|\|\/\^\(international\|international-wing\|es\|[^)]*latin-room\|zh[^)]*\)\$\/\.test\(room\)\)startupScript\('data\/new-books-wing\.js'\)/);
+  assert.match(html,/window\.libraryVersionedSource=src=>versionedSource\(src\)/);
+  // In the library: fetched within 9 m of the door (the reader starts 10.7 m away), at one of the wing's doors, or before a link enters a room.
+  assert.match(game,/add\(window\.ATHENAEUM_NEW_BOOKS\);add\(window\.ATHENAEUM_NEW_BOOKS_WING\);/);
+  assert.match(game,/script\.onload=\(\)=>\{newArrivals\.add\(window\.ATHENAEUM_NEW_BOOKS_WING\);this\.ready=true;done\(\)\}/);
+  assert.match(game,/<9\)this\.load\(\)/);assert.match(game,/function enterWing\(key\)\{wingBooks\.load\(\)\.then\(\(\)=>internationalWing\.enter\(key\)\)\}/);
+  assert.match(game,/\(wingBooks\.ready\?internationalWing\?\.update\(t\):wingBooks\.near\(\)\)/);
+  assert.match(game,/!wingBooks\.ready&&String\(focus\.userData\?\.type\)\.startsWith\('intl-'\)/);
+  assert.match(fs.readFileSync('.github/workflows/new-books.yml','utf8'),/'data\/new-books-wing\.js'/);
 });

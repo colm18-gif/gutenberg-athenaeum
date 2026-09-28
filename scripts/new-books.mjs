@@ -14,7 +14,7 @@ import zlib from 'node:zlib';
 import {loadScript,resolve,textMatches} from './daily-room.mjs';
 
 const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),'..');
-const LIST=path.join(root,'data/new-books.js'),RESOLVED=path.join(root,'data/new-books-resolved.js'),TRACKED=path.join(root,'data/daily-room-texts.json');
+const LIST=path.join(root,'data/new-books.js'),WING=path.join(root,'data/new-books-wing.js'),RESOLVED=path.join(root,'data/new-books-resolved.js'),TRACKED=path.join(root,'data/daily-room-texts.json');
 const BUNDLED=path.join(root,'texts/bundled-gzip');
 export const ROOMS=['secret','shelves','evening-quick','evening-hour','evening-evening','learners-1','learners-2','learners-3','learners-4','learners-short','signal','tide','mars','periodicals','spanish','portuguese','chinese','french','latin'];
 // Rooms whose books are not in English: the language of their texts (used to search Gutendex, and by the reader
@@ -57,7 +57,7 @@ function localText(id){
 }
 
 async function main(){
-  const args=process.argv.slice(2),list=loadScript(LIST,'ATHENAEUM_NEW_BOOKS'),errors=validate(list);
+  const args=process.argv.slice(2),list=[...loadScript(LIST,'ATHENAEUM_NEW_BOOKS'),...loadScript(WING,'ATHENAEUM_NEW_BOOKS_WING')],errors=validate(list);
   if(errors.length){console.error(errors.join('\n'));process.exit(1)}
   if(args.includes('--validate')){console.log(`New books OK: ${list.length} entries.`);return}
   const previous=fs.existsSync(RESOLVED)?loadScript(RESOLVED,'ATHENAEUM_NEW_BOOKS_RESOLVED')?.books||{}:{};
