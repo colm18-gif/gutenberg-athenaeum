@@ -50,7 +50,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `/es/`, `/pt/`, `/fr/` and `/zh/` are the landing pages. Their books are keyed
   in `data/new-books-resolved.js` as `Title [lang]` (`resolvedKey`), so a French *Madame Bovary* and the English one
   can both stand. The rooms share two lamps
-  that move to the reader's room, so adding a room adds no lights.
+  that move to the reader's room, so adding a room adds no lights. Their reading-table chairs are the library's
+  own seats (`registerSeat`), opening one of the room's books. Rooms stand at x −410 and −470: keep them clear of
+  Crusoe's island (x −420, z 165–199; a test checks).
   For these rooms the text's own `Language:` line must match (a title alone lets translations through). Gutendex
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
@@ -78,8 +80,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - Periodicals Room: 8 of 22 titles were not found on Gutenberg; replacements could fill the racks.
 - Mars: *Mars as the Abode of Life* and *Gullivar Jones* were not found.
 - Ideas offered but not started: a Halloween night, a plain text mode, reading progress across devices.
-- International Wing: outreach in Spanish, Portuguese and Chinese sent 28 September; French next, linking to /fr/
-  (France, Belgium, Switzerland, Quebec, francophone Africa). For mainland Chinese readers, host Three.js on the site:
+- International Wing: outreach in Spanish, Portuguese, Chinese and French sent 28 September (no Quebec address
+  found yet for the French batch). For mainland Chinese readers, host Three.js on the site:
   jsDelivr is unreliable there.
 - The owner is moving the Gmail connector to the library's own address for press correspondence; press follow-ups
   were planned for around 2–3 October.
