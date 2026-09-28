@@ -1670,7 +1670,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // The International Wing (international-wing.js), behind a door on the Grand Hall's south wall beside the visitors'
     // book: the Spanish Reading Room and, through its green door, the Portuguese Reading Room; Chinese to follow.
     const internationalWing=window.createInternationalWing?.({THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,playSample,
-      findBook:id=>books.find(b=>b.id===id),arrivals:room=>newArrivals.list(room).map(book=>book.id),analytics:window.libraryAnalytics,isHolding:()=>!!selected,
+      findBook:id=>books.find(b=>b.id===id),arrivals:room=>newArrivals.list(room).map(book=>book.id),analytics:window.libraryAnalytics,isHolding:()=>!!selected,registerSeat,
       wallMaterial:wallFinish?photoWall('sandstone_blocks_08',[2.4,2.4],0xb07a50,2):null,
       finishWalls:wallFinish&&(walls=>{for(const [mesh,w,h,d] of walls)wallFinish.finishBox(mesh,w,h,d);wallFinish.settle(walls.map(([mesh])=>mesh),{ceiling:true})}),
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
@@ -1680,7 +1680,10 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const preWingAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return internationalWing.contains(x,z)?internationalWing.allowed(x,z):preWingAllowed(x,z,y)};
       const preWingInteract=interact;interact=function(){if(focus&&!selected&&internationalWing.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preWingInteract()};
       // Taking a book down: the librarian's note, in Spanish.
-      const preWingSelect=selectBook;selectBook=function(bm){const result=preWingSelect(bm);if(bm?.userData?.international){const note=librarianNotes[bm.userData.book.id]||window.ATHENAEUM_EXTRA_NOTES?.[bm.userData.book.id];if(note){const label=internationalWing.rooms[bm.userData.wingRoom]?.note||'La nota de la bibliotecaria';showNotice(bm.userData.wingRoom==='chinese'?`${label}：「${note}」`:`${label}: “${note}”`,12)}}return result};
+      const preWingSelect=selectBook;selectBook=function(bm){const result=preWingSelect(bm);
+        // A book from the racks, or one opened by sitting in one of the wing's chairs: its note in the room's language.
+        const wingRoom=bm?.userData?.international?bm.userData.wingRoom:bm?.userData?.seatCopy?seated?.seat?.wingRoom:null;
+        if(wingRoom){const note=librarianNotes[bm.userData.book.id]||window.ATHENAEUM_EXTRA_NOTES?.[bm.userData.book.id];if(note){const label=internationalWing.rooms[wingRoom]?.note||'La nota de la bibliotecaria';showNotice(wingRoom==='chinese'?`${label}：「${note}」`:`${label}: “${note}”`,12)}}return result};
     }
     // Traces of other readers (other-readers.js): invented, but the same for everyone on a given day.
     // The real visitors' book (visitors-book.js), once its small service is set up (data/visitors-book-config.js).

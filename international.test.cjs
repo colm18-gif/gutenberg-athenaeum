@@ -115,7 +115,7 @@ test('the Chinese Reading Room: classics in Chinese behind the red door, matched
   assert.ok(!textMatches(head('紅樓夢','Guanzhong Luo','Chinese'),'紅樓夢','曹雪芹 (Cao Xueqin)','zh'));
   assert.equal(countWords('*** START OF THE PROJECT GUTENBERG EBOOK X ***\n滿紙荒唐言，一把辛酸淚。\n*** END OF THE PROJECT GUTENBERG EBOOK X ***'),10,'Chinese is counted by the character');
   // The red door in the Spanish room opens now, onto a room of its own.
-  assert.match(wing,/chinese:\{cx:-410,cz:164,w:24,d:15,h:6,language:'zh'/);assert.match(wing,/type:'intl-go',room:'chinese'/);assert.doesNotMatch(wing,/intl-coming/);
+  assert.match(wing,/chinese:\{cx:-470,cz:100,w:24,d:15,h:6,language:'zh'/);assert.match(wing,/type:'intl-go',room:'chinese'/);assert.doesNotMatch(wing,/intl-coming/);
   assert.match(game,/ROOM_LANGUAGES=\{spanish:'es',portuguese:'pt',chinese:'zh'[,}]/);
   assert.match(game,/zh:'chinese-room',chinese:'chinese-room'/);assert.match(game,/'chinese-room':internationalWing&&\(\(\)=>internationalWing\.enter\('chinese'\)\)/);
   // The reader breaks Chinese lines between characters, since there are no spaces to break at.
@@ -148,7 +148,7 @@ test('the French Reading Room: classics in French behind the blue door, kept apa
   const {textMatches}=await import('./scripts/daily-room.mjs'),head=lang=>`Title: Madame Bovary\nAuthor: Gustave Flaubert\nLanguage: ${lang}\n`;
   assert.ok(textMatches(head('French'),'Madame Bovary','Gustave Flaubert','fr'));assert.ok(!textMatches(head('English'),'Madame Bovary','Gustave Flaubert','fr'));
   // The blue door stands between the green and the red in the Spanish room's east wall.
-  assert.match(wing,/french:\{cx:-410,cz:196,w:24,d:15,h:6,language:'fr'/);assert.match(wing,/type:'intl-go',room:'french'/);
+  assert.match(wing,/french:\{cx:-470,cz:132,w:24,d:15,h:6,language:'fr'/);assert.match(wing,/type:'intl-go',room:'french'/);
   assert.match(wing,/ROOM_DOORS=\{portuguese:\{x:EAST,z:ROOM\.cz-4\.7\},french:\{x:EAST,z:ROOM\.cz\},chinese:\{x:EAST,z:ROOM\.cz\+4\.7\}\}/);
   assert.match(game,/fr:'french-room',french:'french-room',francais:'french-room'/);assert.match(game,/'french-room':internationalWing&&\(\(\)=>internationalWing\.enter\('french'\)\)/);
   assert.match(html,/rooms:\['fr','french','francais','français','french-room'\]/);assert.match(html,/enter:'Entrer dans la bibliothèque'/);
@@ -159,4 +159,20 @@ test('the French Reading Room: classics in French behind the blue door, kept apa
   assert.equal(fs.readFileSync('fr/index.html','utf8'),fr,'run: node scripts/book-pages.mjs');
   assert.match(fs.readFileSync(path.join(out,'sitemap.xml'),'utf8'),/<loc>https:\/\/libraryafterdark\.space\/fr\/<\/loc>/);
   const {readingTime}=await import('./scripts/book-pages.mjs');assert.equal(readingTime(15000,'fr'),'une heure');assert.equal(readingTime(30000,'fr'),'2 heures');
+});
+
+test('the wing’s rooms stand clear of every other place, Crusoe’s island included',()=>{
+  const rooms=[...wing.matchAll(/(\w+):\{cx:(-?\d+),cz:(-?\d+),w:(\d+),d:(\d+)/g)].map(m=>({key:m[1],cx:+m[2],cz:+m[3],w:+m[4],d:+m[5]}));
+  assert.equal(rooms.length,4);
+  const isle=fs.readFileSync('crusoe-island.js','utf8'),[,ix,iz]=isle.match(/ISLE=\{x:(-?\d+),z:(-?\d+)/),[,rx,rz]=isle.match(/SAND=\{rx:(\d+),rz:(\d+)\}/);
+  for(const a of rooms){
+    // The nearest point of the room to the island's centre must lie outside its sand.
+    const px=Math.max(a.cx-a.w/2,Math.min(+ix,a.cx+a.w/2)),pz=Math.max(a.cz-a.d/2,Math.min(+iz,a.cz+a.d/2));
+    assert.ok(((px-ix)/rx)**2+((pz-iz)/rz)**2>1.05,`${a.key} overlaps Crusoe’s island`);
+    for(const b of rooms)if(a!==b)assert.ok(Math.abs(a.cx-b.cx)>=(a.w+b.w)/2+2||Math.abs(a.cz-b.cz)>=(a.d+b.d)/2+2,`${a.key} and ${b.key} overlap`);
+  }
+  // Their chairs can be sat in, and open one of the room's own books.
+  assert.match(wing,/registerSeat\(\[seat,back\],chair,new THREE\.Vector3\(0,1\.28,\.08\),yaw\+Math\.PI,\{title:def\.seat\[0\],author:def\.seat\[1\],bookIds,wingRoom:key\}\);room\.ours\.push\(seat,back\)/);
+  assert.match(game,/isHolding:\(\)=>!!selected,registerSeat,/);
+  assert.match(game,/bm\?\.userData\?\.seatCopy\?seated\?\.seat\?\.wingRoom/);
 });
