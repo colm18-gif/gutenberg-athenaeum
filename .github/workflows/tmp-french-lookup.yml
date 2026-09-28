@@ -1,0 +1,28 @@
+name: Temporary French lookup
+on:
+  push:
+    branches: ['claude/**']
+    paths: ['.github/workflows/tmp-french-lookup.yml']
+permissions:
+  contents: read
+jobs:
+  lookup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: List French texts by major authors (Project Gutenberg's catalogue)
+        run: |
+          curl -sSL --max-time 180 -o pg.csv https://www.gutenberg.org/cache/epub/feeds/pg_catalog.csv
+          cat > lookup.py <<'PY'
+          import csv
+          authors=['Hugo, Victor','Balzac','Flaubert','Zola','Maupassant','Dumas, Alexandre','Stendhal','Voltaire','Molière','Racine','Corneille','Baudelaire','Verlaine','Rimbaud','Verne, Jules','Proust','Sand, George','Mérimée','Daudet, Alphonse','Laclos','Prévost','Rousseau, Jean-Jacques','Montaigne','La Fontaine','Perrault','Diderot','Chateaubriand','Musset','Nerval','Gautier, Théophile','Leroux, Gaston','Alain-Fournier','Hémon','Apollinaire','Lafayette','La Fayette','Rostand','Beaumarchais','Villon','Rabelais','Pascal','La Rochefoucauld','Vigny','Lamartine','Staël','Constant, Benjamin','Huysmans','Mallarmé','Loti','France, Anatole','Radiguet','Maeterlinck','Lautréamont','Marivaux','Sévigné','Labé','Ronsard','Leblanc, Maurice','Féval','Sue, Eugène','Ségur','Bernardin','Fromentin','Villiers','Barbey','Renard, Jules','Feydeau','Jarry','Descartes','Tocqueville','Michelet']
+          rows=[r for r in csv.DictReader(open('pg.csv',encoding='utf-8')) if 'fr' in r.get('Language','').replace(' ','').split(';') and r.get('Type')=='Text']
+          print(len(rows),'French texts')
+          for a in authors:
+            hits=[r for r in rows if a.lower() in r['Authors'].lower()]
+            if not hits: continue
+            print('\n##',a,len(hits))
+            for r in hits[:40]: print(' ',r['Text#'],'|',' '.join(r['Title'].split())[:90],'|',r['Authors'][:50])
+          PY
+          python3 lookup.py
+          for id in 17489 14155 2650; do echo "== $id"; curl -sSL --max-time 30 "https://www.gutenberg.org/cache/epub/$id/pg$id.txt" | head -c 1500 | grep -E "^(Title|Author|Language|Translator|Editor)" || true; done
