@@ -1,7 +1,7 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-09-27",
+ "updated": "2026-09-28",
  "days": {
   "2026-09-25": {
    "books": [
@@ -274,6 +274,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 61561,
      "title": "The Wanderings of Persiles and Sigismunda",
      "author": "Miguel de Cervantes Saavedra"
+    }
+   ],
+   "missing": []
+  },
+  "2026-09-30": {
+   "books": [
+    {
+     "id": 1952,
+     "title": "The Yellow Wallpaper",
+     "author": "Charlotte Perkins Gilman"
+    },
+    {
+     "id": 11231,
+     "title": "Bartleby, the Scrivener",
+     "author": "Herman Melville"
+    },
+    {
+     "id": 5200,
+     "title": "Metamorphosis",
+     "author": "Franz Kafka"
+    },
+    {
+     "id": 7256,
+     "title": "The Gift of the Magi",
+     "author": "O. Henry"
+    },
+    {
+     "id": 1080,
+     "title": "A Modest Proposal",
+     "author": "Jonathan Swift"
+    },
+    {
+     "id": 11757,
+     "title": "The Velveteen Rabbit",
+     "author": "Margery Williams"
+    },
+    {
+     "id": 12122,
+     "title": "The Monkey's Paw",
+     "author": "W. W. Jacobs"
+    },
+    {
+     "id": 375,
+     "title": "An Occurrence at Owl Creek Bridge",
+     "author": "Ambrose Bierce"
+    },
+    {
+     "id": 60976,
+     "title": "Rip Van Winkle",
+     "author": "Washington Irving"
+    },
+    {
+     "id": 6373,
+     "title": "The Luck of Roaring Camp",
+     "author": "Bret Harte"
     }
    ],
    "missing": []
