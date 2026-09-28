@@ -29,10 +29,12 @@ const materials = [
 
 const root = path.resolve('assets/polyhaven');
 
+// Files already in the repository are kept as they are: several were recompressed after download
+// (see scripts/encode-ktx2.mjs), so they no longer match Poly Haven's checksums.
 async function download(url, destination, expectedMd5) {
   try {
-    const existing = await readFile(destination);
-    if (!expectedMd5 || createHash('md5').update(existing).digest('hex') === expectedMd5) return;
+    await readFile(destination);
+    return;
   } catch {}
   const response = await fetch(url, { headers: { 'User-Agent': 'Gutenberg-Athenaeum-asset-builder' } });
   if (!response.ok) throw new Error(`${response.status} while downloading ${url}`);
