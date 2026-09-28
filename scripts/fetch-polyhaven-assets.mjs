@@ -23,8 +23,7 @@ const models = [
 const materials = [
   'smoked_walnut_veneer',
   'leather_red_02',
-  'sandstone_blocks_08',   // the hall walls
-  'plastered_wall_04'      // the reading-room walls
+  'sandstone_blocks_08'    // the hall and reading-room walls
 ];
 
 const root = path.resolve('assets/polyhaven');

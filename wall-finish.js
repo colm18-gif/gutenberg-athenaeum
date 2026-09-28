@@ -24,12 +24,13 @@ window.createWallFinish=function({THREE}){
   function shaderPatch(floor){
     return shader=>{
       shader.vertexShader=shader.vertexShader
-        .replace('#include <common>','#include <common>\nattribute vec2 uv1;\nattribute vec2 uv2;\nvarying vec4 vWallEdge;')
+        // three.js declares uv1/uv2 itself when the geometry has them (it always does here, but stay safe).
+        .replace('#include <common>','#include <common>\n#ifndef USE_UV1\nattribute vec2 uv1;\n#endif\n#ifndef USE_UV2\nattribute vec2 uv2;\n#endif\nvarying vec4 vWallEdge;')
         .replace('#include <begin_vertex>','#include <begin_vertex>\nvWallEdge=vec4(uv1,uv2);');
       // Applied after the lights are summed: fully to ambient light, most of the way to direct light.
       const occlusion=floor
-        ?'float wallOcc=1.-.42*(1.-smoothstep(0.,.85,min(min(vWallEdge.x,vWallEdge.y),min(vWallEdge.z,vWallEdge.w))));'
-        :'float wallOcc=(1.-.48*(1.-smoothstep(0.,.9,vWallEdge.x)))*(1.-.3*(1.-smoothstep(0.,.55,vWallEdge.y)))*(1.-.36*(1.-smoothstep(0.,.75,min(vWallEdge.z,vWallEdge.w))));';
+        ?'float wallOcc=1.-.55*(1.-smoothstep(0.,1.,min(min(vWallEdge.x,vWallEdge.y),min(vWallEdge.z,vWallEdge.w))));'
+        :'float wallOcc=(1.-.62*(1.-smoothstep(0.,1.1,vWallEdge.x)))*(1.-.4*(1.-smoothstep(0.,.7,vWallEdge.y)))*(1.-.5*(1.-smoothstep(0.,.9,min(vWallEdge.z,vWallEdge.w))));';
       shader.fragmentShader=shader.fragmentShader
         .replace('#include <common>','#include <common>\nvarying vec4 vWallEdge;')
         .replace('#include <aomap_fragment>',`#include <aomap_fragment>\n{${occlusion}\nreflectedLight.indirectDiffuse*=wallOcc;reflectedLight.directDiffuse*=mix(1.,wallOcc,.75);reflectedLight.directSpecular*=wallOcc;reflectedLight.indirectSpecular*=wallOcc;}`);

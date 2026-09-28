@@ -125,17 +125,6 @@
         "normal": "assets/polyhaven/materials/sandstone_blocks_08/normal.jpg",
         "roughness": "assets/polyhaven/materials/sandstone_blocks_08/roughness.jpg"
       }
-    },
-    {
-      "id": "plastered_wall_04",
-      "source": "https://polyhaven.com/a/plastered_wall_04",
-      "licence": "CC0 1.0",
-      "resolution": "1k",
-      "files": {
-        "diffuse": "assets/polyhaven/materials/plastered_wall_04/diffuse.jpg",
-        "normal": "assets/polyhaven/materials/plastered_wall_04/normal.jpg",
-        "roughness": "assets/polyhaven/materials/plastered_wall_04/roughness.jpg"
-      }
     }
   ]
 }

@@ -21,6 +21,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   (teleport, placeAt, rooms, books…). Three.js loads from a CDN, so route it to a local copy.
 - Gutenberg and most external sites are blocked from the cloud sessions; GitHub Actions has the network. Anything that
   needs to fetch texts runs as a workflow.
+- Walls in the hall and reading rooms are Poly Haven sandstone laid out in metres, with contact shadows in the shader
+  (`wall-finish.js`; build walls with `addBox` and a `photoWall` material). New Poly Haven models or materials: add
+  them to `scripts/fetch-polyhaven-assets.mjs`; the Poly Haven assets workflow downloads, compresses and commits them.
 
 ## Books and data
 
