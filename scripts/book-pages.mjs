@@ -7,7 +7,7 @@
 // data/librarian-notes.json, the notes files in data/ and the records themselves.
 //
 // Writes book/<id>-<slug>.html for each book, book/index.html (the catalogue by shelf), book/authors.html,
-// book/book.css, es/index.html (the Spanish books, in Spanish), sitemap.xml and robots.txt. A book in another
+// book/book.css, es/index.html and pt/index.html (each International Wing room's books, in its language), sitemap.xml and robots.txt. A book in another
 // language (the International Wing's rooms) gets its page in that language too. Run by .github/workflows/book-pages.yml whenever the catalogue changes.
 //
 //   node scripts/book-pages.mjs            write the pages
@@ -54,11 +54,11 @@ export function loadCatalogue(){
 // ---------- where each book lives ----------
 const ROOM_NAMES={secret:'The secret bookcase in the west wing','evening-quick':'The Evening Room','evening-hour':'The Evening Room','evening-evening':'The Evening Room',
   'learners-1':'The English Reading Room','learners-2':'The English Reading Room','learners-3':'The English Reading Room','learners-4':'The English Reading Room','learners-short':'The English Reading Room',
-  signal:'The Signal House, on the night railway',tide:'Tidebound Quay, on the night railway',mars:'The Reading Room of Helium, on Mars',periodicals:'The Periodicals Room',spanish:'The International Wing'};
+  signal:'The Signal House, on the night railway',tide:'Tidebound Quay, on the night railway',mars:'The Reading Room of Helium, on Mars',periodicals:'The Periodicals Room',spanish:'The International Wing',portuguese:'The Portuguese Reading Room'};
 const CURIOUS={horologist:'The Horologist’s Study',conservatory:'The Night Conservatory',parlour:'The Ghost-Story Parlour',attic:'The attic behind the curious doors',
   repository:'The Repository',unread:'The Unread Room',returning:'The Room of Returning Names',quiet:'The Quiet Stacks',sorting:'The Sorting Room',departures:'Departures'};
 // Places with a link straight into them (/?room=…, handled in game.js).
-const ROOM_LINKS={'The International Wing':'international-wing','The Evening Room':'evening-room','The English Reading Room':'learners-room','The Periodicals Room':'periodicals-room','The Reading Room of Helium, on Mars':'mars',
+const ROOM_LINKS={'The International Wing':'international-wing','The Portuguese Reading Room':'portuguese-room','The Evening Room':'evening-room','The English Reading Room':'learners-room','The Periodicals Room':'periodicals-room','The Reading Room of Helium, on Mars':'mars',
   'The Selenite Reading Outpost, on the Moon':'moon','The Consulting Room':'consulting-room','The Time Laboratory':'time-laboratory','The Lost Kingdoms':'lost-kingdoms','The Verne rooms':'verne-rooms'};
 const CATEGORY_ROOMS={'Extraordinary Voyages':'The Verne rooms','The Consulting Room':'The Consulting Room','The Time Laboratory':'The Time Laboratory','The Lost Kingdoms':'The Lost Kingdoms'};
 function idsIn(file,pattern){const source=read(file),match=source.match(pattern);return match?[...match[1].matchAll(/\d+/g)].map(m=>Number(m[0])):[]}
@@ -82,7 +82,7 @@ function roomsFrom(books){
 const escape=text=>String(text??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 export function slug(text){return String(text).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[’']/g,'').replace(/&/g,' and ').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,60).replace(/-+$/,'')||'book'}
 export const pageName=book=>`${book.id}-${slug(book.title)}.html`;
-export function readingTime(words,lang='en'){if(!words)return null;const es=lang==='es',m=Math.max(1,Math.round(words/250));if(m<15)return `${m} ${es?'minutos':'minutes'}`;const r=Math.round(m/5)*5;if(r<60)return `${r} ${es?'minutos':'minutes'}`;const h=Math.floor(r/60),rest=r%60;return rest?`${h} ${es?'h':'hr'} ${rest} min`:es?(h===1?'una hora':`${h} horas`):`${h===1?'an hour':`${h} hours`}`}
+export function readingTime(words,lang='en'){if(!words)return null;const es=lang==='es'||lang==='pt',m=Math.max(1,Math.round(words/250));if(m<15)return `${m} ${es?'minutos':'minutes'}`;const r=Math.round(m/5)*5;if(r<60)return `${r} ${es?'minutos':'minutes'}`;const h=Math.floor(r/60),rest=r%60;return rest?`${h} ${es?'h':'hr'} ${rest} min`:es?(h===1?'una hora':`${h} horas`):`${h===1?'an hour':`${h} hours`}`}
 // The words around each page, in the language of its book.
 const WORDS={
   en:{lang:'en',by:'by',read:'Read it in the Library After Dark',time:'Reading time',about:'About',where:'Where to find it',onShelves:shelf=>`On the ${shelf} shelves`,edition:'Edition',
@@ -94,7 +94,12 @@ const WORDS={
     pd:'De dominio público en los Estados Unidos.',licence:'Licencia',librarian:'La bibliotecaria',moreBy:author=>`Más de ${author}`,also:()=>'Más libros en español',
     shelf:shelf=>SHELVES_ES[shelf]||shelf,place:place=>({'The International Wing':'El ala internacional: Sala de lectura en español'})[place]||place,
     nav:'<a href="/es/">Libros en español</a><a href="/book/">Catalogue</a><a class="enter" href="/?room=international-wing">Entrar en la biblioteca</a>',
-    footer:'The Library After Dark es una biblioteca en 3D que se recorre desde el navegador, con libros de dominio público para leer. <a href="/?room=international-wing">Entrar</a>.'}
+    footer:'The Library After Dark es una biblioteca en 3D que se recorre desde el navegador, con libros de dominio público para leer. <a href="/?room=international-wing">Entrar</a>.'},
+  pt:{lang:'pt',by:'de',read:'Leia na Library After Dark',time:'Tempo de leitura',about:'Cerca de',where:'Onde encontrá-lo',onShelves:()=>'Na ala internacional',edition:'Edição',
+    pd:'Em domínio público nos Estados Unidos.',licence:'Licença',librarian:'A bibliotecária',moreBy:author=>`Mais de ${author}`,also:()=>'Mais livros em português',
+    shelf:shelf=>SHELVES_PT[shelf]||shelf,place:place=>({'The Portuguese Reading Room':'A ala internacional: Sala de leitura em português','The Lost Kingdoms':'Os Reinos Perdidos (em inglês)'})[place]||place,
+    nav:'<a href="/pt/">Livros em português</a><a href="/book/">Catalogue</a><a class="enter" href="/?room=portuguese-room">Entrar na biblioteca</a>',
+    footer:'The Library After Dark é uma biblioteca em 3D que se percorre no navegador, com livros de domínio público para ler. <a href="/?room=portuguese-room">Entrar</a>.'}
 };
 const wordsFor=book=>WORDS[book?.language]||WORDS.en;
 function description(note,book){const first=(note||'').match(/^.{40,}?[.!?](\s|$)/)?.[0]?.trim()||note||`${book.title} by ${book.author}.`;return first.length>158?first.slice(0,155).replace(/\s+\S*$/,'')+'…':first}
@@ -106,6 +111,7 @@ function coverHtml(book){
 }
 function sourceLink(book){
   if(book.language==='es')return `<a href="https://www.gutenberg.org/ebooks/${book.id}" rel="noopener">Project Gutenberg, libro electrónico n.º ${book.id}</a>`;
+  if(book.language==='pt')return `<a href="https://www.gutenberg.org/ebooks/${book.id}" rel="noopener">Project Gutenberg, livro eletrónico n.º ${book.id}</a>`;
   if(book.sourceKey)return book.sourceUrl?`<a href="${escape(book.sourceUrl)}" rel="noopener">${escape(book.source)}</a>`:escape(book.source);
   return `<a href="https://www.gutenberg.org/ebooks/${book.id}" rel="noopener">Project Gutenberg, eBook #${book.id}</a>`;
 }
@@ -167,7 +173,7 @@ function cataloguePage(books,byShelf){
   const shelves=[...byShelf.keys()].sort((a,b)=>a.localeCompare(b));
   const body=`<main class="catalogue">
 <h1>The catalogue</h1>
-<p class="intro">Every book in the Library After Dark, ${books.length} in all, each with a note from the librarian. Choose one to read about it, or step inside and find it on its shelf.${books.some(b=>b.language==='es')?' <a href="/es/" lang="es">Libros en español</a>.':''}</p>
+<p class="intro">Every book in the Library After Dark, ${books.length} in all, each with a note from the librarian. Choose one to read about it, or step inside and find it on its shelf.${books.some(b=>b.language==='es')?' <a href="/es/" lang="es">Libros en español</a>.':''}${books.some(b=>b.language==='pt')?' <a href="/pt/" lang="pt">Livros em português</a>.':''}</p>
 <label class="filter">Find a title or author <input type="search" id="filter" placeholder="Dracula, Austen, the Moon…" autocomplete="off"></label>
 ${shelves.map(shelf=>`<section class="shelf-list"><h2 id="${slug(shelf)}">${escape(shelf)}</h2><ul>${byShelf.get(shelf).map(b=>`<li><a href="/book/${pageName(b)}">${escape(b.title)}</a><span>${escape(b.author)}</span></li>`).join('')}</ul></section>`).join('\n')}
 </main>
@@ -185,17 +191,26 @@ ${authors.map(author=>`<section class="shelf-list"><h2 id="${slug(author)}">${es
 </main>`;
   return layout({title:'Authors · The Library After Dark',description:`The ${authors.length} writers in the Library After Dark, with every one of their books on the shelves.`,canonical:`${SITE}/book/authors.html`,body});
 }
-// The Spanish books, in Spanish: the page the International Wing's letters and links point to.
+// The books of each International Wing room, in their own language: the pages its letters and links point to.
 const SHELVES_ES={Comedy:'Comedia',Society:'Novela y sociedad',Drama:'Teatro',Satire:'Picaresca y sátira',Poetry:'Poesía',Legend:'Leyendas',History:'Historia',Philosophy:'Ideas',Conscience:'Conciencia',Romance:'Amor',Ghosts:'Cuentos de miedo',Strange:'Lo extraño',Wonder:'Para los más jóvenes',Epic:'Epopeya'};
-function spanishPage(books){
-  const groups=new Map();for(const b of books){const shelf=SHELVES_ES[b.category]||b.category||'Otros';(groups.get(shelf)||groups.set(shelf,[]).get(shelf)).push(b)}
+const SHELVES_PT={Romance:'Amor',Satire:'Sátira',Society:'Romance e sociedade',Poetry:'Poesia',Legend:'Lendas',Adventure:'Aventura',Epic:'Epopeia',Strange:'O estranho',Drama:'Teatro',Journey:'Viagens',History:'História',Philosophy:'Ideias'};
+const LANDINGS={
+  es:{path:'es',shelves:SHELVES_ES,other:'Otros',h1:'Libros en español',room:'international-wing',button:'Entrar en la Sala de lectura en español',
+    intro:n=>`${n} clásicos de España, de América y de Filipinas, de Cervantes a Rubén Darío, para leer gratis en una biblioteca en 3D que se recorre desde el navegador, también desde el móvil. Están en la Sala de lectura en español, en el ala internacional, cada uno con una nota de la bibliotecaria. Sin descargas, sin registro y sin anuncios.`,
+    title:'Libros en español · The Library After Dark',description:n=>`${n} clásicos en español para leer gratis en una biblioteca en 3D, cada uno con una nota de la bibliotecaria: Cervantes, Galdós, Bécquer, Rubén Darío, Rizal y muchos más.`},
+  pt:{path:'pt',shelves:SHELVES_PT,other:'Outros',h1:'Livros em português',room:'portuguese-room',button:'Entrar na Sala de leitura em português',
+    intro:n=>`${n} clássicos do Brasil e de Portugal, de Camões a Machado de Assis e Eça de Queirós, para ler de graça numa biblioteca em 3D que se percorre no navegador, também no telemóvel ou no celular. Estão na Sala de leitura em português, na ala internacional, cada um com uma nota da bibliotecária. Sem downloads, sem cadastro e sem anúncios.`,
+    title:'Livros em português · The Library After Dark',description:n=>`${n} clássicos em português para ler de graça numa biblioteca em 3D, cada um com uma nota da bibliotecária: Machado de Assis, Eça de Queirós, Camões, Alencar, Camilo e muitos mais.`}
+};
+function languagePage(lang,books){
+  const L=LANDINGS[lang],groups=new Map();for(const b of books){const shelf=L.shelves[b.category]||b.category||L.other;(groups.get(shelf)||groups.set(shelf,[]).get(shelf)).push(b)}
   const body=`<main class="catalogue">
-<h1>Libros en español</h1>
-<p class="intro">${books.length} clásicos de España, de América y de Filipinas, de Cervantes a Rubén Darío, para leer gratis en una biblioteca en 3D que se recorre desde el navegador, también desde el móvil. Están en la Sala de lectura en español, en el ala internacional, cada uno con una nota de la bibliotecaria. Sin descargas, sin registro y sin anuncios.</p>
-<a class="read" href="/?room=international-wing">Entrar en la Sala de lectura en español</a>
-${[...groups.keys()].sort((a,b)=>a.localeCompare(b,'es')).map(shelf=>`<section class="shelf-list"><h2 id="${slug(shelf)}">${escape(shelf)}</h2><ul>${groups.get(shelf).map(b=>`<li><a href="/book/${pageName(b)}">${escape(b.title)}</a><span>${escape(b.author)}</span></li>`).join('')}</ul></section>`).join('\n')}
+<h1>${L.h1}</h1>
+<p class="intro">${L.intro(books.length)}</p>
+<a class="read" href="/?room=${L.room}">${L.button}</a>
+${[...groups.keys()].sort((a,b)=>a.localeCompare(b,lang)).map(shelf=>`<section class="shelf-list"><h2 id="${slug(shelf)}">${escape(shelf)}</h2><ul>${groups.get(shelf).map(b=>`<li><a href="/book/${pageName(b)}">${escape(b.title)}</a><span>${escape(b.author)}</span></li>`).join('')}</ul></section>`).join('\n')}
 </main>`;
-  return layout({title:'Libros en español · The Library After Dark',description:`${books.length} clásicos en español para leer gratis en una biblioteca en 3D, cada uno con una nota de la bibliotecaria: Cervantes, Galdós, Bécquer, Rubén Darío, Rizal y muchos más.`,canonical:`${SITE}/es/`,body,words:WORDS.es});
+  return layout({title:L.title,description:L.description(books.length),canonical:`${SITE}/${L.path}/`,body,words:WORDS[lang]});
 }
 const CSS=`:root{--bg:#120e0b;--panel:#1d1712;--ink:#efe3c8;--soft:#c9b894;--gold:#d7ae60;--line:#3a2e22;color-scheme:dark}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.6 Georgia,'Times New Roman',serif}
@@ -229,9 +244,9 @@ export function build(){
   const editions=new Map();for(const b of listed)editions.set(`${b.title}|${b.author}`,(editions.get(`${b.title}|${b.author}`)||0)+1);
   const dir=path.join(OUT,'book');fs.rmSync(dir,{recursive:true,force:true});fs.mkdirSync(dir,{recursive:true});
   for(const book of listed)fs.writeFileSync(path.join(dir,pageName(book)),bookPage(book,{whereIs,byAuthor,byShelf,byLanguage,editions}));
-  const spanish=byLanguage.get('es')||[],es=path.join(OUT,'es');fs.rmSync(es,{recursive:true,force:true});fs.mkdirSync(es,{recursive:true});fs.writeFileSync(path.join(es,'index.html'),spanishPage(spanish));
+  for(const lang of Object.keys(LANDINGS)){const out=path.join(OUT,LANDINGS[lang].path);fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'index.html'),languagePage(lang,byLanguage.get(lang)||[]))}
   fs.writeFileSync(path.join(dir,'index.html'),cataloguePage(listed,byShelf));fs.writeFileSync(path.join(dir,'authors.html'),authorsPage(byAuthor));fs.writeFileSync(path.join(dir,'book.css'),CSS);
-  const urls=[`${SITE}/`,`${SITE}/book/`,`${SITE}/book/authors.html`,`${SITE}/es/`,...listed.map(b=>`${SITE}/book/${pageName(b)}`)];
+  const urls=[`${SITE}/`,`${SITE}/book/`,`${SITE}/book/authors.html`,`${SITE}/es/`,`${SITE}/pt/`,...listed.map(b=>`${SITE}/book/${pageName(b)}`)];
   fs.writeFileSync(path.join(OUT,'sitemap.xml'),`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u=>`  <url><loc>${u}</loc></url>`).join('\n')}\n</urlset>\n`);
   fs.writeFileSync(path.join(OUT,'robots.txt'),`User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
   return {pages:listed.length,withNotes:listed.filter(b=>b.note).length};

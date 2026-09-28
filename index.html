@@ -51,16 +51,21 @@
     </div>
   </div>
   <script>
-    // A link into the International Wing's Spanish room (/?room=es, international-wing, spanish, espanol) is greeted in Spanish.
-    (()=>{try{const room=(new URLSearchParams(location.search).get('room')||'').toLowerCase();if(!['es','spanish','espanol','español','international-wing','international'].includes(room))return;
-      const veil=document.getElementById('veil'),set=(selector,text)=>{const el=veil.querySelector(selector);if(el)el.textContent=text};document.documentElement.lang='es';
-      set('.crest > p','Una biblioteca de libros que han sobrevivido a sus primeros lectores. Esta noche, la Sala de lectura en español.');
-      set('#entryOptions summary','Comodidad y rendimiento');set('#enter','Entrar en la biblioteca');
-      const labels=veil.querySelectorAll('.entry-options-grid label');['Sonido','Reducir movimiento y clima','Modo de bajo consumo de datos','Más contraste','Texto más grande'].forEach((text,i)=>{const label=labels[i];if(!label)return;const input=label.querySelector('input');label.textContent=i?'':text+' ';if(i){label.append(input,' '+text)}else label.append(input)});
-      const catalogue=veil.querySelector('.entry-catalogue');if(catalogue)catalogue.innerHTML='<a href="/es/">Libros en español</a> · cada uno con una nota de la bibliotecaria';
-      set('.kb-intro','WASD o flechas para caminar · ratón para mirar · E interactuar · J diario · O ajustes · R si te pierdes');
-      const rotate=veil.querySelector('.rotation-reminder');if(rotate)rotate.innerHTML='<strong>Antes de entrar:</strong> desbloquea la rotación de la pantalla; la biblioteca se recorre en horizontal.';
-      const touch=veil.querySelectorAll('.touch-intro');if(touch[1])touch[1].innerHTML='Pulgar izquierdo para caminar · arrastra para mirar · toca E para interactuar · toca &#9776; para el menú';
+    // A link into one of the International Wing's rooms (/?room=es, /?room=pt…) is greeted in that room's language.
+    (()=>{try{const room=(new URLSearchParams(location.search).get('room')||'').toLowerCase();
+      const T={es:{rooms:['es','spanish','espanol','español','international-wing','international'],lang:'es',tagline:'Una biblioteca de libros que han sobrevivido a sus primeros lectores. Esta noche, la Sala de lectura en español.',options:'Comodidad y rendimiento',enter:'Entrar en la biblioteca',
+          labels:['Sonido','Reducir movimiento y clima','Modo de bajo consumo de datos','Más contraste','Texto más grande'],catalogue:'<a href="/es/">Libros en español</a> · cada uno con una nota de la bibliotecaria',
+          keys:'WASD o flechas para caminar · ratón para mirar · E interactuar · J diario · O ajustes · R si te pierdes',rotate:'<strong>Antes de entrar:</strong> desbloquea la rotación de la pantalla; la biblioteca se recorre en horizontal.',touch:'Pulgar izquierdo para caminar · arrastra para mirar · toca E para interactuar · toca &#9776; para el menú'},
+        pt:{rooms:['pt','portuguese','portugues','português','portuguese-room'],lang:'pt',tagline:'Uma biblioteca de livros que sobreviveram aos seus primeiros leitores. Esta noite, a Sala de leitura em português.',options:'Conforto e desempenho',enter:'Entrar na biblioteca',
+          labels:['Som','Reduzir movimento e clima','Modo de poucos dados','Mais contraste','Texto maior'],catalogue:'<a href="/pt/">Livros em português</a> · cada um com uma nota da bibliotecária',
+          keys:'WASD ou setas para andar · mouse para olhar · E interagir · J diário · O opções · R se se perder',rotate:'<strong>Antes de entrar:</strong> desbloqueie a rotação automática; a biblioteca percorre-se na horizontal.',touch:'Polegar esquerdo para andar · arraste para olhar · toque em E para interagir · toque em &#9776; para o menu'}};
+      const t=Object.values(T).find(t=>t.rooms.includes(room));if(!t)return;
+      const veil=document.getElementById('veil'),set=(selector,text)=>{const el=veil.querySelector(selector);if(el)el.textContent=text};document.documentElement.lang=t.lang;
+      set('.crest > p',t.tagline);set('#entryOptions summary',t.options);set('#enter',t.enter);
+      const labels=veil.querySelectorAll('.entry-options-grid label');t.labels.forEach((text,i)=>{const label=labels[i];if(!label)return;const input=label.querySelector('input');label.textContent=i?'':text+' ';if(i){label.append(input,' '+text)}else label.append(input)});
+      const catalogue=veil.querySelector('.entry-catalogue');if(catalogue)catalogue.innerHTML=t.catalogue;
+      set('.kb-intro',t.keys);const rotate=veil.querySelector('.rotation-reminder');if(rotate)rotate.innerHTML=t.rotate;
+      const touch=veil.querySelectorAll('.touch-intro');if(touch[1])touch[1].innerHTML=t.touch;
     }catch(error){}})();
   </script>
   <div id="hud">
@@ -116,7 +121,7 @@
     const applyEntryAppearance=()=>{document.body.classList.toggle('reduced-motion',document.getElementById('entryReducedMotion').checked);document.body.classList.toggle('high-contrast',document.getElementById('entryHighContrast').checked);document.body.classList.toggle('large-text',document.getElementById('entryLargeText').checked)};
     for(const [kind,[id,key]] of Object.entries(preferences)){const input=document.getElementById(id),saved=localStorage.getItem(key);if(kind==='volume')input.value=saved??13;else input.checked=saved==='1';input.addEventListener('input',()=>{localStorage.setItem(key,kind==='volume'?input.value:input.checked?'1':'0');applyEntryAppearance()})}applyEntryAppearance();
     const webglAvailable=()=>{try{const canvas=document.createElement('canvas');return !!(canvas.getContext('webgl2')||canvas.getContext('webgl'))}catch(error){return false}};
-    const BUILD='20260928-intl-1';
+    const BUILD='20260928-intl-pt-1';
     // Files the jobs rewrite without a new BUILD (new Room of the Day books, new recordings, new arrivals): their address
     // changes every hour, so a browser holding an older copy picks up the new one within the hour.
     const LIVE_DATA=new Set(['data/daily-rooms-resolved.js','data/audiobooks.js','data/visitors-book-config.js','data/new-books-resolved.js']);
