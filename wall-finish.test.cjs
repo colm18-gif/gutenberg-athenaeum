@@ -20,7 +20,7 @@ function boxGeometry(w,h,d){
   return geometry;
 }
 function finisher(){const window={};vm.runInNewContext(source,{window});return window.createWallFinish({THREE:{BufferAttribute,Vector3}})}
-function wall(finish,w,h,d,x,y,z){const mesh={geometry:boxGeometry(w,h,d),position:new Vector3(x,y,z),parent:{}};finish.finishBox(mesh,w,h,d);return mesh}
+function wall(finish,w,h,d,x,y,z){const mesh={geometry:boxGeometry(w,h,d),position:new Vector3(x,y,z),parent:{isScene:true}};finish.finishBox(mesh,w,h,d);return mesh}
 // Vertex indices of one face (BoxGeometry order: +x, -x, +y, -y, +z, -z).
 const face=(index)=>[0,1,2,3].map(k=>index*4+k);
 
@@ -48,6 +48,11 @@ test('inside corners are found where walls meet, and open ends stay unshaded',()
   // A wall standing alone has no corners, but still meets the ceiling when asked.
   for(const [left,right] of edges(lone,4)){assert.equal(left,finish.FAR);assert.equal(right,finish.FAR)}
   assert(face(4).some(i=>lone.geometry.attributes.uv1.getY(i)===0));
+});
+
+test('pieces of a room that has been freed are forgotten',()=>{
+  const finish=finisher(),kept=wall(finish,10,6,.45,0,3,-5),freed=wall(finish,10,6,.45,0,3,5);freed.parent={parent:null};
+  finish.settle([kept]);assert.equal(finish.pieces.length,1);assert.equal(finish.pieces[0].mesh,kept);
 });
 
 test('reading-room floors carry their distance to all four walls',()=>{

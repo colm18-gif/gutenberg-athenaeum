@@ -16,7 +16,10 @@ import {loadScript,resolve,textMatches} from './daily-room.mjs';
 const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),'..');
 const LIST=path.join(root,'data/new-books.js'),RESOLVED=path.join(root,'data/new-books-resolved.js'),TRACKED=path.join(root,'data/daily-room-texts.json');
 const BUNDLED=path.join(root,'texts/bundled-gzip');
-export const ROOMS=['secret','shelves','evening-quick','evening-hour','evening-evening','learners-1','learners-2','learners-3','learners-4','learners-short','signal','tide','mars','periodicals'];
+export const ROOMS=['secret','shelves','evening-quick','evening-hour','evening-evening','learners-1','learners-2','learners-3','learners-4','learners-short','signal','tide','mars','periodicals','spanish'];
+// Rooms whose books are not in English: the language of their texts (used to search Gutendex, and by the reader
+// and the book pages). Every other room is English.
+export const ROOM_LANGUAGES={spanish:'es'};
 
 export function validate(list){
   const errors=[],notes=new Map();
@@ -40,7 +43,7 @@ export function validate(list){
 export function countWords(text){
   const start=text.search(/\*\*\*\s*START OF (THE|THIS) PROJECT GUTENBERG/i),end=text.search(/\*\*\*\s*END OF (THE|THIS) PROJECT GUTENBERG/i);
   const body=text.slice(start>=0?text.indexOf('\n',start)+1:0,end>start?end:text.length);
-  return (body.toLowerCase().replace(/[’‘]/g,"'").match(/[a-z]+(?:'[a-z]+)?/g)||[]).length;
+  return (body.toLowerCase().replace(/[’‘]/g,"'").match(/\p{L}+(?:'\p{L}+)?/gu)||[]).length;   // letters in any alphabet: “canción” is one word
 }
 function localText(id){
   const plain=path.join(root,`texts/pg${id}.txt`),packed=path.join(BUNDLED,`pg${id}.txt.gz`);
@@ -57,11 +60,11 @@ async function main(){
   fs.mkdirSync(BUNDLED,{recursive:true});
   const save=()=>fs.writeFileSync(RESOLVED,'// Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of\n// each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.\n'+
     'window.ATHENAEUM_NEW_BOOKS_RESOLVED='+JSON.stringify({updated:new Date().toISOString().slice(0,10),books,missing},null,1)+';\n');
-  for(const [title,[id,,author]] of unique){
+  for(const [title,[id,,author,,room]] of unique){
     // A book checked on an earlier run is not looked up again while its text is still here and still matches.
     const known=previous[title],knownText=known&&localText(known.id);
-    let found=knownText&&textMatches(knownText,title,author)?{id:known.id,text:null}:null;
-    if(!found)found=await resolve([known?.id??id,title,author]);
+    const language=ROOM_LANGUAGES[room]||'en';let found=knownText&&textMatches(knownText,title,author,language)?{id:known.id,text:null}:null;
+    if(!found)found=await resolve([known?.id&&textMatches(knownText||'',title,author,language)?known.id:id,title,author],{language});
     if(!found){missing.push(title);console.log(`  missing: ${title} (${author})`);continue}
     let text=found.text;
     if(text&&!localText(found.id)){fs.writeFileSync(path.join(BUNDLED,`pg${found.id}.txt.gz`),zlib.gzipSync(text,{level:9}));console.log(`  + ${found.id} ${title}`)}

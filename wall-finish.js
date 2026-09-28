@@ -66,11 +66,12 @@ window.createWallFinish=function({THREE}){
     pieces.push({mesh,w,h,d,min:new THREE.Vector3(p.x-w/2,p.y-h/2,p.z-d/2),max:new THREE.Vector3(p.x+w/2,p.y+h/2,p.z+d/2)});
   }
 
+  const inScene=object=>{while(object.parent)object=object.parent;return !!object.isScene};
   function inside(point,self){for(const piece of pieces)if(piece!==self&&point.x>piece.min.x&&point.x<piece.max.x&&point.y>piece.min.y&&point.y<piece.max.y&&point.z>piece.min.z&&point.z<piece.max.z)return true;return false}
   // Once a group of walls is standing: find the inside corners (another wall piece just in front of a face,
   // at or beyond its end) and switch those edges on; optionally shade the top edge as meeting a ceiling.
   function settle(meshes,{ceiling=false}={}){
-    for(let i=pieces.length-1;i>=0;i--)if(!pieces[i].mesh.parent)pieces.splice(i,1);   // rooms freed since
+    for(let i=pieces.length-1;i>=0;i--)if(!inScene(pieces[i].mesh))pieces.splice(i,1);   // rooms freed since
     const wanted=new Set(meshes);
     for(const piece of pieces){
       if(!wanted.has(piece.mesh))continue;
