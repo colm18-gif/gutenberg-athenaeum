@@ -51,7 +51,7 @@
     </div>
   </div>
   <script>
-    // A link into one of the International Wing's rooms (/?room=es, /?room=pt, /?room=zh…) is greeted in that room's language.
+    // A link into one of the International Wing's rooms (/?room=es, /?room=pt, /?room=fr, /?room=zh…) is greeted in that room's language.
     (()=>{try{const room=(new URLSearchParams(location.search).get('room')||'').toLowerCase();
       const T={es:{rooms:['es','spanish','espanol','español','international-wing','international'],lang:'es',tagline:'Una biblioteca de libros que han sobrevivido a sus primeros lectores. Esta noche, la Sala de lectura en español.',options:'Comodidad y rendimiento',enter:'Entrar en la biblioteca',
           labels:['Sonido','Reducir movimiento y clima','Modo de bajo consumo de datos','Más contraste','Texto más grande'],catalogue:'<a href="/es/">Libros en español</a> · cada uno con una nota de la bibliotecaria',
@@ -59,6 +59,9 @@
         pt:{rooms:['pt','portuguese','portugues','português','portuguese-room'],lang:'pt',tagline:'Uma biblioteca de livros que sobreviveram aos seus primeiros leitores. Esta noite, a Sala de leitura em português.',options:'Conforto e desempenho',enter:'Entrar na biblioteca',
           labels:['Som','Reduzir movimento e clima','Modo de poucos dados','Mais contraste','Texto maior'],catalogue:'<a href="/pt/">Livros em português</a> · cada um com uma nota da bibliotecária',
           keys:'WASD ou setas para andar · mouse para olhar · E interagir · J diário · O opções · R se se perder',rotate:'<strong>Antes de entrar:</strong> desbloqueie a rotação automática; a biblioteca percorre-se na horizontal.',touch:'Polegar esquerdo para andar · arraste para olhar · toque em E para interagir · toque em &#9776; para o menu'},
+        fr:{rooms:['fr','french','francais','français','french-room'],lang:'fr',tagline:'Une bibliothèque de livres qui ont survécu à leurs premiers lecteurs. Ce soir, la Salle de lecture en français.',options:'Confort et performances',enter:'Entrer dans la bibliothèque',
+          labels:['Son','Réduire les animations et la météo','Mode économie de données','Plus de contraste','Texte plus grand'],catalogue:'<a href="/fr/">Livres en français</a> · chacun avec une note de la bibliothécaire',
+          keys:'ZQSD, WASD ou flèches pour marcher · souris pour regarder · E interagir · J journal · O réglages · R si vous êtes perdu',rotate:'<strong>Avant d’entrer :</strong> déverrouillez la rotation de l’écran ; la bibliothèque se parcourt à l’horizontale.',touch:'Pouce gauche pour marcher · glissez pour regarder · touchez E pour interagir · touchez &#9776; pour le menu'},
         zh:{rooms:['zh','chinese','zhongwen','chinese-room'],lang:'zh-Hant',tagline:'一座圖書館，收藏那些比最初的讀者活得更久的書。今晚，中文閱覽室。',options:'舒適與效能',enter:'進入圖書館',
           labels:['聲音','減少動態與天氣效果','省流量模式','提高對比','放大文字'],catalogue:'<a href="/zh/">中文書</a> · 每一本都附有館員的短評',
           keys:'WASD 或方向鍵走路 · 滑鼠環顧 · E 互動 · J 日誌 · O 設定 · R 迷路時回到起點',rotate:'<strong>進館之前：</strong>請解除螢幕旋轉鎖定，圖書館要橫著走。',touch:'左手拇指走路 · 拖曳環顧 · 點 E 互動 · 點 &#9776; 開啟選單'}};
@@ -124,7 +127,7 @@
     const applyEntryAppearance=()=>{document.body.classList.toggle('reduced-motion',document.getElementById('entryReducedMotion').checked);document.body.classList.toggle('high-contrast',document.getElementById('entryHighContrast').checked);document.body.classList.toggle('large-text',document.getElementById('entryLargeText').checked)};
     for(const [kind,[id,key]] of Object.entries(preferences)){const input=document.getElementById(id),saved=localStorage.getItem(key);if(kind==='volume')input.value=saved??13;else input.checked=saved==='1';input.addEventListener('input',()=>{localStorage.setItem(key,kind==='volume'?input.value:input.checked?'1':'0');applyEntryAppearance()})}applyEntryAppearance();
     const webglAvailable=()=>{try{const canvas=document.createElement('canvas');return !!(canvas.getContext('webgl2')||canvas.getContext('webgl'))}catch(error){return false}};
-    const BUILD='20260928-intl-zh-1';
+    const BUILD='20260928-intl-fr-1';
     // Files the jobs rewrite without a new BUILD (new Room of the Day books, new recordings, new arrivals): their address
     // changes every hour, so a browser holding an older copy picks up the new one within the hour.
     const LIVE_DATA=new Set(['data/daily-rooms-resolved.js','data/audiobooks.js','data/visitors-book-config.js','data/new-books-resolved.js']);

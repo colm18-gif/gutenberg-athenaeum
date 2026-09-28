@@ -33,7 +33,7 @@ test('the Portuguese Reading Room has its classics, each with a note in Portugue
     assert.match(note,/\b(o|a|os|as|de|que|em|um|uma|do|da)\b/,`${title}: the note should be in Portuguese`);
     assert.doesNotMatch(note,/\b(the|and|which|with)\b/i,`${title}: the note should be in Portuguese`);
   }
-  // Titles are shared with no other room: data/new-books-resolved.js is keyed by title.
+  // Titles are shared with no other Portuguese book: data/new-books-resolved.js is keyed by title and language.
   for(const [,title,,,room] of shelves)if(room!=='portuguese')assert.ok(!portuguese.some(entry=>entry[1]===title),title);
 });
 
@@ -89,7 +89,7 @@ test('Spanish books are known to be Spanish: word help steps aside, and their pa
   assert.match(pt,/<html lang="pt">/);assert.match(pt,/<h1>Livros em português<\/h1>/);assert.match(pt,/href="\/\?room=portuguese-room"/);
   assert.equal(fs.readFileSync('pt/index.html','utf8'),pt,'run: node scripts/book-pages.mjs');
   const resolved=load('data/new-books-resolved.js','ATHENAEUM_NEW_BOOKS_RESOLVED')?.books||{};
-  const found=spanish.map(entry=>resolved[entry[1]]).find(Boolean);
+  const found=spanish.map(entry=>resolved[`${entry[1]} [es]`]).find(Boolean);
   if(found){
     const page=fs.readdirSync(path.join(out,'book')).find(f=>f.startsWith(`${found.id}-`)),text=fs.readFileSync(path.join(out,'book',page),'utf8');
     assert.match(text,/<html lang="es">/);assert.match(text,/<cite>La bibliotecaria<\/cite>/);assert.match(text,/"inLanguage":"es"/);
@@ -116,7 +116,7 @@ test('the Chinese Reading Room: classics in Chinese behind the red door, matched
   assert.equal(countWords('*** START OF THE PROJECT GUTENBERG EBOOK X ***\n滿紙荒唐言，一把辛酸淚。\n*** END OF THE PROJECT GUTENBERG EBOOK X ***'),10,'Chinese is counted by the character');
   // The red door in the Spanish room opens now, onto a room of its own.
   assert.match(wing,/chinese:\{cx:-410,cz:164,w:24,d:15,h:6,language:'zh'/);assert.match(wing,/type:'intl-go',room:'chinese'/);assert.doesNotMatch(wing,/intl-coming/);
-  assert.match(game,/ROOM_LANGUAGES=\{spanish:'es',portuguese:'pt',chinese:'zh'\}/);
+  assert.match(game,/ROOM_LANGUAGES=\{spanish:'es',portuguese:'pt',chinese:'zh'[,}]/);
   assert.match(game,/zh:'chinese-room',chinese:'chinese-room'/);assert.match(game,/'chinese-room':internationalWing&&\(\(\)=>internationalWing\.enter\('chinese'\)\)/);
   // The reader breaks Chinese lines between characters, since there are no spaces to break at.
   assert.match(game,/if\(CJK_CHAR\.test\(paragraph\)\)/);
@@ -128,4 +128,35 @@ test('the Chinese Reading Room: classics in Chinese behind the red door, matched
   assert.equal(fs.readFileSync('zh/index.html','utf8'),zh,'run: node scripts/book-pages.mjs');
   assert.match(fs.readFileSync(path.join(out,'sitemap.xml'),'utf8'),/<loc>https:\/\/libraryafterdark\.space\/zh\/<\/loc>/);
   const {readingTime,slug}=await import('./scripts/book-pages.mjs');assert.equal(readingTime(700000,'zh-Hant'),'33 小時 20 分鐘');assert.equal(slug('紅樓夢'),'紅樓夢');
+});
+
+test('the French Reading Room: classics in French behind the blue door, kept apart from the English editions',async()=>{
+  const french=shelves.filter(entry=>entry[4]==='french');
+  const {ROOMS,ROOM_LANGUAGES,resolvedKey}=await import('./scripts/new-books.mjs');assert.ok(ROOMS.includes('french'));assert.equal(ROOM_LANGUAGES.french,'fr');
+  assert.ok(french.length>=35&&french.length<=48,`${french.length} French books`);
+  assert.equal(new Set(french.map(entry=>entry[1])).size,french.length,'each title once');
+  for(const [id,title,,,,note] of french){
+    assert.ok(Number.isInteger(id),`${title}: give its number from Gutenberg's catalogue`);
+    assert.ok(note&&note.length>=80,`${title} needs a librarian’s note`);
+    assert.match(note,/\b(le|la|les|de|du|des|et|un|une|qui)\b/,`${title}: the note should be in French`);
+    assert.doesNotMatch(note,/\b(the|and|which|with)\b/i,`${title}: the note should be in French`);
+  }
+  // Madame Bovary is on the English shelves too: the two editions are kept under different keys.
+  assert.notEqual(resolvedKey('Madame Bovary','french'),resolvedKey('Madame Bovary','shelves'));
+  assert.equal(resolvedKey('Madame Bovary','french'),'Madame Bovary [fr]');
+  assert.match(game,/resolved\[ROOM_LANGUAGES\[room\]\?`\$\{title\} \[\$\{ROOM_LANGUAGES\[room\]\}\]`:title\]/);
+  const {textMatches}=await import('./scripts/daily-room.mjs'),head=lang=>`Title: Madame Bovary\nAuthor: Gustave Flaubert\nLanguage: ${lang}\n`;
+  assert.ok(textMatches(head('French'),'Madame Bovary','Gustave Flaubert','fr'));assert.ok(!textMatches(head('English'),'Madame Bovary','Gustave Flaubert','fr'));
+  // The blue door stands between the green and the red in the Spanish room's east wall.
+  assert.match(wing,/french:\{cx:-410,cz:196,w:24,d:15,h:6,language:'fr'/);assert.match(wing,/type:'intl-go',room:'french'/);
+  assert.match(wing,/ROOM_DOORS=\{portuguese:\{x:EAST,z:ROOM\.cz-4\.7\},french:\{x:EAST,z:ROOM\.cz\},chinese:\{x:EAST,z:ROOM\.cz\+4\.7\}\}/);
+  assert.match(game,/fr:'french-room',french:'french-room',francais:'french-room'/);assert.match(game,/'french-room':internationalWing&&\(\(\)=>internationalWing\.enter\('french'\)\)/);
+  assert.match(html,/rooms:\['fr','french','francais','français','french-room'\]/);assert.match(html,/enter:'Entrer dans la bibliothèque'/);
+  const out=fs.mkdtempSync(path.join(os.tmpdir(),'fr-pages-'));
+  execFileSync(process.execPath,['scripts/book-pages.mjs'],{env:{...process.env,OUT:out}});
+  const fr=fs.readFileSync(path.join(out,'fr/index.html'),'utf8');
+  assert.match(fr,/<html lang="fr">/);assert.match(fr,/<h1>Livres en français<\/h1>/);assert.match(fr,/href="\/\?room=french-room"/);
+  assert.equal(fs.readFileSync('fr/index.html','utf8'),fr,'run: node scripts/book-pages.mjs');
+  assert.match(fs.readFileSync(path.join(out,'sitemap.xml'),'utf8'),/<loc>https:\/\/libraryafterdark\.space\/fr\/<\/loc>/);
+  const {readingTime}=await import('./scripts/book-pages.mjs');assert.equal(readingTime(15000,'fr'),'une heure');assert.equal(readingTime(30000,'fr'),'2 heures');
 });
