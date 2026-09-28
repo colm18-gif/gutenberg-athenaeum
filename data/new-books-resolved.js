@@ -399,533 +399,725 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 15827,
    "words": 12104
   },
-  "Don Quijote": {
+  "Don Quijote [es]": {
    "id": 2000,
    "words": 383633
   },
-  "Novelas ejemplares": {
+  "Novelas ejemplares [es]": {
    "id": 61202,
    "words": 188486
   },
-  "Lazarillo de Tormes": {
+  "Lazarillo de Tormes [es]": {
    "id": 320,
    "words": 20096
   },
-  "La Celestina": {
+  "La Celestina [es]": {
    "id": 1619,
    "words": 105718
   },
-  "Historia de la vida del Buscón": {
+  "Historia de la vida del Buscón [es]": {
    "id": 32315,
    "words": 42981
   },
-  "El sí de las niñas": {
+  "El sí de las niñas [es]": {
    "id": 50027,
    "words": 19792
   },
-  "Marianela": {
+  "Marianela [es]": {
    "id": 17340,
    "words": 50991
   },
-  "Misericordia": {
+  "Misericordia [es]": {
    "id": 21831,
    "words": 83859
   },
-  "Trafalgar": {
+  "Trafalgar [es]": {
    "id": 16961,
    "words": 51266
   },
-  "Fortunata y Jacinta": {
+  "Fortunata y Jacinta [es]": {
    "id": 17013,
    "words": 394686
   },
-  "Niebla": {
+  "Niebla [es]": {
    "id": 49836,
    "words": 57342
   },
-  "Abel Sánchez": {
+  "Abel Sánchez [es]": {
    "id": 44512,
    "words": 29549
   },
-  "La barraca": {
+  "La barraca [es]": {
    "id": 14944,
    "words": 56591
   },
-  "Cañas y barro": {
+  "Cañas y barro [es]": {
    "id": 57781,
    "words": 75562
   },
-  "Sangre y arena": {
+  "Sangre y arena [es]": {
    "id": 26983,
    "words": 111634
   },
-  "Los cuatro jinetes del Apocalipsis": {
+  "Los cuatro jinetes del Apocalipsis [es]": {
    "id": 24536,
    "words": 131407
   },
-  "Los pazos de Ulloa": {
+  "Los pazos de Ulloa [es]": {
    "id": 18005,
    "words": 83807
   },
-  "La Regenta": {
+  "La Regenta [es]": {
    "id": 17073,
    "words": 308261
   },
-  "Pepita Jiménez": {
+  "Pepita Jiménez [es]": {
    "id": 17223,
    "words": 56657
   },
-  "El sombrero de tres picos": {
+  "El sombrero de tres picos [es]": {
    "id": 29506,
    "words": 62983
   },
-  "El capitán Veneno": {
+  "El capitán Veneno [es]": {
    "id": 29731,
    "words": 52142
   },
-  "La gaviota": {
+  "La gaviota [es]": {
    "id": 23600,
    "words": 92135
   },
-  "La hermana San Sulpicio": {
+  "La hermana San Sulpicio [es]": {
    "id": 31013,
    "words": 117377
   },
-  "Azul...": {
+  "Azul... [es]": {
    "id": 52894,
    "words": 31952
   },
-  "Cantos de vida y esperanza": {
+  "Cantos de vida y esperanza [es]": {
    "id": 50341,
    "words": 12677
   },
-  "El gaucho Martín Fierro": {
+  "El gaucho Martín Fierro [es]": {
    "id": 14765,
    "words": 12126
   },
-  "Facundo": {
+  "Facundo [es]": {
    "id": 33267,
    "words": 101220
   },
-  "Tradiciones peruanas": {
+  "Tradiciones peruanas [es]": {
    "id": 21282,
    "words": 48013
   },
-  "Cuentos de amor de locura y de muerte": {
+  "Cuentos de amor de locura y de muerte [es]": {
    "id": 13507,
    "words": 49907
   },
-  "Ariel": {
+  "Ariel [es]": {
    "id": 22899,
    "words": 25716
   },
-  "Noli me tangere": {
+  "Noli me tangere [es]": {
    "id": 47584,
    "words": 140403
   },
-  "El filibusterismo": {
+  "El filibusterismo [es]": {
    "id": 30903,
    "words": 103890
   },
-  "Sab": {
+  "Sab [es]": {
    "id": 75126,
    "words": 56087
   },
-  "La edad de oro": {
+  "La edad de oro [es]": {
    "id": 19898,
    "words": 66827
   },
-  "Las fuerzas extrañas": {
+  "Las fuerzas extrañas [es]": {
    "id": 65689,
    "words": 45447
   },
-  "Obras escogidas": {
+  "Obras escogidas [es]": {
    "id": 53552,
    "words": 94734
   },
-  "Miau": {
+  "Miau [es]": {
    "id": 52392,
    "words": 97244
   },
-  "Tristana": {
+  "Tristana [es]": {
    "id": 66979,
    "words": 52688
   },
-  "La tía Tula": {
+  "La tía Tula [es]": {
    "id": 44358,
    "words": 31176
   },
-  "Amistad funesta": {
+  "Amistad funesta [es]": {
    "id": 18166,
    "words": 60776
   },
-  "Prosas profanas": {
+  "Prosas profanas [es]": {
    "id": 47650,
    "words": 14979
   },
-  "Mi último adiós": {
+  "Mi último adiós [es]": {
    "id": 18600,
    "words": 715
   },
-  "Dom Casmurro": {
+  "Dom Casmurro [pt]": {
    "id": 55752,
    "words": 67239
   },
-  "Memorias Posthumas de Braz Cubas": {
+  "Memorias Posthumas de Braz Cubas [pt]": {
    "id": 54829,
    "words": 63347
   },
-  "Quincas Borba": {
+  "Quincas Borba [pt]": {
    "id": 55682,
    "words": 78361
   },
-  "Esau e Jacob": {
+  "Esau e Jacob [pt]": {
    "id": 56737,
    "words": 72413
   },
-  "Memorial de Ayres": {
+  "Memorial de Ayres [pt]": {
    "id": 55797,
    "words": 51090
   },
-  "Papeis Avulsos": {
+  "Papeis Avulsos [pt]": {
    "id": 57001,
    "words": 55168
   },
-  "Historias Sem Data": {
+  "Historias Sem Data [pt]": {
    "id": 33056,
    "words": 51544
   },
-  "Helena": {
+  "Helena [pt]": {
    "id": 67162,
    "words": 57621
   },
-  "Poesias Completas": {
+  "Poesias Completas [pt]": {
    "id": 61653,
    "words": 44839
   },
-  "Iracema": {
+  "Iracema [pt]": {
    "id": 67740,
    "words": 31353
   },
-  "O Guarany, Vol. 1": {
+  "O Guarany, Vol. 1 [pt]": {
    "id": 67724,
    "words": 58198
   },
-  "O Guarany, Vol. 2": {
+  "O Guarany, Vol. 2 [pt]": {
    "id": 67725,
    "words": 53225
   },
-  "O Cortiço": {
+  "O Cortiço [pt]": {
    "id": 69187,
    "words": 81941
   },
-  "O Atheneu": {
+  "O Atheneu [pt]": {
    "id": 68541,
    "words": 62320
   },
-  "Triste Fim de Polycarpo Quaresma": {
+  "Triste Fim de Polycarpo Quaresma [pt]": {
    "id": 67535,
    "words": 66893
   },
-  "A escrava Isaura": {
+  "A escrava Isaura [pt]": {
    "id": 74475,
    "words": 53616
   },
-  "Innocencia": {
+  "Innocencia [pt]": {
    "id": 68635,
    "words": 53231
   },
-  "Os Lusíadas": {
+  "Os Lusíadas [pt]": {
    "id": 3333,
    "words": 55719
   },
-  "O crime do padre Amaro": {
+  "O crime do padre Amaro [pt]": {
    "id": 31971,
    "words": 143056
   },
-  "Os Maias": {
+  "Os Maias [pt]": {
    "id": 40409,
    "words": 217668
   },
-  "O Primo Bazilio": {
+  "O Primo Bazilio [pt]": {
    "id": 42942,
    "words": 121733
   },
-  "O Mandarim": {
+  "O Mandarim [pt]": {
    "id": 16384,
    "words": 20254
   },
-  "A Relíquia": {
+  "A Relíquia [pt]": {
    "id": 17515,
    "words": 83685
   },
-  "A Cidade e as Serras": {
+  "A Cidade e as Serras [pt]": {
    "id": 18220,
    "words": 68785
   },
-  "A Illustre Casa de Ramires": {
+  "A Illustre Casa de Ramires [pt]": {
    "id": 23145,
    "words": 105733
   },
-  "Contos": {
+  "Contos [pt]": {
    "id": 31347,
    "words": 70513
   },
-  "As Minas de Salomão": {
+  "As Minas de Salomão [pt]": {
    "id": 22015,
    "words": 57980
   },
-  "Amor de Perdição": {
+  "Amor de Perdição [pt]": {
    "id": 16425,
    "words": 50020
   },
-  "A Queda d'um Anjo": {
+  "A Queda d'um Anjo [pt]": {
    "id": 17927,
    "words": 51401
   },
-  "Novelas do Minho": {
+  "Novelas do Minho [pt]": {
    "id": 21406,
    "words": 46963
   },
-  "Os fidalgos da Casa Mourisca": {
+  "Os fidalgos da Casa Mourisca [pt]": {
    "id": 16428,
    "words": 146050
   },
-  "Uma família ingleza": {
+  "Uma família ingleza [pt]": {
    "id": 16443,
    "words": 123556
   },
-  "A Morgadinha dos Cannaviaes": {
+  "A Morgadinha dos Cannaviaes [pt]": {
    "id": 29120,
    "words": 150611
   },
-  "Frei Luiz de Sousa": {
+  "Frei Luiz de Sousa [pt]": {
    "id": 17591,
    "words": 18509
   },
-  "Viagens na Minha Terra": {
+  "Viagens na Minha Terra [pt]": {
    "id": 24401,
    "words": 74261
   },
-  "Eurico, o presbytero": {
+  "Eurico, o presbytero [pt]": {
    "id": 45966,
    "words": 59191
   },
-  "Lendas e Narrativas": {
+  "Lendas e Narrativas [pt]": {
    "id": 9654,
    "words": 57216
   },
-  "Os sonetos completos de Anthero de Quental": {
+  "Os sonetos completos de Anthero de Quental [pt]": {
    "id": 20142,
    "words": 19570
   },
-  "O Livro de Cesario Verde": {
+  "O Livro de Cesario Verde [pt]": {
    "id": 8698,
    "words": 14645
   },
-  "Só": {
+  "Só [pt]": {
    "id": 17193,
    "words": 20726
   },
-  "Livro de Máguas": {
+  "Livro de Máguas [pt]": {
    "id": 17610,
    "words": 3440
   },
-  "Humus": {
+  "Humus [pt]": {
    "id": 39618,
    "words": 58697
   },
-  "紅樓夢": {
+  "紅樓夢 [zh]": {
    "id": 24264,
    "words": 724682
   },
-  "三國志演義": {
+  "三國志演義 [zh]": {
    "id": 23950,
    "words": 484891
   },
-  "西遊記": {
+  "西遊記 [zh]": {
    "id": 23962,
    "words": 588719
   },
-  "水滸傳": {
+  "水滸傳 [zh]": {
    "id": 23863,
    "words": 437341
   },
-  "儒林外史": {
+  "儒林外史 [zh]": {
    "id": 24032,
    "words": 231932
   },
-  "聊齋志異": {
+  "聊齋志異 [zh]": {
    "id": 51828,
    "words": 381376
   },
-  "鏡花緣": {
+  "鏡花緣 [zh]": {
    "id": 23818,
    "words": 337655
   },
-  "老殘遊記": {
+  "老殘遊記 [zh]": {
    "id": 23850,
    "words": 91563
   },
-  "封神演義": {
+  "封神演義 [zh]": {
    "id": 23910,
    "words": 485196
   },
-  "浮生六記": {
+  "浮生六記 [zh]": {
    "id": 25192,
    "words": 29726
   },
-  "吶喊": {
+  "吶喊 [zh]": {
    "id": 27166,
    "words": 67955
   },
-  "徬徨": {
+  "徬徨 [zh]": {
    "id": 24042,
    "words": 50513
   },
-  "朝花夕拾": {
+  "朝花夕拾 [zh]": {
    "id": 25271,
    "words": 30110
   },
-  "野草": {
+  "野草 [zh]": {
    "id": 25242,
    "words": 15715
   },
-  "中國小說史略": {
+  "中國小說史略 [zh]": {
    "id": 25559,
    "words": 166148
   },
-  "論語": {
+  "論語 [zh]": {
    "id": 23839,
    "words": 16025
   },
-  "孟子": {
+  "孟子 [zh]": {
    "id": 24178,
    "words": 36048
   },
-  "道德經": {
+  "道德經 [zh]": {
    "id": 7337,
    "words": 5691
   },
-  "孫子兵法": {
+  "孫子兵法 [zh]": {
    "id": 23864,
    "words": 6107
   },
-  "詩經": {
+  "詩經 [zh]": {
    "id": 23873,
    "words": 30567
   },
-  "易經": {
+  "易經 [zh]": {
    "id": 25501,
    "words": 21639
   },
-  "史記": {
+  "史記 [zh]": {
    "id": 24226,
    "words": 512627
   },
-  "世說新語": {
+  "世說新語 [zh]": {
    "id": 24047,
    "words": 61969
   },
-  "山海經": {
+  "山海經 [zh]": {
    "id": 25288,
    "words": 31942
   },
-  "唐诗三百首": {
+  "唐诗三百首 [zh]": {
    "id": 52323,
    "words": 22543
   },
-  "李太白集": {
+  "李太白集 [zh]": {
    "id": 24060,
    "words": 149654
   },
-  "漱玉詞": {
+  "漱玉詞 [zh]": {
    "id": 25367,
    "words": 3061
   },
-  "牡丹亭": {
+  "牡丹亭 [zh]": {
    "id": 23849,
    "words": 44982
   },
-  "西廂記": {
+  "西廂記 [zh]": {
    "id": 23906,
    "words": 36860
   },
-  "桃花扇": {
+  "桃花扇 [zh]": {
    "id": 24234,
    "words": 29329
   },
-  "長生殿": {
+  "長生殿 [zh]": {
    "id": 52270,
    "words": 76037
   },
-  "竇娥寃": {
+  "竇娥寃 [zh]": {
    "id": 24004,
    "words": 12731
   },
-  "子不語": {
+  "子不語 [zh]": {
    "id": 25245,
    "words": 218120
   },
-  "閱微草堂筆記": {
+  "閱微草堂筆記 [zh]": {
    "id": 23817,
    "words": 307697
   },
-  "陶庵夢憶": {
+  "陶庵夢憶 [zh]": {
    "id": 25401,
    "words": 29288
   },
-  "幽夢影": {
+  "幽夢影 [zh]": {
    "id": 7420,
    "words": 21129
   },
-  "菜根譚": {
+  "菜根譚 [zh]": {
    "id": 24050,
    "words": 7707
   },
-  "茶經": {
+  "茶經 [zh]": {
    "id": 7406,
    "words": 6174
   },
-  "警世通言": {
+  "警世通言 [zh]": {
    "id": 24141,
    "words": 311964
   },
-  "東周列國志": {
+  "東周列國志 [zh]": {
    "id": 25349,
    "words": 125139
   },
-  "海上花列傳": {
+  "海上花列傳 [zh]": {
    "id": 26872,
    "words": 257596
   },
-  "官場現形記": {
+  "官場現形記 [zh]": {
    "id": 24138,
    "words": 559125
   },
-  "二十年目睹之怪現狀": {
+  "二十年目睹之怪現狀 [zh]": {
    "id": 24099,
    "words": 462697
   },
-  "三俠五義": {
+  "三俠五義 [zh]": {
    "id": 25376,
    "words": 424474
   },
-  "人間詞話": {
+  "人間詞話 [zh]": {
    "id": 24112,
    "words": 10704
   },
-  "天工開物": {
+  "天工開物 [zh]": {
    "id": 25273,
    "words": 48419
   },
-  "三字經": {
+  "三字經 [zh]": {
    "id": 12479,
    "words": 1125
   },
-  "千字文": {
+  "千字文 [zh]": {
    "id": 23912,
    "words": 1000
+  },
+  "Notre-Dame de Paris [fr]": {
+   "id": 19657,
+   "words": 175822
+  },
+  "Les misérables Tome I: Fantine [fr]": {
+   "id": 17489,
+   "words": 111887
+  },
+  "Le Dernier Jour d'un Condamné [fr]": {
+   "id": 6838,
+   "words": 34371
+  },
+  "Les contemplations: Autrefois, 1830-1843 [fr]": {
+   "id": 29843,
+   "words": 37108
+  },
+  "Madame Bovary [fr]": {
+   "id": 14155,
+   "words": 112894
+  },
+  "Trois contes [fr]": {
+   "id": 12065,
+   "words": 30022
+  },
+  "Eugénie Grandet [fr]": {
+   "id": 11049,
+   "words": 63903
+  },
+  "Les Rêveries du Promeneur Solitaire [fr]": {
+   "id": 65434,
+   "words": 41959
+  },
+  "Germinal [fr]": {
+   "id": 5711,
+   "words": 166687
+  },
+  "L'Assommoir [fr]": {
+   "id": 6497,
+   "words": 161288
+  },
+  "Thérèse Raquin [fr]": {
+   "id": 7461,
+   "words": 66948
+  },
+  "Au bonheur des dames [fr]": {
+   "id": 16852,
+   "words": 149772
+  },
+  "Boule de Suif [fr]": {
+   "id": 10746,
+   "words": 36455
+  },
+  "Le Horla [fr]": {
+   "id": 10775,
+   "words": 41708
+  },
+  "Une vie [fr]": {
+   "id": 17457,
+   "words": 72880
+  },
+  "Pierre et Jean [fr]": {
+   "id": 11131,
+   "words": 47145
+  },
+  "Les trois mousquetaires [fr]": {
+   "id": 13951,
+   "words": 223890
+  },
+  "Le comte de Monte-Cristo, Tome I [fr]": {
+   "id": 17989,
+   "words": 123570
+  },
+  "La Tulipe Noire [fr]": {
+   "id": 1910,
+   "words": 37118
+  },
+  "Le rouge et le noir [fr]": {
+   "id": 798,
+   "words": 174470
+  },
+  "La Chartreuse De Parme [fr]": {
+   "id": 796,
+   "words": 184031
+  },
+  "Candide, ou l'optimisme [fr]": {
+   "id": 4650,
+   "words": 34452
+  },
+  "Zadig, ou la Destinée, histoire orientale [fr]": {
+   "id": 4647,
+   "words": 27457
+  },
+  "Micromégas [fr]": {
+   "id": 4649,
+   "words": 7785
+  },
+  "L'Avare [fr]": {
+   "id": 6318,
+   "words": 22153
+  },
+  "Le médecin malgré lui [fr]": {
+   "id": 20498,
+   "words": 12586
+  },
+  "L'oiseau bleu [fr]": {
+   "id": 38849,
+   "words": 31935
+  },
+  "Les Fleurs du Mal [fr]": {
+   "id": 6099,
+   "words": 24856
+  },
+  "Une saison en enfer [fr]": {
+   "id": 56668,
+   "words": 7131
+  },
+  "Alcools [fr]": {
+   "id": 15462,
+   "words": 16096
+  },
+  "Voyage au Centre de la Terre [fr]": {
+   "id": 4791,
+   "words": 67957
+  },
+  "Vingt mille Lieues Sous Les Mers [fr]": {
+   "id": 5097,
+   "words": 140767
+  },
+  "Le tour du monde en quatre-vingts jours [fr]": {
+   "id": 800,
+   "words": 68581
+  },
+  "Du côté de chez Swann [fr]": {
+   "id": 2650,
+   "words": 168602
+  },
+  "Le petit chose [fr]": {
+   "id": 13256,
+   "words": 82686
+  },
+  "Tartarin de Tarascon [fr]": {
+   "id": 10687,
+   "words": 55224
+  },
+  "La Vénus d'Ille [fr]": {
+   "id": 16240,
+   "words": 10516
+  },
+  "Manon Lescaut [fr]": {
+   "id": 17983,
+   "words": 59114
+  },
+  "La princesse de Clèves [fr]": {
+   "id": 18797,
+   "words": 59536
+  },
+  "Cyrano de Bergerac [fr]": {
+   "id": 1256,
+   "words": 34032
+  },
+  "La Folle Journée ou le Mariage de Figaro [fr]": {
+   "id": 20577,
+   "words": 42183
+  },
+  "Fables de La Fontaine. Tome Premier [fr]": {
+   "id": 17941,
+   "words": 6928
+  },
+  "Le mystère de la chambre jaune [fr]": {
+   "id": 13765,
+   "words": 84033
+  },
+  "Le Fantôme de l'Opéra [fr]": {
+   "id": 62215,
+   "words": 102586
+  },
+  "Le Grand Meaulnes [fr]": {
+   "id": 5781,
+   "words": 64862
+  },
+  "Maria Chapdelaine [fr]": {
+   "id": 13525,
+   "words": 46698
+  },
+  "Pêcheur d'Islande [fr]": {
+   "id": 4785,
+   "words": 55055
+  },
+  "Arsène Lupin, gentleman-cambrioleur [fr]": {
+   "id": 32854,
+   "words": 55374
   }
  },
  "missing": [

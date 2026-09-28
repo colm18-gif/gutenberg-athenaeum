@@ -16,10 +16,13 @@ import {loadScript,resolve,textMatches} from './daily-room.mjs';
 const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),'..');
 const LIST=path.join(root,'data/new-books.js'),RESOLVED=path.join(root,'data/new-books-resolved.js'),TRACKED=path.join(root,'data/daily-room-texts.json');
 const BUNDLED=path.join(root,'texts/bundled-gzip');
-export const ROOMS=['secret','shelves','evening-quick','evening-hour','evening-evening','learners-1','learners-2','learners-3','learners-4','learners-short','signal','tide','mars','periodicals','spanish','portuguese','chinese'];
+export const ROOMS=['secret','shelves','evening-quick','evening-hour','evening-evening','learners-1','learners-2','learners-3','learners-4','learners-short','signal','tide','mars','periodicals','spanish','portuguese','chinese','french'];
 // Rooms whose books are not in English: the language of their texts (used to search Gutendex, and by the reader
 // and the book pages). Every other room is English.
-export const ROOM_LANGUAGES={spanish:'es',portuguese:'pt',chinese:'zh'};
+export const ROOM_LANGUAGES={spanish:'es',portuguese:'pt',chinese:'zh',french:'fr'};
+// data/new-books-resolved.js is keyed by title, and by title and language for the rooms in another language, so the
+// French Madame Bovary does not take the place of the English one ("Madame Bovary [fr]"). game.js does the same.
+export const resolvedKey=(title,room)=>ROOM_LANGUAGES[room]?`${title} [${ROOM_LANGUAGES[room]}]`:title;
 
 export function validate(list){
   const errors=[],notes=new Map();
@@ -58,20 +61,20 @@ async function main(){
   if(errors.length){console.error(errors.join('\n'));process.exit(1)}
   if(args.includes('--validate')){console.log(`New books OK: ${list.length} entries.`);return}
   const previous=fs.existsSync(RESOLVED)?loadScript(RESOLVED,'ATHENAEUM_NEW_BOOKS_RESOLVED')?.books||{}:{};
-  const books={},missing=[],unique=new Map();for(const entry of list)if(!unique.has(entry[1]))unique.set(entry[1],entry);
+  const books={},missing=[],unique=new Map();for(const entry of list){const key=resolvedKey(entry[1],entry[4]);if(!unique.has(key))unique.set(key,entry)}
   fs.mkdirSync(BUNDLED,{recursive:true});
   const save=()=>fs.writeFileSync(RESOLVED,'// Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of\n// each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.\n'+
     'window.ATHENAEUM_NEW_BOOKS_RESOLVED='+JSON.stringify({updated:new Date().toISOString().slice(0,10),books,missing},null,1)+';\n');
-  for(const [title,[id,,author,,room]] of unique){
+  for(const [key,[id,title,author,,room]] of unique){
     // A book checked on an earlier run is not looked up again while its text is still here and still matches.
-    const known=previous[title],knownText=known&&localText(known.id);
+    const known=previous[key],knownText=known&&localText(known.id);
     const language=ROOM_LANGUAGES[room]||'en';let found=knownText&&textMatches(knownText,title,author,language)?{id:known.id,text:null}:null;
     if(!found)found=await resolve([known?.id&&textMatches(knownText||'',title,author,language)?known.id:id,title,author],{language});
-    if(!found){missing.push(title);console.log(`  missing: ${title} (${author})`);continue}
+    if(!found){missing.push(key);console.log(`  missing: ${title} (${author})`);continue}
     let text=found.text;
     if(text&&!localText(found.id)){fs.writeFileSync(path.join(BUNDLED,`pg${found.id}.txt.gz`),zlib.gzipSync(text,{level:9}));console.log(`  + ${found.id} ${title}`)}
     else{text=text||localText(found.id);console.log(`  = ${found.id} ${title}`)}
-    books[title]={id:found.id,words:countWords(text)};save();
+    books[key]={id:found.id,words:countWords(text)};save();
   }
   save();
   // These texts are kept for good, so the Room of the Day must not count them as its own and remove them later.

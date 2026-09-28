@@ -13,7 +13,7 @@ test('every new book is well formed and brings a librarian’s note',async()=>{
   for(const [,title,,,room,note] of list){
     assert.ok(ROOMS.includes(room),title);
     // Chinese says in 60 characters what English needs 120 letters for.
-    if(note){assert.ok(note.length>=(room==='chinese'?60:120),`${title}: the note is too short`);assert.match(note,/[.!?”。」]$/,`${title}: the note should end a sentence`)}
+    if(note){assert.ok(note.length>=(room==='chinese'?60:120),`${title}: the note is too short`);assert.match(note,/[.!?”»。」]$/,`${title}: the note should end a sentence`)}
   }
   assert.ok(validate([[1,'A','B','C','nowhere','note']]).some(error=>/unknown room/.test(error)));
   assert.ok(validate([[1,'A','B','C','secret','']]).some(error=>/librarian's note/.test(error)));
@@ -36,7 +36,7 @@ test('words are counted from the story, not the Gutenberg header and licence',as
   assert.equal(countWords(text),7);
 });
 
-test('the new books reach the shelves and rooms, and their texts are kept for good',()=>{
+test('the new books reach the shelves and rooms, and their texts are kept for good',async()=>{
   const game=fs.readFileSync('game.js','utf8'),html=fs.readFileSync('index.html','utf8'),daily=fs.readFileSync('scripts/daily-room.mjs','utf8');
   assert.match(game,/const newArrivals=\(\(\)=>\{const resolved=window\.ATHENAEUM_NEW_BOOKS_RESOLVED\?\.books/);
   assert.match(game,/secretFill=secret\?newArrivals\.list\('secret'\)/);
@@ -49,10 +49,11 @@ test('the new books reach the shelves and rooms, and their texts are kept for go
   assert.ok(html.indexOf("startupScript('data/new-books.js')")<html.indexOf("startupScript('game.js')"));
   assert.match(html,/startupScript\('data\/new-books-resolved\.js'\)/);
   assert.match(daily,/keptForGood\(\)/);
+  const {resolvedKey}=await import('./scripts/new-books.mjs');
   const resolved=load('data/new-books-resolved.js','ATHENAEUM_NEW_BOOKS_RESOLVED');
   assert.ok(resolved&&typeof resolved.books==='object'&&Array.isArray(resolved.missing));
   for(const [title,book] of Object.entries(resolved.books)){
-    assert.ok(list.some(entry=>entry[1]===title),`${title} is not in data/new-books.js`);
+    assert.ok(list.some(entry=>resolvedKey(entry[1],entry[4])===title),`${title} is not in data/new-books.js`);
     assert.ok(fs.existsSync(`texts/bundled-gzip/pg${book.id}.txt.gz`)||fs.existsSync(`texts/pg${book.id}.txt`),`${title}: its text should be bundled`);
     assert.ok(book.words>0,`${title}: words`);
   }

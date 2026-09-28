@@ -32,7 +32,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A book es pt zh sitemap.xml robots.txt
+          git add -A book es pt zh fr sitemap.xml robots.txt
           if git diff --cached --quiet; then echo "The book pages are up to date."; exit 0; fi
           git commit -m "Book pages: rebuild"
           for attempt in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0; sleep 10; done

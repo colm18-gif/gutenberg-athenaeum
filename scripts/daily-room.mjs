@@ -57,7 +57,7 @@ export function titleMatches(expected,candidate){if(hanOf(expected).length){cons
 // Words in a candidate title beyond the ones asked for: "Dracula" prefers Dracula to Dracula's Guest.
 export function extraWords(expected,candidate){const want=new Set(words(expected));return words(candidate.split(/[;:]/)[0]).filter(word=>!want.has(word)).length}
 export function surname(author){const parts=words(author.replace(/\b(jr|sr|mrs?|professor|earl|baroness|sir|lord|lady|madame)\b\.?/gi,''));return parts[parts.length-1]||''}
-export function authorMatches(expected,candidate){if(/anonymous|an[oó]nimo/i.test(expected))return true;
+export function authorMatches(expected,candidate){if(/anonymous|an[oó]nimo|anonyme/i.test(expected))return true;
   // A Chinese author is shelved as 曹雪芹 (Cao Xueqin); Gutenberg's header gives the pinyin, in either order.
   if(hanOf(expected).length){const latin=words(expected.match(/\(([^)]+)\)/)?.[1]||''),have=new Set(words(candidate));return latin.length>0&&latin.every(word=>have.has(word))}const name=surname(expected),have=words(candidate),joined=words(expected).slice(-2).join('');/* "Le Fanu" and "LeFanu" are the same writer. */return !!name&&(have.includes(name)||have.join('').includes(joined))}
 export function header(text){
@@ -67,7 +67,7 @@ export function header(text){
 }
 // For a room in another language the text itself must be in it: a title alone would let an English translation of
 // Marianela stand in for the Spanish. (English rooms keep the old test, so nothing already bundled is disturbed.)
-const LANGUAGE_NAMES={es:'Spanish',pt:'Portuguese',zh:'Chinese'};
+const LANGUAGE_NAMES={es:'Spanish',pt:'Portuguese',zh:'Chinese',fr:'French'};
 export function languageMatches(text,language='en'){if(language==='en')return true;const line=text.slice(0,6000).match(/^Language:\s*(.+)$/m)?.[1]||'';return line.includes(LANGUAGE_NAMES[language]||language)}
 export function textMatches(text,title,author,language='en'){const h=header(text);return titleMatches(title,h.title)&&authorMatches(author,h.people)&&languageMatches(text,language)}
 
@@ -97,7 +97,7 @@ async function get(url,type='text'){
 const TEXT_URLS=id=>[`https://www.gutenberg.org/cache/epub/${id}/pg${id}.txt`,`https://gutenberg.pglaf.org/cache/epub/${id}/pg${id}.txt`,`https://aleph.gutenberg.org/cache/epub/${id}/pg${id}.txt`,`https://www.gutenberg.org/ebooks/${id}.txt.utf-8`];
 export async function download(id){for(const url of TEXT_URLS(id)){if(hostDown(url))continue;await sleep(PAUSE_MS);const text=await get(url);if(text&&text.length>2000)return text}return null}
 async function search(title,author,language='en'){
-  const query=`${words(title).slice(0,6).join(' ')} ${/anonymous|an[oó]nimo/i.test(author)?'':surname(author)}`.trim();
+  const query=`${words(title).slice(0,6).join(' ')} ${/anonymous|an[oó]nimo|anonyme/i.test(author)?'':surname(author)}`.trim();
   await sleep(PAUSE_MS);let result=await get(`https://gutendex.com/books?languages=${language}&search=${encodeURIComponent(query)}`,'json');
   // Gutendex is sometimes slow or down; Project Gutenberg's own catalogue search (OPDS) is the fallback.
   if(!result){await sleep(PAUSE_MS);const feed=await get(`https://www.gutenberg.org/ebooks/search.opds/?query=${encodeURIComponent(query)}`);if(feed)result={results:feed.split('<entry>').slice(1).map(entry=>({id:Number(entry.match(/\/ebooks\/(\d+)/)?.[1]),title:(entry.match(/<title>([^<]*)<\/title>/)?.[1]||'').replace(/&amp;/g,'&'),authors:[{name:author}],copyright:false,download_count:0})).filter(book=>book.id)}}
