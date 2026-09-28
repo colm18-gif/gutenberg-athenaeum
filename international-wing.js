@@ -20,7 +20,7 @@
     const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),
       wallMaterial=null,finishWalls=null}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
     const DOOR={x:8.6,z:30.45,yaw:Math.PI};
-    const ROOM={cx:-410,cz:100,w:24,d:15,h:5.2};
+    const ROOM={cx:-410,cz:100,w:24,d:15,h:6};
     const PRELOAD=7,KEEP=25;
     let root=null,time=0,lastNeeded=-1e9;
     const owned=[],ours=[],books=[],blockers=[];
@@ -69,7 +69,7 @@
       // The tiled dado, 1.1 m high all round, capped with a wooden rail.
       for(const [x,z,sw,sd,len] of [[cx,cz-d/2+.17,w-.4,.05,w],[cx,cz+d/2-.17,w-.4,.05,w],[cx-w/2+.17,cz,.05,d-.4,d],[cx+w/2-.17,cz,.05,d-.4,d]]){
         const t=own(tiles.clone());t.repeat.set(Math.round(len/.55),2);box(sw,1.1,sd,own(new THREE.MeshStandardMaterial({map:t,roughness:.45})),x,.55,z,root);box(sw,.07,sd+.06,MAT.darkWood,x,1.13,z,root)}
-      const sign=add(own(new THREE.PlaneGeometry(6,.86)),own(new THREE.MeshStandardMaterial({map:own(plaque('SALA DE LECTURA EN ESPAÑOL','The Spanish Reading Room · El ala internacional',1100,158)),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.3})),cx,4.55,cz-d/2+.17,root);
+      const sign=add(own(new THREE.PlaneGeometry(6,.86)),own(new THREE.MeshStandardMaterial({map:own(plaque('SALA DE LECTURA EN ESPAÑOL','The Spanish Reading Room · El ala internacional',1100,158)),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.3})),cx,5.28,cz-d/2+.24,root);
       mark(sign,{type:'intl-card',title:'Sala de lectura en español',author:'Clásicos de España, de América y de Filipinas, cada uno con una nota de la bibliotecaria. El libro de la noche está en el atril. (The Spanish Reading Room: classics from Spain, the Americas and the Philippines.)',action:'READ'});
       // Books face-out on sloping racks: three tiers along the north wall, three along the west wall.
       const spots=[];

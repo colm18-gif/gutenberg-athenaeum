@@ -39,7 +39,7 @@ test('the International Wing is a room behind its own door, built only when need
   assert.ok(order.indexOf('international-wing.js')>-1&&order.indexOf('international-wing.js')<order.indexOf('game.js'));
   assert.match(wing,/const DOOR=\{x:8\.6,z:30\.45,yaw:Math\.PI\}/,'on the Grand Hall’s south wall, beside the visitors’ book');
   // Well away from the other rooms behind doors (all at x -330).
-  assert.match(wing,/const ROOM=\{cx:-410,cz:100,w:24,d:15,h:5\.2\}/);
+  assert.match(wing,/const ROOM=\{cx:-410,cz:100,w:24,d:15,h:6\}/);
   assert.match(wing,/if\(inside\|\|near\)activate\(\);\s*else if\(root&&t-lastNeeded>KEEP/);
   assert.match(wing,/SALA DE LEITURA EM PORTUGUÊS/);assert.match(wing,/中文閱覽室/);
   assert.match(game,/const internationalWing=window\.createInternationalWing\?\.\(/);
@@ -50,6 +50,9 @@ test('the International Wing is a room behind its own door, built only when need
   assert.match(game,/'international-wing':internationalWing&&\(\(\)=>internationalWing\.enter\(\)\)/);
   assert.match(game,/spanish:'international-wing',espanol:'international-wing',es:'international-wing'/);
   assert.match(fs.readFileSync('room-ambience.js','utf8'),/'international-wing':\{beds:/);
+  // A link into the wing is greeted in Spanish on the entry screen.
+  assert.match(html,/\['es','spanish','espanol','español','international-wing','international'\]\.includes\(room\)/);
+  assert.match(html,/set\('#enter','Entrar en la biblioteca'\)/);assert.match(html,/<a href="\/es\/">Libros en español<\/a>/);
 });
 
 test('Spanish books are known to be Spanish: word help steps aside, and their pages are in Spanish',()=>{

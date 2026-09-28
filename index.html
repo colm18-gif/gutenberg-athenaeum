@@ -50,6 +50,19 @@
       <p class="small touch-intro">Left thumb to walk · drag to look · tap E to interact · tap &#9776; for menu</p>
     </div>
   </div>
+  <script>
+    // A link into the International Wing's Spanish room (/?room=es, international-wing, spanish, espanol) is greeted in Spanish.
+    (()=>{try{const room=(new URLSearchParams(location.search).get('room')||'').toLowerCase();if(!['es','spanish','espanol','español','international-wing','international'].includes(room))return;
+      const veil=document.getElementById('veil'),set=(selector,text)=>{const el=veil.querySelector(selector);if(el)el.textContent=text};document.documentElement.lang='es';
+      set('.crest > p','Una biblioteca de libros que han sobrevivido a sus primeros lectores. Esta noche, la Sala de lectura en español.');
+      set('#entryOptions summary','Comodidad y rendimiento');set('#enter','Entrar en la biblioteca');
+      const labels=veil.querySelectorAll('.entry-options-grid label');['Sonido','Reducir movimiento y clima','Modo de bajo consumo de datos','Más contraste','Texto más grande'].forEach((text,i)=>{const label=labels[i];if(!label)return;const input=label.querySelector('input');label.textContent=i?'':text+' ';if(i){label.append(input,' '+text)}else label.append(input)});
+      const catalogue=veil.querySelector('.entry-catalogue');if(catalogue)catalogue.innerHTML='<a href="/es/">Libros en español</a> · cada uno con una nota de la bibliotecaria';
+      set('.kb-intro','WASD o flechas para caminar · ratón para mirar · E interactuar · J diario · O ajustes · R si te pierdes');
+      const rotate=veil.querySelector('.rotation-reminder');if(rotate)rotate.innerHTML='<strong>Antes de entrar:</strong> desbloquea la rotación de la pantalla; la biblioteca se recorre en horizontal.';
+      const touch=veil.querySelectorAll('.touch-intro');if(touch[1])touch[1].innerHTML='Pulgar izquierdo para caminar · arrastra para mirar · toca E para interactuar · toca &#9776; para el menú';
+    }catch(error){}})();
+  </script>
   <div id="hud">
     <div class="topmark">The Library <b>After Dark</b></div>
     <div id="reticle"></div>
