@@ -6,7 +6,7 @@
   'use strict';
 
   window.createDailyRoom=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,registerBook,showNotice,playSample,sound,move,analytics,now=()=>new Date()}=options;
+    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,registerBook,showNotice,playSample,sound,move,analytics,now=()=>new Date(),registerSeat=null}=options;
     const schedule=window.ATHENAEUM_DAILY_ROOMS;if(!schedule?.days?.length)return null;
     const room={cx:-240,cz:110,w:14,d:14,h:5.2},door={x:-18.72,z:-14.5,yaw:Math.PI/2};
     const KEEP_WARM_SECONDS=25,PRELOAD_DISTANCE=9,DAY_MS=86400000,ARCHIVE=Math.max(1,schedule.archiveDays||14);
@@ -95,7 +95,11 @@
       const dx=cx+w/2-2.3,dz=cz+d/2-2.4,dayBookStand=box(.8,1.0,.55,MAT.darkWood,dx,.5,dz,root),bookTop=box(.95,.08,.7,MAT.darkWood,dx,1.06,dz,root);bookTop.rotation.x=-.28;block(dx,dz,1.1,.85);
       root.userData.dayBookParts=[dayBookStand,bookTop].map(part=>mark(part,{type:'daily-daybook',title:'The day book',author:'',action:'READ'}));
       // A reading bench facing the lectern.
-      box(2.6,.12,.62,MAT.darkWood,cx,.5,cz+1.4,root);for(const lx of [-1.15,1.15])box(.12,.46,.5,MAT.darkWood,cx+lx,.23,cz+1.4,root);block(cx,cz+1.4,2.8,.8);
+      const bench=box(2.6,.12,.62,MAT.darkWood,cx,.5,cz+1.4,root);for(const lx of [-1.15,1.15])box(.12,.46,.5,MAT.darkWood,cx+lx,.23,cz+1.4,root);block(cx,cz+1.4,2.8,.8);
+      // The library's own seats (game.js): the bench faces the lectern, and opens one of today's ten books.
+      if(registerSeat){const seatGroup=new THREE.Group();seatGroup.position.set(cx,0,cz+1.4);root.add(seatGroup);
+        const data=registerSeat([bench],seatGroup,new THREE.Vector3(0,1.3,.1),0,{title:'The reading bench',author:'Sit and read one of today’s books.'});
+        Object.defineProperty(data,'bookIds',{get:()=>dayBooks.map(mesh=>mesh.userData.book.id),configurable:true})}
       // Exit.
       const exitData={type:'daily-exit',title:'Back to the Grand Hall',author:'The door remembers which way the lamps are.',action:'RETURN'};
       mark(box(1.9,3.1,.16,MAT.darkWood,cx,1.55,cz+d/2-.2,root),exitData);

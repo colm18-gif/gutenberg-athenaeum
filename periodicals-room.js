@@ -26,7 +26,7 @@
   ];
 
   window.createPeriodicalsRoom=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],notes={},news=()=>({}),showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date()}=options;
+    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],notes={},news=()=>({}),showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),registerSeat=null}=options;
     const DOOR={x:0,z:30.45,yaw:Math.PI};
     const ROOM={cx:-330,cz:100,w:16,d:14,h:5};
     const PRELOAD=7,KEEP=25;
@@ -132,7 +132,10 @@
         const mesh=placeBook(pick,{x:lx,y:1.42,z:lz-.02,yaw:0},geometry);if(mesh){mesh.rotation.x=-1.05;mesh.userData.home.quaternion.copy(mesh.quaternion);mesh.userData.featured=true}}
       // Armchairs and a green-shaded reading lamp.
       const leather=own(new THREE.MeshStandardMaterial({color:0x4a2019,roughness:.75})),shade=own(new THREE.MeshStandardMaterial({color:0x2f6b3a,emissive:0x2c7a3a,emissiveIntensity:.8,roughness:.5}));
-      for(const [x,z,yaw] of [[cx+4.4,cz+3.4,-.5],[cx+1.8,cz+4.2,.3]]){const chair=new THREE.Group();chair.position.set(x,0,z);chair.rotation.y=yaw;root.add(chair);box(1.05,.45,1,leather,0,.42,0,chair);box(1.05,.85,.22,leather,0,.98,.42,chair);for(const sx of [-.48,.48])box(.16,.32,1,leather,sx,.78,0,chair);block(x,z,1.3,1.3)}
+      for(const [x,z,yaw] of [[cx+4.4,cz+3.4,-.5],[cx+1.8,cz+4.2,.3]]){const chair=new THREE.Group();chair.position.set(x,0,z);chair.rotation.y=yaw;root.add(chair);const seat=box(1.05,.45,1,leather,0,.42,0,chair),back=box(1.05,.85,.22,leather,0,.98,.42,chair);for(const sx of [-.48,.48])box(.16,.32,1,leather,sx,.78,0,chair);block(x,z,1.3,1.3);
+        // The library's own seats (game.js): sitting opens one of the periodicals on the racks.
+        if(registerSeat){const data=registerSeat([seat,back],chair,new THREE.Vector3(0,1.3,.12),yaw,{title:'A leather reading chair',author:'Sit and read one of the magazines and papers on these racks.'});
+          Object.defineProperty(data,'bookIds',{get:()=>books.map(mesh=>mesh.userData.book.id),configurable:true});ours.push(seat,back)}}
       box(.5,.05,.5,MAT.darkWood,cx+3.1,.72,cz+4.8,root);box(.08,.7,.08,MAT.darkWood,cx+3.1,.36,cz+4.8,root);box(.08,.4,.08,MAT.brass,cx+3.1,.95,cz+4.8,root);
       add(own(new THREE.CylinderGeometry(.14,.24,.2,14,1,true)),shade,cx+3.1,1.2,cz+4.8,root);block(cx+3.1,cz+4.8,.6,.6);
       lamp(root,0xffe0a8,7,14,cx,h-.4,cz-1);lamp(root,0xd8f0c0,2.5,5,cx+3.1,1.3,cz+4.8);
