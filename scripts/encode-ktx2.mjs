@@ -30,7 +30,7 @@ async function encode(file,kind,{flipY=false}={}){
 }
 
 // Tiling materials applied through THREE.TextureLoader (flipY=true), so bake the same flip in.
-for(const set of ['smoked_walnut_veneer','leather_red_02']){
+for(const set of JSON.parse(fs.readFileSync(path.join(root,'assets/polyhaven/manifest.json'),'utf8')).materials.map(material=>material.id)){
   const dir=path.join(root,'assets/polyhaven/materials',set);
   await encode(path.join(dir,'diffuse.jpg'),'color',{flipY:true});
   await encode(path.join(dir,'normal.jpg'),'normal',{flipY:true});
