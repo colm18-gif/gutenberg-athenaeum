@@ -31,7 +31,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - The catalogue: the core list in `game.js`, plus `data/*` catalogues and the new arrivals. `scripts/book-pages.mjs`
   rebuilds the same list (742 books at the time of writing).
 - **New books**: add `[id or null, title, author, category, room, note]` to `data/new-books.js` (rooms are listed at
-  the top of that file and in `ROOMS` in `scripts/new-books.mjs`). The New books workflow checks each against the
+  the top of that file and in `ROOMS` in `scripts/new-books.mjs`); the International Wing's rooms go in
+  `data/new-books-wing.js`, which the library fetches only within 9 m of the wing door, at one of its doors, or at
+  startup for a `?book=` or a `?room=` in the wing. The New books workflow checks each against the
   text's own title and author, bundles it into `texts/bundled-gzip`, counts words and writes
   `data/new-books-resolved.js`. Only resolved books appear. Every book needs a librarian's note.
 - Librarian notes: `data/librarian-notes.json` and the notes files in `data/`. Voice: three sentences, dry, warm,

@@ -4,7 +4,7 @@ const fs=require('node:fs');
 const vm=require('node:vm');
 
 const load=(file,name)=>{const context={window:{}};vm.runInNewContext(fs.readFileSync(file,'utf8'),context);return context.window[name]};
-const list=load('data/new-books.js','ATHENAEUM_NEW_BOOKS');
+const list=[...load('data/new-books.js','ATHENAEUM_NEW_BOOKS'),...load('data/new-books-wing.js','ATHENAEUM_NEW_BOOKS_WING')];
 const inRoom=room=>list.filter(entry=>entry[4]===room);
 
 test('every new book is well formed and brings a librarian’s note',async()=>{

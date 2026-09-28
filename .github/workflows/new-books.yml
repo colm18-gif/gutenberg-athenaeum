@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main, 'claude/**']
-    paths: ['data/new-books.js','scripts/new-books.mjs']
+    paths: ['data/new-books.js','data/new-books-wing.js','scripts/new-books.mjs']
 
 permissions:
   contents: write
