@@ -63,8 +63,8 @@ async function main(){
   for(const [title,[id,,author,,room]] of unique){
     // A book checked on an earlier run is not looked up again while its text is still here and still matches.
     const known=previous[title],knownText=known&&localText(known.id);
-    let found=knownText&&textMatches(knownText,title,author)?{id:known.id,text:null}:null;
-    if(!found)found=await resolve([known?.id??id,title,author],{language:ROOM_LANGUAGES[room]||'en'});
+    const language=ROOM_LANGUAGES[room]||'en';let found=knownText&&textMatches(knownText,title,author,language)?{id:known.id,text:null}:null;
+    if(!found)found=await resolve([known?.id&&textMatches(knownText||'',title,author,language)?known.id:id,title,author],{language});
     if(!found){missing.push(title);console.log(`  missing: ${title} (${author})`);continue}
     let text=found.text;
     if(text&&!localText(found.id)){fs.writeFileSync(path.join(BUNDLED,`pg${found.id}.txt.gz`),zlib.gzipSync(text,{level:9}));console.log(`  + ${found.id} ${title}`)}

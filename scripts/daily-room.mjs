@@ -61,7 +61,11 @@ export function header(text){
   const people=[...head.matchAll(/^(?:Author|Editor|Translator|Contributor|Compiler|Illustrator):\s*(.+)$/gm)].map(match=>match[1]).join(' ');
   return {title:title.replace(/\s+/g,' ').trim(),people:people||head.match(/, by ([^\r\n]+)/)?.[1]||''};
 }
-export function textMatches(text,title,author){const h=header(text);return titleMatches(title,h.title)&&authorMatches(author,h.people)}
+// For a room in another language the text itself must be in it: a title alone would let an English translation of
+// Marianela stand in for the Spanish. (English rooms keep the old test, so nothing already bundled is disturbed.)
+const LANGUAGE_NAMES={es:'Spanish',pt:'Portuguese',zh:'Chinese'};
+export function languageMatches(text,language='en'){if(language==='en')return true;const line=text.slice(0,6000).match(/^Language:\s*(.+)$/m)?.[1]||'';return line.includes(LANGUAGE_NAMES[language]||language)}
+export function textMatches(text,title,author,language='en'){const h=header(text);return titleMatches(title,h.title)&&authorMatches(author,h.people)&&languageMatches(text,language)}
 
 // ---------- network ----------
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
@@ -98,11 +102,11 @@ async function search(title,author,language='en'){
 const hasText=id=>fs.existsSync(path.join(root,`texts/pg${id}.txt`))||fs.existsSync(path.join(BUNDLED,`pg${id}.txt.gz`));
 // A text already in the repository is checked like a download, so a wrong id cannot slip through.
 function localText(id){const plain=path.join(root,`texts/pg${id}.txt`),packed=path.join(BUNDLED,`pg${id}.txt.gz`);try{if(fs.existsSync(plain))return fs.readFileSync(plain,'utf8');if(fs.existsSync(packed))return zlib.gunzipSync(fs.readFileSync(packed)).toString('utf8')}catch(error){}return null}
-const localMatches=(id,title,author)=>{const text=localText(id);return !!text&&textMatches(text,title,author)};
+const localMatches=(id,title,author,language)=>{const text=localText(id);return !!text&&textMatches(text,title,author,language)};
 // language: the Gutendex language code to search in when the number given is missing or wrong.
 export async function resolve([id,title,author],{language='en'}={}){
-  if(id){if(localMatches(id,title,author))return {id,text:null};const text=hasText(id)?localText(id):await download(id);if(!hasText(id)&&text&&textMatches(text,title,author))return {id,text};if(text)say(`  id ${id} is not "${title}" (${header(text).title}); searching`)}
-  for(const candidate of (await search(title,author,language)).slice(0,3)){if(localMatches(candidate,title,author))return {id:candidate,text:null};if(hasText(candidate))continue;const text=await download(candidate);if(text&&textMatches(text,title,author))return {id:candidate,text}}
+  if(id){if(localMatches(id,title,author,language))return {id,text:null};const text=hasText(id)?localText(id):await download(id);if(!hasText(id)&&text&&textMatches(text,title,author,language))return {id,text};if(text)say(`  id ${id} is not "${title}" (${header(text).title}); searching`)}
+  for(const candidate of (await search(title,author,language)).slice(0,3)){if(localMatches(candidate,title,author,language))return {id:candidate,text:null};if(hasText(candidate))continue;const text=await download(candidate);if(text&&textMatches(text,title,author,language))return {id:candidate,text}}
   return null;
 }
 

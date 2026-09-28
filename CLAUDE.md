@@ -43,6 +43,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `data/new-books.js`, notes in Spanish. Rooms in `ROOM_LANGUAGES` (`scripts/new-books.mjs`, and in `game.js`) are
   searched on Gutendex in their language, get `book.language` (word help steps aside) and Spanish book pages;
   `/es/` is the Spanish landing page. Portuguese and Chinese rooms are signed as coming soon.
+  For these rooms the text's own `Language:` line must match (a title alone lets translations through). Gutendex
+  is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
+  to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, evening-room, periodicals-room, learners-room, boathouse,
   daily-room, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text.

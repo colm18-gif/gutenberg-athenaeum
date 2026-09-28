@@ -28,7 +28,10 @@ test('the pipeline looks for Spanish books in Spanish, and counts accented words
   assert.ok(ROOMS.includes('spanish'));assert.equal(ROOM_LANGUAGES.spanish,'es');
   assert.equal(countWords('*** START OF THE PROJECT GUTENBERG EBOOK X ***\nLa canción del pirata, ¡qué alegría!\n*** END OF THE PROJECT GUTENBERG EBOOK X ***'),6);
   const newBooks=fs.readFileSync('scripts/new-books.mjs','utf8'),daily=fs.readFileSync('scripts/daily-room.mjs','utf8');
-  assert.match(newBooks,/resolve\(\[known\?\.id\?\?id,title,author\],\{language:ROOM_LANGUAGES\[room\]\|\|'en'\}\)/);
+  assert.match(newBooks,/const language=ROOM_LANGUAGES\[room\]\|\|'en'/);assert.match(newBooks,/\{language\}\)/);
+  // A translation cannot stand in for the Spanish text: the text's own Language line must say Spanish.
+  const {textMatches}=await import('./scripts/daily-room.mjs'),head=lang=>`Title: Marianela\nAuthor: Benito Pérez Galdós\nLanguage: ${lang}\n`;
+  assert.ok(textMatches(head('Spanish'),'Marianela','Benito Pérez Galdós','es'));assert.ok(!textMatches(head('English'),'Marianela','Benito Pérez Galdós','es'));assert.ok(textMatches(head('English'),'Marianela','Benito Pérez Galdós'));
   assert.match(daily,/gutendex\.com\/books\?languages=\$\{language\}/);
   const {authorMatches}=await import('./scripts/daily-room.mjs');assert.ok(authorMatches('Anónimo','Anonymous'));
   assert.match(fs.readFileSync('.github/workflows/new-books.yml','utf8'),/branches: \[main, 'claude\/\*\*'\]/);
