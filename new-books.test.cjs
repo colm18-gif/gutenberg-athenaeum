@@ -12,7 +12,8 @@ test('every new book is well formed and brings a librarian’s note',async()=>{
   assert.deepEqual(validate(list),[]);
   for(const [,title,,,room,note] of list){
     assert.ok(ROOMS.includes(room),title);
-    if(note){assert.ok(note.length>=120,`${title}: the note is too short`);assert.match(note,/[.!?”]$/,`${title}: the note should end a sentence`)}
+    // Chinese says in 60 characters what English needs 120 letters for.
+    if(note){assert.ok(note.length>=(room==='chinese'?60:120),`${title}: the note is too short`);assert.match(note,/[.!?”。」]$/,`${title}: the note should end a sentence`)}
   }
   assert.ok(validate([[1,'A','B','C','nowhere','note']]).some(error=>/unknown room/.test(error)));
   assert.ok(validate([[1,'A','B','C','secret','']]).some(error=>/librarian's note/.test(error)));

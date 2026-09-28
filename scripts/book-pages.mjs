@@ -54,11 +54,11 @@ export function loadCatalogue(){
 // ---------- where each book lives ----------
 const ROOM_NAMES={secret:'The secret bookcase in the west wing','evening-quick':'The Evening Room','evening-hour':'The Evening Room','evening-evening':'The Evening Room',
   'learners-1':'The English Reading Room','learners-2':'The English Reading Room','learners-3':'The English Reading Room','learners-4':'The English Reading Room','learners-short':'The English Reading Room',
-  signal:'The Signal House, on the night railway',tide:'Tidebound Quay, on the night railway',mars:'The Reading Room of Helium, on Mars',periodicals:'The Periodicals Room',spanish:'The International Wing',portuguese:'The Portuguese Reading Room'};
+  signal:'The Signal House, on the night railway',tide:'Tidebound Quay, on the night railway',mars:'The Reading Room of Helium, on Mars',periodicals:'The Periodicals Room',spanish:'The International Wing',portuguese:'The Portuguese Reading Room',chinese:'The Chinese Reading Room'};
 const CURIOUS={horologist:'The Horologist’s Study',conservatory:'The Night Conservatory',parlour:'The Ghost-Story Parlour',attic:'The attic behind the curious doors',
   repository:'The Repository',unread:'The Unread Room',returning:'The Room of Returning Names',quiet:'The Quiet Stacks',sorting:'The Sorting Room',departures:'Departures'};
 // Places with a link straight into them (/?room=…, handled in game.js).
-const ROOM_LINKS={'The International Wing':'international-wing','The Portuguese Reading Room':'portuguese-room','The Evening Room':'evening-room','The English Reading Room':'learners-room','The Periodicals Room':'periodicals-room','The Reading Room of Helium, on Mars':'mars',
+const ROOM_LINKS={'The International Wing':'international-wing','The Portuguese Reading Room':'portuguese-room','The Chinese Reading Room':'chinese-room','The Evening Room':'evening-room','The English Reading Room':'learners-room','The Periodicals Room':'periodicals-room','The Reading Room of Helium, on Mars':'mars',
   'The Selenite Reading Outpost, on the Moon':'moon','The Consulting Room':'consulting-room','The Time Laboratory':'time-laboratory','The Lost Kingdoms':'lost-kingdoms','The Verne rooms':'verne-rooms'};
 const CATEGORY_ROOMS={'Extraordinary Voyages':'The Verne rooms','The Consulting Room':'The Consulting Room','The Time Laboratory':'The Time Laboratory','The Lost Kingdoms':'The Lost Kingdoms'};
 function idsIn(file,pattern){const source=read(file),match=source.match(pattern);return match?[...match[1].matchAll(/\d+/g)].map(m=>Number(m[0])):[]}
@@ -80,9 +80,13 @@ function roomsFrom(books){
 
 // ---------- the pages ----------
 const escape=text=>String(text??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-export function slug(text){return String(text).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[’']/g,'').replace(/&/g,' and ').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,60).replace(/-+$/,'')||'book'}
+// Chinese titles keep their characters (/book/24264-紅樓夢.html): a page name of pinyin would mean nothing to their readers.
+export function slug(text){return String(text).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[’']/g,'').replace(/&/g,' and ').replace(/[^a-z0-9\p{Script=Han}]+/gu,'-').replace(/^-+|-+$/g,'').slice(0,60).replace(/-+$/,'')||'book'}
 export const pageName=book=>`${book.id}-${slug(book.title)}.html`;
-export function readingTime(words,lang='en'){if(!words)return null;const es=lang==='es'||lang==='pt',m=Math.max(1,Math.round(words/250));if(m<15)return `${m} ${es?'minutos':'minutes'}`;const r=Math.round(m/5)*5;if(r<60)return `${r} ${es?'minutos':'minutes'}`;const h=Math.floor(r/60),rest=r%60;return rest?`${h} ${es?'h':'hr'} ${rest} min`:es?(h===1?'una hora':`${h} horas`):`${h===1?'an hour':`${h} hours`}`}
+export function readingTime(words,lang='en'){if(!words)return null;
+  // Chinese is counted by the character (scripts/new-books.mjs); a reader takes in some 350 of them a minute.
+  if(lang.startsWith('zh')){const m=Math.max(1,Math.round(words/350));if(m<15)return `${m} 分鐘`;const r=Math.round(m/5)*5;if(r<60)return `${r} 分鐘`;const h=Math.floor(r/60),rest=r%60;return rest?`${h} 小時 ${rest} 分鐘`:`${h} 小時`}
+  const es=lang==='es'||lang==='pt',m=Math.max(1,Math.round(words/250));if(m<15)return `${m} ${es?'minutos':'minutes'}`;const r=Math.round(m/5)*5;if(r<60)return `${r} ${es?'minutos':'minutes'}`;const h=Math.floor(r/60),rest=r%60;return rest?`${h} ${es?'h':'hr'} ${rest} min`:es?(h===1?'una hora':`${h} horas`):`${h===1?'an hour':`${h} hours`}`}
 // The words around each page, in the language of its book.
 const WORDS={
   en:{lang:'en',by:'by',read:'Read it in the Library After Dark',time:'Reading time',about:'About',where:'Where to find it',onShelves:shelf=>`On the ${shelf} shelves`,edition:'Edition',
@@ -99,10 +103,16 @@ const WORDS={
     pd:'Em domínio público nos Estados Unidos.',licence:'Licença',librarian:'A bibliotecária',moreBy:author=>`Mais de ${author}`,also:()=>'Mais livros em português',
     shelf:shelf=>SHELVES_PT[shelf]||shelf,place:place=>({'The Portuguese Reading Room':'A ala internacional: Sala de leitura em português','The Lost Kingdoms':'Os Reinos Perdidos (em inglês)'})[place]||place,
     nav:'<a href="/pt/">Livros em português</a><a href="/book/">Catalogue</a><a class="enter" href="/?room=portuguese-room">Entrar na biblioteca</a>',
-    footer:'The Library After Dark é uma biblioteca em 3D que se percorre no navegador, com livros de domínio público para ler. <a href="/?room=portuguese-room">Entrar</a>.'}
+    footer:'The Library After Dark é uma biblioteca em 3D que se percorre no navegador, com livros de domínio público para ler. <a href="/?room=portuguese-room">Entrar</a>.'},
+  zh:{lang:'zh-Hant',by:'作者',read:'在 Library After Dark 裡閱讀',time:'閱讀時間',about:'約',where:'在圖書館的哪裡',onShelves:()=>'在國際館',edition:'版本',
+    pd:'在美國屬於公有領域。',licence:'授權',librarian:'館員',moreBy:author=>`${author.replace(/\s*\(.*\)$/,'')}的其他作品`,also:()=>'更多中文書',
+    shelf:shelf=>SHELVES_ZH[shelf]||shelf,place:place=>({'The Chinese Reading Room':'國際館：中文閱覽室'})[place]||place,
+    pageTitle:(book,edition)=>`《${book.title}》${edition} ${book.author.replace(/\s*\(.*\)$/,'')} · The Library After Dark`,
+    nav:'<a href="/zh/">中文書</a><a href="/book/">Catalogue</a><a class="enter" href="/?room=chinese-room">進入圖書館</a>',
+    footer:'The Library After Dark 是一座可以在瀏覽器裡走進去的 3D 圖書館，館裡的公有領域書籍都可以免費閱讀。<a href="/?room=chinese-room">進去看看</a>。'}
 };
 const wordsFor=book=>WORDS[book?.language]||WORDS.en;
-function description(note,book){const first=(note||'').match(/^.{40,}?[.!?](\s|$)/)?.[0]?.trim()||note||`${book.title} by ${book.author}.`;return first.length>158?first.slice(0,155).replace(/\s+\S*$/,'')+'…':first}
+function description(note,book){const first=(note||'').match(/^.{40,}?[.!?](\s|$)/)?.[0]?.trim()||(note||'').match(/^.{20,}?[。！？]/)?.[0]||note||`${book.title} by ${book.author}.`;return first.length>158?first.slice(0,155).replace(/\s+\S*$/,'')+'…':first}
 const PALETTES=[['#182d2a','#c49a53'],['#4a1618','#d6b36c'],['#18243d','#c59b56'],['#432612','#d2ad68'],['#24201d','#ba8741']];
 function coverHtml(book){
   if(fs.existsSync(path.join(root,`covers/books/${book.id}.jpg`)))return `<img class="cover" src="/covers/books/${book.id}.jpg" alt="The cover of ${escape(book.title)}" width="300" height="450">`;
@@ -111,6 +121,7 @@ function coverHtml(book){
 }
 function sourceLink(book){
   if(book.language==='es')return `<a href="https://www.gutenberg.org/ebooks/${book.id}" rel="noopener">Project Gutenberg, libro electrónico n.º ${book.id}</a>`;
+  if(book.language==='zh')return `<a href="https://www.gutenberg.org/ebooks/${book.id}" rel="noopener">Project Gutenberg 電子書第 ${book.id} 號</a>`;
   if(book.language==='pt')return `<a href="https://www.gutenberg.org/ebooks/${book.id}" rel="noopener">Project Gutenberg, livro eletrónico n.º ${book.id}</a>`;
   if(book.sourceKey)return book.sourceUrl?`<a href="${escape(book.sourceUrl)}" rel="noopener">${escape(book.source)}</a>`:escape(book.source);
   return `<a href="https://www.gutenberg.org/ebooks/${book.id}" rel="noopener">Project Gutenberg, eBook #${book.id}</a>`;
@@ -166,7 +177,7 @@ ${places.length?`<dt>${T.where}</dt><dd>${places.map(place=>ROOM_LINKS[place]?`<
 </div>
 </main>
 ${more(sameAuthor,escape(T.moreBy(book.author)))}${more(neighbours,escape(T.also(book.category||'same')))}`;
-  return layout({title:`${book.title}${edition} ${T.by} ${book.author} · The Library After Dark`,description:description(note,book),canonical:url,type:'book',body,words:T,
+  return layout({title:T.pageTitle?T.pageTitle(book,edition):`${book.title}${edition} ${T.by} ${book.author} · The Library After Dark`,description:description(note,book),canonical:url,type:'book',body,words:T,
     head:`<script type="application/ld+json">${JSON.stringify(ld).replace(/</g,'\\u003c')}</script>\n`});
 }
 function cataloguePage(books,byShelf){
@@ -194,13 +205,17 @@ ${authors.map(author=>`<section class="shelf-list"><h2 id="${slug(author)}">${es
 // The books of each International Wing room, in their own language: the pages its letters and links point to.
 const SHELVES_ES={Comedy:'Comedia',Society:'Novela y sociedad',Drama:'Teatro',Satire:'Picaresca y sátira',Poetry:'Poesía',Legend:'Leyendas',History:'Historia',Philosophy:'Ideas',Conscience:'Conciencia',Romance:'Amor',Ghosts:'Cuentos de miedo',Strange:'Lo extraño',Wonder:'Para los más jóvenes',Epic:'Epopeya'};
 const SHELVES_PT={Romance:'Amor',Satire:'Sátira',Society:'Romance e sociedade',Poetry:'Poesia',Legend:'Lendas',Adventure:'Aventura',Epic:'Epopeia',Strange:'O estranho',Drama:'Teatro',Journey:'Viagens',History:'História',Philosophy:'Ideias'};
+const SHELVES_ZH={Society:'世情小說',Epic:'歷史演義',Legend:'神魔與奇想',Satire:'諷刺小說',Ghosts:'志怪',Essays:'散文與筆記',Modern:'魯迅',Philosophy:'諸子與經典',Poetry:'詩詞',History:'史書',Drama:'戲曲',Adventure:'俠義',Wonder:'蒙學'};
 const LANDINGS={
   es:{path:'es',shelves:SHELVES_ES,other:'Otros',h1:'Libros en español',room:'international-wing',button:'Entrar en la Sala de lectura en español',
     intro:n=>`${n} clásicos de España, de América y de Filipinas, de Cervantes a Rubén Darío, para leer gratis en una biblioteca en 3D que se recorre desde el navegador, también desde el móvil. Están en la Sala de lectura en español, en el ala internacional, cada uno con una nota de la bibliotecaria. Sin descargas, sin registro y sin anuncios.`,
     title:'Libros en español · The Library After Dark',description:n=>`${n} clásicos en español para leer gratis en una biblioteca en 3D, cada uno con una nota de la bibliotecaria: Cervantes, Galdós, Bécquer, Rubén Darío, Rizal y muchos más.`},
   pt:{path:'pt',shelves:SHELVES_PT,other:'Outros',h1:'Livros em português',room:'portuguese-room',button:'Entrar na Sala de leitura em português',
     intro:n=>`${n} clássicos do Brasil e de Portugal, de Camões a Machado de Assis e Eça de Queirós, para ler de graça numa biblioteca em 3D que se percorre no navegador, também no telemóvel ou no celular. Estão na Sala de leitura em português, na ala internacional, cada um com uma nota da bibliotecária. Sem downloads, sem cadastro e sem anúncios.`,
-    title:'Livros em português · The Library After Dark',description:n=>`${n} clássicos em português para ler de graça numa biblioteca em 3D, cada um com uma nota da bibliotecária: Machado de Assis, Eça de Queirós, Camões, Alencar, Camilo e muitos mais.`}
+    title:'Livros em português · The Library After Dark',description:n=>`${n} clássicos em português para ler de graça numa biblioteca em 3D, cada um com uma nota da bibliotecária: Machado de Assis, Eça de Queirós, Camões, Alencar, Camilo e muitos mais.`},
+  zh:{path:'zh',shelves:SHELVES_ZH,other:'其他',h1:'中文書',room:'chinese-room',button:'進入中文閱覽室',
+    intro:n=>`${n} 部中文經典，從《詩經》、《論語》到《紅樓夢》和魯迅，都可以在一座 3D 圖書館裡免費閱讀，用瀏覽器就能走進去，手機也可以。這些書放在國際館的中文閱覽室，每一本都附有館員的短評。不用下載，不用註冊，也沒有廣告。`,
+    title:'中文書 · The Library After Dark',description:n=>`${n} 部中文經典，在一座 3D 圖書館裡免費閱讀，每一本都附有館員的短評：紅樓夢、三國志演義、西遊記、水滸傳、聊齋志異、魯迅等。`}
 };
 function languagePage(lang,books){
   const L=LANDINGS[lang],groups=new Map();for(const b of books){const shelf=L.shelves[b.category]||b.category||L.other;(groups.get(shelf)||groups.set(shelf,[]).get(shelf)).push(b)}
@@ -246,8 +261,8 @@ export function build(){
   for(const book of listed)fs.writeFileSync(path.join(dir,pageName(book)),bookPage(book,{whereIs,byAuthor,byShelf,byLanguage,editions}));
   for(const lang of Object.keys(LANDINGS)){const out=path.join(OUT,LANDINGS[lang].path);fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'index.html'),languagePage(lang,byLanguage.get(lang)||[]))}
   fs.writeFileSync(path.join(dir,'index.html'),cataloguePage(listed,byShelf));fs.writeFileSync(path.join(dir,'authors.html'),authorsPage(byAuthor));fs.writeFileSync(path.join(dir,'book.css'),CSS);
-  const urls=[`${SITE}/`,`${SITE}/book/`,`${SITE}/book/authors.html`,`${SITE}/es/`,`${SITE}/pt/`,...listed.map(b=>`${SITE}/book/${pageName(b)}`)];
-  fs.writeFileSync(path.join(OUT,'sitemap.xml'),`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u=>`  <url><loc>${u}</loc></url>`).join('\n')}\n</urlset>\n`);
+  const urls=[`${SITE}/`,`${SITE}/book/`,`${SITE}/book/authors.html`,`${SITE}/es/`,`${SITE}/pt/`,`${SITE}/zh/`,...listed.map(b=>`${SITE}/book/${pageName(b)}`)];
+  fs.writeFileSync(path.join(OUT,'sitemap.xml'),`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u=>`  <url><loc>${encodeURI(u)}</loc></url>`).join('\n')}\n</urlset>\n`);
   fs.writeFileSync(path.join(OUT,'robots.txt'),`User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
   return {pages:listed.length,withNotes:listed.filter(b=>b.note).length};
 }

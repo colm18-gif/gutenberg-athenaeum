@@ -16,7 +16,7 @@ test('every book in the library has a page with its note and a way in',()=>{
     const html=fs.readFileSync(path.join(out,'book',file),'utf8'),id=file.split('-')[0];
     assert.match(html,new RegExp(`<link rel="canonical" href="https://libraryafterdark\\.space/book/${file}">`),file);
     assert.match(html,new RegExp(`<a class="read" href="/\\?book=${id}">`),file);
-    assert.match(html,/<blockquote><p>.{40,}<\/p><cite>(The librarian|La bibliotecaria|A bibliotecária)<\/cite><\/blockquote>/s,`${file} has the librarian’s note`);
+    assert.match(html,/<blockquote><p>.{40,}<\/p><cite>(The librarian|La bibliotecaria|A bibliotecária|館員)<\/cite><\/blockquote>/s,`${file} has the librarian’s note`);
     assert.match(html,/<meta name="description" content=".{20,}">/,file);
     const ld=JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/)[1]);assert.equal(ld['@type'],'Book');
     const title=html.match(/<title>(.*?)<\/title>/)[1];assert.ok(!titles.has(title),`two pages share the title ${title}`);titles.add(title);
@@ -25,7 +25,7 @@ test('every book in the library has a page with its note and a way in',()=>{
 
 test('the catalogue, authors index, sitemap and robots.txt list the pages',()=>{
   const catalogue=fs.readFileSync(path.join(out,'book/index.html'),'utf8'),sitemap=fs.readFileSync(path.join(out,'sitemap.xml'),'utf8');
-  for(const file of pages.slice(0,50)){assert.ok(catalogue.includes(`/book/${file}`),file);assert.ok(sitemap.includes(`/book/${file}</loc>`),file)}
+  for(const file of pages.slice(0,50)){assert.ok(catalogue.includes(`/book/${file}`),file);assert.ok(sitemap.includes(`/book/${encodeURI(file)}</loc>`),file)}
   assert.match(fs.readFileSync(path.join(out,'robots.txt'),'utf8'),/Sitemap: https:\/\/libraryafterdark\.space\/sitemap\.xml/);
   assert.match(fs.readFileSync(path.join(out,'book/authors.html'),'utf8'),/<h1>Authors<\/h1>/);
 });
