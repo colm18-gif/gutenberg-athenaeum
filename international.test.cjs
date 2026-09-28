@@ -8,7 +8,7 @@ const {execFileSync}=require('node:child_process');
 
 const wing=fs.readFileSync('international-wing.js','utf8'),game=fs.readFileSync('game.js','utf8'),html=fs.readFileSync('index.html','utf8');
 const load=(file,name)=>{const c={window:{}};vm.runInNewContext(fs.readFileSync(file,'utf8'),c);return c.window[name]};
-const spanish=load('data/new-books.js','ATHENAEUM_NEW_BOOKS').filter(entry=>entry[4]==='spanish');
+const shelves=load('data/new-books.js','ATHENAEUM_NEW_BOOKS'),spanish=shelves.filter(entry=>entry[4]==='spanish'),portuguese=shelves.filter(entry=>entry[4]==='portuguese');
 
 test('the Spanish Reading Room has its classics, each with a note in Spanish',()=>{
   assert.ok(spanish.length>=40,`${spanish.length} Spanish books`);
@@ -21,6 +21,20 @@ test('the Spanish Reading Room has its classics, each with a note in Spanish',()
   // There is a place on the racks for every book (ten across three tiers on the north wall, six on the west).
   assert.match(wing,/for\(let row=0;row<3;row\+\+\)for\(let i=0;i<10;i\+\+\)/);assert.match(wing,/for\(let row=0;row<3;row\+\+\)for\(let i=0;i<6;i\+\+\)/);
   assert.ok(spanish.length<=48,'more books than places on the racks');
+});
+
+test('the Portuguese Reading Room has its classics, each with a note in Portuguese',async()=>{
+  const {ROOMS,ROOM_LANGUAGES}=await import('./scripts/new-books.mjs');assert.ok(ROOMS.includes('portuguese'));assert.equal(ROOM_LANGUAGES.portuguese,'pt');
+  assert.ok(portuguese.length>=35&&portuguese.length<=48,`${portuguese.length} Portuguese books`);
+  assert.equal(new Set(portuguese.map(entry=>entry[1])).size,portuguese.length,'each title once');
+  for(const [id,title,,,,note] of portuguese){
+    assert.ok(Number.isInteger(id),`${title}: give its number from Gutenberg's catalogue`);
+    assert.ok(note&&note.length>=80,`${title} needs a librarian’s note`);
+    assert.match(note,/\b(o|a|os|as|de|que|em|um|uma|do|da)\b/,`${title}: the note should be in Portuguese`);
+    assert.doesNotMatch(note,/\b(the|and|which|with)\b/i,`${title}: the note should be in Portuguese`);
+  }
+  // Titles are shared with no other room: data/new-books-resolved.js is keyed by title.
+  for(const [,title,,,room] of shelves)if(room!=='portuguese')assert.ok(!portuguese.some(entry=>entry[1]===title),title);
 });
 
 test('the pipeline looks for Spanish books in Spanish, and counts accented words whole',async()=>{
@@ -42,24 +56,27 @@ test('the International Wing is a room behind its own door, built only when need
   assert.ok(order.indexOf('international-wing.js')>-1&&order.indexOf('international-wing.js')<order.indexOf('game.js'));
   assert.match(wing,/const DOOR=\{x:8\.6,z:30\.45,yaw:Math\.PI\}/,'on the Grand Hall’s south wall, beside the visitors’ book');
   // Well away from the other rooms behind doors (all at x -330).
-  assert.match(wing,/const ROOM=\{cx:-410,cz:100,w:24,d:15,h:6\}/);
-  assert.match(wing,/if\(inside\|\|near\)activate\(\);\s*else if\(root&&t-lastNeeded>KEEP/);
-  assert.match(wing,/SALA DE LEITURA EM PORTUGUÊS/);assert.match(wing,/中文閱覽室/);
+  assert.match(wing,/spanish:\{cx:-410,cz:100,w:24,d:15,h:6,language:'es'/);assert.match(wing,/portuguese:\{cx:-410,cz:132,w:24,d:15,h:6,language:'pt'/);
+  // Each room is built on approach and freed on its own; the wing's two lamps follow the reader instead of multiplying.
+  assert.match(wing,/if\(key!==here&&t-lastNeeded\[key\]>KEEP&&!isHolding\(\)/);assert.match(wing,/function placeLamps\(key\)\{\s*if\(!lamps\)/);
+  assert.doesNotMatch(wing.slice(wing.indexOf('function buildRoom'),wing.indexOf('function placeLamps')),/PointLight/,'rooms borrow the wing’s lamps');
+  assert.match(wing,/type:'intl-go',room:'portuguese'/);assert.match(wing,/中文閱覽室/);
   assert.match(game,/const internationalWing=window\.createInternationalWing\?\.\(/);
-  assert.match(game,/arrivals:\(\)=>newArrivals\.list\('spanish'\)/);
+  assert.match(game,/arrivals:room=>newArrivals\.list\(room\)/);
   assert.match(game,/if\(internationalWing\?\.contains\(x,z\)\)return 'international-wing';/);
   assert.match(game,/\['international-wing','The International Wing'\]/);
   assert.match(game,/internationalWing\?\.update\(t\)/);
-  assert.match(game,/'international-wing':internationalWing&&\(\(\)=>internationalWing\.enter\(\)\)/);
+  assert.match(game,/'international-wing':internationalWing&&\(\(\)=>internationalWing\.enter\('spanish'\)\),'portuguese-room':internationalWing&&\(\(\)=>internationalWing\.enter\('portuguese'\)\)/);
+  assert.match(game,/pt:'portuguese-room',portuguese:'portuguese-room'/);
   assert.match(game,/spanish:'international-wing',espanol:'international-wing',es:'international-wing'/);
   assert.match(fs.readFileSync('room-ambience.js','utf8'),/'international-wing':\{beds:/);
   // A link into the wing is greeted in Spanish on the entry screen.
-  assert.match(html,/\['es','spanish','espanol','español','international-wing','international'\]\.includes\(room\)/);
-  assert.match(html,/set\('#enter','Entrar en la biblioteca'\)/);assert.match(html,/<a href="\/es\/">Libros en español<\/a>/);
+  assert.match(html,/rooms:\['es','spanish','espanol','español','international-wing','international'\]/);assert.match(html,/rooms:\['pt','portuguese','portugues','português','portuguese-room'\]/);
+  assert.match(html,/enter:'Entrar en la biblioteca'/);assert.match(html,/enter:'Entrar na biblioteca'/);assert.match(html,/<a href="\/es\/">Libros en español<\/a>/);
 });
 
 test('Spanish books are known to be Spanish: word help steps aside, and their pages are in Spanish',()=>{
-  assert.match(game,/ROOM_LANGUAGES=\{spanish:'es'\}/);assert.match(game,/if\(ROOM_LANGUAGES\[room\]\)book\.language=ROOM_LANGUAGES\[room\]/);
+  assert.match(game,/ROOM_LANGUAGES=\{spanish:'es',portuguese:'pt'\}/);assert.match(game,/if\(ROOM_LANGUAGES\[room\]\)book\.language=ROOM_LANGUAGES\[room\]/);
   const help=fs.readFileSync('word-help.js','utf8');
   assert.match(help,/function enabled\(\)\{return !foreign&&/);assert.match(help,/foreign=!!book\?\.language&&book\.language!=='en'/);
   const out=fs.mkdtempSync(path.join(os.tmpdir(),'intl-pages-'));
@@ -68,6 +85,9 @@ test('Spanish books are known to be Spanish: word help steps aside, and their pa
   assert.match(landing,/<html lang="es">/);assert.match(landing,/<h1>Libros en español<\/h1>/);assert.match(landing,/href="\/\?room=international-wing"/);
   assert.match(fs.readFileSync(path.join(out,'sitemap.xml'),'utf8'),/<loc>https:\/\/libraryafterdark\.space\/es\/<\/loc>/);
   assert.equal(fs.readFileSync('es/index.html','utf8'),landing,'run: node scripts/book-pages.mjs');
+  const pt=fs.readFileSync(path.join(out,'pt/index.html'),'utf8');
+  assert.match(pt,/<html lang="pt">/);assert.match(pt,/<h1>Livros em português<\/h1>/);assert.match(pt,/href="\/\?room=portuguese-room"/);
+  assert.equal(fs.readFileSync('pt/index.html','utf8'),pt,'run: node scripts/book-pages.mjs');
   const resolved=load('data/new-books-resolved.js','ATHENAEUM_NEW_BOOKS_RESOLVED')?.books||{};
   const found=spanish.map(entry=>resolved[entry[1]]).find(Boolean);
   if(found){

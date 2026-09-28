@@ -566,6 +566,174 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Mi último adiós": {
    "id": 18600,
    "words": 715
+  },
+  "Dom Casmurro": {
+   "id": 55752,
+   "words": 67239
+  },
+  "Memorias Posthumas de Braz Cubas": {
+   "id": 54829,
+   "words": 63347
+  },
+  "Quincas Borba": {
+   "id": 55682,
+   "words": 78361
+  },
+  "Esau e Jacob": {
+   "id": 56737,
+   "words": 72413
+  },
+  "Memorial de Ayres": {
+   "id": 55797,
+   "words": 51090
+  },
+  "Papeis Avulsos": {
+   "id": 57001,
+   "words": 55168
+  },
+  "Historias Sem Data": {
+   "id": 33056,
+   "words": 51544
+  },
+  "Helena": {
+   "id": 67162,
+   "words": 57621
+  },
+  "Poesias Completas": {
+   "id": 61653,
+   "words": 44839
+  },
+  "Iracema": {
+   "id": 67740,
+   "words": 31353
+  },
+  "O Guarany, Vol. 1": {
+   "id": 67724,
+   "words": 58198
+  },
+  "O Guarany, Vol. 2": {
+   "id": 67725,
+   "words": 53225
+  },
+  "O Cortiço": {
+   "id": 69187,
+   "words": 81941
+  },
+  "O Atheneu": {
+   "id": 68541,
+   "words": 62320
+  },
+  "Triste Fim de Polycarpo Quaresma": {
+   "id": 67535,
+   "words": 66893
+  },
+  "A escrava Isaura": {
+   "id": 74475,
+   "words": 53616
+  },
+  "Innocencia": {
+   "id": 68635,
+   "words": 53231
+  },
+  "Os Lusíadas": {
+   "id": 3333,
+   "words": 55719
+  },
+  "O crime do padre Amaro": {
+   "id": 31971,
+   "words": 143056
+  },
+  "Os Maias": {
+   "id": 40409,
+   "words": 217668
+  },
+  "O Primo Bazilio": {
+   "id": 42942,
+   "words": 121733
+  },
+  "O Mandarim": {
+   "id": 16384,
+   "words": 20254
+  },
+  "A Relíquia": {
+   "id": 17515,
+   "words": 83685
+  },
+  "A Cidade e as Serras": {
+   "id": 18220,
+   "words": 68785
+  },
+  "A Illustre Casa de Ramires": {
+   "id": 23145,
+   "words": 105733
+  },
+  "Contos": {
+   "id": 31347,
+   "words": 70513
+  },
+  "As Minas de Salomão": {
+   "id": 22015,
+   "words": 57980
+  },
+  "Amor de Perdição": {
+   "id": 16425,
+   "words": 50020
+  },
+  "A Queda d'um Anjo": {
+   "id": 17927,
+   "words": 51401
+  },
+  "Novelas do Minho": {
+   "id": 21406,
+   "words": 46963
+  },
+  "Os fidalgos da Casa Mourisca": {
+   "id": 16428,
+   "words": 146050
+  },
+  "Uma família ingleza": {
+   "id": 16443,
+   "words": 123556
+  },
+  "A Morgadinha dos Cannaviaes": {
+   "id": 29120,
+   "words": 150611
+  },
+  "Frei Luiz de Sousa": {
+   "id": 17591,
+   "words": 18509
+  },
+  "Viagens na Minha Terra": {
+   "id": 24401,
+   "words": 74261
+  },
+  "Eurico, o presbytero": {
+   "id": 45966,
+   "words": 59191
+  },
+  "Lendas e Narrativas": {
+   "id": 9654,
+   "words": 57216
+  },
+  "Os sonetos completos de Anthero de Quental": {
+   "id": 20142,
+   "words": 19570
+  },
+  "O Livro de Cesario Verde": {
+   "id": 8698,
+   "words": 14645
+  },
+  "Só": {
+   "id": 17193,
+   "words": 20726
+  },
+  "Livro de Máguas": {
+   "id": 17610,
+   "words": 3440
+  },
+  "Humus": {
+   "id": 39618,
+   "words": 58697
   }
  },
  "missing": [
