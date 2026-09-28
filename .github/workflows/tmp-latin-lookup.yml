@@ -1,0 +1,22 @@
+name: Temporary Latin lookup
+on:
+  push:
+    branches: ['claude/**']
+    paths: ['.github/workflows/tmp-latin-lookup.yml']
+permissions:
+  contents: read
+jobs:
+  lookup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: List every Latin text (Project Gutenberg's catalogue), with a few headers
+        run: |
+          curl -sSL --max-time 180 -o pg.csv https://www.gutenberg.org/cache/epub/feeds/pg_catalog.csv
+          python3 - <<'PY'
+          import csv
+          rows=[r for r in csv.DictReader(open('pg.csv',encoding='utf-8')) if 'la' in r.get('Language','').replace(' ','').split(';') and r.get('Type')=='Text']
+          print(len(rows),'Latin texts')
+          for r in rows: print(r['Text#'],'|',' '.join(r['Title'].split())[:85],'|',r['Authors'][:55],'|',r['Language'])
+          PY
+          for id in 227 232 2361; do echo "== $id"; curl -sSL --max-time 30 "https://www.gutenberg.org/cache/epub/$id/pg$id.txt" | head -c 1500 | grep -E "^(Title|Author|Language|Translator|Editor)" || true; done
