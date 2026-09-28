@@ -1271,7 +1271,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Astounding Stories of Super-Science, January 1930",
   "McClure's Magazine, Vol. 1, No. 1, June, 1893",
   "The Spectator, Volume 1",
-  "The Nursery, April 1873, Vol. XIII. No. 4",
-  "Octavia Praetexta [la]"
+  "The Nursery, April 1873, Vol. XIII. No. 4"
  ]
 };
