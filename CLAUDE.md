@@ -62,6 +62,10 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, evening-room, periodicals-room, learners-room, boathouse,
   daily-room, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text.
+- **Halloween night** (`halloween.js`): 24 October to 2 November by the reader's own date (`?halloween` previews it,
+  `?nohalloween` hides it). Carved lanterns (one InstancedMesh, glowing through emissive faces, no lights) by the south
+  doors and the rug, a turnip lantern, and the Oíche Shamhna table of ghost stories near the entrance with a card on
+  Samhain.
 - The Room of the Day runs nightly from `data/daily-rooms.js` (`scripts/daily-room.mjs`).
 
 ## Services
@@ -85,7 +89,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - Gutenberg has no Hindi, Urdu or Bengali texts (Wikisource would be the source; Urdu needs right-to-left reading)
   and only six in Irish. An Irish Room was suggested: mostly English (myth, folklore, the Revival, Irish writers)
   with a small Irish-language shelf; CELT (celt.ucc.ie) needs permission to republish.
-- Ideas offered but not started: a Halloween night, a plain text mode, reading progress across devices.
+- Ideas offered but not started: a plain text mode, reading progress across devices.
 - International Wing: outreach in Spanish, Portuguese, Chinese and French sent 28 September (no Quebec address
   found yet for the French batch). For mainland Chinese readers, host Three.js on the site:
   jsDelivr is unreliable there.

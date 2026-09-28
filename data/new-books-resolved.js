@@ -155,6 +155,18 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 228,
    "words": 107752
   },
+  "The Works of Edgar Allan Poe — Volume 3": {
+   "id": 2149,
+   "words": 100830
+  },
+  "The Works of Edgar Allan Poe — Volume 4": {
+   "id": 2150,
+   "words": 88490
+  },
+  "The Works of Edgar Allan Poe — Volume 5": {
+   "id": 2151,
+   "words": 74183
+  },
   "The Gift of the Magi": {
    "id": 7256,
    "words": 2079
