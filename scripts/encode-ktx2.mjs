@@ -30,8 +30,15 @@ async function encode(file,kind,{flipY=false}={}){
 }
 
 // Tiling materials applied through THREE.TextureLoader (flipY=true), so bake the same flip in.
-for(const set of ['smoked_walnut_veneer','leather_red_02']){
+for(const set of JSON.parse(fs.readFileSync(path.join(root,'assets/polyhaven/manifest.json'),'utf8')).materials.map(material=>material.id)){
   const dir=path.join(root,'assets/polyhaven/materials',set);
+  // A new set's JPEGs (the fallback when .ktx2 is unavailable) arrive at Poly Haven's size: slim them once.
+  for(const [map,quality] of [['diffuse',80],['normal',88],['roughness',78]]){
+    const file=path.join(dir,`${map}.jpg`);
+    if(fs.existsSync(ktx2Path(file))||fs.statSync(file).size<300*1024)continue;
+    const before=fs.statSync(file).size,bytes=await sharp(file).jpeg({quality,mozjpeg:true}).toBuffer();
+    if(bytes.length<before){fs.writeFileSync(file,bytes);console.log(`${path.relative(root,file)}  ${before/1024|0}KB -> ${bytes.length/1024|0}KB (JPEG)`)}
+  }
   await encode(path.join(dir,'diffuse.jpg'),'color',{flipY:true});
   await encode(path.join(dir,'normal.jpg'),'normal',{flipY:true});
   await encode(path.join(dir,'roughness.jpg'),'data',{flipY:true});

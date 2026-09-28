@@ -1,0 +1,46 @@
+name: Poly Haven assets
+
+# Downloads the Poly Haven (CC0) models and materials listed in scripts/fetch-polyhaven-assets.mjs, makes the
+# GPU-compressed .ktx2 copies (scripts/encode-ktx2.mjs) and commits anything new. Cloud sessions cannot reach
+# Poly Haven, so this runs whenever either script changes, on main or on a working branch, or by hand.
+on:
+  workflow_dispatch:
+  push:
+    paths: ['scripts/fetch-polyhaven-assets.mjs', 'scripts/encode-ktx2.mjs', '.github/workflows/polyhaven-assets.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: polyhaven-assets-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  assets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Download
+        run: node scripts/fetch-polyhaven-assets.mjs
+      # A fresh checkout gives every file the same age; mark the existing .ktx2 copies as current so only
+      # new textures are encoded.
+      - name: Encode
+        run: |
+          find assets -name '*.ktx2' -exec touch {} +
+          npm i --no-save ktx2-encoder sharp
+          node scripts/encode-ktx2.mjs
+      - name: Run the tests
+        run: node --test *.test.cjs
+      - name: Publish
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/polyhaven assets/models
+          git diff --cached --quiet -- assets/polyhaven/materials assets/polyhaven/models assets/models && { echo "No new assets."; exit 0; }
+          git commit -m "Poly Haven assets: download and compress"
+          for attempt in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0; sleep 10; done
+          exit 1
