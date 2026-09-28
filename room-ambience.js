@@ -95,6 +95,8 @@
       // The periodicals room: a clock, and pages turning at the reading slopes.
       'periodicals-room':{beds:[['air',.02]],ticks:[[1,'tock',.028]],events:[['rustle',.8,.045]]},
       'learners-room':{beds:[['air',.035]],events:[['rustle',1.6,.035],['creak',.5,.04]]},
+      // The International Wing: a quiet reading room, pages turning at the long table.
+      'international-wing':{beds:[['air',.03]],events:[['rustle',1.3,.04],['creak',.4,.035]]},
       boathouse:{beds:[['waves',.08],['air',.03]],events:[['creak',1.4,.06],['drip',3,.035]]},
       'crusoe-island':{beds:[['waves',.13],['wind',.05]],events:[['gull',1.4,.05],['bird',2.5,.04]]},
       'librarian-office':{beds:[['air',.04]],ticks:[[1,'tick',.06]],events:[['scratch',2.5,.05],['rustle',1.5,.04]]},

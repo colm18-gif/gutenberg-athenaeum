@@ -77,7 +77,7 @@
   // ---------------- In the browser ----------------
   const PREF='athenaeum-word-help',NOTEBOOK='athenaeum-word-notebook',DICTIONARY='data/learner-dictionary.json';
   const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
-  let dictionary=null,loading=null,card=null,forced=false,currentBook=null;
+  let dictionary=null,loading=null,card=null,forced=false,foreign=false,currentBook=null;
   const OLD_PATTERN=new RegExp(`(^|[^A-Za-z'’])(${Object.keys(OLD_WORDS).map(w=>w.replace(/'/g,"['’]")).sort((a,b)=>b.length-a.length).join('|')})(?=$|[^A-Za-z'’])`,'gi');
 
   function load(){
@@ -97,11 +97,11 @@
     return null;
   }
 
-  function enabled(){return forced||store.get(PREF)==='on'}
+  function enabled(){return !foreign&&(forced||store.get(PREF)==='on')}
   function setEnabled(on){store.set(PREF,on?'on':'off');forced=false;sync()}
   function sync(){
     const reader=document.getElementById('reader'),button=document.getElementById('wordHelp');
-    const on=enabled();reader?.classList.toggle('word-help',on);if(button){button.classList.toggle('on',on);button.setAttribute('aria-pressed',String(on))}
+    const on=enabled();reader?.classList.toggle('word-help',on);if(button){button.classList.toggle('on',on);button.setAttribute('aria-pressed',String(on));button.hidden=foreign}
     if(!on)hide();decorate();if(on)load().catch(()=>{});
   }
 
@@ -178,7 +178,8 @@
   }
   // Called whenever the reader opens a book: word help comes on by itself for books from the learners' room,
   // unless the reader has switched it off themselves.
-  function opened(book,fromLearnersRoom=false){currentBook=book;forced=fromLearnersRoom&&store.get(PREF)!=='off';hide();sync()}
+  // The meanings are English ones: for a book in another language (book.language), word help steps aside.
+  function opened(book,fromLearnersRoom=false){currentBook=book;foreign=!!book?.language&&book.language!=='en';forced=fromLearnersRoom&&store.get(PREF)!=='off';hide();sync()}
   Object.assign(api,{install,opened,decorate,lookup,load,speak,notebook,save,enabled,setEnabled,hide});
   Object.defineProperty(api,'active',{get:enabled});
   window.libraryWordHelp=api;

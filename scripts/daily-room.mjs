@@ -55,7 +55,7 @@ export function titleMatches(expected,candidate){const want=words(expected),have
 // Words in a candidate title beyond the ones asked for: "Dracula" prefers Dracula to Dracula's Guest.
 export function extraWords(expected,candidate){const want=new Set(words(expected));return words(candidate.split(/[;:]/)[0]).filter(word=>!want.has(word)).length}
 export function surname(author){const parts=words(author.replace(/\b(jr|sr|mrs?|professor|earl|baroness|sir|lord|lady|madame)\b\.?/gi,''));return parts[parts.length-1]||''}
-export function authorMatches(expected,candidate){if(/anonymous/i.test(expected))return true;const name=surname(expected),have=words(candidate),joined=words(expected).slice(-2).join('');/* "Le Fanu" and "LeFanu" are the same writer. */return !!name&&(have.includes(name)||have.join('').includes(joined))}
+export function authorMatches(expected,candidate){if(/anonymous|an[oó]nimo/i.test(expected))return true;const name=surname(expected),have=words(candidate),joined=words(expected).slice(-2).join('');/* "Le Fanu" and "LeFanu" are the same writer. */return !!name&&(have.includes(name)||have.join('').includes(joined))}
 export function header(text){
   const head=text.slice(0,6000),title=head.match(/^Title:\s*(.+(?:\r?\n[ \t]+.+)*)/m)?.[1]||head.match(/Project Gutenberg (?:EBook|eBook) of ([^\r\n]+)/)?.[1]||'';
   const people=[...head.matchAll(/^(?:Author|Editor|Translator|Contributor|Compiler|Illustrator):\s*(.+)$/gm)].map(match=>match[1]).join(' ');
@@ -88,9 +88,9 @@ async function get(url,type='text'){
 // Project Gutenberg's own site first, then its official mirrors.
 const TEXT_URLS=id=>[`https://www.gutenberg.org/cache/epub/${id}/pg${id}.txt`,`https://gutenberg.pglaf.org/cache/epub/${id}/pg${id}.txt`,`https://aleph.gutenberg.org/cache/epub/${id}/pg${id}.txt`,`https://www.gutenberg.org/ebooks/${id}.txt.utf-8`];
 export async function download(id){for(const url of TEXT_URLS(id)){if(hostDown(url))continue;await sleep(PAUSE_MS);const text=await get(url);if(text&&text.length>2000)return text}return null}
-async function search(title,author){
-  const query=`${words(title).slice(0,6).join(' ')} ${/anonymous/i.test(author)?'':surname(author)}`.trim();
-  await sleep(PAUSE_MS);let result=await get(`https://gutendex.com/books?languages=en&search=${encodeURIComponent(query)}`,'json');
+async function search(title,author,language='en'){
+  const query=`${words(title).slice(0,6).join(' ')} ${/anonymous|an[oó]nimo/i.test(author)?'':surname(author)}`.trim();
+  await sleep(PAUSE_MS);let result=await get(`https://gutendex.com/books?languages=${language}&search=${encodeURIComponent(query)}`,'json');
   // Gutendex is sometimes slow or down; Project Gutenberg's own catalogue search (OPDS) is the fallback.
   if(!result){await sleep(PAUSE_MS);const feed=await get(`https://www.gutenberg.org/ebooks/search.opds/?query=${encodeURIComponent(query)}`);if(feed)result={results:feed.split('<entry>').slice(1).map(entry=>({id:Number(entry.match(/\/ebooks\/(\d+)/)?.[1]),title:(entry.match(/<title>([^<]*)<\/title>/)?.[1]||'').replace(/&amp;/g,'&'),authors:[{name:author}],copyright:false,download_count:0})).filter(book=>book.id)}}
   return (result?.results||[]).filter(book=>!book.copyright&&titleMatches(title,book.title)&&authorMatches(author,(book.authors||[]).map(a=>a.name).join(' '))).sort((a,b)=>extraWords(title,a.title)-extraWords(title,b.title)||(b.download_count||0)-(a.download_count||0)).map(book=>book.id);
@@ -99,9 +99,10 @@ const hasText=id=>fs.existsSync(path.join(root,`texts/pg${id}.txt`))||fs.existsS
 // A text already in the repository is checked like a download, so a wrong id cannot slip through.
 function localText(id){const plain=path.join(root,`texts/pg${id}.txt`),packed=path.join(BUNDLED,`pg${id}.txt.gz`);try{if(fs.existsSync(plain))return fs.readFileSync(plain,'utf8');if(fs.existsSync(packed))return zlib.gunzipSync(fs.readFileSync(packed)).toString('utf8')}catch(error){}return null}
 const localMatches=(id,title,author)=>{const text=localText(id);return !!text&&textMatches(text,title,author)};
-export async function resolve([id,title,author]){
+// language: the Gutendex language code to search in when the number given is missing or wrong.
+export async function resolve([id,title,author],{language='en'}={}){
   if(id){if(localMatches(id,title,author))return {id,text:null};const text=hasText(id)?localText(id):await download(id);if(!hasText(id)&&text&&textMatches(text,title,author))return {id,text};if(text)say(`  id ${id} is not "${title}" (${header(text).title}); searching`)}
-  for(const candidate of (await search(title,author)).slice(0,3)){if(localMatches(candidate,title,author))return {id:candidate,text:null};if(hasText(candidate))continue;const text=await download(candidate);if(text&&textMatches(text,title,author))return {id:candidate,text}}
+  for(const candidate of (await search(title,author,language)).slice(0,3)){if(localMatches(candidate,title,author))return {id:candidate,text:null};if(hasText(candidate))continue;const text=await download(candidate);if(text&&textMatches(text,title,author))return {id:candidate,text}}
   return null;
 }
 
