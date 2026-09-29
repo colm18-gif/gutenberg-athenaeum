@@ -252,6 +252,8 @@ test('the Ukrainian Reading Room: classics from Wikisource behind a blue door wi
   // Wikisource's HTML comes out as text, without its header, notes or references, and the header's author link is read.
   const {text,links}=ws.htmlToText('<div class="ws-header"><a href="/wiki/A" title="Автор:Леся Українка">Л</a></div><div><p>Мавка<br>виходить з лісу.</p><sup class="reference">[1]</sup><p><a href="/wiki/X/I" title="X/I">I</a></p></div>');
   assert.equal(text,'Мавка\nвиходить з лісу.\n\nI');assert.deepEqual(links.map(l=>[l.title,l.header]),[['Автор:Леся Українка',true],['X/I',false]]);
+  // Wikisource's licence notices are left out, but not a sentence that happens to begin the same way.
+  assert.equal(ws.htmlToText('<p>Текст.</p><p>Ця робота перебуває в суспільному надбанні в усьому світі.</p><p>Робота кипіла.</p>').text,'Текст.\n\nРобота кипіла.');
   const kept=ws.wikisourceText({title:'Лісова пісня',author:'Леся Українка',page:'Лісова пісня',url:ws.wikisourceUrl('Лісова пісня'),body:'Мавка.'});
   assert.ok(ws.isWikisourceText(kept,'Лісова пісня'));assert.match(kept,/^Language: Ukrainian$/m);assert.match(kept,/Текст з Вікіджерел/);
   // The reader and the word count read a Wikisource text as they read a Gutenberg one.

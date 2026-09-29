@@ -11,7 +11,9 @@ import {setTimeout as sleep} from 'node:timers/promises';
 export const WIKISOURCE_LANGUAGES={uk:{name:'Ukrainian',host:'uk.wikisource.org',author:'Автор',credit:'Текст з Вікіджерел (uk.wikisource.org), суспільне надбання.'}};
 const USER_AGENT='LibraryAfterDark/1.0 (https://libraryafterdark.space; free public-domain library)';
 // Subpages that are the edition's editors speaking, not the book.
-const EDITORIAL=/^(Примітки|Пояснення|Вступне слово|Від редакції|Передмова редактора|Література|Зміст|Словничок|Словник|Коментарі|Додатки)$/i;
+const EDITORIAL=/^(Примітки|Пояснення|Вступне слово|Від редакції|Від видавництва|Передмова редактора|Література|Зміст|Словничок|Словник|Коментарі|Додатки|Біографія|Життєпис)$|аналіз|вступна стаття|критичн/i;
+// Wikisource's own licence notices, repeated on every chapter page, are not the book.
+const LICENCE=/^(Ця робота|Цей твір|Робота|Автор помер) .*(суспільному надбанні|авторське право)|\(дата URAA\)/;
 
 export const isWikisource=id=>typeof id==='string'&&id.startsWith('ws:');
 export const wikisourcePage=id=>id.slice(3);
@@ -52,7 +54,7 @@ export function htmlToText(html){
     const nav=NAV_CLASS.test(cls)||id==='headertemplate';stack.push({tag,skip,nav});if(skip)skipDepth++;if(nav)navDepth++;
     if(!skipDepth&&BLOCK.test(tag))out.push(/^h/.test(tag)||tag==='p'?'\n\n':'\n');
   }
-  const text=out.join('').split('\n').map(line=>line.replace(/\s+/g,' ').trim()).join('\n').replace(/\n{3,}/g,'\n\n').trim();
+  const text=out.join('').split('\n').map(line=>line.replace(/\s+/g,' ').trim()).filter(line=>!LICENCE.test(line)).join('\n').replace(/\n{3,}/g,'\n\n').trim();
   return {text,links};
 }
 
@@ -94,7 +96,9 @@ export async function fetchWikisource(page,author,lang='uk',say=()=>{}){
         while(queue.length&&parts.length<600){const kid=queue.shift(),p=await parse(kid,lang);if(!p)continue;const g=htmlToText(p.html);
           // Chapters that link only to the next one are read in that order.
           queue.unshift(...take(g.links,prefix,true));
-          const mark=parts.length;parts.push(kid.split('/').pop());await collect(p.title,g,depth+1);if(parts.length===mark+1)parts.pop()}
+          const heading=kid.split('/').pop(),mark=parts.length;parts.push(heading);await collect(p.title,g,depth+1);
+          // No heading of ours where there is nothing under it, or where the chapter opens with its own ("I" before "I.").
+          const own=(parts[mark+1]||'').split('\n')[0],bare=t=>norm(t).replace(/[^\p{L}\p{N}]+/gu,'');if(parts.length===mark+1||bare(own).startsWith(bare(heading)))parts.splice(mark,1)}
         return}
       if(text.trim())parts.push(text.trim());
     }
