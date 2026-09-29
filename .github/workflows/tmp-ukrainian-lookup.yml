@@ -1,0 +1,21 @@
+name: Temporary Ukrainian lookup
+on:
+  push:
+    branches: ['claude/**']
+    paths: ['.github/workflows/tmp-ukrainian-lookup.yml']
+permissions:
+  contents: read
+jobs:
+  lookup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: List every Ukrainian text (Project Gutenberg's catalogue)
+        run: |
+          curl -sSL --max-time 180 -o pg.csv https://www.gutenberg.org/cache/epub/feeds/pg_catalog.csv
+          python3 - <<'PY'
+          import csv
+          rows=[r for r in csv.DictReader(open('pg.csv',encoding='utf-8')) if 'uk' in r.get('Language','').replace(' ','').split(';') and r.get('Type')=='Text']
+          print(len(rows),'Ukrainian texts')
+          for r in rows: print(r['Text#'],'|',' '.join(r['Title'].split())[:90],'|',r['Authors'][:60],'|',r['Language'])
+          PY
