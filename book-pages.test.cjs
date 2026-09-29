@@ -41,7 +41,7 @@ test('a link from a book page opens that book in the reader',()=>{
   assert.match(game,/const linkedBook=\(\(\)=>\{try\{const id=Number\(new URLSearchParams\(location\.search\)\.get\('book'\)\)/);
   assert.match(game,/if\(linkedBook\)openLinkedBook\(\);else if\(!\(linkedRoom&&goToLinkedRoom\(\)\)\)tour\?\.begin\(\);/);
   assert.match(game,/selectBook\(bm\);openReader\(\)/);
-  assert.match(html,/<a href="\/book\/">Browse the catalogue<\/a>/);
+  assert.doesNotMatch(html,/entry-catalogue/,'the opening screen has no catalogue link');
 });
 
 test('room links take the reader straight to a room, and book pages use them',()=>{

@@ -284,4 +284,4 @@ body.reader-open .now-playing button{height:26px;min-width:32px;font-size:12px}
 .vb-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.vb-signed p{font-style:italic;color:#e6c98f}.vb-signed.hidden,.vb-form.hidden{display:none}
 @media(max-width:560px){.vb-card{padding:24px 18px 18px}.vb-card h2{font-size:25px}}
 
-.entry-catalogue{margin:14px 0 0;font-size:15px;color:#bfae88}.entry-catalogue a{color:#e3c07a}
+

@@ -72,7 +72,7 @@ test('the International Wing is a room behind its own door, built only when need
   assert.match(fs.readFileSync('room-ambience.js','utf8'),/'international-wing':\{beds:/);
   // A link into the wing is greeted in Spanish on the entry screen.
   assert.match(html,/rooms:\['es','spanish','espanol','español','international-wing','international'\]/);assert.match(html,/rooms:\['pt','portuguese','portugues','português','portuguese-room'\]/);
-  assert.match(html,/enter:'Entrar en la biblioteca'/);assert.match(html,/enter:'Entrar na biblioteca'/);assert.match(html,/<a href="\/es\/">Libros en español<\/a>/);
+  assert.match(html,/enter:'Entrar en la biblioteca'/);assert.match(html,/enter:'Entrar na biblioteca'/);
 });
 
 test('Spanish books are known to be Spanish: word help steps aside, and their pages are in Spanish',()=>{
