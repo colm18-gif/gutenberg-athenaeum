@@ -169,7 +169,7 @@ test('the French Reading Room: classics in French behind the blue door, kept apa
 
 test('the wing’s rooms stand clear of every other place, Crusoe’s island included',()=>{
   const rooms=[...wing.matchAll(/(\w+):\{cx:(-?\d+),cz:(-?\d+),w:(\d+),d:(\d+)/g)].map(m=>({key:m[1],cx:+m[2],cz:+m[3],w:+m[4],d:+m[5]}));
-  assert.equal(rooms.length,5);
+  assert.equal(rooms.length,6);
   const isle=fs.readFileSync('crusoe-island.js','utf8'),[,ix,iz]=isle.match(/ISLE=\{x:(-?\d+),z:(-?\d+)/),[,rx,rz]=isle.match(/SAND=\{rx:(\d+),rz:(\d+)\}/);
   for(const a of rooms){
     // The nearest point of the room to the island's centre must lie outside its sand.
@@ -203,7 +203,7 @@ test('the Latin Reading Room: Latin texts behind a stone door in the south wall,
 
 test('the wing’s books load only on the way there, or on a link that may lead there',()=>{
   const main=load('data/new-books.js','ATHENAEUM_NEW_BOOKS'),wingList=load('data/new-books-wing.js','ATHENAEUM_NEW_BOOKS_WING');
-  const WING=new Set(['spanish','portuguese','french','latin','chinese']);
+  const WING=new Set(['spanish','portuguese','french','latin','chinese','ukrainian']);
   assert.ok(main.every(entry=>!WING.has(entry[4])),'the wing’s books belong in data/new-books-wing.js');
   assert.ok(wingList.length>150&&wingList.every(entry=>WING.has(entry[4])),'only the wing’s books in data/new-books-wing.js');
   // Not among the files every visitor downloads: only for a ?book= or a ?room= in the wing.
@@ -232,3 +232,39 @@ test('every chair in the rooms can be sat in',()=>{
   assert.match(game,/const data=registerSeat\(\[seat,back\],g,new THREE\.Vector3\(0,1\.36,\.12\),0,/);
   assert.doesNotMatch(game,/note\(chair,'Watson’s chair'/);
 });
+
+test('the Ukrainian Reading Room: classics from Wikisource behind a blue door with a rushnyk',async()=>{
+  const wingList=load('data/new-books-wing.js','ATHENAEUM_NEW_BOOKS_WING'),ukrainian=wingList.filter(entry=>entry[4]==='ukrainian');
+  const {ROOMS,ROOM_LANGUAGES,validate}=await import('./scripts/new-books.mjs'),ws=await import('./scripts/wikisource.mjs');
+  assert.ok(ROOMS.includes('ukrainian'));assert.equal(ROOM_LANGUAGES.ukrainian,'uk');
+  assert.ok(ukrainian.length>=20&&ukrainian.length<=48,`${ukrainian.length} Ukrainian books`);
+  for(const [id,title,author,,,note] of ukrainian){
+    assert.ok(ws.isWikisource(id),`${title}: from Wikisource, as Gutenberg has no Ukrainian texts`);
+    assert.ok(/[а-щьюяєіїґ]/i.test(title)||/^[A-Z]/.test(title),`${title}: in the spelling of its edition`);
+    assert.ok(/[а-щьюяєіїґ]/i.test(note)&&note.length>=80,`${title}: a note in Ukrainian`);
+    assert.ok(/[а-щьюяєіїґ]/i.test(author),`${title}: the author in Ukrainian`);
+  }
+  assert.deepEqual(validate(ukrainian),[]);
+  // Each Wikisource page has a number of its own, clear of Gutenberg's, and always the same one.
+  const numbers=ukrainian.map(([id])=>ws.wikisourceId(ws.wikisourcePage(id)));
+  assert.equal(new Set(numbers).size,numbers.length);assert.ok(numbers.every(n=>n>=950000&&n<1000000));
+  assert.equal(ws.wikisourceId('Лісова пісня'),ws.wikisourceId('Лісова пісня'));
+  // Wikisource's HTML comes out as text, without its header, notes or references, and the header's author link is read.
+  const {text,links}=ws.htmlToText('<div class="ws-header"><a href="/wiki/A" title="Автор:Леся Українка">Л</a></div><div><p>Мавка<br>виходить з лісу.</p><sup class="reference">[1]</sup><p><a href="/wiki/X/I" title="X/I">I</a></p></div>');
+  assert.equal(text,'Мавка\nвиходить з лісу.\n\nI');assert.deepEqual(links.map(l=>[l.title,l.header]),[['Автор:Леся Українка',true],['X/I',false]]);
+  const kept=ws.wikisourceText({title:'Лісова пісня',author:'Леся Українка',page:'Лісова пісня',url:ws.wikisourceUrl('Лісова пісня'),body:'Мавка.'});
+  assert.ok(ws.isWikisourceText(kept,'Лісова пісня'));assert.match(kept,/^Language: Ukrainian$/m);assert.match(kept,/Текст з Вікіджерел/);
+  // The reader and the word count read a Wikisource text as they read a Gutenberg one.
+  assert.match(game,/START OF \(THE\|THIS\) \(PROJECT GUTENBERG EBOOK\|WIKISOURCE TEXT\)/);
+  const {countWords}=await import('./scripts/new-books.mjs');assert.equal(countWords(kept),1,'the credit line is not counted');
+  // The room: at the far end of the wing, reached through the Spanish room's south wall, and signed in Ukrainian.
+  assert.match(wing,/ukrainian:\{cx:-530,cz:100,w:24,d:15,h:6,language:'uk',sign:'УКРАЇНСЬКА ЧИТАЛЬНЯ'/);
+  assert.match(wing,/ukrainian:\{x:ROOM\.cx-7,z:SOUTH,yaw:0\}/);assert.match(wing,/type:'intl-go',room:'ukrainian'/);
+  assert.match(wing,/if\(key==='ukrainian'\)\{\/\/ A rushnyk/);assert.match(wing,/if\(kind==='vyshyvanka'\)/);
+  assert.match(game,/uk:'ukrainian-room'/);assert.match(game,/'ukrainian-room':internationalWing&&\(\(\)=>enterWing\('ukrainian'\)\)/);
+  assert.match(html,/\|uk\|ua\|ukrainian\|ukrainska\|українська\|ukrainian-room\)\$\/\.test\(room\)\)startupScript/);
+  // Book pages: in Ukrainian, credited to Wikisource, with addresses in Latin letters.
+  const pages=await import('./scripts/book-pages.mjs');assert.equal(pages.slug('Хіба ревуть воли, як ясла повні?'),'khiba-revut-voly-yak-yasla-povni');
+  assert.equal(pages.slug('Григорій Квітка-Основ’яненко'),'hryhorii-kvitka-osnovianenko');assert.equal(pages.readingTime(60000,'uk'),'4 год');
+});
+
