@@ -27,9 +27,11 @@ async function main(){
   const broken=damaged();
   if(!broken.length){console.log('Every bundled text is sound.');return}
   for(const b of broken)console.log(`damaged: ${b.file} (${b.reason})`);
+  // Texts read from Wikisource (numbers from 950000) are not on Gutenberg; the New books workflow reads them again.
   if(process.argv.includes('--check'))process.exit(1);
   const {books}=loadCatalogue(),known=new Map(books.map(book=>[book.id,book]));let fixed=0;
   for(const {file,id} of broken){
+    if(id>=950000){console.log(`  ${id}: from Wikisource; the New books workflow will read it again`);continue}
     const book=known.get(id),text=await download(id);
     if(!text){console.log(`  ${id}: could not be downloaded; left as it is`);continue}
     if(book&&!textMatches(text,book.title,book.author)){console.log(`  ${id}: the download is not “${book.title}”; left as it is`);continue}
