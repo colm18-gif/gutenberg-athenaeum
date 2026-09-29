@@ -35,7 +35,10 @@
       card:['Salle de lecture en français','Des classiques de France et de toute la francophonie, chacun avec une note de la bibliothécaire. Le livre du soir est sur le lutrin. (The French Reading Room: classics from France and the French-speaking world.)'],
       lectern:'LE LIVRE DU SOIR',shade:0x2a3f6e,tiles:'toile',
       welcome:pick=>`Salle de lecture en français. Bienvenue : des classiques en français, chacun avec une note de la bibliothécaire.${pick?` Sur le lutrin ce soir : ${pick.title}.`:''} (The International Wing: the French Reading Room.)`,
-      note:'La note de la bibliothécaire',seat:['Une chaise près de la table','Asseyez-vous et lisez un livre de cette salle. (Sit and read a book from this room.)']},
+      note:'La note de la bibliothécaire',seat:['Une chaise près de la table','Asseyez-vous et lisez un livre de cette salle. (Sit and read a book from this room.)'],
+      // A small case of its own on the east wall: writers born in Switzerland or who lived there, and books set there.
+      corner:{ids:[65434,13861,26818,60810,32808,28523,17696],sign:'LE RAYON SUISSE',sub:'Genève · Lausanne · Neuchâtel · Coppet',flag:true,
+        card:['Le rayon suisse','Des écrivains nés en Suisse ou qui y ont vécu, et des livres qui s’y passent : Rousseau, citoyen de Genève ; Benjamin Constant, né à Lausanne ; Madame de Staël, à Coppet ; Isabelle de Charrière, à Colombier ; Senancour, dans les Alpes. (The Swiss shelf.)']}},
     latin:{cx:-470,cz:164,w:24,d:15,h:6,language:'la',sign:'CONCLAVE LATINVM',sub:'The Latin Reading Room · Ala Internationalis',
       card:['Conclave Latinum','The Latin Reading Room: Virgil, Ovid, Caesar, Cicero and the rest, in the words they wrote, each with a note from the librarian. Tonight’s book is on the lectern. (Salvete, lectores.)'],
       lectern:'LIBER NOCTIS',shade:0x7a5a2a,tiles:'roman',
@@ -180,7 +183,18 @@
       const placeBook=(book,spot)=>{const mesh=add(geometry,own(bookMaterial(book)),spot.x,spot.y,spot.z,root);mesh.rotation.order='YXZ';mesh.rotation.y=spot.yaw;mesh.rotation.x=-.1;
         mesh.userData={type:'book',book,loaded:false,international:true,wingRoom:key,home:{position:mesh.position.clone(),quaternion:mesh.quaternion.clone(),parent:root}};
         interactables.push(mesh);room.ours.push(mesh);room.books.push(mesh);return mesh};
-      list.slice(0,spots.length).forEach((book,i)=>placeBook(book,spots[i]));
+      const corner=def.corner,inCorner=book=>!!corner&&corner.ids.includes(book.id);
+      list.filter(book=>!inCorner(book)).slice(0,spots.length).forEach((book,i)=>placeBook(book,spots[i]));
+      // A room's own corner shelf (the French room's Rayon suisse): a short case of two tiers on the east wall.
+      if(corner){const ex=cx+w/2,held=corner.ids.map(id=>list.find(book=>book.id===id)).filter(Boolean);
+        box(.06,2.4,8.8,MAT.darkWood,ex-.2,2.3,cz);box(.46,.14,9,MAT.darkWood,ex-.36,3.52,cz);for(let i=0;i<=4;i++)box(.4,2.4,.07,MAT.darkWood,ex-.38,2.3,cz-4.4+i*2.2);
+        for(let row=0;row<2;row++)box(.36,.05,8.6,MAT.darkWood,ex-.36,1.1+row*1.12,cz);block(ex-.4,cz,.8,9);
+        held.slice(0,8).forEach((book,i)=>placeBook(book,{x:ex-.42,z:cz-3.3+(i%4)*2.2,y:1.62+Math.floor(i/4)*1.12,yaw:-Math.PI/2}));
+        const board=add(own(new THREE.PlaneGeometry(3.4,.6)),own(new THREE.MeshStandardMaterial({map:own(plaque(corner.sign,corner.sub,900,160,'#23170e')),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.25})),ex-.18,4.15,cz,root);board.rotation.y=-Math.PI/2;
+        mark(board,{type:'intl-card',title:corner.card[0],author:corner.card[1],action:'READ'});
+        if(corner.flag){// The white cross on red, beside the sign.
+          const flag=own(canvasTexture((c,W,H)=>{c.fillStyle='#d52b1e';c.fillRect(0,0,W,H);c.fillStyle='#ffffff';c.fillRect(W*.41,H*.19,W*.18,H*.62);c.fillRect(W*.19,H*.41,W*.62,H*.18)},64,64));
+          const mesh=add(own(new THREE.PlaneGeometry(.5,.5)),own(new THREE.MeshStandardMaterial({map:flag,roughness:.7})),ex-.18,4.15,cz-2.1,root);mesh.rotation.y=-Math.PI/2}}
       // The doors in the east wall of the Spanish room: green to the Portuguese room, blue to the French, red to the Chinese.
       const doorSign=(signText,signSub,font,x,z,yaw,data)=>{const board=add(own(new THREE.PlaneGeometry(2.6,.5)),own(new THREE.MeshStandardMaterial({map:own(plaque(signText,signSub,780,150,'#23170e',font)),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.25})),x,4.95,z,root);board.rotation.y=yaw;mark(board,data)};
       const plainDoor=(x,z,yaw,color,data)=>{const slab=box(1.9,3.1,.16,own(new THREE.MeshStandardMaterial({color,roughness:.7})),x,1.55,z);slab.rotation.y=yaw;mark(slab,data)};
