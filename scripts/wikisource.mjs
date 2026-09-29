@@ -22,6 +22,9 @@ export const wikisourceUrl=(page,lang='uk')=>`https://${WIKISOURCE_LANGUAGES[lan
 const ENTITIES={amp:'&',lt:'<',gt:'>',quot:'"',apos:"'",nbsp:' ',shy:'',ndash:'–',mdash:'—',laquo:'«',raquo:'»',hellip:'…',rsquo:'’',lsquo:'‘',ldquo:'“',rdquo:'”',bdquo:'„'};
 const decode=s=>s.replace(/&(#x[0-9a-f]+|#\d+|\w+);/gi,(m,e)=>e[0]==='#'?String.fromCodePoint(e[1].toLowerCase()==='x'?parseInt(e.slice(2),16):parseInt(e.slice(1),10)):ENTITIES[e.toLowerCase()]??m);
 const SKIP_CLASS=/\b(ws-noexport|noprint|ws-header|headertemplate|mw-editsection|reference|references|mw-references-wrap|navbox|metadata|catlinks|licensetpl|licenseContainer|mw-cite-backlink|toc|pagenum|ws-pagenum|mw-empty-elt|sisterproject)\b/;
+// Of what is left out of the text, only Wikisource's own navigation is left out of the chapters too: a table of
+// contents is not text, but its links are the book's chapters.
+const NAV_CLASS=/\b(ws-header|headertemplate|navbox|catlinks|licensetpl|licenseContainer|sisterproject|metadata)\b/;
 const SKIP_TAG=/^(style|script|sup|noscript|figure)$/;
 const VOID=/^(br|hr|img|input|meta|link|wbr|col|area|base|source|track)$/;
 const BLOCK=/^(p|div|h[1-6]|li|dd|dt|tr|blockquote|center|pre|table|ul|ol|dl|section)$/;
@@ -29,7 +32,7 @@ const BLOCK=/^(p|div|h[1-6]|li|dd|dt|tr|blockquote|center|pre|table|ul|ol|dl|sec
 // Wikisource's rendered HTML to plain text, and the links it holds, in the order they appear. The page's header
 // (with its author link) is read for links but left out of the text.
 export function htmlToText(html){
-  const out=[],links=[],stack=[];let skipDepth=0;
+  const out=[],links=[],stack=[];let skipDepth=0,navDepth=0;
   const re=/<(\/?)([a-zA-Z0-9]+)((?:\s+[^\s=>\/]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+))?)*)\s*(\/?)>|<!--[\s\S]*?-->|([^<]+)/g;let m;
   while((m=re.exec(html))){
     if(m[5]!==undefined){if(!skipDepth)out.push(decode(m[5]).replace(/[ \t\r\n]+/g,' '));continue}
@@ -37,16 +40,16 @@ export function htmlToText(html){
     const closing=m[1]==='/',tag=m[2].toLowerCase(),attrs=m[3]||'',selfClose=m[4]==='/'||VOID.test(tag);
     if(closing){
       // Close back to the matching tag, however sloppy the markup.
-      for(let i=stack.length-1;i>=0;i--)if(stack[i].tag===tag){while(stack.length>i){const e=stack.pop();if(e.skip)skipDepth--}break}
+      for(let i=stack.length-1;i>=0;i--)if(stack[i].tag===tag){while(stack.length>i){const e=stack.pop();if(e.skip)skipDepth--;if(e.nav)navDepth--}break}
       if(!skipDepth&&BLOCK.test(tag))out.push(tag==='p'||/^h/.test(tag)?'\n\n':'\n');
       continue;
     }
-    if(tag==='a'){const title=attrs.match(/\btitle="([^"]*)"/)?.[1],href=attrs.match(/\bhref="([^"]*)"/)?.[1]||'';if(title&&href.startsWith('/wiki/'))links.push({title:decode(title),header:skipDepth>0})}
+    if(tag==='a'){const title=attrs.match(/\btitle="([^"]*)"/)?.[1],href=attrs.match(/\bhref="([^"]*)"/)?.[1]||'';if(title&&href.startsWith('/wiki/'))links.push({title:decode(title),header:navDepth>0})}
     if(tag==='br'){if(!skipDepth)out.push('\n');continue}
     if(selfClose)continue;
     const cls=attrs.match(/\bclass="([^"]*)"/)?.[1]||'',id=attrs.match(/\bid="([^"]*)"/)?.[1]||'';
     const skip=SKIP_TAG.test(tag)||SKIP_CLASS.test(cls)||/^(headertemplate|toc|catlinks)$/.test(id);
-    stack.push({tag,skip});if(skip)skipDepth++;
+    const nav=NAV_CLASS.test(cls)||id==='headertemplate';stack.push({tag,skip,nav});if(skip)skipDepth++;if(nav)navDepth++;
     if(!skipDepth&&BLOCK.test(tag))out.push(/^h/.test(tag)||tag==='p'?'\n\n':'\n');
   }
   const text=out.join('').split('\n').map(line=>line.replace(/\s+/g,' ').trim()).join('\n').replace(/\n{3,}/g,'\n\n').trim();
@@ -76,21 +79,30 @@ export async function fetchWikisource(page,author,lang='uk',say=()=>{}){
   const root=await parse(page,lang);if(!root){say(`  ${page}: not found on Wikisource`);return null}
   const first=htmlToText(root.html);
   if(!byAuthor(first.links,root.categories,author,lang)){say(`  ${root.title}: does not name ${author} as its author`);return null}
-  const parts=[],seen=new Set([root.title]);
-  const subpages=(title,links)=>{const found=[];for(const l of links){if(l.header||!l.title.startsWith(title+'/')||seen.has(l.title))continue;if(EDITORIAL.test(l.title.split('/').pop()))continue;seen.add(l.title);found.push(l.title)}return found};
-  async function collect(title,{text,links},depth){
-    const children=depth<2?subpages(title,links):[];
-    // A table of contents is mostly links; a chapter is mostly text.
-    if(children.length&&(text.length<4000||text.length<children.length*400)){
-      for(const child of children){const p=await parse(child,lang);if(!p)continue;const mark=parts.length;parts.push(child.split('/').pop());
-        await collect(p.title,htmlToText(p.html),depth+1);if(parts.length===mark+1)parts.pop()}
-      return}
-    if(text.trim())parts.push(text.trim());
+  async function read(title,got){
+    const parts=[],seen=new Set([title]);
+    const subpages=(prefix,links)=>{const found=[];for(const l of links){if(l.header||!l.title.startsWith(prefix+'/')||seen.has(l.title))continue;if(EDITORIAL.test(l.title.split('/').pop()))continue;seen.add(l.title);found.push(l.title)}return found};
+    async function collect(prefix,{text,links},depth){
+      const children=depth<2?subpages(prefix,links):[];
+      // A table of contents is mostly links; a chapter is mostly text.
+      if(children.length&&(text.length<4000||text.length<children.length*400)){
+        for(const child of children){const p=await parse(child,lang);if(!p)continue;const mark=parts.length;parts.push(child.split('/').pop());
+          await collect(p.title,htmlToText(p.html),depth+1);if(parts.length===mark+1)parts.pop()}
+        return}
+      if(text.trim())parts.push(text.trim());
+    }
+    await collect(title,got,0);return parts.join('\n\n\n').trim();
   }
-  await collect(root.title,first,0);
-  const body=parts.join('\n\n\n').trim();
+  let book=root.title,body=await read(root.title,first);
+  // A page that only lists a work's editions ("Захар Беркут" → "Твори (Франко, 1956–1962)/13/Захар Беркут"): the first
+  // edition that holds the text.
+  if(body.length<1500){
+    const base=t=>norm(t.split('/').pop().replace(/\s*\([^)]*\)\s*$/,'')),want=base(root.title);
+    const editions=[...new Set(first.links.filter(l=>!l.header&&!/^[^/]*:/.test(l.title)&&l.title!==root.title&&base(l.title)===want).map(l=>l.title))].slice(0,5);
+    for(const edition of editions){const p=await parse(edition,lang);if(!p)continue;const text=await read(p.title,htmlToText(p.html));if(text.length>=1500){book=p.title;body=text;say(`  ${root.title}: read from the edition ${p.title}`);break}}
+  }
   if(body.length<1500){say(`  ${root.title}: only ${body.length} characters of text`);return null}
-  return {page:root.title,url:wikisourceUrl(root.title,lang),body};
+  return {page:book,url:wikisourceUrl(book,lang),body};
 }
 
 // The kept text: a Gutenberg-like header (so the rest of the library can read it) and Wikisource's credit.
