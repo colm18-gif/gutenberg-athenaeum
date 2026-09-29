@@ -133,7 +133,13 @@ test('the Chinese Reading Room: classics in Chinese behind the red door, matched
 test('the French Reading Room: classics in French behind the blue door, kept apart from the English editions',async()=>{
   const french=shelves.filter(entry=>entry[4]==='french');
   const {ROOMS,ROOM_LANGUAGES,resolvedKey}=await import('./scripts/new-books.mjs');assert.ok(ROOMS.includes('french'));assert.equal(ROOM_LANGUAGES.french,'fr');
-  assert.ok(french.length>=35&&french.length<=48,`${french.length} French books`);
+  // 48 on the racks, and up to 8 more in the Rayon suisse on the east wall.
+  assert.ok(french.length>=35&&french.length<=56,`${french.length} French books`);
+  const swiss=wing.match(/corner:\{ids:\[([\d,]+)\]/)[1].split(',').map(Number);
+  assert.ok(swiss.length>=5&&swiss.length<=8,'a short Swiss shelf');
+  for(const id of swiss)assert.ok(french.some(entry=>entry[0]===id),`${id} on the Swiss shelf is one of the French room's books`);
+  assert.ok(french.length-swiss.length<=48,'the rest fit the racks');
+  assert.match(wing,/list\.filter\(book=>!inCorner\(book\)\)/,'the Swiss books leave the racks for their own case');
   assert.equal(new Set(french.map(entry=>entry[1])).size,french.length,'each title once');
   for(const [id,title,,,,note] of french){
     assert.ok(Number.isInteger(id),`${title}: give its number from Gutenberg's catalogue`);
