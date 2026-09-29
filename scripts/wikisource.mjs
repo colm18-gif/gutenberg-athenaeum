@@ -81,13 +81,20 @@ export async function fetchWikisource(page,author,lang='uk',say=()=>{}){
   if(!byAuthor(first.links,root.categories,author,lang)){say(`  ${root.title}: does not name ${author} as its author`);return null}
   async function read(title,got){
     const parts=[],seen=new Set([title]);
-    const subpages=(prefix,links)=>{const found=[];for(const l of links){if(l.header||!l.title.startsWith(prefix+'/')||seen.has(l.title))continue;if(EDITORIAL.test(l.title.split('/').pop()))continue;seen.add(l.title);found.push(l.title)}return found};
+    // A page's own subpages, wherever it links them (a table of contents, or the header's "next"); `direct` keeps
+    // only its immediate chapters, not theirs.
+    const take=(links,prefix,direct=false)=>{const found=[];for(const l of links){if(!l.title.startsWith(prefix+'/')||seen.has(l.title))continue;const rest=l.title.slice(prefix.length+1);
+      if(direct&&rest.includes('/')||EDITORIAL.test(rest.split('/').pop()))continue;seen.add(l.title);found.push(l.title)}return found};
     async function collect(prefix,{text,links},depth){
-      const children=depth<2?subpages(prefix,links):[];
-      // A table of contents is mostly links; a chapter is mostly text.
-      if(children.length&&(text.length<4000||text.length<children.length*400)){
-        for(const child of children){const p=await parse(child,lang);if(!p)continue;const mark=parts.length;parts.push(child.split('/').pop());
-          await collect(p.title,htmlToText(p.html),depth+1);if(parts.length===mark+1)parts.pop()}
+      const kids=depth<2?take(links,prefix):[];
+      // A table of contents or a title page is mostly links; a chapter is mostly text.
+      if(kids.length&&(text.length<4000||text.length<kids.length*400)){
+        if(depth===0&&text.trim())parts.push(text.trim());// the book's own front page: title, preface or prologue
+        const queue=[...kids];
+        while(queue.length&&parts.length<600){const kid=queue.shift(),p=await parse(kid,lang);if(!p)continue;const g=htmlToText(p.html);
+          // Chapters that link only to the next one are read in that order.
+          queue.unshift(...take(g.links,prefix,true));
+          const mark=parts.length;parts.push(kid.split('/').pop());await collect(p.title,g,depth+1);if(parts.length===mark+1)parts.pop()}
         return}
       if(text.trim())parts.push(text.trim());
     }
