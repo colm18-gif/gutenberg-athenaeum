@@ -1296,16 +1296,28 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "words": 29535
   },
   "Енеїда [uk]": {
-   "id": 964641,
-   "words": 153,
+   "id": 952441,
+   "words": 32510,
    "source": "wikisource",
-   "page": "https://uk.wikisource.org/wiki/%D0%95%D0%BD%D0%B5%D1%97%D0%B4%D0%B0_(1798)"
+   "page": "https://uk.wikisource.org/wiki/%D0%A2%D0%B2%D0%BE%D1%80%D0%B8_(%D0%9A%D0%BE%D1%82%D0%BB%D1%8F%D1%80%D0%B5%D0%B2%D1%81%D1%8C%D0%BA%D0%B8%D0%B9%2C_1922)/%D0%A2%D0%BE%D0%BC_1/%D0%95%D0%BD%D0%B5%D1%97%D0%B4%D0%B0"
+  },
+  "Наталка Полтавка [uk]": {
+   "id": 975703,
+   "words": 9339,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9D%D0%B0%D1%82%D0%B0%D0%BB%D0%BA%D0%B0-%D0%9F%D0%BE%D0%BB%D1%82%D0%B0%D0%B2%D0%BA%D0%B0_(1937)"
   },
   "Катерина [uk]": {
    "id": 955597,
    "words": 2543,
    "source": "wikisource",
    "page": "https://uk.wikisource.org/wiki/%D0%9A%D0%BE%D0%B1%D0%B7%D0%B0%D1%80%D1%8C_(1876)/%D0%A2%D0%BE%D0%BC_1/%D0%9A%D0%B0%D1%82%D0%B5%D1%80%D0%B8%D0%BD%D0%B0"
+  },
+  "Гайдамаки [uk]": {
+   "id": 973182,
+   "words": 10342,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%A7%D0%B8%D0%B3%D0%B8%D1%80%D0%B8%D0%BD%D1%81%D0%BA%D1%96%D0%B9_%D0%BA%D0%BE%D0%B1%D0%B7%D0%B0%D1%80%D1%8C_%D0%B8_%D0%93%D0%B0%D0%B9%D0%B4%D0%B0%D0%BC%D0%B0%D0%BA%D0%B8/%D0%93%D0%B0%D0%B9%D0%B4%D0%B0%D0%BC%D0%B0%D0%BA%D0%B8"
   },
   "Сон [uk]": {
    "id": 981266,
@@ -1337,15 +1349,27 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "source": "wikisource",
    "page": "https://uk.wikisource.org/wiki/%D0%9A%D0%B0%D1%80%D0%BC%D0%B5%D0%BB%D1%8E%D0%BA_(%D0%9C%D0%B0%D1%80%D0%BA%D0%BE_%D0%92%D0%BE%D0%B2%D1%87%D0%BE%D0%BA%2C_1917)"
   },
+  "Кайдашева сім’я [uk]": {
+   "id": 989241,
+   "words": 51516,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9A%D0%B0%D0%B9%D0%B4%D0%B0%D1%88%D0%B5%D0%B2%D0%B0_%D1%81%D1%96%D0%BC%D1%8F%CC%80"
+  },
   "Микола Джеря [uk]": {
    "id": 996336,
    "words": 9543,
    "source": "wikisource",
    "page": "https://uk.wikisource.org/wiki/%D0%9C%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0_%D0%94%D0%B6%D0%B5%D1%80%D1%8F_(1926)"
   },
+  "Хіба ревуть воли, як ясла повні? [uk]": {
+   "id": 994319,
+   "words": 105206,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%A5%D0%B8%D0%B1%D0%B0_%D1%80%D0%B5%D0%B2%D1%83%D1%82%D1%8C_%D0%B2%D0%BE%D0%BB%D0%B8%2C_%D1%98%D0%B0%D0%BA_%D1%98%D0%B0%D1%81%D0%BB%D0%B0_%D0%BF%D0%BE%D0%B2%D0%BD%D1%96%3F"
+  },
   "Захар Беркут [uk]": {
    "id": 988892,
-   "words": 218,
+   "words": 50350,
    "source": "wikisource",
    "page": "https://uk.wikisource.org/wiki/%D0%A2%D0%B2%D0%BE%D1%80%D0%B8_(%D0%A4%D1%80%D0%B0%D0%BD%D0%BA%D0%BE%2C_1956%E2%80%931962)/13/%D0%97%D0%B0%D1%85%D0%B0%D1%80_%D0%91%D0%B5%D1%80%D0%BA%D1%83%D1%82"
   },
@@ -1363,7 +1387,7 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   },
   "Мойсей [uk]": {
    "id": 975798,
-   "words": 396,
+   "words": 7777,
    "source": "wikisource",
    "page": "https://uk.wikisource.org/wiki/%D0%9C%D0%BE%D0%B9%D1%81%D0%B5%D0%B9_(1905)"
   },
@@ -1372,6 +1396,12 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "words": 16886,
    "source": "wikisource",
    "page": "https://uk.wikisource.org/wiki/%D0%9B%D1%96%D1%81%D0%BE%D0%B2%D0%B0_%D0%BF%D1%96%D1%81%D0%BD%D1%8F"
+  },
+  "Бояриня [uk]": {
+   "id": 995689,
+   "words": 8157,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%91%D0%BE%D1%8F%D1%80%D0%B8%D0%BD%D1%8F_(1918)"
   },
   "Тіні забутих предків [uk]": {
    "id": 988269,
@@ -1391,11 +1421,29 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "source": "wikisource",
    "page": "https://uk.wikisource.org/wiki/%D0%A2%D0%B2%D0%BE%D1%80%D0%B8_(%D0%9A%D0%BE%D1%86%D1%8E%D0%B1%D0%B8%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D0%B9%2C_1924%E2%80%931925)/3/Fata_morgana"
   },
+  "Царівна [uk]": {
+   "id": 972401,
+   "words": 98228,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%A6%D0%B0%D1%80%D1%96%D0%B2%D0%BD%D0%B0_(1896)"
+  },
+  "Чорна рада [uk]": {
+   "id": 996525,
+   "words": 53245,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%A7%D0%BE%D1%80%D0%BD%D0%B0_%D1%80%D0%B0%D0%B4%D0%B0_(1943)"
+  },
   "Байки [uk]": {
    "id": 966244,
-   "words": 717,
+   "words": 8012,
    "source": "wikisource",
    "page": "https://uk.wikisource.org/wiki/%D0%91%D0%B0%D0%B9%D0%BA%D0%B8_(%D0%93%D0%BB%D1%96%D0%B1%D0%BE%D0%B2%2C_1918)"
+  },
+  "Новели [uk]": {
+   "id": 958769,
+   "words": 5513,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9D%D0%BE%D0%B2%D0%B5%D0%BB%D0%B8_(%D0%A1%D1%82%D0%B5%D1%84%D0%B0%D0%BD%D0%B8%D0%BA%2C_1927)"
   }
  },
  "missing": [
@@ -1410,15 +1458,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "McClure's Magazine, Vol. 1, No. 1, June, 1893",
   "The Spectator, Volume 1",
   "The Nursery, April 1873, Vol. XIII. No. 4",
-  "Наталка Полтавка [uk]",
-  "Кобзар [uk]",
-  "Гайдамаки [uk]",
-  "Кайдашева сім’я [uk]",
-  "Хіба ревуть воли, як ясла повні? [uk]",
-  "Бояриня [uk]",
-  "Царівна [uk]",
-  "Чорна рада [uk]",
-  "Сад божественних пісень [uk]",
-  "Новели [uk]"
+  "Сад божественних пісень [uk]"
  ]
 };
