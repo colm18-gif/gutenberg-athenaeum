@@ -1,0 +1,35 @@
+name: Temporary Wikisource lookup
+on:
+  push:
+    branches: ['claude/**']
+    paths: ['.github/workflows/tmp-wikisource-lookup.yml']
+permissions:
+  contents: read
+jobs:
+  lookup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Find Ukrainian classics on uk.wikisource.org
+        run: |
+          python3 - <<'PY'
+          import json,urllib.request,urllib.parse,time
+          UA={'User-Agent':'LibraryAfterDark/1.0 (https://libraryafterdark.space; library catalogue check)'}
+          def get(url):
+              req=urllib.request.Request(url,headers=UA)
+              with urllib.request.urlopen(req,timeout=60) as r: return r.read().decode('utf-8','replace')
+          API='https://uk.wikisource.org/w/api.php?'
+          works=['Кобзар','Гайдамаки','Катерина Шевченко','Енеїда Котляревський','Наталка Полтавка','Маруся Квітка-Основ\'яненко','Конотопська відьма','Інститутка Марко Вовчок','Кайдашева сім\'я','Микола Джеря','Хіба ревуть воли, як ясла повні','Захар Беркут','Украдене щастя','Лис Микита','Мойсей Франко','Лісова пісня','Бояриня Леся Українка','Тіні забутих предків','Intermezzo Коцюбинський','Fata morgana Коцюбинський','Земля Кобилянська','Царівна Кобилянська','Чорна рада','За двома зайцями','Сад божественних пісень','Байки Глібов','Новина Стефаник','Камінний хрест','Кармелюк','Сон Шевченко']
+          for w in works:
+              try:
+                  q=API+urllib.parse.urlencode({'action':'query','list':'search','srsearch':w,'srlimit':5,'format':'json','srnamespace':0})
+                  hits=json.loads(get(q))['query']['search']
+                  print('==',w,'::',' | '.join(f"{h['title']} ({h['size']})" for h in hits))
+              except Exception as e: print('==',w,'ERROR',e)
+              time.sleep(0.5)
+          PY
+      - name: Try WS Export on a few titles
+        run: |
+          for t in "Кобзар (1840)" "Тіні забутих предків" "Лісова пісня" "Кайдашева сім'я" "Енеїда"; do
+            echo "=== $t"; curl -sSL --max-time 120 -A "LibraryAfterDark/1.0 (https://libraryafterdark.space)" "https://ws-export.wmcloud.org/?format=txt&lang=uk&page=$(python3 -c "import urllib.parse,sys;print(urllib.parse.quote(sys.argv[1]))" "$t")" -o out.txt -w "%{http_code} %{size_download}\n"; head -c 700 out.txt; echo; tail -c 400 out.txt; echo
+          done
