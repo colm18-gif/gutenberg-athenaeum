@@ -1,7 +1,7 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-09-28",
+ "updated": "2026-09-29",
  "days": {
   "2026-09-25": {
    "books": [
@@ -329,6 +329,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 6373,
      "title": "The Luck of Roaring Camp",
      "author": "Bret Harte"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-01": {
+   "books": [
+    {
+     "id": 1260,
+     "title": "Jane Eyre",
+     "author": "Charlotte Brontë"
+    },
+    {
+     "id": 768,
+     "title": "Wuthering Heights",
+     "author": "Emily Brontë"
+    },
+    {
+     "id": 767,
+     "title": "Agnes Grey",
+     "author": "Anne Brontë"
+    },
+    {
+     "id": 969,
+     "title": "The Tenant of Wildfell Hall",
+     "author": "Anne Brontë"
+    },
+    {
+     "id": 9182,
+     "title": "Villette",
+     "author": "Charlotte Brontë"
+    },
+    {
+     "id": 30486,
+     "title": "Shirley",
+     "author": "Charlotte Brontë"
+    },
+    {
+     "id": 1028,
+     "title": "The Professor",
+     "author": "Charlotte Brontë"
+    },
+    {
+     "id": 1019,
+     "title": "Poems by Currer, Ellis, and Acton Bell",
+     "author": "Charlotte, Emily and Anne Brontë"
+    },
+    {
+     "id": 1827,
+     "title": "The Life of Charlotte Bronte",
+     "author": "Elizabeth Cleghorn Gaskell"
+    },
+    {
+     "id": 3011,
+     "title": "The Lady of the Lake",
+     "author": "Walter Scott"
     }
    ],
    "missing": []
