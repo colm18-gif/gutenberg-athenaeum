@@ -10,7 +10,7 @@
   'use strict';
 
   window.createCrusoeIsland=function(options){
-    const {THREE,scene,MAT,player,camera,interactables,canvasTexture,bookMaterial,findBook,showNotice,playSample,sound,noise,move,fade,renderer,ambient,moon,analytics,isReducedMotion=()=>false,isHolding=()=>false,storage=null}=options;
+    const {THREE,scene,MAT,player,camera,interactables,canvasTexture,bookMaterial,findBook,showNotice,playSample,sound,noise,move,fade,renderer,ambient,moon,analytics,isReducedMotion=()=>false,isHolding=()=>false,storage=null,doorKit=null}=options;
     const DOOR={x:-4.5,z:30.45,yaw:Math.PI};
     // Where the reader stands on coming back through the door: just in front of it, facing into the hall.
     const HALL_SPOT={x:DOOR.x+Math.sin(DOOR.yaw)*1.9,z:DOOR.z+Math.cos(DOOR.yaw)*1.9,yaw:DOOR.yaw+Math.PI};
@@ -39,6 +39,14 @@
     const box=(w,h,d,material,x,y,z,parent)=>add(new THREE.BoxGeometry(w,h,d),material,x,y,z,parent);
     const cyl=(rt,rb,h,seg,material,x,y,z,parent)=>add(new THREE.CylinderGeometry(rt,rb,h,seg),material,x,y,z,parent);
     function mark(object,data){object.userData=data;interactables.push(object);ours.push(object);return object}
+    // The door in the hall stays when the boathouse is freed, so its parts are not among the room's own.
+    function markDoor(object,data){object.userData=data;interactables.push(object);return object}
+    // The same door from either side: sea-blue boards with a porthole, hung in the library's own kit (library-doors.js).
+    const DOOR_LOOK={style:'painted',color:0x2f5561,planked:true,fanlight:false,pediment:false,width:1.9,height:3.1};
+    const through=(data,go)=>doorKit&&data.kit?doorKit.pass(data.kit,data,go):go();
+    // A brass porthole through the leaf, dark with the sea behind it.
+    function porthole(door,glass){if(!door)return;const ring=new THREE.TorusGeometry(.33,.05,8,24),pane=new THREE.CircleGeometry(.3,24);
+      for(const side of [-1,1]){const r=add(ring,MAT.brass,0,2.25,side*.07,door.leaf),p=add(pane,glass,0,2.25,side*.066,door.leaf);if(side<0){r.rotation.y=p.rotation.y=Math.PI}}doorKit.drawAfterPortal(door.leaf)}
     function lamp(parent,color,intensity,distance,x,y,z){const l=new THREE.PointLight(color,intensity,distance,2);l.position.set(x,y,z);l.castShadow=false;parent.add(l);return l}
     function block(x,z,w,d){blockers.push({minX:x-w/2,maxX:x+w/2,minZ:z-d/2,maxZ:z+d/2})}
     function texture(draw,w,h,linear=false){const t=own(canvasTexture(draw,w,h));if(linear)t.colorSpace=THREE.NoColorSpace;return t}
@@ -58,14 +66,17 @@
     function buildDoor(){
       const g=new THREE.Group();g.name='boathouse-door';g.position.set(DOOR.x,0,DOOR.z);g.rotation.y=DOOR.yaw;scene.add(g);
       const data={type:'isle-door',title:'The Boathouse',author:'A sea-blue door that smells faintly of salt. Somewhere behind it, water is lapping.',action:'ENTER'};
-      const paint=new THREE.MeshStandardMaterial({color:0x2f5561,roughness:.8}),glass=new THREE.MeshStandardMaterial({color:0x1d3440,emissive:0x0d2330,emissiveIntensity:.8,roughness:.2,metalness:.1});
-      mark(box(1.9,3.1,.14,paint,0,1.55,.08,g),data);
-      for(let i=-3;i<=3;i++)box(.025,2.95,.02,MAT.darkWood,i*.26,1.55,.16,g);
-      const ring=cyl(.38,.38,.06,24,MAT.brass,0,2.25,.17,g);ring.rotation.x=Math.PI/2;const pane=cyl(.3,.3,.07,24,glass,0,2.25,.18,g);pane.rotation.x=Math.PI/2;mark(pane,data);
-      for(const px of [-1.07,1.07])box(.22,3.45,.3,MAT.brass,px,1.72,.1,g);box(2.36,.22,.3,MAT.brass,0,3.44,.1,g);
-      mark(add(new THREE.SphereGeometry(.08,10,8),MAT.brass,.68,1.35,.22,g),data);
+      const glass=new THREE.MeshStandardMaterial({color:0x1d3440,emissive:0x0d2330,emissiveIntensity:.8,roughness:.2,metalness:.1});
+      const kd=doorKit?.hang(g,{data,mark:markDoor,...DOOR_LOOK});if(!kd)markDoor(box(1.9,3.1,.14,new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.8}),0,1.55,.08,g),data);porthole(kd,glass);
+      // A coil of rope on a cleat beside the door, and a lifebuoy.
+      const rope=new THREE.MeshStandardMaterial({color:0x6e5534,roughness:1});
+      for(let k=0;k<3;k++){const coil=add(new THREE.TorusGeometry(.3-k*.035,.035,6,22),rope,-1.72,1.7-k*.05,.1+k*.03,g);coil.scale.y=1.25}
+      box(.3,.06,.08,MAT.brass,-1.72,2.13,.06,g);
+      const buoy=new THREE.MeshStandardMaterial({color:0xc9c2b2,roughness:.85}),band=new THREE.MeshStandardMaterial({color:0xa8322a,roughness:.85});
+      const ring=add(new THREE.TorusGeometry(.3,.08,10,24),buoy,1.72,2.05,.14,g);for(let k=0;k<4;k++){const b=add(new THREE.TorusGeometry(.3,.085,10,4,Math.PI/6),band,1.72,2.05,.14,g);b.rotation.z=k*Math.PI/2+Math.PI/6}
+      markDoor(ring,{type:'isle-card',title:'A lifebuoy',author:'No ship’s name on it. Crusoe came ashore without one, on the island he called the Island of Despair.',action:'EXAMINE'});
       const plate=texture((c,W,H)=>{c.fillStyle='#16282e';c.fillRect(0,0,W,H);c.strokeStyle='#d7ae60';c.lineWidth=6;c.strokeRect(5,5,W-10,H-10);c.fillStyle='#ffe2a0';c.textAlign='center';c.font='bold 30px Georgia';c.fillText('THE BOATHOUSE',W/2,44)},560,64);
-      mark(add(new THREE.PlaneGeometry(1.9,.3),new THREE.MeshStandardMaterial({map:plate,emissive:0x6b461e,emissiveIntensity:.35}),0,3.72,.12,g),data);
+      markDoor(add(new THREE.PlaneGeometry(1.9,.3),new THREE.MeshStandardMaterial({map:plate,emissive:0x6b461e,emissiveIntensity:.35}),0,3.72,.12,g),data);
       owned.splice(owned.indexOf(plate),1);
       doorParts={group:g,glow:lamp(g,0xbfe3ff,1.1,5,0,3.9,1.1)};
     }
@@ -133,7 +144,8 @@
       cyl(.5,.5,.18,18,std({color:0x9c8458,roughness:1}),cx-3,.09,HOUSE.z1-1.5,root);
       // The door home.
       const exit={type:'isle-exit',title:'Back to the Grand Hall',author:'The lamplit hall is just the other side.',action:'RETURN'};
-      mark(box(1.9,3.1,.16,MAT.darkWood,cx,1.55,HOUSE.z1-.2,root),exit);for(const px of [-1.05,1.05])box(.16,3.35,.24,MAT.brass,cx+px,1.68,HOUSE.z1-.22,root);box(2.3,.16,.24,MAT.brass,cx,3.3,HOUSE.z1-.22,root);
+      const exitDoor=doorKit?.hang(root,{data:exit,mark,x:cx,z:HOUSE.z1-.2,yaw:Math.PI,label:'THE GRAND HALL',...DOOR_LOOK});if(exitDoor)porthole(exitDoor,std({color:0x3a2a18,emissive:0xffb35c,emissiveIntensity:.9,roughness:.3}));
+      else{mark(box(1.9,3.1,.16,MAT.darkWood,cx,1.55,HOUSE.z1-.2,root),exit);for(const px of [-1.05,1.05])box(.16,3.35,.24,MAT.brass,cx+px,1.68,HOUSE.z1-.22,root);box(2.3,.16,.24,MAT.brass,cx,3.3,HOUSE.z1-.22,root)}
       // The jetty, and the boat at the end of it.
       const jx=(JETTY.x0+JETTY.x1)/2,jl=JETTY.z1-JETTY.z0;box(JETTY.x1-JETTY.x0,.2,jl,MAT.wood,jx,-.1,(JETTY.z0+JETTY.z1)/2,root);
       for(let z=JETTY.z0+.3;z<JETTY.z1;z+=3)for(const x of [JETTY.x0,JETTY.x1])cyl(.1,.12,1.6,8,MAT.darkWood,x,-.5,z,root);
@@ -291,14 +303,15 @@
       const data=object?.userData;if(!data||typeof data.type!=='string'||!data.type.startsWith('isle-'))return false;
       if(transition||travel)return true;
       switch(data.type){
-        case 'isle-door':enter();return true;
-        case 'isle-exit':move(HALL_SPOT.x,HALL_SPOT.z,HALL_SPOT.yaw);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again. Behind you, faintly, the sea.',4);return true;
+        case 'isle-door':through(data,enter);return true;
+        case 'isle-exit':through(data,()=>{move(HALL_SPOT.x,HALL_SPOT.z,HALL_SPOT.yaw);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again. Behind you, faintly, the sea.',4)});return true;
         case 'isle-boat':startCrossing();return true;
         case 'isle-return':beginTransition(()=>{landed=false;dawn=0;move(-420,321.5,Math.PI)},'Back at the boathouse. Behind you, the sea is dark again.');return true;
         case 'isle-calendar':{const days=daysAshore();showNotice(`${QUOTES.calendar} You first came ashore ${days?`${days} day${days===1?'':'s'} ago`:'today'}.`,9);return true}
         case 'isle-poll':state.pollTalk=1.6;sound?.(1500,.16,'sawtooth',.045);setTimeout(()=>sound?.(1900,.12,'square',.03),160);showNotice(QUOTES.poll,6);return true;
         case 'isle-footprint':showNotice(QUOTES.footprint,10);analytics?.track('Secret Found',{secret:'crusoe-footprint'});return true;
         case 'isle-map':showNotice(data.author,6);return true;
+        case 'isle-card':showNotice(`${data.title}. ${data.author}`,7);return true;
         case 'isle-dig':dig();return true;
         case 'isle-spyglass':lookThroughSpyglass();return true;
         case 'isle-fire':lightFire();return true;

@@ -19,6 +19,27 @@ test('every door style builds, swings open, lets the reader through once and set
   }
 });
 
+test('rooms behind doors dress their doors from the kit: painted, glazed, boarded or plain, and freed with their room',()=>{
+  const context={window:{},Math,Map};vm.runInNewContext(fs.readFileSync('library-doors.js','utf8'),context);
+  const kit=context.window.createDoorKit({THREE:stub(),MAT:stub(),canvasTexture:()=>stub()});
+  for(const look of [{color:0x5a2a2a,fanColor:0xff9a4a},{color:0x3f6b4f,glazed:true},{color:0x2f5561,planked:true,fanlight:false,pediment:false},{color:0x5a1c1a,plain:true,fanlight:false,cornice:false}]){
+    const marked=[],data={type:'test-door'},door=kit.hang(stub(),{data,mark:(mesh,d)=>{marked.push(d)},style:'painted',width:1.9,height:3.1,...look});
+    assert.equal(data.kit,door,'the door is found from what the reader points at');assert(marked.length>=1&&marked.every(d=>d===data),'every part of the door points at it');
+    assert.equal(door.spill,null,'a room door adds no light of its own');
+    let passed=0;kit.pass(door,data,()=>passed++);kit.pass(door,data,()=>passed++);for(let i=0;i<40;i++)kit.update(.05);assert.equal(passed,1,'pressing twice still lets the reader through once');
+  }
+  assert.equal(kit.paint(0x123456),kit.paint(0x123456),'one material per colour');
+  // A door whose room has been freed drops out of the kit.
+  const scene={isScene:true},room={parent:scene},group=kit.build(stub(),{}).group;group.parent=room;const before=kit.doors.length;
+  for(let i=0;i<100;i++)kit.update(.05);assert.equal(kit.doors.length,before);room.parent=null;for(let i=0;i<100;i++)kit.update(.05);assert.equal(kit.doors.length,before-1);
+  // Every room behind a door hangs its doors, both sides, from the kit, and waits for the swing.
+  const game=fs.readFileSync('game.js','utf8');
+  for(const [file,create] of [['evening-room.js','createEveningRoom'],['learners-room.js','createLearnersRoom'],['periodicals-room.js','createPeriodicalsRoom'],['daily-room.js','createDailyRoom'],['crusoe-island.js','createCrusoeIsland'],['international-wing.js','createInternationalWing']]){
+    const source=fs.readFileSync(file,'utf8');assert.match(game,new RegExp(`window\\.${create}\\?\\.\\(\\{doorKit:getDoorKit\\(\\),`),`${file} is given the kit`);
+    assert((source.match(/doorKit\?\.hang\(|hangWing\(root/g)||[]).length>=2,`${file} hangs its doors from the kit`);assert.match(source,/doorKit\.pass\(data\.kit,data,go\)/,`${file} waits for the door to open`);
+  }
+});
+
 test('memory doors and after-dark entrances use the kit and wait for the swing before moving the reader',()=>{
   const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(m=>m[1]);assert.ok(order.indexOf('library-doors.js')>-1&&order.indexOf('library-doors.js')<order.indexOf('game.js'));
   assert.match(game,/dressMemoryDoor\(group,door,destination,industrial,forbidden,themeExit\);return door/);

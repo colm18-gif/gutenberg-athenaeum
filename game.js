@@ -1607,7 +1607,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       
     }
     // The Room of the Day: one reusable room, dressed each day with ten books (daily-room.js, data/daily-rooms.js).
-    const dailyRoom=window.createDailyRoom?.({THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,sound,analytics:window.libraryAnalytics,
+    const dailyRoom=window.createDailyRoom?.({doorKit:getDoorKit(),THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,sound,analytics:window.libraryAnalytics,
       registerBook:record=>{if(!record?.id)return null;let book=books.find(b=>b.id===record.id);if(book)return book;book={...record,category:'daily',fame:1,source:'Project Gutenberg',sourceUrl:`https://www.gutenberg.org/ebooks/${record.id}`,licence:'Public Domain',textUrl:`https://www.gutenberg.org/cache/epub/${record.id}/pg${record.id}.txt`,progress:loadSavedProgress(record.id),index:books.length};books.push(book);return book},
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
     });
@@ -1617,7 +1617,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const preDailyInteract=interact;interact=function(){if(focus&&!selected&&dailyRoom.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preDailyInteract()};
     }
     // The Boathouse and Crusoe's island (crusoe-island.js): a sea-blue door in the hall, a sunrise crossing, an island.
-    const crusoeIsland=window.createCrusoeIsland?.({THREE,scene,MAT,player,camera,interactables,canvasTexture,bookMaterial,renderer,ambient,moon,showNotice,playSample,sound,
+    const crusoeIsland=window.createCrusoeIsland?.({doorKit:getDoorKit(),THREE,scene,MAT,player,camera,interactables,canvasTexture,bookMaterial,renderer,ambient,moon,showNotice,playSample,sound,
       findBook:id=>books.find(b=>b.id===id),noise:(d,v,f)=>paperNoise(d,v,f),fade:o=>{returnFade.style.opacity=String(o)},analytics:window.libraryAnalytics,
       isReducedMotion:()=>reducedMotion,isHolding:()=>!!selected,storage:(()=>{try{return localStorage}catch(e){return null}})(),
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
@@ -1636,7 +1636,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // same [level, minutes at a learner's pace, words] shape as data/learner-levels.js; their shelf sets the level.
     const learnerLevels={...(window.ATHENAEUM_LEARNER_LEVELS||{})};for(const [id,words] of Object.entries(newArrivals.words))if(!learnerLevels[id])learnerLevels[id]=[0,Math.max(1,Math.round(words/150)),words];
     const arrivalIds=room=>newArrivals.list(room).map(book=>book.id);
-    const learnersRoom=window.createLearnersRoom?.({THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,playSample,sound,
+    const learnersRoom=window.createLearnersRoom?.({doorKit:getDoorKit(),THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,playSample,sound,
       findBook:id=>books.find(b=>b.id===id),levels:learnerLevels,arrivals:{1:arrivalIds('learners-1'),2:arrivalIds('learners-2'),3:arrivalIds('learners-3'),4:arrivalIds('learners-4'),short:arrivalIds('learners-short')},wordHelp:window.libraryWordHelp,analytics:window.libraryAnalytics,
       language:()=>navigator.language||'en',isHolding:()=>!!selected,
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
@@ -1647,7 +1647,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const preLearnersInteract=interact;interact=function(){if(focus&&!selected&&learnersRoom.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preLearnersInteract()};
     }
     // The Evening Room (evening-room.js), off the east wing: books to finish in one sitting, each with a note.
-    const eveningRoom=window.createEveningRoom?.({THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,
+    const eveningRoom=window.createEveningRoom?.({doorKit:getDoorKit(),THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,
       // A book the main shelves do not list (some live only in the Room of the Day's schedule) is brought in, as the daily room does.
       findBook:(id,record)=>books.find(b=>b.id===id)||(record?.title?(()=>{const book={...record,category:'evening',fame:1,source:'Project Gutenberg',sourceUrl:`https://www.gutenberg.org/ebooks/${id}`,licence:'Public Domain',textUrl:`https://www.gutenberg.org/cache/epub/${id}/pg${id}.txt`,progress:loadSavedProgress(id),index:books.length};books.push(book);return book})():null),
       levels:learnerLevels,arrivals:{quick:arrivalIds('evening-quick'),hour:arrivalIds('evening-hour'),evening:arrivalIds('evening-evening')},analytics:window.libraryAnalytics,isHolding:()=>!!selected,
@@ -1662,7 +1662,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     }
     // The Periodicals Room (periodicals-room.js), behind a door beneath the clock on the Grand Hall's south wall:
     // magazines as they first appeared, and the library's own nightly paper, The After Dark Gazette.
-    const periodicalsRoom=window.createPeriodicalsRoom?.({THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,
+    const periodicalsRoom=window.createPeriodicalsRoom?.({doorKit:getDoorKit(),THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,
       findBook:id=>books.find(b=>b.id===id),arrivals:()=>newArrivals.list('periodicals').map(book=>book.id),analytics:window.libraryAnalytics,isHolding:()=>!!selected,
       news:()=>({room:dailyRoom?.entryFor?.(dailyRoom.todayKey)?.entry||null,visitors:visitorsBook?.entries||[],weather}),
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
@@ -1676,7 +1676,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     }
     // The International Wing (international-wing.js), behind a door on the Grand Hall's south wall beside the visitors'
     // book: the Spanish Reading Room and, through its green door, the Portuguese Reading Room; Chinese to follow.
-    const internationalWing=window.createInternationalWing?.({THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,playSample,
+    const internationalWing=window.createInternationalWing?.({doorKit:getDoorKit(),THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,playSample,
       findBook:id=>books.find(b=>b.id===id),arrivals:room=>newArrivals.list(room).map(book=>book.id),analytics:window.libraryAnalytics,isHolding:()=>!!selected,registerSeat,
       wallMaterial:wallFinish?photoWall('sandstone_blocks_08',[2.4,2.4],0xb07a50,2):null,
       finishWalls:wallFinish&&(walls=>{for(const [mesh,w,h,d] of walls)wallFinish.finishBox(mesh,w,h,d);wallFinish.settle(walls.map(([mesh])=>mesh),{ceiling:true})}),

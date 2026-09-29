@@ -216,11 +216,11 @@ test('every chair in the rooms can be sat in',()=>{
   // The rooms behind doors pass their chairs to the library's seats and free them with the room.
   for(const [file,count] of [['evening-room.js',1],['periodicals-room.js',1],['daily-room.js',1]]){
     const source=fs.readFileSync(file,'utf8');
-    assert.match(source,/registerSeat=null\}=options;/,`${file} takes registerSeat`);
+    assert.match(source,/registerSeat=null[,}]/,`${file} takes registerSeat`);
     assert.equal((source.match(/registerSeat\(\[/g)||[]).length,count,`${file} registers its chairs`);
     assert.match(source,/Object\.defineProperty\(data,'bookIds',\{get:/,`${file}: a seat opens one of the room's own books`);
   }
-  for(const key of ['createDailyRoom','createEveningRoom','createPeriodicalsRoom'])assert.match(game,new RegExp(`window\\.${key}\\?\\.\\(\\{THREE,scene,MAT,player,interactables,registerSeat,`),key);
+  for(const key of ['createDailyRoom','createEveningRoom','createPeriodicalsRoom'])assert.match(game,new RegExp(`window\\.${key}\\?\\.\\(\\{doorKit:getDoorKit\\(\\),THREE,scene,MAT,player,interactables,registerSeat,`),key);
   // Watson's chair and the broken chairs of the forgotten rooms are seats too, not only notes.
   assert.match(game,/registerSeat\(\[chair\],at,new THREE\.Vector3\(-\.1,1\.3,0\),-Math\.PI\/2,\{title:'Watson’s chair'/);
   assert.match(game,/const data=registerSeat\(\[seat,back\],g,new THREE\.Vector3\(0,1\.36,\.12\),0,/);

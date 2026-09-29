@@ -45,7 +45,7 @@
 
   window.createInternationalWing=function(options){
     const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),
-      wallMaterial=null,finishWalls=null,registerSeat=null}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
+      wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
     const DOOR={x:8.6,z:30.45,yaw:Math.PI};
     // The doors in the Spanish room's east wall, to the other rooms.
     // yaw: which way the reader faces when they come back out through it.
@@ -56,6 +56,52 @@
     const built={},lastNeeded=Object.fromEntries(Object.keys(ROOMS).map(key=>[key,-1e9]));
     const doorData={type:'intl-door',title:'The International Wing',author:'Clásicos en español · Clássicos em português · Classiques en français · 中文經典 · Libri Latini. Each book with a note from the librarian in its own language.',action:'ENTER'};
     function add(geometry,material,x,y,z,parent){const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);parent.add(m);return m}
+    // ---------- the doors ----------
+    // Every door in the wing is hung in the library's own kit (library-doors.js), and looks the same from both sides:
+    // navy to the Spanish room, green with Lisbon tiles to the Portuguese, blue with an iron grille to the French,
+    // red lacquer with brass studs under a tiled eave to the Chinese, and stone under a Roman arch to the Latin.
+    const DOOR_LOOKS={spanish:{color:0x1f3350,glazed:true,fanColor:0xd9923a},portuguese:{color:0x1f4a33,glazed:true,fanColor:0xffc978},
+      french:{color:0x1f3160,glazed:true,fanColor:0xffd48a},chinese:{color:0x5a1c1a,plain:true,fanlight:false,cornice:false},latin:{color:()=>stone('leaf',0x8c8272),fanlight:false,cornice:false}};
+    const EXIT_LABELS={spanish:'THE GRAND HALL',portuguese:'SALA ESPANHOLA',french:'SALLE ESPAGNOLE',chinese:'西班牙文閱覽室',latin:'EXITVS'};
+    let lacquer=null;const stones={},stone=(key,color)=>stones[key]||(stones[key]=new THREE.MeshStandardMaterial({color,roughness:.9}));
+    const FRAMES={chinese:()=>lacquer||(lacquer=new THREE.MeshStandardMaterial({color:0x2a0d0a,roughness:.45})),latin:()=>stone('dressed',0xa89b84)};
+    const through=(data,go)=>doorKit&&data.kit?doorKit.pass(data.kit,data,go):go();
+    // Letters cut into stone: a light edge below, the shadowed cut above it.
+    function carved(text,W,H,font='Georgia',bg='#8e8472',at=.5,fill=.92){return canvasTexture((c)=>{c.fillStyle=bg;c.fillRect(0,0,W,H);for(let k=0;k<W*H/300;k++){c.fillStyle=`rgba(${Math.random()<.5?'255,255,255':'0,0,0'},${Math.random()*.06})`;c.fillRect(Math.random()*W,Math.random()*H,2+Math.random()*6,2+Math.random()*4)}
+      c.textAlign='center';c.textBaseline='middle';let size=Math.round(H*.5);do{c.font=`bold ${size}px ${font}`;size-=2}while(c.measureText(text).width>W*fill&&size>10);c.fillStyle='rgba(235,225,205,.55)';c.fillText(text,W/2+2,H*at+3);c.fillStyle='#342a20';c.fillText(text,W/2,H*at)},W,H)}
+    function hangWing(parent,key,{data,mark,x=0,z=0,yaw=0,label='',own=thing=>thing,...extra}){
+      const frame=FRAMES[key]?.(),look={...DOOR_LOOKS[key]};if(typeof look.color==='function')look.color=look.color();
+      const door=doorKit?.hang(parent,{data,mark,x,z,yaw,label,style:'painted',width:1.9,height:3.1,...look,...(frame?{frame}:{}),...extra});
+      if(door)dressDoor(key,door,own);return door}
+    function dressDoor(key,door,own){
+      const {group,leaf}=door,part=(geometry,material,x,y,z,parent=group)=>add(own(geometry),material,x,y,z,parent);
+      if(key==='portuguese'){// Blue-and-white azulejos up both sides, above the dado.
+        const tile=own(tileTexture('lisbon'));tile.wrapS=tile.wrapT=THREE.RepeatWrapping;tile.repeat.set(2,10);const tiles=own(new THREE.MeshStandardMaterial({map:tile,roughness:.35}));
+        for(const side of [-1,1]){part(new THREE.PlaneGeometry(.55,2.78),tiles,side*1.46,2.56,.03);part(new THREE.BoxGeometry(.63,.06,.06),MAT.darkWood,side*1.46,3.97,.03)}}
+      if(key==='french'){// A wrought-iron grille of scrolls over the glass, as on a Paris street door.
+        const grille=own(canvasTexture((c,W,H)=>{c.clearRect(0,0,W,H);c.strokeStyle='#141414';c.lineCap='round';c.lineWidth=7;c.strokeRect(6,6,W-12,H-12);c.beginPath();c.moveTo(W/2,6);c.lineTo(W/2,H-6);c.stroke();c.lineWidth=5;
+          for(const sx of [-1,1])for(const y of [H*.28,H*.72]){c.beginPath();c.arc(W/2+sx*W*.2,y,W*.17,0,Math.PI*2);c.stroke();c.beginPath();c.arc(W/2+sx*W*.2,y,W*.07,0,Math.PI*2);c.stroke()}
+          c.fillStyle='#141414';for(const y of [H*.5]){c.beginPath();c.arc(W/2,y,9,0,Math.PI*2);c.fill()}},128,192)),iron=own(new THREE.MeshStandardMaterial({map:grille,transparent:true,alphaTest:.4,color:0x5a5a5a,metalness:.6,roughness:.45,side:THREE.DoubleSide}));
+        for(const pane of door.panes){const {width=.6,height=.8}=pane.geometry.parameters||{};for(const zz of [-.066,.066])part(new THREE.PlaneGeometry(width-.02,height-.04),iron,pane.position.x,pane.position.y,zz,leaf)}}
+      if(key==='chinese'){// Rows of brass door nails and a ring knocker on the lacquer; a lattice transom; a tiled eave above.
+        const spots=[];for(let r=0;r<5;r++)for(let k=0;k<5;k++){const x=-.62+k*.31,y=.62+r*.52;if(x>.5&&y<1.4)continue;spots.push([x,y])}
+        const nails=new THREE.InstancedMesh(own(new THREE.SphereGeometry(.042,8,6)),MAT.brass,spots.length*2),m=new THREE.Matrix4();spots.forEach(([x,y],i)=>{nails.setMatrixAt(i*2,m.makeTranslation(x,y,.055));nails.setMatrixAt(i*2+1,m.makeTranslation(x,y,-.055))});leaf.add(nails);
+        for(const side of [-1,1]){const boss=part(new THREE.CylinderGeometry(.1,.1,.03,16),MAT.brass,0,1.62,side*.06,leaf);boss.rotation.x=Math.PI/2;part(new THREE.TorusGeometry(.085,.014,6,16),MAT.brass,0,1.5,side*.085,leaf)}
+        const frame=FRAMES.chinese(),lattice=own(tileTexture('lattice'));lattice.wrapS=THREE.RepeatWrapping;lattice.repeat.set(3,1);
+        part(new THREE.BoxGeometry(2.34,.14,.22),frame,0,3.17,.05);part(new THREE.PlaneGeometry(1.9,.58),own(new THREE.MeshStandardMaterial({map:lattice,roughness:.5,emissive:0x3a0c06,emissiveIntensity:.35})),0,3.53,.03);
+        for(const side of [-1,1])part(new THREE.BoxGeometry(.22,.8,.18),frame,side*1.06,3.55,.04);part(new THREE.BoxGeometry(2.6,.16,.26),frame,0,3.9,.06);
+        const roof=own(canvasTexture((c,W,H)=>{c.fillStyle='#26332f';c.fillRect(0,0,W,H);for(let x=0;x<W;x+=16){const g=c.createLinearGradient(x,0,x+16,0);g.addColorStop(0,'#1b2522');g.addColorStop(.5,'#4a5e57');g.addColorStop(1,'#1b2522');c.fillStyle=g;c.fillRect(x,0,16,H)}},256,64));roof.wrapS=THREE.RepeatWrapping;roof.repeat.set(3,1);
+        const tiles=own(new THREE.MeshStandardMaterial({map:roof,roughness:.4,metalness:.1})),eave=part(new THREE.BoxGeometry(3.3,.1,.82),tiles,0,4.12,.4);eave.rotation.x=.38;part(new THREE.BoxGeometry(3.4,.14,.16),tiles,0,4.27,.05);
+        for(const side of [-1,1]){const tip=part(new THREE.BoxGeometry(.4,.09,.12),tiles,side*1.72,4.04,.74);tip.rotation.z=side*.45}
+        const ends=new THREE.InstancedMesh(own(new THREE.CylinderGeometry(.055,.055,.05,10)),tiles,11),q=new THREE.Matrix4().makeRotationX(Math.PI/2);for(let i=0;i<11;i++)ends.setMatrixAt(i,m.makeTranslation(-1.5+i*.3,3.97,.79).multiply(q));group.add(ends)}
+      if(key==='latin'){// A Roman arch over the door, with its keystone, and INTRATE (come in) cut in the stone beneath it.
+        const band=new THREE.Shape();band.absarc(0,0,1.32,0,Math.PI,false);band.lineTo(-.98,0);band.absarc(0,0,.98,Math.PI,0,true);band.lineTo(1.32,0);
+        const dressed=FRAMES.latin();part(new THREE.ExtrudeGeometry(band,{depth:.26,bevelEnabled:false,curveSegments:20}),dressed,0,3.1,-.04);part(new THREE.BoxGeometry(.3,.46,.34),dressed,0,4.36,.1);
+        for(const side of [-1,1])part(new THREE.BoxGeometry(.46,.14,.32),dressed,side*1.15,3.13,.08);
+        const word=own(carved('INTRATE',512,256,'Georgia','#8e8472',.72,.6));const face=part(new THREE.CircleGeometry(.98,24,0,Math.PI),own(new THREE.MeshStandardMaterial({map:word,roughness:.9})),0,3.1,.02);
+        // The half disc covers only the upper half of its texture coordinates; stretch the whole word over it.
+        word.repeat.set(1,2);word.offset.set(0,-1)}
+      if(key!=='spanish'&&key!=='portuguese')doorKit.drawAfterPortal(leaf)}
     const dayNumber=()=>Math.floor(Date.parse(today().toISOString().slice(0,10)+'T12:00:00Z')/86400000);
     function plaque(text,sub,w,h,dark='#1d2a3d',font='Georgia'){return canvasTexture((c,W,H)=>{c.fillStyle=dark;c.fillRect(0,0,W,H);c.strokeStyle='#d7ae60';c.lineWidth=6;c.strokeRect(5,5,W-10,H-10);c.fillStyle='#ffe2a0';c.textAlign='center';
       let size=Math.round(H*(sub?.3:.36));do{c.font=`bold ${size}px ${font}`;size-=2}while(c.measureText(text).width>W-40&&size>12);c.fillText(text,W/2,sub?H*.46:H/2+H*.12);if(sub){c.font=`italic ${Math.round(H*.19)}px Georgia`;c.fillText(sub,W/2,H*.8)}},w,h)}
@@ -92,14 +138,14 @@
     function buildDoor(){
       const g=new THREE.Group();g.name='international-door';g.position.set(DOOR.x,0,DOOR.z);g.rotation.y=DOOR.yaw;scene.add(g);
       const mark=(object,data)=>{object.userData=data;interactables.push(object);return object};
-      const paint=new THREE.MeshStandardMaterial({color:0x1f3350,roughness:.75}),glass=new THREE.MeshStandardMaterial({color:0x8a6a3a,emissive:0xd9923a,emissiveIntensity:.45,roughness:.3});
-      mark(add(new THREE.BoxGeometry(1.9,3.1,.14),paint,0,1.55,.08,g),doorData);
-      const pane=add(new THREE.BoxGeometry(1.2,.7,.05),glass,0,2.35,.17,g);mark(pane,doorData);for(const bx of [-.2,.2])add(new THREE.BoxGeometry(.04,.72,.07),MAT.darkWood,bx,2.35,.18,g);add(new THREE.BoxGeometry(1.22,.04,.07),MAT.darkWood,0,2.35,.18,g);
-      for(const px of [-.46,.46])add(new THREE.BoxGeometry(.72,1.2,.04),MAT.darkWood,px,.95,.17,g);
-      for(const px of [-1.07,1.07])add(new THREE.BoxGeometry(.22,3.45,.3),MAT.brass,px,1.72,.1,g);add(new THREE.BoxGeometry(2.36,.22,.3),MAT.brass,0,3.44,.1,g);
-      mark(add(new THREE.SphereGeometry(.08,10,8),MAT.brass,.68,1.45,.22,g),doorData);
+      // A stone doorcase round the navy door, its lintel cut with the word for books in each of the wing's languages.
+      if(hangWing(g,'spanish',{data:doorData,mark,pediment:false})){
+        for(const side of [-1,1]){add(new THREE.BoxGeometry(.36,4.1,.3),MAT.stone,side*1.52,2.05,.1,g);add(new THREE.BoxGeometry(.5,.18,.38),MAT.stone,side*1.52,4.18,.12,g);add(new THREE.BoxGeometry(.5,.32,.38),MAT.stone,side*1.52,.16,.12,g)}
+        add(new THREE.BoxGeometry(3.5,.66,.34),MAT.stone,0,4.6,.12,g);add(new THREE.BoxGeometry(3.8,.12,.44),MAT.stone,0,4.99,.14,g);
+        mark(add(new THREE.PlaneGeometry(3.3,.46),new THREE.MeshStandardMaterial({map:carved('LIBROS · LIVROS · LIVRES · 書 · LIBRI',1024,144,`Georgia,${CJK}`),roughness:.9}),0,4.6,.295,g),doorData)}
+      else mark(add(new THREE.BoxGeometry(1.9,3.1,.14),new THREE.MeshStandardMaterial({color:DOOR_LOOKS.spanish.color,roughness:.75}),0,1.55,.08,g),doorData);
       const plate=plaque('THE INTERNATIONAL WING','Español · Português · Français · 中文 · Latina',640,100);// the door's plaque stays for good
-      mark(add(new THREE.PlaneGeometry(2.3,.36),new THREE.MeshStandardMaterial({map:plate,emissive:0xffffff,emissiveMap:plate,emissiveIntensity:.35}),0,3.8,.12,g),doorData);
+      mark(add(new THREE.PlaneGeometry(2.3,.36),new THREE.MeshStandardMaterial({map:plate,emissive:0xffffff,emissiveMap:plate,emissiveIntensity:.35}),0,5.42,.12,g),doorData);
       const l=new THREE.PointLight(0xffc27a,1.1,5,2);l.position.set(0,3.9,1.1);g.add(l);
     }
 
@@ -136,19 +182,19 @@
         interactables.push(mesh);room.ours.push(mesh);room.books.push(mesh);return mesh};
       list.slice(0,spots.length).forEach((book,i)=>placeBook(book,spots[i]));
       // The doors in the east wall of the Spanish room: green to the Portuguese room, blue to the French, red to the Chinese.
-      const eastDoor=(z,color,data,signText,signSub,font='Georgia')=>{const x=cx+w/2-.2;
-        mark(box(.16,3.1,1.9,own(new THREE.MeshStandardMaterial({color,roughness:.7})),x,1.55,z),data);
-        for(const pz of [-1.05,1.05])box(.24,3.35,.16,MAT.brass,x-.02,1.68,z+pz);box(.24,.16,2.3,MAT.brass,x-.02,3.3,z);
-        const board=add(own(new THREE.PlaneGeometry(2.6,.5)),own(new THREE.MeshStandardMaterial({map:own(plaque(signText,signSub,780,150,'#23170e',font)),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.25})),x-.14,3.85,z,root);
-        board.rotation.y=-Math.PI/2;mark(board,data);block(x-.3,z,.6,2.4)};
+      const doorSign=(signText,signSub,font,x,z,yaw,data)=>{const board=add(own(new THREE.PlaneGeometry(2.6,.5)),own(new THREE.MeshStandardMaterial({map:own(plaque(signText,signSub,780,150,'#23170e',font)),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.25})),x,4.95,z,root);board.rotation.y=yaw;mark(board,data)};
+      const plainDoor=(x,z,yaw,color,data)=>{const slab=box(1.9,3.1,.16,own(new THREE.MeshStandardMaterial({color,roughness:.7})),x,1.55,z);slab.rotation.y=yaw;mark(slab,data)};
+      // The doors in the east wall of the Spanish room face west, into it.
+      const eastDoor=(z,wing,data,signText,signSub,font='Georgia')=>{const x=cx+w/2-.2;
+        if(!hangWing(root,wing,{data,mark,x,z,yaw:-Math.PI/2,own}))plainDoor(x,z,Math.PI/2,DOOR_LOOKS[wing].color,data);
+        doorSign(signText,signSub,font,x-.14,z,-Math.PI/2,data);block(x-.3,z,.6,2.4)};
       if(key==='spanish'){
-        eastDoor(ROOM_DOORS.portuguese.z,0x1f4a33,{type:'intl-go',room:'portuguese',title:'Sala de leitura em português',author:'Clássicos em português, cada um com uma nota da bibliotecária. (The Portuguese Reading Room.)',action:'ENTER'},'SALA DE LEITURA EM PORTUGUÊS','Entre · The Portuguese Reading Room');
-        eastDoor(ROOM_DOORS.french.z,0x1f3160,{type:'intl-go',room:'french',title:'Salle de lecture en français',author:'Des classiques en français, chacun avec une note de la bibliothécaire. (The French Reading Room.)',action:'ENTER'},'SALLE DE LECTURE EN FRANÇAIS','Entrez · The French Reading Room');
+        eastDoor(ROOM_DOORS.portuguese.z,'portuguese',{type:'intl-go',room:'portuguese',title:'Sala de leitura em português',author:'Clássicos em português, cada um com uma nota da bibliotecária. (The Portuguese Reading Room.)',action:'ENTER'},'SALA DE LEITURA EM PORTUGUÊS','Entre · The Portuguese Reading Room');
+        eastDoor(ROOM_DOORS.french.z,'french',{type:'intl-go',room:'french',title:'Salle de lecture en français',author:'Des classiques en français, chacun avec une note de la bibliothécaire. (The French Reading Room.)',action:'ENTER'},'SALLE DE LECTURE EN FRANÇAIS','Entrez · The French Reading Room');
         {const d=ROOM_DOORS.latin,data={type:'intl-go',room:'latin',title:'Conclave Latinum',author:'The Latin Reading Room: the Romans in their own words. (Intrate.)',action:'ENTER'};
-          mark(box(1.9,3.1,.16,own(new THREE.MeshStandardMaterial({color:0x8c8272,roughness:.85})),d.x,1.55,d.z),data);for(const px of [-1.05,1.05])box(.16,3.35,.24,MAT.brass,d.x+px,1.68,d.z-.02);box(2.3,.16,.24,MAT.brass,d.x,3.3,d.z-.02);
-          const board=add(own(new THREE.PlaneGeometry(2.6,.5)),own(new THREE.MeshStandardMaterial({map:own(plaque('CONCLAVE LATINVM','Intrate · The Latin Reading Room',780,150,'#23170e')),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.25})),d.x,3.85,d.z-.14,root);
-          board.rotation.y=Math.PI;mark(board,data);block(d.x,d.z-.3,2.4,.6)}
-        eastDoor(ROOM_DOORS.chinese.z,0x5a1c1a,{type:'intl-go',room:'chinese',title:'中文閱覽室',author:'中文經典，每一本都附有館員的短評。(The Chinese Reading Room.)',action:'ENTER'},'中文閱覽室','請進 · The Chinese Reading Room',CJK);
+          if(!hangWing(root,'latin',{data,mark,x:d.x,z:d.z,yaw:Math.PI,own}))plainDoor(d.x,d.z,0,DOOR_LOOKS.latin.color,data);
+          doorSign('CONCLAVE LATINVM','Intrate · The Latin Reading Room','Georgia',d.x,d.z-.14,Math.PI,data);block(d.x,d.z-.3,2.4,.6)}
+        eastDoor(ROOM_DOORS.chinese.z,'chinese',{type:'intl-go',room:'chinese',title:'中文閱覽室',author:'中文經典，每一本都附有館員的短評。(The Chinese Reading Room.)',action:'ENTER'},'中文閱覽室','請進 · The Chinese Reading Room',CJK);
       }
       // The reading table, with a lamp, and the lectern by the door with tonight's book.
       box(4.2,.08,1.6,MAT.darkWood,cx+1.5,.78,cz+1.2);for(const [dx,dz] of [[-1.9,-.6],[1.9,-.6],[-1.9,.6],[1.9,.6]])box(.1,.74,.1,MAT.darkWood,cx+1.5+dx,.39,cz+1.2+dz);block(cx+1.5,cz+1.2,4.4,1.8);
@@ -165,7 +211,7 @@
       // The way out: to the Grand Hall from the Spanish room, back to the Spanish room from the others.
       const exit=key==='spanish'?{type:'intl-exit',title:'Back to the Grand Hall',author:'The visitors’ book is just outside.',action:'RETURN'}
         :{type:'intl-go',room:'spanish',back:key,title:'Sala de lectura en español',author:({chinese:'回到西班牙文閱覽室。',french:'Retour à la salle espagnole. ',latin:'Redi. '}[key]||'')+'Back to the Spanish Reading Room.',action:'RETURN'};
-      mark(box(1.9,3.1,.16,MAT.darkWood,cx,1.55,cz+d/2-.2),exit);for(const px of [-1.05,1.05])box(.16,3.35,.24,MAT.brass,cx+px,1.68,cz+d/2-.22);box(2.3,.16,.24,MAT.brass,cx,3.3,cz+d/2-.22);
+      if(!hangWing(root,key,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,label:EXIT_LABELS[key],own}))plainDoor(cx,cz+d/2-.2,0,DOOR_LOOKS[key].color,exit);
       scene.add(root);
     }
 
@@ -195,14 +241,14 @@
     }
     function interact(object){
       const data=object?.userData;if(!data||typeof data.type!=='string'||!data.type.startsWith('intl-'))return false;
-      if(data.type==='intl-door'){enter('spanish');return true}
+      if(data.type==='intl-door'){through(data,()=>enter('spanish'));return true}
       if(data.type==='intl-go'){
         // Back from the Portuguese or Chinese room: out through its door, into the Spanish room.
-        if(data.back){const from=ROOM_DOORS[data.back]||ROOM_DOORS.portuguese;activate('spanish');placeLamps('spanish');move(from.x-Math.sin(-from.yaw)*1.8,from.z-Math.cos(from.yaw)*1.8,from.yaw);playSample?.('doorOpen',.8,1);showNotice('Sala de lectura en español.',3)}
-        else enter(data.room);
+        through(data,()=>{if(data.back){const from=ROOM_DOORS[data.back]||ROOM_DOORS.portuguese;activate('spanish');placeLamps('spanish');move(from.x-Math.sin(-from.yaw)*1.8,from.z-Math.cos(from.yaw)*1.8,from.yaw);playSample?.('doorOpen',.8,1);showNotice('Sala de lectura en español.',3)}
+        else enter(data.room)});
         return true;
       }
-      if(data.type==='intl-exit'){move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again, beside the visitors’ book.',3);return true}
+      if(data.type==='intl-exit'){through(data,()=>{move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again, beside the visitors’ book.',3)});return true}
       if(data.type==='intl-card'){showNotice(`${data.title}: ${data.author}`,9);return true}
       return false;
     }

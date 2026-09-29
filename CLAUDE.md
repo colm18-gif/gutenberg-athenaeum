@@ -18,6 +18,11 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - Every chair, sofa and bench is one of the library's seats: build it with `chair()`/`sofa()`/`bench()` in game.js, or
   pass `registerSeat` into a room module and call it (with a `bookIds` getter for that room's books; push the parts
   onto the room's list so they are freed with it). `?debug` exposes `__athenaeum.seats`.
+- Doors come from the shared kit in `library-doors.js`. A room behind a door is given `doorKit` and hangs both sides of
+  its door with `doorKit.hang(parent,{data,mark,...look})` (`color`, `glazed`, `planked`, `plain`, `fanColor`, `frame`,
+  `cornice`, `pediment`; no light of its own), then lets the reader through with `doorKit.pass(data.kit,data,go)` so
+  the leaf swings first. Mark the hall side of a door so it is not among the room's own parts, or it stops answering
+  once the room is freed.
 - Performance matters (many visitors are on phones): merge static parts by material, use `InstancedMesh`, avoid
   adding lights where the library's own can be borrowed.
 - To check things visually, serve the repo (`python3 -m http.server 8765`) and drive it with Playwright using

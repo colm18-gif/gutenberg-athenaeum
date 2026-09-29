@@ -19,7 +19,7 @@ class Material{constructor(p={}){Object.assign(this,p);this.color=new Color(p.co
 class Mesh extends Object3D{constructor(geometry,material){super();this.geometry=geometry;this.material=material;this.isMesh=true}}
 class InstancedMesh extends Mesh{constructor(g,m,count){super(g,m);this.count=count;this.instanceMatrix={}}setMatrixAt(){}}
 class PointLight extends Object3D{constructor(color,intensity,distance){super();Object.assign(this,{color,intensity,distance,isPointLight:true})}}
-const THREE={Group:Object3D,Mesh,InstancedMesh,PointLight,BoxGeometry:Geometry,PlaneGeometry:Geometry,CylinderGeometry:Geometry,SphereGeometry:Geometry,ConeGeometry:Geometry,DodecahedronGeometry:Geometry,
+const THREE={Group:Object3D,Mesh,InstancedMesh,PointLight,BoxGeometry:Geometry,PlaneGeometry:Geometry,CylinderGeometry:Geometry,SphereGeometry:Geometry,ConeGeometry:Geometry,TorusGeometry:Geometry,DodecahedronGeometry:Geometry,
   MeshStandardMaterial:Material,MeshBasicMaterial:Material,Color,Vector3:Vector,Vector2:class{constructor(x,y){this.x=x;this.y=y}},
   Matrix4:class{makeTranslation(){return this}compose(){return this}},Quaternion:class{setFromEuler(){return this}},Euler:class{set(){return this}},RepeatWrapping:1000,NoColorSpace:''};
 
@@ -69,7 +69,8 @@ test('nothing is built until the reader walks up to the door, and it is all free
   w.run(10);assert.equal(w.island.built,true,'kept warm for a while');
   w.player.pos.set(0,0,0);w.run(30);assert.equal(w.island.built,false);
   assert.equal(w.scene.children.length,doorOnly);assert.equal(w.lights(),doorLights);assert(disposed>50);
-  assert.equal(w.interactables.filter(o=>o.userData.type!=='isle-door').length,0,'nothing left to point at');
+  assert.equal(w.interactables.filter(o=>!['isle-door','isle-card'].includes(o.userData.type)).length,0,'nothing left to point at but the door and the lifebuoy beside it');
+  assert(w.find('isle-door'),'the door in the hall still answers once the boathouse is freed');
 });
 
 test('the crossing turns night to sunrise, lands on the island and puts the library’s light back afterwards',()=>{
