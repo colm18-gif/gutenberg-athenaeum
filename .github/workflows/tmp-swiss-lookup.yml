@@ -1,0 +1,22 @@
+name: Temporary Swiss lookup
+on:
+  push:
+    branches: ['claude/**']
+    paths: ['.github/workflows/tmp-swiss-lookup.yml']
+permissions:
+  contents: read
+jobs:
+  lookup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: List French texts by Swiss writers (Project Gutenberg's catalogue)
+        run: |
+          curl -sSL --max-time 180 -o pg.csv https://www.gutenberg.org/cache/epub/feeds/pg_catalog.csv
+          python3 - <<'PY'
+          import csv
+          names=['Rousseau, Jean-Jacques','Constant, Benjamin','Staël','Töpffer','Topffer','Amiel','Cherbuliez','Ramuz','Charrière','Rod, Édouard','Rod, Edouard','Olivier, Juste','Rambert','Monnier, Marc','Monnier, Philippe','Sismondi','Bonstetten','Vinet','Gobineau','Saussure','Bridel','Senancour','Haller','Muralt','Candolle','Dunant','Burnand','Petit-Senn','Urbain Olivier','Olivier, Urbain','Tissot','Warnery','Gauthiez','Duplain','Godet','Berthoud','Mallet','Pictet','Necker']
+          rows=[r for r in csv.DictReader(open('pg.csv',encoding='utf-8')) if 'fr' in r.get('Language','').replace(' ','').split(';') and r.get('Type')=='Text' and any(n.lower() in r['Authors'].lower() for n in names)]
+          print(len(rows),'matches')
+          for r in rows: print(r['Text#'],'|',' '.join(r['Title'].split())[:95],'|',r['Authors'][:70],'|',r['Subjects'][:80])
+          PY
