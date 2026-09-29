@@ -48,4 +48,5 @@ test('the room builds on approach, shows every book with its time, and is freed 
   r.interact(interactables.find(o=>o.userData.type==='evening-exit'));player.pos.set(0,0,0);disposed=0;r.update(40,.1);
   assert.equal(r.built,false);assert.equal(scene.children.length,doorOnly);assert(disposed>40);
   assert.equal(interactables.filter(o=>o.userData.type!=='evening-door').length,0);
+  assert(interactables.some(o=>o.userData.type==='evening-door'),'the door in the east wing still answers once the room is freed');
 });

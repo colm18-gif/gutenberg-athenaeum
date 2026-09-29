@@ -30,16 +30,21 @@
   }
 
   window.createEveningRoom=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,levels={},arrivals={},showNotice,playSample,move,analytics,isHolding=()=>false,registerSeat=null}=options;
+    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,levels={},arrivals={},showNotice,playSample,move,analytics,isHolding=()=>false,registerSeat=null,doorKit=null}=options;
     const DOOR={x:21.8,z:9.45,yaw:Math.PI};
     const ROOM={cx:-330,cz:20,w:14,d:12,h:4.6};
     const PRELOAD=7,KEEP=25;
+    // The same door from either side: painted, panelled and hung in the library's own kit (library-doors.js).
+    const DOOR_LOOK={style:'painted',color:0x5a2a2a,fanColor:0xff9a4a,width:1.9,height:3.1};
+    const through=(data,go)=>doorKit&&data.kit?doorKit.pass(data.kit,data,go):go();
     let root=null,time=0,lastNeeded=-1e9,fire=null;
     const owned=[],ours=[],books=[],blockers=[];
     const own=thing=>{owned.push(thing);return thing};
     function add(geometry,material,x,y,z,parent){const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);parent.add(m);return m}
     const box=(w,h,d,material,x,y,z,parent)=>add(own(new THREE.BoxGeometry(w,h,d)),material,x,y,z,parent);
     function mark(object,data){object.userData=data;interactables.push(object);ours.push(object);return object}
+    // The door in the hall stays when the room is freed, so its parts are not among the room's own.
+    function markDoor(object,data){object.userData=data;interactables.push(object);return object}
     function block(x,z,w,d){blockers.push({minX:x-w/2,maxX:x+w/2,minZ:z-d/2,maxZ:z+d/2})}
     function lamp(parent,color,intensity,distance,x,y,z){const l=new THREE.PointLight(color,intensity,distance,2);l.position.set(x,y,z);parent.add(l);return l}
     function sign(parent,text,sub,w,h,x,y,z){
@@ -58,15 +63,16 @@
     function buildDoor(){
       const g=new THREE.Group();g.name='evening-door';g.position.set(DOOR.x,0,DOOR.z);g.rotation.y=DOOR.yaw;scene.add(g);
       const data={type:'evening-door',title:'The Evening Room',author:'A fireside room of books you can finish in one sitting.',action:'ENTER'};
-      const paint=new THREE.MeshStandardMaterial({color:0x5a2a2a,roughness:.8}),glass=new THREE.MeshStandardMaterial({color:0xf3d9a8,emissive:0xff9a4a,emissiveIntensity:.7,roughness:.4});
-      mark(add(new THREE.BoxGeometry(1.9,3.1,.14),paint,0,1.55,.08,g),data);
-      for(const px of [-.46,.46])add(new THREE.BoxGeometry(.72,1.2,.04),MAT.darkWood,px,.95,.17,g);
-      const fan=add(new THREE.CylinderGeometry(.62,.62,.05,20,1,false,-Math.PI/2,Math.PI),glass,0,2.3,.18,g);fan.rotation.x=-Math.PI/2;/* the upper half: a fanlight */mark(fan,data);
-      for(const px of [-1.07,1.07])add(new THREE.BoxGeometry(.22,3.45,.3),MAT.brass,px,1.72,.1,g);add(new THREE.BoxGeometry(2.36,.22,.3),MAT.brass,0,3.44,.1,g);
-      mark(add(new THREE.SphereGeometry(.08,10,8),MAT.brass,.68,1.45,.22,g),data);
+      // A deep red door from the library's own kit, its fanlight lit like a fire behind it, and a carriage lamp beside it.
+      if(!doorKit?.hang(g,{data,mark:markDoor,...DOOR_LOOK}))markDoor(add(new THREE.BoxGeometry(1.9,3.1,.14),new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.8}),0,1.55,.08,g),data);
+      const lampGlass=new THREE.MeshStandardMaterial({color:0xffb870,emissive:0xff8a3a,emissiveIntensity:1.3,roughness:.3}),lx=1.62,ly=2.7;
+      add(new THREE.BoxGeometry(.16,.34,.04),MAT.brass,lx,ly+.36,.03,g);add(new THREE.BoxGeometry(.05,.05,.44),MAT.brass,lx,ly+.4,.24,g);add(new THREE.BoxGeometry(.03,.14,.03),MAT.brass,lx,ly+.32,.44,g);
+      markDoor(add(new THREE.BoxGeometry(.2,.3,.2),lampGlass,lx,ly,.44,g),data);add(new THREE.BoxGeometry(.28,.05,.28),MAT.brass,lx,ly-.17,.44,g);
+      for(const [px,pz] of [[-.11,-.11],[.11,-.11],[-.11,.11],[.11,.11]])add(new THREE.BoxGeometry(.025,.32,.025),MAT.brass,lx+px,ly,.44+pz,g);
+      const cap=add(new THREE.ConeGeometry(.2,.17,4),MAT.brass,lx,ly+.24,.44,g);cap.rotation.y=Math.PI/4;add(new THREE.SphereGeometry(.035,8,6),MAT.brass,lx,ly+.35,.44,g);
       const plate=canvasTexture((c,W,H)=>{c.fillStyle='#2a1512';c.fillRect(0,0,W,H);c.strokeStyle='#d7ae60';c.lineWidth=6;c.strokeRect(5,5,W-10,H-10);c.textAlign='center';c.fillStyle='#ffe2a0';c.font='bold 32px Georgia';c.fillText('THE EVENING ROOM',W/2,46);c.font='italic 21px Georgia';c.fillText('Every book here can be read in one sitting',W/2,80)},600,100);
-      mark(add(new THREE.PlaneGeometry(2.1,.35),new THREE.MeshStandardMaterial({map:plate,emissive:0x6b461e,emissiveIntensity:.35}),0,3.78,.12,g),data);
-      lamp(g,0xffb46a,1.2,5,0,3.9,1.1);
+      markDoor(add(new THREE.PlaneGeometry(2.1,.35),new THREE.MeshStandardMaterial({map:plate,emissive:0x6b461e,emissiveIntensity:.35}),0,4.82,.12,g),data);
+      lamp(g,0xffb46a,1.2,5,lx,ly,.9);// the lamp's own glow, the door's only light
     }
 
     // ---------- the room ----------
@@ -115,7 +121,7 @@
       lamp(root,0xffd49a,6,12,cx,h-.4,cz+1.5);
       // The door back to the east wing.
       const exit={type:'evening-exit',title:'Back to the east wing',author:'The lamplit library is just the other side.',action:'RETURN'};
-      mark(box(1.9,3.1,.16,MAT.darkWood,cx,1.55,cz+d/2-.2,root),exit);for(const px of [-1.05,1.05])box(.16,3.35,.24,MAT.brass,cx+px,1.68,cz+d/2-.22,root);box(2.3,.16,.24,MAT.brass,cx,3.3,cz+d/2-.22,root);
+      if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,label:'THE EAST WING',...DOOR_LOOK})){mark(box(1.9,3.1,.16,MAT.darkWood,cx,1.55,cz+d/2-.2,root),exit);for(const px of [-1.05,1.05])box(.16,3.35,.24,MAT.brass,cx+px,1.68,cz+d/2-.22,root);box(2.3,.16,.24,MAT.brass,cx,3.3,cz+d/2-.22,root)}
       scene.add(root);
     }
     function placeBook(entry,spot,geometry){
@@ -147,8 +153,8 @@
     }
     function interact(object){
       const data=object?.userData;if(!data||typeof data.type!=='string'||!data.type.startsWith('evening-'))return false;
-      if(data.type==='evening-door'){enter();return true}
-      if(data.type==='evening-exit'){move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The east wing again.',3);return true}
+      if(data.type==='evening-door'){through(data,enter);return true}
+      if(data.type==='evening-exit'){through(data,()=>{move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The east wing again.',3)});return true}
       if(data.type==='evening-card'){showNotice(`${data.title}: ${data.author}`,6);return true}
       return false;
     }

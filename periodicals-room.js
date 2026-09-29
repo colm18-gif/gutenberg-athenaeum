@@ -26,7 +26,7 @@
   ];
 
   window.createPeriodicalsRoom=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],notes={},news=()=>({}),showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),registerSeat=null}=options;
+    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],notes={},news=()=>({}),showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),registerSeat=null,doorKit=null}=options;
     const DOOR={x:0,z:30.45,yaw:Math.PI};
     const ROOM={cx:-330,cz:100,w:16,d:14,h:5};
     const PRELOAD=7,KEEP=25;
@@ -36,6 +36,11 @@
     function add(geometry,material,x,y,z,parent){const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);parent.add(m);return m}
     const box=(w,h,d,material,x,y,z,parent)=>add(own(new THREE.BoxGeometry(w,h,d)),material,x,y,z,parent);
     function mark(object,data){object.userData=data;interactables.push(object);ours.push(object);return object}
+    // The door in the hall stays when the room is freed, so its parts are not among the room's own.
+    function markDoor(object,data){object.userData=data;interactables.push(object);return object}
+    // The same door from either side: dark green, glazed above, with a letter plate, hung in the library's own kit.
+    const DOOR_LOOK={style:'painted',color:0x2e3b2a,fanColor:0xd9923a,glazed:true,width:1.9,height:3.1};
+    const through=(data,go)=>doorKit&&data.kit?doorKit.pass(data.kit,data,go):go();
     function block(x,z,w,d){blockers.push({minX:x-w/2,maxX:x+w/2,minZ:z-d/2,maxZ:z+d/2})}
     function lamp(parent,color,intensity,distance,x,y,z){const l=new THREE.PointLight(color,intensity,distance,2);l.position.set(x,y,z);parent.add(l);return l}
     const dayKey=()=>today().toISOString().slice(0,10),dayNumber=()=>Math.floor(Date.parse(dayKey()+'T12:00:00Z')/86400000);
@@ -81,14 +86,16 @@
     function buildDoor(){
       const g=new THREE.Group();g.name='periodicals-door';g.position.set(DOOR.x,0,DOOR.z);g.rotation.y=DOOR.yaw;scene.add(g);
       const data={type:'periodicals-door',title:'The Periodicals Room',author:'Magazines, journals and papers, as they first appeared. Tonight’s Gazette is on the slopes.',action:'ENTER'};
-      const paint=new THREE.MeshStandardMaterial({color:0x2e3b2a,roughness:.8}),glass=new THREE.MeshStandardMaterial({color:0x8a6a3a,emissive:0xd9923a,emissiveIntensity:.45,roughness:.3});
-      mark(add(new THREE.BoxGeometry(1.9,3.1,.14),paint,0,1.55,.08,g),data);
-      const pane=add(new THREE.BoxGeometry(1.2,.7,.05),glass,0,2.35,.17,g);mark(pane,data);for(const bx of [-.2,.2])add(new THREE.BoxGeometry(.04,.72,.07),MAT.darkWood,bx,2.35,.18,g);add(new THREE.BoxGeometry(1.22,.04,.07),MAT.darkWood,0,2.35,.18,g);
-      for(const px of [-.46,.46])add(new THREE.BoxGeometry(.72,1.2,.04),MAT.darkWood,px,.95,.17,g);
-      for(const px of [-1.07,1.07])add(new THREE.BoxGeometry(.22,3.45,.3),MAT.brass,px,1.72,.1,g);add(new THREE.BoxGeometry(2.36,.22,.3),MAT.brass,0,3.44,.1,g);
-      mark(add(new THREE.SphereGeometry(.08,10,8),MAT.brass,.68,1.45,.22,g),data);
+      const kd=doorKit?.hang(g,{data,mark:markDoor,...DOOR_LOOK});if(!kd)markDoor(add(new THREE.BoxGeometry(1.9,3.1,.14),new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.8}),0,1.55,.08,g),data);
+      // A slot in the letter plate, for the post.
+      if(kd){for(const z of [-.115,.115])add(new THREE.BoxGeometry(.36,.035,.01),MAT.black||new THREE.MeshBasicMaterial({color:0x080604}),0,3.1*.53,z,kd.leaf);doorKit.drawAfterPortal(kd.leaf)}
+      // Beside the door, tonight's Gazette on its sticks, as in a coffee house.
+      const paper=canvasTexture((c,W,H)=>{c.fillStyle='#e6dcc2';c.fillRect(0,0,W,H);c.fillStyle='#2a2118';c.textAlign='center';c.font='bold 22px Georgia';c.fillText('THE AFTER DARK',W/2,34);c.font='bold 30px Georgia';c.fillText('GAZETTE',W/2,66);
+        c.fillRect(12,78,W-24,3);c.globalAlpha=.55;for(let col=0;col<3;col++)for(let line=0;line<22;line++)c.fillRect(14+col*(W-28)/3,94+line*9,(W-28)/3-8-((line*7+col*3)%5)*4,3);c.globalAlpha=1},160,300);
+      const sheet=new THREE.MeshStandardMaterial({map:paper,roughness:.95,side:THREE.DoubleSide}),gazette={type:'periodicals-gazette',title:'The After Dark Gazette',author:'Tonight’s number, on its stick by the door.',action:'READ THE GAZETTE'};
+      add(new THREE.BoxGeometry(.9,.08,.12),MAT.darkWood,-1.95,2.25,.08,g);for(const px of [-.3,0,.3]){add(new THREE.BoxGeometry(.03,.03,.3),MAT.brass,-1.95+px,2.2,.2,g);const stick=add(new THREE.BoxGeometry(.3,.035,.035),MAT.darkWood,-1.95+px,2.19,.34,g);markDoor(add(new THREE.PlaneGeometry(.26,.5),sheet,-1.95+px,1.93,.35,g),gazette)}
       const plate=plaque('THE PERIODICALS ROOM','Magazines, journals and papers',640,100);owned.pop();// the door's plaque stays for good
-      mark(add(new THREE.PlaneGeometry(2.3,.36),new THREE.MeshStandardMaterial({map:plate,emissive:0xffffff,emissiveMap:plate,emissiveIntensity:.35}),0,3.8,.12,g),data);
+      markDoor(add(new THREE.PlaneGeometry(2.3,.36),new THREE.MeshStandardMaterial({map:plate,emissive:0xffffff,emissiveMap:plate,emissiveIntensity:.35}),0,4.82,.12,g),data);
       lamp(g,0xffc27a,1.1,5,0,3.9,1.1);
     }
 
@@ -141,7 +148,7 @@
       lamp(root,0xffe0a8,7,14,cx,h-.4,cz-1);lamp(root,0xd8f0c0,2.5,5,cx+3.1,1.3,cz+4.8);
       // The door back to the Grand Hall.
       const exit={type:'periodicals-exit',title:'Back to the Grand Hall',author:'The clock is on the other side.',action:'RETURN'};
-      mark(box(1.9,3.1,.16,MAT.darkWood,cx,1.55,cz+d/2-.2,root),exit);for(const px of [-1.05,1.05])box(.16,3.35,.24,MAT.brass,cx+px,1.68,cz+d/2-.22,root);box(2.3,.16,.24,MAT.brass,cx,3.3,cz+d/2-.22,root);
+      if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,label:'THE GRAND HALL',...DOOR_LOOK})){mark(box(1.9,3.1,.16,MAT.darkWood,cx,1.55,cz+d/2-.2,root),exit);for(const px of [-1.05,1.05])box(.16,3.35,.24,MAT.brass,cx+px,1.68,cz+d/2-.22,root);box(2.3,.16,.24,MAT.brass,cx,3.3,cz+d/2-.22,root)}
       scene.add(root);
     }
     function placeBook(book,spot,geometry){
@@ -168,8 +175,8 @@
     }
     function interact(object){
       const data=object?.userData;if(!data||typeof data.type!=='string'||!data.type.startsWith('periodicals-'))return false;
-      if(data.type==='periodicals-door'){enter();return true}
-      if(data.type==='periodicals-exit'){move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again, under the clock.',3);return true}
+      if(data.type==='periodicals-door'){through(data,enter);return true}
+      if(data.type==='periodicals-exit'){through(data,()=>{move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again, under the clock.',3)});return true}
       if(data.type==='periodicals-gazette'){playSample?.('pageTurn',.5,1);readGazette();return true}
       if(data.type==='periodicals-card'){showNotice(`${data.title}: ${data.author}`,7);return true}
       return false;

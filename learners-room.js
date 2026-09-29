@@ -41,10 +41,13 @@
   const BANNER=['Welcome','Bienvenidos','Bienvenue','Boas-vindas','Willkommen','Karibu','Witamy','Hoş geldiniz','Selamat datang','Chào mừng','欢迎','ようこそ','환영합니다','स्वागत है','أهلاً وسهلاً','Добро пожаловать','Fáilte'];
 
   window.createLearnersRoom=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,levels={},arrivals={},wordHelp=null,showNotice,playSample,sound,move,analytics,language=()=>'en',today=()=>new Date(),isHolding=()=>false}=options;
+    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,levels={},arrivals={},wordHelp=null,showNotice,playSample,sound,move,analytics,language=()=>'en',today=()=>new Date(),isHolding=()=>false,doorKit=null}=options;
     const DOOR={x:-23,z:9.45,yaw:Math.PI};
     const ROOM={cx:-330,cz:-60,w:16,d:14,h:5};
     const PRELOAD=7,KEEP=25;
+    // The same door from either side: green, glazed above and hung in the library's own kit (library-doors.js).
+    const DOOR_LOOK={style:'painted',color:0x3f6b4f,fanColor:0xffc978,glazed:true,width:1.9,height:3.1};
+    const through=(data,go)=>doorKit&&data.kit?doorKit.pass(data.kit,data,go):go();
     let root=null,time=0,lastNeeded=-1e9,doorParts=null;
     const owned=[],ours=[],books=[],blockers=[];
     const own=thing=>{owned.push(thing);return thing};
@@ -52,6 +55,8 @@
     const box=(w,h,d,material,x,y,z,parent)=>add(own(new THREE.BoxGeometry(w,h,d)),material,x,y,z,parent);
     const cyl=(r1,r2,h,material,x,y,z,parent,seg=12)=>add(own(new THREE.CylinderGeometry(r1,r2,h,seg)),material,x,y,z,parent);
     function mark(object,data){object.userData=data;interactables.push(object);ours.push(object);return object}
+    // The door in the hall stays when the room is freed, so its parts are not among the room's own.
+    function markDoor(object,data){object.userData=data;interactables.push(object);return object}
     function block(x,z,w,d){blockers.push({minX:x-w/2,maxX:x+w/2,minZ:z-d/2,maxZ:z+d/2})}
     function lamp(parent,color,intensity,distance,x,y,z){const l=new THREE.PointLight(color,intensity,distance,2);l.position.set(x,y,z);parent.add(l);return l}
     const dayKey=()=>today().toISOString().slice(0,10);
@@ -89,14 +94,15 @@
     function buildDoor(){
       const g=new THREE.Group();g.name='learners-door';g.position.set(DOOR.x,0,DOOR.z);g.rotation.y=DOOR.yaw;scene.add(g);
       const data={type:'learners-door',title:'The English Reading Room',author:'For everyone reading in English as a new language. Graded shelves, and help with every word.',action:'ENTER'};
-      const paint=new THREE.MeshStandardMaterial({color:0x3f6b4f,roughness:.8}),glass=new THREE.MeshStandardMaterial({color:0xf3e6c4,emissive:0xffc978,emissiveIntensity:.6,roughness:.4});
-      mark(add(new THREE.BoxGeometry(1.9,3.1,.14),paint,0,1.55,.08,g),data);
-      for(const [py,ph] of [[.95,1.2]])for(const px of [-.46,.46])add(new THREE.BoxGeometry(.72,ph,.04),MAT.darkWood,px,py,.17,g);
-      mark(add(new THREE.BoxGeometry(1.3,.9,.04),glass,0,2.35,.17,g),data);for(const px of [-.22,.22])add(new THREE.BoxGeometry(.04,.9,.05),MAT.darkWood,px,2.35,.19,g);
-      for(const px of [-1.07,1.07])add(new THREE.BoxGeometry(.22,3.45,.3),MAT.brass,px,1.72,.1,g);add(new THREE.BoxGeometry(2.36,.22,.3),MAT.brass,0,3.44,.1,g);
-      mark(add(new THREE.SphereGeometry(.08,10,8),MAT.brass,.68,1.45,.22,g),data);
+      if(!doorKit?.hang(g,{data,mark:markDoor,...DOOR_LOOK}))markDoor(add(new THREE.BoxGeometry(1.9,3.1,.14),new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.8}),0,1.55,.08,g),data);
+      // A slate by the door with the word of the day, as on the blackboard inside.
+      const [word,meaning]=wordOfTheDay(),slate=canvasTexture((c,W,H)=>{c.fillStyle='#2b3530';c.fillRect(0,0,W,H);for(let k=0;k<260;k++){c.fillStyle=`rgba(255,255,255,${Math.random()*.04})`;c.fillRect(Math.random()*W,Math.random()*H,3+Math.random()*24,1+Math.random()*2)}
+        c.textAlign='center';c.fillStyle='#f4f1e6';c.font='bold 24px Georgia';c.fillText('WORD OF THE DAY',W/2,46);c.font='bold 62px Georgia';c.fillText(word,W/2,132);
+        c.font='italic 23px Georgia';c.fillStyle='#e8e0c8';let size=23;while(c.measureText(meaning).width>W-36&&size>14){size-=1;c.font=`italic ${size}px Georgia`}c.fillText(meaning,W/2,184)},384,224);
+      add(new THREE.BoxGeometry(.98,.62,.05),MAT.darkWood,-1.78,1.72,.04,g);markDoor(add(new THREE.PlaneGeometry(.88,.52),new THREE.MeshStandardMaterial({map:slate,roughness:.95}),-1.78,1.72,.07,g),{type:'learners-word',title:'Word of the day',author:`${word}: ${meaning}.`,action:'SAY IT',word,meaning});
+      add(new THREE.BoxGeometry(.5,.04,.08),MAT.darkWood,-1.78,1.38,.09,g);add(new THREE.BoxGeometry(.08,.025,.025),new THREE.MeshStandardMaterial({color:0xf2efe4,roughness:1}),-1.66,1.41,.1,g);
       const plate=canvasTexture((c,W,H)=>{c.fillStyle='#1e3326';c.fillRect(0,0,W,H);c.strokeStyle='#d7ae60';c.lineWidth=6;c.strokeRect(5,5,W-10,H-10);c.textAlign='center';c.fillStyle='#ffe2a0';c.font='bold 30px Georgia';c.fillText('THE ENGLISH READING ROOM',W/2,46);c.font='italic 21px Georgia';c.fillText('Welcome · Bienvenidos · Bienvenue · Karibu · 欢迎',W/2,80)},640,100);
-      mark(add(new THREE.PlaneGeometry(2.2,.34),new THREE.MeshStandardMaterial({map:plate,emissive:0x6b461e,emissiveIntensity:.35}),0,3.78,.12,g),data);
+      markDoor(add(new THREE.PlaneGeometry(2.2,.34),new THREE.MeshStandardMaterial({map:plate,emissive:0x6b461e,emissiveIntensity:.35}),0,4.82,.12,g),data);
       doorParts={group:g,glow:lamp(g,0xffd79a,1.2,5,0,3.9,1.1)};
     }
 
@@ -158,7 +164,7 @@
       lamp(root,0xffd49a,6,9,cx,3.2,cz-d/2+2.2);
       // The door back to the west wing.
       const exit={type:'learners-exit',title:'Back to the west wing',author:'The lamplit library is just the other side.',action:'RETURN'};
-      mark(box(1.9,3.1,.16,MAT.darkWood,cx-3.4,1.55,cz+d/2-.2,root),exit);for(const px of [-1.05,1.05])box(.16,3.35,.24,MAT.brass,cx-3.4+px,1.68,cz+d/2-.22,root);box(2.3,.16,.24,MAT.brass,cx-3.4,3.3,cz+d/2-.22,root);
+      if(!doorKit?.hang(root,{data:exit,mark,x:cx-3.4,z:cz+d/2-.2,yaw:Math.PI,label:'THE WEST WING',...DOOR_LOOK})){mark(box(1.9,3.1,.16,MAT.darkWood,cx-3.4,1.55,cz+d/2-.2,root),exit);for(const px of [-1.05,1.05])box(.16,3.35,.24,MAT.brass,cx-3.4+px,1.68,cz+d/2-.22,root);box(2.3,.16,.24,MAT.brass,cx-3.4,3.3,cz+d/2-.22,root)}
       scene.add(root);
     }
     function placeBook(entry,x,y,z,yaw,geometry,tilt=-.08){
@@ -186,8 +192,8 @@
     function interact(object){
       const data=object?.userData;if(!data||typeof data.type!=='string'||!data.type.startsWith('learners-'))return false;
       switch(data.type){
-        case 'learners-door':enter();return true;
-        case 'learners-exit':move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The west wing again.',3);return true;
+        case 'learners-door':through(data,enter);return true;
+        case 'learners-exit':through(data,()=>{move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The west wing again.',3)});return true;
         case 'learners-word':wordHelp?.speak?.(data.word);showNotice(`${data.word}: ${data.meaning}.`,6);return true;
         case 'learners-level':showNotice(`${data.title}: ${data.author} Every book in this room was chosen for readers learning English.`,8);return true;
         case 'learners-notebook':{const list=wordHelp?.notebook?.()||[];showNotice(list.length?`My words (${list.length}): ${list.slice(0,12).map(e=>e.m?`${e.w} (${e.m.split(/[;(]/)[0].trim()})`:e.w).join(' · ')}${list.length>12?' …':''}`:'Your notebook is empty. While reading, tap a word and choose “Save to my words”.',12);return true}

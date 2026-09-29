@@ -6,7 +6,7 @@
   'use strict';
 
   window.createDailyRoom=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,registerBook,showNotice,playSample,sound,move,analytics,now=()=>new Date(),registerSeat=null}=options;
+    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,registerBook,showNotice,playSample,sound,move,analytics,now=()=>new Date(),registerSeat=null,doorKit=null}=options;
     const schedule=window.ATHENAEUM_DAILY_ROOMS;if(!schedule?.days?.length)return null;
     const room={cx:-240,cz:110,w:14,d:14,h:5.2},door={x:-18.72,z:-14.5,yaw:Math.PI/2};
     const KEEP_WARM_SECONDS=25,PRELOAD_DISTANCE=9,DAY_MS=86400000,ARCHIVE=Math.max(1,schedule.archiveDays||14);
@@ -46,6 +46,9 @@
     const add=(geometry,material,x,y,z,parent)=>{const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);m.castShadow=m.receiveShadow=false;parent.add(m);return m};
     const box=(w,h,d,material,x,y,z,parent)=>add(new THREE.BoxGeometry(w,h,d),material,x,y,z,parent);
     const mark=(object,data)=>{object.userData=data;interactables.push(object);return object};
+    // The same door from either side: the library's warm wood, panelled and hung in its own kit (library-doors.js).
+    let doorLook=null;const DOOR_LOOK=()=>doorLook||(doorLook={style:'walnut',width:1.9,height:3.1,color:new THREE.MeshStandardMaterial({map:MAT.wood.map||null,color:MAT.wood.map?0x8a6448:0x4a2c18,roughness:.85,metalness:0,envMapIntensity:.15})});
+    const through=(data,go)=>doorKit&&data.kit?doorKit.pass(data.kit,data,go):go();
     function light(parent,color,intensity,distance,x,y,z){const l=new THREE.PointLight(color,intensity,distance,2);l.position.set(x,y,z);l.castShadow=false;parent.add(l);return l}
     function wrap(c,text,x,y,maxWidth,lineHeight,maxLines=9){const words=String(text).split(/\s+/);let line='',lines=0;for(const word of words){const test=line?line+' '+word:word;if(c.measureText(test).width>maxWidth&&line){c.fillText(line,x,y);y+=lineHeight;line=word;if(++lines>=maxLines-1)break}else line=test}if(line)c.fillText(line,x,y);return y+lineHeight}
     const displayGeometry=new THREE.BoxGeometry(.82,1.08,.14);
@@ -64,14 +67,11 @@
     function buildDoor(){
       const g=new THREE.Group();g.position.set(door.x,0,door.z);g.rotation.y=door.yaw;scene.add(g);
       const data={type:'daily-door',title:'The Room of the Day',author:'A new room behind this door every day: ten books, chosen for the date.',action:'ENTER'};
-      const doorWood=new THREE.MeshStandardMaterial({map:MAT.wood.map||null,color:MAT.wood.map?0x8a6448:0x4a2c18,roughness:.85,metalness:0,envMapIntensity:.15}),panelWood=new THREE.MeshStandardMaterial({map:MAT.darkWood.map||null,color:MAT.darkWood.map?0x6a4a36:0x2e1a0e,roughness:.85,metalness:0,envMapIntensity:.15});mark(box(1.9,3.1,.14,doorWood,0,1.55,.08,g),data);
-      for(const [py,ph] of [[.95,1.2],[2.35,1.05]])for(const px of [-.46,.46])box(.72,ph,.04,panelWood,px,py,.17,g);
-      for(const px of [-1.07,1.07])box(.22,3.45,.3,MAT.brass,px,1.72,.1,g);box(2.36,.22,.3,MAT.brass,0,3.44,.1,g);
-      const knob=add(new THREE.SphereGeometry(.08,10,8),MAT.brass,.68,1.45,.22,g);mark(knob,data);
-      const sign=add(new THREE.PlaneGeometry(1.9,.3),new THREE.MeshStandardMaterial({map:canvasTexture((c,w,h)=>{c.fillStyle='#24170d';c.fillRect(0,0,w,h);c.strokeStyle='#d7ae60';c.lineWidth=6;c.strokeRect(5,5,w-10,h-10);c.fillStyle='#ffe2a0';c.textAlign='center';c.font='bold 30px Georgia';c.fillText('THE ROOM OF THE DAY',w/2,44)},560,64),emissive:0x6b461e,emissiveIntensity:.35}),0,3.72,.12,g);mark(sign,data);
+      if(!doorKit?.hang(g,{data,mark,...DOOR_LOOK()})){const doorWood=DOOR_LOOK().color;mark(box(1.9,3.1,.14,doorWood,0,1.55,.08,g),data);for(const px of [-1.07,1.07])box(.22,3.45,.3,MAT.brass,px,1.72,.1,g);box(2.36,.22,.3,MAT.brass,0,3.44,.1,g)}
+      const sign=add(new THREE.PlaneGeometry(1.9,.3),new THREE.MeshStandardMaterial({map:canvasTexture((c,w,h)=>{c.fillStyle='#24170d';c.fillRect(0,0,w,h);c.strokeStyle='#d7ae60';c.lineWidth=6;c.strokeRect(5,5,w-10,h-10);c.fillStyle='#ffe2a0';c.textAlign='center';c.font='bold 30px Georgia';c.fillText('THE ROOM OF THE DAY',w/2,44)},560,64),emissive:0x6b461e,emissiveIntensity:.35}),0,4.82,.12,g);mark(sign,data);
       // A tear-off calendar above the door shows today's date and what is behind it.
       const calendarMaterial=new THREE.MeshStandardMaterial({map:calendarTexture(entryFor(todayKey)),roughness:.85});
-      const calendar=add(new THREE.PlaneGeometry(1.05,1.05),calendarMaterial,0,4.55,.12,g);mark(calendar,data);box(1.15,.08,.06,MAT.brass,0,5.1,.12,g);
+      const calendar=add(new THREE.PlaneGeometry(1.05,1.05),calendarMaterial,0,5.62,.12,g);mark(calendar,data);box(1.15,.08,.06,MAT.brass,0,6.17,.12,g);
       const glow=light(g,0xffc27a,1.4,5,0,3.9,1.1);
       doorParts={group:g,calendarMaterial,glow};
     }
@@ -102,9 +102,8 @@
         Object.defineProperty(data,'bookIds',{get:()=>dayBooks.map(mesh=>mesh.userData.book.id),configurable:true})}
       // Exit.
       const exitData={type:'daily-exit',title:'Back to the Grand Hall',author:'The door remembers which way the lamps are.',action:'RETURN'};
-      mark(box(1.9,3.1,.16,MAT.darkWood,cx,1.55,cz+d/2-.2,root),exitData);
-      for(const px of [-1.05,1.05])box(.16,3.35,.24,MAT.brass,cx+px,1.68,cz+d/2-.22,root);box(2.3,.16,.24,MAT.brass,cx,3.3,cz+d/2-.22,root);
-      mark(add(new THREE.SphereGeometry(.08,10,8),MAT.brass,cx+.65,1.45,cz+d/2-.32,root),exitData);
+      if(!doorKit?.hang(root,{data:exitData,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,label:'THE GRAND HALL',...DOOR_LOOK()})){mark(box(1.9,3.1,.16,MAT.darkWood,cx,1.55,cz+d/2-.2,root),exitData);
+        for(const px of [-1.05,1.05])box(.16,3.35,.24,MAT.brass,cx+px,1.68,cz+d/2-.22,root);box(2.3,.16,.24,MAT.brass,cx,3.3,cz+d/2-.22,root)}
       root.userData.lights=[light(root,0xffd49a,14,16,cx,h-.5,cz-2.5),light(root,0xffd49a,10,14,cx,h-.5,cz+3.5),light(root,0xffd49a,7,9,cx,3.1,cz-d/2+2.6)];
       scene.add(root);active=true;
     }
@@ -166,8 +165,8 @@
     }
     function interact(object){
       const data=object?.userData;if(!data)return false;
-      if(data.type==='daily-door'){enter();return true}
-      if(data.type==='daily-exit'){move(door.x+Math.sin(door.yaw)*1.9,door.z+Math.cos(door.yaw)*1.9,door.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again. Tomorrow the room will be different.',4);return true}
+      if(data.type==='daily-door'){through(data,enter);return true}
+      if(data.type==='daily-exit'){through(data,()=>{move(door.x+Math.sin(door.yaw)*1.9,door.z+Math.cos(door.yaw)*1.9,door.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again. Tomorrow the room will be different.',4)});return true}
       if(data.type==='daily-daybook'){if(oldestOffset()===0){showNotice(data.author,5);return true}const next=shownOffset>=oldestOffset()?0:shownOffset+1;dress(next);sound?.(620,.12,'triangle',.04);const found=entryFor(addDays(todayKey,-next));showNotice(next?`The room rearranges itself: ${shortDate(found.key)}, ${found.entry.title}.`:`Back to today: ${found.entry.title}.`,5);return true}
       if(data.type==='daily-detail'){showNotice(data.author,8);return true}
       return false;

@@ -75,7 +75,9 @@ test('the room builds on approach with graded shelves, and is freed after the re
   r.interact(interactables.find(o=>o.userData.type==='learners-word'));assert.match(notices.at(-1),/^\w+: /);
   r.interact(interactables.find(o=>o.userData.type==='learners-exit'));player.pos.set(0,0,0);disposed=0;r.update(40,.1);
   assert.equal(r.built,false);assert.equal(scene.children.length,doorOnly);assert(disposed>40);
-  assert.equal(interactables.filter(o=>o.userData.type!=='learners-door').length,0);
+  assert.equal(interactables.filter(o=>!['learners-door','learners-word'].includes(o.userData.type)).length,0);
+  assert(interactables.some(o=>o.userData.type==='learners-door'),'the door in the west wing still answers once the room is freed');
+  assert.equal(interactables.filter(o=>o.userData.type==='learners-word').length,1,'only the slate by the door is left, with the word of the day');
 });
 test('an English browser gets a plain welcome, and the walls keep readers inside',()=>{
   const {r,notices,interactables}=room('en-GB');r.interact(interactables.find(o=>o.userData.type==='learners-door'));assert.match(notices.at(-1),/^The English Reading Room/);
