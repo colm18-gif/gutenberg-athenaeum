@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-09-28",
+ "updated": "2026-09-29",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -1130,6 +1130,30 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Arsène Lupin, gentleman-cambrioleur [fr]": {
    "id": 32854,
    "words": 55374
+  },
+  "Adolphe [fr]": {
+   "id": 13861,
+   "words": 29194
+  },
+  "Lettres écrites de Lausanne [fr]": {
+   "id": 26818,
+   "words": 50588
+  },
+  "Corinne [fr]": {
+   "id": 60810,
+   "words": 179954
+  },
+  "Oberman [fr]": {
+   "id": 32808,
+   "words": 130809
+  },
+  "Miss Rovel [fr]": {
+   "id": 28523,
+   "words": 79891
+  },
+  "Simone [fr]": {
+   "id": 17696,
+   "words": 67915
   },
   "Aeneidos [la]": {
    "id": 227,
