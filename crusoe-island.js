@@ -67,7 +67,7 @@
       const g=new THREE.Group();g.name='boathouse-door';g.position.set(DOOR.x,0,DOOR.z);g.rotation.y=DOOR.yaw;scene.add(g);
       const data={type:'isle-door',title:'The Boathouse',author:'A sea-blue door that smells faintly of salt. Somewhere behind it, water is lapping.',action:'ENTER'};
       const glass=new THREE.MeshStandardMaterial({color:0x1d3440,emissive:0x0d2330,emissiveIntensity:.8,roughness:.2,metalness:.1});
-      const kd=doorKit?.hang(g,{data,mark:markDoor,...DOOR_LOOK});if(!kd)markDoor(box(1.9,3.1,.14,new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.8}),0,1.55,.08,g),data);porthole(kd,glass);
+      const kd=doorKit?.hang(g,{data,mark:markDoor,...DOOR_LOOK,...doorKit.readingRoom?.('THE BOATHOUSE','Crusoe’s island, by water')});if(!kd)markDoor(box(1.9,3.1,.14,new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.8}),0,1.55,.08,g),data);else if(!doorKit.readingRoom)porthole(kd,glass);
       // A coil of rope on a cleat beside the door, and a lifebuoy.
       const rope=new THREE.MeshStandardMaterial({color:0x6e5534,roughness:1});
       for(let k=0;k<3;k++){const coil=add(new THREE.TorusGeometry(.3-k*.035,.035,6,22),rope,-1.72,1.7-k*.05,.1+k*.03,g);coil.scale.y=1.25}
@@ -76,7 +76,8 @@
       const ring=add(new THREE.TorusGeometry(.3,.08,10,24),buoy,1.72,2.05,.14,g);for(let k=0;k<4;k++){const b=add(new THREE.TorusGeometry(.3,.085,10,4,Math.PI/6),band,1.72,2.05,.14,g);b.rotation.z=k*Math.PI/2+Math.PI/6}
       markDoor(ring,{type:'isle-card',title:'A lifebuoy',author:'No ship’s name on it. Crusoe came ashore without one, on the island he called the Island of Despair.',action:'EXAMINE'});
       const plate=texture((c,W,H)=>{c.fillStyle='#16282e';c.fillRect(0,0,W,H);c.strokeStyle='#d7ae60';c.lineWidth=6;c.strokeRect(5,5,W-10,H-10);c.fillStyle='#ffe2a0';c.textAlign='center';c.font='bold 30px Georgia';c.fillText('THE BOATHOUSE',W/2,44)},560,64);
-      markDoor(add(new THREE.PlaneGeometry(1.9,.3),new THREE.MeshStandardMaterial({map:plate,emissive:0x6b461e,emissiveIntensity:.35}),0,3.72,.12,g),data);
+      // The name is gilded on the door's glass; the old board above is kept only for a door built without the kit.
+      if(!doorKit?.readingRoom)markDoor(add(new THREE.PlaneGeometry(1.9,.3),new THREE.MeshStandardMaterial({map:plate,emissive:0x6b461e,emissiveIntensity:.35}),0,3.72,.12,g),data);
       owned.splice(owned.indexOf(plate),1);
       doorParts={group:g,glow:lamp(g,0xbfe3ff,1.1,5,0,3.9,1.1)};
     }

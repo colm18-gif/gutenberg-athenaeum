@@ -59,9 +59,10 @@
     function buildDoor(){
       const g=new THREE.Group();g.name='irish-door';g.position.set(DOOR.x,0,DOOR.z);g.rotation.y=DOOR.yaw;scene.add(g);
       const data={type:'irish-door',title:'The Irish Room',author:'Seomra na hÉireann: the stories of Ireland, its writers, and books in Irish.',action:'ENTER'};
-      if(!doorKit?.hang(g,{data,mark:markDoor,...DOOR_LOOK}))markDoor(add(new THREE.BoxGeometry(1.9,3.1,.14),new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.7}),0,1.55,.08,g),data);
+      if(!doorKit?.hang(g,{data,mark:markDoor,...DOOR_LOOK,...doorKit.readingRoom?.('THE IRISH ROOM','Seomra na hÉireann')}))markDoor(add(new THREE.BoxGeometry(1.9,3.1,.14),new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.7}),0,1.55,.08,g),data);
       const plate=canvasTexture((c,W,H)=>{c.fillStyle='#14281c';c.fillRect(0,0,W,H);c.strokeStyle='#c9a45a';c.lineWidth=6;c.strokeRect(5,5,W-10,H-10);c.textAlign='center';c.fillStyle='#f1e2b8';c.font='bold 32px Georgia';c.fillText('THE IRISH ROOM',W/2,46);c.font='italic 22px Georgia';c.fillText('Seomra na hÉireann',W/2,80)},600,100);
-      markDoor(add(new THREE.PlaneGeometry(2.1,.35),new THREE.MeshStandardMaterial({map:plate,emissive:0x3a2a12,emissiveIntensity:.35}),0,4.82,.12,g),data);
+      // The name is gilded on the door's glass; the old board above is kept only for a door built without the kit.
+      if(!doorKit?.readingRoom)markDoor(add(new THREE.PlaneGeometry(2.1,.35),new THREE.MeshStandardMaterial({map:plate,emissive:0x3a2a12,emissiveIntensity:.35}),0,4.82,.12,g),data);
     }
 
     // ---------- the room ----------

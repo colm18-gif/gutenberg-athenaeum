@@ -31,7 +31,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - Doors come from the shared kit in `library-doors.js`. A room behind a door is given `doorKit` and hangs both sides of
   its door with `doorKit.hang(parent,{data,mark,...look})` (`color`, `glazed`, `planked`, `plain`, `fanColor`, `frame`,
   `cornice`, `pediment`; no light of its own), then lets the reader through with `doorKit.pass(data.kit,data,go)` so
-  the leaf swings first. Mark the hall side of a door so it is not among the room's own parts, or it stops answering
+  the leaf swings first. On the Grand Hall's side, a room's door is the library's walnut with its name gilded on the glass
+  (`...doorKit.readingRoom('THE X ROOM','sub line')` after the room's own look); the room's side keeps its colours. Mark the hall side of a door so it is not among the room's own parts, or it stops answering
   once the room is freed.
 - Performance matters (many visitors are on phones): merge static parts by material, use `InstancedMesh`, avoid
   adding lights where the library's own can be borrowed.

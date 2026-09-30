@@ -94,7 +94,7 @@
     function buildDoor(){
       const g=new THREE.Group();g.name='learners-door';g.position.set(DOOR.x,0,DOOR.z);g.rotation.y=DOOR.yaw;scene.add(g);
       const data={type:'learners-door',title:'The English Reading Room',author:'For everyone reading in English as a new language. Graded shelves, and help with every word.',action:'ENTER'};
-      if(!doorKit?.hang(g,{data,mark:markDoor,...DOOR_LOOK}))markDoor(add(new THREE.BoxGeometry(1.9,3.1,.14),new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.8}),0,1.55,.08,g),data);
+      if(!doorKit?.hang(g,{data,mark:markDoor,...DOOR_LOOK,...doorKit.readingRoom?.('THE ENGLISH\nREADING ROOM','For new readers of English')}))markDoor(add(new THREE.BoxGeometry(1.9,3.1,.14),new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.8}),0,1.55,.08,g),data);
       // A slate by the door with the word of the day, as on the blackboard inside.
       const [word,meaning]=wordOfTheDay(),slate=canvasTexture((c,W,H)=>{c.fillStyle='#2b3530';c.fillRect(0,0,W,H);for(let k=0;k<260;k++){c.fillStyle=`rgba(255,255,255,${Math.random()*.04})`;c.fillRect(Math.random()*W,Math.random()*H,3+Math.random()*24,1+Math.random()*2)}
         c.textAlign='center';c.fillStyle='#f4f1e6';c.font='bold 24px Georgia';c.fillText('WORD OF THE DAY',W/2,46);c.font='bold 62px Georgia';c.fillText(word,W/2,132);
@@ -102,7 +102,8 @@
       add(new THREE.BoxGeometry(.98,.62,.05),MAT.darkWood,-1.78,1.72,.04,g);markDoor(add(new THREE.PlaneGeometry(.88,.52),new THREE.MeshStandardMaterial({map:slate,roughness:.95}),-1.78,1.72,.07,g),{type:'learners-word',title:'Word of the day',author:`${word}: ${meaning}.`,action:'SAY IT',word,meaning});
       add(new THREE.BoxGeometry(.5,.04,.08),MAT.darkWood,-1.78,1.38,.09,g);add(new THREE.BoxGeometry(.08,.025,.025),new THREE.MeshStandardMaterial({color:0xf2efe4,roughness:1}),-1.66,1.41,.1,g);
       const plate=canvasTexture((c,W,H)=>{c.fillStyle='#1e3326';c.fillRect(0,0,W,H);c.strokeStyle='#d7ae60';c.lineWidth=6;c.strokeRect(5,5,W-10,H-10);c.textAlign='center';c.fillStyle='#ffe2a0';c.font='bold 30px Georgia';c.fillText('THE ENGLISH READING ROOM',W/2,46);c.font='italic 21px Georgia';c.fillText('Welcome · Bienvenidos · Bienvenue · Karibu · 欢迎',W/2,80)},640,100);
-      markDoor(add(new THREE.PlaneGeometry(2.2,.34),new THREE.MeshStandardMaterial({map:plate,emissive:0x6b461e,emissiveIntensity:.35}),0,4.82,.12,g),data);
+      // The name is gilded on the door's glass; the old board above is kept only for a door built without the kit.
+      if(!doorKit?.readingRoom)markDoor(add(new THREE.PlaneGeometry(2.2,.34),new THREE.MeshStandardMaterial({map:plate,emissive:0x6b461e,emissiveIntensity:.35}),0,4.82,.12,g),data);
       doorParts={group:g,glow:lamp(g,0xffd79a,1.2,5,0,3.9,1.1)};
     }
 
