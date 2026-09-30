@@ -1,0 +1,20 @@
+name: Catalogue lookup
+
+# Searches Project Gutenberg's own catalogue for the titles in scripts/catalog-queries.txt and prints what it finds
+# (numbers, titles, authors, languages), for choosing new books. It changes nothing in the repository.
+on:
+  workflow_dispatch:
+  push:
+    branches: ['claude/**']
+    paths: ['scripts/catalog-queries.txt','scripts/catalog-lookup.py']
+
+permissions:
+  contents: read
+
+jobs:
+  lookup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/catalog-lookup.py
