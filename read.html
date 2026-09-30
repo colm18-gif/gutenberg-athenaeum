@@ -35,6 +35,9 @@
   .resume{display:none;margin:1em 0;padding:10px 14px;border:1px solid var(--rule);border-radius:6px}
   .resume.shown{display:block}
 </style>
+<!-- The reading card, when the reader has one: the same bookmarks on every device (reading-card.js). -->
+<script src="data/visitors-book-config.js"></script>
+<script src="reading-card.js"></script>
 </head>
 <body>
 <div class="progress" id="progress" aria-hidden="true"></div>
@@ -68,7 +71,8 @@
   $('walk').href='/?book='+id;
   // The same bookmark as the 3D reader: a fraction of the way through the book.
   const KEY='athenaeum-progress-'+id;
-  const saved=(()=>{try{const v=JSON.parse(store.get(KEY)||'null');return v&&typeof v.p==='number'&&v.p>0&&v.p<1?v.p:0}catch(e){return 0}})();
+  const savedPlace=()=>{try{const v=JSON.parse(store.get(KEY)||'null');return v&&typeof v.p==='number'&&v.p>0&&v.p<1?v.p:0}catch(e){return 0}};
+  const card=window.AthenaeumCard,cardReady=card?.code?card.sync().catch(()=>{}):Promise.resolve();card?.start?.();
   async function bundled(){if(typeof DecompressionStream==='undefined')return'';try{const r=await fetch(`texts/bundled-gzip/pg${id}.txt.gz`);if(!r.ok)return'';return await new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).text()}catch(e){return''}}
   async function plain(url){try{const r=await fetch(url);if(!r.ok)return'';const t=await r.text();return t.length>500&&!/^\s*</.test(t)?t:''}catch(e){return''}}
   async function fetchText(){
@@ -98,10 +102,10 @@
   function track(){
     const bar=$('progress');let last=0;
     const at=()=>{const max=document.documentElement.scrollHeight-innerHeight;return max>0?Math.min(1,Math.max(0,scrollY/max)):0};
-    addEventListener('scroll',()=>{const p=at();bar.style.width=(p*100)+'%';const now=Date.now();if(now-last>1500&&p>0.001){last=now;store.set(KEY,JSON.stringify({p,n:100}))}},{passive:true});
-    addEventListener('pagehide',()=>{const p=at();if(p>0.001)store.set(KEY,JSON.stringify({p,n:100}))});
+    addEventListener('scroll',()=>{const p=at();bar.style.width=(p*100)+'%';const now=Date.now();if(now-last>1500&&p>0.001){last=now;store.set(KEY,JSON.stringify({p,n:100,t:Date.now()}))}},{passive:true});
+    addEventListener('pagehide',()=>{const p=at();if(p>0.001)store.set(KEY,JSON.stringify({p,n:100,t:Date.now()}))},{capture:true});
   }
-  fetchText().then(raw=>{
+  Promise.all([fetchText(),cardReady]).then(([raw])=>{const saved=savedPlace();
     if(!raw){$('status').textContent='The text could not be fetched just now. Try again in a moment, or read it in the 3D library.';return}
     const title=field(raw,'Title')||'A book from the library',author=field(raw,'Author'),language=field(raw,'Language'),lang=LANGS[language.split(/[,;]/)[0].trim()]||'en';
     document.title=`${title} · Plain text · The Library After Dark`;root.lang=lang;$('title').textContent=title;$('author').textContent=author;

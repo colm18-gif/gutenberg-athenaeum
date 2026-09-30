@@ -5,10 +5,10 @@ const fs=require('node:fs');
 test('every book page offers the book as plain text, and the plain reader shares the 3D reader’s bookmark',()=>{
   const page=fs.readFileSync('book/345-dracula.html','utf8'),reader=fs.readFileSync('read.html','utf8');
   assert.match(page,/<a class="plain" href="\/read\.html\?book=345&amp;from=345-dracula\.html">Or read it as plain text<\/a>/);
-  assert.match(reader,/const KEY='athenaeum-progress-'\+id/,'the same key as game.js’s loadSavedProgress');assert.match(reader,/JSON\.stringify\(\{p,n:100\}\)/);
+  assert.match(reader,/const KEY='athenaeum-progress-'\+id/,'the same key as game.js’s loadSavedProgress');assert.match(reader,/JSON\.stringify\(\{p,n:100,t:Date\.now\(\)\}\)/);
   assert.match(reader,/texts\/bundled-gzip\/pg\$\{id\}\.txt\.gz/);assert.match(reader,/texts\/pg\$\{id\}\.txt/);
   assert.match(reader,/START OF \(THE\|THIS\) \(PROJECT GUTENBERG EBOOK\|WIKISOURCE TEXT\)/,'Wikisource texts too');
-  assert.doesNotMatch(reader,/<script src=/,'no scripts to download: one small page');
+  assert.deepEqual([...reader.matchAll(/<script src="([^"]+)"/g)].map(m=>m[1]),['data/visitors-book-config.js','reading-card.js'],'nothing else to download: one small page');
 });
 
 test('the 3D reader and the opening screen point to the plain text',()=>{

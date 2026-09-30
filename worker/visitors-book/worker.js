@@ -7,6 +7,15 @@
 //   POST   /sign             {name, country, book, phrase}   (book: a Project Gutenberg number, or 0)
 //   DELETE /entries/:id      remove one signature (needs the ADMIN_TOKEN secret as a Bearer token)
 //
+// It also keeps reading cards, so a reader can carry their place in each book to another device. A card is only a
+// code of four words and two digits (no account, no email) and, for each book, how far through it the reader is and
+// when they were last there. The code itself is never stored, only a hash of it; a card is forgotten after a year
+// without use.
+//
+//   POST   /card             make a new card: {code}
+//   GET    /card/:code       {books:{id:{p,t}}}   (p: 0 to 1 of the way through; t: when, in ms)
+//   PUT    /card/:code       {books:{id:{p,t}}}   merged with what the card holds; the later t wins for each book
+//
 // Storage: one KV namespace bound as BOOK. See README.md in this folder for setting it up.
 
 // Keep in step with visitors-book.js in the site (a test checks they match).
@@ -27,6 +36,23 @@ const BLOCKED_WORDS=('arse arsehole ass asshole bastard bitch bollocks bugger bu
 const BLOCKED_ANYWHERE=['fuck','cunt','nigg','fagg','wank','twat','whore'];// not 'shit' (Yoshitaka) or 'rape' (Draper)
 const LEET={'0':'o','1':'i','3':'e','4':'a','5':'s','7':'t','@':'a','$':'s','!':'i'};
 const KEEP=400,SHOW=60,DAILY_LIMIT=500,WAIT_SECONDS=600;
+// The words reading-card codes are made of: easy to read aloud and type on a phone.
+export const CARD_WORDS=('amber anchor apple arch atlas attic autumn badger barley beacon birch bishop bramble brass bridge brook '+
+  'candle canvas castle cedar chapel cherry cider clover comet copper coral cottage crane crow daisy delta dove dune '+
+  'eagle ember falcon fern ferry fiddle finch forest fossil fox garden garnet glacier harbour hare harp hazel heron '+
+  'holly honey island ivory ivy jasper juniper kestrel kettle lantern lark laurel lemon linen lotus maple marble meadow '+
+  'mill mint moss nectar oak ochre olive opal orchard otter owl pebble pepper pilot pine plum poppy quill quince '+
+  'raven reed ribbon river robin rowan saffron sage salmon shell silver sparrow spruce star stone swan thistle tide '+
+  'tulip velvet violet walnut willow wren').split(' ');
+const CARD_BOOKS=600,CARD_TTL=60*60*24*400,CARD_QUIET_MS=10000;
+const CARD_CODE=new RegExp(`^(${CARD_WORDS.join('|')})(-(${CARD_WORDS.join('|')})){3}-\\d{2}$`);
+export function cardCode(random=crypto.getRandomValues(new Uint32Array(5))){return [0,1,2,3].map(i=>CARD_WORDS[random[i]%CARD_WORDS.length]).join('-')+'-'+String(random[4]%100).padStart(2,'0')}
+export const cleanCode=raw=>{const code=String(raw??'').trim().toLowerCase().replace(/[\s_]+/g,'-');return CARD_CODE.test(code)?code:null};
+// Only book numbers, fractions and times: anything else in a card is dropped.
+export function cleanBooks(raw){const books={};for(const [id,v] of Object.entries(raw&&typeof raw==='object'?raw:{})){const n=Number(id),p=Number(v?.p),t=Number(v?.t);
+  if(Number.isInteger(n)&&n>0&&n<1e6&&p>=0&&p<=1&&Number.isFinite(t)&&t>0)books[n]={p:Math.round(p*10000)/10000,t:Math.round(t)}}return books}
+export function mergeBooks(held,incoming){const out={...held};for(const [id,v] of Object.entries(incoming))if(!out[id]||v.t>out[id].t)out[id]=v;
+  const ids=Object.keys(out).sort((a,b)=>out[b].t-out[a].t);return Object.fromEntries(ids.slice(0,CARD_BOOKS).map(id=>[id,out[id]]))}
 const ORIGINS=[/^https:\/\/(www\.)?libraryafterdark\.space$/,/^http:\/\/localhost(:\d+)?$/,/^http:\/\/127\.0\.0\.1(:\d+)?$/];
 
 export function cleanName(raw){
@@ -50,7 +76,7 @@ export function validate(body){
 async function hash(text){const bytes=new TextEncoder().encode(text);const digest=await crypto.subtle.digest('SHA-256',bytes);return [...new Uint8Array(digest)].slice(0,12).map(b=>b.toString(16).padStart(2,'0')).join('')}
 async function read(env){try{return JSON.parse(await env.BOOK.get('entries')||'[]')}catch(e){return []}}
 function cors(request){const origin=request.headers.get('Origin')||'';const allowed=ORIGINS.some(r=>r.test(origin));
-  return {'Access-Control-Allow-Origin':allowed?origin:'https://libraryafterdark.space','Access-Control-Allow-Methods':'GET, POST, DELETE, OPTIONS','Access-Control-Allow-Headers':'Content-Type, Authorization','Vary':'Origin'}}
+  return {'Access-Control-Allow-Origin':allowed?origin:'https://libraryafterdark.space','Access-Control-Allow-Methods':'GET, POST, PUT, DELETE, OPTIONS','Access-Control-Allow-Headers':'Content-Type, Authorization','Vary':'Origin'}}
 const json=(request,data,status=200,extra={})=>new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store',...cors(request),...extra}});
 
 export async function handle(request,env,now=new Date()){
@@ -69,6 +95,30 @@ export async function handle(request,env,now=new Date()){
     entries.unshift(entry);await env.BOOK.put('entries',JSON.stringify(entries.slice(0,KEEP)));
     await env.BOOK.put(who,'1',{expirationTtl:WAIT_SECONDS});await env.BOOK.put(countKey,String(count+1),{expirationTtl:172800});
     return json(request,{entry},201);
+  }
+  // Reading cards.
+  const fromLibrary=ORIGINS.some(r=>r.test(request.headers.get('Origin')||''));
+  if(request.method==='POST'&&url.pathname==='/card'){
+    if(!fromLibrary)return json(request,{error:'Reading cards are only made inside the library.'},403);
+    const who='cardwait:'+await hash((request.headers.get('CF-Connecting-IP')||'')+'|reading-card');
+    if(await env.BOOK.get(who))return json(request,{error:'A card was made here a moment ago. Please try again in a minute.'},429);
+    let code=cardCode();for(let i=0;i<3&&await env.BOOK.get('card:'+await hash(code));i++)code=cardCode();
+    await env.BOOK.put('card:'+await hash(code),JSON.stringify({b:{},u:now.getTime()}),{expirationTtl:CARD_TTL});await env.BOOK.put(who,'1',{expirationTtl:60});
+    return json(request,{code},201);
+  }
+  const card=url.pathname.match(/^\/card\/([a-z0-9-]{8,80})$/);
+  if(card&&(request.method==='GET'||request.method==='PUT')){
+    const code=cleanCode(decodeURIComponent(card[1]));if(!code)return json(request,{error:'That is not a reading card code.'},400);
+    const key='card:'+await hash(code);let held;try{held=JSON.parse(await env.BOOK.get(key)||'null')}catch(e){held=null}
+    if(!held)return json(request,{error:'No reading card has that code.'},404);
+    if(request.method==='GET')return json(request,{books:held.b||{}});
+    if(!fromLibrary)return json(request,{error:'Reading cards are only written inside the library.'},403);
+    let body;try{body=await request.json()}catch(e){return json(request,{error:'Something went wrong with that card.'},400)}
+    const merged=mergeBooks(held.b||{},cleanBooks(body?.books));
+    // Nothing new, or written a moment ago: keep the storage for readers who need it.
+    if(JSON.stringify(merged)===JSON.stringify(held.b||{})||now.getTime()-(held.u||0)<CARD_QUIET_MS)return json(request,{books:merged,saved:false});
+    await env.BOOK.put(key,JSON.stringify({b:merged,u:now.getTime()}),{expirationTtl:CARD_TTL});
+    return json(request,{books:merged,saved:true});
   }
   const remove=url.pathname.match(/^\/entries\/([a-z0-9-]{4,40})$/);
   if(request.method==='DELETE'&&remove){

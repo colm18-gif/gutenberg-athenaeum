@@ -5,6 +5,10 @@ A signature is a first name or initials, a country, a book and one line from a f
 free text to moderate. Names are checked against a list of unsuitable words, each reader can sign once every
 ten minutes, and the book takes at most 500 signatures a day. Nothing else is stored.
 
+The same worker keeps **reading cards** (`/card`), so a reader can carry their place in each book to their other
+devices without an account: a card is a code of four words and two digits, stored only as a hash, holding a book
+number, a fraction and a time for each book. A card is forgotten after 400 days without use.
+
 ## Setting it up (once)
 
 1. Create a free Cloudflare account at https://dash.cloudflare.com/sign-up.
