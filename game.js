@@ -358,36 +358,29 @@ function coverTexture(book){if(coverTextureCache.has(book.id))return coverTextur
     for(const side of [-1,1]){const x=side*19;addBox(.5,10,22,hallWall,x,5,-20);if(side<0)addBox(.5,10,22,hallWall,x,5,20);else{addBox(.5,10,4,hallWall,x,5,15);addBox(.5,10,8,hallWall,x,5,27)}trim(x,7.4,0,.7,.5,8);trim(x,3.7,-4,.7,7.4,.5);trim(x,3.7,4,.7,7.4,.5);addBox(.5,2,26,hallWall,x,8.9,0,false);addBox(.5,10,3,hallWall,x,5,11.5);for(const z of [-6.425,6.425])addBox(.5,7.4,5.15,hallWall,x,3.7,z);addBox(.5,1.2,8,hallWall,x,7.4,0,false)}
     wallFinish?.settle(wallFinish.pieces.map(piece=>piece.mesh));
     // Closed wing doors conceal each wing from the entrance. They slide aside as the visitor approaches.
-    // PREVIEW: two designs for the wing doors (?wingdoors=books or glass).
+    // The wing doors are bookcases: from the Grand Hall each end reads as a wall of books, which parts down the middle
+    // and slides into the walls as the reader comes near. Per leaf: a backing, one instanced set of shelf boards and a
+    // painted plane of spines on each face, the spines drawn once and shared by all four leaves.
     function wingLeaf(side,direction){
-      const style=new URLSearchParams(location.search).get('wingdoors');if(!style)return null;
-      const g=new THREE.Group(),W=3.85,H=6.9,add=(geo,mat,x,y,z)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);g.add(m);return m};
-      if(style==='books'){add(new THREE.BoxGeometry(.14,H,W),MAT.darkWood,0,0,0);
-        wingLeaf.spines=wingLeaf.spines||[0,1,2].map(seed=>{const t=canvasTexture((c,w,h)=>{c.fillStyle='#120a06';c.fillRect(0,0,w,h);let x=0,k=seed*17+3;const cols=['#6b1f1f','#1f3a5a','#2e4a2a','#5a3a1a','#3a1f3f','#7a5a2a','#1f2f3f','#4a1a14','#2a4a4a','#5f4a2f'];while(x<w){k=(k*9301+49297)%233280;const bw=14+k%22,bh=h*(.72+(k%25)/100);const col=cols[k%cols.length];c.fillStyle=col;c.fillRect(x,h-bh,bw-2,bh);c.fillStyle='rgba(255,255,255,.07)';c.fillRect(x+2,h-bh,3,bh);c.fillStyle='rgba(0,0,0,.25)';c.fillRect(x+bw-5,h-bh,3,bh);c.fillStyle='#c9a24e';for(const f of [.12,.18,.8])c.fillRect(x+2,h-bh+bh*f,bw-6,2);if(k%3===0){c.fillRect(x+4,h-bh+bh*.35,bw-10,bh*.12)}x+=bw}},512,160);return t});
-        const shelfMat=MAT.wood2||MAT.darkWood,rows=6,rowH=(H-.5)/rows;
-        for(const face of [1,-1]){const fx=face*.075;
-          for(let r=0;r<rows;r++){const y=-H/2+.3+r*rowH;
-            add(new THREE.BoxGeometry(.3,.08,W-.1),shelfMat,fx+face*.1,y,0);
-            const books=add(new THREE.PlaneGeometry(W-.2,rowH-.14),new THREE.MeshStandardMaterial({map:wingLeaf.spines[(r+(direction>0?1:0)+(side>0?2:0))%3],roughness:.85}),fx+face*.01,y+rowH/2+.02,0);books.rotation.y=face*Math.PI/2}
-          add(new THREE.BoxGeometry(.3,H,.12),shelfMat,fx+face*.1,0,W/2-.06);add(new THREE.BoxGeometry(.3,H,.12),shelfMat,fx+face*.1,0,-W/2+.06);add(new THREE.BoxGeometry(.3,.2,W),shelfMat,fx+face*.1,H/2-.1,0)}
-      }else{
-        const frame=MAT.darkWood,glass=wingLeaf.glass||(wingLeaf.glass=new THREE.MeshStandardMaterial({color:0x140c06,emissive:0xb87a36,emissiveIntensity:.22,roughness:.3,metalness:0,envMapIntensity:.15})),panel=wingLeaf.panel||(wingLeaf.panel=new THREE.MeshStandardMaterial({color:0x4a2c18,roughness:.6}));
-        const lowH=1.9,cols=3,rowsG=6,gx=W-.5,gy=H-lowH-.55;
-        for(const face of [1,-1]){const fx=face*.09;
-          for(const z of [-W/2+.14,W/2-.14])add(new THREE.BoxGeometry(.1,H,.28),frame,fx,0,z);
-          for(const y of [-H/2+.14,-H/2+lowH,H/2-.16])add(new THREE.BoxGeometry(.1,.28,W),frame,fx,y,0);
-          for(let c=0;c<2;c++)add(new THREE.BoxGeometry(.08,lowH-.6,(W-.6)/2-.1),panel,fx+face*.02,-H/2+lowH/2+.07,-W/4+c*W/2+(c?-.05:.05));
-          for(let c=1;c<cols;c++)add(new THREE.BoxGeometry(.08,gy,.06),frame,fx,-H/2+lowH+.14+gy/2,-gx/2+c*gx/cols);
-          for(let r=1;r<rowsG;r++)add(new THREE.BoxGeometry(.08,.06,gx),frame,fx,-H/2+lowH+.14+r*gy/rowsG,0)}
-        add(new THREE.BoxGeometry(.12,lowH,W),frame,0,-H/2+lowH/2,0);add(new THREE.BoxGeometry(.06,gy,gx),glass,0,-H/2+lowH+.14+gy/2,0);
-        add(new THREE.BoxGeometry(.2,.5,.08),MAT.brass,0,-.2,direction<0?W/2-.35:-W/2+.35);
-      }
+      const W=3.85,H=6.9,rows=6,rowH=(H-.5)/rows,g=new THREE.Group();
+      const spines=wingLeaf.spines||(wingLeaf.spines=[0,1].map(seed=>{const t=canvasTexture((c,w,h)=>{c.fillStyle='#0d0805';c.fillRect(0,0,w,h);
+        const cols=['#4a1c18','#1f2e44','#2a3a26','#4a3218','#33203a','#5a4524','#1c2630','#3b1712','#24403f','#4d3b26','#2d2a24','#5b2a20'];let k=seed*7919+11;const rnd=()=>(k=(k*9301+49297)%233280)/233280,rh=h/rows;
+        for(let r=0;r<rows;r++){let x=0;const base=(r+1)*rh-rh*.06;while(x<w){const bw=10+rnd()*20,bh=rh*(.62+rnd()*.28);if(rnd()<.05){x+=6+rnd()*14;continue}// now and then a gap
+          const col=cols[Math.floor(rnd()*cols.length)];c.fillStyle=col;c.fillRect(x,base-bh,bw-1.5,bh);
+          c.fillStyle='rgba(255,236,200,.06)';c.fillRect(x+1.5,base-bh,2,bh);c.fillStyle='rgba(0,0,0,.35)';c.fillRect(x+bw-4,base-bh,2.5,bh);
+          c.fillStyle=rnd()<.5?'#a8843c':'#8a6a30';for(const f of [.1,.15,.86])c.fillRect(x+2,base-bh+bh*f,bw-5,1.6);if(rnd()<.4)c.fillRect(x+3,base-bh+bh*(.3+rnd()*.15),bw-7,bh*.08);x+=bw}}},512,1024);return t}));
+      const faceMat=wingLeaf.faceMat||(wingLeaf.faceMat=spines.map(map=>new THREE.MeshStandardMaterial({map,roughness:.88})));
+      const back=new THREE.Mesh(wingLeaf.backGeo||(wingLeaf.backGeo=new THREE.BoxGeometry(.14,H,W)),MAT.darkWood);g.add(back);
+      const boards=[];for(const face of [1,-1]){for(let r=0;r<=rows;r++)boards.push([face*.155,-H/2+.25+r*rowH-(r===rows?.02:0),0,.17,.07,W]);for(const z of [W/2-.05,-W/2+.05])boards.push([face*.155,0,z,.17,H,.1])}
+      const shelf=new THREE.InstancedMesh(wingLeaf.unit||(wingLeaf.unit=new THREE.BoxGeometry(1,1,1)),MAT.wood2||MAT.darkWood,boards.length),m=new THREE.Matrix4(),q=new THREE.Quaternion(),v=new THREE.Vector3(),sc=new THREE.Vector3();
+      boards.forEach(([x,y,z,sx,sy,sz],i)=>shelf.setMatrixAt(i,m.compose(v.set(x,y,z),q,sc.set(sx,sy,sz))));g.add(shelf);
+      for(const face of [1,-1]){const plane=new THREE.Mesh(wingLeaf.faceGeo||(wingLeaf.faceGeo=new THREE.PlaneGeometry(W-.2,H-.5)),faceMat[(face>0)===(direction>0)?0:1]);plane.position.set(face*.075,-.0,0);plane.rotation.y=face*Math.PI/2;g.add(plane)}
       return g}
     const wingDoors=[];
     for(const side of [-1,1]){
       const panels=[];
       for(const direction of [-1,1]){
-        const panel=wingLeaf(side,direction)||new THREE.Mesh(new THREE.BoxGeometry(.18,6.9,3.85),MAT.darkWood);
+        const panel=wingLeaf(side,direction);
         panel.position.set(side*19,3.45,direction*1.95);scene.add(panel);panels.push(panel);
       }
       wingDoors.push({side,panels,opening:0});
@@ -1141,7 +1134,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       ['Why is there a rocket?',()=> localStorage.getItem('athenaeum-mars-visited')?'You have been to Mars, then. I trust the wireless was still ticking. The course dial goes back to MOON whenever you like; the red planet will keep its canals for you.':localStorage.getItem('athenaeum-moon-visited')?'To return the lunar books to the place that first lent us moonlight. It has lately learned a second destination: turn the course dial on the navigation desk from MOON to MARS. The countdown is ceremonial; the rattling is unfortunately structural.':'Because the Moon collection complained that shelving lunar voyages on Earth showed a lack of commitment. The projectile waits at the top of the high staircase, and its course dial now reads MOON or MARS.'],
       ['May I see your office?',()=> 'You may. The door is set into the eastern wing. Please ignore tomorrow’s appointments, the drawer of lost keys, and any correspondence that appears to have been written by you.'],
       ['What have you added lately?',()=> 'Rather a lot. A boathouse with an island beyond it, an Evening Room of books for one sitting, an English Reading Room, a Periodicals Room with a newspaper of our own, a visitors’ book that real readers sign, and a rocket that has learned the way to Mars as well as to our Selenite reading outpost on the Moon. The secret bookcase has been restocked, and the station reading rooms have shelves at last. I have updated the catalogue. The catalogue has declined to admit it.'],
-      ['Where are the new rooms?',()=> 'Stand in the Grand Hall facing the clock. Beneath it is the Periodicals Room; to its left, the visitors’ book on its lectern; to its right, the blue door of the Boathouse, with an island at the end of the crossing. The Evening Room opens off the east wing and the English Reading Room off the west, both on the south walls. For Mars, climb the high staircase and turn the rocket’s course dial.'],
+      ['Where are the new rooms?',()=> 'Stand in the Grand Hall facing the clock. Beneath it is the Periodicals Room; to its left, the visitors’ book on its lectern; to its right, the Boathouse door, with an island at the end of the crossing. The Evening Room opens off the east wing and the English Reading Room off the west, both on the south walls. For Mars, climb the high staircase and turn the rocket’s course dial.'],
       ['Something I can finish tonight?',()=>{const groups=eveningRoom?.catalogue?.()||[],all=groups.flatMap(group=>group.books);if(!all.length)return 'The Evening Room, off the east wing, keeps books you can finish in one sitting, each with its reading time on a card.';const pick=all[Math.floor(Math.random()*all.length)];return `Try “${pick.book.title}” by ${pick.book.author}: about ${pick.time}. It is in the Evening Room off the east wing, where every book can be finished before the fire burns down.`}],
       ['I am learning English',()=> 'Then the English Reading Room is yours, off the west wing: books on four shelves from gentle to challenging, a word of the day on the blackboard, and short stories on the table by the door. When you read anywhere in the library, tap a word to hear it and see what it means, and save the ones you want to keep.'],
       ['Should I sign the visitors’ book?',()=>{const list=visitorsBook?.entries||[],places=new Set(list.map(e=>e.country)).size;return visitorsBook?`Please do. It stands on a lectern by the entrance, under a sign you cannot miss. ${list.length?`The latest pages hold names from ${places} ${places===1?'country':'countries'}. `:''}A first name, where you are reading from, a book you like and a line of your own choosing; nothing else is kept.`:'It stands on a lectern by the entrance. The signatures are older than they look.'}],
@@ -1663,7 +1656,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const preDailyAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return dailyRoom.contains(x,z)?dailyRoom.allowed(x,z):preDailyAllowed(x,z,y)};
       const preDailyInteract=interact;interact=function(){if(focus&&!selected&&dailyRoom.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preDailyInteract()};
     }
-    // The Boathouse and Crusoe's island (crusoe-island.js): a sea-blue door in the hall, a sunrise crossing, an island.
+    // The Boathouse and Crusoe's island (crusoe-island.js): a door in the hall, a sunrise crossing, an island.
     const crusoeIsland=window.createCrusoeIsland?.({doorKit:getDoorKit(),THREE,scene,MAT,player,camera,interactables,canvasTexture,bookMaterial,renderer,ambient,moon,showNotice,playSample,sound,
       findBook:id=>books.find(b=>b.id===id),noise:(d,v,f)=>paperNoise(d,v,f),fade:o=>{returnFade.style.opacity=String(o)},analytics:window.libraryAnalytics,
       isReducedMotion:()=>reducedMotion,isHolding:()=>!!selected,storage:(()=>{try{return localStorage}catch(e){return null}})(),

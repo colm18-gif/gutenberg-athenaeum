@@ -17,7 +17,7 @@
     {x:-29.3,y:1.62,z:-2.25,yaw:.4}
   ];
   const FLOORS={
-    boathouse:{x:-3.1,z:29.6,yaw:0},         // beside the sea-blue door, prints heading into the hall
+    boathouse:{x:-3.1,z:29.6,yaw:0},         // beside the Boathouse door, prints heading into the hall
     stair:{x:-33.5,z:-12.6,yaw:Math.PI}      // in front of the stair that is not on the plan
   };
 
@@ -33,8 +33,8 @@
     {id:'flower',on:'table',title:'A pressed violet',text:'A pressed violet, fallen out of some book and left here as if to be put back later. Nobody remembers which book.'},
     {id:'slip',on:'table',title:'A reservation slip',text:'A library slip: “Reserved for Thomas, aged 9. He is coming back for the one with the dragon.”'},
     {id:'knitting',on:'table',title:'Some knitting',text:'Half a sock on four needles, abandoned mid-row. The pattern is pencilled in the margin of a cookery book.'},
-    {id:'umbrella',on:'boathouse',title:'A wet umbrella',text:'An umbrella leaning by the sea-blue door, standing in a small puddle. The water tastes of salt.'},
-    {id:'sand',on:'boathouse',title:'Sandy footprints',text:'Sandy footprints come in through the sea-blue door and stop halfway across the floor, as if their owner thought better of it.'},
+    {id:'umbrella',on:'boathouse',title:'A wet umbrella',text:'An umbrella leaning by the Boathouse door, standing in a small puddle. The water tastes of salt.'},
+    {id:'sand',on:'boathouse',title:'Sandy footprints',text:'Sandy footprints come in through the Boathouse door and stop halfway across the floor, as if their owner thought better of it.'},
     {id:'dust',on:'stair',title:'Grey footprints',text:'A trail of very fine grey dust leads out from the stair door. It does not look like any dust from Earth.'}
   ];
 
