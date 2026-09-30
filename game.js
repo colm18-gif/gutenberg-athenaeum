@@ -358,11 +358,36 @@ function coverTexture(book){if(coverTextureCache.has(book.id))return coverTextur
     for(const side of [-1,1]){const x=side*19;addBox(.5,10,22,hallWall,x,5,-20);if(side<0)addBox(.5,10,22,hallWall,x,5,20);else{addBox(.5,10,4,hallWall,x,5,15);addBox(.5,10,8,hallWall,x,5,27)}trim(x,7.4,0,.7,.5,8);trim(x,3.7,-4,.7,7.4,.5);trim(x,3.7,4,.7,7.4,.5);addBox(.5,2,26,hallWall,x,8.9,0,false);addBox(.5,10,3,hallWall,x,5,11.5);for(const z of [-6.425,6.425])addBox(.5,7.4,5.15,hallWall,x,3.7,z);addBox(.5,1.2,8,hallWall,x,7.4,0,false)}
     wallFinish?.settle(wallFinish.pieces.map(piece=>piece.mesh));
     // Closed wing doors conceal each wing from the entrance. They slide aside as the visitor approaches.
+    // PREVIEW: two designs for the wing doors (?wingdoors=books or glass).
+    function wingLeaf(side,direction){
+      const style=new URLSearchParams(location.search).get('wingdoors');if(!style)return null;
+      const g=new THREE.Group(),W=3.85,H=6.9,add=(geo,mat,x,y,z)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);g.add(m);return m};
+      if(style==='books'){add(new THREE.BoxGeometry(.14,H,W),MAT.darkWood,0,0,0);
+        wingLeaf.spines=wingLeaf.spines||[0,1,2].map(seed=>{const t=canvasTexture((c,w,h)=>{c.fillStyle='#120a06';c.fillRect(0,0,w,h);let x=0,k=seed*17+3;const cols=['#6b1f1f','#1f3a5a','#2e4a2a','#5a3a1a','#3a1f3f','#7a5a2a','#1f2f3f','#4a1a14','#2a4a4a','#5f4a2f'];while(x<w){k=(k*9301+49297)%233280;const bw=14+k%22,bh=h*(.72+(k%25)/100);const col=cols[k%cols.length];c.fillStyle=col;c.fillRect(x,h-bh,bw-2,bh);c.fillStyle='rgba(255,255,255,.07)';c.fillRect(x+2,h-bh,3,bh);c.fillStyle='rgba(0,0,0,.25)';c.fillRect(x+bw-5,h-bh,3,bh);c.fillStyle='#c9a24e';for(const f of [.12,.18,.8])c.fillRect(x+2,h-bh+bh*f,bw-6,2);if(k%3===0){c.fillRect(x+4,h-bh+bh*.35,bw-10,bh*.12)}x+=bw}},512,160);return t});
+        const shelfMat=MAT.wood2||MAT.darkWood,rows=6,rowH=(H-.5)/rows;
+        for(const face of [1,-1]){const fx=face*.075;
+          for(let r=0;r<rows;r++){const y=-H/2+.3+r*rowH;
+            add(new THREE.BoxGeometry(.3,.08,W-.1),shelfMat,fx+face*.1,y,0);
+            const books=add(new THREE.PlaneGeometry(W-.2,rowH-.14),new THREE.MeshStandardMaterial({map:wingLeaf.spines[(r+(direction>0?1:0)+(side>0?2:0))%3],roughness:.85}),fx+face*.01,y+rowH/2+.02,0);books.rotation.y=face*Math.PI/2}
+          add(new THREE.BoxGeometry(.3,H,.12),shelfMat,fx+face*.1,0,W/2-.06);add(new THREE.BoxGeometry(.3,H,.12),shelfMat,fx+face*.1,0,-W/2+.06);add(new THREE.BoxGeometry(.3,.2,W),shelfMat,fx+face*.1,H/2-.1,0)}
+      }else{
+        const frame=MAT.darkWood,glass=wingLeaf.glass||(wingLeaf.glass=new THREE.MeshStandardMaterial({color:0x2a1a0c,emissive:0xc98a3c,emissiveIntensity:.16,roughness:.12,metalness:.2})),panel=wingLeaf.panel||(wingLeaf.panel=new THREE.MeshStandardMaterial({color:0x4a2c18,roughness:.6}));
+        const lowH=1.9,cols=3,rowsG=6,gx=W-.5,gy=H-lowH-.55;
+        for(const face of [1,-1]){const fx=face*.09;
+          for(const z of [-W/2+.14,W/2-.14])add(new THREE.BoxGeometry(.1,H,.28),frame,fx,0,z);
+          for(const y of [-H/2+.14,-H/2+lowH,H/2-.16])add(new THREE.BoxGeometry(.1,.28,W),frame,fx,y,0);
+          for(let c=0;c<2;c++)add(new THREE.BoxGeometry(.08,lowH-.6,(W-.6)/2-.1),panel,fx+face*.02,-H/2+lowH/2+.07,-W/4+c*W/2+(c?-.05:.05));
+          for(let c=1;c<cols;c++)add(new THREE.BoxGeometry(.08,gy,.06),frame,fx,-H/2+lowH+.14+gy/2,-gx/2+c*gx/cols);
+          for(let r=1;r<rowsG;r++)add(new THREE.BoxGeometry(.08,.06,gx),frame,fx,-H/2+lowH+.14+r*gy/rowsG,0)}
+        add(new THREE.BoxGeometry(.12,lowH,W),frame,0,-H/2+lowH/2,0);add(new THREE.BoxGeometry(.06,gy,gx),glass,0,-H/2+lowH+.14+gy/2,0);
+        add(new THREE.BoxGeometry(.2,.5,.08),MAT.brass,0,-.2,direction<0?W/2-.35:-W/2+.35);
+      }
+      return g}
     const wingDoors=[];
     for(const side of [-1,1]){
       const panels=[];
       for(const direction of [-1,1]){
-        const panel=new THREE.Mesh(new THREE.BoxGeometry(.18,6.9,3.85),MAT.darkWood);
+        const panel=wingLeaf(side,direction)||new THREE.Mesh(new THREE.BoxGeometry(.18,6.9,3.85),MAT.darkWood);
         panel.position.set(side*19,3.45,direction*1.95);scene.add(panel);panels.push(panel);
       }
       wingDoors.push({side,panels,opening:0});
