@@ -1,7 +1,7 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-09-29",
+ "updated": "2026-09-30",
  "days": {
   "2026-09-25": {
    "books": [
@@ -384,6 +384,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 3011,
      "title": "The Lady of the Lake",
      "author": "Walter Scott"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-02": {
+   "books": [
+    {
+     "id": 84,
+     "title": "Frankenstein",
+     "author": "Mary Wollstonecraft Shelley"
+    },
+    {
+     "id": 2147,
+     "title": "The Works of Edgar Allan Poe — Volume 1",
+     "author": "Edgar Allan Poe"
+    },
+    {
+     "id": 696,
+     "title": "The Castle of Otranto",
+     "author": "Horace Walpole"
+    },
+    {
+     "id": 521,
+     "title": "Robinson Crusoe",
+     "author": "Daniel Defoe"
+    },
+    {
+     "id": 325,
+     "title": "Phantastes",
+     "author": "George MacDonald"
+    },
+    {
+     "id": 155,
+     "title": "The Moonstone",
+     "author": "Wilkie Collins"
+    },
+    {
+     "id": 6124,
+     "title": "Pamela",
+     "author": "Samuel Richardson"
+    },
+    {
+     "id": 18247,
+     "title": "The Last Man",
+     "author": "Mary Shelley"
+    },
+    {
+     "id": 244,
+     "title": "A Study in Scarlet",
+     "author": "Arthur Conan Doyle"
+    },
+    {
+     "id": 2130,
+     "title": "Utopia",
+     "author": "Thomas More"
     }
    ],
    "missing": []
