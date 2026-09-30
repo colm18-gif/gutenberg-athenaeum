@@ -270,3 +270,19 @@ test('the Ukrainian Reading Room: classics from Wikisource behind a blue door wi
   assert.equal(pages.slug('Григорій Квітка-Основ’яненко'),'hryhorii-kvitka-osnovianenko');assert.equal(pages.readingTime(60000,'uk'),'4 год');
 });
 
+
+test('a reader whose browser speaks one of the wing\'s languages is shown the way to its room, and books can report a mistake',()=>{
+  const html=fs.readFileSync('index.html','utf8'),game=fs.readFileSync('game.js','utf8');
+  for(const code of ['es','pt','fr','zh','uk'])assert.ok(html.includes(`href="/?room=${code}"`),code);
+  assert.match(html,/navigator\.languages/);assert.match(html,/class="reader-source reader-report"/);
+  assert.match(game,/const REPORT_LABELS=\{en:\['Report a mistake'/);assert.match(game,/uk:\['Повідомити про помилку'/);
+  assert.match(game,/report\.href='mailto:libraryafterdark1@gmail\.com\?subject='/);
+  const wing=fs.readFileSync('data/new-books-wing.js','utf8');assert.match(wing,/'María','Jorge Isaacs'/);assert.match(wing,/'Poesías','José Asunción Silva'/);
+});
+
+test('the Ukrainian room has its flags, a Petrykivka painting under a rushnyk, sunflowers and pysanky, with no lights of its own',()=>{
+  const src=fs.readFileSync('international-wing.js','utf8'),i=src.indexOf('function dressUkrainian('),body=src.slice(i,src.indexOf('\n    }\n',i));
+  assert.ok(i>0);assert.match(src,/if\(key==='ukrainian'\)dressUkrainian\(/);
+  for(const word of ['Прапор України','Петриківський розпис','Писанки','Соняшники','#0057b7','#ffd500','InstancedMesh'])assert.ok(body.includes(word),word);
+  assert.doesNotMatch(body,/Light\(/);
+});

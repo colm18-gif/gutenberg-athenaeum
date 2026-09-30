@@ -67,7 +67,12 @@
         uk:{rooms:['uk','ua','ukrainian','ukrainska','українська','ukrainian-room'],lang:'uk',tagline:'Бібліотека книжок, які пережили своїх перших читачів. Сьогодні ввечері — Українська читальня.',options:'Зручність і швидкодія',enter:'Увійти до бібліотеки',
           labels:['Звук','Менше руху й погоди','Режим економії даних','Більше контрасту','Більший текст'],
           keys:'WASD або стрілки — ходити · миша — роззиратися · E — дія · J — щоденник · O — налаштування · R — якщо заблукали',rotate:'<strong>Перш ніж увійти:</strong> розблокуйте поворот екрана; бібліотеку оглядають, тримаючи телефон горизонтально.',touch:'Лівий великий палець — ходити · проведіть, щоб роззирнутися · торкніться E для дії · торкніться &#9776; для меню'}};
-      const t=Object.values(T).find(t=>t.rooms.includes(room));if(!t)return;
+      const t=Object.values(T).find(t=>t.rooms.includes(room));
+      // Arriving at the plain address with a phone or browser set to one of the wing's languages, a reader is shown the way to that room.
+      if(!t){if(room)return;const INVITE={es:'Hay una <a href="/?room=es">Sala de lectura en español</a> →',pt:'Há uma <a href="/?room=pt">Sala de leitura em português</a> →',
+          fr:'Il y a une <a href="/?room=fr">Salle de lecture en français</a> →',zh:'館裡有一間<a href="/?room=zh">中文閱覽室</a> →',uk:'Тут є <a href="/?room=uk">Українська читальня</a> →'};
+        const first=((navigator.languages&&navigator.languages[0])||navigator.language||'').toLowerCase().split('-')[0],invite=INVITE[first];
+        const progress=document.getElementById('entryProgress');if(invite&&progress){const p=document.createElement('p');p.className='entry-invite';p.innerHTML=invite;progress.after(p)}return}
       const veil=document.getElementById('veil'),set=(selector,text)=>{const el=veil.querySelector(selector);if(el)el.textContent=text};document.documentElement.lang=t.lang;
       set('.crest > p',t.tagline);set('#entryOptions summary',t.options);set('#enter',t.enter);
       const labels=veil.querySelectorAll('.entry-options-grid label');t.labels.forEach((text,i)=>{const label=labels[i];if(!label)return;const input=label.querySelector('input');label.textContent=i?'':text+' ';if(i){label.append(input,' '+text)}else label.append(input)});
@@ -96,7 +101,7 @@
   <div id="bookActions" class="hidden"><div class="meta"><strong></strong><em></em></div><button class="primary" id="openBook">Open book</button><button class="ghost hidden" id="listenAction" type="button">Listen</button><button class="ghost" id="carryBook">Carry to a chair</button><button class="ghost" id="askLibrarian">Ask the librarian</button><button class="primary hidden-unless-seat" id="leaveOnChair">Leave on the chair</button><button class="ghost hidden-unless-seat hidden" id="placeNearby">Set on the nearest table</button><button class="ghost" id="leaveBook">Leave at desk</button><button class="ghost" id="returnBook">Return</button></div>
   <div id="reader" class="comfort hidden">
     <div class="book-spread">
-      <header class="reader-head"><div><h2 id="readerTitle"></h2><p id="readerAuthor"></p><a id="readerSource" class="reader-source hidden" target="_blank" rel="noopener noreferrer"></a></div><button class="iconbtn" id="closeReader" aria-label="Close reader">×</button></header>
+      <header class="reader-head"><div><h2 id="readerTitle"></h2><p id="readerAuthor"></p><a id="readerSource" class="reader-source hidden" target="_blank" rel="noopener noreferrer"></a><a id="readerReport" class="reader-source reader-report"></a></div><button class="iconbtn" id="closeReader" aria-label="Close reader">×</button></header>
       <main class="pages"><article class="page left"><div class="chapter" id="chapter">A Gutenberg edition</div><div id="pageLeft"></div></article><article class="page right"><div class="chapter">continued</div><div id="pageRight"></div></article></main>
       <footer class="reader-foot"><button id="prevPage" aria-label="Previous page">←</button><button id="nextPage" aria-label="Next page">→</button><button id="fontDown" aria-label="Decrease font size">A−</button><button id="fontUp" aria-label="Increase font size">A+</button><button id="bookmark" class="bookmark" aria-label="Bookmark page">⌑</button><button id="shareQuote" class="share-quote" aria-label="Share a quote from this page">❝ Share</button><button id="readerStyle" class="reader-style" aria-label="Reading comfort: text size, typeface and page colour" aria-expanded="false" aria-controls="readerPrefs">Aa</button><button id="modeToggle" class="mode-toggle">Immersive mode</button><button id="listenBook" class="ghost listen-book hidden" type="button">Listen</button><button id="finishReading">Done</button><div class="progress"><i id="readerProgress"></i></div><span class="page-count" id="readerPage">1 / 1</span><span class="percent" id="readerPercent">0%</span></footer>
       <div id="readerPrefs" class="reader-prefs hidden" role="dialog" aria-label="Reading comfort">
@@ -128,7 +133,7 @@
     const applyEntryAppearance=()=>{document.body.classList.toggle('reduced-motion',document.getElementById('entryReducedMotion').checked);document.body.classList.toggle('high-contrast',document.getElementById('entryHighContrast').checked);document.body.classList.toggle('large-text',document.getElementById('entryLargeText').checked)};
     for(const [kind,[id,key]] of Object.entries(preferences)){const input=document.getElementById(id),saved=localStorage.getItem(key);if(kind==='volume')input.value=saved??13;else input.checked=saved==='1';input.addEventListener('input',()=>{localStorage.setItem(key,kind==='volume'?input.value:input.checked?'1':'0');applyEntryAppearance()})}applyEntryAppearance();
     const webglAvailable=()=>{try{const canvas=document.createElement('canvas');return !!(canvas.getContext('webgl2')||canvas.getContext('webgl'))}catch(error){return false}};
-    const BUILD='20260929-no-catalogue-link';
+    const BUILD='20260930-ukrainian-touches';
     // Files the jobs rewrite without a new BUILD (new Room of the Day books, new recordings, new arrivals): their address
     // changes every hour, so a browser holding an older copy picks up the new one within the hour.
     const LIVE_DATA=new Set(['data/daily-rooms-resolved.js','data/audiobooks.js','data/visitors-book-config.js','data/new-books-resolved.js']);
