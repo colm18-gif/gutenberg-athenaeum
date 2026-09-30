@@ -67,7 +67,7 @@ export function header(text){
 }
 // For a room in another language the text itself must be in it: a title alone would let an English translation of
 // Marianela stand in for the Spanish. (English rooms keep the old test, so nothing already bundled is disturbed.)
-const LANGUAGE_NAMES={es:'Spanish',pt:'Portuguese',zh:'Chinese',fr:'French',la:'Latin',uk:'Ukrainian'};
+const LANGUAGE_NAMES={es:'Spanish',pt:'Portuguese',zh:'Chinese',fr:'French',la:'Latin',uk:'Ukrainian',ga:'Irish'};
 export function languageMatches(text,language='en'){if(language==='en')return true;const line=text.slice(0,6000).match(/^Language:\s*(.+)$/m)?.[1]||'';return line.includes(LANGUAGE_NAMES[language]||language)}
 export function textMatches(text,title,author,language='en'){const h=header(text);return titleMatches(title,h.title)&&authorMatches(author,h.people)&&languageMatches(text,language)}
 

@@ -12,12 +12,17 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   startup script means updating the script count in `experience.test.cjs` and bumping `BUILD` in `index.html`.
   Files the jobs rewrite without a new build are listed in `LIVE_DATA` there.
 - Rooms behind doors (`evening-room.js`, `learners-room.js`, `periodicals-room.js`, `international-wing.js`,
-  `crusoe-island.js`, `mars.js`, `poe-room.js`)
+  `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`)
   are built only when the reader approaches and freed ~25 s after they leave. Each gets an ambience recipe in
   `room-ambience.js` and a place in `PLACE_GROUPS` in `game.js`.
 - The Poe Room (`poe-room.js`, x −330, z −140) is behind a chamber door in the Gothic Parlour's west wall, under a raven on a
   bust of Pallas (`?room=poe`). A heart beats under the floor, louder near the loose board (made with game.js's `sound`, no
   file); lifting the board gives up Volume 2 of the Raven Edition, which opens at The Tell-Tale Heart (`pendingStory`).
+- The Irish Room (`irish-room.js`, x −330, z −205), Seomra na hÉireann, is behind a green Georgian door in the Grand Hall's
+  south wall (x −8.3; `?room=irish`): shelves `irish-myth`, `irish-revival`, `irish-writers` and `irish-gaeilge` in
+  `data/new-books.js` (the last checked as Irish, `ga`), round a turf fire, with a harp, a St Brigid's cross and an ogham stone.
+- Plain text: `read.html?book=ID` shows any book as one readable page (linked from every book page and the reader). Reading
+  cards (`reading-card.js`, `/card` on the visitors' book worker) carry bookmarks between devices by a four-word code.
 - Every chair, sofa and bench is one of the library's seats: build it with `chair()`/`sofa()`/`bench()` in game.js, or
   pass `registerSeat` into a room module and call it (with a `bookIds` getter for that room's books; push the parts
   onto the room's list so they are freed with it). `?debug` exposes `__athenaeum.seats`.
@@ -32,7 +37,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `/opt/pw-browsers` Chromium with `--use-angle=swiftshader`; `index.html?debug&noktx2` exposes `window.__athenaeum`
   (teleport, placeAt, rooms, books…). Three.js loads from a CDN, so route it to a local copy.
 - Gutenberg and most external sites are blocked from the cloud sessions; GitHub Actions has the network. Anything that
-  needs to fetch texts runs as a workflow.
+  needs to fetch texts runs as a workflow. To find books' numbers, add lines to `scripts/catalog-queries.txt` (`title ; author ;
+  language`, patterns are regexes) and push to a `claude/` branch: the Catalogue lookup workflow prints the matches from
+  Gutenberg's own catalogue in its log.
 - Walls in the hall and reading rooms are Poly Haven sandstone laid out in metres, with contact shadows in the shader
   (`wall-finish.js`; build walls with `addBox` and a `photoWall` material). New Poly Haven models or materials: add
   them to `scripts/fetch-polyhaven-assets.mjs`; the Poly Haven assets workflow downloads, compresses and commits them.
@@ -47,6 +54,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   startup for a `?book=` or a `?room=` in the wing. The New books workflow checks each against the
   text's own title and author, bundles it into `texts/bundled-gzip`, counts words and writes
   `data/new-books-resolved.js`. Only resolved books appear. Every book needs a librarian's note.
+  The match wants three quarters of the title's words in the text's `Title:` line (so give the short title, not the
+  volume and date that follow on the next line) and the author's last word among its `Author:` lines (for two authors,
+  put last the one the header surely names).
 - Librarian notes: `data/librarian-notes.json` and the notes files in `data/`. Voice: three sentences, dry, warm,
   accurate; never invent facts.
 - **Book pages**: `book/<id>-<slug>.html`, `book/index.html`, `book/authors.html`, `sitemap.xml`, `robots.txt` are
@@ -76,7 +86,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, ukrainian-room or uk, evening-room, periodicals-room, learners-room, boathouse,
-  daily-room, poe, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms) goes to a room.
+  daily-room, poe, irish, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text.
 - **Halloween night** (`halloween.js`): 24 October to 2 November by the reader's own date (`?halloween` previews it,
   `?nohalloween` hides it). Carved lanterns (one InstancedMesh, glowing through emissive faces, no lights) by the south
@@ -98,14 +108,12 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - The English Reading Room keeps only one darker book (Jekyll and Hyde, with a note).
 - Traces of other readers are invented, not real data.
 
-## Open to-dos (as of 28 September 2026)
+## Open to-dos (as of 1 October 2026)
 
-- Periodicals Room: 8 of 22 titles were not found on Gutenberg; replacements could fill the racks.
-- Mars: *Mars as the Abode of Life* and *Gullivar Jones* were not found.
 - Gutenberg has no Hindi, Urdu or Bengali texts (Wikisource would be the source, now that `scripts/wikisource.mjs` exists; Urdu needs right-to-left reading)
-  and only six in Irish. An Irish Room was suggested: mostly English (myth, folklore, the Revival, Irish writers)
-  with a small Irish-language shelf; CELT (celt.ucc.ie) needs permission to republish.
-- Ideas offered but not started: a plain text mode, reading progress across devices.
+  and only a handful in Irish (four are on the Irish Room's shelf); CELT (celt.ucc.ie) needs permission to republish.
+- The Spanish room's *María* (Jorge Isaacs) and Silva's *Poesías* are not on Gutenberg: es.wikisource would need
+  `scripts/wikisource.mjs` to read Spanish Wikisource.
 - International Wing: outreach in Spanish, Portuguese, Chinese and French sent 28 September (no Quebec address
   found yet for the French batch). For mainland Chinese readers, host Three.js on the site:
   jsDelivr is unreliable there.

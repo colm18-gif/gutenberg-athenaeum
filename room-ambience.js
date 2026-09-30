@@ -92,6 +92,8 @@
       'roof-garden':{beds:[['wind',.14]],events:[['chimes',2.2,.08],['owl',.4,.06]]},
       'daily-room':{beds:[['air',.04]],events:[['rustle',1.2,.04]]},
       'evening-room':{beds:[['fire',.07]],ticks:[[1.5,'tock',.03]],events:[['rustle',1.2,.035]]},
+      // The Irish Room: a turf fire, and pages turning.
+      'irish-room':{beds:[['fire',.06]],events:[['rustle',1,.035],['creak',.4,.03]]},
       // The Poe Room: a still house, its floorboards settling (the heart under them is poe-room.js's own).
       'poe-room':{beds:[['air',.03]],events:[['creak',.9,.05],['rustle',.6,.03]]},
       // The periodicals room: a clock, and pages turning at the reading slopes.

@@ -1,0 +1,79 @@
+# Periodicals Room: the titles the New books workflow could not find, and other first numbers worth having.
+Strand Magazine.*(Vol\.? ?0?1\b|January,? 1891)
+Yellow Book
+Scientific American.*1867
+Chambers's Edinburgh Journal.*No\. 4(1[0-9]|2[0-9])
+Astounding Stories.*1930
+McClure's Magazine
+^The Spectator
+The Nursery.*187
+Punch.*18(41|42)
+Blackwood
+Harper's New Monthly
+The Argosy
+Belgravia
+Temple Bar
+The Cornhill
+Lippincott's
+The Century
+Household Words
+All the Year Round
+Boys of England|Boy's Own
+The Idler
+The Galaxy
+Once a Week
+Good Words
+The Bookman
+Weird Tales
+Amazing Stories
+Planet Stories
+Thrilling Wonder
+Galaxy Science Fiction
+If: Worlds of Science Fiction
+Fantastic Universe
+# Mars: the two not found, and other Martian books.
+Abode of Life|Lowell
+Gullivar|Arnold, Edwin Lester
+\bMars\b
+Martian
+Barsoom|Burroughs, Edgar Rice
+Red Planet
+# The Spanish room's Colombians, in case they are there after all.
+María|Maria ; Isaacs
+ ; Silva, José Asunción
+# Benito Cereno (a new arrival that did not resolve).
+Benito Cereno|Piazza Tales
+# An Irish Room: myth, folklore, the Revival and Irish writers, and a small Irish-language shelf.
+ ; ; ga
+ ; Gregory, Lady
+ ; Yeats, W\. B\.
+ ; Synge
+ ; Stephens, James
+ ; Hyde, Douglas
+ ; Curtin, Jeremiah
+ ; Jacobs, Joseph
+ ; Rolleston
+ ; Wilde, Lady
+ ; Kennedy, Patrick
+ ; O'Grady, Standish
+ ; Edgeworth, Maria
+ ; Carleton, William
+ ; Griffin, Gerald
+ ; Kickham
+ ; Somerville|Ross, Martin
+ ; Moore, George
+ ; Moore, Thomas
+ ; Joyce, James
+ ; Goldsmith, Oliver
+ ; Pearse
+ ; Meagher
+ ; Mangan
+ ; Davis, Thomas
+ ; Lover, Samuel
+ ; Lever, Charles
+ ; Russell, George William|^AE\b
+ ; Colum, Padraic
+ ; Dunsany
+ ; Ledwidge
+ ; Tynan, Katharine
+Ireland|Irish|Erin|Celtic
