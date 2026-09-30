@@ -228,6 +228,8 @@ const SHELVES_FR={Society:'Roman et société',Romance:'Amour',Adventure:'Aventu
 const SHELVES_LA={Epic:'Epic',Poetry:'Poetry',History:'History',Oratory:'Oratory',Philosophy:'Philosophy and faith',Drama:'Drama',Science:'Science',Food:'The kitchen',Learners:'For learners'};
 const SHELVES_UK={Poetry:'Поезія',Epic:'Поеми',Drama:'Драма',Society:'Повісті й романи',Romance:'Про кохання',Legend:'Легенди й казки',Satire:'Сміх і сатира',History:'Історія',Philosophy:'Думки',Stories:'Новели й оповідання',Fables:'Байки'};
 const SHELVES_ZH={Society:'世情小說',Epic:'歷史演義',Legend:'神魔與奇想',Satire:'諷刺小說',Ghosts:'志怪',Essays:'散文與筆記',Modern:'魯迅',Philosophy:'諸子與經典',Poetry:'詩詞',History:'史書',Drama:'戲曲',Adventure:'俠義',Wonder:'蒙學'};
+// Ukrainian numbers choose their noun: 1 твір, 2–4 твори, 5–20 творів (21 твір, 24 твори…).
+const ukWorks=n=>n%10===1&&n%100!==11?'твір':n%10>=2&&n%10<=4&&(n%100<12||n%100>14)?'твори':'творів';
 const LANDINGS={
   es:{path:'es',shelves:SHELVES_ES,other:'Otros',h1:'Libros en español',room:'international-wing',button:'Entrar en la Sala de lectura en español',
     intro:n=>`${n} clásicos de España, de América y de Filipinas, de Cervantes a Rubén Darío, para leer gratis en una biblioteca en 3D que se recorre desde el navegador, también desde el móvil. Están en la Sala de lectura en español, en el ala internacional, cada uno con una nota de la bibliotecaria. Sin descargas, sin registro y sin anuncios.`,
@@ -242,8 +244,8 @@ const LANDINGS={
     intro:n=>`${n} books in Latin, from Virgil, Caesar and Cicero to Augustine, Saint Patrick, Descartes and Newton, and Treasure Island for learners, to read free in a 3D library you walk through in your browser, on a phone too. They are in the Latin Reading Room in the International Wing, each with a note from the librarian. No downloads, no sign-up and no adverts.`,
     title:'Libri Latini: Latin books · The Library After Dark',description:n=>`${n} Latin classics to read free in a 3D library, each with a librarian’s note: Virgil, Caesar, Cicero, Horace, Catullus, Ovid, Augustine and more.`},
   uk:{path:'uk',shelves:SHELVES_UK,other:'Інше',h1:'Книжки українською',room:'ukrainian-room',button:'Увійти до Української читальні',
-    intro:n=>`${n} творів української класики, від «Енеїди» Котляревського і Шевченка до Лесі Українки, Франка й Коцюбинського, які можна безкоштовно читати в 3D-бібліотеці просто в браузері, зокрема з телефона. Вони стоять в Українській читальні Міжнародного крила, кожна з приміткою бібліотекарки. Тексти з Вікіджерел. Без завантажень, без реєстрації й без реклами.`,
-    title:'Книжки українською · The Library After Dark',description:n=>`${n} творів української класики для безкоштовного читання в 3D-бібліотеці, кожен із приміткою бібліотекарки: Шевченко, Франко, Леся Українка, Коцюбинський, Котляревський та інші.`},
+    intro:n=>`${n} ${ukWorks(n)} української класики, від «Енеїди» Котляревського і Шевченка до Лесі Українки, Франка й Коцюбинського, які можна безкоштовно читати в 3D-бібліотеці просто в браузері, зокрема з телефона. Вони стоять в Українській читальні Міжнародного крила, кожна з приміткою бібліотекарки. Тексти з Вікіджерел. Без завантажень, без реєстрації й без реклами.`,
+    title:'Книжки українською · The Library After Dark',description:n=>`${n} ${ukWorks(n)} української класики для безкоштовного читання в 3D-бібліотеці, кожен із приміткою бібліотекарки: Шевченко, Франко, Леся Українка, Коцюбинський, Котляревський та інші.`},
   zh:{path:'zh',shelves:SHELVES_ZH,other:'其他',h1:'中文書',room:'chinese-room',button:'進入中文閱覽室',
     intro:n=>`${n} 部中文經典，從《詩經》、《論語》到《紅樓夢》和魯迅，都可以在一座 3D 圖書館裡免費閱讀，用瀏覽器就能走進去，手機也可以。這些書放在國際館的中文閱覽室，每一本都附有館員的短評。不用下載，不用註冊，也沒有廣告。`,
     title:'中文書 · The Library After Dark',description:n=>`${n} 部中文經典，在一座 3D 圖書館裡免費閱讀，每一本都附有館員的短評：紅樓夢、三國志演義、西遊記、水滸傳、聊齋志異、魯迅等。`}
