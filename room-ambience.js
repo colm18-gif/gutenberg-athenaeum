@@ -92,6 +92,8 @@
       'roof-garden':{beds:[['wind',.14]],events:[['chimes',2.2,.08],['owl',.4,.06]]},
       'daily-room':{beds:[['air',.04]],events:[['rustle',1.2,.04]]},
       'evening-room':{beds:[['fire',.07]],ticks:[[1.5,'tock',.03]],events:[['rustle',1.2,.035]]},
+      // The Poe Room: a still house, its floorboards settling (the heart under them is poe-room.js's own).
+      'poe-room':{beds:[['air',.03]],events:[['creak',.9,.05],['rustle',.6,.03]]},
       // The periodicals room: a clock, and pages turning at the reading slopes.
       'periodicals-room':{beds:[['air',.02]],ticks:[[1,'tock',.028]],events:[['rustle',.8,.045]]},
       'learners-room':{beds:[['air',.035]],events:[['rustle',1.6,.035],['creak',.5,.04]]},

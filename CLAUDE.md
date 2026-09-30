@@ -12,9 +12,12 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   startup script means updating the script count in `experience.test.cjs` and bumping `BUILD` in `index.html`.
   Files the jobs rewrite without a new build are listed in `LIVE_DATA` there.
 - Rooms behind doors (`evening-room.js`, `learners-room.js`, `periodicals-room.js`, `international-wing.js`,
-  `crusoe-island.js`, `mars.js`)
+  `crusoe-island.js`, `mars.js`, `poe-room.js`)
   are built only when the reader approaches and freed ~25 s after they leave. Each gets an ambience recipe in
   `room-ambience.js` and a place in `PLACE_GROUPS` in `game.js`.
+- The Poe Room (`poe-room.js`, x −330, z −140) is behind a chamber door in the Gothic Parlour's west wall, under a raven on a
+  bust of Pallas (`?room=poe`). A heart beats under the floor, louder near the loose board (made with game.js's `sound`, no
+  file); lifting the board gives up Volume 2 of the Raven Edition, which opens at The Tell-Tale Heart (`pendingStory`).
 - Every chair, sofa and bench is one of the library's seats: build it with `chair()`/`sofa()`/`bench()` in game.js, or
   pass `registerSeat` into a room module and call it (with a `bookIds` getter for that room's books; push the parts
   onto the room's list so they are freed with it). `?debug` exposes `__athenaeum.seats`.
@@ -73,7 +76,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, ukrainian-room or uk, evening-room, periodicals-room, learners-room, boathouse,
-  daily-room, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms) goes to a room.
+  daily-room, poe, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text.
 - **Halloween night** (`halloween.js`): 24 October to 2 November by the reader's own date (`?halloween` previews it,
   `?nohalloween` hides it). Carved lanterns (one InstancedMesh, glowing through emissive faces, no lights) by the south
