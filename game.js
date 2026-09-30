@@ -1882,6 +1882,29 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       flickerLights.forEach((light,i)=>{const d=light.userData,factor=flame(i+1);if(d.flickerApplied!==undefined&&light.intensity!==d.flickerApplied)d.flickerBase=light.intensity/(d.flickerFactor||1);if(d.flickerBase===undefined)d.flickerBase=light.intensity;light.intensity=d.flickerBase*factor;d.flickerApplied=light.intensity;d.flickerFactor=factor})
     }
     {const preLampWorld=updateWorld;updateWorld=function(t,dt){preLampWorld(t,dt);updateLamplight(t);crusoeIsland?.update(t,dt);marsWorld?.update(t);otherReaders?.update(dt);learnersRoom?.update(t,dt);eveningRoom?.update(t,dt,reducedMotion);poeRoom?.update(t,dt,reducedMotion);irishRoom?.update(t,dt,reducedMotion);periodicalsRoom?.update(t);(wingBooks.ready?internationalWing?.update(t):wingBooks.near())}}
+    // Quill's haunts: now and then the library cat is found asleep in one of the rooms behind doors (by the Irish
+    // Room's turf fire, beside Poe's desk, on a reading table in the International Wing). The same cat, moved and
+    // curled up; nothing new is built, and it goes back to its rounds of the Grand Hall when the reader does.
+    {const legs=cat.children.filter(o=>o.geometry?.type==='CylinderGeometry'),eyes=cat.children.filter(o=>o.userData.catEye),rest=cat.children.filter(o=>!legs.includes(o)&&!eyes.includes(o));
+      const pose=rest.map(o=>({o,y:o.position.y})),awake={...body.userData},haunts={};let away=null,home=null,lastZone=null,greeted=false;const alwaysQuill=new URLSearchParams(location.search).has('quill');// ?quill: always there
+      const spot=zone=>{
+        if(zone==='irish-room'&&irishRoom?.built){const r=irishRoom.room;return {x:r.cx-1,y:0,z:r.cz-r.d/2+2.1,yaw:.3,line:'Quill is asleep on the hearth, warming one side and then the other.'}}
+        if(zone==='poe-room'&&poeRoom?.built){const r=poeRoom.room;return {x:r.cx-2.3,y:0,z:r.cz+2.1,yaw:-.4,line:'Quill is curled up beside Poe’s desk, one eye half open. Poe kept a cat too: Catterina, a tortoiseshell, who is said to have sat on his shoulder while he wrote.'}}
+        const key=zone==='international-wing'&&internationalWing?.roomAt(player.pos.x,player.pos.z);
+        if(key&&internationalWing.isBuilt(key)){const r=internationalWing.rooms[key];return {x:r.cx+2.8,y:.84,z:r.cz+1.2,yaw:0,key,line:'Quill is asleep on the reading table, between the lamp and the books. A cat is the same in every language.'}}
+        return null};
+      const curl=on=>{legs.forEach(o=>o.visible=!on);eyes.forEach(o=>o.visible=!on);for(const {o,y} of pose)o.position.y=on?y-.42:y;head.position.x=on?.6:.68;head.position.y=on?.6:1.12;tail.rotation.set(on?Math.PI/2:0,on?0:Math.PI/2,0);// the tail laid flat round the body, then up again
+        const text=on?{...awake,author:'Fast asleep. It might not mind a scratch behind the ears.'}:awake;for(const part of [body,head])part.userData=text};
+      const preQuillWorld=updateWorld;updateWorld=function(t,dt){preQuillWorld(t,dt);
+        const zone=irishRoom?.contains(player.pos.x,player.pos.z)?'irish-room':poeRoom?.contains(player.pos.x,player.pos.z)?'poe-room':internationalWing?.contains(player.pos.x,player.pos.z)?'international-wing':null;
+        const where=zone==='international-wing'?'wing:'+internationalWing.roomAt(player.pos.x,player.pos.z):zone;
+        if(away){petTime=Math.max(0,petTime-dt);head.rotation.z=petTime>0?Math.sin(petTime*5)*.13:0;
+          if(where!==away.where){// back to the hall, or on to another room: Quill goes home
+            cat.position.copy(home);cat.rotation.set(0,0,0);curl(false);away=null}
+          else if(!greeted&&Math.hypot(player.pos.x-cat.position.x,player.pos.z-cat.position.z)<3.2){greeted=true;showNotice(away.line,7)}}
+        // On arriving in a room, Quill is there half the time on a first visit and one in three after (never while leading the reader somewhere).
+        if(where&&where!==lastZone&&!away&&!catGuideTarget){const s=spot(zone);if(s&&(alwaysQuill||Math.random()<(haunts[where]===undefined?.5:.33))){home=cat.position.clone();cat.position.set(s.x,s.y,s.z);cat.rotation.set(0,s.yaw,0);curl(true);away={...s,where};greeted=false}haunts[where]=true}
+        lastZone=where}}
     // ---- First visit: a short tour that moves on as the reader does each thing, with Quill leading to a shelf.
     const tour=(()=>{const box=$('#tour'),stepLabel=$('#tourStep'),text=$('#tourText');
       const pending=!localStorage.getItem('athenaeum-tour-done')&&exploredRooms.size<3&&!awakenedBooks.size;
