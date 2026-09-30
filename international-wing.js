@@ -155,6 +155,66 @@
       c.beginPath();c.arc(W/2,H/2,W*.16,0,Math.PI*2);c.fill();c.fillStyle='#d99a2b';c.beginPath();c.arc(W/2,H/2,W*.07,0,Math.PI*2);c.fill();
       c.fillStyle='#2c5592';for(const [x,y] of [[0,0],[W,0],[0,H],[W,H]]){c.beginPath();c.arc(x,y,W*.14,0,Math.PI*2);c.fill()}},128,128)}
 
+    // ---------- the Ukrainian room's own things ----------
+    // Two blue-and-yellow flags either side of the sign, a Petrykivka painting on the east wall with a rushnyk over it,
+    // sunflowers in a clay jug and a bowl of pysanky on the reading table. Canvas textures and a few instanced parts;
+    // the wing's own two lamps light them.
+    function dressUkrainian({cx,cz,w,d,box,own,mark,root}){
+      const Z=cz-d/2+.26,EX=cx+w/2-.19;
+      // The flags, with a little fold in the cloth, each on a brass rod.
+      const flagMap=own(canvasTexture((c,W,H)=>{c.fillStyle='#0057b7';c.fillRect(0,0,W,H/2);c.fillStyle='#ffd500';c.fillRect(0,H/2,W,H/2)},96,64));
+      const flagGeo=own(new THREE.PlaneGeometry(1.2,.8,12,1)),pos=flagGeo.attributes.position;for(let i=0;i<pos.count;i++)pos.setZ(i,Math.sin(pos.getX(i)*7)*.025+.03);flagGeo.computeVertexNormals();
+      const flagMat=own(new THREE.MeshStandardMaterial({map:flagMap,roughness:.85,side:THREE.DoubleSide})),rod=own(new THREE.CylinderGeometry(.018,.018,1.34,6)),knob=own(new THREE.SphereGeometry(.04,8,6));
+      const flagCard={type:'intl-card',title:'Прапор України',author:'Синій і жовтий: небо над пшеничним полем, як його часто пояснюють. (The flag of Ukraine.)',action:'READ'};
+      for(const side of [-1,1]){const x=cx+side*4.2;mark(add(flagGeo,flagMat,x,5.18,Z,root),flagCard);const r=add(rod,MAT.brass,x,5.6,Z+.05,root);r.rotation.z=Math.PI/2;for(const e of [-1,1])add(knob,MAT.brass,x+e*.68,5.6,Z+.05,root)}
+      // The Petrykivka painting: brush-stroke flowers, leaves and kalyna berries on cream, in the manner of the village of Petrykivka.
+      const paint=own(canvasTexture((c,W,H)=>{c.fillStyle='#f2e8cf';c.fillRect(0,0,W,H);
+        const leaf=(x,y,len,a,wid,col)=>{c.save();c.translate(x,y);c.rotate(a);c.fillStyle=col;c.beginPath();c.moveTo(0,0);c.quadraticCurveTo(len*.45,-wid,len,0);c.quadraticCurveTo(len*.45,wid*.35,0,0);c.fill();c.restore()};
+        const flower=(x,y,r,petal,heart)=>{for(let k=0;k<9;k++){const a=k/9*Math.PI*2;leaf(x,y,r,a,r*.42,petal)}for(let k=0;k<9;k++){const a=(k+.5)/9*Math.PI*2;leaf(x,y,r*.62,a,r*.3,heart)}c.fillStyle='#f4c430';c.beginPath();c.arc(x,y,r*.22,0,Math.PI*2);c.fill()};
+        const berries=(x,y)=>{for(const [dx,dy] of [[0,0],[20,-8],[-19,-10],[8,17],[-11,15],[28,11],[-3,-25]]){c.fillStyle='#c0141c';c.beginPath();c.arc(x+dx,y+dy,12,0,Math.PI*2);c.fill();c.fillStyle='#fff3e0';c.beginPath();c.arc(x+dx-3,y+dy-3,2.2,0,Math.PI*2);c.fill()}};
+        c.strokeStyle='#2f5d2a';c.lineWidth=11;c.lineCap='round';
+        const stem=(x0,y0,x1,y1,bx,by)=>{c.beginPath();c.moveTo(x0,y0);c.quadraticCurveTo(bx,by,x1,y1);c.stroke()};
+        stem(W/2,H-20,W/2,H*.3,W/2-40,H*.6);stem(W/2,H*.72,W*.24,H*.38,W*.3,H*.7);stem(W/2,H*.72,W*.76,H*.38,W*.7,H*.7);stem(W/2,H*.85,W*.12,H*.7,W*.3,H*.9);stem(W/2,H*.85,W*.88,H*.7,W*.7,H*.9);
+        for(let k=0;k<14;k++){const t=k/13,x=W/2+(k%2?1:-1)*(18+t*10),y=H-40-t*(H*.55);leaf(x,y,96-t*30,(k%2?-.5:Math.PI+.5),24,k%3?'#3f7a33':'#2a5a27')}
+        for(const [x0,y0,x1,y1] of [[W/2,H*.72,W*.24,H*.38],[W/2,H*.72,W*.76,H*.38],[W/2,H*.85,W*.12,H*.7],[W/2,H*.85,W*.88,H*.7]])for(let k=1;k<5;k++){const t=k/5,x=x0+(x1-x0)*t,y=y0+(y1-y0)*t-Math.sin(t*Math.PI)*40,a=Math.atan2(y1-y0,x1-x0);leaf(x,y,58,a-1.1,15,'#3f7a33');leaf(x,y,52,a+1.1,14,'#2a5a27')}
+        for(const [x,y,s] of [[W*.2,H*.62,1],[W*.8,H*.62,-1],[W*.33,H*.86,1],[W*.67,H*.86,-1]])for(let k=0;k<5;k++)leaf(x,y,84,(s>0?Math.PI:0)+s*(-.9+k*.45),20,'#3f7a33');
+        flower(W/2,H*.25,112,'#c62a1f','#e8742a');flower(W*.24,H*.36,78,'#1f4f9a','#5a8fd6');flower(W*.76,H*.36,78,'#1f4f9a','#5a8fd6');flower(W*.12,H*.66,62,'#e8742a','#f4c430');flower(W*.88,H*.66,62,'#e8742a','#f4c430');
+        berries(W*.37,H*.52);berries(W*.63,H*.52);berries(W*.42,H*.76);berries(W*.58,H*.76);
+        c.strokeStyle='#7a1a12';c.lineWidth=6;c.strokeRect(14,14,W-28,H-28)},1024,620));
+      const panel=add(own(new THREE.PlaneGeometry(3.4,2.06)),own(new THREE.MeshStandardMaterial({map:paint,roughness:.8})),EX,2.95,cz,root);panel.rotation.y=-Math.PI/2;
+      mark(panel,{type:'intl-card',title:'Петриківський розпис',author:'Квіти, листя й калина, мальовані пензлем і пальцем, як у селі Петриківка на Дніпропетровщині. 2013 року ЮНЕСКО внесло петриківський розпис до списку нематеріальної культурної спадщини людства. (Petrykivka painting, on UNESCO’s list of the intangible heritage of humanity.)',action:'READ'});
+      for(const s of [-1,1]){box(.08,.1,3.6,MAT.darkWood,EX+.02,2.95+s*1.08,cz);box(.08,2.26,.1,MAT.darkWood,EX+.02,2.95,cz+s*1.75)}
+      // The rushnyk over it: an embroidered linen towel laid along the top and falling at both sides, as over an icon or a portrait in a Ukrainian home.
+      const band=own(canvasTexture((c,W,H)=>stitchMotif(c,W,H),512,64));band.wrapS=THREE.RepeatWrapping;band.repeat.set(3,1);
+      const tail=own(canvasTexture((c,W,H)=>{c.fillStyle='#efe6d2';c.fillRect(0,0,W,H);const u=8;for(let j=0;j<9;j++)for(let i=0;i<W/u;i++){const dd=Math.abs(i-(W/u-1)/2)+Math.abs(j-4);const col=dd<1.5?'#b3202a':dd>=3&&dd<4?'#1c1c1c':dd>=5&&dd<6?'#b3202a':null;if(col)stitch(c,i*u,H-40-(j+1)*u,u,col)}
+        c.strokeStyle='#e6dcc3';c.lineWidth=2;for(let x=2;x<W;x+=5){c.beginPath();c.moveTo(x,H-16);c.lineTo(x,H);c.stroke()}},64,256));
+      const linen=own(new THREE.MeshStandardMaterial({map:band,roughness:.9,side:THREE.DoubleSide})),hang=own(new THREE.MeshStandardMaterial({map:tail,roughness:.9,side:THREE.DoubleSide}));
+      const top=add(own(new THREE.PlaneGeometry(4.1,.32)),linen,EX-.05,4.12,cz,root);top.rotation.y=-Math.PI/2;
+      for(const s of [-1,1]){const t=add(own(new THREE.PlaneGeometry(.32,1.5)),hang,EX-.06,3.28,cz+s*1.95,root);t.rotation.y=-Math.PI/2}
+      // Sunflowers in a clay jug, and pysanky in a bowl, on the reading table.
+      const tx=cx+1.5,tz=cz+1.2,ty=.82,dummy=new THREE.Object3D();
+      const jug=add(own(new THREE.LatheGeometry([[.001,0],[.1,0],[.14,.08],[.13,.2],[.07,.3],[.08,.36]].map(([x,y])=>new THREE.Vector2(x,y)),14)),own(new THREE.MeshStandardMaterial({color:0x9a4a26,roughness:.7})),tx+1.55,ty,tz-.1,root);
+      const headMap=own(canvasTexture((c,W,H)=>{c.clearRect(0,0,W,H);c.fillStyle='#f2b81c';for(let k=0;k<22;k++){c.save();c.translate(W/2,H/2);c.rotate(k/22*Math.PI*2);c.beginPath();c.ellipse(0,-W*.33,W*.06,W*.16,0,0,Math.PI*2);c.fill();c.restore()}
+        c.fillStyle='#4a2c12';c.beginPath();c.arc(W/2,H/2,W*.2,0,Math.PI*2);c.fill();c.fillStyle='#6b4420';for(let k=0;k<60;k++){const a=k*2.4,r=Math.sqrt(k/60)*W*.18;c.fillRect(W/2+Math.cos(a)*r-2,H/2+Math.sin(a)*r-2,4,4)}},128,128));
+      const heads=own(new THREE.InstancedMesh(own(new THREE.CircleGeometry(.12,16)),own(new THREE.MeshStandardMaterial({map:headMap,transparent:true,alphaTest:.4,roughness:.8,side:THREE.DoubleSide})),5));
+      const stems=own(new THREE.InstancedMesh(own(new THREE.CylinderGeometry(.008,.01,1,5)),own(new THREE.MeshStandardMaterial({color:0x3f6a2a,roughness:.9})),5));
+      [[0,.62,0,.2],[.09,.52,.9,.35],[-.09,.5,-.8,.3],[.05,.44,2.2,.45],[-.05,.58,-2.4,.25]].forEach(([dx,hgt,yaw,tilt],i)=>{
+        const bx=tx+1.55,bz=tz-.1,y0=ty+.34,hx=bx+dx+Math.sin(yaw)*tilt*.25,hz=bz+Math.cos(yaw)*tilt*.25,hy=y0+hgt;
+        dummy.position.set((bx+hx)/2,(y0+hy)/2,(bz+hz)/2);dummy.lookAt(hx,hy,hz);dummy.rotateX(Math.PI/2);dummy.scale.set(1,Math.hypot(hx-bx,hy-y0,hz-bz),1);dummy.updateMatrix();stems.setMatrixAt(i,dummy.matrix);
+        dummy.scale.set(1,1,1);dummy.position.set(hx,hy,hz);dummy.rotation.set(-tilt*.8,yaw,0,'YXZ');dummy.updateMatrix();heads.setMatrixAt(i,dummy.matrix)});
+      root.add(stems,heads);
+      const eggMap=own(canvasTexture((c,W,H)=>{c.fillStyle='#ffffff';c.fillRect(0,0,W,H);c.fillStyle='#161210';for(const y of [H*.32,H*.5,H*.68])c.fillRect(0,y-3,W,6);
+        c.strokeStyle='#161210';c.lineWidth=3;for(const [y0,y1] of [[H*.32,H*.5],[H*.5,H*.68]]){c.beginPath();for(let x=0;x<=W;x+=16)c.lineTo(x,(x/16)%2?y1-6:y0+6);c.stroke()}
+        c.fillStyle='#f6e7b0';for(let x=8;x<W;x+=16){c.beginPath();c.arc(x,H*.2,3,0,Math.PI*2);c.fill();c.beginPath();c.arc(x,H*.8,3,0,Math.PI*2);c.fill()}},128,128));
+      const eggGeo=own(new THREE.SphereGeometry(.042,14,10));eggGeo.scale(1,1.3,1);
+      const eggs=own(new THREE.InstancedMesh(eggGeo,own(new THREE.MeshStandardMaterial({map:eggMap,roughness:.4})),6)),colour=new THREE.Color();
+      [[0,0,0xc0141c],[.07,.03,0xf2b81c],[-.06,.04,0x1f4f9a],[.03,-.07,0xc0141c],[-.05,-.05,0x2f6d2a],[.08,-.05,0xd9772a]].forEach(([dx,dz,col],i)=>{dummy.position.set(tx-1.1+dx,ty+.06,tz+.1+dz);dummy.rotation.set(1.25,i*1.1,0);dummy.updateMatrix();eggs.setMatrixAt(i,dummy.matrix);eggs.setColorAt(i,colour.setHex(col))});
+      root.add(eggs);
+      const bowl=add(own(new THREE.LatheGeometry([[.001,0],[.1,0],[.15,.04],[.17,.08]].map(([x,y])=>new THREE.Vector2(x,y)),16)),own(new THREE.MeshStandardMaterial({color:0xe9dcc0,roughness:.5,side:THREE.DoubleSide})),tx-1.1,ty,tz+.1,root);
+      mark(bowl,{type:'intl-card',title:'Писанки',author:'Яйця, розписані воском і фарбами до Великодня: смуги, хвилі й крапки, кожна писанка своя. (Pysanky, Easter eggs written in wax and dye.)',action:'READ'});
+      mark(jug,{type:'intl-card',title:'Соняшники',author:'Соняшники в глиняному глечику, як на українському столі наприкінці літа. (Sunflowers in a clay jug.)',action:'READ'});
+    }
+
     // ---------- the books ----------
     function shelf(key){return [...new Set(arrivals(key))].map(id=>findBook(id)).filter(Boolean)}
     // One book is out on each lectern each night, a different one tomorrow.
@@ -218,6 +278,7 @@
         if(corner.flag){// The white cross on red, beside the sign.
           const flag=own(canvasTexture((c,W,H)=>{c.fillStyle='#d52b1e';c.fillRect(0,0,W,H);c.fillStyle='#ffffff';c.fillRect(W*.41,H*.19,W*.18,H*.62);c.fillRect(W*.19,H*.41,W*.62,H*.18)},64,64));
           const mesh=add(own(new THREE.PlaneGeometry(.5,.5)),own(new THREE.MeshStandardMaterial({map:flag,roughness:.7})),ex-.18,4.15,cz-2.1,root);mesh.rotation.y=-Math.PI/2}}
+      if(key==='ukrainian')dressUkrainian({cx,cz,w,d,box,own,mark,root});
       // The doors in the east wall of the Spanish room: green to the Portuguese room, blue to the French, red to the Chinese.
       const doorSign=(signText,signSub,font,x,z,yaw,data)=>{const board=add(own(new THREE.PlaneGeometry(2.6,.5)),own(new THREE.MeshStandardMaterial({map:own(plaque(signText,signSub,780,150,'#23170e',font)),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.25})),x,4.95,z,root);board.rotation.y=yaw;mark(board,data)};
       const plainDoor=(x,z,yaw,color,data)=>{const slab=box(1.9,3.1,.16,own(new THREE.MeshStandardMaterial({color,roughness:.7})),x,1.55,z);slab.rotation.y=yaw;mark(slab,data)};

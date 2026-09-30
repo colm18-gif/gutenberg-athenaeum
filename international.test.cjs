@@ -279,3 +279,10 @@ test('a reader whose browser speaks one of the wing\'s languages is shown the wa
   assert.match(game,/report\.href='mailto:libraryafterdark1@gmail\.com\?subject='/);
   const wing=fs.readFileSync('data/new-books-wing.js','utf8');assert.match(wing,/'María','Jorge Isaacs'/);assert.match(wing,/'Poesías','José Asunción Silva'/);
 });
+
+test('the Ukrainian room has its flags, a Petrykivka painting under a rushnyk, sunflowers and pysanky, with no lights of its own',()=>{
+  const src=fs.readFileSync('international-wing.js','utf8'),i=src.indexOf('function dressUkrainian('),body=src.slice(i,src.indexOf('\n    }\n',i));
+  assert.ok(i>0);assert.match(src,/if\(key==='ukrainian'\)dressUkrainian\(/);
+  for(const word of ['Прапор України','Петриківський розпис','Писанки','Соняшники','#0057b7','#ffd500','InstancedMesh'])assert.ok(body.includes(word),word);
+  assert.doesNotMatch(body,/Light\(/);
+});
