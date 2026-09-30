@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-09-29",
+ "updated": "2026-09-30",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -1451,6 +1451,8 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Astounding Stories of Super-Science, January 1930",
   "McClure's Magazine, Vol. 1, No. 1, June, 1893",
   "The Spectator, Volume 1",
-  "The Nursery, April 1873, Vol. XIII. No. 4"
+  "The Nursery, April 1873, Vol. XIII. No. 4",
+  "María [es]",
+  "Poesías [es]"
  ]
 };
