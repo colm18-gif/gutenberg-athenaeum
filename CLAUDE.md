@@ -54,6 +54,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   startup for a `?book=` or a `?room=` in the wing. The New books workflow checks each against the
   text's own title and author, bundles it into `texts/bundled-gzip`, counts words and writes
   `data/new-books-resolved.js`. Only resolved books appear. Every book needs a librarian's note.
+  The match wants three quarters of the title's words in the text's `Title:` line (so give the short title, not the
+  volume and date that follow on the next line) and the author's last word among its `Author:` lines (for two authors,
+  put last the one the header surely names).
 - Librarian notes: `data/librarian-notes.json` and the notes files in `data/`. Voice: three sentences, dry, warm,
   accurate; never invent facts.
 - **Book pages**: `book/<id>-<slug>.html`, `book/index.html`, `book/authors.html`, `sitemap.xml`, `robots.txt` are
