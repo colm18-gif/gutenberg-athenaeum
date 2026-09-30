@@ -151,6 +151,14 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 1424,
    "words": 45416
   },
+  "Some Experiences of an Irish R.M.": {
+   "id": 34630,
+   "words": 74025
+  },
+  "The Real Charlotte": {
+   "id": 59138,
+   "words": 150031
+  },
   "The Vicar of Wakefield": {
    "id": 2667,
    "words": 63960
@@ -515,6 +523,10 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 13306,
    "words": 94576
   },
+  "Chambers's Edinburgh Journal, No. 418": {
+   "id": 13865,
+   "words": 21042
+  },
   "Godey's Lady's Book, Vol. 42, January, 1851": {
    "id": 15080,
    "words": 59726
@@ -534,6 +546,10 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "The Mirror of Literature, Amusement, and Instruction, Vol. 10, No. 287, December 22, 1827": {
    "id": 12496,
    "words": 12538
+  },
+  "The Spectator, Volume 1": {
+   "id": 9334,
+   "words": 322603
   },
   "The Continental Monthly, Vol. 1, No. 1, January, 1862": {
    "id": 18977,
@@ -1581,11 +1597,7 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   }
  },
  "missing": [
-  "Some Experiences of an Irish R.M.",
-  "The Real Charlotte",
   "Benito Cereno",
-  "Chambers's Edinburgh Journal, No. 418, Volume 17, New Series, January 3, 1852",
-  "The Spectator, Volume 1",
   "María [es]",
   "Poesías [es]"
  ]
