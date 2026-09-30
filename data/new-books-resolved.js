@@ -67,6 +67,114 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 14851,
    "words": 166091
   },
+  "Gods and Fighting Men": {
+   "id": 14465,
+   "words": 172502
+  },
+  "Myths & Legends of the Celtic Race": {
+   "id": 34081,
+   "words": 139905
+  },
+  "Celtic Fairy Tales": {
+   "id": 7885,
+   "words": 75275
+  },
+  "Irish Fairy Tales": {
+   "id": 2892,
+   "words": 66493
+  },
+  "The Coming of Cuculain": {
+   "id": 5092,
+   "words": 38461
+  },
+  "Myths and Folk Tales of Ireland": {
+   "id": 36540,
+   "words": 73048
+  },
+  "Beside the Fire": {
+   "id": 60782,
+   "words": 81817
+  },
+  "Ancient Legends, Mystic Charms & Superstitions of Ireland": {
+   "id": 61436,
+   "words": 161112
+  },
+  "The Celtic Twilight": {
+   "id": 10459,
+   "words": 39871
+  },
+  "Visions and Beliefs in the West of Ireland, First Series": {
+   "id": 43973,
+   "words": 79101
+  },
+  "The Playboy of the Western World": {
+   "id": 1240,
+   "words": 20642
+  },
+  "Riders to the Sea": {
+   "id": 994,
+   "words": 5027
+  },
+  "The Aran Islands": {
+   "id": 4381,
+   "words": 50300
+  },
+  "The Land of Heart’s Desire": {
+   "id": 5168,
+   "words": 4861
+  },
+  "The Wild Swans at Coole": {
+   "id": 32491,
+   "words": 9461
+  },
+  "Seven Short Plays": {
+   "id": 41653,
+   "words": 40100
+  },
+  "The Crock of Gold": {
+   "id": 1605,
+   "words": 56293
+  },
+  "The Untilled Field": {
+   "id": 4034,
+   "words": 99627
+  },
+  "The Insurrection in Dublin": {
+   "id": 12871,
+   "words": 21739
+  },
+  "Our Irish Theatre": {
+   "id": 65953,
+   "words": 68994
+  },
+  "Castle Rackrent": {
+   "id": 1424,
+   "words": 45416
+  },
+  "The Vicar of Wakefield": {
+   "id": 2667,
+   "words": 63960
+  },
+  "The Black Prophet: A Tale Of Irish Famine": {
+   "id": 16018,
+   "words": 142882
+  },
+  "Niamh [ga]": {
+   "id": 50913,
+   "words": 114351
+  },
+  "Cormac Ua Conaill [ga]": {
+   "id": 79587,
+   "words": 25501
+  },
+  "Aoḋ Ó Néill [ga]": {
+   "id": 78840,
+   "words": 5592
+  },
+  "Maidean i mBéarra agus dánta eile [ga]": {
+   "id": 78815,
+   "words": 4486
+  },
   "Dubliners": {
    "id": 2814,
    "words": 68030
@@ -351,6 +459,14 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 47015,
    "words": 84825
   },
+  "Is Mars Habitable?": {
+   "id": 10855,
+   "words": 25587
+  },
+  "Gulliver of Mars": {
+   "id": 604,
+   "words": 71365
+  },
   "The Certainty of a Future Life in Mars": {
    "id": 13289,
    "words": 55621
@@ -359,6 +475,10 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 13639,
    "words": 15220
   },
+  "The Strand Magazine, Vol. 01, January 1891": {
+   "id": 41613,
+   "words": 57350
+  },
   "The Atlantic Monthly, Vol. 01, No. 01, November, 1857": {
    "id": 8498,
    "words": 84364
@@ -366,6 +486,10 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Notes and Queries, Number 01, November 3, 1849": {
    "id": 8603,
    "words": 11277
+  },
+  "The Yellow Book, an Illustrated Quarterly. Vol. 1, April 1894": {
+   "id": 41875,
+   "words": 64573
   },
   "The Germ: Thoughts towards Nature in Poetry, Literature and Art": {
    "id": 17649,
@@ -383,6 +507,10 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 28313,
    "words": 16480
   },
+  "Scientific American, Volume 17, No. 26, December 28, 1867": {
+   "id": 8951,
+   "words": 42309
+  },
   "Blackwood's Edinburgh Magazine, Vol. 55, No. 339, January, 1844": {
    "id": 13306,
    "words": 94576
@@ -394,6 +522,14 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "The Crisis, Vol. 1, No. 1, November, 1910": {
    "id": 71222,
    "words": 12885
+  },
+  "Astounding Stories of Super-Science, January 1930": {
+   "id": 41481,
+   "words": 74269
+  },
+  "McClure's Magazine, Vol. 1, No. 1": {
+   "id": 36745,
+   "words": 42787
   },
   "The Mirror of Literature, Amusement, and Instruction, Vol. 10, No. 287, December 22, 1827": {
    "id": 12496,
@@ -410,6 +546,10 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "The Great Round World and What Is Going On In It, Vol. 1, No. 1, November 4, 1896": {
    "id": 15827,
    "words": 12104
+  },
+  "The Nursery, April 1873, Vol. XIII.": {
+   "id": 24477,
+   "words": 6029
   },
   "Don Quijote [es]": {
    "id": 2000,
@@ -1441,17 +1581,11 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   }
  },
  "missing": [
+  "Some Experiences of an Irish R.M.",
+  "The Real Charlotte",
   "Benito Cereno",
-  "Mars as the Abode of Life",
-  "Lieut. Gullivar Jones: His Vacation",
-  "The Strand Magazine, Vol. 01, Issue 01, January 1891",
-  "The Yellow Book, Volume 1, April 1894",
-  "Scientific American, Vol. 17, No. 1, July 6, 1867",
-  "Chambers's Edinburgh Journal, No. 419, New Series, January 3, 1852",
-  "Astounding Stories of Super-Science, January 1930",
-  "McClure's Magazine, Vol. 1, No. 1, June, 1893",
+  "Chambers's Edinburgh Journal, No. 418, Volume 17, New Series, January 3, 1852",
   "The Spectator, Volume 1",
-  "The Nursery, April 1873, Vol. XIII. No. 4",
   "María [es]",
   "Poesías [es]"
  ]
