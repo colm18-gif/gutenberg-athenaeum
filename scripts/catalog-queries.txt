@@ -39,41 +39,41 @@ Martian
 Barsoom|Burroughs, Edgar Rice
 Red Planet
 # The Spanish room's Colombians, in case they are there after all.
-María|Maria | Isaacs
-| Silva, José Asunción
+María|Maria ; Isaacs
+ ; Silva, José Asunción
 # Benito Cereno (a new arrival that did not resolve).
 Benito Cereno|Piazza Tales
 # An Irish Room: myth, folklore, the Revival and Irish writers, and a small Irish-language shelf.
-| | ga
-| Gregory, Lady
-| Yeats, W\. B\.
-| Synge
-| Stephens, James
-| Hyde, Douglas
-| Curtin, Jeremiah
-| Jacobs, Joseph
-| Rolleston
-| Wilde, Lady
-| Kennedy, Patrick
-| O'Grady, Standish
-| Edgeworth, Maria
-| Carleton, William
-| Griffin, Gerald
-| Kickham
-| Somerville|Ross, Martin
-| Moore, George
-| Moore, Thomas
-| Joyce, James
-| Goldsmith, Oliver
-| Pearse
-| Meagher
-| Mangan
-| Davis, Thomas
-| Lover, Samuel
-| Lever, Charles
-| Russell, George William|^AE\b
-| Colum, Padraic
-| Dunsany
-| Ledwidge
-| Tynan, Katharine
+ ; ; ga
+ ; Gregory, Lady
+ ; Yeats, W\. B\.
+ ; Synge
+ ; Stephens, James
+ ; Hyde, Douglas
+ ; Curtin, Jeremiah
+ ; Jacobs, Joseph
+ ; Rolleston
+ ; Wilde, Lady
+ ; Kennedy, Patrick
+ ; O'Grady, Standish
+ ; Edgeworth, Maria
+ ; Carleton, William
+ ; Griffin, Gerald
+ ; Kickham
+ ; Somerville|Ross, Martin
+ ; Moore, George
+ ; Moore, Thomas
+ ; Joyce, James
+ ; Goldsmith, Oliver
+ ; Pearse
+ ; Meagher
+ ; Mangan
+ ; Davis, Thomas
+ ; Lover, Samuel
+ ; Lever, Charles
+ ; Russell, George William|^AE\b
+ ; Colum, Padraic
+ ; Dunsany
+ ; Ledwidge
+ ; Tynan, Katharine
 Ireland|Irish|Erin|Celtic
