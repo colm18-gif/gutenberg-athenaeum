@@ -371,7 +371,7 @@ function coverTexture(book){if(coverTextureCache.has(book.id))return coverTextur
             const books=add(new THREE.PlaneGeometry(W-.2,rowH-.14),new THREE.MeshStandardMaterial({map:wingLeaf.spines[(r+(direction>0?1:0)+(side>0?2:0))%3],roughness:.85}),fx+face*.01,y+rowH/2+.02,0);books.rotation.y=face*Math.PI/2}
           add(new THREE.BoxGeometry(.3,H,.12),shelfMat,fx+face*.1,0,W/2-.06);add(new THREE.BoxGeometry(.3,H,.12),shelfMat,fx+face*.1,0,-W/2+.06);add(new THREE.BoxGeometry(.3,.2,W),shelfMat,fx+face*.1,H/2-.1,0)}
       }else{
-        const frame=MAT.darkWood,glass=wingLeaf.glass||(wingLeaf.glass=new THREE.MeshStandardMaterial({color:0x2a1a0c,emissive:0xc98a3c,emissiveIntensity:.16,roughness:.12,metalness:.2})),panel=wingLeaf.panel||(wingLeaf.panel=new THREE.MeshStandardMaterial({color:0x4a2c18,roughness:.6}));
+        const frame=MAT.darkWood,glass=wingLeaf.glass||(wingLeaf.glass=new THREE.MeshStandardMaterial({color:0x140c06,emissive:0xb87a36,emissiveIntensity:.22,roughness:.3,metalness:0,envMapIntensity:.15})),panel=wingLeaf.panel||(wingLeaf.panel=new THREE.MeshStandardMaterial({color:0x4a2c18,roughness:.6}));
         const lowH=1.9,cols=3,rowsG=6,gx=W-.5,gy=H-lowH-.55;
         for(const face of [1,-1]){const fx=face*.09;
           for(const z of [-W/2+.14,W/2-.14])add(new THREE.BoxGeometry(.1,H,.28),frame,fx,0,z);
