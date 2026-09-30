@@ -225,13 +225,11 @@
       const g=new THREE.Group();g.name='international-door';g.position.set(DOOR.x,0,DOOR.z);g.rotation.y=DOOR.yaw;scene.add(g);
       const mark=(object,data)=>{object.userData=data;interactables.push(object);return object};
       // A stone doorcase round the navy door, its lintel cut with the word for books in each of the wing's languages.
-      if(hangWing(g,'spanish',{data:doorData,mark,pediment:false})){
+      if(hangWing(g,'spanish',{data:doorData,mark,...(doorKit?.readingRoom?.('THE INTERNATIONAL WING','Six languages, six reading rooms')||{}),fanlight:true,fanColor:0x9a6a3a})){
         for(const side of [-1,1]){add(new THREE.BoxGeometry(.36,4.1,.3),MAT.stone,side*1.52,2.05,.1,g);add(new THREE.BoxGeometry(.5,.18,.38),MAT.stone,side*1.52,4.18,.12,g);add(new THREE.BoxGeometry(.5,.32,.38),MAT.stone,side*1.52,.16,.12,g)}
         add(new THREE.BoxGeometry(3.5,.66,.34),MAT.stone,0,4.6,.12,g);add(new THREE.BoxGeometry(3.8,.12,.44),MAT.stone,0,4.99,.14,g);
         mark(add(new THREE.PlaneGeometry(3.3,.46),new THREE.MeshStandardMaterial({map:carved('LIBROS · LIVROS · LIVRES · 書 · LIBRI · КНИЖКИ',1024,144,`Georgia,${CJK}`),roughness:.9}),0,4.6,.295,g),doorData)}
       else mark(add(new THREE.BoxGeometry(1.9,3.1,.14),new THREE.MeshStandardMaterial({color:DOOR_LOOKS.spanish.color,roughness:.75}),0,1.55,.08,g),doorData);
-      const plate=plaque('THE INTERNATIONAL WING','Español · Português · Français · 中文 · Latina · Українська',640,100);// the door's plaque stays for good
-      mark(add(new THREE.PlaneGeometry(2.3,.36),new THREE.MeshStandardMaterial({map:plate,emissive:0xffffff,emissiveMap:plate,emissiveIntensity:.35}),0,5.42,.12,g),doorData);
       const l=new THREE.PointLight(0xffc27a,1.1,5,2);l.position.set(0,3.9,1.1);g.add(l);
     }
 

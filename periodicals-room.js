@@ -86,16 +86,17 @@
     function buildDoor(){
       const g=new THREE.Group();g.name='periodicals-door';g.position.set(DOOR.x,0,DOOR.z);g.rotation.y=DOOR.yaw;scene.add(g);
       const data={type:'periodicals-door',title:'The Periodicals Room',author:'Magazines, journals and papers, as they first appeared. Tonight’s Gazette is on the slopes.',action:'ENTER'};
-      const kd=doorKit?.hang(g,{data,mark:markDoor,...DOOR_LOOK});if(!kd)markDoor(add(new THREE.BoxGeometry(1.9,3.1,.14),new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.8}),0,1.55,.08,g),data);
+      const kd=doorKit?.hang(g,{data,mark:markDoor,...DOOR_LOOK,...doorKit.readingRoom?.('THE PERIODICALS ROOM','Magazines, journals and papers')});if(!kd)markDoor(add(new THREE.BoxGeometry(1.9,3.1,.14),new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.8}),0,1.55,.08,g),data);
       // A slot in the letter plate, for the post.
-      if(kd){for(const z of [-.115,.115])add(new THREE.BoxGeometry(.36,.035,.01),MAT.black||new THREE.MeshBasicMaterial({color:0x080604}),0,3.1*.53,z,kd.leaf);doorKit.drawAfterPortal(kd.leaf)}
+      if(kd&&!doorKit.readingRoom){for(const z of [-.115,.115])add(new THREE.BoxGeometry(.36,.035,.01),MAT.black||new THREE.MeshBasicMaterial({color:0x080604}),0,3.1*.53,z,kd.leaf);doorKit.drawAfterPortal(kd.leaf)}
       // Beside the door, tonight's Gazette on its sticks, as in a coffee house.
       const paper=canvasTexture((c,W,H)=>{c.fillStyle='#e6dcc2';c.fillRect(0,0,W,H);c.fillStyle='#2a2118';c.textAlign='center';c.font='bold 22px Georgia';c.fillText('THE AFTER DARK',W/2,34);c.font='bold 30px Georgia';c.fillText('GAZETTE',W/2,66);
         c.fillRect(12,78,W-24,3);c.globalAlpha=.55;for(let col=0;col<3;col++)for(let line=0;line<22;line++)c.fillRect(14+col*(W-28)/3,94+line*9,(W-28)/3-8-((line*7+col*3)%5)*4,3);c.globalAlpha=1},160,300);
       const sheet=new THREE.MeshStandardMaterial({map:paper,roughness:.95,side:THREE.DoubleSide}),gazette={type:'periodicals-gazette',title:'The After Dark Gazette',author:'Tonight’s number, on its stick by the door.',action:'READ THE GAZETTE'};
       add(new THREE.BoxGeometry(.9,.08,.12),MAT.darkWood,-1.95,2.25,.08,g);for(const px of [-.3,0,.3]){add(new THREE.BoxGeometry(.03,.03,.3),MAT.brass,-1.95+px,2.2,.2,g);const stick=add(new THREE.BoxGeometry(.3,.035,.035),MAT.darkWood,-1.95+px,2.19,.34,g);markDoor(add(new THREE.PlaneGeometry(.26,.5),sheet,-1.95+px,1.93,.35,g),gazette)}
       const plate=plaque('THE PERIODICALS ROOM','Magazines, journals and papers',640,100);owned.pop();// the door's plaque stays for good
-      markDoor(add(new THREE.PlaneGeometry(2.3,.36),new THREE.MeshStandardMaterial({map:plate,emissive:0xffffff,emissiveMap:plate,emissiveIntensity:.35}),0,4.82,.12,g),data);
+      // The name is gilded on the door's glass; the old board above is kept only for a door built without the kit.
+      if(!doorKit?.readingRoom)markDoor(add(new THREE.PlaneGeometry(2.3,.36),new THREE.MeshStandardMaterial({map:plate,emissive:0xffffff,emissiveMap:plate,emissiveIntensity:.35}),0,4.82,.12,g),data);
       lamp(g,0xffc27a,1.1,5,0,3.9,1.1);
     }
 

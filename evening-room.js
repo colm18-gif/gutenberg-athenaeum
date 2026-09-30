@@ -64,14 +64,15 @@
       const g=new THREE.Group();g.name='evening-door';g.position.set(DOOR.x,0,DOOR.z);g.rotation.y=DOOR.yaw;scene.add(g);
       const data={type:'evening-door',title:'The Evening Room',author:'A fireside room of books you can finish in one sitting.',action:'ENTER'};
       // A deep red door from the library's own kit, its fanlight lit like a fire behind it, and a carriage lamp beside it.
-      if(!doorKit?.hang(g,{data,mark:markDoor,...DOOR_LOOK}))markDoor(add(new THREE.BoxGeometry(1.9,3.1,.14),new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.8}),0,1.55,.08,g),data);
+      if(!doorKit?.hang(g,{data,mark:markDoor,...DOOR_LOOK,...doorKit.readingRoom?.('THE EVENING ROOM','Books for one sitting')}))markDoor(add(new THREE.BoxGeometry(1.9,3.1,.14),new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.8}),0,1.55,.08,g),data);
       const lampGlass=new THREE.MeshStandardMaterial({color:0xffb870,emissive:0xff8a3a,emissiveIntensity:1.3,roughness:.3}),lx=1.62,ly=2.7;
       add(new THREE.BoxGeometry(.16,.34,.04),MAT.brass,lx,ly+.36,.03,g);add(new THREE.BoxGeometry(.05,.05,.44),MAT.brass,lx,ly+.4,.24,g);add(new THREE.BoxGeometry(.03,.14,.03),MAT.brass,lx,ly+.32,.44,g);
       markDoor(add(new THREE.BoxGeometry(.2,.3,.2),lampGlass,lx,ly,.44,g),data);add(new THREE.BoxGeometry(.28,.05,.28),MAT.brass,lx,ly-.17,.44,g);
       for(const [px,pz] of [[-.11,-.11],[.11,-.11],[-.11,.11],[.11,.11]])add(new THREE.BoxGeometry(.025,.32,.025),MAT.brass,lx+px,ly,.44+pz,g);
       const cap=add(new THREE.ConeGeometry(.2,.17,4),MAT.brass,lx,ly+.24,.44,g);cap.rotation.y=Math.PI/4;add(new THREE.SphereGeometry(.035,8,6),MAT.brass,lx,ly+.35,.44,g);
       const plate=canvasTexture((c,W,H)=>{c.fillStyle='#2a1512';c.fillRect(0,0,W,H);c.strokeStyle='#d7ae60';c.lineWidth=6;c.strokeRect(5,5,W-10,H-10);c.textAlign='center';c.fillStyle='#ffe2a0';c.font='bold 32px Georgia';c.fillText('THE EVENING ROOM',W/2,46);c.font='italic 21px Georgia';c.fillText('Every book here can be read in one sitting',W/2,80)},600,100);
-      markDoor(add(new THREE.PlaneGeometry(2.1,.35),new THREE.MeshStandardMaterial({map:plate,emissive:0x6b461e,emissiveIntensity:.35}),0,4.82,.12,g),data);
+      // The name is gilded on the door's glass; the old board above is kept only for a door built without the kit.
+      if(!doorKit?.readingRoom)markDoor(add(new THREE.PlaneGeometry(2.1,.35),new THREE.MeshStandardMaterial({map:plate,emissive:0x6b461e,emissiveIntensity:.35}),0,4.82,.12,g),data);
       lamp(g,0xffb46a,1.2,5,lx,ly,.9);// the lamp's own glow, the door's only light
     }
 
