@@ -93,27 +93,27 @@ export function readingTime(words,lang='en'){if(!words)return null;
   const es=lang==='es'||lang==='pt'||lang==='fr',m=Math.max(1,Math.round(words/250));if(m<15)return `${m} ${es?'minutos':'minutes'}`;const r=Math.round(m/5)*5;if(r<60)return `${r} ${es?'minutos':'minutes'}`;const h=Math.floor(r/60),rest=r%60;return rest?`${h} ${es?'h':'hr'} ${rest} min`:lang==='fr'?(h===1?'une heure':`${h} heures`):es?(h===1?'una hora':`${h} horas`):`${h===1?'an hour':`${h} hours`}`}
 // The words around each page, in the language of its book.
 const WORDS={
-  en:{lang:'en',by:'by',read:'Read it in the Library After Dark',time:'Reading time',about:'About',where:'Where to find it',onShelves:shelf=>`On the ${shelf} shelves`,edition:'Edition',
+  en:{lang:'en',by:'by',read:'Read it in the Library After Dark',plain:'Or read it as plain text',time:'Reading time',about:'About',where:'Where to find it',onShelves:shelf=>`On the ${shelf} shelves`,edition:'Edition',
     pd:'In the public domain in the United States.',licence:'Licence',librarian:'The librarian',moreBy:author=>`More by ${author}`,also:shelf=>`Also on the ${shelf} shelves`,
     shelf:shelf=>shelf,place:place=>place,
     nav:'<a href="/book/">Catalogue</a><a href="/book/authors.html">Authors</a><a class="enter" href="/">Enter the library</a>',
     footer:'The Library After Dark is a 3D library you can walk through in your browser, with public-domain books to read. <a href="/">Step inside</a>.'},
-  es:{lang:'es',by:'de',read:'Léelo en la Library After Dark',time:'Tiempo de lectura',about:'Unos',where:'Dónde encontrarlo',onShelves:()=>'En el ala internacional',edition:'Edición',
+  es:{lang:'es',by:'de',read:'Léelo en la Library After Dark',plain:'O léelo en texto sencillo',time:'Tiempo de lectura',about:'Unos',where:'Dónde encontrarlo',onShelves:()=>'En el ala internacional',edition:'Edición',
     pd:'De dominio público en los Estados Unidos.',licence:'Licencia',librarian:'La bibliotecaria',moreBy:author=>`Más de ${author}`,also:()=>'Más libros en español',
     shelf:shelf=>SHELVES_ES[shelf]||shelf,place:place=>({'The International Wing':'El ala internacional: Sala de lectura en español'})[place]||place,
     nav:'<a href="/es/">Libros en español</a><a href="/book/">Catalogue</a><a class="enter" href="/?room=international-wing">Entrar en la biblioteca</a>',
     footer:'The Library After Dark es una biblioteca en 3D que se recorre desde el navegador, con libros de dominio público para leer. <a href="/?room=international-wing">Entrar</a>.'},
-  pt:{lang:'pt',by:'de',read:'Leia na Library After Dark',time:'Tempo de leitura',about:'Cerca de',where:'Onde encontrá-lo',onShelves:()=>'Na ala internacional',edition:'Edição',
+  pt:{lang:'pt',by:'de',read:'Leia na Library After Dark',plain:'Ou leia em texto simples',time:'Tempo de leitura',about:'Cerca de',where:'Onde encontrá-lo',onShelves:()=>'Na ala internacional',edition:'Edição',
     pd:'Em domínio público nos Estados Unidos.',licence:'Licença',librarian:'A bibliotecária',moreBy:author=>`Mais de ${author}`,also:()=>'Mais livros em português',
     shelf:shelf=>SHELVES_PT[shelf]||shelf,place:place=>({'The Portuguese Reading Room':'A ala internacional: Sala de leitura em português','The Lost Kingdoms':'Os Reinos Perdidos (em inglês)'})[place]||place,
     nav:'<a href="/pt/">Livros em português</a><a href="/book/">Catalogue</a><a class="enter" href="/?room=portuguese-room">Entrar na biblioteca</a>',
     footer:'The Library After Dark é uma biblioteca em 3D que se percorre no navegador, com livros de domínio público para ler. <a href="/?room=portuguese-room">Entrar</a>.'},
-  fr:{lang:'fr',by:'de',read:'Lire dans la Library After Dark',time:'Temps de lecture',about:'Environ',where:'Où le trouver',onShelves:()=>'Dans l’aile internationale',edition:'Édition',
+  fr:{lang:'fr',by:'de',read:'Lire dans la Library After Dark',plain:'Ou le lire en texte simple',time:'Temps de lecture',about:'Environ',where:'Où le trouver',onShelves:()=>'Dans l’aile internationale',edition:'Édition',
     pd:'Dans le domaine public aux États-Unis.',licence:'Licence',librarian:'La bibliothécaire',moreBy:author=>`Du même auteur : ${author}`,also:()=>'D’autres livres en français',
     shelf:shelf=>SHELVES_FR[shelf]||shelf,place:place=>({'The French Reading Room':'L’aile internationale : Salle de lecture en français','The Verne rooms':'Les salles Jules Verne (en anglais)'})[place]||place,
     nav:'<a href="/fr/">Livres en français</a><a href="/book/">Catalogue</a><a class="enter" href="/?room=french-room">Entrer dans la bibliothèque</a>',
     footer:'The Library After Dark est une bibliothèque en 3D que l’on parcourt dans son navigateur, avec des livres du domaine public à lire. <a href="/?room=french-room">Entrer</a>.'},
-  zh:{lang:'zh-Hant',by:'作者',read:'在 Library After Dark 裡閱讀',time:'閱讀時間',about:'約',where:'在圖書館的哪裡',onShelves:()=>'在國際館',edition:'版本',
+  zh:{lang:'zh-Hant',by:'作者',read:'在 Library After Dark 裡閱讀',plain:'或以純文字閱讀',time:'閱讀時間',about:'約',where:'在圖書館的哪裡',onShelves:()=>'在國際館',edition:'版本',
     pd:'在美國屬於公有領域。',licence:'授權',librarian:'館員',moreBy:author=>`${author.replace(/\s*\(.*\)$/,'')}的其他作品`,also:()=>'更多中文書',
     shelf:shelf=>SHELVES_ZH[shelf]||shelf,place:place=>({'The Chinese Reading Room':'國際館：中文閱覽室'})[place]||place,
     pageTitle:(book,edition)=>`《${book.title}》${edition} ${book.author.replace(/\s*\(.*\)$/,'')} · The Library After Dark`,
@@ -124,7 +124,7 @@ const WORDS={
 WORDS.la={...WORDS.en,also:()=>'More Latin books',place:place=>place,onShelves:()=>'In the International Wing',
   nav:'<a href="/la/">Libri Latini</a><a href="/book/">Catalogue</a><a class="enter" href="/?room=latin-room">Enter the library</a>'};
 // Ukrainian books come from Wikisource, and their pages are in Ukrainian.
-WORDS.uk={lang:'uk',by:'',pageTitle:(book,edition)=>`${book.title}${edition} — ${book.author} · The Library After Dark`,read:'Читати в Library After Dark',time:'Час читання',about:'Близько',where:'Де знайти',onShelves:()=>'У Міжнародному крилі',edition:'Видання',
+WORDS.uk={lang:'uk',by:'',pageTitle:(book,edition)=>`${book.title}${edition} — ${book.author} · The Library After Dark`,read:'Читати в Library After Dark',plain:'Або читати простим текстом',time:'Час читання',about:'Близько',where:'Де знайти',onShelves:()=>'У Міжнародному крилі',edition:'Видання',
   pd:'Суспільне надбання.',licence:'Статус',librarian:'Бібліотекарка',moreBy:author=>`Ще від автора: ${author}`,also:()=>'Інші книжки українською',
   shelf:shelf=>SHELVES_UK[shelf]||shelf,place:place=>({'The Ukrainian Reading Room':'Міжнародне крило: Українська читальня'})[place]||place,
   nav:'<a href="/uk/">Книжки українською</a><a href="/book/">Catalogue</a><a class="enter" href="/?room=ukrainian-room">Увійти до бібліотеки</a>',
@@ -187,7 +187,7 @@ ${coverHtml(book)}
 <h1>${escape(book.title)}${edition?`<small>${escape(edition.trim())}</small>`:''}</h1>
 <p class="author">${T.by} <a href="/book/authors.html#${slug(book.author)}">${escape(book.author)}</a></p>
 ${note?`<blockquote><p>${escape(note)}</p><cite>${T.librarian}</cite></blockquote>`:''}
-<a class="read" href="/?book=${book.id}">${T.read}</a>
+<a class="read" href="/?book=${book.id}">${T.read}</a> <a class="plain" href="/read.html?book=${book.id}&amp;from=${encodeURIComponent(pageName(book))}">${T.plain}</a>
 <dl>
 ${time?`<dt>${T.time}</dt><dd>${T.about} ${time}</dd>`:''}
 ${places.length?`<dt>${T.where}</dt><dd>${places.map(place=>ROOM_LINKS[place]?`<a href="/?room=${ROOM_LINKS[place]}">${escape(T.place(place))}</a>`:escape(T.place(place))).join('; ')}</dd>`:`<dt>${T.where}</dt><dd>${escape(T.onShelves(book.category||'library'))}</dd>`}
@@ -277,6 +277,7 @@ h1 small{display:block;font-size:.4em;color:var(--soft);margin-top:.3em}h1{font-
 blockquote{margin:0 0 1.6em;padding:20px 24px;background:var(--panel);border-left:3px solid var(--gold);border-radius:0 6px 6px 0}blockquote p{margin:0 0 .6em}
 cite{display:block;font-size:15px;color:var(--soft)}cite:before{content:'— '}
 .read{display:inline-block;margin:0 0 1.8em;padding:14px 22px;background:var(--gold);color:#1a120a;text-decoration:none;border-radius:6px;font-size:18px}.read:hover{background:#f0c878;color:#1a120a}
+.plain{display:inline-block;margin:0 0 1.8em 14px;color:var(--gold);font-size:16px}.plain:hover{color:#f0c878}
 dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:0;font-size:16px}dt{color:var(--soft)}dd{margin:0}
 .more,.shelf-list{max-width:980px;margin:0 auto;padding:0 24px 24px}.more h2,.shelf-list h2{font-weight:normal;font-size:22px;border-bottom:1px solid var(--line);padding-bottom:6px}
 .more ul,.shelf-list ul{list-style:none;margin:0;padding:0;columns:2 280px;column-gap:32px}.more li,.shelf-list li{break-inside:avoid;padding:4px 0}.more li span,.shelf-list li span{display:block;font-size:14px;color:var(--soft)}

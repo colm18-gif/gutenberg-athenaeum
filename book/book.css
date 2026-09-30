@@ -15,6 +15,7 @@ h1 small{display:block;font-size:.4em;color:var(--soft);margin-top:.3em}h1{font-
 blockquote{margin:0 0 1.6em;padding:20px 24px;background:var(--panel);border-left:3px solid var(--gold);border-radius:0 6px 6px 0}blockquote p{margin:0 0 .6em}
 cite{display:block;font-size:15px;color:var(--soft)}cite:before{content:'— '}
 .read{display:inline-block;margin:0 0 1.8em;padding:14px 22px;background:var(--gold);color:#1a120a;text-decoration:none;border-radius:6px;font-size:18px}.read:hover{background:#f0c878;color:#1a120a}
+.plain{display:inline-block;margin:0 0 1.8em 14px;color:var(--gold);font-size:16px}.plain:hover{color:#f0c878}
 dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:0;font-size:16px}dt{color:var(--soft)}dd{margin:0}
 .more,.shelf-list{max-width:980px;margin:0 auto;padding:0 24px 24px}.more h2,.shelf-list h2{font-weight:normal;font-size:22px;border-bottom:1px solid var(--line);padding-bottom:6px}
 .more ul,.shelf-list ul{list-style:none;margin:0;padding:0;columns:2 280px;column-gap:32px}.more li,.shelf-list li{break-inside:avoid;padding:4px 0}.more li span,.shelf-list li span{display:block;font-size:14px;color:var(--soft)}
