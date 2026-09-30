@@ -23,6 +23,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `data/new-books.js` (the last checked as Irish, `ga`), round a turf fire, with a harp, a St Brigid's cross and an ogham stone.
 - Quill, the library cat, is sometimes found asleep in the Irish Room, the Poe Room or a wing reading room (the same
   cat moved and curled up; `?quill` makes it every time). The librarian stays in the Grand Hall.
+- The doors between the Grand Hall and each wing (x ±19) are bookcases that part and slide into the walls (`wingLeaf` in
+  `game.js`: one shared spine texture, instanced shelf boards).
 - Plain text: `read.html?book=ID` shows any book as one readable page (linked from every book page and the reader). Reading
   cards (`reading-card.js`, `/card` on the visitors' book worker) carry bookmarks between devices by a four-word code.
 - Every chair, sofa and bench is one of the library's seats: build it with `chair()`/`sofa()`/`bench()` in game.js, or

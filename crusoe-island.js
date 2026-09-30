@@ -1,4 +1,4 @@
-// The Boathouse and Crusoe's island. A sea-blue door in the Grand Hall opens onto an old boathouse at night;
+// The Boathouse and Crusoe's island. A walnut door in the Grand Hall opens onto an old boathouse at night;
 // a rowing boat at the end of its jetty crosses the sea as the sun comes up, to a small island where Robinson
 // Crusoe has left his camp, his calendar post, his parrot and a castaways' library.
 //
@@ -41,7 +41,7 @@
     function mark(object,data){object.userData=data;interactables.push(object);ours.push(object);return object}
     // The door in the hall stays when the boathouse is freed, so its parts are not among the room's own.
     function markDoor(object,data){object.userData=data;interactables.push(object);return object}
-    // The same door from either side: sea-blue boards with a porthole, hung in the library's own kit (library-doors.js).
+    // The boathouse side of its door: sea-blue boards with a porthole (the hall side is walnut), hung in the library's own kit (library-doors.js).
     const DOOR_LOOK={style:'painted',color:0x2f5561,planked:true,fanlight:false,pediment:false,width:1.9,height:3.1};
     const through=(data,go)=>doorKit&&data.kit?doorKit.pass(data.kit,data,go):go();
     // A brass porthole through the leaf, dark with the sea behind it.
@@ -65,7 +65,7 @@
     // ---------- the door in the Grand Hall ----------
     function buildDoor(){
       const g=new THREE.Group();g.name='boathouse-door';g.position.set(DOOR.x,0,DOOR.z);g.rotation.y=DOOR.yaw;scene.add(g);
-      const data={type:'isle-door',title:'The Boathouse',author:'A sea-blue door that smells faintly of salt. Somewhere behind it, water is lapping.',action:'ENTER'};
+      const data={type:'isle-door',title:'The Boathouse',author:'A walnut door that smells faintly of salt. Somewhere behind it, water is lapping.',action:'ENTER'};
       const glass=new THREE.MeshStandardMaterial({color:0x1d3440,emissive:0x0d2330,emissiveIntensity:.8,roughness:.2,metalness:.1});
       const kd=doorKit?.hang(g,{data,mark:markDoor,...DOOR_LOOK,...doorKit.readingRoom?.('THE BOATHOUSE','Crusoe’s island, by water')});if(!kd)markDoor(box(1.9,3.1,.14,new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.8}),0,1.55,.08,g),data);else if(!doorKit.readingRoom)porthole(kd,glass);
       // A coil of rope on a cleat beside the door, and a lifebuoy.

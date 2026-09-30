@@ -68,3 +68,9 @@ test('the Grand Hall side of every room behind a door is the library’s walnut,
   for(const [file,name] of [['irish-room.js','THE IRISH ROOM'],['periodicals-room.js','THE PERIODICALS ROOM'],['crusoe-island.js','THE BOATHOUSE'],['evening-room.js','THE EVENING ROOM'],['learners-room.js','THE ENGLISH\\nREADING ROOM'],['international-wing.js','THE INTERNATIONAL WING']])
     assert(fs.readFileSync(file,'utf8').includes(`readingRoom?.('${name}'`),file);
 });
+
+test('the doors to the wings are bookcases that slide apart, drawn cheaply',()=>{
+  const fn=game.slice(game.indexOf('function wingLeaf('),game.indexOf('const wingDoors=[]'));
+  assert.match(fn,/InstancedMesh/,'shelf boards in one instanced mesh per leaf');assert.match(fn,/wingLeaf\.spines\|\|/,'one spine texture, shared');
+  assert.doesNotMatch(fn,/PointLight|URLSearchParams/);assert.match(game,/const panel=wingLeaf\(side,direction\)/);
+});
