@@ -1,7 +1,7 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-09-30",
+ "updated": "2026-10-01",
  "days": {
   "2026-09-25": {
    "books": [
@@ -439,6 +439,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 2130,
      "title": "Utopia",
      "author": "Thomas More"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-03": {
+   "books": [
+    {
+     "id": 4200,
+     "title": "The Diary of Samuel Pepys",
+     "author": "Samuel Pepys"
+    },
+    {
+     "id": 42856,
+     "title": "Journals of Dorothy Wordsworth",
+     "author": "Dorothy Wordsworth"
+    },
+    {
+     "id": 16623,
+     "title": "Letters of a Woman Homesteader",
+     "author": "Elinore Pruitt Stewart"
+    },
+    {
+     "id": 35977,
+     "title": "Letters of Abelard and Heloise",
+     "author": "Pierre Abelard"
+    },
+    {
+     "id": 3361,
+     "title": "Letters to His Son",
+     "author": "Earl of Chesterfield"
+    },
+    {
+     "id": 39585,
+     "title": "The Journal of a Disappointed Man",
+     "author": "W. N. P. Barbellion"
+    },
+    {
+     "id": 2680,
+     "title": "Meditations",
+     "author": "Marcus Aurelius"
+    },
+    {
+     "id": 78579,
+     "title": "Letters of Madame de Sévigné",
+     "author": "Madame de Sévigné"
+    },
+    {
+     "id": 6053,
+     "title": "Evelina",
+     "author": "Fanny Burney"
+    },
+    {
+     "id": 946,
+     "title": "Lady Susan",
+     "author": "Jane Austen"
     }
    ],
    "missing": []
