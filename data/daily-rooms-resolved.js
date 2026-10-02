@@ -1,7 +1,7 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-01",
+ "updated": "2026-10-02",
  "days": {
   "2026-09-25": {
    "books": [
@@ -494,6 +494,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 946,
      "title": "Lady Susan",
      "author": "Jane Austen"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-04": {
+   "books": [
+    {
+     "id": 2701,
+     "title": "Moby-Dick",
+     "author": "Herman Melville"
+    },
+    {
+     "id": 2055,
+     "title": "Two Years Before the Mast",
+     "author": "Richard Henry Dana"
+    },
+    {
+     "id": 1074,
+     "title": "The Sea-Wolf",
+     "author": "Jack London"
+    },
+    {
+     "id": 2186,
+     "title": "Captains Courageous",
+     "author": "Rudyard Kipling"
+    },
+    {
+     "id": 1142,
+     "title": "Typhoon",
+     "author": "Joseph Conrad"
+    },
+    {
+     "id": 120,
+     "title": "Treasure Island",
+     "author": "Robert Louis Stevenson"
+    },
+    {
+     "id": 6629,
+     "title": "Mr. Midshipman Easy",
+     "author": "Frederick Marryat"
+    },
+    {
+     "id": 151,
+     "title": "The Rime of the Ancient Mariner",
+     "author": "Samuel Taylor Coleridge"
+    },
+    {
+     "id": 1356,
+     "title": "The Cruise of the Cachalot",
+     "author": "Frank T. Bullen"
+    },
+    {
+     "id": 164,
+     "title": "Twenty Thousand Leagues under the Sea",
+     "author": "Jules Verne"
     }
    ],
    "missing": []
