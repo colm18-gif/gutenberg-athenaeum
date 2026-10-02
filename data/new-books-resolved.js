@@ -767,6 +767,90 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 24477,
    "words": 6029
   },
+  "Select Letters of Christopher Columbus": {
+   "id": 77820,
+   "words": 136176
+  },
+  "The Letters of Amerigo Vespucci": {
+   "id": 36924,
+   "words": 52572
+  },
+  "The First Voyage Round the World": {
+   "id": 74723,
+   "words": 111712
+  },
+  "Voyager’s Tales": {
+   "id": 3752,
+   "words": 42390
+  },
+  "Sir Francis Drake’s Famous Voyage Round the World": {
+   "id": 2991,
+   "words": 10915
+  },
+  "The Discovery of Guiana": {
+   "id": 2272,
+   "words": 34851
+  },
+  "The Discovery of the Source of the Nile": {
+   "id": 3284,
+   "words": 210617
+  },
+  "The Naturalist on the River Amazons": {
+   "id": 2440,
+   "words": 177661
+  },
+  "Scott’s Last Expedition": {
+   "id": 11579,
+   "words": 176583
+  },
+  "A Negro Explorer at the North Pole": {
+   "id": 20923,
+   "words": 39297
+  },
+  "The Story of Geographical Discovery": {
+   "id": 14291,
+   "words": 47215
+  },
+  "History of Geography": {
+   "id": 58349,
+   "words": 40178
+  },
+  "The Geography of Strabo": {
+   "id": 44884,
+   "words": 210630
+  },
+  "Pausanias’ Description of Greece": {
+   "id": 68946,
+   "words": 164039
+  },
+  "Prince Henry the Navigator": {
+   "id": 18757,
+   "words": 93618
+  },
+  "Directions for Navigating on Part of the South Coast of Newfoundland": {
+   "id": 21915,
+   "words": 8711
+  },
+  "A Briefe Introduction to Geography": {
+   "id": 14999,
+   "words": 12310
+  },
+  "New Atlantis": {
+   "id": 2434,
+   "words": 15757
+  },
+  "The City of the Sun": {
+   "id": 2816,
+   "words": 16641
+  },
+  "Sylvie and Bruno Concluded": {
+   "id": 48795,
+   "words": 76010
+  },
+  "The Travels of Sir John Mandeville": {
+   "id": 782,
+   "words": 84314
+  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633
@@ -1798,6 +1882,7 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
  },
  "missing": [
   "Benito Cereno",
+  "History of the Expedition under the Command of Captains Lewis and Clark",
   "María [es]",
   "Poesías [es]"
  ]
