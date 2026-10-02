@@ -1882,7 +1882,7 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
  },
  "missing": [
   "Benito Cereno",
-  "The Journals of Lewis and Clark",
+  "History of the Expedition under the Command of Captains Lewis and Clark",
   "María [es]",
   "Poesías [es]"
  ]
