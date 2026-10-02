@@ -1,4 +1,14 @@
 {
+ "mercator": {
+  "file": "Nova et aucta orbis terrae descriptio ad usum navigantium emendate accomodata - illustriss... principi... Wilhelmo Duci juliae, Clivorum et Monti Opus hoc... eius auspiciis inchoatum... - Gerardus Mercator... - btv1b7200344k (09 of 14).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Nova_et_aucta_orbis_terrae_descriptio_ad_usum_navigantium_emendate_accomodata_-_illustriss..._principi..._Wilhelmo_Duci_juliae,_Clivorum_et_Monti_Opus_hoc..._eius_auspiciis_inchoatum..._-_Gerardus_Mercator..._-_btv1b7200344k_(09_of_14).jpg",
+  "width": 2048,
+  "height": 1585,
+  "artist": "Mercator, Gerard (1512-1594). Cartographe. Dédicateur",
+  "date": "1569 date QS:P571,+1569-00-00T00:00:00Z/9",
+  "licence": "Public domain",
+  "description": "Sujet : Monde Échelle(s) : [1:20 205 000 environ] Référence bibliographique : n° 119, pl. 102 Couverture : Monde Langue : latin"
+ },
  "waldseemuller": {
   "file": "Waldseemuller map 2.jpg",
   "page": "https://commons.wikimedia.org/wiki/File:Waldseemuller_map_2.jpg",
@@ -89,6 +99,17 @@
   "licence": "Public domain",
   "description": "Map of Treasure Island from the 1883 edition by Cassel. \"I sent in my manuscript, and the map along with it, to Messrs. Cassell. The proofs came, they were corrected, but I heard nothing of the map. I wrote and asked; was told it had never been received, and sat aghast. It is one thing to draw a map at random, set a scale in one corner of it at a venture, and write up a story to the measurements. "
  },
+ "snark": {
+  "file": null,
+  "page": null,
+  "drawn": true,
+  "width": 2048,
+  "height": 1500,
+  "artist": "Drawn for the library, after the poem and Henry Holiday’s chart of 1876",
+  "date": "1876",
+  "licence": "Public domain",
+  "description": "The Bellman’s map from The Hunting of the Snark: a perfect and absolute blank."
+ },
  "catalan": {
   "file": "Catalan Atlas BNF Sheet 6 Western Sahara.jpg",
   "page": "https://commons.wikimedia.org/wiki/File:Catalan_Atlas_BNF_Sheet_6_Western_Sahara.jpg",
@@ -129,6 +150,16 @@
   "licence": "Public domain",
   "description": "Schiaparelli Mars Map, 1877"
  },
+ "smith": {
+  "file": "Geological map Britain William Smith 1815.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Geological_map_Britain_William_Smith_1815.jpg",
+  "width": 1200,
+  "height": 1769,
+  "artist": "William Smith (1769-1839)",
+  "date": "1815",
+  "licence": "Public domain",
+  "description": "A delineation of the strata of England and Wales with part of Scotland. (The first geological map of Britain, published by William Smith in 1815)"
+ },
  "speed-ireland": {
   "file": "The Kingdome of Irland (BM 1870,0514.2830.+).jpg",
   "page": "https://commons.wikimedia.org/wiki/File:The_Kingdome_of_Irland_(BM_1870,0514.2830.%2B).jpg",
@@ -158,5 +189,15 @@
   "date": "1651",
   "licence": "Public domain",
   "description": "Map of the Moon from G. B. Riccioli's 1651 Almagestum Novum."
+ },
+ "de-la-cosa": {
+  "file": "1500 map by Juan de la Cosa.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:1500_map_by_Juan_de_la_Cosa.jpg",
+  "width": 2048,
+  "height": 1120,
+  "artist": "Juan de la Cosa",
+  "date": "1500 date QS:P571,+1500-00-00T00:00:00Z/9",
+  "licence": "Public domain",
+  "description": ""
  }
 }
