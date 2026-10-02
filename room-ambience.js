@@ -99,6 +99,9 @@
       antipodes:{beds:[['air',.035]],events:[['rustle',.8,.035],['creak',.3,.03]]},
       'australian-room':{beds:[['fire',.05],['insects',.04]],events:[['cricket',5,.03],['bird',.5,.035],['rustle',.8,.03]]},
       'new-zealand-room':{beds:[['wind',.04],['air',.025]],events:[['owl',.7,.045],['rustle',1,.035]]},
+      // The African Reading Room: night insects and a breeze in the courtyard; pages turning inside.
+      'african-courtyard':{beds:[['insects',.06],['wind',.03]],events:[['cricket',8,.035],['owl',.25,.035]]},
+      'african-room':{beds:[['air',.035]],events:[['rustle',1,.035],['creak',.3,.03]]},
       // The Poe Room: a still house, its floorboards settling (the heart under them is poe-room.js's own).
       'poe-room':{beds:[['air',.03]],events:[['creak',.9,.05],['rustle',.6,.03]]},
       // The periodicals room: a clock, and pages turning at the reading slopes.

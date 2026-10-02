@@ -27,6 +27,11 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   and comes up in a hall under a skylight of southern stars, with live clocks for Perth, Sydney and Wellington. The
   Australian Room is to the west, the New Zealand Room to the east (rooms `antipodes`, `australian`, `new-zealand` in
   `data/new-books.js`); a second globe there falls back home. `?room=antipodes`, `australia` or `nz` go straight there.
+- The African Reading Room (`african-room.js`, courtyard x −600, z −294; room north of it) is reached by balloon: a
+  balloon moored in the roof garden's south-west corner (x −13, z 51.5) rises over the town, crosses a cloud sea (built at
+  x −900 for the flight, inside the camera's 130 m) and sinks into a walled courtyard with a baobab. The room is in the
+  Sahelian manner of Djenné and Timbuktu (shelves `african-ancient`, `african-voices`, `african-tales` in
+  `data/new-books.js`); the courtyard's balloon flies home. `?room=africa` goes straight to the courtyard.
 - Quill, the library cat, is sometimes found asleep in the Irish Room, the Poe Room or a wing reading room (the same
   cat moved and curled up; `?quill` makes it every time). The librarian stays in the Grand Hall.
 - The doors between the Grand Hall and each wing (x ±19) are bookcases that part and slide into the walls (`wingLeaf` in
@@ -97,7 +102,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, ukrainian-room or uk, evening-room, periodicals-room, learners-room, boathouse,
-  daily-room, poe, irish, antipodes, australia, nz, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms) goes to a room.
+  daily-room, poe, irish, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text.
 - **Halloween night** (`halloween.js`): 24 October to 2 November by the reader's own date (`?halloween` previews it,
   `?nohalloween` hides it). Carved lanterns (one InstancedMesh, glowing through emissive faces, no lights) by the south

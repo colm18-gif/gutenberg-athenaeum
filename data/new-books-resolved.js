@@ -67,6 +67,82 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 14851,
    "words": 166091
   },
+  "The Golden Asse": {
+   "id": 1666,
+   "words": 80866
+  },
+  "The Apologia and Florida of Apuleius of Madaura": {
+   "id": 26294,
+   "words": 63398
+  },
+  "The Comedies of Terence": {
+   "id": 22188,
+   "words": 129134
+  },
+  "Egyptian Tales, Translated from the Papyri": {
+   "id": 7386,
+   "words": 19298
+  },
+  "The Book of the Dead": {
+   "id": 7145,
+   "words": 12764
+  },
+  "The Literature of the Ancient Egyptians": {
+   "id": 15932,
+   "words": 99476
+  },
+  "The Interesting Narrative of the Life of Olaudah Equiano": {
+   "id": 15399,
+   "words": 82892
+  },
+  "Letters of the Late Ignatius Sancho, an African": {
+   "id": 66908,
+   "words": 65885
+  },
+  "Poems on Various Subjects, Religious and Moral": {
+   "id": 409,
+   "words": 14732
+  },
+  "Native Life in South Africa": {
+   "id": 1452,
+   "words": 134084
+  },
+  "An Account of Timbuctoo and Housa Territories in the Interior of Africa": {
+   "id": 22631,
+   "words": 132314
+  },
+  "The Story of an African Farm": {
+   "id": 1441,
+   "words": 102719
+  },
+  "Zanzibar Tales": {
+   "id": 37472,
+   "words": 25064
+  },
+  "West African Folk-Tales": {
+   "id": 66923,
+   "words": 27906
+  },
+  "Folk Stories from Southern Nigeria": {
+   "id": 34655,
+   "words": 43702
+  },
+  "Cunnie Rabbit, Mr. Spider and the Other Beef": {
+   "id": 48828,
+   "words": 57042
+  },
+  "Where Animals Talk": {
+   "id": 58900,
+   "words": 85492
+  },
+  "Moorish Literature": {
+   "id": 10085,
+   "words": 92032
+  },
+  "Reynard the Fox in South Africa": {
+   "id": 73413,
+   "words": 19593
+  },
   "Captain Cook’s Journal During His First Voyage Round the World": {
    "id": 8106,
    "words": 226309

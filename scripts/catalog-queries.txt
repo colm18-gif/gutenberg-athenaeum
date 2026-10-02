@@ -1,56 +1,19 @@
-# title ; author ; language   (Australia and New Zealand, for the Antipodes)
- ; Lawson, Henry ; en
- ; Paterson, A\. B\.|Paterson, Banjo ; en
- ; Clarke, Marcus ; en
- ; Boldrewood ; en
- ; Franklin, Miles|Franklin, Stella ; en
- ; Furphy|Collins, Tom ; en
- ; Richardson, Henry Handel ; en
- ; Turner, Ethel ; en
- ; Parker, K\.|Parker, Katie|Langloh ; en
- ; Dennis, C\. J\.|Dennis, Clarence ; en
- ; Gunn, Aeneas|Gunn, Jeannie ; en
- ; Hume, Fergus ; en
- ; Tench, Watkin ; en
- ; Baynton ; en
- ; Lindsay, Norman ; en
- ; Kendall, Henry ; en
- ; Gordon, Adam Lindsay ; en
- ; Cambridge, Ada ; en
- ; Praed ; en
- ; Bruce, Mary Grant ; en
- ; Mackellar ; en
- ; Becke, Louis ; en
- ; Spence, Catherine ; en
- ; Gilmore, Mary ; en
- ; Brennan, Christopher ; en
- ; O'Dowd|O’Dowd ; en
- ; Ogilvie, Will ; en
- ; Flinders, Matthew ; en
- ; Sturt, Charles ; en
- ; Leichhardt ; en
- ; Eyre, Edward John ; en
- ; Mansfield, Katherine ; en
- ; Barker, Lady|Barker, Mary Anne|Broome, Mary Anne ; en
- ; Maning ; en
- ; Grey, George ; en
- ; Butler, Samuel ; en
- ; Reeves, William Pember ; en
- ; Mackay, Jessie ; en
- ; Bracken, Thomas ; en
- ; Domett ; en
- ; Andersen, Johannes ; en
- ; Cowan, James ; en
- ; Shortland ; en
- ; Satchell ; en
- ; Grossmann ; en
- ; Baughan ; en
- ; Hyde, Robin ; en
- ; Taylor, Richard ; en
- ; Henty ; en
- ; Cook, James ; en
- ; Trollope, Anthony ; en
-Following the Equator ; ; en
-Voyage of the Beagle|Journal of Researches ; Darwin ; en
-Australia|Australian|Botany Bay|New South Wales|Van Diemen|Tasmania|Queensland|Victoria.*gold|bush ; ; en
-New Zealand|Maori|Aotearoa|Canterbury|Otago|Wellington|Auckland ; ; en
+# title ; author ; language   (African writing, second pass: folk tales, epics and a few more writers)
+(Folk|Tales|Stories|Fables|Legends|Myths|Lore|Riddles|Proverbs).*(Africa|Zulu|Bantu|Hausa|Swahili|Congo|Basuto|Kaffir|Xhosa|Yoruba|Ashanti|Ashantee|Fjort|Bushman|Hottentot|Nigeria|Ewe|Akan|Fan|Masai|Kikuyu|Uganda|Abyssinia|Ethiopia|Egypt|Berber|Sudan) ; ; en
+(Africa|African|Zulu|Bantu|Hausa|Swahili|Congo|Basuto|Kaffir|Xhosa|Yoruba|Ashanti|Bushman|Hottentot|Masai|Uganda).*(Folk|Tales|Stories|Fables|Legends|Myths|Lore|Proverbs|Poems|Songs) ; ; en
+Menyelek|Kebra|Swahili Tales|Uncle Remus ; ; en
+Ethiopia Unbound|Liberia|Sierra Leone|Gold Coast|Lagos|Timbuctoo|Timbuktu|Mali|Songhai|Sokoto ; ; en
+ ; Dube ; en
+ ; Aggrey ; en
+ ; Delany ; en
+ ; Crummell ; en
+ ; Dennett ; en
+ ; Ellis, A. B. ; en
+ ; Nassau ; en
+ ; Theal ; en
+ ; Bleek ; en
+ ; Werner, Alice ; en
+ ; Barker, W. H. ; en
+ ; Fletcher, Banister|Frobenius ; en
+ ; Johnston, Harry ; en
+ ; Equiano|Vassa ; 
