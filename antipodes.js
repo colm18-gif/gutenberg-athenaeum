@@ -109,18 +109,31 @@
       },1024,512));
     }
     // The globe on its stand, turned so a given longitude and latitude face the reader (at +z on the stand's side).
-    function buildGlobe(parent,x,z,mine,data){
+    // Parts that never move, merged into one geometry per material: [geometry, x, y, z, rx, ry, rz].
+    const placer=new THREE.Object3D();
+    function merged(parts){
+      const arrays={position:[],normal:[],uv:[]};
+      for(const [geometry,x,y,z,rx=0,ry=0,rz=0] of parts){
+        placer.position.set(x,y,z);placer.rotation.set(rx,ry,rz);placer.updateMatrix();
+        const flat=geometry.index?geometry.toNonIndexed():geometry.clone();flat.applyMatrix4(placer.matrix);
+        for(const name in arrays)arrays[name].push(flat.attributes[name].array);flat.dispose();geometry.dispose();
+      }
+      const out=new THREE.BufferGeometry();
+      for(const [name,size] of [['position',3],['normal',3],['uv',2]]){const list=arrays[name],all=new Float32Array(list.reduce((n,a)=>n+a.length,0));let at=0;for(const a of list){all.set(a,at);at+=a.length}out.setAttribute(name,new THREE.BufferAttribute(all,size))}
+      out.computeBoundingSphere();return out;
+    }
+    // `rim` is where the trapdoor lies from the globe: its brass rim is merged with the globe's ring.
+    function buildGlobe(parent,x,z,mine,data,rim){
       const g=new THREE.Group();g.position.set(x,0,z);parent.add(g);
       const brass=MAT.brass,wood=MAT.darkWood,R=.78,shared=mine?own:t=>t;
-      const legGeo=shared(new THREE.BoxGeometry(.09,.9,.09));
-      for(let k=0;k<3;k++){const a=k*TAU/3,leg=add(legGeo,wood,Math.sin(a)*.42,.45,Math.cos(a)*.42,g);leg.rotation.set(Math.cos(a)*.22,0,-Math.sin(a)*.22)}
-      add(shared(new THREE.CylinderGeometry(.62,.62,.07,32)),wood,0,.08,0,g);
-      add(shared(new THREE.CylinderGeometry(.92,.92,.05,40,1,true)),brass,0,.93,0,g);// the horizon ring
+      // The stand: three splayed legs, a round foot and the pillar up to the globe in wood, and the brass horizon ring.
+      const legs=[0,1,2].map(k=>{const a=k*TAU/3;return [new THREE.BoxGeometry(.09,.9,.09),Math.sin(a)*.42,.45,Math.cos(a)*.42,Math.cos(a)*.22,0,-Math.sin(a)*.22]});
+      add(shared(merged([...legs,[new THREE.CylinderGeometry(.62,.62,.07,24),0,.08,0],[new THREE.CylinderGeometry(.03,.03,.86,6),0,.5,0]])),wood,0,0,0,g);
+      add(shared(merged([[new THREE.CylinderGeometry(.92,.92,.05,28,1,true),0,.93,0],[new THREE.TorusGeometry(HATCH.r+.04,.045,4,28),rim.x,.012,rim.z,Math.PI/2]])),brass,0,0,0,g);
       const tilt=new THREE.Group();tilt.position.y=1.72;g.add(tilt);
-      const meridian=add(shared(new THREE.TorusGeometry(R+.06,.022,6,48)),brass,0,0,0,tilt);
+      const meridian=add(shared(new THREE.TorusGeometry(R+.06,.022,5,32)),brass,0,0,0,tilt);
       const spin=new THREE.Group();tilt.add(spin);
-      const sphere=add(shared(new THREE.SphereGeometry(R,40,24)),shared(new THREE.MeshStandardMaterial({map:worldMap(),roughness:.55,metalness:.05})),0,0,0,spin);
-      add(shared(new THREE.CylinderGeometry(.03,.03,.95,8)),wood,0,-1.25,0,tilt);
+      const sphere=add(shared(new THREE.SphereGeometry(R,32,20)),shared(new THREE.MeshStandardMaterial({map:worldMap(),roughness:.55,metalness:.05})),0,0,0,spin);
       const mk=mine?mark:markHall;mk(sphere,data);mk(meridian,data);
       return {group:g,tilt,spin,sphere,turn:null};
     }
@@ -152,11 +165,9 @@
     }
     function buildHatch(parent,x,z,mine,data){
       const g=new THREE.Group();g.position.set(x,0,z);parent.add(g);const shared=mine?own:t=>t,R=HATCH.r;
-      add(shared(new THREE.TorusGeometry(R+.04,.045,6,40)),MAT.brass,0,.012,0,g).rotation.x=Math.PI/2;
-      const well=add(shared(new THREE.CircleGeometry(R,40)),shared(new THREE.MeshBasicMaterial({map:wellMap(),fog:false})),0,.006,0,g);well.rotation.x=-Math.PI/2;well.visible=false;
+      const well=add(shared(new THREE.CircleGeometry(R,28)),shared(new THREE.MeshBasicMaterial({map:wellMap(),fog:false})),0,.006,0,g);well.rotation.x=-Math.PI/2;well.visible=false;
       const leaves=[-1,1].map(side=>{const hinge=new THREE.Group();hinge.position.set(side*R,.02,0);g.add(hinge);
-        const leaf=add(shared(new THREE.CylinderGeometry(R,R,.04,24,1,false,side<0?Math.PI:0,Math.PI)),MAT.darkWood,-side*R,0,0,hinge);
-        add(shared(new THREE.BoxGeometry(.05,.03,R*1.6)),MAT.brass,-side*R*.5,.03,0,hinge);return {hinge,leaf,side}});
+        const leaf=add(shared(new THREE.CylinderGeometry(R,R,.04,16,1,false,side<0?Math.PI:0,Math.PI)),MAT.darkWood,-side*R,0,0,hinge);return {hinge,leaf,side}});
       const mk=mine?mark:markHall;for(const l of leaves)mk(l.leaf,data);mk(well,data);
       return {group:g,well,leaves,open:0,target:0,openedAt:0};
     }
@@ -170,7 +181,7 @@
     const hallHatchData={type:'antipodes-hatch',title:'A trapdoor',author:'Round, brass-rimmed, and set in the floor at the globe’s foot.',action:'LOOK'};
     const hall={globe:null,hatch:null};
     function buildHall(){
-      hall.globe=buildGlobe(scene,GLOBE.x,GLOBE.z,false,hallGlobeData);hall.globe.group.name='antipodes-globe';
+      hall.globe=buildGlobe(scene,GLOBE.x,GLOBE.z,false,hallGlobeData,{x:HATCH.x-GLOBE.x,z:HATCH.z-GLOBE.z});hall.globe.group.name='antipodes-globe';
       hall.globe.spin.rotation.y=facing(-8);hall.globe.tilt.rotation.x=.42;// Europe to the fore, as you would expect
       hall.hatch=buildHatch(scene,HATCH.x,HATCH.z,false,hallHatchData);hall.hatch.group.name='antipodes-trapdoor';
     }
@@ -301,7 +312,7 @@
         c.fillStyle='#e8d6a8';c.font='bold 30px Georgia';c.textAlign='center';c.fillText('N',0,-W*.36);c.fillText('S',0,W*.4);c.fillText('E',W*.4,10);c.fillText('W',-W*.4,10)},512,512))})),cx,.005,FAR_HATCH.z,root);rose.rotation.x=-Math.PI/2;
       farGlobeData={type:'antipodes-globe-home',title:CARDS.home[0],author:CARDS.home[1],action:'TURN THE GLOBE'};
       farHatchData={type:'antipodes-hatch-home',title:'A trapdoor',author:'The one you came up through, closed again behind you.',action:'LOOK'};
-      far.globe=buildGlobe(root,FAR_GLOBE.x,FAR_GLOBE.z,true,farGlobeData);far.globe.spin.rotation.y=facing(150);far.globe.tilt.rotation.x=-.5;block(FAR_GLOBE.x,FAR_GLOBE.z,1.4,1.4);
+      far.globe=buildGlobe(root,FAR_GLOBE.x,FAR_GLOBE.z,true,farGlobeData,{x:FAR_HATCH.x-FAR_GLOBE.x,z:FAR_HATCH.z-FAR_GLOBE.z});far.globe.spin.rotation.y=facing(150);far.globe.tilt.rotation.x=-.5;block(FAR_GLOBE.x,FAR_GLOBE.z,1.4,1.4);
       far.hatch=buildHatch(root,FAR_HATCH.x,FAR_HATCH.z,true,farHatchData);
       mark(sign(root,'THE ANTIPODES','Through the Earth from the Grand Hall',4.4,.82,cx,5.35,cz-d/2+.17),card('hallSign'));
       // Three clocks keeping the time where the books on these shelves were written, and the time back home.
