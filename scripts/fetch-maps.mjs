@@ -14,7 +14,7 @@ import path from 'node:path';
 import sharp from 'sharp';
 
 export const MAPS = [
-  { key: 'mercator', search: 'Mercator 1569 Nova et Aucta Orbis Terrae Descriptio', minSize: 3000, exclude: /detail|crop|projection|globe|portrait/i },
+  { key: 'mercator', files: ['Mercator 1569 world map composite.jpg', 'Mercator World Map 1569.jpg', 'Mercator 1569 world map.jpg', 'Mercator 1569.png'], search: 'Mercator 1569 world map', exclude: /\bof \d+\)|detail|crop|projection|globe|portrait/i },
   { key: 'waldseemuller', file: 'Waldseemuller map 2.jpg', search: 'Waldseemüller 1507 Universalis Cosmographia' },
   { key: 'ortelius', file: 'OrteliusWorldMap1570.jpg', search: 'Ortelius Typus Orbis Terrarum 1570' },
   { key: 'hereford', file: 'Hereford-Karte.jpg', search: 'Hereford Mappa Mundi' },
@@ -62,12 +62,14 @@ const usable = (page, map = {}) => {
   return info && !page.missing && /jpeg|png|tiff/.test(info.mime) && Math.max(info.width, info.height) >= (map.minSize || 1000) && !map.exclude?.test(page.title) && isPublicDomain(info.extmetadata);
 };
 async function choose(map) {
-  if (map.file) {
-    const data = await api({ ...INFO, titles: `File:${map.file}` });
+  // The files named, in order of preference; the first that is there and usable is taken.
+  for (const file of map.files || (map.file ? [map.file] : [])) {
+    const data = await api({ ...INFO, titles: `File:${file}` });
     const page = data.query?.pages?.[0];
     if (usable(page, map)) return page;
-    console.log(`  ${map.key}: File:${map.file} ${page?.missing ? 'is not on Commons' : 'is not usable (size or licence)'}; searching instead`);
+    console.log(`  ${map.key}: File:${file} ${page?.missing ? 'is not on Commons' : `is not usable (${page?.imageinfo?.[0]?.width}x${page?.imageinfo?.[0]?.height}, ${strip(page?.imageinfo?.[0]?.extmetadata?.LicenseShortName?.value)})`}`);
   }
+  if (map.file || map.files) console.log(`  ${map.key}: searching instead`);
   const data = await api({ ...INFO, generator: 'search', gsrsearch: map.search, gsrnamespace: '6', gsrlimit: '15' });
   const pages = (data.query?.pages || []).sort((a, b) => a.index - b.index);
   for (const page of pages) console.log(`    candidate: ${page.title} ${page.imageinfo?.[0]?.width}x${page.imageinfo?.[0]?.height} ${strip(page.imageinfo?.[0]?.extmetadata?.LicenseShortName?.value)}`);
