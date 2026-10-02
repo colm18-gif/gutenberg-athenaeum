@@ -190,7 +190,7 @@
     function picture(parent,draw,w,h,x,y,z,yaw,data,frame=timber){
       const g=new THREE.Group();g.position.set(x,y,z);g.rotation.y=yaw;parent.add(g);
       box(w+.2,h+.2,.08,frame,0,0,0,g);
-      const p=add(own(new THREE.PlaneGeometry(w,h)),own(new THREE.MeshBasicMaterial({map:own(canvasTexture(draw,512,Math.round(512*h/w)))})),0,0,.045,g);
+      const p=add(own(new THREE.PlaneGeometry(w,h)),own(new THREE.MeshBasicMaterial({color:0xcfc4aa,map:own(canvasTexture(draw,512,Math.round(512*h/w)))})),0,0,.045,g);
       if(data)mark(p,data);return g;
     }
     // Bush slabs: rough split boards standing side by side, with daylight-dark gaps between them.
@@ -420,7 +420,8 @@
       const northSpots=rowSpots(10,{x0:cx-3.6,z0:north+.3,dx:1,dz:0,yaw:0});
       const southSpots=[[-2.8,1.55],[2.8,1.55],[-4.6,1.55],[4.6,1.55],[-3.7,2.85]].map(([dx,y])=>({x:cx+dx,z:south-.3,y,yaw:Math.PI}));
       wallBooks('nz',list.slice(0,10),northSpots);wallBooks('nz',list.slice(10),southSpots);
-      shelfBoards(cx,north+.34,9.6,'x',[1.55,2.85]);for(const s of [-1,1])shelfBoards(cx+s*3.7,south-.34,2.9,'x',[1.55,2.85]);
+      // A second shelf either side of the desk only when there are books for it.
+      shelfBoards(cx,north+.34,9.6,'x',[1.55,2.85]);for(const s of [-1,1])shelfBoards(cx+s*3.7,south-.34,2.9,'x',list.length>14&&s<0?[1.55,2.85]:[1.55]);
       block(cx,north+.4,9.8,.6);for(const s of [-1,1])block(cx+s*3.7,south-.4,3.1,.6);
       const lamp=new THREE.PointLight(0xffd49a,4.5,15,2);lamp.position.set(cx,h-.7,cz);root.add(lamp);
       add(own(new THREE.SphereGeometry(.16,12,8)),own(new THREE.MeshStandardMaterial({color:0xffe2a8,emissive:0xffb35c,emissiveIntensity:1.2})),cx,h-.65,cz,root);
