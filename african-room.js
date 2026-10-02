@@ -182,11 +182,11 @@
       const lamp=new THREE.PointLight(0xffc888,5,17,1.8);lamp.position.set(cx,h-1,cz);root.add(lamp);
       add(own(new THREE.SphereGeometry(.2,10,8)),own(new THREE.MeshStandardMaterial({color:0xffe2a8,emissive:0xffb35c,emissiveIntensity:1.2})),cx,h-.95,cz,root);
       // The shelves: writers along the north wall, ancient Africa on the west, stories on the east.
-      const step=1.75,wallBooks=(key,spots)=>shelfBooks(key).forEach((book,i)=>placeBook(book,spots[i],key));
-      const northSpots=[],westSpots=[],eastSpots=[];
-      for(let i=0;i<10;i++)northSpots.push({x:cx-3.5+(i%5)*step,z:north+.3,y:i<5?1.55:2.85,yaw:0});
-      for(let i=0;i<8;i++){westSpots.push({x:west+.3,z:cz-2.6+(i%4)*step,y:i<4?1.55:2.85,yaw:Math.PI/2});eastSpots.push({x:east-.3,z:cz-2.6+(i%4)*step,y:i<4?1.55:2.85,yaw:-Math.PI/2})}
-      wallBooks('voices',northSpots);wallBooks('ancient',westSpots);wallBooks('tales',eastSpots);
+      // Each wall's books in two balanced rows, centred on the shelf: [along the wall, height] for book i of n.
+      const step=1.75,rows=(n,i)=>{const top=Math.floor(n/2),lower=n-top,row=i<lower?0:1,inRow=row?top:lower,k=row?i-lower:i;return [(k-(inRow-1)/2)*step,row?2.85:1.55]};
+      const wallBooks=(key,spot)=>{const list=shelfBooks(key);list.forEach((book,i)=>placeBook(book,spot(...rows(list.length,i)),key))};
+      wallBooks('voices',(a,y)=>({x:cx+a,z:north+.3,y,yaw:0}));
+      wallBooks('ancient',(a,y)=>({x:west+.3,z:cz+a,y,yaw:Math.PI/2}));wallBooks('tales',(a,y)=>({x:east-.3,z:cz-a,y,yaw:-Math.PI/2}));
       for(const y of [1.55,2.85]){box(9.2,.06,.34,palm,cx,y-.5,north+.34,root);box(.34,.06,7.2,palm,west+.34,y-.5,cz-.0,root);box(.34,.06,7.2,palm,east-.34,y-.5,cz,root)}
       block(cx,north+.4,9.4,.7);block(west+.4,cz,.7,7.4);block(east-.4,cz,.7,7.4);
       for(const [shelf,x,z,yaw] of [['voices',cx,north+.22,0],['ancient',west+.22,cz,Math.PI/2],['tales',east-.22,cz,-Math.PI/2]]){
