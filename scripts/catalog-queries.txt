@@ -1,40 +1,19 @@
-# title ; author ; language   (African writing, for the African Reading Room reached by balloon)
- ; Equiano ; en
- ; Plaatje ; en
- ; Blyden ; en
- ; Casely|Hayford ; en
- ; Mofolo ; 
- ; Cugoano ; en
- ; Sancho, Ignatius ; en
- ; Wheatley, Phillis ; en
- ; Horton, James Africanus|Africanus Horton ; en
- ; Crowther ; en
- ; Schreiner, Olive ; en
- ; Augustine ; en
- ; Apuleius ; en
- ; Terence ; en
- ; Tertullian ; en
- ; Leo, Africanus|Africanus, Leo ; 
- ; Ibn Battuta|Batuta ; 
- ; Callaway ; en
- ; Rattray ; en
- ; Steere ; en
- ; Budge ; en
- ; Petrie, W. M. Flinders ; en
- ; Maran, Ren ; 
- ; Sarbah ; en
- ; Jabavu ; en
- ; Tiyo Soga|Soga, Tiyo ; en
- ; Washington, Booker ; en
- ; Du Bois ; en
- ; Kingsley, Mary ; en
- ; Livingstone ; en
- ; Verne, Jules ; en
-Five Weeks in a Balloon|Cinq semaines ; ; 
-Kebra|Queen of Sheba ; ; en
-Africa|African|Zulu|Hausa|Swahili|Ashanti|Yoruba|Congo|Ethiopia|Abyssinia|Nigeria|Ghana|Gold Coast|Basuto|Xhosa|Kaffir|Bantu|Egypt ; ; en
- ; ; sw
- ; ; af
- ; ; am
- ; ; yo
- ; ; zu
+# title ; author ; language   (African writing, second pass: folk tales, epics and a few more writers)
+(Folk|Tales|Stories|Fables|Legends|Myths|Lore|Riddles|Proverbs).*(Africa|Zulu|Bantu|Hausa|Swahili|Congo|Basuto|Kaffir|Xhosa|Yoruba|Ashanti|Ashantee|Fjort|Bushman|Hottentot|Nigeria|Ewe|Akan|Fan|Masai|Kikuyu|Uganda|Abyssinia|Ethiopia|Egypt|Berber|Sudan) ; ; en
+(Africa|African|Zulu|Bantu|Hausa|Swahili|Congo|Basuto|Kaffir|Xhosa|Yoruba|Ashanti|Bushman|Hottentot|Masai|Uganda).*(Folk|Tales|Stories|Fables|Legends|Myths|Lore|Proverbs|Poems|Songs) ; ; en
+Menyelek|Kebra|Swahili Tales|Uncle Remus ; ; en
+Ethiopia Unbound|Liberia|Sierra Leone|Gold Coast|Lagos|Timbuctoo|Timbuktu|Mali|Songhai|Sokoto ; ; en
+ ; Dube ; en
+ ; Aggrey ; en
+ ; Delany ; en
+ ; Crummell ; en
+ ; Dennett ; en
+ ; Ellis, A. B. ; en
+ ; Nassau ; en
+ ; Theal ; en
+ ; Bleek ; en
+ ; Werner, Alice ; en
+ ; Barker, W. H. ; en
+ ; Fletcher, Banister|Frobenius ; en
+ ; Johnston, Harry ; en
+ ; Equiano|Vassa ; 
