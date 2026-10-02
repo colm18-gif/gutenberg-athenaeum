@@ -20,7 +20,7 @@ import {isWikisource,wikisourcePage,wikisourceId,fetchWikisource,wikisourceText,
 const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),'..');
 const LIST=path.join(root,'data/new-books.js'),WING=path.join(root,'data/new-books-wing.js'),RESOLVED=path.join(root,'data/new-books-resolved.js'),TRACKED=path.join(root,'data/daily-room-texts.json');
 const BUNDLED=path.join(root,'texts/bundled-gzip');
-export const ROOMS=['secret','shelves','evening-quick','evening-hour','evening-evening','learners-1','learners-2','learners-3','learners-4','learners-short','signal','tide','mars','periodicals','irish-myth','irish-revival','irish-writers','irish-gaeilge','antipodes','australian','new-zealand','spanish','portuguese','chinese','french','latin','ukrainian'];
+export const ROOMS=['secret','shelves','evening-quick','evening-hour','evening-evening','learners-1','learners-2','learners-3','learners-4','learners-short','signal','tide','mars','periodicals','irish-myth','irish-revival','irish-writers','irish-gaeilge','antipodes','australian','new-zealand','african-ancient','african-voices','african-tales','spanish','portuguese','chinese','french','latin','ukrainian'];
 // Rooms whose books are not in English: the language of their texts (used to search Gutendex, and by the reader
 // and the book pages). Every other room is English.
 export const ROOM_LANGUAGES={spanish:'es',portuguese:'pt',chinese:'zh',french:'fr',latin:'la',ukrainian:'uk','irish-gaeilge':'ga'};
