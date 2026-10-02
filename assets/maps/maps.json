@@ -1,14 +1,4 @@
 {
- "mercator": {
-  "file": "Mercator 1569.png",
-  "page": "https://commons.wikimedia.org/wiki/File:Mercator_1569.png",
-  "width": 1158,
-  "height": 737,
-  "artist": "Gerardus Mercator",
-  "date": "1569",
-  "licence": "Public domain",
-  "description": "Carta do Mundo de Mercator (1569)"
- },
  "waldseemuller": {
   "file": "Waldseemuller map 2.jpg",
   "page": "https://commons.wikimedia.org/wiki/File:Waldseemuller_map_2.jpg",
@@ -139,16 +129,6 @@
   "licence": "Public domain",
   "description": "Schiaparelli Mars Map, 1877"
  },
- "smith": {
-  "file": "Geological map of Great Britain.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Geological_map_of_Great_Britain.jpg",
-  "width": 1036,
-  "height": 1614,
-  "artist": "Horace Bolingbroke Woodward",
-  "date": "1904",
-  "licence": "Public domain",
-  "description": "A geological map of Great Britain and neighbouring islands (excluding Ireland)."
- },
  "speed-ireland": {
   "file": "The Kingdome of Irland (BM 1870,0514.2830.+).jpg",
   "page": "https://commons.wikimedia.org/wiki/File:The_Kingdome_of_Irland_(BM_1870,0514.2830.%2B).jpg",
@@ -178,15 +158,5 @@
   "date": "1651",
   "licence": "Public domain",
   "description": "Map of the Moon from G. B. Riccioli's 1651 Almagestum Novum."
- },
- "de-la-cosa": {
-  "file": "1500 map by Juan de la Cosa.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:1500_map_by_Juan_de_la_Cosa.jpg",
-  "width": 1120,
-  "height": 2048,
-  "artist": "Juan de la Cosa",
-  "date": "1500 date QS:P571,+1500-00-00T00:00:00Z/9",
-  "licence": "Public domain",
-  "description": ""
  }
 }
