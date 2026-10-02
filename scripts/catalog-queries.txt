@@ -1,19 +1,17 @@
-# title ; author ; language   (African writing, second pass: folk tales, epics and a few more writers)
-(Folk|Tales|Stories|Fables|Legends|Myths|Lore|Riddles|Proverbs).*(Africa|Zulu|Bantu|Hausa|Swahili|Congo|Basuto|Kaffir|Xhosa|Yoruba|Ashanti|Ashantee|Fjort|Bushman|Hottentot|Nigeria|Ewe|Akan|Fan|Masai|Kikuyu|Uganda|Abyssinia|Ethiopia|Egypt|Berber|Sudan) ; ; en
-(Africa|African|Zulu|Bantu|Hausa|Swahili|Congo|Basuto|Kaffir|Xhosa|Yoruba|Ashanti|Bushman|Hottentot|Masai|Uganda).*(Folk|Tales|Stories|Fables|Legends|Myths|Lore|Proverbs|Poems|Songs) ; ; en
-Menyelek|Kebra|Swahili Tales|Uncle Remus ; ; en
-Ethiopia Unbound|Liberia|Sierra Leone|Gold Coast|Lagos|Timbuctoo|Timbuktu|Mali|Songhai|Sokoto ; ; en
- ; Dube ; en
- ; Aggrey ; en
- ; Delany ; en
- ; Crummell ; en
- ; Dennett ; en
- ; Ellis, A. B. ; en
- ; Nassau ; en
- ; Theal ; en
- ; Bleek ; en
- ; Werner, Alice ; en
- ; Barker, W. H. ; en
- ; Fletcher, Banister|Frobenius ; en
- ; Johnston, Harry ; en
- ; Equiano|Vassa ; 
+# The Map Room: books about maps, charts, atlases, geography and surveying, voyages of discovery, and imaginary lands.
+\bmaps?\b|\bmap-|\bcharts?\b|atlas|cartograph ; ; en
+geograph ; ; en
+navigat|longitude|latitude|surveying|compass ; ; en
+discover(y|ies|ers) ; ; en
+explor(ation|ers?) ; ; en
+Columbus|Magellan|Vespucci|Cabot|Drake|Raleigh|Frobisher|Hudson|Vasco|Henry the Navigator ; ; en
+ ; Hakluyt ; en
+ ; Pigafetta|Columbus|Colon, Cristobal ; en
+ ; Park, Mungo|Humboldt|Livingstone|Burton, Richard|Speke|Stanley, Henry ; en
+ ; Lewis, Meriwether|Clark, William ; en
+ ; Nansen|Amundsen|Peary|Scott, Robert|Franklin, John|Parry, William ; en
+ ; Bird, Isabella|Kingsley, Mary|Bates, Henry Walter|Wallace, Alfred ; en
+ ; Strabo|Herodotus|Pausanias|Ptolemy|Mandeville|Ibn Batuta|Battuta|Polo, Marco|Carpini|Rubruck ; en
+Sylvie and Bruno|New Atlantis|City of the Sun|Herland|Islandia|Lilliput|Brobdingnag ; ; en
+ ; Jacobs, Joseph ; en
+ ; Heawood|Beazley|Keltie|Mill, Hugh Robert|Markham ; en
