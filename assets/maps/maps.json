@@ -1,4 +1,14 @@
 {
+ "mercator": {
+  "file": "Mercator 1569 world map composite.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Mercator_1569_world_map_composite.jpg",
+  "width": 2048,
+  "height": 1300,
+  "artist": "Gerardus Mercator",
+  "date": "2012-03-19",
+  "licence": "Public domain",
+  "description": "Mercator 1569 world map composite of all 18 sheets"
+ },
  "waldseemuller": {
   "file": "Waldseemuller map 2.jpg",
   "page": "https://commons.wikimedia.org/wiki/File:Waldseemuller_map_2.jpg",
