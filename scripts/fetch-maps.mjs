@@ -47,7 +47,8 @@ async function api(params) {
   const url = `${API}?${new URLSearchParams({ format: 'json', formatversion: '2', origin: '*', ...params })}`;
   for (let attempt = 1; ; attempt++) {
     const response = await fetch(url, { headers: HEADERS });
-    if (response.ok) return response.json();
+    const body = await response.text();
+    if (response.ok) { try { return JSON.parse(body) } catch { throw new Error(`Commons sent a page, not JSON (${response.headers.get('content-type')}): ${body.replace(/\s+/g, ' ').slice(0, 600)}`) } }
     if (attempt >= 4) throw new Error(`${response.status} from Commons for ${url}`);
     await new Promise(r => setTimeout(r, 2000 * attempt));
   }
@@ -108,5 +109,6 @@ async function main() {
   const ordered = Object.fromEntries(MAPS.filter(m => manifest[m.key]).map(m => [m.key, manifest[m.key]]));
   await writeFile(manifestFile, JSON.stringify(ordered, null, 1) + '\n');
   console.log(`\n${Object.keys(ordered).length} of ${MAPS.length} maps in assets/maps; ${failed} not found.`);
+  if (!Object.keys(ordered).length) process.exit(1);
 }
 if (import.meta.url === `file://${process.argv[1]}`) main().catch(error => { console.error(error); process.exit(1) });
