@@ -44,7 +44,7 @@ const strip = html => String(html || '').replace(/<[^>]+>/g, ' ').replace(/&nbsp
 export const isPublicDomain = meta => /public domain|^pd\b|^pd-|cc0/i.test(strip(meta?.LicenseShortName?.value)) || /^pd/i.test(strip(meta?.License?.value));
 
 async function api(params) {
-  const url = `${API}?${new URLSearchParams({ format: 'json', formatversion: '2', origin: '*', ...params })}`;
+  const url = `${API}?${new URLSearchParams({ action: 'query', format: 'json', formatversion: '2', origin: '*', ...params })}`;
   for (let attempt = 1; ; attempt++) {
     const response = await fetch(url, { headers: HEADERS });
     const body = await response.text();
