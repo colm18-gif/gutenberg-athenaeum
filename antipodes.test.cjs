@@ -11,13 +11,14 @@ const byRoom=room=>arrivals.filter(e=>e[4]===room);
 class V{constructor(x=0,y=0,z=0){this.x=x;this.y=y;this.z=z}set(x,y,z){Object.assign(this,{x,y,z});return this}clone(){return new V(this.x,this.y,this.z)}copy(v){return this.set(v.x,v.y,v.z)}setScalar(s){return this.set(s,s,s)}}
 class O{constructor(){this.children=[];this.parent=null;this.position=new V();this.scale=new V(1,1,1);this.visible=true;this.rotation={x:0,y:0,z:0,order:'XYZ',set(x,y,z){Object.assign(this,{x,y,z})}};this.quaternion={clone:()=>({})};this.userData={}}
   add(...m){for(const c of m){c.parent=this;this.children.push(c)}}removeFromParent(){if(this.parent)this.parent.children.splice(this.parent.children.indexOf(this),1);this.parent=null}traverse(fn){fn(this);this.children.forEach(c=>c.traverse(fn))}rotateX(){}}
+O.prototype.updateMatrix=function(){this.matrix={}};
 class Mesh extends O{constructor(g,m){super();this.geometry=g;this.material=m}}
-let disposed=0;const G=class{dispose(){disposed++}setAttribute(){}},M=class{constructor(p){Object.assign(this,p)}dispose(){disposed++}};
+let disposed=0;const G=class{constructor(){this.index=null;this.attributes={position:{array:new Float32Array(9)},normal:{array:new Float32Array(9)},uv:{array:new Float32Array(6)}}}dispose(){disposed++}setAttribute(){}clone(){return new G()}applyMatrix4(){return this}computeBoundingSphere(){}},M=class{constructor(p){Object.assign(this,p)}dispose(){disposed++}};
 const any=new Proxy(function(){},{get:(t,k)=>k==='width'?100:k===Symbol.toPrimitive?()=>0:any,apply:()=>any,set:()=>true});
 const canvasTexture=(draw,w=384,h=560)=>{const ctx=new Proxy({canvas:{width:w,height:h}},{get:(t,k)=>k in t?t[k]:any,set:()=>true});draw(ctx,w,h);return {dispose(){disposed++},repeat:{set(){}},image:{getContext:()=>ctx},needsUpdate:false}};
 const THREE={Group:O,Mesh,Vector3:V,BoxGeometry:G,CylinderGeometry:G,SphereGeometry:G,PlaneGeometry:G,ConeGeometry:G,TorusGeometry:G,CircleGeometry:G,BufferGeometry:G,
   MeshStandardMaterial:M,MeshBasicMaterial:M,PointsMaterial:M,Float32BufferAttribute:class{},Points:Mesh,RepeatWrapping:1,BackSide:1,DoubleSide:2,
-  InstancedMesh:class extends Mesh{constructor(g,m,n){super(g,m);this.count=n}setMatrixAt(){}},Matrix4:class{compose(){return this}},Quaternion:class{setFromEuler(){return this}},Euler:class{set(){return this}},
+  Object3D:O,BufferAttribute:class{constructor(a,n){this.array=a;this.itemSize=n}},InstancedMesh:class extends Mesh{constructor(g,m,n){super(g,m);this.count=n}setMatrixAt(){}},Matrix4:class{compose(){return this}},Quaternion:class{setFromEuler(){return this}},Euler:class{set(){return this}},
   PointLight:class extends O{constructor(c,i){super();this.isPointLight=true;this.intensity=i}}};
 function world({reduced=true}={}){
   const context={window:{},Math,Intl,Date,setTimeout};vm.runInNewContext(source,context);
@@ -58,6 +59,9 @@ test('the globe stands in the open middle of the Grand Hall, and the far side is
   for(const [x,z] of [[-330,-205],[-330,-140],[-330,-60],[-330,20],[-330,100],[-420,180],[-410,100],[-240,110]])assert(Math.hypot(a.hall.cx-x,a.hall.cz-z)>60,`far from ${x},${z}`);
   assert(!a.contains(0,0)&&a.zoneAt(a.rooms.australian.cx,a.rooms.australian.cz)==='australian-room'&&a.zoneAt(a.rooms.nz.cx,a.rooms.nz.cz)==='new-zealand-room');
   assert(a.rooms.australian.cx<a.hall.cx&&a.rooms.nz.cx>a.hall.cx,'Australia to the west of New Zealand, as on the map');
+  // Always in the Grand Hall, so kept cheap: the stand merged to one part per material, the trapdoor plain.
+  const {scene}=world(),count=name=>{let n=0;scene.children.find(o=>o.name===name).traverse(o=>{if(o.geometry)n++});return n};
+  assert(count('antipodes-globe')<=4,'globe: stand in wood, ring in brass, the meridian and the sphere');assert(count('antipodes-trapdoor')<=3,'trapdoor: two leaves and the well (its rim is in the globe’s brass)');
 });
 
 test('turning the globe opens the trapdoor; the reader falls through the Earth, turning over at the centre, and comes up at the Antipodes',async()=>{
