@@ -163,7 +163,7 @@
     }
 
     // The books for each shelf: those listed, then the new arrivals; a book the library does not hold is left out.
-    const ROOM_FOR={voyages:16,makers:8,lands:16};
+    const ROOM_FOR={voyages:14,makers:8,lands:16};
     function catalogue(){
       return GROUPS.map(group=>({...group,books:[...new Set([...group.ids,...(arrivals[group.key]||[])])].map(id=>{const [title,author]=RECORDS[id]||[];return findBook(id,title?{id,title,author}:null)}).filter(Boolean).slice(0,ROOM_FOR[group.key])}));
     }
