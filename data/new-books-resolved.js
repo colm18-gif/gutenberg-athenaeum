@@ -767,14 +767,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 24477,
    "words": 6029
   },
-  "Select Letters of Christopher Columbus": {
-   "id": 77820,
-   "words": 136176
-  },
-  "The Letters of Amerigo Vespucci": {
-   "id": 36924,
-   "words": 52572
-  },
   "The First Voyage Round the World": {
    "id": 74723,
    "words": 111712
@@ -782,18 +774,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Voyager’s Tales": {
    "id": 3752,
    "words": 42390
-  },
-  "Sir Francis Drake’s Famous Voyage Round the World": {
-   "id": 2991,
-   "words": 10915
-  },
-  "The Discovery of Guiana": {
-   "id": 2272,
-   "words": 34851
-  },
-  "The Discovery of the Source of the Nile": {
-   "id": 3284,
-   "words": 210617
   },
   "The Naturalist on the River Amazons": {
    "id": 2440,
@@ -806,6 +786,42 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "A Negro Explorer at the North Pole": {
    "id": 20923,
    "words": 39297
+  },
+  "A woman’s journey round the world": {
+   "id": 11039,
+   "words": 187000
+  },
+  "A Girl’s Ride in Iceland": {
+   "id": 26006,
+   "words": 44485
+  },
+  "The Malay Archipelago, Volume 1": {
+   "id": 2530,
+   "words": 113925
+  },
+  "The Open Polar Sea": {
+   "id": 66063,
+   "words": 136871
+  },
+  "Select Letters of Christopher Columbus": {
+   "id": 77820,
+   "words": 136176
+  },
+  "The Letters of Amerigo Vespucci": {
+   "id": 36924,
+   "words": 52572
+  },
+  "Sir Francis Drake’s Famous Voyage Round the World": {
+   "id": 2991,
+   "words": 10915
+  },
+  "The Discovery of Guiana": {
+   "id": 2272,
+   "words": 34851
+  },
+  "The Discovery of the Source of the Nile": {
+   "id": 3284,
+   "words": 210617
   },
   "The Story of Geographical Discovery": {
    "id": 14291,
@@ -1882,7 +1898,7 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
  },
  "missing": [
   "Benito Cereno",
-  "History of the Expedition under the Command of Captains Lewis and Clark",
+  "History of the Expedition under the Command of Captains Lewis and Clark, Vol. 1.",
   "María [es]",
   "Poesías [es]"
  ]
