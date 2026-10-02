@@ -1,79 +1,56 @@
-# Periodicals Room: the titles the New books workflow could not find, and other first numbers worth having.
-Strand Magazine.*(Vol\.? ?0?1\b|January,? 1891)
-Yellow Book
-Scientific American.*1867
-Chambers's Edinburgh Journal.*No\. 4(1[0-9]|2[0-9])
-Astounding Stories.*1930
-McClure's Magazine
-^The Spectator
-The Nursery.*187
-Punch.*18(41|42)
-Blackwood
-Harper's New Monthly
-The Argosy
-Belgravia
-Temple Bar
-The Cornhill
-Lippincott's
-The Century
-Household Words
-All the Year Round
-Boys of England|Boy's Own
-The Idler
-The Galaxy
-Once a Week
-Good Words
-The Bookman
-Weird Tales
-Amazing Stories
-Planet Stories
-Thrilling Wonder
-Galaxy Science Fiction
-If: Worlds of Science Fiction
-Fantastic Universe
-# Mars: the two not found, and other Martian books.
-Abode of Life|Lowell
-Gullivar|Arnold, Edwin Lester
-\bMars\b
-Martian
-Barsoom|Burroughs, Edgar Rice
-Red Planet
-# The Spanish room's Colombians, in case they are there after all.
-María|Maria ; Isaacs
- ; Silva, José Asunción
-# Benito Cereno (a new arrival that did not resolve).
-Benito Cereno|Piazza Tales
-# An Irish Room: myth, folklore, the Revival and Irish writers, and a small Irish-language shelf.
- ; ; ga
- ; Gregory, Lady
- ; Yeats, W\. B\.
- ; Synge
- ; Stephens, James
- ; Hyde, Douglas
- ; Curtin, Jeremiah
- ; Jacobs, Joseph
- ; Rolleston
- ; Wilde, Lady
- ; Kennedy, Patrick
- ; O'Grady, Standish
- ; Edgeworth, Maria
- ; Carleton, William
- ; Griffin, Gerald
- ; Kickham
- ; Somerville|Ross, Martin
- ; Moore, George
- ; Moore, Thomas
- ; Joyce, James
- ; Goldsmith, Oliver
- ; Pearse
- ; Meagher
- ; Mangan
- ; Davis, Thomas
- ; Lover, Samuel
- ; Lever, Charles
- ; Russell, George William|^AE\b
- ; Colum, Padraic
- ; Dunsany
- ; Ledwidge
- ; Tynan, Katharine
-Ireland|Irish|Erin|Celtic
+# title ; author ; language   (Australia and New Zealand, for the Antipodes)
+ ; Lawson, Henry ; en
+ ; Paterson, A\. B\.|Paterson, Banjo ; en
+ ; Clarke, Marcus ; en
+ ; Boldrewood ; en
+ ; Franklin, Miles|Franklin, Stella ; en
+ ; Furphy|Collins, Tom ; en
+ ; Richardson, Henry Handel ; en
+ ; Turner, Ethel ; en
+ ; Parker, K\.|Parker, Katie|Langloh ; en
+ ; Dennis, C\. J\.|Dennis, Clarence ; en
+ ; Gunn, Aeneas|Gunn, Jeannie ; en
+ ; Hume, Fergus ; en
+ ; Tench, Watkin ; en
+ ; Baynton ; en
+ ; Lindsay, Norman ; en
+ ; Kendall, Henry ; en
+ ; Gordon, Adam Lindsay ; en
+ ; Cambridge, Ada ; en
+ ; Praed ; en
+ ; Bruce, Mary Grant ; en
+ ; Mackellar ; en
+ ; Becke, Louis ; en
+ ; Spence, Catherine ; en
+ ; Gilmore, Mary ; en
+ ; Brennan, Christopher ; en
+ ; O'Dowd|O’Dowd ; en
+ ; Ogilvie, Will ; en
+ ; Flinders, Matthew ; en
+ ; Sturt, Charles ; en
+ ; Leichhardt ; en
+ ; Eyre, Edward John ; en
+ ; Mansfield, Katherine ; en
+ ; Barker, Lady|Barker, Mary Anne|Broome, Mary Anne ; en
+ ; Maning ; en
+ ; Grey, George ; en
+ ; Butler, Samuel ; en
+ ; Reeves, William Pember ; en
+ ; Mackay, Jessie ; en
+ ; Bracken, Thomas ; en
+ ; Domett ; en
+ ; Andersen, Johannes ; en
+ ; Cowan, James ; en
+ ; Shortland ; en
+ ; Satchell ; en
+ ; Grossmann ; en
+ ; Baughan ; en
+ ; Hyde, Robin ; en
+ ; Taylor, Richard ; en
+ ; Henty ; en
+ ; Cook, James ; en
+ ; Trollope, Anthony ; en
+Following the Equator ; ; en
+Voyage of the Beagle|Journal of Researches ; Darwin ; en
+Australia|Australian|Botany Bay|New South Wales|Van Diemen|Tasmania|Queensland|Victoria.*gold|bush ; ; en
+New Zealand|Maori|Aotearoa|Canterbury|Otago|Wellington|Auckland ; ; en
