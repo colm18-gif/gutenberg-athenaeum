@@ -1,56 +1,40 @@
-# title ; author ; language   (Australia and New Zealand, for the Antipodes)
- ; Lawson, Henry ; en
- ; Paterson, A\. B\.|Paterson, Banjo ; en
- ; Clarke, Marcus ; en
- ; Boldrewood ; en
- ; Franklin, Miles|Franklin, Stella ; en
- ; Furphy|Collins, Tom ; en
- ; Richardson, Henry Handel ; en
- ; Turner, Ethel ; en
- ; Parker, K\.|Parker, Katie|Langloh ; en
- ; Dennis, C\. J\.|Dennis, Clarence ; en
- ; Gunn, Aeneas|Gunn, Jeannie ; en
- ; Hume, Fergus ; en
- ; Tench, Watkin ; en
- ; Baynton ; en
- ; Lindsay, Norman ; en
- ; Kendall, Henry ; en
- ; Gordon, Adam Lindsay ; en
- ; Cambridge, Ada ; en
- ; Praed ; en
- ; Bruce, Mary Grant ; en
- ; Mackellar ; en
- ; Becke, Louis ; en
- ; Spence, Catherine ; en
- ; Gilmore, Mary ; en
- ; Brennan, Christopher ; en
- ; O'Dowd|O’Dowd ; en
- ; Ogilvie, Will ; en
- ; Flinders, Matthew ; en
- ; Sturt, Charles ; en
- ; Leichhardt ; en
- ; Eyre, Edward John ; en
- ; Mansfield, Katherine ; en
- ; Barker, Lady|Barker, Mary Anne|Broome, Mary Anne ; en
- ; Maning ; en
- ; Grey, George ; en
- ; Butler, Samuel ; en
- ; Reeves, William Pember ; en
- ; Mackay, Jessie ; en
- ; Bracken, Thomas ; en
- ; Domett ; en
- ; Andersen, Johannes ; en
- ; Cowan, James ; en
- ; Shortland ; en
- ; Satchell ; en
- ; Grossmann ; en
- ; Baughan ; en
- ; Hyde, Robin ; en
- ; Taylor, Richard ; en
- ; Henty ; en
- ; Cook, James ; en
- ; Trollope, Anthony ; en
-Following the Equator ; ; en
-Voyage of the Beagle|Journal of Researches ; Darwin ; en
-Australia|Australian|Botany Bay|New South Wales|Van Diemen|Tasmania|Queensland|Victoria.*gold|bush ; ; en
-New Zealand|Maori|Aotearoa|Canterbury|Otago|Wellington|Auckland ; ; en
+# title ; author ; language   (African writing, for the African Reading Room reached by balloon)
+ ; Equiano ; en
+ ; Plaatje ; en
+ ; Blyden ; en
+ ; Casely|Hayford ; en
+ ; Mofolo ; 
+ ; Cugoano ; en
+ ; Sancho, Ignatius ; en
+ ; Wheatley, Phillis ; en
+ ; Horton, James Africanus|Africanus Horton ; en
+ ; Crowther ; en
+ ; Schreiner, Olive ; en
+ ; Augustine ; en
+ ; Apuleius ; en
+ ; Terence ; en
+ ; Tertullian ; en
+ ; Leo, Africanus|Africanus, Leo ; 
+ ; Ibn Battuta|Batuta ; 
+ ; Callaway ; en
+ ; Rattray ; en
+ ; Steere ; en
+ ; Budge ; en
+ ; Petrie, W. M. Flinders ; en
+ ; Maran, Ren ; 
+ ; Sarbah ; en
+ ; Jabavu ; en
+ ; Tiyo Soga|Soga, Tiyo ; en
+ ; Washington, Booker ; en
+ ; Du Bois ; en
+ ; Kingsley, Mary ; en
+ ; Livingstone ; en
+ ; Verne, Jules ; en
+Five Weeks in a Balloon|Cinq semaines ; ; 
+Kebra|Queen of Sheba ; ; en
+Africa|African|Zulu|Hausa|Swahili|Ashanti|Yoruba|Congo|Ethiopia|Abyssinia|Nigeria|Ghana|Gold Coast|Basuto|Xhosa|Kaffir|Bantu|Egypt ; ; en
+ ; ; sw
+ ; ; af
+ ; ; am
+ ; ; yo
+ ; ; zu
