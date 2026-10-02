@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-09-30",
+ "updated": "2026-10-02",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -66,6 +66,130 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Uncle Silas": {
    "id": 14851,
    "words": 166091
+  },
+  "Captain Cook’s Journal During His First Voyage Round the World": {
+   "id": 8106,
+   "words": 226309
+  },
+  "A Voyage to Terra Australis": {
+   "id": 12929,
+   "words": 168014
+  },
+  "The Voyage of the Beagle": {
+   "id": 944,
+   "words": 207021
+  },
+  "Following the Equator": {
+   "id": 2895,
+   "words": 190584
+  },
+  "For the Term of His Natural Life": {
+   "id": 3424,
+   "words": 183058
+  },
+  "Robbery Under Arms": {
+   "id": 1198,
+   "words": 210979
+  },
+  "My Brilliant Career": {
+   "id": 11620,
+   "words": 89880
+  },
+  "While the Billy Boils": {
+   "id": 7144,
+   "words": 85323
+  },
+  "Joe Wilson and His Mates": {
+   "id": 1036,
+   "words": 85186
+  },
+  "Such Is Life": {
+   "id": 3470,
+   "words": 163503
+  },
+  "The Getting of Wisdom": {
+   "id": 3728,
+   "words": 73393
+  },
+  "Seven Little Australians": {
+   "id": 4731,
+   "words": 45327
+  },
+  "Australian Legendary Tales": {
+   "id": 3833,
+   "words": 33485
+  },
+  "The Songs of a Sentimental Bloke": {
+   "id": 4730,
+   "words": 15432
+  },
+  "We of the Never-Never": {
+   "id": 4699,
+   "words": 84743
+  },
+  "The Mystery of a Hansom Cab": {
+   "id": 4223,
+   "words": 88859
+  },
+  "The Magic Pudding": {
+   "id": 23625,
+   "words": 19549
+  },
+  "A Narrative of the Expedition to Botany-Bay": {
+   "id": 3535,
+   "words": 24290
+  },
+  "Bush Studies": {
+   "id": 78420,
+   "words": 30598
+  },
+  "Bliss, and Other Stories": {
+   "id": 44385,
+   "words": 65826
+  },
+  "The Doves’ Nest, and Other Stories": {
+   "id": 66871,
+   "words": 47026
+  },
+  "In a German Pension": {
+   "id": 1472,
+   "words": 31041
+  },
+  "Poems": {
+   "id": 59276,
+   "words": 10954
+  },
+  "Station Life in New Zealand": {
+   "id": 6104,
+   "words": 62998
+  },
+  "Old New Zealand": {
+   "id": 33342,
+   "words": 50645
+  },
+  "A First Year in Canterbury Settlement": {
+   "id": 3235,
+   "words": 45039
+  },
+  "Erewhon Revisited": {
+   "id": 1971,
+   "words": 85711
+  },
+  "The Long White Cloud": {
+   "id": 12411,
+   "words": 104607
+  },
+  "A Narrative of a Nine Months’ Residence in New Zealand in 1827": {
+   "id": 11933,
+   "words": 57689
+  },
+  "The Adventures of Kimble Bent": {
+   "id": 45688,
+   "words": 74317
+  },
+  "Maori Folk-Tales of the Port Hills": {
+   "id": 73766,
+   "words": 17402
   },
   "Gods and Fighting Men": {
    "id": 14465,

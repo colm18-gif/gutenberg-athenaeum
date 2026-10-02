@@ -69,12 +69,13 @@ test('reading cards: a code of four words, bookmarks merged by the later visit, 
   const {handle,cleanCode,cleanBooks,mergeBooks,CARD_WORDS}=await worker(),kv=new Map(),env={BOOK:{get:async k=>kv.get(k)??null,put:async(k,v)=>{kv.set(k,v)}}};
   const req=(method,path,body,headers={})=>new Request('https://vb.test'+path,{method,headers:{Origin:'https://libraryafterdark.space','CF-Connecting-IP':'1.1.1.1',...headers},body:body&&JSON.stringify(body)});
   assert(CARD_WORDS.length>=100&&new Set(CARD_WORDS).size===CARD_WORDS.length);
-  const made=await handle(req('POST','/card'),env);assert.equal(made.status,201);const {code}=await made.json();
+  // The card is made an hour before the visits below, whatever today's date (it was made "now", and stopped saving once now passed them).
+  const t0=Date.parse('2026-10-01T10:00:00Z');
+  const made=await handle(req('POST','/card'),env,new Date(t0-3600000));assert.equal(made.status,201);const {code}=await made.json();
   assert.match(code,/^[a-z]+(-[a-z]+){3}-\d{2}$/);assert.equal(cleanCode(code.toUpperCase().replace(/-/g,' ')),code,'typed in capitals or with spaces');
   assert(![...kv.keys()].some(k=>k.includes(code)),'the code itself is never stored');
   assert.equal((await handle(req('POST','/card'),env)).status,429,'one card a minute from one place');
   assert.equal((await handle(req('POST','/card',null,{Origin:'https://elsewhere.example','CF-Connecting-IP':'9.9.9.9'}),env)).status,403);
-  const t0=Date.parse('2026-10-01T10:00:00Z');
   let r=await handle(req('PUT','/card/'+code,{books:{345:{p:.4,t:t0},11:{p:.9,t:t0}}}),env,new Date(t0+60000));assert.equal(r.status,200);assert.equal((await r.json()).saved,true);
   // A second device, which read Dracula later but Alice earlier: each book keeps its later visit.
   r=await handle(req('PUT','/card/'+code,{books:{345:{p:.6,t:t0+5000},11:{p:.2,t:t0-5000},1342:{p:.1,t:t0}}}),env,new Date(t0+120000));

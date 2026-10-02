@@ -94,6 +94,11 @@
       'evening-room':{beds:[['fire',.07]],ticks:[[1.5,'tock',.03]],events:[['rustle',1.2,.035]]},
       // The Irish Room: a turf fire, and pages turning.
       'irish-room':{beds:[['fire',.06]],events:[['rustle',1,.035],['creak',.4,.03]]},
+      // The Antipodes: a quiet hall under the stars; a fire, crickets and now and then a bird in the Australian Room; a
+      // night wind and a morepork (the ruru, New Zealand's little owl) in the New Zealand Room.
+      antipodes:{beds:[['air',.035]],events:[['rustle',.8,.035],['creak',.3,.03]]},
+      'australian-room':{beds:[['fire',.05],['insects',.04]],events:[['cricket',5,.03],['bird',.5,.035],['rustle',.8,.03]]},
+      'new-zealand-room':{beds:[['wind',.04],['air',.025]],events:[['owl',.7,.045],['rustle',1,.035]]},
       // The Poe Room: a still house, its floorboards settling (the heart under them is poe-room.js's own).
       'poe-room':{beds:[['air',.03]],events:[['creak',.9,.05],['rustle',.6,.03]]},
       // The periodicals room: a clock, and pages turning at the reading slopes.
