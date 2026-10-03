@@ -15,6 +15,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
+import zlib from 'node:zlib';
+import {ANTHOLOGY,POEMS} from './anthology.mjs';
 import {ROOM_LANGUAGES,resolvedKey} from './new-books.mjs';
 
 const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),'..');
@@ -35,6 +37,8 @@ export function loadCatalogue(){
   for(const [id,title,author,category] of core)add({id,title,author,category,source:'Project Gutenberg'});
   for(const list of [w.ATHENAEUM_RAILWAY_BOOKS,w.ATHENAEUM_CURIOUS_BOOKS,w.ATHENAEUM_AFTER_DARK_BOOKS])for(const record of list||[])add({...record,source:'Project Gutenberg'});
   for(const record of w.ATHENAEUM_OPEN_ACCESS_BOOKS||[]){const source=(w.ATHENAEUM_OPEN_ACCESS_SOURCES||{})[record.source]||{};add({...record,sourceKey:record.source,source:source.name||record.source})}
+  // The anthology of poems bound from Wikisource (scripts/anthology.mjs), added in game.js once it is bundled.
+  if(fs.existsSync(path.join(root,'texts','bundled-gzip',`pg${ANTHOLOGY.id}.txt.gz`)))add({...ANTHOLOGY,source:'Wikisource',sourceKey:'wikisource',sourceUrl:'https://en.wikisource.org/',licence:'Public Domain'});
   for(const [key,author,category] of [['ATHENAEUM_VERNE_BOOKS','Jules Verne','Extraordinary Voyages'],['ATHENAEUM_DOYLE_BOOKS','Arthur Conan Doyle','The Consulting Room'],['ATHENAEUM_WELLS_BOOKS','H. G. Wells','The Time Laboratory'],['ATHENAEUM_HAGGARD_BOOKS','H. Rider Haggard','The Lost Kingdoms']])
     for(const [id,title] of w[key]||[])add({id,title,author,category,source:'Project Gutenberg'});
   const resolved=w.ATHENAEUM_NEW_BOOKS_RESOLVED?.books||{},arrivalNotes={},arrivalRooms={},words={};
@@ -68,7 +72,7 @@ const CATEGORY_ROOMS={'Extraordinary Voyages':'The Verne rooms','The Consulting 
 function idsIn(file,pattern){const source=read(file),match=source.match(pattern);return match?[...match[1].matchAll(/\d+/g)].map(m=>Number(m[0])):[]}
 function roomsFrom(books){
   const evening=new Set(idsIn('evening-room.js',/const GROUPS=\[([\s\S]*?)\];/)),learners=new Set([...idsIn('learners-room.js',/const SHELVES=\[([\s\S]*?)\];/),...idsIn('learners-room.js',/const SHORT=\[([^\]]*)\]/)]);
-  const setTexts=new Set([...idsIn('set-texts-room.js',/const NOVELS=\[([^\]]*)\]/),...idsIn('set-texts-room.js',/const PLAYS=\[([^\]]*)\]/)]);
+  const setTexts=new Set([ANTHOLOGY.id,...idsIn('set-texts-room.js',/const NOVELS=\[([^\]]*)\]/),...idsIn('set-texts-room.js',/const PLAYS=\[([^\]]*)\]/)]);
   const moon=new Set(idsIn('high-staircase.js',/const lunarCollection=\[([^\]]*)\]/)),mars=new Set(idsIn('mars.js',/const SHELF=\[([^\]]*)\]/)),railway=new Set();
   for(const book of books)if(book.depotNote)railway.add(book.id);
   return book=>{
@@ -267,6 +271,18 @@ ${[...groups.keys()].sort((a,b)=>a.localeCompare(b,lang)).map(shelf=>`<section c
 }
 // The page for teachers: the set texts on the Set Texts Room's walls (set-texts-room.js), each with ways to read it,
 // its plain text with a contents of chapters, acts and scenes to link to, and its LibriVox recording where there is one.
+// The poems in the bundled anthology, each with the address read.html gives its heading (the same slug, from the
+// capitalised heading), in the order and sections the book has them.
+function anthologyPoems(){
+  let text;try{text=zlib.gunzipSync(fs.readFileSync(path.join(root,'texts','bundled-gzip',`pg${ANTHOLOGY.id}.txt.gz`))).toString('utf8')}catch(e){return []}
+  const slug=t=>t.normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[’']/g,'').replace(/[^a-z0-9\u0400-\u04ff\u4e00-\u9fff]+/g,'-').replace(/^-+|-+$/g,'').slice(0,48).replace(/-+$/,'');
+  const body=text.slice(text.indexOf('***',text.indexOf('*** START')+3)+3,text.indexOf('*** END')),poems=[];let section='';
+  for(const part of body.split(/\n\n\n+/).map(p=>p.trim()).filter(Boolean).slice(1)){const blocks=part.split(/\n\n+/);
+    if(blocks.length===1){section=part.toLowerCase().replace(/(^|\s)\w/g,c=>c.toUpperCase()).replace(/ And /g,' and ');continue}
+    const heading=blocks[0].trim(),title=POEMS.find(p=>p[1].toUpperCase()===heading)?.[1]||heading;
+    poems.push({section,title,poet:blocks[1].trim(),id:slug(heading)})}
+  return poems;
+}
 function setTextsPage(listed){
   const byId=new Map(listed.map(b=>[b.id,b])),ids=re=>idsIn('set-texts-room.js',re);
   // The new arrivals in the order data/new-books.js lists them, as the room shelves them.
@@ -274,16 +290,21 @@ function setTextsPage(listed){
   const arrivals=listed.filter(b=>b.arrivalRooms.includes('set-texts')).sort((a,b)=>at(a)-at(b)).map(b=>b.id),[first,...rest]=arrivals;
   const plays=[...new Set([...(first?[first]:[]),...ids(/const PLAYS=\[([^\]]*)\]/),...rest])].map(id=>byId.get(id)).filter(Boolean);
   const novels=ids(/const NOVELS=\[([^\]]*)\]/).map(id=>byId.get(id)).filter(Boolean);
+  const poems=anthologyPoems(),anthology=byId.get(ANTHOLOGY.id),poemsPage=anthology&&pageName(anthology);
+  const poemEntry=p=>`<li><a href="/read.html?book=${ANTHOLOGY.id}&amp;from=${encodeURIComponent(poemsPage)}#${p.id}">${escape(p.title)}</a> <span>${escape(p.poet)}</span></li>`;
+  const poetry=anthology&&poems.length?`<section class="shelf-list"><h2 id="poetry">Poetry: the anthologies</h2><p>${poems.length} poems from the GCSE anthologies, all those old enough to be in the public domain, bound as one book, <a href="/book/${poemsPage}">${escape(ANTHOLOGY.title)}</a>, which lies open on the lectern in the Set Texts Room. Each poem has a short note and a link of its own; the modern poems in the same anthologies are still in copyright, so they are not here.</p>
+${[...new Set(poems.map(p=>p.section))].map(section=>`<h3>${escape(section)}</h3><ul>${poems.filter(p=>p.section===section).map(poemEntry).join('')}</ul>`).join('\n')}</section>`:'';
   const audio=id=>{try{const a=JSON.parse(read(`data/audio/${id}.json`)),folder=(a.chapters?.[0]?.url||'').match(/archive\.org\/download\/([^/]+)\//)?.[1];return folder?{url:`https://archive.org/details/${folder}`,hours:Math.max(1,Math.round(a.seconds/360)/10)}:null}catch(e){return null}};
   const entry=b=>{const page=pageName(b),listen=audio(b.id);return `<li class="set-text"><h3><a href="/book/${page}">${escape(b.title)}</a> <span>${escape(b.author)}</span></h3>
 ${b.note?`<p>${escape(b.note)}</p>`:''}<p class="ways"><a href="/?book=${b.id}">Read it in the 3D library</a> · <a href="/read.html?book=${b.id}&amp;from=${encodeURIComponent(page)}">Plain text, with a link to each ${/Drama/.test(b.category)?'act and scene':'chapter'}</a>${listen?` · <a href="${listen.url}">Listen: the LibriVox recording (${listen.hours} hours)</a>`:''}</p></li>`};
   const body=`<main class="catalogue set-texts">
 <h1>Set texts</h1>
-<p class="intro">The plays and novels most often set for GCSE English Literature, free to read in the Library After Dark: no account, no advertising, and it works on phones and school computers alike. In the library they stand in the Set Texts Room, through a door in the English Reading Room.</p>
+<p class="intro">The plays, novels and poems most often set for GCSE English Literature, free to read in the Library After Dark: no account, no advertising, and it works on phones and school computers alike. In the library they stand in the Set Texts Room, through a door in the English Reading Room.</p>
 <a class="read" href="/?room=set-texts">Go to the Set Texts Room</a>
 <section class="shelf-list"><h2>Setting a chapter or a scene</h2><p>Open a book’s plain text and choose Contents: every chapter, act and scene has an address of its own, such as <code>read.html?book=46#stave-iii</code> for the third stave of <i>A Christmas Carol</i>. Copy it into a homework post and the page opens at that place. A student’s place in each book is kept on their device, and a reading card (four words and two digits) carries it between home and school without an account.</p></section>
 <section class="shelf-list"><h2 id="shakespeare">Shakespeare</h2><ul class="set-list">${plays.map(entry).join('\n')}</ul></section>
 <section class="shelf-list"><h2 id="novels">The nineteenth-century novel</h2><ul class="set-list">${novels.map(entry).join('\n')}</ul></section>
+${poetry}
 <p class="intro">Every text is in the public domain, from Project Gutenberg; the recordings are LibriVox’s, read by volunteers. Something missing? The library takes suggestions in its visitors’ book.</p>
 </main>`;
   return layout({title:'Set texts for GCSE English Literature · The Library After Dark',description:`Free set texts for GCSE English Literature: ${[...plays,...novels].slice(0,6).map(b=>b.title).join(', ')} and more, with links to every chapter and scene and free audiobooks.`,canonical:`${SITE}/set-texts/`,body});
