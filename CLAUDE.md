@@ -21,6 +21,12 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - The Irish Room (`irish-room.js`, x −330, z −205), Seomra na hÉireann, is behind a green Georgian door in the Grand Hall's
   south wall (x −8.3; `?room=irish`): shelves `irish-myth`, `irish-revival`, `irish-writers` and `irish-gaeilge` in
   `data/new-books.js` (the last checked as Irish, `ga`), round a turf fire, with a harp, a St Brigid's cross and an ogham stone.
+  Its secret: a sod fallen from the turf creel by the hearth; lifting it uncovers a facsimile of the Book of Kells
+  (`kells-book.js`), as the great Gospel of Colum Cille was found under a sod in 1007 (found once, found for good;
+  `?kells` shows it at once). The book opens in its own viewer: twelve public-domain pages from Wikimedia Commons
+  (`scripts/fetch-kells.mjs`, Kells images workflow, `assets/kells`), a drawn title page and colophon, on thick board
+  leaves that turn rigidly on the spine (drag, swipe or arrows; zoom; one page at a time on a narrow screen). While it is
+  open the world is not drawn; the book renders its own small scene with the same renderer.
 - The Map Room (`map-room.js`, x −420, z −60) is behind a door in the west wing's north wall (x −21.4; `?room=maps`): twenty
   old maps hung edge to edge (Mercator, Waldseemüller, the Hereford Mappa Mundi, Piri Reis, the Catalan Atlas, Ricci,
   John Snow's cholera map and William Smith's on the map table…), each with a card in `MAPS`. Looking at one opens the

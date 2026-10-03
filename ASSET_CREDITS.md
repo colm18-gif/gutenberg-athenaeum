@@ -55,13 +55,21 @@ Scans used for the twelve newly added Haggard and Doyle covers are cached locall
 ## Typefaces
 
 Self-hosted from `assets/fonts` (Latin subsets, WOFF2, via the Fontsource packages).
-Both are licensed under the [SIL Open Font License 1.1](https://openfontlicense.org);
+All are licensed under the [SIL Open Font License 1.1](https://openfontlicense.org);
 the full licence texts sit beside the font files.
 
 | Use | Typeface | Designer | Licence file |
 |---|---|---|---|
 | Title, headings, HUD mark | IM Fell English SC | Igino Marini (after the Fell types) | `assets/fonts/OFL-IM-Fell.txt` |
 | Notes, prompts, dialogue | Cormorant Garamond | Christian Thalmann / Catharsis Fonts | `assets/fonts/OFL-Cormorant.txt` |
+| The Book of Kells facsimile's title page, colophon and cover | Uncial Antiqua | Brian J. Bonislawsky (Astigmatic) | `assets/fonts/OFL-Uncial-Antiqua.txt` |
+
+## The Book of Kells
+
+The twelve pages of the Irish Room's facsimile (`assets/kells`) are photographs of Trinity College Dublin, MS 58,
+from Wikimedia Commons, all marked public domain there. `scripts/fetch-kells.mjs` (the Kells images workflow)
+downloads them and records each file's Commons page and licence in `assets/kells/kells.json`; the book credits each
+page beneath it. The title page, colophon, pastedowns and binding are drawn by the library.
 
 ## Generated sound and light
 
