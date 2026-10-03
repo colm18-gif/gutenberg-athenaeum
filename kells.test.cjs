@@ -3,7 +3,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
 
-const html=fs.readFileSync('index.html','utf8'),game=fs.readFileSync('game.js','utf8'),source=fs.readFileSync('kells-book.js','utf8'),room=fs.readFileSync('irish-room.js','utf8'),fetcher=fs.readFileSync('scripts/fetch-kells.mjs','utf8');
+const html=fs.readFileSync('index.html','utf8'),game=fs.readFileSync('game.js','utf8'),source=fs.readFileSync('kells-book.js','utf8'),room=fs.readFileSync('irish-room.js','utf8'),fetcher=fs.readFileSync('scripts/fetch-book-pages.mjs','utf8');
 const manifest=JSON.parse(fs.readFileSync('assets/kells/kells.json','utf8'));
 const book=(()=>{const context={window:{},Math,setTimeout};vm.runInNewContext(source,context);return context.window.createKellsBook({THREE:{},renderer:{}})})();
 
@@ -32,7 +32,7 @@ test('the Book of Kells loads before the game, is handed to the Irish Room, and 
 
 test('every page of the facsimile has a card, a public-domain photograph, and a place in the book',()=>{
   const folios=Object.keys(book.folios),fetched=[...fetcher.matchAll(/key: '(\d{3}[rv])'/g)].map(m=>m[1]);
-  assert.equal(folios.length,12);assert.deepEqual(fetched,folios,'scripts/fetch-kells.mjs fetches the same pages, in the same order');
+  assert.equal(folios.length,12);assert.deepEqual(fetched,folios,'scripts/fetch-book-pages.mjs fetches the same pages, in the same order');
   for(const key of folios){
     assert(fs.existsSync(`assets/kells/${key}.jpg`),`${key}.jpg`);assert.match(manifest[key]?.licence||'',/public domain|^pd|cc0/i,`${key} is in the public domain`);
     assert.match(manifest[key].page,/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/);

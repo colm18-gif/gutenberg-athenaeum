@@ -1,6 +1,6 @@
 // The Book of Kells, a facsimile: the Irish Room's secret book (irish-room.js keeps it under a sod of turf by the hearth,
 // as the great Gospel of Colum Cille was found under a sod in 1007). Twelve of its pages, photographs in the public
-// domain from Wikimedia Commons (scripts/fetch-kells.mjs, assets/kells), bound with a title page and a colophon on
+// domain from Wikimedia Commons (scripts/fetch-book-pages.mjs, assets/kells), bound with a title page and a colophon on
 // thick board leaves that stay stiff as they turn: each leaf is a solid slab swinging on its hinge at the spine.
 //
 // Opening it lays the book on a museum cradle under a lamp. While it is open the library stops drawing the world and

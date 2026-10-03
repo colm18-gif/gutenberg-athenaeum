@@ -67,7 +67,7 @@ the full licence texts sit beside the font files.
 ## The Book of Kells
 
 The twelve pages of the Irish Room's facsimile (`assets/kells`) are photographs of Trinity College Dublin, MS 58,
-from Wikimedia Commons, all marked public domain there. `scripts/fetch-kells.mjs` (the Kells images workflow)
+from Wikimedia Commons, all marked public domain there. `scripts/fetch-book-pages.mjs` (the Book images workflow)
 downloads them and records each file's Commons page and licence in `assets/kells/kells.json`; the book credits each
 page beneath it. The title page, colophon, pastedowns and binding are drawn by the library.
 
