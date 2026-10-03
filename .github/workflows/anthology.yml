@@ -1,0 +1,37 @@
+name: Anthology
+
+# Binds Poems from the Anthologies (scripts/anthology.mjs): the public-domain poems of the GCSE English Literature
+# anthologies, read from English Wikisource, into texts/bundled-gzip. Cloud sessions cannot reach Wikisource, so this
+# runs whenever the script changes, on main or on a working branch, or by hand. The log shows every poem as taken.
+on:
+  workflow_dispatch:
+  push:
+    paths: ['scripts/anthology.mjs', 'scripts/wikisource.mjs', '.github/workflows/anthology.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: library-texts   # shared with new-books.yml and daily-room.yml: all write texts/bundled-gzip
+  cancel-in-progress: false
+
+jobs:
+  bind:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Bind the anthology
+        run: node scripts/anthology.mjs
+      - name: Publish
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add texts/bundled-gzip/pg940001.txt.gz
+          git diff --cached --quiet && { echo "The anthology is unchanged."; exit 0; }
+          git commit -m "Anthology: bind the poems from Wikisource"
+          for attempt in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0; sleep 10; done
+          exit 1

@@ -8,7 +8,9 @@
 // its own (from 950000, well clear of Gutenberg's) so the reader and the book pages can treat it as any other book.
 import {setTimeout as sleep} from 'node:timers/promises';
 
-export const WIKISOURCE_LANGUAGES={uk:{name:'Ukrainian',host:'uk.wikisource.org',author:'Автор',credit:'Текст з Вікіджерел (uk.wikisource.org), суспільне надбання.'}};
+export const WIKISOURCE_LANGUAGES={uk:{name:'Ukrainian',host:'uk.wikisource.org',author:'Автор',credit:'Текст з Вікіджерел (uk.wikisource.org), суспільне надбання.'},
+  // English Wikisource, for the poems of the anthology (scripts/anthology.mjs).
+  en:{name:'English',host:'en.wikisource.org',author:'Author',credit:'Texts from Wikisource (en.wikisource.org), in the public domain.'}};
 const USER_AGENT='LibraryAfterDark/1.0 (https://libraryafterdark.space; free public-domain library)';
 // Subpages that are the edition's editors speaking, not the book.
 const EDITORIAL=/^(Примітки|Пояснення|Вступне слово|Від редакції|Від видавництва|Передмова редактора|Література|Зміст|Словничок|Словник|Коментарі|Додатки|Біографія|Життєпис)$|аналіз|вступна стаття|критичн/i;
@@ -58,7 +60,7 @@ export function htmlToText(html){
   return {text,links};
 }
 
-async function api(params,lang){
+export async function api(params,lang){
   const url=`https://${WIKISOURCE_LANGUAGES[lang].host}/w/api.php?`+new URLSearchParams({format:'json',formatversion:'2',...params});
   for(let attempt=0;attempt<3;attempt++){
     try{await sleep(400);const r=await fetch(url,{headers:{'User-Agent':USER_AGENT},signal:AbortSignal.timeout(60000)});if(r.ok)return await r.json()}catch(error){}
@@ -66,11 +68,11 @@ async function api(params,lang){
   }
   return null;
 }
-async function parse(page,lang){const j=await api({action:'parse',page,prop:'text|categories',redirects:'1',disableeditsection:'1',disabletoc:'1'},lang);if(!j?.parse)return null;return {title:j.parse.title,html:j.parse.text,categories:(j.parse.categories||[]).map(c=>c.category)}}
+export async function parse(page,lang){const j=await api({action:'parse',page,prop:'text|categories',redirects:'1',disableeditsection:'1',disabletoc:'1'},lang);if(!j?.parse)return null;return {title:j.parse.title,html:j.parse.text,categories:(j.parse.categories||[]).map(c=>c.category)}}
 
 const norm=s=>s.normalize('NFC').toLowerCase().replace(/[’'ʼ`]/g,'').replace(/\s+/g,' ').trim();
 // The author as shelved ("Тарас Шевченко", "Григорій Квітка-Основ'яненко"): their page must be linked from the book.
-function byAuthor(links,categories,author,lang){
+export function byAuthor(links,categories,author,lang){
   const want=norm(author.replace(/\s*\(.*\)\s*$/,'')),last=want.split(' ').pop(),prefix=norm(WIKISOURCE_LANGUAGES[lang].author+':');
   const named=links.map(l=>norm(l.title)).filter(t=>t.startsWith(prefix)).map(t=>t.slice(prefix.length));
   return named.some(name=>name===want||name.split(' ').includes(last)||name.endsWith(' '+last)||name===last)||categories.some(c=>norm(c.replace(/_/g,' ')).includes(last));
