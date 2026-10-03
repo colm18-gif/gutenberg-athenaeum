@@ -10,9 +10,10 @@ function setup(clipboard={writeText:async()=>{}}){
   elements.correspondence.querySelectorAll=()=>['letterName','letterSubject','letterMessage','letterCopy','letterCopyText','closeLetter'].map(id=>elements[id]);
   const window={location:{href:''},addEventListener(type,fn,capture){if(type==='keydown'){assert.equal(capture,true);keys.push(fn)}}};
   const context={window,document,navigator:{clipboard}};vm.runInNewContext(source,context);
-  const interactables=[],callbacks={opens:0,closes:0};
-  const desk=window.createCorrespondenceDesk({THREE:stub(),MAT:stub(),desk:stub(),interactables,canvasTexture:()=>stub(),onOpen:()=>callbacks.opens++,onClose:()=>callbacks.closes++});
-  return {elements,window,document,desk,interactables,callbacks,keydown:keys[0]};
+  const surface={userData:{type:'book-table'},geometry:{dispose(){this.disposed=true}},position:{set(...v){this.value=v}}},oldGeometry=surface.geometry,furniture={children:[surface],add(mesh){this.children.push(mesh)}},interactables=[surface],callbacks={opens:0,closes:0};
+  const THREE=stub();THREE.BoxGeometry=class{constructor(width,height,depth){this.parameters={width,height,depth}}};
+  const desk=window.createCorrespondenceDesk({THREE,MAT:stub(),desk:furniture,interactables,canvasTexture:()=>stub(),onOpen:()=>callbacks.opens++,onClose:()=>callbacks.closes++});
+  return {elements,window,document,desk,interactables,callbacks,surface,oldGeometry,keydown:keys[0]};
 }
 test('desk stationery opens a private letter and closes with Escape',()=>{
   const s=setup();assert(s.interactables.length>=3);assert.equal(s.desk.isOpen,false);
@@ -35,4 +36,13 @@ test('blank letters cannot launch email and clipboard denial leaves selectable t
 test('keyboard focus stays in the letter and the game pauses while it is open',()=>{
   const s=setup();s.desk.open();let prevented=0;s.keydown({code:'Tab',shiftKey:true,stopImmediatePropagation(){},preventDefault(){prevented++}});assert.equal(s.document.activeElement,s.elements.closeLetter);s.keydown({code:'Tab',shiftKey:false,stopImmediatePropagation(){},preventDefault(){prevented++}});assert.equal(s.document.activeElement,s.elements.letterName);assert.equal(prevented,2);
   const game=fs.readFileSync('game.js','utf8');assert.match(game,/return !correspondenceDesk\.isOpen&&preLetterActive\(\)/);assert.match(game,/return correspondenceDesk\.isOpen\|\|preLetterCovered\(\)/);assert.match(game,/!correspondenceDesk\?\.isOpen&&\(!selected\|\|carryingBook\)/);assert.match(game,/type==='correspondence-desk'&&correspondenceDesk\?\.interact\(focus\)/);
+});
+
+
+test('the original desktop opens correspondence while carrying instead of placing the book',()=>{
+  const s=setup();assert.equal(s.surface.userData.type,'correspondence-desk');assert.equal(s.surface.userData.action,'WRITE A LETTER');assert.equal(s.oldGeometry.disposed,true);
+  assert.deepEqual(s.surface.geometry.parameters,{width:3.5,height:.12,depth:1.5});assert.equal(s.interactables.filter(m=>m===s.surface).length,1);
+  const game=fs.readFileSync('game.js','utf8'),wrapper=game.slice(game.indexOf('const carriedBookInteract=interact;'),game.indexOf('const preStairReset='));
+  const book={},context={carryingBook:true,selected:book,focus:s.surface,correspondenceDesk:s.desk,ui:{prompt:{style:{opacity:1}}},interact(){throw Error('unexpected fallback')},placeSelected(){throw Error('book must stay carried')},placeOnSurface(){throw Error('book must stay carried')}};
+  vm.runInNewContext(wrapper,context);context.interact();assert.equal(s.desk.isOpen,true);assert.equal(context.selected,book);assert.equal(context.carryingBook,true);assert.equal(context.focus,null);
 });

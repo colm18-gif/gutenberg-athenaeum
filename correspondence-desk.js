@@ -5,7 +5,10 @@
     const address='libraryafterdark1@gmail.com',dialog=document.getElementById('correspondence'),form=document.getElementById('letterForm');
     const name=document.getElementById('letterName'),subject=document.getElementById('letterSubject'),message=document.getElementById('letterMessage'),status=document.getElementById('letterStatus'),copyText=document.getElementById('letterCopyText');
     const data={type:'correspondence-desk',title:'The correspondence desk',author:'A private letter to the keeper of The Library After Dark.',action:'WRITE A LETTER'};
-    function part(geometry,material,x,y,z,interactive=false){const mesh=new THREE.Mesh(geometry,material);mesh.position.set(x,y,z);desk.add(mesh);if(interactive){mesh.userData=data;interactables.push(mesh)}return mesh}
+    // The original writing desk has a book-placement target. Make its whole
+    // desktop a letter target so aiming beside the paper still writes a letter.
+    for(const mesh of desk.children)if(mesh.userData?.type==='book-table'){mesh.userData=data;mesh.geometry.dispose();mesh.geometry=new THREE.BoxGeometry(3.5,.12,1.5);mesh.position.set(0,1.46,-.45)}
+    function part(geometry,material,x,y,z,interactive=true){const mesh=new THREE.Mesh(geometry,material);mesh.position.set(x,y,z);desk.add(mesh);if(interactive){mesh.userData=data;interactables.push(mesh)}return mesh}
     // Leather blotter, addressed stationery, sealed envelope, ink and a feather pen.
     const leather=new THREE.MeshStandardMaterial({color:0x243b31,roughness:.92});
     part(new THREE.BoxGeometry(1.6,.025,.96),leather,-.62,1.455,-.46);
