@@ -102,6 +102,13 @@ async function infoFor(book, titles) {
   return pages;
 }
 async function choose(book, entry) {
+  // A page of the book's scan: the scan's file, rendered at that page.
+  if (entry.scan) {
+    const page = (await api({ ...info(book), iiurlparam: `page${entry.scan}-${book.width * 2}px`, titles: `File:${book.scan}` })).query?.pages?.[0];
+    const i = page?.imageinfo?.[0];
+    if (!i || page.missing || !isPublicDomain(i.extmetadata)) { console.log(`  ${entry.key}: the scan is not usable`); return null }
+    return page;
+  }
   for (const file of entry.files) {
     const page = (await infoFor(book, [`File:${file}`]))[0];
     if (usable(page)) return page;
@@ -144,11 +151,13 @@ async function openingSheets(book) {
   await mkdir(OUT, { recursive: true });
   const get = async url => { for (let attempt = 1; ; attempt++) { const r = await fetch(url, { headers: HEADERS }); if (r.ok) return Buffer.from(await r.arrayBuffer()); if (attempt >= 5) throw new Error(`${r.status} for ${url}`); await new Promise(res => setTimeout(res, 1500 * attempt)) } };
   const first = (await api({ prop: 'imageinfo', iiprop: 'url|size', iiurlwidth: '450', iiurlparam: 'page1-450px', titles: `File:${book.scan}` })).query.pages[0].imageinfo[0].thumburl;
+  console.log(`openings from ${first}`);
+  if (!/page1-\d+px/.test(first)) throw new Error('the scan\'s thumbnail address does not name its page');
   const PW = 450, PH = 680, PER = 3;
   for (let k = 0; k < book.openings.length; k += PER) {
     const cells = [], group = book.openings.slice(k, k + PER);
     for (const [row, pair] of group.entries()) for (const [col, n] of pair.entries()) {
-      try { cells.push({ input: await sharp(await get(first.replace(/page1-450px/, `page${n}-450px`))).resize({ width: PW, height: PH - 24, fit: 'inside' }).toBuffer(), left: col * PW, top: row * PH + 24 }) } catch (error) { console.log(`  page ${n}: ${error.message}`) }
+      try { cells.push({ input: await sharp(await get(first.replace(/page1-(\d+)px/, `page${n}-$1px`))).resize({ width: PW, height: PH - 24, fit: 'inside' }).toBuffer(), left: col * PW, top: row * PH + 24 }) } catch (error) { console.log(`  page ${n}: ${error.message}`) }
       cells.push({ input: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${PW}" height="22"><text x="6" y="17" font-size="18" font-family="DejaVu Sans" fill="#ff0">pdf ${n} = page ${n - 12}</text></svg>`), left: col * PW, top: row * PH });
     }
     const name = `openings-${String(k / PER + 1).padStart(2, '0')}.jpg`;
@@ -184,11 +193,11 @@ async function fetchBook(name, book) {
       const data = await image.resize({ width: book.width, height: book.height, fit, background: book.paper }).jpeg({ quality: 80, mozjpeg: true }).toBuffer();
       await writeFile(out, data);
       manifest[entry.key] = {
-        file: page.title.replace(/^File:/, ''), page: i.descriptionurl, fit,
+        file: page.title.replace(/^File:/, ''), page: i.descriptionurl + (entry.scan ? `?page=${entry.scan}` : ''), fit, ...(entry.scan ? { scanPage: entry.scan } : {}),
         artist: strip(meta.Artist?.value).slice(0, 160), date: strip(meta.DateTimeOriginal?.value).slice(0, 80),
         licence: strip(meta.LicenseShortName?.value) || 'Public domain', description: strip(meta.ImageDescription?.value).slice(0, 300)
       };
-      console.log(`${entry.key}: ${page.title} (${width}x${height}, ${fit}) -> ${Math.round(data.length / 1024)} KB · ${manifest[entry.key].licence} · ${manifest[entry.key].artist}`);
+      console.log(`${entry.key}: ${page.title}${entry.scan ? ` page ${entry.scan}` : ''} (${width}x${height}, ${fit}) -> ${Math.round(data.length / 1024)} KB · ${manifest[entry.key].licence} · ${manifest[entry.key].artist}`);
     } catch (error) { console.log(`${entry.key}: FAILED ${error.message}`); failed++ }
   }
   const ordered = Object.fromEntries(book.pages.filter(p => manifest[p.key]).map(p => [p.key, manifest[p.key]]));
