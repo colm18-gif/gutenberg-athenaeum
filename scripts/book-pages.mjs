@@ -57,24 +57,25 @@ const ROOM_NAMES={secret:'The secret bookcase in the west wing','evening-quick':
   signal:'The Signal House, on the night railway',tide:'Tidebound Quay, on the night railway',mars:'The Reading Room of Helium, on Mars',periodicals:'The Periodicals Room',spanish:'The International Wing',portuguese:'The Portuguese Reading Room',chinese:'The Chinese Reading Room',french:'The French Reading Room',latin:'The Latin Reading Room',ukrainian:'The Ukrainian Reading Room',
   antipodes:'The Antipodes, through the Earth from the Grand Hall',australian:'The Australian Room, at the Antipodes','new-zealand':'The New Zealand Room, at the Antipodes',
   'african-ancient':'The African Reading Room','african-voices':'The African Reading Room','african-tales':'The African Reading Room',
-  'map-voyages':'The Map Room','map-makers':'The Map Room','map-lands':'The Map Room'};
+  'map-voyages':'The Map Room','map-makers':'The Map Room','map-lands':'The Map Room','set-texts':'The Set Texts Room'};
 const CURIOUS={horologist:'The Horologist’s Study',conservatory:'The Night Conservatory',parlour:'The Ghost-Story Parlour',attic:'The attic behind the curious doors',
   repository:'The Repository',unread:'The Unread Room',returning:'The Room of Returning Names',quiet:'The Quiet Stacks',sorting:'The Sorting Room',departures:'Departures'};
 // Places with a link straight into them (/?room=…, handled in game.js).
 const ROOM_LINKS={'The International Wing':'international-wing','The Portuguese Reading Room':'portuguese-room','The Chinese Reading Room':'chinese-room','The French Reading Room':'french-room','The Latin Reading Room':'latin-room','The Ukrainian Reading Room':'ukrainian-room','The Evening Room':'evening-room','The English Reading Room':'learners-room','The Periodicals Room':'periodicals-room','The Reading Room of Helium, on Mars':'mars',
   'The Selenite Reading Outpost, on the Moon':'moon','The Consulting Room':'consulting-room','The Time Laboratory':'time-laboratory','The Lost Kingdoms':'lost-kingdoms','The Verne rooms':'verne-rooms',
-  'The Antipodes, through the Earth from the Grand Hall':'antipodes','The Australian Room, at the Antipodes':'australia','The New Zealand Room, at the Antipodes':'new-zealand','The African Reading Room':'africa','The Map Room':'maps'};
+  'The Antipodes, through the Earth from the Grand Hall':'antipodes','The Australian Room, at the Antipodes':'australia','The New Zealand Room, at the Antipodes':'new-zealand','The African Reading Room':'africa','The Map Room':'maps','The Set Texts Room':'set-texts'};
 const CATEGORY_ROOMS={'Extraordinary Voyages':'The Verne rooms','The Consulting Room':'The Consulting Room','The Time Laboratory':'The Time Laboratory','The Lost Kingdoms':'The Lost Kingdoms'};
 function idsIn(file,pattern){const source=read(file),match=source.match(pattern);return match?[...match[1].matchAll(/\d+/g)].map(m=>Number(m[0])):[]}
 function roomsFrom(books){
   const evening=new Set(idsIn('evening-room.js',/const GROUPS=\[([\s\S]*?)\];/)),learners=new Set([...idsIn('learners-room.js',/const SHELVES=\[([\s\S]*?)\];/),...idsIn('learners-room.js',/const SHORT=\[([^\]]*)\]/)]);
+  const setTexts=new Set([...idsIn('set-texts-room.js',/const NOVELS=\[([^\]]*)\]/),...idsIn('set-texts-room.js',/const PLAYS=\[([^\]]*)\]/)]);
   const moon=new Set(idsIn('high-staircase.js',/const lunarCollection=\[([^\]]*)\]/)),mars=new Set(idsIn('mars.js',/const SHELF=\[([^\]]*)\]/)),railway=new Set();
   for(const book of books)if(book.depotNote)railway.add(book.id);
   return book=>{
     const places=new Set();
     for(const room of book.arrivalRooms)if(ROOM_NAMES[room])places.add(ROOM_NAMES[room]);
     if(CURIOUS[book.room])places.add(CURIOUS[book.room]);
-    if(evening.has(book.id))places.add('The Evening Room');if(learners.has(book.id))places.add('The English Reading Room');
+    if(evening.has(book.id))places.add('The Evening Room');if(learners.has(book.id))places.add('The English Reading Room');if(setTexts.has(book.id))places.add('The Set Texts Room');
     if(moon.has(book.id))places.add('The Selenite Reading Outpost, on the Moon');if(mars.has(book.id))places.add('The Reading Room of Helium, on Mars');
     if(railway.has(book.id)&&!book.sourceKey)places.add('The Collections Depot, on the night railway');
     if(CATEGORY_ROOMS[book.category])places.add(CATEGORY_ROOMS[book.category]);
@@ -264,6 +265,29 @@ ${[...groups.keys()].sort((a,b)=>a.localeCompare(b,lang)).map(shelf=>`<section c
 </main>`;
   return layout({title:L.title,description:L.description(books.length),canonical:`${SITE}/${L.path}/`,body,words:WORDS[lang]});
 }
+// The page for teachers: the set texts on the Set Texts Room's walls (set-texts-room.js), each with ways to read it,
+// its plain text with a contents of chapters, acts and scenes to link to, and its LibriVox recording where there is one.
+function setTextsPage(listed){
+  const byId=new Map(listed.map(b=>[b.id,b])),ids=re=>idsIn('set-texts-room.js',re);
+  // The new arrivals in the order data/new-books.js lists them, as the room shelves them.
+  const list=read('data/new-books.js'),at=b=>list.indexOf(`'${b.title.replace(/'/g,'’')}'`);
+  const arrivals=listed.filter(b=>b.arrivalRooms.includes('set-texts')).sort((a,b)=>at(a)-at(b)).map(b=>b.id),[first,...rest]=arrivals;
+  const plays=[...new Set([...(first?[first]:[]),...ids(/const PLAYS=\[([^\]]*)\]/),...rest])].map(id=>byId.get(id)).filter(Boolean);
+  const novels=ids(/const NOVELS=\[([^\]]*)\]/).map(id=>byId.get(id)).filter(Boolean);
+  const audio=id=>{try{const a=JSON.parse(read(`data/audio/${id}.json`)),folder=(a.chapters?.[0]?.url||'').match(/archive\.org\/download\/([^/]+)\//)?.[1];return folder?{url:`https://archive.org/details/${folder}`,hours:Math.max(1,Math.round(a.seconds/360)/10)}:null}catch(e){return null}};
+  const entry=b=>{const page=pageName(b),listen=audio(b.id);return `<li class="set-text"><h3><a href="/book/${page}">${escape(b.title)}</a> <span>${escape(b.author)}</span></h3>
+${b.note?`<p>${escape(b.note)}</p>`:''}<p class="ways"><a href="/?book=${b.id}">Read it in the 3D library</a> · <a href="/read.html?book=${b.id}&amp;from=${encodeURIComponent(page)}">Plain text, with a link to each ${/Drama/.test(b.category)?'act and scene':'chapter'}</a>${listen?` · <a href="${listen.url}">Listen: the LibriVox recording (${listen.hours} hours)</a>`:''}</p></li>`};
+  const body=`<main class="catalogue set-texts">
+<h1>Set texts</h1>
+<p class="intro">The plays and novels most often set for GCSE English Literature, free to read in the Library After Dark: no account, no advertising, and it works on phones and school computers alike. In the library they stand in the Set Texts Room, through a door in the English Reading Room.</p>
+<a class="read" href="/?room=set-texts">Go to the Set Texts Room</a>
+<section class="shelf-list"><h2>Setting a chapter or a scene</h2><p>Open a book’s plain text and choose Contents: every chapter, act and scene has an address of its own, such as <code>read.html?book=46#stave-iii</code> for the third stave of <i>A Christmas Carol</i>. Copy it into a homework post and the page opens at that place. A student’s place in each book is kept on their device, and a reading card (four words and two digits) carries it between home and school without an account.</p></section>
+<section class="shelf-list"><h2 id="shakespeare">Shakespeare</h2><ul class="set-list">${plays.map(entry).join('\n')}</ul></section>
+<section class="shelf-list"><h2 id="novels">The nineteenth-century novel</h2><ul class="set-list">${novels.map(entry).join('\n')}</ul></section>
+<p class="intro">Every text is in the public domain, from Project Gutenberg; the recordings are LibriVox’s, read by volunteers. Something missing? The library takes suggestions in its visitors’ book.</p>
+</main>`;
+  return layout({title:'Set texts for GCSE English Literature · The Library After Dark',description:`Free set texts for GCSE English Literature: ${[...plays,...novels].slice(0,6).map(b=>b.title).join(', ')} and more, with links to every chapter and scene and free audiobooks.`,canonical:`${SITE}/set-texts/`,body});
+}
 const CSS=`:root{--bg:#120e0b;--panel:#1d1712;--ink:#efe3c8;--soft:#c9b894;--gold:#d7ae60;--line:#3a2e22;color-scheme:dark}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.6 Georgia,'Times New Roman',serif}
 a{color:var(--gold)}a:hover{color:#f3d08a}
@@ -287,6 +311,8 @@ dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:0;font
 .more ul,.shelf-list ul{list-style:none;margin:0;padding:0;columns:2 280px;column-gap:32px}.more li,.shelf-list li{break-inside:avoid;padding:4px 0}.more li span,.shelf-list li span{display:block;font-size:14px;color:var(--soft)}
 .catalogue .shelf-list{padding:0 0 18px}.intro{color:var(--soft)}
 .filter{display:block;margin:0 0 28px;color:var(--soft);font-size:16px}.filter input{display:block;width:100%;max-width:420px;margin-top:6px;padding:10px 12px;font:inherit;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:6px}
+ul.set-list{columns:1}.set-text{padding:10px 0 14px!important;border-bottom:1px solid var(--line)}.set-text h3{margin:0 0 .3em;font-weight:normal;font-size:20px}.set-text h3 span{display:inline;font-size:15px;color:var(--soft);font-style:italic;margin-left:.4em}
+.set-text p{margin:.2em 0;font-size:16px}.set-text .ways{font-size:15px}code{font-size:.9em;color:var(--ink);background:var(--panel);padding:1px 5px;border-radius:4px}
 footer{border-top:1px solid var(--line);padding:24px;text-align:center;color:var(--soft);font-size:15px}
 `;
 
@@ -298,8 +324,9 @@ export function build(){
   const dir=path.join(OUT,'book');fs.rmSync(dir,{recursive:true,force:true});fs.mkdirSync(dir,{recursive:true});
   for(const book of listed)fs.writeFileSync(path.join(dir,pageName(book)),bookPage(book,{whereIs,byAuthor,byShelf,byLanguage,editions}));
   for(const lang of Object.keys(LANDINGS)){const out=path.join(OUT,LANDINGS[lang].path);fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'index.html'),languagePage(lang,byLanguage.get(lang)||[]))}
+  {const out=path.join(OUT,'set-texts');fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'index.html'),setTextsPage(listed))}
   fs.writeFileSync(path.join(dir,'index.html'),cataloguePage(listed,byShelf));fs.writeFileSync(path.join(dir,'authors.html'),authorsPage(byAuthor));fs.writeFileSync(path.join(dir,'book.css'),CSS);
-  const urls=[`${SITE}/`,`${SITE}/book/`,`${SITE}/book/authors.html`,`${SITE}/es/`,`${SITE}/pt/`,`${SITE}/fr/`,`${SITE}/la/`,`${SITE}/uk/`,`${SITE}/zh/`,...listed.map(b=>`${SITE}/book/${pageName(b)}`)];
+  const urls=[`${SITE}/`,`${SITE}/book/`,`${SITE}/book/authors.html`,`${SITE}/es/`,`${SITE}/pt/`,`${SITE}/fr/`,`${SITE}/la/`,`${SITE}/uk/`,`${SITE}/zh/`,`${SITE}/set-texts/`,...listed.map(b=>`${SITE}/book/${pageName(b)}`)];
   fs.writeFileSync(path.join(OUT,'sitemap.xml'),`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u=>`  <url><loc>${encodeURI(u)}</loc></url>`).join('\n')}\n</urlset>\n`);
   fs.writeFileSync(path.join(OUT,'robots.txt'),`User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
   return {pages:listed.length,withNotes:listed.filter(b=>b.note).length};
