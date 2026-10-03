@@ -1,7 +1,7 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-02",
+ "updated": "2026-10-03",
  "days": {
   "2026-09-25": {
    "books": [
@@ -549,6 +549,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 164,
      "title": "Twenty Thousand Leagues under the Sea",
      "author": "Jules Verne"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-05": {
+   "books": [
+    {
+     "id": 10136,
+     "title": "The Book of Household Management",
+     "author": "Isabella Beeton"
+    },
+    {
+     "id": 72482,
+     "title": "Modern Cookery for Private Families",
+     "author": "Eliza Acton"
+    },
+    {
+     "id": 69519,
+     "title": "A New System of Domestic Cookery",
+     "author": "Maria Eliza Ketelby Rundell"
+    },
+    {
+     "id": 5434,
+     "title": "The Physiology of Taste",
+     "author": "Jean Anthelme Brillat-Savarin"
+    },
+    {
+     "id": 65061,
+     "title": "The Boston Cooking-School Cook Book",
+     "author": "Fannie Merritt Farmer"
+    },
+    {
+     "id": 46,
+     "title": "A Christmas Carol",
+     "author": "Charles Dickens"
+    },
+    {
+     "id": 730,
+     "title": "Oliver Twist",
+     "author": "Charles Dickens"
+    },
+    {
+     "id": 8102,
+     "title": "The Forme of Cury",
+     "author": "Samuel Pegge"
+    },
+    {
+     "id": 1400,
+     "title": "Great Expectations",
+     "author": "Charles Dickens"
+    },
+    {
+     "id": 24407,
+     "title": "The Italian Cook Book",
+     "author": "Maria Gentile"
     }
    ],
    "missing": []
