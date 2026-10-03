@@ -35,7 +35,7 @@ test('the room is one reusable space behind a Grand Hall door, freed when the re
   assert.match(room,/door=\{x:-18\.72,z:-14\.5,yaw:Math\.PI\/2\}/);
   // Leaving frees the day's books and textures; re-dressing disposes the old ones first.
   assert.match(room,/function unload\(\)\{if\(!active\)return;root\.removeFromParent\(\);active=false;.*clearDressing\(\)/);
-  assert.match(room,/for\(const item of disposables\.splice\(0\)\)item\.dispose\?\.\(\)/);
+  assert.match(room,/for\(const item of disposables\.splice\(0\)\)if\(!keep\.has\(item\)\)item\.dispose\?\.\(\)/);
   // The day book reaches back two weeks at most, never before the first room.
   assert.match(room,/function oldestOffset\(\)\{return Math\.max\(0,Math\.min\(ARCHIVE-1,dayIndex\(todayKey\)\)\)\}/);
   // Checked lists from the nightly job win over the hand-written schedule.
@@ -118,4 +118,18 @@ test('a Gutenberg server that never answers is skipped, and the mirrors finish t
   assert(today.some(book=>book.title==='The Woman in White'),'books with ids are fetched from the mirror');
   assert.match(r.stdout,/^2026-09-25 A Rainy Evening/m,'progress is logged as it goes, today first');
   fs.rmSync(dir,{recursive:true,force:true});
+});
+
+
+test('unloading daily dressing preserves a book taken out by the reader',()=>{
+  const disposed=[],normalMaterial={dispose(){disposed.push('normal')}},travelMaterial={dispose(){disposed.push('travelling')}};
+  const scene={},dressing={removeFromParent(){this.removed=true},localToWorld(v){v.world=true;return v},getWorldQuaternion(q){return q}};
+  const position={clone(){return {}}},quaternion={};
+  const normal={parent:dressing,material:normalMaterial,userData:{}},traveller={parent:scene,material:travelMaterial,userData:{home:{parent:dressing,position,quaternion}}};
+  const prop={userData:{dailyDressing:true}};
+  const context={dressing,dayBooks:[normal,traveller],disposables:[normalMaterial,travelMaterial],interactables:[normal,traveller,prop],scene,THREE:{Quaternion:class{multiply(q){return q}}}};
+  vm.runInNewContext(room.slice(room.indexOf('function clearDressing(){'),room.indexOf('function dress(offset)'))+';clearDressing()',context);
+  assert.deepEqual(disposed,['normal']);assert.equal(context.interactables.length,1);assert.equal(context.interactables[0],traveller);
+  assert.equal(traveller.userData.singleCopyMoved,true);assert.equal(traveller.userData.home.parent,scene);assert.equal(traveller.userData.home.position.world,true);
+  assert.equal(context.dressing,null);assert.equal(context.dayBooks.length,0);
 });
