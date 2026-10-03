@@ -53,8 +53,8 @@ test('every book bound for the Antipodes has a number and a note of three senten
 
 test('the globe stands in the open middle of the Grand Hall, and the far side is well away from every other room',()=>{
   const {a}=world();
-  // The central reading chair, the reading tables, the long north bookcase and the serendipity machine.
-  for(const [x,z] of [[0,8],[-4.7,4],[0,-17],[12,1],[-7,-25.8]])assert(Math.hypot(a.globe.x-x,a.globe.z-z)>4,`clear of ${x},${z}`);
+  // The deep reading chair, the return tables, the long north bookcase and the serendipity machine.
+  for(const [x,z] of [[10.6,6.2],[-7.6,5],[7.6,5],[0,-17],[12,1],[-7,-25.8]])assert(Math.hypot(a.globe.x-x,a.globe.z-z)>4,`clear of ${x},${z}`);
   assert(a.blocksHall(a.globe.x,a.globe.z)&&!a.blocksHall(a.hatch.x,a.hatch.z+1.4),'the stand is solid; the trapdoor’s edge is not');
   for(const [x,z] of [[-330,-205],[-330,-140],[-330,-60],[-330,20],[-330,100],[-420,180],[-410,100],[-240,110]])assert(Math.hypot(a.hall.cx-x,a.hall.cz-z)>60,`far from ${x},${z}`);
   assert(!a.contains(0,0)&&a.zoneAt(a.rooms.australian.cx,a.rooms.australian.cz)==='australian-room'&&a.zoneAt(a.rooms.nz.cx,a.rooms.nz.cz)==='new-zealand-room');

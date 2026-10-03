@@ -79,9 +79,9 @@ test('Rocket Hall is spacious, astronomical and uses its spacecraft instrument o
 
 test('return-and-discovery table is communal and preserves left-at-desk behavior',()=>{
   assert.match(game,/return-and-discovery-table/);
-  assert.match(game,/BoxGeometry\(15,\.34,3\.2\)/);
+  assert.match(game,/BoxGeometry\(7,\.34,3\.2\)/);
   assert.match(game,/WoodenTable_01\/WoodenTable_01_1k\.gltf/);
-  assert.match(game,/for\(const x of \[-5,0,5\]\)/);
+  assert.match(game,/for\(const group of returnDeskGroups\)/);
   assert.match(game,/The date stamp/);
   assert.match(game,/A fan of return slips/);
   assert.match(game,/function leaveSelectedAtDesk/);
