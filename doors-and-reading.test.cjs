@@ -70,3 +70,30 @@ test('the reading carriage uses real models with licences and a proper journey p
   assert.match(train,/function lanternPost\(/);assert.match(train,/StainedGlassLamp\.gltf/);assert.match(train,/vintage_suitcase_1k\.gltf/);
   for(const gltf of ['assets/models/khronos/lantern/Lantern.gltf','assets/models/khronos/stained-glass-lamp/StainedGlassLamp.gltf']){const g=JSON.parse(fs.readFileSync(gltf,'utf8')),dir=gltf.replace(/[^/]+$/,'');for(const i of g.images)assert.ok(fs.existsSync(dir+i.uri),i.uri);for(const b of g.buffers)assert.ok(fs.existsSync(dir+b.uri),b.uri)}
 });
+
+
+test('a cached room return door works again after unloading and revisiting',()=>{
+  const context={window:{},Math,Map};vm.runInNewContext(fs.readFileSync('library-doors.js','utf8'),context);
+  const kit=context.window.createDoorKit({THREE:stub(),MAT:stub(),canvasTexture:()=>stub()});
+  const scene={isScene:true},room={parent:scene},door=kit.build(stub(),{}),data={};door.group.parent=room;
+  let passed=0;
+  for(let visit=0;visit<3;visit++){
+    for(let i=0;i<100;i++)kit.update(.05);
+    room.parent=null;for(let i=0;i<100;i++)kit.update(.05);
+    assert(!kit.doors.includes(door),'unloaded room door is pruned');
+    room.parent=scene;kit.pass(door,data,()=>passed++);kit.pass(door,data,()=>passed++);
+    for(let i=0;i<40;i++)kit.update(.05);
+    assert.equal(passed,visit+1);assert.equal(data.opening,false);
+    assert.equal(kit.doors.filter(d=>d===door).length,1,'cached door is registered once');
+  }
+});
+
+test('carrying a book through the daily exit uses the door instead of setting down the book',()=>{
+  const source=game.slice(game.indexOf('const carriedBookInteract=interact;'),game.indexOf('const preStairReset='));
+  const book={},door={userData:{type:'daily-exit'}};let exits=0,placed=0;
+  const context={carryingBook:true,selected:book,focus:door,ui:{prompt:{style:{opacity:1}}},dailyRoom:{interact(object){assert.equal(object,door);exits++;return true}},interact(){throw Error('unexpected fallback')},placeOnSurface(){placed++}};
+  vm.runInNewContext(source,context);context.interact();
+  assert.equal(exits,1);assert.equal(placed,0);assert.equal(context.selected,book);assert.equal(context.focus,null);
+  const focusSource=game.slice(game.indexOf('function updateFocus('),game.indexOf('function updateFocus(')+7000);
+  assert.match(focusSource,/object\.userData\?\.type!=='daily-exit'/,'the exit can be focused while carrying');
+});

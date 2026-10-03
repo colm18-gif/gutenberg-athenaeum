@@ -110,9 +110,14 @@
     function block(x,z,w,d){blockers.push({minX:x-w/2,maxX:x+w/2,minZ:z-d/2,maxZ:z+d/2})}
 
     function clearDressing(){
-      if(!dressing)return;dressing.removeFromParent();
-      for(let i=interactables.length-1;i>=0;i--)if(dayBooks.includes(interactables[i])||interactables[i].userData?.dailyDressing)interactables.splice(i,1);
-      for(const item of disposables.splice(0))item.dispose?.();dayBooks.length=0;dressing=null;
+      if(!dressing)return;
+      // A reader may take today's sole volume back to the hall. It outlives the
+      // room's dressing, including its material and a usable return position.
+      const travelling=dayBooks.filter(book=>book.parent!==dressing),keep=new Set(travelling.map(book=>book.material));
+      for(const book of travelling){book.userData.singleCopyMoved=true;const home=book.userData.home;if(home.parent===dressing){home.position=dressing.localToWorld(home.position.clone());home.quaternion=dressing.getWorldQuaternion(new THREE.Quaternion()).multiply(home.quaternion);home.parent=scene}}
+      dressing.removeFromParent();
+      for(let i=interactables.length-1;i>=0;i--)if((dayBooks.includes(interactables[i])&&!travelling.includes(interactables[i]))||interactables[i].userData?.dailyDressing)interactables.splice(i,1);
+      for(const item of disposables.splice(0))if(!keep.has(item))item.dispose?.();dayBooks.length=0;dressing=null;
     }
     function dress(offset){
       const key=addDays(todayKey,-offset),found=entryFor(key);clearDressing();dressedKey=`${todayKey}:${offset}`;shownOffset=offset;if(!found)return;

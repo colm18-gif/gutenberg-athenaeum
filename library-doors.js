@@ -105,7 +105,7 @@
       doors.push(door);return door;
     }
     // Swing a door open, call back once the reader can pass, then let it settle shut again.
-    function open(door,onOpened,hold=.6){door.target=1;door.onOpened=onOpened;door.hold=hold;door.elapsed=0}
+    function open(door,onOpened,hold=.6){if(!doors.includes(door))doors.push(door);door.target=1;door.onOpened=onOpened;door.hold=hold;door.elapsed=0}
     // A door for a room behind a door: placed, every part pointing at `data` (through the room's own `mark`), and
     // no light of its own. Anything added to the leaf afterwards goes through drawAfterPortal(door.leaf).
     function hang(parent,{data,mark,x=0,y=0,z=0,yaw=0,glow=false,...options}){const door=build(parent,{...options,glow});door.group.position.set(x,y,z);door.group.rotation.y=yaw;for(const hit of door.hits)mark(hit,data);if(door.fan)mark(door.fan,data);data.kit=door;return door}
