@@ -41,7 +41,7 @@ export const BOOKS = {
   kelmscott: {
     dir: 'assets/kelmscott', manifest: 'kelmscott.json', width: 1190, height: 1730, paper: '#ece4d0',
     categories: ['Category:Kelmscott Chaucer', 'Category:The Works of Geoffrey Chaucer (Kelmscott Press)', 'Category:Kelmscott Press'], must: /chaucer|kelmscott/i,
-    survey: ['Kelmscott Chaucer', 'Works of Geoffrey Chaucer Kelmscott', 'Kelmscott Press Chaucer Burne-Jones', 'Kelmscott Chaucer page'],
+    survey: ['Houghton Typ 805K.96.275', 'intitle:"805K.96.275"', 'Works of Geoffrey Chaucer 1896', 'Works of Geoffrey Chaucer newly imprinted', 'Kelmscott Chaucer leaf', 'Kelmscott Chaucer Burne-Jones wood engraving', 'Chaucer Kelmscott Press 1896 page'], surveyOnly: /chaucer|805K/i,
     pages: []
   }
 };
@@ -119,10 +119,10 @@ async function choose(book, entry) {
 // A book with no pages yet: list what Commons holds for it, with sizes, licences and descriptions.
 async function survey(name, book) {
   console.log(`\n=== ${name}: survey ===`);
-  const titles = new Set(await inCategories(book));
+  const titles = new Set((await inCategories(book)).filter(t => !book.surveyOnly || book.surveyOnly.test(t)));
   for (const query of book.survey || []) {
-    const data = await api({ list: 'search', srsearch: query, srnamespace: '6', srlimit: '50' });
-    for (const hit of data.query?.search || []) titles.add(hit.title);
+    const data = await api({ list: 'search', srsearch: query, srnamespace: '6', srlimit: '100' });
+    for (const hit of data.query?.search || []) if (!book.surveyOnly || book.surveyOnly.test(hit.title)) titles.add(hit.title);
   }
   const pages = (await infoFor(book, [...titles])).sort((a, b) => a.title.localeCompare(b.title));
   for (const page of pages) {
