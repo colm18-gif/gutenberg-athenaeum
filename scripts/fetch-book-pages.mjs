@@ -42,12 +42,28 @@ export const BOOKS = {
     dir: 'assets/kelmscott', manifest: 'kelmscott.json', width: 1190, height: 1730, paper: '#ece4d0',
     categories: ['Category:Kelmscott Chaucer', 'Category:The Works of Geoffrey Chaucer (Kelmscott Press)', 'Category:Kelmscott Press'], must: /chaucer|kelmscott/i,
     survey: ['Works of Geoffrey Chaucer newly imprinted', 'Kelmscott Chaucer leaf'], surveyOnly: /chaucer|805K/i,
-    // The whole book, scanned by the Internet Archive (568 pages; its page 13 is the book's page 1). Openings worth
-    // considering are drawn larger, side by side, to read their headings.
+    // The whole book, scanned by the Internet Archive (568 pages; its page 13 is the book's page 1, so a page's number is
+    // its place in the scan less twelve). The woodcut title and seven openings, each a pair of pages as Morris designed
+    // them, chosen from contact sheets of the scan.
     scan: 'The works of Geoffrey Chaucer - now newly imprinted. (Colophon- Here ends the Book of the Works of Geoffrey Chaucer (IA worksofgeoffreyc00chau 0).pdf',
-    openings: [[34, 35], [42, 43], [126, 127], [234, 235], [252, 253], [256, 257], [264, 265], [268, 269], [284, 285], [324, 325], [328, 329], [334, 335],
-      [434, 435], [452, 453], [464, 465], [482, 483], [494, 495], [512, 513], [530, 531], [548, 549], [564, 565]],
-    pages: []
+    pages: [
+      { key: 'p000', scan: 12 },
+      { key: 'p001', scan: 13 },
+      { key: 'p030', scan: 42 },
+      { key: 'p031', scan: 43 },
+      { key: 'p114', scan: 126 },
+      { key: 'p115', scan: 127 },
+      { key: 'p222', scan: 234 },
+      { key: 'p223', scan: 235 },
+      { key: 'p240', scan: 252 },
+      { key: 'p241', scan: 253 },
+      { key: 'p312', scan: 324 },
+      { key: 'p313', scan: 325 },
+      { key: 'p470', scan: 482 },
+      { key: 'p471', scan: 483 },
+      { key: 'p552', scan: 564 },
+      { key: 'p553', scan: 565 }
+    ]
   }
 };
 

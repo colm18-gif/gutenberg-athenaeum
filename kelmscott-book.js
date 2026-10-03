@@ -8,14 +8,32 @@
 
   // The pages, in the book's order, each with its card. Morris designed each opening as a pair of pages, so the pages
   // are bound to face each other as they do in the book.
-  const FOLIOS={};
+  const FOLIOS={
+    p000:['The woodcut title','The works of Geoffrey Chaucer now newly imprinted','Morris’s full-page woodcut title, its letters white on a ground of vine. It faces the first page of the book.'],
+    p001:['Page 1','Here beginneth the Tales of Canterbury','The Prologue begins, “Whan that Aprille with his shoures soote”, under Burne-Jones’s picture of Chaucer in a garden with a book in his hand.'],
+    p030:['Page 30','The end of the Knight’s Tale','“Heere is ended the Knyghtes Tale”, in red at the foot of the page, beneath a picture from the tale.'],
+    p031:['Page 31','The Miller’s Tale','The Host and the drunken Miller argue over who tells the next tale, and the Miller’s Tale begins: “Whilom ther was dwellynge at Oxenford”.'],
+    p114:['Page 114','The Wife of Bath’s Tale','The knight and the old wife he has had to marry, in their room on the wedding night.'],
+    p115:['Page 115','The Wife of Bath’s Tale','Facing, the same room: the old wife has become young and fair, as she promised him.'],
+    p222:['Page 222','Chaucer’s leave-taking','“Heere taketh the makere of this book his leve”: the end of the Canterbury Tales, where Chaucer asks pardon for his worldly books.'],
+    p223:['Page 223','An A.B.C.','Chaucer’s prayer to the Virgin, a verse for each letter of the alphabet, opening with a great A.'],
+    p240:['Page 240','Womanly Noblesse','A ballade, “Balade that Chaucer made”, beneath a picture of figures in a garden ringed by a fence.'],
+    p241:['Page 241','The Romaunt of the Rose','The dreamer asleep, and the Romaunt begins: “Many men seyn that in swevenynges / Ther nys but fables and lesynges”.'],
+    p312:['Page 312','The end of the Romaunt','“Here endeth al that is done of The Romaunt of the Rose”: Chaucer’s translation stops short of the whole poem.'],
+    p313:['Page 313','The Parlement of Foules','“The lyf so short, the craft so long to lerne”: the dream of the birds who meet on Saint Valentine’s day to choose their mates.'],
+    p470:['Page 470','Troilus and Criseyde','The first book begins: “The double sorwe of Troilus to tellen, / That was the kyng Priamus sone of Troye”.'],
+    p471:['Page 471','Troilus and Criseyde','Facing it, the story opens at Troy: “It is wel wist how that the Grekes stronge / In armes with a thousand shippes wente”.'],
+    p552:['Page 552','The end of Troilus','The poem takes its leave: “Go, litel book, go, litel myn tragedye”.'],
+    p553:['Page 553','O moral Gower','Troilus ends, “O moral Gower, this book I directe”, above one more picture and the word Kelmscott.']
+  };
   const DRAWN={
     'paste-front':['The front pastedown','Ex libris','The library’s bookplate.'],
-    title:['The title page','The Kelmscott Chaucer','The Works of Geoffrey Chaucer, as the Kelmscott Press printed them: some of its pages, in facsimile.'],
+    title:['The title page','The Kelmscott Chaucer','The Works of Geoffrey Chaucer, as the Kelmscott Press printed them: seven of its openings, in facsimile.'],
     colophon:['The colophon','The Kelmscott Chaucer','How the book was made.'],
     'paste-back':['The back pastedown','Finis','The end.']
   };
-  const FACES=['cover','paste-front','title','colophon'];
+  // The faces of the ten leaves that turn, front then back of each: so each opening below lies open together.
+  const FACES=['cover','paste-front','title','p000','p001','p030','p031','p114','p115','p222','p223','p240','p241','p312','p313','p470','p471','p552','p553','colophon'];
   const INK='#1d1610',RED='#a8321f',PAPER='#ece4d0';
 
   // Laid paper, as Morris had it made by hand: warm, a little uneven, with the fine laid lines and the wider chain lines
@@ -42,7 +60,7 @@
   }
   function vineFrame(c,x,y,w,h,width,ink){for(const [a,b,cc,d] of [[x,y,x+w,y],[x,y+h,x+w,y+h],[x,y,x,y+h],[x+w,y,x+w,y+h]])vineBand(c,a,b,cc,d,width,ink)}
 
-  const KELMSCOTT={id:'kelmscott',base:'assets/kelmscott/',manifestFile:'kelmscott.json',aspect:1730/1190,FOLIOS,DRAWN,FACES,
+  const KELMSCOTT={id:'kelmscott',sheet:'p001',base:'assets/kelmscott/',manifestFile:'kelmscott.json',aspect:1730/1190,FOLIOS,DRAWN,FACES,
     header:'THE KELMSCOTT CHAUCER · THE WORKS OF GEOFFREY CHAUCER, 1896',label:'The Kelmscott Chaucer, a facsimile',source:'The Works of Geoffrey Chaucer, Kelmscott Press, 1896.',
     coverCard:['The Kelmscott Chaucer','A facsimile in white pigskin, blind-tooled. Turn the cover to open it.'],
     font:{family:'Kelmscott Fell',url:'assets/fonts/im-fell-english-sc-latin-400-normal.woff2'},
@@ -55,7 +73,7 @@
         title:(c,w,h)=>{paper(c,w,h,5);vineFrame(c,70,70,w-140,h-140,54);
           c.fillStyle=INK;c.textAlign='center';c.font=`72px ${fontFamily()}`;c.fillText('THE KELMSCOTT',w/2,h*.3);c.fillText('CHAUCER',w/2,h*.3+86);
           c.fillStyle=RED;c.font=`40px ${fontFamily()}`;c.fillText('THE WORKS OF',w/2,h*.48);c.fillText('GEOFFREY CHAUCER',w/2,h*.48+50);
-          c.fillStyle=INK;c.font='italic 34px Georgia, serif';c.fillText('some of its pages, in facsimile',w/2,h*.66);
+          c.fillStyle=INK;c.font='italic 34px Georgia, serif';c.fillText('seven of its openings, in facsimile',w/2,h*.66);
           c.font='28px Georgia, serif';c.fillText('Kelmscott Press, Hammersmith, 1896',w/2,h*.71);c.fillStyle=RED;c.font=`30px ${fontFamily()}`;c.fillText('FOR THE LIBRARY AFTER DARK',w/2,h*.8)},
         colophon:(c,w,h)=>{paper(c,w,h,7);vineBand(c,120,130,w-120,130,34);vineBand(c,120,h-130,w-120,h-130,34);
           c.fillStyle=RED;c.font=`96px ${fontFamily()}`;c.textAlign='left';c.fillText('T',120,300);
@@ -63,7 +81,7 @@
           y=lines(c,'he Works of Geoffrey Chaucer, now newly imprinted, was printed by William Morris at the Kelmscott Press in Hammersmith and finished in May 1896.',196,y,w-316,46);
           c.textAlign='left';y=lines(c,'Edward Burne-Jones designed its eighty-seven pictures; Morris designed its borders, its initials and its type, a smaller cut of his Troy type that he named Chaucer. It was printed in black and red, in four hundred and twenty-five copies on paper and thirteen on vellum.',120,y+28,w-240,46);
           y=lines(c,'Burne-Jones called it a pocket cathedral. Morris died that October.',120,y+28,w-240,46);
-          c.font='italic 29px Georgia, serif';y=lines(c,'This facsimile, made for the library, holds some of its pages, from photographs in the public domain on Wikimedia Commons; each is credited beneath it. Its leaves are board, so that they stay stiff as they turn.',120,y+28,w-240,44)},
+          c.font='italic 29px Georgia, serif';y=lines(c,'This facsimile, made for the library, holds its woodcut title and seven of its openings, from photographs in the public domain on Wikimedia Commons; each is credited beneath it. Its leaves are board, so that they stay stiff as they turn.',120,y+28,w-240,44)},
         'paste-back':(c,w,h)=>{paper(c,w,h,11);vineFrame(c,w*.3,h*.42,w*.4,h*.14,22);c.fillStyle=RED;c.textAlign='center';c.font=`54px ${fontFamily()}`;c.fillText('FINIS',w/2,h*.5+18)}
       };
     },
