@@ -85,7 +85,7 @@ test('reading from a chair releases the mouse so the reader controls are usable'
 test('the reading carriage has window seats that offer railway books',()=>{
   assert.match(train,/registerSeat\?\.\(\[cushion,back\],seatGroup/);
   assert.match(train,/bookIds:\(window\.ATHENAEUM_RAILWAY_BOOKS\|\|\[\]\)\.map\(book=>book\.id\)/);
-  assert.match(game,/preferred=seat\.bookIds\?\.length\?available\.filter\(b=>seat\.bookIds\.includes\(b\.id\)\)/);
+  assert.match(game,/if\(seat\.bookIds\?\.length\)pool=pool\.filter\(object=>seat\.bookIds\.includes\(object\.userData\.book\.id\)\)/);
   assert.match(game,/createNightTrain\(\{[^}]*registerSeat,/);
 });
 
