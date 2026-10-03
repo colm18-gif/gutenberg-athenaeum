@@ -8,6 +8,15 @@
   "licence": "Public domain",
   "description": ""
  },
+ "027v": {
+  "file": "KellsFol027v4Evang.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:KellsFol027v4Evang.jpg",
+  "fit": "cover",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": "Image of Folio 27v, with the four evangelist symbols from the en:Book of Kells , a 1200 year old book. Scanned from: Meehan, Bernard; The Book of Kells': an illustrated introduction to the manuscript in Trinity College Dublin . London: Thames and Hudson, 1994. p. 8."
+ },
  "028v": {
   "file": "KellsFol028vPortMatt.jpg",
   "page": "https://commons.wikimedia.org/wiki/File:KellsFol028vPortMatt.jpg",
@@ -61,6 +70,15 @@
   "date": "9 th century date QS:P,+850-00-00T00:00:00Z/7",
   "licence": "Public domain",
   "description": "Book of Kells , Folio 114v, Arrest of Christ."
+ },
+ "130r": {
+  "file": "KellsFol130rIncipitMark.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:KellsFol130rIncipitMark.jpg",
+  "fit": "cover",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
  },
  "188r": {
   "file": "KellsFol188rQuoniam.jpg",
