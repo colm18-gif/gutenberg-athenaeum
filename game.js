@@ -1704,12 +1704,15 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     }
     // The Irish Room (irish-room.js), behind a green Georgian door in the Grand Hall's south wall: myth and legend, the
     // Revival, Irish writers and a small shelf of books in Irish, round a turf fire.
-    // The Irish Room's secret (kells-book.js): a facsimile of the Book of Kells under a sod by the hearth. While it is open
-    // the world is not drawn or walked; the book draws its own scene with the same renderer.
-    const kellsBook=window.createKellsBook?.({THREE,renderer,playSample,sound,
-      onOpen:()=>{dragging=false;for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;player.vel.set(0,0,0);document.exitPointerLock?.();document.body.classList.add('kells-open')},
-      onClose:()=>{document.body.classList.remove('kells-open');requestLookLock()}});
-    if(kellsBook){const preKellsCovered=worldIsCovered;worldIsCovered=function(){return kellsBook.isOpen||preKellsCovered()};const preKellsActive=gameActive;gameActive=function(){return !kellsBook.isOpen&&preKellsActive()}}
+    // The fine books (fine-books.js): the Irish Room's Book of Kells under a sod by the hearth (kells-book.js), and the
+    // Periodicals Room's Kelmscott Chaucer on the shelf of an Albion press (kelmscott-book.js). While one is open the world
+    // is not drawn or walked; the book draws its own scene with the same renderer.
+    const fineBookOptions={THREE,renderer,playSample,sound,
+      onOpen:()=>{dragging=false;for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;player.vel.set(0,0,0);document.exitPointerLock?.();document.body.classList.add('fine-book-open')},
+      onClose:()=>{document.body.classList.remove('fine-book-open');requestLookLock()}};
+    const kellsBook=window.createKellsBook?.(fineBookOptions),kelmscottBook=window.createKelmscottBook?.(fineBookOptions);
+    const fineBookOpen=()=>!!(kellsBook?.isOpen||kelmscottBook?.isOpen);
+    {const preFineCovered=worldIsCovered;worldIsCovered=function(){return fineBookOpen()||preFineCovered()};const preFineActive=gameActive;gameActive=function(){return !fineBookOpen()&&preFineActive()}}
     const irishRoom=window.createIrishRoom?.({doorKit:getDoorKit(),THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,kells:kellsBook,
       findBook:id=>books.find(b=>b.id===id),arrivals:{myth:arrivalIds('irish-myth'),revival:arrivalIds('irish-revival'),writers:arrivalIds('irish-writers'),gaeilge:arrivalIds('irish-gaeilge')},
       analytics:window.libraryAnalytics,isHolding:()=>!!selected,
@@ -1792,7 +1795,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     }
     // The Periodicals Room (periodicals-room.js), behind a door beneath the clock on the Grand Hall's south wall:
     // magazines as they first appeared, and the library's own nightly paper, The After Dark Gazette.
-    const periodicalsRoom=window.createPeriodicalsRoom?.({doorKit:getDoorKit(),THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,
+    const periodicalsRoom=window.createPeriodicalsRoom?.({doorKit:getDoorKit(),THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,kelmscott:kelmscottBook,
       findBook:id=>books.find(b=>b.id===id),arrivals:()=>newArrivals.list('periodicals').map(book=>book.id),analytics:window.libraryAnalytics,isHolding:()=>!!selected,
       news:()=>({room:dailyRoom?.entryFor?.(dailyRoom.todayKey)?.entry||null,visitors:visitorsBook?.entries||[],weather}),
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
@@ -2122,7 +2125,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       }finally{renderer.setRenderTarget(previousTarget);warmingShaders=false}
     }
     // Opt-in inspection hook for automated visual and performance checks (?debug).
-    if(new URLSearchParams(location.search).has('debug'))window.__athenaeum={THREE,MAT,seats,hallLightmap,quoteShare,selectBook:bm=>selectBook(bm),staticBatcher,tour,continueDisplay,lampSpots,get dayPhase(){return dayPhase},set dayPhase(v){dayPhase=v},get roomAmbience(){return roomAmbience},placeAt:(x,y,z)=>placeAt(x,y,z),resetPosition:()=>resetPosition(),afterDarkExpansion,librarianOffice,dailyRoom,crusoeIsland,otherReaders,learnersRoom,poeRoom,irishRoom,kellsBook,mapRoom,antipodes,africanRoom,eveningRoom,visitorsBook,wordHelp:window.libraryWordHelp,verneDescent,analyticsRoom:()=>analyticsRoom(),floorAt:(x,z)=>floorHeight(x,z),renderer,scene,camera,player,visual,books,curiousDoors,get librarianNotes(){return librarianNotes},interactables,zones:()=>({memoryZones,themeZones}),buildTheme:key=>buildThemeRooms(key),dressExits(){exitDressTimer=0;dressExitDoors(0)},allowedAt:(x,z)=>allowed(x,z),wallFaceOffset,buildAll(){buildBasement();buildMemoryRooms();for(const z of themeZones)try{buildThemeRooms(z.key)}catch(e){}try{buildContestedRoom()}catch(e){}},nightRailway,highStaircase,marsWorld,periodicalsRoom,internationalWing,interact:()=>interact(),get focus(){return focus},get soundscape(){return soundscape},get audioCtx(){return audioCtx},playSample,teleport(x,y,z,yaw=0,pitch=0){player.pos.set(x,y,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=pitch;lastSafePosition.copy(player.pos)}};
+    if(new URLSearchParams(location.search).has('debug'))window.__athenaeum={THREE,MAT,seats,hallLightmap,quoteShare,selectBook:bm=>selectBook(bm),staticBatcher,tour,continueDisplay,lampSpots,get dayPhase(){return dayPhase},set dayPhase(v){dayPhase=v},get roomAmbience(){return roomAmbience},placeAt:(x,y,z)=>placeAt(x,y,z),resetPosition:()=>resetPosition(),afterDarkExpansion,librarianOffice,dailyRoom,crusoeIsland,otherReaders,learnersRoom,poeRoom,irishRoom,kellsBook,kelmscottBook,mapRoom,antipodes,africanRoom,eveningRoom,visitorsBook,wordHelp:window.libraryWordHelp,verneDescent,analyticsRoom:()=>analyticsRoom(),floorAt:(x,z)=>floorHeight(x,z),renderer,scene,camera,player,visual,books,curiousDoors,get librarianNotes(){return librarianNotes},interactables,zones:()=>({memoryZones,themeZones}),buildTheme:key=>buildThemeRooms(key),dressExits(){exitDressTimer=0;dressExitDoors(0)},allowedAt:(x,z)=>allowed(x,z),wallFaceOffset,buildAll(){buildBasement();buildMemoryRooms();for(const z of themeZones)try{buildThemeRooms(z.key)}catch(e){}try{buildContestedRoom()}catch(e){}},nightRailway,highStaircase,marsWorld,periodicalsRoom,internationalWing,interact:()=>interact(),get focus(){return focus},get soundscape(){return soundscape},get audioCtx(){return audioCtx},playSample,teleport(x,y,z,yaw=0,pitch=0){player.pos.set(x,y,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=pitch;lastSafePosition.copy(player.pos)}};
     // Compiling every shader on the first frame froze the page for seconds, longest on tablets.
     // Compile them behind the entrance veil instead, a few at a time so the progress bar keeps
     // moving, then keep warming the materials of rooms that are built later, before they are seen.

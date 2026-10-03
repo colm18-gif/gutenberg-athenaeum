@@ -6,6 +6,10 @@
 //
 // Like the other rooms behind doors, nothing is built until the reader walks up to it, and it is freed a little
 // while after they leave.
+//
+// The room's secret: an Albion hand press in the corner by the door, inked, with a sheet on the tympan. Pull the bar
+// and it prints a page nobody set, the first page of the Kelmscott Chaucer, and the book itself is found on the shelf
+// beneath the bed (kelmscott-book.js). Once found it stays found (athenaeum-kelmscott-found; ?kelmscott shows it).
 (function(){
   'use strict';
 
@@ -26,11 +30,13 @@
   ];
 
   window.createPeriodicalsRoom=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],notes={},news=()=>({}),showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),registerSeat=null,doorKit=null}=options;
+    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],notes={},news=()=>({}),showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),registerSeat=null,doorKit=null,kelmscott=null,storage=window.localStorage}=options;
     const DOOR={x:0,z:30.45,yaw:Math.PI};
     const ROOM={cx:-330,cz:100,w:16,d:14,h:5};
     const PRELOAD=7,KEEP=25;
-    let root=null,time=0,lastNeeded=-1e9,gazette=null;
+    let root=null,time=0,lastNeeded=-1e9,gazette=null,press=null;
+    const FOUND_KEY='athenaeum-kelmscott-found';
+    const wasFound=()=>{try{return storage?.getItem(FOUND_KEY)==='1'||/[?&]kelmscott\b/.test(location.search)}catch(e){return false}};
     const owned=[],ours=[],books=[],blockers=[];
     const own=thing=>{owned.push(thing);return thing};
     function add(geometry,material,x,y,z,parent){const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);parent.add(m);return m}
@@ -147,10 +153,68 @@
       box(.5,.05,.5,MAT.darkWood,cx+3.1,.72,cz+4.8,root);box(.08,.7,.08,MAT.darkWood,cx+3.1,.36,cz+4.8,root);box(.08,.4,.08,MAT.brass,cx+3.1,.95,cz+4.8,root);
       add(own(new THREE.CylinderGeometry(.14,.24,.2,14,1,true)),shade,cx+3.1,1.2,cz+4.8,root);block(cx+3.1,cz+4.8,.6,.6);
       lamp(root,0xffe0a8,7,14,cx,h-.4,cz-1);lamp(root,0xd8f0c0,2.5,5,cx+3.1,1.3,cz+4.8);
+      if(kelmscott)buildPress(cx-5.6,cz+3.1);
       // The door back to the Grand Hall.
       const exit={type:'periodicals-exit',title:'Back to the Grand Hall',author:'The clock is on the other side.',action:'RETURN'};
       if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,label:'THE GRAND HALL',...DOOR_LOOK})){mark(box(1.9,3.1,.16,MAT.darkWood,cx,1.55,cz+d/2-.2,root),exit);for(const px of [-1.05,1.05])box(.16,3.35,.24,MAT.brass,cx+px,1.68,cz+d/2-.22,root);box(2.3,.16,.24,MAT.brass,cx,3.3,cz+d/2-.22,root)}
       scene.add(root);
+    }
+    // An Albion hand press: a cast-iron staple on a cross foot, the spring box on its crown, the platen hanging inside, and
+    // the bed running out on its ribs with the tympan raised. The bar swings out from the right cheek.
+    function buildPress(px,pz){
+      const iron=own(new THREE.MeshStandardMaterial({color:0x2a2b2e,metalness:.55,roughness:.5})),parchment=own(new THREE.MeshStandardMaterial({color:0xe6dcc2,roughness:.95}));
+      const g=new THREE.Group();g.position.set(px,0,pz);root.add(g);const parts=[];const part=(m)=>{parts.push(m);return m};
+      part(box(1.25,.14,.5,iron,0,.07,0,g));part(box(.36,.12,1.1,iron,0,.06,0,g));
+      for(const side of [-1,1])part(box(.16,1.6,.32,iron,side*.47,.94,0,g));
+      part(box(1.1,.3,.36,iron,0,1.86,0,g));
+      const arch=part(add(own(new THREE.CylinderGeometry(.55,.55,.36,24,1,false,0,Math.PI)),iron,0,2.0,0,g));arch.rotation.set(Math.PI/2,0,Math.PI/2);arch.scale.set(1,1,.42);
+      part(add(own(new THREE.CylinderGeometry(.11,.11,.36,16)),iron,0,2.33,0,g));part(add(own(new THREE.SphereGeometry(.07,10,8)),MAT.brass,0,2.55,0,g));
+      const plate=add(own(new THREE.PlaneGeometry(.62,.16)),own(new THREE.MeshStandardMaterial({map:plaque('ALBION','',360,90,'#1b1c1e'),roughness:.6,metalness:.3})),0,1.86,.185,g);parts.push(plate);
+      const platen=part(box(.8,.08,.6,iron,0,1.14,0,g)),piston=part(add(own(new THREE.CylinderGeometry(.07,.07,.5,12)),iron,0,1.44,0,g));
+      // The ribs the bed runs on, from front to back on their legs.
+      for(const side of [-1,1]){part(box(.06,.07,2.7,iron,side*.32,.84,0,g));for(const z of [-1.3,1.3])part(box(.07,.82,.07,iron,side*.32,.41,z,g))}
+      const carriage=new THREE.Group();carriage.position.set(0,0,.95);g.add(carriage);
+      part(box(.76,.09,.9,iron,0,.92,0,carriage));part(box(.66,.02,.8,parchment,0,.975,0,carriage));
+      // The tympan, hinged at the bed's far edge and standing open, with the sheet on it.
+      const tympan=new THREE.Group();tympan.position.set(0,.98,.45);tympan.rotation.x=-1.05;carriage.add(tympan);
+      for(const [w,d,x,z] of [[.72,.03,0,-.84],[.72,.03,0,0],[.03,.86,-.35,-.42],[.03,.86,.35,-.42]])part(box(w,.025,d,iron,x,0,z,tympan));
+      part(box(.68,.008,.82,parchment,0,.004,-.42,tympan));
+      const sheetMat=own(new THREE.MeshStandardMaterial({color:0xf1e9d6,roughness:.95})),sheet=add(own(new THREE.PlaneGeometry(.56,.76)),sheetMat,0,.012,-.42,tympan);sheet.rotation.x=-Math.PI/2;parts.push(sheet);
+      // The bar, on its pivot at the right cheek, with a turned wooden handle; and the rounce that runs the bed in.
+      const bar=new THREE.Group();bar.position.set(.56,1.3,0);g.add(bar);bar.rotation.y=.6;
+      const rod=part(add(own(new THREE.CylinderGeometry(.028,.028,.68,8)),iron,.34,0,0,bar));rod.rotation.z=Math.PI/2;
+      const handle=part(add(own(new THREE.CylinderGeometry(.04,.036,.26,10)),MAT.darkWood,.8,0,0,bar));handle.rotation.z=Math.PI/2;
+      const rounce=part(add(own(new THREE.CylinderGeometry(.05,.05,.4,10)),MAT.darkWood,.62,.86,.7,g));rounce.rotation.z=Math.PI/2;
+      // A shelf between the front legs, where the book is found.
+      part(box(.62,.03,.9,MAT.darkWood,0,.36,.75,g));
+      block(px,pz,1.4,2.9);
+      const found=wasFound(),closed=own(kelmscott.closedBook(.46));closed.group.position.set(0,.375,.75);closed.group.rotation.y=Math.PI/2+.04;closed.group.visible=found;g.add(closed.group);
+      const bookData={type:'periodicals-kelmscott',title:'The Kelmscott Chaucer, in facsimile',author:'The Works of Geoffrey Chaucer, as William Morris printed them in 1896, on leaves of board.',action:'OPEN'};
+      const reveal=()=>{closed.group.visible=true;for(const p of closed.parts)mark(p,bookData)};if(found)reveal();
+      const pressData={type:'periodicals-press',title:'An Albion hand press',author:'Cast iron, inked by hand and printed one sheet at a time with a pull of the bar. The Kelmscott Press printed its books on Albions like this one.',action:found?'EXAMINE':'PULL THE BAR'};
+      for(const p of parts)mark(p,pressData);
+      press={bar,platen,piston,carriage,tympan,sheet,sheetMat,reveal,pressData,found,pull:-1};
+      if(found)printSheet();
+    }
+    // The printed sheet shows the Chaucer's first page, once the press has been pulled.
+    function printSheet(){
+      if(!press||!kelmscott?.sheetUrl||!THREE.TextureLoader)return;const p=press;
+      new THREE.TextureLoader().load(kelmscott.sheetUrl,texture=>{if(press!==p){texture.dispose();return}own(texture);texture.colorSpace=THREE.SRGBColorSpace;p.sheetMat.map=texture;p.sheetMat.color.set(0xffffff);p.sheetMat.needsUpdate=true});
+    }
+    function pullPress(){
+      if(!press)return;if(press.found){showNotice(`${press.pressData.title}: ${press.pressData.author}`,8);return}
+      if(press.pull>=0)return;press.pull=0;playSample?.('stoneStep1',.45,.55);
+    }
+    // The pull: the tympan comes down, the bed runs in, the bar swings and the platen falls with a thump, and back again.
+    function animatePress(dt){
+      const p=press;if(!p||p.pull<0)return;p.pull+=dt;const t=p.pull,phase=(a,b)=>Math.min(1,Math.max(0,(t-a)/(b-a))),ease=k=>k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
+      const shut=ease(phase(0,.5))-ease(phase(2.3,2.8)),run=ease(phase(.5,1.1))-ease(phase(1.9,2.4)),pull=ease(phase(1.1,1.4))-ease(phase(1.5,1.9));
+      p.tympan.rotation.x=-1.05*(1-shut);p.carriage.position.z=.95*(1-run);p.bar.rotation.y=.6-1.3*pull;p.platen.position.y=1.14-.05*pull;p.piston.position.y=1.44-.05*pull;
+      if(t>1.4&&!p.thumped){p.thumped=true;playSample?.('stoneStep0',.6,.5)}
+      if(t>2.8){p.pull=-1;p.found=true;p.pressData.action='EXAMINE';printSheet();p.reveal();
+        try{storage?.setItem(FOUND_KEY,'1')}catch(e){}
+        analytics?.track('Secret Found',{secret:'periodicals-kelmscott'});
+        showNotice('The press comes down with a heavy thump. On the tympan is a sheet nobody set: the first page of the Kelmscott Chaucer, the ink still wet. On the shelf beneath the bed lies the book itself.',13)}
     }
     function placeBook(book,spot,geometry){
       if(!spot)return null;
@@ -180,22 +244,24 @@
       if(data.type==='periodicals-exit'){through(data,()=>{move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again, under the clock.',3)});return true}
       if(data.type==='periodicals-gazette'){playSample?.('pageTurn',.5,1);readGazette();return true}
       if(data.type==='periodicals-card'){showNotice(`${data.title}: ${data.author}`,7);return true}
+      if(data.type==='periodicals-press'){pullPress();return true}
+      if(data.type==='periodicals-kelmscott'){kelmscott?.open();return true}
       return false;
     }
 
     // ---------- lifecycle ----------
     function activate(){if(!root)buildRoom();lastNeeded=time}
     function unload(){
-      if(!root)return;root.removeFromParent();root=null;gazette=null;
+      if(!root)return;root.removeFromParent();root=null;gazette=null;press=null;
       for(let i=interactables.length-1;i>=0;i--)if(ours.includes(interactables[i]))interactables.splice(i,1);
       for(const thing of owned.splice(0))thing.dispose?.();ours.length=0;books.length=0;blockers.length=0;
     }
     function update(t){
-      time=t;const inside=contains(player.pos.x,player.pos.z),near=Math.hypot(player.pos.x-DOOR.x,player.pos.z-DOOR.z)<PRELOAD;
+      const dt=Math.min(.12,Math.max(0,t-time));time=t;animatePress(dt);const inside=contains(player.pos.x,player.pos.z),near=Math.hypot(player.pos.x-DOOR.x,player.pos.z-DOOR.z)<PRELOAD;
       if(inside||near)activate();
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==root))unload();
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,unload,featured,gazetteText,door:DOOR,room:ROOM,notes:NOTES,get built(){return !!root},get books(){return books.slice()},zoneAt:(x,z)=>contains(x,z)?'periodicals-room':null};
+    return {contains,floorAt,allowed,interact,update,enter,unload,featured,gazetteText,door:DOOR,room:ROOM,notes:NOTES,get built(){return !!root},get books(){return books.slice()},get kelmscottFound(){return !!press?.found},zoneAt:(x,z)=>contains(x,z)?'periodicals-room':null};
   };
 })();

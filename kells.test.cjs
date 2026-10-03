@@ -5,7 +5,7 @@ const vm=require('node:vm');
 
 const html=fs.readFileSync('index.html','utf8'),game=fs.readFileSync('game.js','utf8'),source=fs.readFileSync('kells-book.js','utf8'),room=fs.readFileSync('irish-room.js','utf8'),fetcher=fs.readFileSync('scripts/fetch-book-pages.mjs','utf8');
 const manifest=JSON.parse(fs.readFileSync('assets/kells/kells.json','utf8'));
-const book=(()=>{const context={window:{},Math,setTimeout};vm.runInNewContext(source,context);return context.window.createKellsBook({THREE:{},renderer:{}})})();
+const book=(()=>{const context={window:{},Math,setTimeout};vm.runInNewContext(fs.readFileSync('fine-books.js','utf8'),context);vm.runInNewContext(source,context);return context.window.createKellsBook({THREE:{},renderer:{}})})();
 
 class V{constructor(){this.x=0;this.y=0;this.z=0}set(x,y,z){Object.assign(this,{x,y,z});return this}clone(){return new V().set(this.x,this.y,this.z)}}
 class O{constructor(){this.children=[];this.parent=null;this.position=new V();this.scale=new V().set(1,1,1);this.rotation={x:0,y:0,z:0,order:'XYZ',set(x,y,z){Object.assign(this,{x,y,z})}};this.quaternion={clone:()=>({})};this.userData={};this.visible=true}
@@ -25,8 +25,9 @@ function irishRoom(stored={}){
 test('the Book of Kells loads before the game, is handed to the Irish Room, and stops the world while it is open',()=>{
   const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(m=>m[1]);assert(order.indexOf('kells-book.js')>0&&order.indexOf('kells-book.js')<order.indexOf('game.js'));
   assert.match(game,/const kellsBook=window\.createKellsBook\?\.\(/);assert.match(game,/kells:kellsBook/);
-  assert.match(game,/worldIsCovered=function\(\)\{return kellsBook\.isOpen\|\|preKellsCovered\(\)\}/,'the library does not draw the world under the open book');
-  assert.match(game,/gameActive=function\(\)\{return !kellsBook\.isOpen&&preKellsActive\(\)\}/,'nothing walks while the book is open');
+  assert.match(game,/const fineBookOpen=\(\)=>!!\(kellsBook\?\.isOpen\|\|kelmscottBook\?\.isOpen\)/);
+  assert.match(game,/worldIsCovered=function\(\)\{return fineBookOpen\(\)\|\|preFineCovered\(\)\}/,'the library does not draw the world under the open book');
+  assert.match(game,/gameActive=function\(\)\{return !fineBookOpen\(\)&&preFineActive\(\)\}/,'nothing walks while the book is open');
   assert.match(fs.readFileSync('analytics.js','utf8'),/'Secret Found'/);assert(fs.existsSync('assets/fonts/uncial-antiqua-latin-400-normal.woff2')&&fs.existsSync('assets/fonts/OFL-Uncial-Antiqua.txt'));
 });
 
