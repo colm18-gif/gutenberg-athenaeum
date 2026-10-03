@@ -24,9 +24,17 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Its secret: a sod fallen from the turf creel by the hearth; lifting it uncovers a facsimile of the Book of Kells
   (`kells-book.js`), as the great Gospel of Colum Cille was found under a sod in 1007 (found once, found for good;
   `?kells` shows it at once). The book opens in its own viewer: twelve public-domain pages from Wikimedia Commons
-  (`scripts/fetch-kells.mjs`, Kells images workflow, `assets/kells`), a drawn title page and colophon, on thick board
+  (`scripts/fetch-book-pages.mjs`, Book images workflow, `assets/kells`), a drawn title page and colophon, on thick board
   leaves that turn rigidly on the spine (drag, swipe or arrows; zoom; one page at a time on a narrow screen). While it is
   open the world is not drawn; the book renders its own small scene with the same renderer.
+- The fine books share one engine, `fine-books.js` (cradle, stiff board leaves, zoom, captions, loading only the spreads
+  either side of the open one); each book is a description: `kells-book.js`, `kelmscott-book.js` (pages and cards, drawn
+  pages, binding, paper, type). Their photographs come from Wikimedia Commons by `scripts/fetch-book-pages.mjs` (Book
+  images workflow; public domain only). A book listed with no pages is surveyed in the log instead, which is how pages
+  are chosen from what Commons really holds. The Periodicals Room's secret is the Kelmscott Chaucer: pull the bar of the
+  Albion hand press by the door and it prints the Chaucer's first page and gives up the book (`?kelmscott` shows it). Its
+  pages are the woodcut title and seven facing openings from the Internet Archive's scan (a page's number is its place in
+  the scan less twelve).
 - The Map Room (`map-room.js`, x −420, z −60) is behind a door in the west wing's north wall (x −21.4; `?room=maps`): twenty
   old maps hung edge to edge (Mercator, Waldseemüller, the Hereford Mappa Mundi, Piri Reis, the Catalan Atlas, Ricci,
   John Snow's cholera map and William Smith's on the map table…), each with a card in `MAPS`. Looking at one opens the
