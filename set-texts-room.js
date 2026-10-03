@@ -1,7 +1,8 @@
 // The Set Texts Room: through a door in the English Reading Room's east wall, the plays and novels most often set for
 // GCSE English Literature, for students and their teachers. Shakespeare on the west wall, the nineteenth-century novel
 // on the north wall, a long table with chairs that open one of the room's books, and on the east wall a board telling
-// teachers how to link straight to a book, a chapter or a scene (set-texts/index.html, read.html#…).
+// teachers how to link straight to a book, a chapter or a scene (set-texts/index.html, read.html#…), with the
+// anthology of poems on a lectern beside it (scripts/anthology.mjs).
 //
 // The English Reading Room keeps only one darker book, so these are in a room of their own. Like the other rooms behind
 // doors, nothing is built until the reader walks up to it, and it is freed a little while after they leave.
@@ -12,6 +13,8 @@
   // new arrivals (data/new-books.js, room set-texts).
   const NOVELS=[43,46,1400,1260,84,1342,2097,550,36];
   const PLAYS=[1513];
+  // Poems from the Anthologies, the library's own binding (scripts/anthology.mjs).
+  const ANTHOLOGY=940001;
   const CARDS={
     board:['Set texts','The plays and novels most often set for GCSE English Literature. Every one has a page of its own and a plain-text version for any school computer, with a link to each chapter, act and scene: libraryafterdark.space/set-texts'],
     sign:['The Set Texts Room','Shakespeare on the west wall, the nineteenth-century novel on the north. Sit at the table to read one of them.']
@@ -46,7 +49,7 @@
     // The books for each wall: those listed, then the new arrivals; a book the library does not hold is left out.
     function catalogue(){
       const found=ids=>[...new Set(ids)].map(id=>findBook(id)).filter(Boolean);
-      return {plays:found([...arrivals.slice(0,1),...PLAYS,...arrivals.slice(1)]).slice(0,6),novels:found(NOVELS).slice(0,10)};
+      return {plays:found([...arrivals.slice(0,1),...PLAYS,...arrivals.slice(1)]).slice(0,6),novels:found(NOVELS).slice(0,10),poems:findBook(ANTHOLOGY)||null};
     }
 
     // ---------- the door, in the English Reading Room ----------
@@ -64,7 +67,7 @@
       box(w,h,.3,wall,cx,h/2,cz-d/2,root);box(w,h,.3,wall,cx,h/2,cz+d/2,root);box(.3,h,d,wall,cx-w/2,h/2,cz,root);box(.3,h,d,wall,cx+w/2,h/2,cz,root);
       for(const [x,z,sw,sd] of [[cx,cz-d/2+.17,w-.4,.05],[cx,cz+d/2-.17,w-.4,.05],[cx-w/2+.17,cz,.05,d-.4],[cx+w/2-.17,cz,.05,d-.4]])box(sw,1.05,sd,MAT.darkWood,x,.52,z,root);
       mark(sign(root,'THE SET TEXTS ROOM','Books for the English classroom',3.6,.6,cx,4.35,cz-d/2+.17),card('sign'));
-      const {plays,novels}=catalogue(),geometry=own(new THREE.BoxGeometry(.72,.96,.13));
+      const {plays,novels,poems}=catalogue(),geometry=own(new THREE.BoxGeometry(.72,.96,.13));
       // The nineteenth-century novel along the north wall: two shelves of five.
       const nz=cz-d/2+.3;for(const y of [1.05,2.4])box(6.6,.05,.36,MAT.darkWood,cx,y,nz+.05,root);block(cx,nz+.2,6.8,.7);
       // In reading order: the top shelf first, from the left.
@@ -82,6 +85,10 @@
         lines.forEach((l,i)=>c.fillText(l,W/2,140+i*44));c.font='bold 38px Georgia';c.fillStyle='#ffe2a0';c.fillText('libraryafterdark.space/set-texts',W/2,400);
       },1024,460));
       const board=add(own(new THREE.PlaneGeometry(3.8,1.7)),own(new THREE.MeshStandardMaterial({map:boardMap,roughness:.95,emissive:0x151515,emissiveIntensity:.3})),cx+w/2-.17,2.45,cz-.6,root);board.rotation.y=-Math.PI/2;mark(board,card('board'));
+      // The anthology on a lectern by the board, open towards the room.
+      if(poems){const lx=cx+w/2-.95,lz=cz+3.2;box(.5,1.05,.4,MAT.darkWood,lx,.52,lz,root);const top=box(.6,.05,.8,MAT.darkWood,lx,1.1,lz,root);top.rotation.z=.3;block(lx,lz,.8,.9);
+        placeBook(poems,{x:lx-.02,y:1.42,z:lz,yaw:-Math.PI/2,tilt:-1.05},geometry,'poems');
+        const label=sign(root,'POETRY','',1.2,.3,cx+w/2-.17,2.05,lz);label.rotation.y=-Math.PI/2;mark(label,{type:'settexts-card',title:'Poetry',author:'Poems from the Anthologies: the poems in the GCSE anthologies that are in the public domain, each with a note and a link of its own.',action:'READ'})}
       // A long table down the middle, with chairs that are the library's own seats.
       box(5.2,.1,1.4,MAT.wood,cx,1.0,cz+1.2,root);for(const dx of [-2.4,2.4])for(const dz of [-.55,.55])box(.1,.98,.1,MAT.darkWood,cx+dx,.49,cz+1.2+dz,root);block(cx,cz+1.2,5.4,1.6);
       const fabric=own(new THREE.MeshStandardMaterial({color:0x34465a,roughness:.9}));
@@ -100,7 +107,7 @@
       scene.add(root);
     }
     function placeBook(book,spot,geometry,shelf){
-      const mesh=add(geometry,own(bookMaterial(book)),spot.x,spot.y,spot.z,root);mesh.rotation.order='YXZ';mesh.rotation.y=spot.yaw;mesh.rotation.x=-.08;
+      const mesh=add(geometry,own(bookMaterial(book)),spot.x,spot.y,spot.z,root);mesh.rotation.order='YXZ';mesh.rotation.y=spot.yaw;mesh.rotation.x=spot.tilt??-.08;
       mesh.userData={type:'book',book,loaded:false,setText:true,shelf,home:{position:mesh.position.clone(),quaternion:mesh.quaternion.clone(),parent:root}};
       interactables.push(mesh);ours.push(mesh);books.push(mesh);return mesh;
     }
@@ -141,6 +148,6 @@
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==root))unload();
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,unload,catalogue,door:DOOR,room:ROOM,novels:NOVELS,plays:PLAYS,get built(){return !!root},get books(){return books.slice()},zoneAt:(x,z)=>contains(x,z)?'set-texts-room':null};
+    return {contains,floorAt,allowed,interact,update,enter,unload,catalogue,door:DOOR,room:ROOM,novels:NOVELS,plays:PLAYS,anthology:ANTHOLOGY,get built(){return !!root},get books(){return books.slice()},zoneAt:(x,z)=>contains(x,z)?'set-texts-room':null};
   };
 })();

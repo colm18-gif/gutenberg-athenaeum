@@ -190,6 +190,8 @@
     for(const record of window.ATHENAEUM_AFTER_DARK_BOOKS||[])if(!books.some(b=>b.id===record.id))books.push({...record,source:'Project Gutenberg',sourceUrl:`https://www.gutenberg.org/ebooks/${record.id}`,licence:'Public Domain',textUrl:`https://www.gutenberg.org/cache/epub/${record.id}/pg${record.id}.txt`,progress:loadSavedProgress(record.id),index:books.length});
     const openAccessSources=window.ATHENAEUM_OPEN_ACCESS_SOURCES||{},openAccessBooks=window.ATHENAEUM_OPEN_ACCESS_BOOKS||[],bookEnrichments=window.ATHENAEUM_BOOK_ENRICHMENTS||{};
     for(const record of openAccessBooks){const source=openAccessSources[record.source]||{};books.push(Object.assign({},record,{sourceKey:record.source,source:source.name||record.source,progress:loadSavedProgress(record.id),index:books.length}))}
+    // Poems from the Anthologies (scripts/anthology.mjs): the library's own binding of public-domain poems from Wikisource, for the Set Texts Room.
+    books.push({id:940001,title:'Poems from the Anthologies',author:'Various',category:'Poetry',fame:40,source:'Wikisource',sourceKey:'wikisource',sourceUrl:'https://en.wikisource.org/',licence:'Public Domain',progress:loadSavedProgress(940001),index:books.length});
     const verneCatalog=window.ATHENAEUM_VERNE_BOOKS||[],knownBookIds=new Set(books.map(book=>book.id));
     for(const [id,title] of verneCatalog){if(knownBookIds.has(id))continue;books.push({id,title,author:'Jules Verne',category:'Extraordinary Voyages',fame:45,source:'Project Gutenberg',sourceUrl:`https://www.gutenberg.org/ebooks/${id}`,licence:'Public Domain',textUrl:`https://www.gutenberg.org/cache/epub/${id}/pg${id}.txt`,progress:loadSavedProgress(id),index:books.length});knownBookIds.add(id)}
     const doyleCatalog=window.ATHENAEUM_DOYLE_BOOKS||[];
