@@ -1,0 +1,39 @@
+name: Kells images
+
+# Downloads the pages of the Irish Room's Book of Kells facsimile (scripts/fetch-kells.mjs) from Wikimedia Commons, public-domain images only, resizes
+# them and commits anything new to assets/kells. Cloud sessions cannot reach Commons, so this runs whenever the script
+# changes, on main or on a working branch, or by hand.
+on:
+  workflow_dispatch:
+  push:
+    paths: ['scripts/fetch-kells.mjs', '.github/workflows/kells-images.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kells-images-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  kells:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Download
+        run: |
+          npm i --no-save sharp
+          node scripts/fetch-kells.mjs
+      - name: Publish
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/kells
+          git diff --cached --quiet -- assets/kells && { echo "No new pages."; exit 0; }
+          git commit -m "Kells images: download from Wikimedia Commons"
+          for attempt in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0; sleep 10; done
+          exit 1
