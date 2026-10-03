@@ -283,8 +283,8 @@
       return {sync,find,available};
     }
     const singleCopyLibrary=createSingleCopyLibrary({objects:interactables,scene,held:()=>selected,priority:object=>{
-      const data=object.userData;if(data.secret||data.secretId)return 100;
-      if(data.machineTray)return 80;if(data.continueExtras)return 40;if(data.readingStand)return 30;
+      const data=object.userData;if(data.secret||data.secretId||data.underBoard)return 100;
+      if(data.machineTray)return 80;if(data.halloween)return 60;if(data.expeditionCopy||data.subterraneanCopy)return 50;if(data.continueExtras)return 40;if(data.readingStand)return 30;
       if(data.singleCopyPriority===undefined){object.getWorldPosition(tmpWorldPosition);data.singleCopyPriority=Math.abs(tmpWorldPosition.x)>20||Math.abs(tmpWorldPosition.z)>32?20:10}
       return data.singleCopyPriority;
     }});
