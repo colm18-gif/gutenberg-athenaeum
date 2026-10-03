@@ -41,7 +41,11 @@ export const BOOKS = {
   kelmscott: {
     dir: 'assets/kelmscott', manifest: 'kelmscott.json', width: 1190, height: 1730, paper: '#ece4d0',
     categories: ['Category:Kelmscott Chaucer', 'Category:The Works of Geoffrey Chaucer (Kelmscott Press)', 'Category:Kelmscott Press'], must: /chaucer|kelmscott/i,
-    survey: ['Houghton Typ 805K.96.275', 'intitle:"805K.96.275"', 'Works of Geoffrey Chaucer 1896', 'Works of Geoffrey Chaucer newly imprinted', 'Kelmscott Chaucer leaf', 'Kelmscott Chaucer Burne-Jones wood engraving', 'Chaucer Kelmscott Press 1896 page'], surveyOnly: /chaucer|805K/i,
+    survey: ['Works of Geoffrey Chaucer newly imprinted', 'Kelmscott Chaucer leaf'], surveyOnly: /chaucer|805K/i,
+    // The whole book, scanned by the Internet Archive: its pages are drawn on contact sheets, numbered, to choose from.
+    sheets: 'The works of Geoffrey Chaucer - now newly imprinted. (Colophon- Here ends the Book of the Works of Geoffrey Chaucer (IA worksofgeoffreyc00chau 0).pdf',
+    previews: ['William Morris - The Works of Geoffrey Chaucer (The Kelmscott Chaucer) - Google Art Project.jpg', 'William Morris, A Leaf from the Kelmscott Chaucer, published 1896, NGA 70239.jpg',
+      'Leaf from the Kelmscott Chaucer, after Edward Burne Jones, 1896, wood engraving on laid paper - Fogg Museum - Harvard University - DSC01715.jpg', 'Morris-chaucer1.png'],
     pages: []
   }
 };
@@ -130,6 +134,40 @@ async function survey(name, book) {
     console.log(`${usable(page) ? 'USABLE ' : '       '}${describe(page)} | ${strip(meta.ImageDescription?.value).slice(0, 160)}`);
   }
   console.log(`=== ${pages.length} files, ${pages.filter(usable).length} usable ===`);
+  if (book.sheets || book.previews) await contactSheets(book);
+}
+// Survey pictures, committed to <dir>/survey to be looked at and then removed: every page of a scanned book, small and
+// numbered, a hundred to a sheet; and an 800-pixel preview of each single image worth considering.
+async function contactSheets(book) {
+  const OUT = path.join(root, book.dir, 'survey');
+  await mkdir(OUT, { recursive: true });
+  const get = async url => { for (let attempt = 1; ; attempt++) { const r = await fetch(url, { headers: HEADERS }); if (r.ok) return Buffer.from(await r.arrayBuffer()); if (attempt >= 5) throw new Error(`${r.status} for ${url}`); await new Promise(res => setTimeout(res, 1500 * attempt)) } };
+  for (const [i, file] of (book.previews || []).entries()) {
+    try {
+      const page = (await api({ prop: 'imageinfo', iiprop: 'url|size', iiurlwidth: '800', titles: `File:${file}` })).query.pages[0];
+      await writeFile(path.join(OUT, `preview-${i + 1}.jpg`), await sharp(await get(page.imageinfo[0].thumburl)).jpeg({ quality: 70 }).toBuffer());
+      console.log(`preview-${i + 1}: ${file} (${page.imageinfo[0].width}x${page.imageinfo[0].height})`);
+    } catch (error) { console.log(`preview ${file}: FAILED ${error.message}`) }
+  }
+  if (!book.sheets) return;
+  const page = (await api({ prop: 'imageinfo', iiprop: 'url|size', iiurlwidth: '120', iiurlparam: 'page1-120px', titles: `File:${book.sheets}` })).query.pages[0];
+  const count = page.imageinfo[0].pagecount || 0, first = page.imageinfo[0].thumburl;
+  console.log(`sheets: ${book.sheets}: ${count} pages (${first})`);
+  const CW = 120, CH = 190, COLS = 10, ROWS = 10;
+  for (let start = 1; start <= count; start += COLS * ROWS) {
+    const cells = [];
+    for (let n = start; n < Math.min(count + 1, start + COLS * ROWS); n++) {
+      const k = n - start, left = (k % COLS) * CW, top = Math.floor(k / COLS) * CH;
+      try {
+        const thumb = await sharp(await get(first.replace(/page1-120px/, `page${n}-120px`))).resize({ width: CW - 6, height: CH - 26, fit: 'inside' }).toBuffer();
+        cells.push({ input: thumb, left: left + 3, top: top + 22 });
+      } catch (error) { console.log(`  page ${n}: ${error.message}`) }
+      cells.push({ input: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${CW}" height="20"><text x="4" y="15" font-size="15" font-family="DejaVu Sans" fill="#ff0">${n}</text></svg>`), left, top });
+    }
+    const name = `sheet-${String(start).padStart(3, '0')}.jpg`;
+    await sharp({ create: { width: CW * COLS, height: CH * ROWS, channels: 3, background: '#222' } }).composite(cells).jpeg({ quality: 72 }).toFile(path.join(OUT, name));
+    console.log(`${name}: pages ${start}-${Math.min(count, start + COLS * ROWS - 1)}`);
+  }
 }
 
 async function exists(file) { try { await access(file); return true } catch { return false } }
