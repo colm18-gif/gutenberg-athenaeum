@@ -4,8 +4,7 @@ const fs=require('node:fs');
 const vm=require('node:vm');
 
 const html=fs.readFileSync('index.html','utf8'),game=fs.readFileSync('game.js','utf8'),source=fs.readFileSync('kelmscott-book.js','utf8'),room=fs.readFileSync('periodicals-room.js','utf8'),fetcher=fs.readFileSync('scripts/fetch-book-pages.mjs','utf8');
-// Until the Book images workflow has fetched the pages chosen from its survey, the page test waits (todo).
-const pagesArrived=fs.existsSync('assets/kelmscott/kelmscott.json'),manifest=pagesArrived?JSON.parse(fs.readFileSync('assets/kelmscott/kelmscott.json','utf8')):{};
+const manifest=JSON.parse(fs.readFileSync('assets/kelmscott/kelmscott.json','utf8'));
 const book=(()=>{const context={window:{},Math,setTimeout};vm.runInNewContext(fs.readFileSync('fine-books.js','utf8'),context);vm.runInNewContext(source,context);return context.window.createKelmscottBook({THREE:{},renderer:{}})})();
 
 class V{constructor(){this.x=0;this.y=0;this.z=0}set(x,y,z){Object.assign(this,{x,y,z});return this}clone(){return new V().set(this.x,this.y,this.z)}}
@@ -29,7 +28,7 @@ test('the Kelmscott Chaucer loads before the game and is handed to the Periodica
   assert.match(game,/kelmscottBook=window\.createKelmscottBook\?\.\(fineBookOptions\)/);assert.match(game,/kelmscott:kelmscottBook/);
 });
 
-test('every page of the facsimile has a card, a public-domain photograph, and a place in the book',{todo:!pagesArrived&&'waiting for the pages'},()=>{
+test('every page of the facsimile has a card, a public-domain photograph, and a place in the book',()=>{
   const folios=Object.keys(book.folios);assert(folios.length>=10,'at least ten of its pages');
   const block=fetcher.slice(fetcher.indexOf('kelmscott: {')),fetched=[...block.matchAll(/key: '([a-z0-9-]+)'/g)].map(m=>m[1]);
   assert.deepEqual(fetched,folios,'scripts/fetch-book-pages.mjs fetches the same pages, in the same order');
