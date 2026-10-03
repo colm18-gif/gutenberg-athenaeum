@@ -182,12 +182,16 @@
       for(const thing of owned.splice(0))thing.dispose?.();ours.length=0;books.length=0;blockers.length=0;root=sky=phobos=deimos=null;
     }
     function reset(){restoreAtmosphere()}
+    // Looking through the roof telescope builds the scenery without landing, visiting,
+    // changing the reader's position or borrowing the Grand Hall's lighting.
+    function preview(){if(!root)build();lastHere=time;for(const object of [sky,phobos,deimos])if(object)object.visible=false;return {root,eye:[CENTRE.x,7,CENTRE.z+2],look:[CENTRE.x,1.8,CENTRE.z+RUIN.z],background:0x160c0c,fog:0x472218,light:0xffc4a0}}
     function update(t){
       time=t;const here=contains(player.pos.x,player.pos.z);
-      if(here){lastHere=t;if(!root)build();applyAtmosphere();placeSky(t);return}
+      if(here){lastHere=t;if(!root)build();for(const object of [sky,phobos,deimos])if(object)object.visible=true;applyAtmosphere();placeSky(t);return}
       restoreAtmosphere();
+      for(const object of [sky,phobos,deimos])if(object)object.visible=false;
       if(root&&t-lastHere>KEEP&&!isHolding()&&!books.some(b=>b.parent!==b.userData.home.parent))unload();
     }
-    return {contains,zoneAt,floorAt,allowed,onSand,arrive,stepOut,interact,update,reset,get built(){return !!root},get books(){return books},center:CENTRE,QUOTES};
+    return {contains,zoneAt,floorAt,allowed,onSand,arrive,stepOut,interact,update,reset,preview,get built(){return !!root},get books(){return books},center:CENTRE,QUOTES};
   };
 })();

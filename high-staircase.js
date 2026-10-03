@@ -310,6 +310,6 @@
       if(inHall&&!localStorage.getItem('athenaeum-high-stair-summit')){localStorage.setItem('athenaeum-high-stair-summit','1');showNotice('The Rocket Hall: a glass-and-iron observatory above the roof, built around one impossible destination.',7);window.libraryAnalytics?.track('Room Explored',{room:'rocket-hall'})}
     }
     function reset(){if(slide){slide=null;slideSound?.(0);camera.fov=67;camera.updateProjectionMatrix()}root.visible=true;rocketTrip=null;rocketBoarded=null;flightHud.hide()}
-    return {contains,floorAt,allowed,interact,update,reset,onMoon,board:boardRocket,noticeAllowed:()=>(!rocketTrip&&!slide)||speaking,get inFlight(){return !!rocketTrip},get sliding(){return !!slide},center:{x:cx,z:cz},topY,topBooks,moonBooks};
+    return {contains,floorAt,allowed,interact,update,reset,onMoon,preview:()=>({root,eye:[mx,9,mz+16],look:[mx,1.4,mz-6],background:0x080d1b,fog:0x18233a,light:0xc9dbff}),board:boardRocket,noticeAllowed:()=>(!rocketTrip&&!slide)||speaking,get inFlight(){return !!rocketTrip},get sliding(){return !!slide},center:{x:cx,z:cz},topY,topBooks,moonBooks};
   };
 })();
