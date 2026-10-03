@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-10-02",
+ "updated": "2026-10-03",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -866,6 +866,26 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "The Travels of Sir John Mandeville": {
    "id": 782,
    "words": 84314
+  },
+  "Macbeth": {
+   "id": 1533,
+   "words": 18566
+  },
+  "The Tempest": {
+   "id": 1540,
+   "words": 17705
+  },
+  "The Merchant of Venice": {
+   "id": 1515,
+   "words": 22488
+  },
+  "Much Ado About Nothing": {
+   "id": 1519,
+   "words": 22749
+  },
+  "Julius Caesar": {
+   "id": 1522,
+   "words": 21055
   },
   "Don Quijote [es]": {
    "id": 2000,

@@ -102,6 +102,8 @@
       // The African Reading Room: night insects and a breeze in the courtyard; pages turning inside.
       'african-courtyard':{beds:[['insects',.06],['wind',.03]],events:[['cricket',8,.035],['owl',.25,.035]]},
       'african-room':{beds:[['air',.035]],events:[['rustle',1,.035],['creak',.3,.03]]},
+      // The Set Texts Room: a classroom after hours, a clock, and pages turning at the long table.
+      'set-texts-room':{beds:[['air',.03]],ticks:[[1,'tock',.022]],events:[['rustle',1.1,.04]]},
       // The Map Room: a quiet room, a clock, and big sheets of paper being turned over.
       'map-room':{beds:[['air',.035]],ticks:[[1.6,'tock',.025]],events:[['rustle',1.4,.04]]},
       // The Poe Room: a still house, its floorboards settling (the heart under them is poe-room.js's own).

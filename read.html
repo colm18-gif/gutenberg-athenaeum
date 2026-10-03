@@ -34,6 +34,16 @@
   .status{color:var(--soft);font-style:italic}
   .resume{display:none;margin:1em 0;padding:10px 14px;border:1px solid var(--rule);border-radius:6px}
   .resume.shown{display:block}
+  /* Contents: a link to each chapter, act and scene, to set for reading or send to someone. */
+  .contents{margin:1.2em 0 1.6em;padding:8px 14px;border:1px solid var(--rule);border-radius:6px;font-size:.9em}
+  .contents summary{cursor:pointer;color:var(--soft)}
+  .contents ol{margin:.6em 0 .2em;padding-left:1.3em;columns:2 14em}
+  .contents li{break-inside:avoid;margin:.1em 0}
+  .contents li.sub{list-style:none;margin-left:.9em;font-size:.95em}
+  .contents .hint{font-size:.85em;color:var(--soft);margin:.4em 0 0}
+  article p.head{scroll-margin-top:64px}
+  article p.head a.here{margin-left:.4em;font-weight:normal;text-decoration:none;color:var(--soft);opacity:0}
+  article p.head:hover a.here,article p.head a.here:focus{opacity:1}
 </style>
 <!-- The reading card, when the reader has one: the same bookmarks on every device (reading-card.js). -->
 <script src="data/visitors-book-config.js"></script>
@@ -53,6 +63,7 @@
 <main>
   <header class="book"><h1 id="title">A book from the library</h1><p id="author"></p><p><a id="page" href="/book/">About this book</a> · <a id="walk" href="/">Read it in the 3D library</a></p></header>
   <p class="resume" id="resume"><a href="#" id="resumeLink">Carry on where you left off</a></p>
+  <details class="contents" id="toc" hidden><summary>Contents</summary><ol id="tocList"></ol><p class="hint">Each part has its own address: open it and copy the address to set it for reading or share it.</p></details>
   <p class="status" id="status" role="status">Fetching the text…</p>
   <article id="text" aria-live="off"></article>
   <p class="credit" id="credit"></p>
@@ -92,12 +103,25 @@
       const lines=block.split('\n').map(l=>l.trim()).filter(Boolean);if(!lines.length)continue;
       const p=document.createElement('p'),joined=lines.join(cjk?'':' ');
       // Short lines in capitals, or "CHAPTER …", read as headings.
-      if(joined.length<80&&(/^(chapter|book|part|canto|act|scene|capítulo|chapitre|livre|розділ|частина)\b/i.test(joined)||(joined===joined.toUpperCase()&&/[A-ZÀ-ÞА-Я]/.test(joined))))p.className='head';
+      if(joined.length<80&&(/^(chapter|book|part|canto|act|scene|stave|letter|prologue|epilogue|capítulo|chapitre|livre|розділ|частина)\b/i.test(joined)||(joined===joined.toUpperCase()&&/[A-ZÀ-ÞА-Я]/.test(joined))))p.className='head';
       // Poetry, and lists such as a table of contents, keep their lines; prose (wrapped at about 70 characters) flows.
       if(lines.length>1&&!cjk&&(lines.reduce((n,l)=>n+l.length,0)/lines.length<50||lines.filter(l=>/^(chapter|book|part|canto|act|letter|[ivxlc]+\.|\d+\.)\s/i.test(l)).length>=2)){lines.forEach((l,i)=>{if(i)p.append(document.createElement('br'));p.append(l)})}else p.textContent=joined;
       frag.append(p);
     }
     $('text').append(frag);
+  }
+  // Each heading gets an address of its own (#stave-i, #chapter-iv, #act-ii-scene-iii), and the Contents lists them. Where
+  // a book's own table of contents repeats a heading, the later one, in the text itself, takes the address.
+  function headings(){
+    const heads=[...document.querySelectorAll('#text p.head')];if(heads.length<3)return;
+    const slug=t=>t.normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[’']/g,'').replace(/[^a-z0-9\u0400-\u04ff\u4e00-\u9fff]+/g,'-').replace(/^-+|-+$/g,'').slice(0,48).replace(/-+$/,'');
+    let act='';const keys=heads.map(p=>{const t=p.textContent.trim(),lead=(t.match(/^((?:chapter|book|part|canto|act|scene|stave|letter)\s+[\w.]+?)(?=[.:\s]|$)/i)||[])[1];
+      const key=slug(lead||t)||'part';if(/^act\b/i.test(t)){act=key;return {p,key,sub:false}}if(/^scene\b/i.test(t)&&act)return {p,key:act+'-'+key,sub:true};return {p,key,sub:false}});
+    const last=new Map();keys.forEach((k,i)=>last.set(k.key,i));const used=new Set(),list=$('tocList');
+    keys.forEach((k,i)=>{let id=k.key;if(last.get(k.key)!==i)id=k.key+'-contents';while(used.has(id)||document.getElementById(id))id+='-x';used.add(id);k.p.id=id;
+      const here=document.createElement('a');here.className='here';here.href='#'+id;here.textContent='#';here.setAttribute('aria-label','Link to this part');k.p.append(here);
+      if(last.get(k.key)===i){const li=document.createElement('li'),a=document.createElement('a');if(k.sub)li.className='sub';a.href='#'+id;a.textContent=k.p.firstChild.textContent.trim();li.append(a);list.append(li)}});
+    if(list.children.length>=3)$('toc').hidden=false;
   }
   function track(){
     const bar=$('progress');let last=0;
@@ -114,7 +138,10 @@
     if(source){credit.append('Text from Wikisource, in the public domain: ');const a=document.createElement('a');a.href=source;a.textContent=source;credit.append(a)}
     else{credit.append('Project Gutenberg eBook #'+id+', in the public domain: ');const a=document.createElement('a');a.href='https://www.gutenberg.org/ebooks/'+id;a.textContent='gutenberg.org/ebooks/'+id;credit.append(a)}
     $('credit').append(credit);
-    $('status').remove();render(body(raw),lang);track();
+    $('status').remove();render(body(raw),lang);headings();track();
+    // A link to a chapter or scene opens there, rather than offering the reader's own place.
+    const target=location.hash.length>1&&document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if(target){requestAnimationFrame(()=>target.scrollIntoView());return}
     if(saved>0.002){$('resume').classList.add('shown');$('resumeLink').textContent=`Carry on where you left off (${Math.round(saved*100)}% of the way through)`;
       $('resumeLink').onclick=e=>{e.preventDefault();scrollTo(0,saved*(document.documentElement.scrollHeight-innerHeight));$('resume').classList.remove('shown')}}
   });

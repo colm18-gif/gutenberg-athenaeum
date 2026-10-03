@@ -21,4 +21,6 @@ dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px;margin:0;font
 .more ul,.shelf-list ul{list-style:none;margin:0;padding:0;columns:2 280px;column-gap:32px}.more li,.shelf-list li{break-inside:avoid;padding:4px 0}.more li span,.shelf-list li span{display:block;font-size:14px;color:var(--soft)}
 .catalogue .shelf-list{padding:0 0 18px}.intro{color:var(--soft)}
 .filter{display:block;margin:0 0 28px;color:var(--soft);font-size:16px}.filter input{display:block;width:100%;max-width:420px;margin-top:6px;padding:10px 12px;font:inherit;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:6px}
+ul.set-list{columns:1}.set-text{padding:10px 0 14px!important;border-bottom:1px solid var(--line)}.set-text h3{margin:0 0 .3em;font-weight:normal;font-size:20px}.set-text h3 span{display:inline;font-size:15px;color:var(--soft);font-style:italic;margin-left:.4em}
+.set-text p{margin:.2em 0;font-size:16px}.set-text .ways{font-size:15px}code{font-size:.9em;color:var(--ink);background:var(--panel);padding:1px 5px;border-radius:4px}
 footer{border-top:1px solid var(--line);padding:24px;text-align:center;color:var(--soft);font-size:15px}
