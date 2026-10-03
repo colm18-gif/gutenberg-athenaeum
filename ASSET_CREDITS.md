@@ -71,6 +71,14 @@ from Wikimedia Commons, all marked public domain there. `scripts/fetch-book-page
 downloads them and records each file's Commons page and licence in `assets/kells/kells.json`; the book credits each
 page beneath it. The title page, colophon, pastedowns and binding are drawn by the library.
 
+## The Kelmscott Chaucer
+
+The Periodicals Room's facsimile (`assets/kelmscott`) shows sixteen pages of The Works of Geoffrey Chaucer (Kelmscott
+Press, 1896), rendered from the Internet Archive's scan of a copy held on Wikimedia Commons as a PDF marked public
+domain. `scripts/fetch-book-pages.mjs` records the scan and each page in `assets/kelmscott/kelmscott.json`, and the book
+credits each page beneath it. Its title page, colophon, pastedowns and white pigskin binding are drawn by the library;
+their headings are set in IM Fell English SC (above).
+
 ## Generated sound and light
 
 `soundscape.js` synthesises the room reverberation, rain on glass, storm thunder
