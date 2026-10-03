@@ -42,10 +42,11 @@ export const BOOKS = {
     dir: 'assets/kelmscott', manifest: 'kelmscott.json', width: 1190, height: 1730, paper: '#ece4d0',
     categories: ['Category:Kelmscott Chaucer', 'Category:The Works of Geoffrey Chaucer (Kelmscott Press)', 'Category:Kelmscott Press'], must: /chaucer|kelmscott/i,
     survey: ['Works of Geoffrey Chaucer newly imprinted', 'Kelmscott Chaucer leaf'], surveyOnly: /chaucer|805K/i,
-    // The whole book, scanned by the Internet Archive: its pages are drawn on contact sheets, numbered, to choose from.
-    sheets: 'The works of Geoffrey Chaucer - now newly imprinted. (Colophon- Here ends the Book of the Works of Geoffrey Chaucer (IA worksofgeoffreyc00chau 0).pdf',
-    previews: ['William Morris - The Works of Geoffrey Chaucer (The Kelmscott Chaucer) - Google Art Project.jpg', 'William Morris, A Leaf from the Kelmscott Chaucer, published 1896, NGA 70239.jpg',
-      'Leaf from the Kelmscott Chaucer, after Edward Burne Jones, 1896, wood engraving on laid paper - Fogg Museum - Harvard University - DSC01715.jpg', 'Morris-chaucer1.png'],
+    // The whole book, scanned by the Internet Archive (568 pages; its page 13 is the book's page 1). Openings worth
+    // considering are drawn larger, side by side, to read their headings.
+    scan: 'The works of Geoffrey Chaucer - now newly imprinted. (Colophon- Here ends the Book of the Works of Geoffrey Chaucer (IA worksofgeoffreyc00chau 0).pdf',
+    openings: [[34, 35], [42, 43], [126, 127], [234, 235], [252, 253], [256, 257], [264, 265], [268, 269], [284, 285], [324, 325], [328, 329], [334, 335],
+      [434, 435], [452, 453], [464, 465], [482, 483], [494, 495], [512, 513], [530, 531], [548, 549], [564, 565]],
     pages: []
   }
 };
@@ -134,39 +135,25 @@ async function survey(name, book) {
     console.log(`${usable(page) ? 'USABLE ' : '       '}${describe(page)} | ${strip(meta.ImageDescription?.value).slice(0, 160)}`);
   }
   console.log(`=== ${pages.length} files, ${pages.filter(usable).length} usable ===`);
-  if (book.sheets || book.previews) await contactSheets(book);
+  if (book.openings) await openingSheets(book);
 }
-// Survey pictures, committed to <dir>/survey to be looked at and then removed: every page of a scanned book, small and
-// numbered, a hundred to a sheet; and an 800-pixel preview of each single image worth considering.
-async function contactSheets(book) {
+// Survey pictures, committed to <dir>/survey to be looked at and then removed: openings of a scanned book drawn side by
+// side, three to a sheet, large enough to read their headings.
+async function openingSheets(book) {
   const OUT = path.join(root, book.dir, 'survey');
   await mkdir(OUT, { recursive: true });
   const get = async url => { for (let attempt = 1; ; attempt++) { const r = await fetch(url, { headers: HEADERS }); if (r.ok) return Buffer.from(await r.arrayBuffer()); if (attempt >= 5) throw new Error(`${r.status} for ${url}`); await new Promise(res => setTimeout(res, 1500 * attempt)) } };
-  for (const [i, file] of (book.previews || []).entries()) {
-    try {
-      const page = (await api({ prop: 'imageinfo', iiprop: 'url|size', iiurlwidth: '800', titles: `File:${file}` })).query.pages[0];
-      await writeFile(path.join(OUT, `preview-${i + 1}.jpg`), await sharp(await get(page.imageinfo[0].thumburl)).jpeg({ quality: 70 }).toBuffer());
-      console.log(`preview-${i + 1}: ${file} (${page.imageinfo[0].width}x${page.imageinfo[0].height})`);
-    } catch (error) { console.log(`preview ${file}: FAILED ${error.message}`) }
-  }
-  if (!book.sheets) return;
-  const page = (await api({ prop: 'imageinfo', iiprop: 'url|size', iiurlwidth: '120', iiurlparam: 'page1-120px', titles: `File:${book.sheets}` })).query.pages[0];
-  const count = page.imageinfo[0].pagecount || 0, first = page.imageinfo[0].thumburl;
-  console.log(`sheets: ${book.sheets}: ${count} pages (${first})`);
-  const CW = 120, CH = 190, COLS = 10, ROWS = 10;
-  for (let start = 1; start <= count; start += COLS * ROWS) {
-    const cells = [];
-    for (let n = start; n < Math.min(count + 1, start + COLS * ROWS); n++) {
-      const k = n - start, left = (k % COLS) * CW, top = Math.floor(k / COLS) * CH;
-      try {
-        const thumb = await sharp(await get(first.replace(/page1-120px/, `page${n}-120px`))).resize({ width: CW - 6, height: CH - 26, fit: 'inside' }).toBuffer();
-        cells.push({ input: thumb, left: left + 3, top: top + 22 });
-      } catch (error) { console.log(`  page ${n}: ${error.message}`) }
-      cells.push({ input: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${CW}" height="20"><text x="4" y="15" font-size="15" font-family="DejaVu Sans" fill="#ff0">${n}</text></svg>`), left, top });
+  const first = (await api({ prop: 'imageinfo', iiprop: 'url|size', iiurlwidth: '450', iiurlparam: 'page1-450px', titles: `File:${book.scan}` })).query.pages[0].imageinfo[0].thumburl;
+  const PW = 450, PH = 680, PER = 3;
+  for (let k = 0; k < book.openings.length; k += PER) {
+    const cells = [], group = book.openings.slice(k, k + PER);
+    for (const [row, pair] of group.entries()) for (const [col, n] of pair.entries()) {
+      try { cells.push({ input: await sharp(await get(first.replace(/page1-450px/, `page${n}-450px`))).resize({ width: PW, height: PH - 24, fit: 'inside' }).toBuffer(), left: col * PW, top: row * PH + 24 }) } catch (error) { console.log(`  page ${n}: ${error.message}`) }
+      cells.push({ input: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${PW}" height="22"><text x="6" y="17" font-size="18" font-family="DejaVu Sans" fill="#ff0">pdf ${n} = page ${n - 12}</text></svg>`), left: col * PW, top: row * PH });
     }
-    const name = `sheet-${String(start).padStart(3, '0')}.jpg`;
-    await sharp({ create: { width: CW * COLS, height: CH * ROWS, channels: 3, background: '#222' } }).composite(cells).jpeg({ quality: 72 }).toFile(path.join(OUT, name));
-    console.log(`${name}: pages ${start}-${Math.min(count, start + COLS * ROWS - 1)}`);
+    const name = `openings-${String(k / PER + 1).padStart(2, '0')}.jpg`;
+    await sharp({ create: { width: PW * 2, height: PH * group.length, channels: 3, background: '#222' } }).composite(cells).jpeg({ quality: 78 }).toFile(path.join(OUT, name));
+    console.log(`${name}: ${group.map(p => p.join('|')).join(', ')}`);
   }
 }
 
