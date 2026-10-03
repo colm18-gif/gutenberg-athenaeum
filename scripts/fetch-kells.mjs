@@ -13,16 +13,16 @@ import sharp from 'sharp';
 
 export const PAGES = [
   { key: '007v', files: ['KellsFol007vMadonnaChild.jpg', 'KellsFol007vVirginChild.jpg', 'Meister des Book of Kells 001.jpg'] },
-  { key: '027v', files: ['KellsFol027v4Evangelists.jpg', 'KellsFol027vFourEvangelists.jpg'] },
+  { key: '027v', files: ['KellsFol027v4Evang.jpg', 'KellsFol027v4Evangelists.jpg'] },
   { key: '028v', files: ['KellsFol028vMatthew.jpg', 'KellsFol028vStMatthew.jpg', 'KellsFol028vPortraitMatthew.jpg'] },
   { key: '029r', files: ['KellsFol029rIncipitMatthew.jpg', 'KellsFol029rLiberGenerationis.jpg', 'KellsFol029rIncipMatt.jpg'] },
   { key: '032v', files: ['KellsFol032vChristEnthroned.jpg'] },
   { key: '033r', files: ['KellsFol033rCarpetPage.jpg', 'KellsFol033rCarpet.jpg'] },
   { key: '034r', files: ['KellsFol034rChiRhoMonogram.jpg', 'KellsFol034rChiRho.jpg'] },
   { key: '114r', files: ['KellsFol114rArrest.jpg', 'KellsFol114rChristArrest.jpg', 'KellsFol114rArrestChrist.jpg'] },
-  { key: '188r', files: ['KellsFol188rIncipitMark.jpg', 'KellsFol188rIncipMark.jpg', 'KellsFol188rInitiumEvangelii.jpg'] },
+  { key: '130r', files: ['KellsFol130rIncipitMark.jpg', 'KellsFol130rInitium.jpg'] },
+  { key: '188r', files: ['KellsFol188rQuoniam.jpg'] },
   { key: '202v', files: ['KellsFol202vTemptation.jpg', 'KellsFol202vTemptationChrist.jpg'] },
-  { key: '291v', files: ['KellsFol291vJohn.jpg', 'KellsFol291vStJohn.jpg', 'KellsFol291vPortraitJohn.jpg'] },
   { key: '292r', files: ['KellsFol292rIncipJohn.jpg', 'KellsFol292rIncipitJohn.jpg', 'KellsFol292rInPrincipio.jpg'] }
 ];
 
