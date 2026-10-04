@@ -1,7 +1,7 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-03",
+ "updated": "2026-10-04",
  "days": {
   "2026-09-25": {
    "books": [
@@ -604,6 +604,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 24407,
      "title": "The Italian Cook Book",
      "author": "Maria Gentile"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-06": {
+   "books": [
+    {
+     "id": 1463,
+     "title": "The Private Papers of Henry Ryecroft",
+     "author": "George Gissing"
+    },
+    {
+     "id": 9846,
+     "title": "Excursions",
+     "author": "Henry David Thoreau"
+    },
+    {
+     "id": 2048,
+     "title": "The Sketch Book of Geoffrey Crayon",
+     "author": "Washington Irving"
+    },
+    {
+     "id": 45,
+     "title": "Anne of Green Gables",
+     "author": "L. M. Montgomery"
+    },
+    {
+     "id": 36949,
+     "title": "Wild Life in a Southern County",
+     "author": "Richard Jefferies"
+    },
+    {
+     "id": 4232,
+     "title": "A Week on the Concord and Merrimack Rivers",
+     "author": "Henry David Thoreau"
+    },
+    {
+     "id": 534,
+     "title": "An Inland Voyage",
+     "author": "Robert Louis Stevenson"
+    },
+    {
+     "id": 2496,
+     "title": "Our Village",
+     "author": "Mary Russell Mitford"
+    },
+    {
+     "id": 122,
+     "title": "The Return of the Native",
+     "author": "Thomas Hardy"
+    },
+    {
+     "id": 289,
+     "title": "The Wind in the Willows",
+     "author": "Kenneth Grahame"
     }
    ],
    "missing": []
