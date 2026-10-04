@@ -52,7 +52,7 @@ test('first visit: a skippable tour that follows the reader and hands over to th
 
 test('books in progress wait on a Continue reading rest by the entrance',()=>{
   assert.match(game,/const continueDisplay=\(\(\)=>\{/);
-  assert.match(game,/book\.progress>\.02&&book\.progress<\.95\)\.slice\(0,4\)/);
+  assert.match(game,/libraryMemory\.unfinished\(\)\.filter/);
   assert.match(game,/home:\{parent:group,position:bm\.position\.clone\(\),quaternion:bm\.quaternion\.clone\(\),scale:\.5\}/);
   assert.match(game,/refreshReadingStack=function\(\)\{preStack\(\);continueDisplay\.refresh\(\)\}/);
 });

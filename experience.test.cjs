@@ -193,7 +193,7 @@ test('startup files download together, run in order, and are fetched only once',
   assert.match(html,/STARTUP\.forEach\(warm\);await loadFirst\(THREE_SOURCES\);await Promise\.all\(STARTUP\.map\(src=>loadScript\(src,30000\)\)\)/);
   const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(match=>match[1]);
   // 61 including telescope-view.js and data/new-books-wing.js, which is only listed for links that may lead into the International Wing.
-  assert.equal(order.length,62);assert.equal(order.at(-1),'game.js','game.js must run last, after everything it depends on');
+  assert.equal(order.length,63);assert.equal(order.at(-1),'game.js','game.js must run last, after everything it depends on');
   assert.equal(new Set(order).size,order.length);for(const file of order)assert(fs.existsSync(file),`${file} is listed for startup but missing`);
 });
 

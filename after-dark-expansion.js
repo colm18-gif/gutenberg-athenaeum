@@ -118,7 +118,7 @@
         const z=trayZ-.35+i*.32;
         box(2.7,.08,.27,MAT.wood2,trayX,1.33,z,room.root);
         const ticket=sign(room.root,trayX,1.43,z+.12,label,'',0,.33);
-        mark(ticket,{type:'after-dark-detail',title:label,author:'The sorting hand has not finished this pile.',action:'READ'});
+        mark(ticket,{type:'after-dark-detail',trailEvent:label==='KEEP FOR THE LIBRARIAN'?'sorting-slip':null,title:label,author:'The sorting hand has not finished this pile.',action:'READ'});
       }
       for(let i=0;i<6;i++){const volume=box(.42,.55,.11,[MAT.green,MAT.fabric,MAT.wood2][i%3],deskX-1.2+i*.38,1.73,deskZ+.25,room.root);volume.rotation.y=(i%2?-.12:.09)}
       const stringLine=add(new THREE.TorusGeometry(.65,.025,6,28),twine,room.cx+1.3,.04,room.cz+6.8,room.root);stringLine.rotation.x=Math.PI/2;
@@ -146,6 +146,7 @@
       const lantern=cylinder(.38,.48,.72,12,MAT.brass,room.cx,2.05,room.cz-1.8,room.root);cylinder(.28,.34,.65,12,emissiveAmber,room.cx,2.08,room.cz-1.8,room.root);const lanternLight=new THREE.PointLight(0xffba69,8,11,2);lanternLight.position.set(room.cx,2.65,room.cz-1.8);lanternLight.castShadow=false;room.root.add(lanternLight);
       const compassFallback=[cylinder(.85,.85,.12,28,MAT.brass,room.cx-4.2,1.52,room.cz+2.2,room.root)];addModel(room.root,'assets/polyhaven/models/seadogs_compass/seadogs_compass_1k.gltf',room.cx-4.2,1.43,room.cz+2.2,{height:.55,rotation:.16,fallback:compassFallback});
       const suitcaseA=[box(1.7,.75,1.1,MAT.wood,room.cx-10.8,.38,room.cz+8.4,room.root)],suitcaseB=[box(1.55,.68,1,MAT.wood2,room.cx-9.2,.34,room.cz+8.7,room.root)];addModel(room.root,'assets/polyhaven/models/vintage_suitcase/vintage_suitcase_1k.gltf',room.cx-10.8,0,room.cz+8.4,{height:.78,rotation:.2,fallback:suitcaseA});addModel(room.root,'assets/polyhaven/models/vintage_suitcase/vintage_suitcase_1k.gltf',room.cx-9.2,0,room.cz+8.7,{height:.68,rotation:-.22,fallback:suitcaseB});block(room.key,room.cx-10,room.cz+8.5,3.2,1.6);
+      const luggageLabel=sign(room.root,room.cx-10.8,.92,room.cz+8.85,'THE LONG WAY HOME','a label tied to the handle',0,.48);mark(luggageLabel,{type:'after-dark-detail',trailEvent:'departures-label',title:'A label on the luggage',author:'An old luggage label: “The long way home.” A salt mark has spread through the ink.',action:'READ'});
       const roomBooks=books.filter(book=>book.room==='departures');roomBooks.forEach((book,index)=>{const side=index<6?-1:1,i=index%6,x=room.cx+side*(4.2+(i%3-1)*1.05),z=room.cz+2.2+(Math.floor(i/3)-.5)*.72;placeBook(room,book,x,1.52+.04*(i%2),z,(i%3-1)*.22,-.48)});
       for(let i=0;i<90;i++){const drop=box(.014,.34,.014,new THREE.MeshBasicMaterial({color:0x8bb0c2,transparent:true,opacity:.36}),room.cx-11+Math.random()*22,.5+Math.random()*4.8,room.cz+room.d/2-.45-Math.random()*.25,room.root);animated.push({kind:'rain',mesh:drop,room,phase:Math.random()*5})}
       for(const p of [[room.cx+10.5,room.cz+7.7,.1],[room.cx+8.9,room.cz+8.8,-.15],[room.cx+11.2,room.cz+9,.08]]){const chart=cylinder(.1,.1,2.1,10,MAT.paper,p[0],.48,p[1],room.root);chart.rotation.z=Math.PI/2+p[2]}
