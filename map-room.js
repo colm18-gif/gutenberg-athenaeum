@@ -127,7 +127,7 @@
       else if(info){credit.append('Image: ');const a=document.createElement('a');a.href=info.page;a.target='_blank';a.rel='noopener';a.textContent='Wikimedia Commons';credit.append(a,`, ${/public domain|^pd/i.test(info.licence)?'in the public domain':info.licence}.`)}
       img.style.visibility='visible';root.querySelector('.mv-missing').classList.add('hidden');img.removeAttribute('src');img.alt=`${title}, ${maker}`;
       if(info)img.src=`${base}${key}.jpg`;else{img.style.visibility='hidden';root.querySelector('.mv-missing').classList.remove('hidden')}
-      onView?.(key);
+      const trailText=onView?.(key);let slip=caption.querySelector('.mv-trail');if(trailText){if(!slip){slip=document.createElement('p');slip.className='mv-note mv-trail';caption.querySelector('.mv-note').after(slip)}slip.textContent='A loose slip — '+trailText+' (Kept in your journal.)'}else slip?.remove();
     }
     function openAt(key){if(!root)build();open=true;root.classList.remove('hidden');onOpen?.();show(Math.max(0,ORDER.indexOf(key)));setTimeout(()=>root.querySelector('.mv-close').focus(),30)}
     function close(){if(!open)return;open=false;root.classList.add('hidden');img.removeAttribute('src');onClose?.()}
@@ -136,7 +136,7 @@
 
   window.createMapRoom=function(options){
     const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,move,analytics,isHolding=()=>false,registerSeat=null,doorKit=null,
-      base='assets/maps/',fetchJson=url=>fetch(url).then(r=>r.ok?r.json():{}),loadTexture=null,onViewerOpen=null,onViewerClose=null}=options;
+      base='assets/maps/',fetchJson=url=>fetch(url).then(r=>r.ok?r.json():{}),loadTexture=null,onViewerOpen=null,onViewerClose=null,onMapViewed=null}=options;
     // In the west wing's north wall, between the wing's doorway from the Grand Hall and its bookcase.
     const DOOR={x:-21.4,z:-13.45,yaw:0};
     const ROOM={cx:-420,cz:-60,w:18,d:14,h:6};
@@ -154,7 +154,7 @@
     function markDoor(object,data){object.userData=data;interactables.push(object);return object}
     function block(x,z,w,d){blockers.push({minX:x-w/2,maxX:x+w/2,minZ:z-d/2,maxZ:z+d/2})}
     const card=key=>({type:'map-card',title:CARDS[key][0],author:CARDS[key][1],action:'READ'});
-    const viewer=createViewer({base,manifest:()=>manifest,onOpen:onViewerOpen,onClose:onViewerClose,onView:key=>analytics?.track('Map Viewed',{map:key})});
+    const viewer=createViewer({base,manifest:()=>manifest,onOpen:onViewerOpen,onClose:onViewerClose,onView:key=>{analytics?.track('Map Viewed',{map:key});return onMapViewed?.(key)}});
     function askManifest(){if(manifestAsked)return;manifestAsked=true;Promise.resolve().then(()=>fetchJson(`${base}maps.json`)).then(data=>{manifest=data&&typeof data==='object'?data:{};if(root)for(const f of frames)dress(f)}).catch(()=>{manifestAsked=false})}
 
     function sign(parent,text,sub,w,h,x,y,z){

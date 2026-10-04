@@ -303,3 +303,12 @@ body.reader-open .now-playing button{height:26px;min-width:32px;font-size:12px}
 .letter-card input,.letter-card textarea{box-sizing:border-box;width:100%;padding:10px 12px;font:inherit;font-size:16px;color:#2d2318;background:#f6edda;border:1px solid #a78b62;border-radius:2px}.letter-card textarea{resize:vertical;min-height:120px;line-height:1.55}.letter-card :focus-visible{outline:3px solid #765328;outline-offset:3px}.letter-note,.letter-address{font-size:14px;color:#604b33}.letter-address a{color:#503915;overflow-wrap:anywhere}.letter-actions{display:flex;gap:10px;flex-wrap:wrap}.letter-card .primary{background:#4b3520;color:#fff1cf}.letter-card .ghost{color:#49351f;border-color:#a58a61}#letterStatus:empty{display:none}#letterStatus{font-size:14px;color:#594324}.high-contrast .letter-card{background:#fff6e2;color:#17120d}.large-text .letter-card{font-size:20px}.large-text .letter-card input,.large-text .letter-card textarea{font-size:20px}@media(max-width:520px){#correspondence{padding:10px}.letter-card{padding:20px;max-height:calc(100dvh - 20px)}.letter-card h2{font-size:29px}}
 
 body.mobile-started:has(#correspondence:not(.hidden)) #rotateDevice{display:none}
+
+/* Found paper stays legible and collapsible in the discovery journal. */
+.paper-trail{margin:14px 0 22px;padding-top:8px;border-top:1px solid #aa8c5b}
+.paper-trail h4{margin:6px 0 12px;color:#50351f;font-weight:normal;font-size:18px}
+.paper-trail details{margin:8px 0;line-height:1.6}
+.paper-trail summary{cursor:pointer;color:#76512b;padding:5px 0}
+.paper-trail summary:focus-visible{outline:2px solid #d7ad67;outline-offset:3px}
+.paper-trail p{margin:6px 0 12px;color:#4d402f}
+#mapViewer .mv-trail{padding:14px;border:1px solid #9a7a48;background:#302519;color:#f1dfbb;font-style:italic}
