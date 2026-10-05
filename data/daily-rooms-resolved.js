@@ -1,7 +1,7 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-04",
+ "updated": "2026-10-05",
  "days": {
   "2026-09-25": {
    "books": [
@@ -659,6 +659,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 289,
      "title": "The Wind in the Willows",
      "author": "Kenneth Grahame"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-07": {
+   "books": [
+    {
+     "id": 1065,
+     "title": "The Raven",
+     "author": "Edgar Allan Poe"
+    },
+    {
+     "id": 51060,
+     "title": "The Narrative of Arthur Gordon Pym of Nantucket",
+     "author": "Edgar Allan Poe"
+    },
+    {
+     "id": 2148,
+     "title": "The Works of Edgar Allan Poe — Volume 2",
+     "author": "Edgar Allan Poe"
+    },
+    {
+     "id": 1064,
+     "title": "The Masque of the Red Death",
+     "author": "Edgar Allan Poe"
+    },
+    {
+     "id": 1063,
+     "title": "The Cask of Amontillado",
+     "author": "Edgar Allan Poe"
+    },
+    {
+     "id": 32037,
+     "title": "Eureka: A Prose Poem",
+     "author": "Edgar Allan Poe"
+    },
+    {
+     "id": 2097,
+     "title": "The Sign of the Four",
+     "author": "Arthur Conan Doyle"
+    },
+    {
+     "id": 10002,
+     "title": "The House on the Borderland",
+     "author": "William Hope Hodgson"
+    },
+    {
+     "id": 14471,
+     "title": "The Empty House and Other Ghost Stories",
+     "author": "Algernon Blackwood"
+    },
+    {
+     "id": 15862,
+     "title": "Afterwhiles",
+     "author": "James Whitcomb Riley"
     }
    ],
    "missing": []
