@@ -5,8 +5,11 @@
 
   window.createChanceRoom=function(options){
     const {THREE,scene,MAT,player,interactables,bookMaterial,findBook,canvasTexture,showNotice,playSample,move,analytics,isHolding=()=>false}=options;
-    const ENTRANCE={x:36.55,z:4,yaw:-Math.PI/2};
-    const ROOM={cx:360,cz:24,w:18,d:16,h:5.2};
+    // The portrait hangs on the east wing's east wall, in the plain stretch between the Restricted Catalogue's gate (to
+    // z 0.95) and the Verne engraving (from z 3.1), facing into the wing. The room stands well clear of the Moon
+    // (x 340, z 30, radius 18) and the night railway, beyond the camera's reach from either.
+    const ENTRANCE={x:36.6,z:2.05,yaw:-Math.PI/2};
+    const ROOM={cx:500,cz:60,w:18,d:16,h:5.2};
     const IDS=[1342,84,2701,11,1661,98,174,345,5200,1232,1952,1400,4300,1080,46,768,2554,219,16328,6130,19942,55,244,514,1260,2097,1727,5740,1064,145,35,5230,236,1524,10002,389,1695,1934,2005,10897,204,215];
     let root=null,time=0,lastNeeded=-1e9,portrait=null;
     const ours=[],owned=[],blockers=[];
@@ -29,16 +32,17 @@
 
     function buildEntrance(){
       const mat=new THREE.MeshStandardMaterial({map:portraitTexture(),roughness:.88});
-      portrait=add(new THREE.PlaneGeometry(2.45,3.25),mat,ENTRANCE.x,3.25,ENTRANCE.z);
-      portrait.rotation.y=Math.PI/2;portrait.rotation.z=.028;
+      portrait=add(new THREE.PlaneGeometry(1.45,1.9),mat,ENTRANCE.x,2.45,ENTRANCE.z);
+      portrait.rotation.y=ENTRANCE.yaw;portrait.rotation.z=.028;
       mark(portrait,{type:'chance-door',title:'A portrait hung slightly crooked',author:'There is a faint draught behind the frame.',action:'EXAMINE'});
     }
 
     function plaque(parent){
       const tex=own(canvasTexture((c,w,h)=>{c.fillStyle='#18110b';c.fillRect(0,0,w,h);c.strokeStyle='#a98653';c.lineWidth=7;c.strokeRect(8,8,w-16,h-16);c.fillStyle='#e0c792';c.textAlign='center';c.font='bold 31px Georgia';c.fillText('NO ORDER GOVERNS',w/2,50);c.fillText('THESE SHELVES',w/2,88)},560,112));
-      const p=add(own(new THREE.PlaneGeometry(4.4,.88)),own(new THREE.MeshStandardMaterial({map:tex,roughness:.9})),ROOM.cx,3.7,ROOM.cz-ROOM.d/2+.03,parent);p.rotation.y=0;
+      const p=add(own(new THREE.PlaneGeometry(4.4,.88)),own(new THREE.MeshStandardMaterial({map:tex,roughness:.9})),ROOM.cx-ROOM.w/2+.22,3.1,ROOM.cz,parent);p.rotation.y=Math.PI/2;
     }
 
+    // A bookcase whose open side (local −z, where the books stand) is turned by yaw to face the room.
     function shelf(parent,x,z,yaw,entries){
       const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=yaw;parent.add(g);
       const W=7.1,H=4.7,D=.72;
@@ -59,6 +63,7 @@
       if(root)return;root=new THREE.Group();scene.add(root);
       box(ROOM.w,.35,ROOM.d,MAT.wood,ROOM.cx,-.18,ROOM.cz,root);
       box(ROOM.w,ROOM.h,.4,MAT.stone,ROOM.cx,ROOM.h/2,ROOM.cz-ROOM.d/2,root);
+      box(ROOM.w,.3,ROOM.d,MAT.darkWood,ROOM.cx,ROOM.h+.15,ROOM.cz,root);
       box(ROOM.w,ROOM.h,.4,MAT.stone,ROOM.cx,ROOM.h/2,ROOM.cz+ROOM.d/2,root);
       box(.4,ROOM.h,ROOM.d,MAT.stone,ROOM.cx-ROOM.w/2,ROOM.h/2,ROOM.cz,root);
       box(.4,ROOM.h,ROOM.d,MAT.stone,ROOM.cx+ROOM.w/2,ROOM.h/2,ROOM.cz,root);
@@ -67,11 +72,11 @@
       const lamp=new THREE.PointLight(0xffc47e,11,17,2);lamp.position.set(ROOM.cx,3.3,ROOM.cz);root.add(lamp);
       plaque(root);
       const shuffled=shuffle(IDS.map(id=>findBook(id)).filter(Boolean));
-      shelf(root,ROOM.cx-4.2,ROOM.cz-ROOM.d/2+.7,0,shuffled.slice(0,9));
-      shelf(root,ROOM.cx+4.2,ROOM.cz-ROOM.d/2+.7,0,shuffled.slice(9,18));
-      shelf(root,ROOM.cx-4.2,ROOM.cz+ROOM.d/2-.7,Math.PI,shuffled.slice(18,27));
-      shelf(root,ROOM.cx+4.2,ROOM.cz+ROOM.d/2-.7,Math.PI,shuffled.slice(27,36));
-      shelf(root,ROOM.cx+ROOM.w/2-.7,ROOM.cz,-Math.PI/2,shuffled.slice(36,45));
+      shelf(root,ROOM.cx-4.2,ROOM.cz-ROOM.d/2+.7,Math.PI,shuffled.slice(0,9));
+      shelf(root,ROOM.cx+4.2,ROOM.cz-ROOM.d/2+.7,Math.PI,shuffled.slice(9,18));
+      shelf(root,ROOM.cx-4.2,ROOM.cz+ROOM.d/2-.7,0,shuffled.slice(18,27));
+      shelf(root,ROOM.cx+4.2,ROOM.cz+ROOM.d/2-.7,0,shuffled.slice(27,36));
+      shelf(root,ROOM.cx+ROOM.w/2-.7,ROOM.cz,Math.PI/2,shuffled.slice(36,45));
       const table=box(3.4,.2,1.7,MAT.wood,ROOM.cx,.92,ROOM.cz,root);block(ROOM.cx,ROOM.cz,3.7,2);
       for(const dx of [-1.45,1.45])for(const dz of [-.65,.65])box(.14,.9,.14,MAT.darkWood,ROOM.cx+dx,.45,ROOM.cz+dz,root);
       const exit=mark(box(1.9,3.1,.16,MAT.darkWood,ROOM.cx,1.55,ROOM.cz+ROOM.d/2-.22,root),{type:'chance-exit',title:'The portrait passage',author:'The ordered library waits beyond.',action:'RETURN'});
