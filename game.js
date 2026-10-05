@@ -1701,6 +1701,16 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const preDailyAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return dailyRoom.contains(x,z)?dailyRoom.allowed(x,z):preDailyAllowed(x,z,y)};
       const preDailyInteract=interact;interact=function(){if(focus&&!selected&&dailyRoom.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preDailyInteract()};
     }
+    // The Room of Chance: a hidden portrait on the east wall opens onto shelves shuffled without theme or hierarchy.
+    const chanceRoom=window.createChanceRoom?.({THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,playSample,analytics:window.libraryAnalytics,isHolding:()=>!!selected,
+      findBook:id=>books.find(b=>b.id===id),
+      move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
+    });
+    if(chanceRoom){
+      const preChanceFloor=floorHeight;floorHeight=function(x,z){return chanceRoom.floorAt(x,z)??preChanceFloor(x,z)};
+      const preChanceAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return chanceRoom.contains(x,z)?chanceRoom.allowed(x,z):preChanceAllowed(x,z,y)};
+      const preChanceInteract=interact;interact=function(){if(focus&&!selected&&chanceRoom.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preChanceInteract()};
+    }
     // The Boathouse and Crusoe's island (crusoe-island.js): a door in the hall, a sunrise crossing, an island.
     const crusoeIsland=window.createCrusoeIsland?.({doorKit:getDoorKit(),THREE,scene,MAT,player,camera,interactables,canvasTexture,bookMaterial,renderer,ambient,moon,showNotice,playSample,sound,
       findBook:id=>books.find(b=>b.id===id),noise:(d,v,f)=>paperNoise(d,v,f),fade:o=>{returnFade.style.opacity=String(o)},analytics:window.libraryAnalytics,
@@ -1941,7 +1951,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     const preStairInteract=interact;interact=function(){if(focus&&!selected&&highStaircase.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preStairInteract()};
     const carriedBookInteract=interact;interact=function(){if(carryingBook&&focus?.userData?.type==='correspondence-desk'&&correspondenceDesk?.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}if(carryingBook&&focus?.userData?.type==='daily-exit'&&dailyRoom?.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}if(carryingBook){if(focus?.userData?.type==='seat')return sitWithBook(focus.userData);if(focus?.userData?.type==='book-table'||focus?.userData?.type==='book-shelf')return placeSelected(focus);placeOnSurface();return}return carriedBookInteract()};
     const preStairReset=resetPosition;resetPosition=function(){highStaircase.reset();return preStairReset()};
-    const preStairWorld=updateWorld;updateWorld=function(t,dt){preStairWorld(t,dt);highStaircase.update(t,dt);afterDarkExpansion.update(t,dt,reducedMotion);curiousDoors?.update(t,dt,reducedMotion);dailyRoom?.update(t);if(audiobooks?.playing)gramophone.platter.rotation.y-=dt*3.6;getDoorKit()?.update(dt);dressExitDoors(dt)};
+    const preStairWorld=updateWorld;updateWorld=function(t,dt){preStairWorld(t,dt);highStaircase.update(t,dt);afterDarkExpansion.update(t,dt,reducedMotion);curiousDoors?.update(t,dt,reducedMotion);dailyRoom?.update(t);chanceRoom?.update(t);if(audiobooks?.playing)gramophone.platter.rotation.y-=dt*3.6;getDoorKit()?.update(dt);dressExitDoors(dt)};
     const telescopeViewer=window.createTelescopeViewer?.({THREE,renderer,scene,size:lowBandwidth||lowPowerDevice?384:640,stars:()=>awakenedBooks.size,beforeRender:view=>singleCopyLibrary.sync(view.root),
       destinations:{moon:{title:'The Selenite Reading Outpost',description:'Pale dust, a brass sign, and books waiting beneath the lunar sky.',view:()=>highStaircase.preview()},mars:{title:'The Reading Room of Helium',description:'Broken columns on the red plain. Someone is still keeping the shelves.',view:()=>marsWorld?.preview()}},
       onOpen:()=>{for(const key in keys)keys[key]=false;player.vel.set(0,0,0);touchMoveX=touchMoveY=0;touchSprint=false;dragging=false;ui.pause.classList.add('hidden');document.exitPointerLock?.()},onClose:()=>{if(started)requestLookLock()}});
