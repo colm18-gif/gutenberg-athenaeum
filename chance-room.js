@@ -74,12 +74,16 @@
       const shuffled=shuffle(IDS.map(id=>findBook(id)).filter(Boolean));
       shelf(root,ROOM.cx-4.2,ROOM.cz-ROOM.d/2+.7,Math.PI,shuffled.slice(0,9));
       shelf(root,ROOM.cx+4.2,ROOM.cz-ROOM.d/2+.7,Math.PI,shuffled.slice(9,18));
-      shelf(root,ROOM.cx-4.2,ROOM.cz+ROOM.d/2-.7,0,shuffled.slice(18,27));
-      shelf(root,ROOM.cx+4.2,ROOM.cz+ROOM.d/2-.7,0,shuffled.slice(27,36));
+      shelf(root,ROOM.cx-5.1,ROOM.cz+ROOM.d/2-.7,0,shuffled.slice(18,27));
+      shelf(root,ROOM.cx+5.1,ROOM.cz+ROOM.d/2-.7,0,shuffled.slice(27,36));
       shelf(root,ROOM.cx+ROOM.w/2-.7,ROOM.cz,Math.PI/2,shuffled.slice(36,45));
       const table=box(3.4,.2,1.7,MAT.wood,ROOM.cx,.92,ROOM.cz,root);block(ROOM.cx,ROOM.cz,3.7,2);
       for(const dx of [-1.45,1.45])for(const dz of [-.65,.65])box(.14,.9,.14,MAT.darkWood,ROOM.cx+dx,.45,ROOM.cz+dz,root);
-      const exit=mark(box(1.9,3.1,.16,MAT.darkWood,ROOM.cx,1.55,ROOM.cz+ROOM.d/2-.22,root),{type:'chance-exit',title:'The portrait passage',author:'The ordered library waits beyond.',action:'RETURN'});
+      // The way back: the portrait's lit reverse, in a clear gap between the south bookcases, facing the room.
+      const backTex=own(canvasTexture((c,w,h)=>{const g=c.createRadialGradient(w/2,h*.42,20,w/2,h*.42,w*.75);g.addColorStop(0,'#f6dca0');g.addColorStop(.55,'#8a6236');g.addColorStop(1,'#2a1a10');c.fillStyle=g;c.fillRect(0,0,w,h);
+        c.strokeStyle='#d4b77d';c.lineWidth=16;c.strokeRect(14,14,w-28,h-28);c.fillStyle='#1c120b';c.textAlign='center';c.font='bold 33px Georgia';c.fillText('THE WAY BACK',w/2,h*.82);c.font='italic 23px Georgia';c.fillText('to the ordered library',w/2,h*.89)},320,520));
+      box(2.3,3.5,.12,MAT.darkWood,ROOM.cx,1.75,ROOM.cz+ROOM.d/2-.27,root);
+      const exit=mark(add(own(new THREE.PlaneGeometry(1.9,3.1)),own(new THREE.MeshStandardMaterial({map:backTex,emissive:0xffffff,emissiveMap:backTex,emissiveIntensity:.55,roughness:.8})),ROOM.cx,1.65,ROOM.cz+ROOM.d/2-.34,root),{type:'chance-exit',title:'The portrait passage',author:'The ordered library waits beyond.',action:'RETURN'});
       exit.rotation.y=Math.PI;
       lastNeeded=time;
     }
@@ -87,11 +91,13 @@
     function contains(x,z){return x>ROOM.cx-ROOM.w/2&&x<ROOM.cx+ROOM.w/2&&z>ROOM.cz-ROOM.d/2&&z<ROOM.cz+ROOM.d/2}
     function floorAt(x,z){return contains(x,z)?0:null}
     function allowed(x,z){if(!contains(x,z))return false;const r=player.radius||.42;if(x-r<ROOM.cx-ROOM.w/2+.45||x+r>ROOM.cx+ROOM.w/2-.45||z-r<ROOM.cz-ROOM.d/2+.45||z+r>ROOM.cz+ROOM.d/2-.45)return false;return !blockers.some(b=>x+r>b.minX&&x-r<b.maxX&&z+r>b.minZ&&z-r<b.maxZ)}
-    function enter(){buildRoom();move(ROOM.cx,ROOM.cz+ROOM.d/2-1.5,0);playSample?.('doorOpen',.75,.9);showNotice('The Room of Chance. No theme, no sequence, no recommendation: only whatever happened to land beside whatever else.',8);analytics?.track('Room Explored',{room:'room-of-chance'})}
-    function leave(){move(ENTRANCE.x-1.9,ENTRANCE.z,Math.PI/2);playSample?.('doorOpen',.7,1);showNotice('The portrait settles back into place.',3)}
+    function enter(){buildRoom();move(ROOM.cx,ROOM.cz+ROOM.d/2-1.5,0);playSample?.('doorOpen',.75,.9);showNotice('The Room of Chance. No theme, no sequence, no recommendation: only whatever happened to land beside whatever else. The way back is the lit passage behind you.',9);analytics?.track('Room Explored',{room:'room-of-chance'})}
+    function leave(withBook=false){move(ENTRANCE.x-1.9,ENTRANCE.z,Math.PI/2);playSample?.('doorOpen',.7,1);showNotice(withBook?'You leave the book where chance put it, and the portrait settles back into place.':'The portrait settles back into place.',withBook?5:3)}
+    // Standing at the way back (in the gap between the south bookcases): a reader carrying a book can leave from here too.
+    function atExit(x=player.pos.x,z=player.pos.z){return !!root&&Math.abs(x-ROOM.cx)<1.6&&z>ROOM.cz+ROOM.d/2-2.6&&contains(x,z)}
     function interact(object){const d=object?.userData;if(d?.type==='chance-door'){enter();return true}if(d?.type==='chance-exit'){leave();return true}return false}
     function update(t){time=t;if(contains(player.pos.x,player.pos.z))lastNeeded=t}
     buildEntrance();
-    return {contains,floorAt,allowed,interact,update,enter,room:ROOM,entrance:ENTRANCE,get built(){return !!root},zoneAt:(x,z)=>contains(x,z)?'room-of-chance':null};
+    return {contains,floorAt,allowed,interact,update,enter,leave,atExit,room:ROOM,entrance:ENTRANCE,get built(){return !!root},zoneAt:(x,z)=>contains(x,z)?'room-of-chance':null};
   };
 })();
