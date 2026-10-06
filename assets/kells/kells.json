@@ -1,7 +1,25 @@
 {
+ "005r": {
+  "file": "KellsFol005rCanonTable.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:KellsFol005rCanonTable.jpg",
+  "fit": "cover",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
  "007v": {
   "file": "KellsFol007vMadonnaChild.jpg",
   "page": "https://commons.wikimedia.org/wiki/File:KellsFol007vMadonnaChild.jpg",
+  "fit": "cover",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
+ "008r": {
+  "file": "KellsFol008rBrevCausMatt.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:KellsFol008rBrevCausMatt.jpg",
   "fit": "cover",
   "artist": "",
   "date": "",
@@ -80,9 +98,27 @@
   "licence": "Public domain",
   "description": ""
  },
+ "183r": {
+  "file": "KellsFol183rEratAutem.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:KellsFol183rEratAutem.jpg",
+  "fit": "contain",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
  "188r": {
   "file": "KellsFol188rQuoniam.jpg",
   "page": "https://commons.wikimedia.org/wiki/File:KellsFol188rQuoniam.jpg",
+  "fit": "cover",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
+ "200r": {
+  "file": "KellsFol200rGeneolgyOfChrist.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:KellsFol200rGeneolgyOfChrist.jpg",
   "fit": "cover",
   "artist": "",
   "date": "",
@@ -98,6 +134,15 @@
   "licence": "Public domain",
   "description": ""
  },
+ "203r": {
+  "file": "KellsFol203rIesusAutem.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:KellsFol203rIesusAutem.jpg",
+  "fit": "cover",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
  "292r": {
   "file": "KellsFol292rIncipJohn.jpg",
   "page": "https://commons.wikimedia.org/wiki/File:KellsFol292rIncipJohn.jpg",
@@ -106,5 +151,14 @@
   "date": "circa 800",
   "licence": "Public domain",
   "description": "Book of Kells , Folio 292r, Incipit to John. In principio erat verbum."
+ },
+ "309r": {
+  "file": "KellsFol309r.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:KellsFol309r.jpg",
+  "fit": "cover",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": "Image of page from the Book of Kells, a 1200 year old book in public domain. en:Category:Illuminated manuscript images"
  }
 }

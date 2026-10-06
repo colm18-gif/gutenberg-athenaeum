@@ -1770,16 +1770,17 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     }
     // The Irish Room (irish-room.js), behind a green Georgian door in the Grand Hall's south wall: myth and legend, the
     // Revival, Irish writers and a small shelf of books in Irish, round a turf fire.
-    // The fine books (fine-books.js): the Irish Room's Book of Kells under a sod by the hearth (kells-book.js), and the
+    // The fine books (fine-books.js): the Irish Room's Book of Kells on show under glass (kells-book.js) and the Book of
+    // Durrow under a sod by the hearth (durrow-book.js), and the
     // Periodicals Room's Kelmscott Chaucer on the shelf of an Albion press (kelmscott-book.js). While one is open the world
     // is not drawn or walked; the book draws its own scene with the same renderer.
     const fineBookOptions={THREE,renderer,playSample,sound,
       onOpen:()=>{dragging=false;for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;player.vel.set(0,0,0);document.exitPointerLock?.();document.body.classList.add('fine-book-open')},
       onClose:()=>{document.body.classList.remove('fine-book-open');requestLookLock()}};
-    const kellsBook=window.createKellsBook?.(fineBookOptions),kelmscottBook=window.createKelmscottBook?.(fineBookOptions);
-    const fineBookOpen=()=>!!(kellsBook?.isOpen||kelmscottBook?.isOpen);
+    const kellsBook=window.createKellsBook?.(fineBookOptions),durrowBook=window.createDurrowBook?.(fineBookOptions),kelmscottBook=window.createKelmscottBook?.(fineBookOptions);
+    const fineBookOpen=()=>!!(kellsBook?.isOpen||durrowBook?.isOpen||kelmscottBook?.isOpen);
     {const preFineCovered=worldIsCovered;worldIsCovered=function(){return fineBookOpen()||preFineCovered()};const preFineActive=gameActive;gameActive=function(){return !fineBookOpen()&&preFineActive()}}
-    const irishRoom=window.createIrishRoom?.({doorKit:getDoorKit(),THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,kells:kellsBook,
+    const irishRoom=window.createIrishRoom?.({doorKit:getDoorKit(),THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,kells:kellsBook,durrow:durrowBook,
       findBook:id=>books.find(b=>b.id===id),arrivals:{myth:arrivalIds('irish-myth'),revival:arrivalIds('irish-revival'),writers:arrivalIds('irish-writers'),gaeilge:arrivalIds('irish-gaeilge')},
       analytics:window.libraryAnalytics,isHolding:()=>!!selected,
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}

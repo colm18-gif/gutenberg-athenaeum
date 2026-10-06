@@ -4,9 +4,10 @@
 // hearth and an ogham stone by the door, each with a card. Like the other rooms behind doors, nothing is built until
 // the reader walks up to it, and it is freed a little while after they leave.
 //
+// In the middle of the room, under glass, the facsimile of the Book of Kells (kells-book.js) lies open for anyone to turn.
 // The room's secret: by the hearth one sod has fallen from the turf creel, cut cleaner than the rest. Under it, in a
-// hollow in the boards, is a facsimile of the Book of Kells (kells-book.js), as the great Gospel of Colum Cille was
-// found under a sod in 1007. Once found it stays found (athenaeum-kells-found; ?kells shows it at once).
+// hollow in the boards, is the Book of Kells's elder, the Book of Durrow (durrow-book.js), hidden as the great Gospel of
+// Colum Cille was found under a sod in 1007. Once found it stays found (athenaeum-durrow-found; ?durrow shows it).
 (function(){
   'use strict';
 
@@ -28,7 +29,7 @@
     sign:['Seomra na hÉireann','The Irish Room: the old stories, the writers of the Revival and the novelists, and a small shelf of books in Irish. Fáilte romhat, you are welcome.']};
 
   window.createIrishRoom=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,move,analytics,isHolding=()=>false,registerSeat=null,doorKit=null,kells=null,storage=window.localStorage}=options;
+    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,move,analytics,isHolding=()=>false,registerSeat=null,doorKit=null,kells=null,durrow=null,storage=window.localStorage}=options;
     // In the Grand Hall's south wall, between the Boathouse door and the pillar.
     const DOOR={x:-8.3,z:30.45,yaw:Math.PI};
     const ROOM={cx:-330,cz:-205,w:16,d:14,h:5};
@@ -37,8 +38,8 @@
     const DOOR_LOOK={style:'painted',color:0x1d5a3c,fanColor:0xffb35c,width:1.9,height:3.1};
     const through=(data,go)=>doorKit&&data.kit?doorKit.pass(data.kit,data,go):go();
     let root=null,time=0,lastNeeded=-1e9,fire=null,secret=null;
-    const FOUND_KEY='athenaeum-kells-found';
-    const wasFound=()=>{try{return storage?.getItem(FOUND_KEY)==='1'||/[?&]kells\b/.test(location.search)}catch(e){return false}};
+    const FOUND_KEY='athenaeum-durrow-found';
+    const wasFound=()=>{try{return storage?.getItem(FOUND_KEY)==='1'||/[?&]durrow\b/.test(location.search)}catch(e){return false}};
     const owned=[],ours=[],books=[],blockers=[];
     const own=thing=>{owned.push(thing);return thing};
     function add(geometry,material,x,y,z,parent){const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);parent.add(m);return m}
@@ -93,7 +94,8 @@
       const straw=own(new THREE.MeshStandardMaterial({color:0xc9a860,roughness:.9})),cross=new THREE.Group();cross.position.set(cx,3.3,fz+.23);root.add(cross);
       for(let k=0;k<4;k++){const arm=new THREE.Group();arm.rotation.z=k*Math.PI/2;cross.add(arm);for(const off of [-.045,0,.045])add(own(new THREE.BoxGeometry(.04,.5,.04)),straw,off+.05,.3,0,arm);add(own(new THREE.BoxGeometry(.16,.05,.05)),straw,.05,.5,0,arm)}// each arm off-centre, so the cross turns like a pinwheel
       const core=add(own(new THREE.BoxGeometry(.2,.2,.06)),straw,0,0,.01,cross);core.rotation.z=Math.PI/4;mark(core,card('cross'));
-      if(kells)buildSecret(cx,fz);
+      if(kells)buildShowcase(cx,cz+.4);
+      if(durrow)buildSecret(cx,fz);
       // The room's sign above the hearth.
       mark(sign(root,'SEOMRA NA hÉIREANN','The Irish Room',3.2,.6,cx,4.3,fz+.24),card('sign'));
       // Two chairs by the fire, the library's own seats, each opening one of the room's books.
@@ -132,6 +134,34 @@
       if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,label:'THE GRAND HALL',own,...DOOR_LOOK}))mark(box(1.9,3.1,.16,own(new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.7})),cx,1.55,cz+d/2-.2,root),exit);
       scene.add(root);
     }
+    // The Book of Kells on show in the middle of the room: a glass case on a plinth, the facsimile lying open in a cradle at
+    // a real opening of the manuscript, folio 32v (Christ enthroned) facing 33r (the carpet page), lit from within.
+    function buildShowcase(x,z){
+      const g=new THREE.Group();g.position.set(x,0,z);root.add(g);
+      const brass=MAT.brass||own(new THREE.MeshStandardMaterial({color:0xb08a3e,metalness:.7,roughness:.35}));
+      const leaves=kells.folios?Object.keys(kells.folios).length:0;
+      const data={type:'irish-kells',title:'The Book of Kells, in facsimile',author:`Leabhar Cheanannais, open at Christ enthroned and the carpet page.${leaves?` ${leaves} of its pages, on board leaves.`:''}`,action:'OPEN'};
+      const plinth=box(1.5,.95,1,MAT.darkWood,0,.475,0,g);box(1.6,.06,1.1,MAT.darkWood,0,.97,0,g);box(1.6,.08,1.1,MAT.darkWood,0,.04,0,g);
+      // The open book: two pages in a cradle, each sloping down from the spine.
+      const loader=THREE.TextureLoader?new THREE.TextureLoader():null,pageW=.52,pageH=.68;
+      const page=(key,side)=>{const map=loader?own(loader.load(`assets/kells/${key}.jpg`)):null;if(map&&THREE.SRGBColorSpace)map.colorSpace=THREE.SRGBColorSpace;
+        const mat=own(new THREE.MeshStandardMaterial({color:0xd6cdbb,map,emissive:0xffffff,emissiveMap:map,emissiveIntensity:.1,roughness:.9}));
+        const hinge=new THREE.Group();hinge.position.set(side*.01,1.09,0);hinge.rotation.z=side*-.16;g.add(hinge);
+        const m=add(own(new THREE.PlaneGeometry(pageW,pageH)),mat,side*pageW/2,0,0,hinge);m.rotation.x=-Math.PI/2;return m};
+      const left=page('032v',-1),right=page('033r',1);
+      for(const side of [-1,1]){const wedge=box(.56,.08,.7,MAT.darkWood,side*.28,.95,0,g);wedge.rotation.z=side*-.16}
+      // The glass, with brass at its edges.
+      const glass=own(new THREE.MeshStandardMaterial({color:0xdfeee8,transparent:true,opacity:.045,roughness:.05,depthWrite:false}));
+      const pane=box(1.42,.5,1,glass,0,1.25,0,g);
+      for(const [sx,sz] of [[-1,-1],[1,-1],[-1,1],[1,1]])box(.03,.5,.03,brass,sx*.71,1.25,sz*.5,g);
+      for(const sz of [-1,1])box(1.45,.03,.03,brass,0,1.5,sz*.5,g);for(const sx of [-1,1])box(.03,.03,1.03,brass,sx*.71,1.5,0,g);
+      // Its card, on the front of the plinth.
+      const map=own(canvasTexture((c,W,H)=>{c.fillStyle='#14281c';c.fillRect(0,0,W,H);knot(c,W,H,'#c9a45a');c.fillStyle='#f1e2b8';c.textAlign='center';c.font='bold 34px Georgia';c.fillText('LEABHAR CHEANANNAIS',W/2,64);
+        c.font='italic 24px Georgia';c.fillText('The Book of Kells, about the year 800',W/2,100);c.font='20px Georgia';c.fillText('A facsimile. Trinity College Dublin, MS 58',W/2,134)},560,160));
+      const label=add(own(new THREE.PlaneGeometry(1.05,.3)),own(new THREE.MeshStandardMaterial({map,emissive:0x3a2a12,emissiveIntensity:.3,roughness:.85})),0,.7,.505,g);
+      for(const part of [plinth,pane,left,right,label])mark(part,data);
+      block(x,z,1.8,1.3);
+    }
     // A creel of turf beside the hearth, a sod fallen from it, and under the sod a hollow in the boards with the book.
     function buildSecret(cx,fz){
       const turf=own(new THREE.MeshStandardMaterial({color:0x3a2616,roughness:1})),wicker=own(new THREE.MeshStandardMaterial({color:0x4e361c,roughness:.95})),dark=own(new THREE.MeshStandardMaterial({color:0x120b06,roughness:1}));
@@ -148,8 +178,8 @@
       const hollow=new THREE.Group();hollow.position.set(at.x,0,at.z);hollow.visible=found;root.add(hollow);
       const pit=add(own(new THREE.PlaneGeometry(.84,1.08)),dark,0,.004,0,hollow);pit.rotation.x=-Math.PI/2;
       for(const [w,d,x,z] of [[.92,.06,0,-.57],[.92,.06,0,.57],[.06,1.08,-.45,0],[.06,1.08,.45,0]])add(own(new THREE.BoxGeometry(w,.03,d)),MAT.darkWood,x,.012,z,hollow);
-      const closed=own(kells.closedBook(.66));closed.group.position.set(0,.006,0);closed.group.rotation.y=.06;hollow.add(closed.group);
-      const bookData={type:'irish-kells',title:'The Book of Kells, in facsimile',author:'Leabhar Cheanannais, under a sod, as the great Gospel of Colum Cille was found in 1007. Its pages are board.',action:'OPEN'};
+      const closed=own(durrow.closedBook(.5));closed.group.position.set(0,.006,0);closed.group.rotation.y=.06;hollow.add(closed.group);
+      const bookData={type:'irish-durrow',title:'The Book of Durrow, in facsimile',author:'Leabhar Darú, the older Gospel book of Colum Cille’s community, hidden under a sod as the Book of Kells once was. Its pages are board.',action:'OPEN'};
       const reveal=()=>{for(const part of closed.parts)mark(part,bookData)};if(found)reveal();
       const sod=add(own(new THREE.BoxGeometry(.56,.17,.34)),turf,0,0,0,root);
       const rest={x:at.x,y:.085,z:at.z,ry:.4,rz:.06},aside={x:at.x-.62,y:.085,z:at.z+.55,ry:1.3,rz:0};
@@ -162,8 +192,8 @@
       const i=interactables.indexOf(secret.sod);if(i>=0)interactables.splice(i,1);secret.sod.userData={};
       playSample?.('stoneStep0',.35,.7);
       try{storage?.setItem(FOUND_KEY,'1')}catch(e){}
-      analytics?.track('Secret Found',{secret:'irish-kells'});
-      showNotice('Under the sod there is a book. In 1007 the great Gospel of Colum Cille was stolen by night from the church at Kells, and found two months and twenty nights later, its gold torn away and a sod over it. This one is a facsimile, and its pages are board.',14);
+      analytics?.track('Secret Found',{secret:'irish-durrow'});
+      showNotice('Under the sod there is a book: the Book of Durrow, older than Kells by a century or more and the earliest of the great Irish Gospel books to survive, painted in the second half of the seventh century. In the 1600s a farmer who kept it was said to pour water over it to cure his sick cattle. This one is a facsimile, and its pages are board.',15);
     }
     // A harp on a low stand: soundbox, neck and forepillar, and its strings.
     function harp(x,z){
@@ -196,7 +226,7 @@
     // ---------- doing things ----------
     function enter(){
       activate();move(ROOM.cx,ROOM.cz+ROOM.d/2-1.4,0);playSample?.('doorOpen',.8,.96);
-      showNotice('Seomra na hÉireann, the Irish Room. A turf fire, the old stories and the writers of Ireland, and a shelf of books in Irish. Fáilte romhat.',9);
+      showNotice('Seomra na hÉireann, the Irish Room. A turf fire, the old stories and the writers of Ireland, a shelf of books in Irish, and under glass, the Book of Kells, open for you to turn. Fáilte romhat.',10);
       analytics?.track('Room Explored',{room:'irish-room'});
     }
     function interact(object){
@@ -206,6 +236,7 @@
       if(data.type==='irish-card'){showNotice(`${data.title}: ${data.author}`,9);return true}
       if(data.type==='irish-sod'){liftSod();return true}
       if(data.type==='irish-kells'){kells?.open();return true}
+      if(data.type==='irish-durrow'){durrow?.open();return true}
       return false;
     }
 
@@ -226,6 +257,6 @@
       if(fire&&inside&&!reduced){for(const f of fire.flames)f.mesh.scale.y=1+Math.sin(t*8+f.phase)*.16;fire.light.intensity=6+Math.sin(t*5)*.7+Math.sin(t*11.3)*.3}
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,unload,catalogue,door:DOOR,room:ROOM,groups:GROUPS,records:RECORDS,get built(){return !!root},get books(){return books.slice()},get kellsFound(){return !!secret&&secret.lift>0},zoneAt:(x,z)=>contains(x,z)?'irish-room':null};
+    return {contains,floorAt,allowed,interact,update,enter,unload,catalogue,door:DOOR,room:ROOM,groups:GROUPS,records:RECORDS,get built(){return !!root},get books(){return books.slice()},get durrowFound(){return !!secret&&secret.lift>0},zoneAt:(x,z)=>contains(x,z)?'irish-room':null};
   };
 })();

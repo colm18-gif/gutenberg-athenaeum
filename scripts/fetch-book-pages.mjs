@@ -4,6 +4,7 @@
 // cannot reach Commons, so the Book images workflow runs this whenever it changes. Pages already downloaded are kept.
 //
 //   kells      The Irish Room's Book of Kells (kells-book.js): leaves of about 330 by 250 mm, on vellum.
+//   durrow     The Irish Room's Book of Durrow (durrow-book.js): leaves of about 245 by 145 mm, on vellum.
 //   kelmscott  The Periodicals Room's Kelmscott Chaucer (kelmscott-book.js): folio pages of about 425 by 292 mm, on
 //              Morris's handmade paper.
 //
@@ -24,7 +25,9 @@ export const BOOKS = {
     categories: ['Category:Book of Kells'], must: /kells/i, pattern: folioPattern,
     search: key => `Book of Kells folio ${Number(key.slice(0, 3))}${key[3]}`,
     pages: [
+  { key: '005r', files: ['KellsFol005rCanonTable.jpg', 'KellsFol005rCanon.jpg'] },
   { key: '007v', files: ['KellsFol007vMadonnaChild.jpg', 'KellsFol007vVirginChild.jpg', 'Meister des Book of Kells 001.jpg'] },
+  { key: '008r', files: ['KellsFol008rBrevCausMatt.jpg'] },
   { key: '027v', files: ['KellsFol027v4Evang.jpg', 'KellsFol027v4Evangelists.jpg'] },
   { key: '028v', files: ['KellsFol028vMatthew.jpg', 'KellsFol028vStMatthew.jpg', 'KellsFol028vPortraitMatthew.jpg'] },
   { key: '029r', files: ['KellsFol029rIncipitMatthew.jpg', 'KellsFol029rLiberGenerationis.jpg', 'KellsFol029rIncipMatt.jpg'] },
@@ -33,9 +36,29 @@ export const BOOKS = {
   { key: '034r', files: ['KellsFol034rChiRhoMonogram.jpg', 'KellsFol034rChiRho.jpg'] },
   { key: '114r', files: ['KellsFol114rArrest.jpg', 'KellsFol114rChristArrest.jpg', 'KellsFol114rArrestChrist.jpg'] },
   { key: '130r', files: ['KellsFol130rIncipitMark.jpg', 'KellsFol130rInitium.jpg'] },
+  { key: '183r', files: ['KellsFol183rEratAutem.jpg', 'KellsFol183rErat.jpg'] },
   { key: '188r', files: ['KellsFol188rQuoniam.jpg'] },
+  { key: '200r', files: ['KellsFol200rGenealogy.jpg', 'KellsFol200rQuiFuit.jpg'] },
   { key: '202v', files: ['KellsFol202vTemptation.jpg', 'KellsFol202vTemptationChrist.jpg'] },
-  { key: '292r', files: ['KellsFol292rIncipJohn.jpg', 'KellsFol292rIncipitJohn.jpg', 'KellsFol292rInPrincipio.jpg'] }
+  { key: '203r', files: ['KellsFol203rIesusAutem.jpg'] },
+  { key: '292r', files: ['KellsFol292rIncipJohn.jpg', 'KellsFol292rIncipitJohn.jpg', 'KellsFol292rInPrincipio.jpg'] },
+  { key: '309r', files: ['KellsFol309r.jpg'] }
+    ]
+  },
+  // The Irish Room's secret since the Book of Kells went on show: the Book of Durrow (Trinity College Dublin, MS 57), the
+  // older Gospel book of Colum Cille's community, leaves of about 245 by 145 mm. Its pages were chosen from a survey of Commons.
+  durrow: {
+    dir: 'assets/durrow', manifest: 'durrow.json', width: 1000, height: 1690, paper: '#e2d2ae',
+    categories: ['Category:Book of Durrow'], must: /durrow/i, pattern: folioPattern,
+    search: key => `Book of Durrow folio ${Number(key.slice(0, 3))}${key[3]}`,
+    survey: ['Book of Durrow', 'Durrow carpet page', 'Durrow folio'], surveyOnly: /durrow/i,
+    // Chosen from the survey: the man, the opening of Mark, the calf, and two carpet pages.
+    pages: [
+  { key: '021v', files: ['Meister des Book of Durrow 001.jpg', 'DurrowFol21vMan.jpg'] },
+  { key: '086r', files: ['BookDurrowInitMark86r.jpg', 'BookOfDurrowBeginMarkGospel.jpg'] },
+  { key: '124v', files: ['Book of Durrow - TCL Ms57 (Ox).jpg'] },
+  { key: '125v', files: ['BookOfDurrowFolio125vCarpetPage.jpg'] },
+  { key: '192v', files: ['Book of Durrow folio 192v.png', 'Meister des Book of Durrow 002.jpg'] }
     ]
   },
   kelmscott: {
@@ -159,6 +182,29 @@ async function survey(name, book) {
   }
   console.log(`=== ${pages.length} files, ${pages.filter(usable).length} usable ===`);
   if (book.openings) await openingSheets(book);
+  if (book.thumbs) await thumbSheets(book, pages.filter(p => (p.imageinfo?.[0]?.height || 0) >= 900 && /jpeg|png|tiff/.test(p.imageinfo?.[0]?.mime || '')));
+}
+// Survey pictures of single files, numbered, eight to a sheet with their names, to be looked at and then removed.
+async function thumbSheets(book, pages) {
+  const OUT = path.join(root, book.dir, 'survey');
+  await mkdir(OUT, { recursive: true });
+  const TW = 300, TH = 440, PER = 8;
+  for (let k = 0; k < pages.length; k += PER) {
+    const cells = [], group = pages.slice(k, k + PER);
+    for (const [n, page] of group.entries()) {
+      const left = (n % 4) * TW, top = Math.floor(n / 4) * (TH + 40);
+      try {
+        const thumb = (await api({ prop: 'imageinfo', iiprop: 'url', iiurlwidth: '300', titles: page.title })).query.pages[0].imageinfo[0].thumburl;
+        const r = await fetch(thumb, { headers: HEADERS });
+        cells.push({ input: await sharp(Buffer.from(await r.arrayBuffer())).resize({ width: TW - 8, height: TH, fit: 'inside' }).toBuffer(), left: left + 4, top: top + 40 });
+      } catch (error) { console.log(`  ${page.title}: ${error.message}`) }
+      const label = `${k + n + 1}. ${page.title.replace(/^File:/, '').slice(0, 34)}`.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+      cells.push({ input: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${TW}" height="36"><text x="4" y="24" font-size="15" font-family="DejaVu Sans" fill="#ff0">${label}</text></svg>`), left, top });
+    }
+    const name = `files-${String(k / PER + 1).padStart(2, '0')}.jpg`;
+    await sharp({ create: { width: TW * 4, height: (TH + 40) * Math.ceil(group.length / 4), channels: 3, background: '#222' } }).composite(cells).jpeg({ quality: 78 }).toFile(path.join(OUT, name));
+    console.log(`${name}: ${group.map((p, n) => `${k + n + 1}=${p.title.replace(/^File:/, '')}`).join(' | ')}`);
+  }
 }
 // Survey pictures, committed to <dir>/survey to be looked at and then removed: openings of a scanned book drawn side by
 // side, three to a sheet, large enough to read their headings.
