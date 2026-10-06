@@ -4,6 +4,7 @@
 // cannot reach Commons, so the Book images workflow runs this whenever it changes. Pages already downloaded are kept.
 //
 //   kells      The Irish Room's Book of Kells (kells-book.js): leaves of about 330 by 250 mm, on vellum.
+//   durrow     The Irish Room's Book of Durrow (durrow-book.js): leaves of about 245 by 145 mm, on vellum.
 //   kelmscott  The Periodicals Room's Kelmscott Chaucer (kelmscott-book.js): folio pages of about 425 by 292 mm, on
 //              Morris's handmade paper.
 //
@@ -24,6 +25,7 @@ export const BOOKS = {
     categories: ['Category:Book of Kells'], must: /kells/i, pattern: folioPattern,
     search: key => `Book of Kells folio ${Number(key.slice(0, 3))}${key[3]}`,
     pages: [
+  { key: '005r', files: ['KellsFol005rCanonTable.jpg', 'KellsFol005rCanon.jpg'] },
   { key: '007v', files: ['KellsFol007vMadonnaChild.jpg', 'KellsFol007vVirginChild.jpg', 'Meister des Book of Kells 001.jpg'] },
   { key: '027v', files: ['KellsFol027v4Evang.jpg', 'KellsFol027v4Evangelists.jpg'] },
   { key: '028v', files: ['KellsFol028vMatthew.jpg', 'KellsFol028vStMatthew.jpg', 'KellsFol028vPortraitMatthew.jpg'] },
@@ -32,11 +34,27 @@ export const BOOKS = {
   { key: '033r', files: ['KellsFol033rCarpetPage.jpg', 'KellsFol033rCarpet.jpg'] },
   { key: '034r', files: ['KellsFol034rChiRhoMonogram.jpg', 'KellsFol034rChiRho.jpg'] },
   { key: '114r', files: ['KellsFol114rArrest.jpg', 'KellsFol114rChristArrest.jpg', 'KellsFol114rArrestChrist.jpg'] },
+  { key: '124r', files: ['KellsFol124rTuncCrucifixerant.jpg', 'KellsFol124rTunc.jpg'] },
+  { key: '129v', files: ['KellsFol129v4Evang.jpg', 'KellsFol129v4Evangelists.jpg'] },
   { key: '130r', files: ['KellsFol130rIncipitMark.jpg', 'KellsFol130rInitium.jpg'] },
+  { key: '183r', files: ['KellsFol183rEratAutem.jpg', 'KellsFol183rErat.jpg'] },
   { key: '188r', files: ['KellsFol188rQuoniam.jpg'] },
+  { key: '200r', files: ['KellsFol200rGenealogy.jpg', 'KellsFol200rQuiFuit.jpg'] },
   { key: '202v', files: ['KellsFol202vTemptation.jpg', 'KellsFol202vTemptationChrist.jpg'] },
+  { key: '285r', files: ['KellsFol285rUnaAutem.jpg', 'KellsFol285rUnaAutemSabbati.jpg'] },
+  { key: '290v', files: ['KellsFol290v4Evang.jpg', 'KellsFol290v4Evangelists.jpg'] },
+  { key: '291v', files: ['KellsFol291vJohn.jpg', 'KellsFol291vStJohn.jpg', 'KellsFol291vPortraitJohn.jpg'] },
   { key: '292r', files: ['KellsFol292rIncipJohn.jpg', 'KellsFol292rIncipitJohn.jpg', 'KellsFol292rInPrincipio.jpg'] }
     ]
+  },
+  // The Irish Room's secret since the Book of Kells went on show: the Book of Durrow (Trinity College Dublin, MS 57), the
+  // older Gospel book of Colum Cille's community, leaves of about 245 by 145 mm. Surveyed first, to choose its pages.
+  durrow: {
+    dir: 'assets/durrow', manifest: 'durrow.json', width: 1000, height: 1690, paper: '#e2d2ae',
+    categories: ['Category:Book of Durrow'], must: /durrow/i, pattern: folioPattern,
+    search: key => `Book of Durrow folio ${Number(key.slice(0, 3))}${key[3]}`,
+    survey: ['Book of Durrow', 'Durrow carpet page', 'Durrow folio'], surveyOnly: /durrow/i,
+    pages: []
   },
   kelmscott: {
     dir: 'assets/kelmscott', manifest: 'kelmscott.json', width: 1190, height: 1730, paper: '#ece4d0',
