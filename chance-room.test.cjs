@@ -37,3 +37,15 @@ test('the room stands clear of the Moon, has its books facing in, and is reached
   a.r.interact(a.interactables.find(o=>o.userData.type==='chance-exit'));assert(Math.abs(a.player.pos.z-a.r.entrance.z)<.01&&a.player.pos.x<a.r.entrance.x,'back out in front of the portrait');
   assert.match(game,/chance:'chance-room'/);assert.match(game,/'chance-room':chanceRoom&&\(\(\)=>chanceRoom\.enter\(\)\)/);
 });
+
+test('the way back is lit, in a clear gap, works while carrying a book, and the room is named in the journal',()=>{
+  const a=room();a.r.enter();const {room:R}=a.r,exit=a.interactables.find(o=>o.userData.type==='chance-exit');
+  assert(exit.material.emissiveMap,'the way back glows');assert(Math.abs(exit.position.x-R.cx)<.01&&exit.position.z>R.cz+R.d/2-.6,'on the south wall, behind the arrival point');
+  const south=[...new Set(a.interactables.filter(o=>o.userData.chance).map(b=>b.parent))].filter(g=>g.position.z>R.cz);
+  for(const g of south)assert(Math.abs(g.position.x-R.cx)-7.1/2-.22>.8,'the bookcases either side leave the passage clear');
+  assert(a.r.allowed(R.cx,R.cz+R.d/2-1.3)&&a.r.atExit(R.cx,R.cz+R.d/2-1.3),'a reader can stand at the way back');assert(!a.r.atExit(R.cx,R.cz),'but not from the middle of the room');
+  assert.match(a.notices.at(-1),/way back/);
+  assert.match(game,/if\(carryingBook&&chanceRoom\?\.atExit\(\)\)\{returnSelected\(false\);chanceRoom\.leave\(true\)/,'carrying a book does not trap the reader');
+  assert.match(game,/\['chance-room','The Room of Chance'\]/);assert.match(game,/chanceRoom\?\.contains\(x,z\)\)return 'chance-room'/);
+  assert.match(fs.readFileSync('room-ambience.js','utf8'),/'chance-room':\{/);
+});
