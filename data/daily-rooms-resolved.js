@@ -1,7 +1,7 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-05",
+ "updated": "2026-10-06",
  "days": {
   "2026-09-25": {
    "books": [
@@ -714,6 +714,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 15862,
      "title": "Afterwhiles",
      "author": "James Whitcomb Riley"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-08": {
+   "books": [
+    {
+     "id": 21,
+     "title": "Aesop's Fables",
+     "author": "Aesop"
+    },
+    {
+     "id": 50316,
+     "title": "The Fables of La Fontaine",
+     "author": "Jean de La Fontaine"
+    },
+    {
+     "id": 2781,
+     "title": "Just So Stories",
+     "author": "Rudyard Kipling"
+    },
+    {
+     "id": 6438,
+     "title": "Fables for the Frivolous",
+     "author": "Guy Wetmore Carryl"
+    },
+    {
+     "id": 58585,
+     "title": "The Prophet",
+     "author": "Kahlil Gibran"
+    },
+    {
+     "id": 1597,
+     "title": "Hans Andersen's Fairy Tales",
+     "author": "H. C. Andersen"
+    },
+    {
+     "id": 25322,
+     "title": "Fables in Slang",
+     "author": "George Ade"
+    },
+    {
+     "id": 2591,
+     "title": "Grimms' Fairy Tales",
+     "author": "Jacob Grimm"
+    },
+    {
+     "id": 374,
+     "title": "Fantastic Fables",
+     "author": "Ambrose Bierce"
+    },
+    {
+     "id": 5616,
+     "title": "The Madman: His Parables and Poems",
+     "author": "Kahlil Gibran"
     }
    ],
    "missing": []
