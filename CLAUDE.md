@@ -21,17 +21,21 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - The Irish Room (`irish-room.js`, x −330, z −205), Seomra na hÉireann, is behind a green Georgian door in the Grand Hall's
   south wall (x −8.3; `?room=irish`): shelves `irish-myth`, `irish-revival`, `irish-writers` and `irish-gaeilge` in
   `data/new-books.js` (the last checked as Irish, `ga`), round a turf fire, with a harp, a St Brigid's cross and an ogham stone.
-  Its secret: a sod fallen from the turf creel by the hearth; lifting it uncovers a facsimile of the Book of Kells
-  (`kells-book.js`), as the great Gospel of Colum Cille was found under a sod in 1007 (found once, found for good;
-  `?kells` shows it at once). The book opens in its own viewer: twelve public-domain pages from Wikimedia Commons
-  (`scripts/fetch-book-pages.mjs`, Book images workflow, `assets/kells`), a drawn title page and colophon, on thick board
-  leaves that turn rigidly on the spine (drag, swipe or arrows; zoom; one page at a time on a narrow screen). While it is
-  open the world is not drawn; the book renders its own small scene with the same renderer.
+  In the middle of the room, under a glass case on a plinth, the facsimile of the Book of Kells (`kells-book.js`) lies open at
+  a real opening (folio 32v, Christ enthroned, facing 33r, the carpet page); anything on the case opens it in its own viewer:
+  eighteen public-domain pages from Wikimedia Commons (`scripts/fetch-book-pages.mjs`, Book images workflow, `assets/kells`),
+  a drawn title page and colophon, on thick board leaves that turn rigidly on the spine (drag, swipe or arrows; zoom; one
+  page at a time on a narrow screen). While a fine book is open the world is not drawn; the book renders its own small
+  scene with the same renderer. The room's secret: a sod fallen from the turf creel by the hearth; lifting it uncovers the
+  Book of Durrow (`durrow-book.js`, Trinity MS 57, five pages in `assets/durrow`, and a drawn page on its older order of the
+  evangelists' symbols), hidden as the great Gospel of Colum Cille was found under a sod in 1007 (found once, found for
+  good: `athenaeum-durrow-found`; `?durrow` shows it at once).
 - The fine books share one engine, `fine-books.js` (cradle, stiff board leaves, zoom, captions, loading only the spreads
-  either side of the open one); each book is a description: `kells-book.js`, `kelmscott-book.js` (pages and cards, drawn
-  pages, binding, paper, type). Their photographs come from Wikimedia Commons by `scripts/fetch-book-pages.mjs` (Book
-  images workflow; public domain only). A book listed with no pages is surveyed in the log instead, which is how pages
-  are chosen from what Commons really holds. The Periodicals Room's secret is the Kelmscott Chaucer: pull the bar of the
+  either side of the open one); each book is a description: `kells-book.js`, `durrow-book.js` (which borrows the Kells ornament), `kelmscott-book.js`
+  (pages and cards, drawn pages, binding, paper, type). Their photographs come from Wikimedia Commons by `scripts/fetch-book-pages.mjs` (Book
+  images workflow; public domain only). A book listed with no pages is surveyed in the log instead (with `thumbs`, it also commits
+  numbered sheets of the larger files to `<dir>/survey`, to be looked at and removed), which is how pages are chosen from
+  what Commons really holds. Commons has no large copies of Kells 124r, 129v, 285r, 290v or 291v. The Periodicals Room's secret is the Kelmscott Chaucer: pull the bar of the
   Albion hand press by the door and it prints the Chaucer's first page and gives up the book (`?kelmscott` shows it). Its
   pages are the woodcut title and seven facing openings from the Internet Archive's scan (a page's number is its place in
   the scan less twelve).
