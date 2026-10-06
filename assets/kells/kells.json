@@ -17,6 +17,15 @@
   "licence": "Public domain",
   "description": ""
  },
+ "008r": {
+  "file": "KellsFol008rBrevCausMatt.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:KellsFol008rBrevCausMatt.jpg",
+  "fit": "cover",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
  "027v": {
   "file": "KellsFol027v4Evang.jpg",
   "page": "https://commons.wikimedia.org/wiki/File:KellsFol027v4Evang.jpg",
@@ -125,6 +134,15 @@
   "licence": "Public domain",
   "description": ""
  },
+ "203r": {
+  "file": "KellsFol203rIesusAutem.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:KellsFol203rIesusAutem.jpg",
+  "fit": "cover",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
  "292r": {
   "file": "KellsFol292rIncipJohn.jpg",
   "page": "https://commons.wikimedia.org/wiki/File:KellsFol292rIncipJohn.jpg",
@@ -133,5 +151,14 @@
   "date": "circa 800",
   "licence": "Public domain",
   "description": "Book of Kells , Folio 292r, Incipit to John. In principio erat verbum."
+ },
+ "309r": {
+  "file": "KellsFol309r.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:KellsFol309r.jpg",
+  "fit": "cover",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": "Image of page from the Book of Kells, a 1200 year old book in public domain. en:Category:Illuminated manuscript images"
  }
 }

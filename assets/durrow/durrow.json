@@ -1,0 +1,47 @@
+{
+ "021v": {
+  "file": "Meister des Book of Durrow 001.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Meister_des_Book_of_Durrow_001.jpg",
+  "fit": "contain",
+  "artist": "Meister des Book of Durrow",
+  "date": "7th century",
+  "licence": "Public domain",
+  "description": ""
+ },
+ "086r": {
+  "file": "BookDurrowInitMark86r.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:BookDurrowInitMark86r.jpg",
+  "fit": "cover",
+  "artist": "anonymous",
+  "date": "7 th century date QS:P571,+650-00-00T00:00:00Z/7",
+  "licence": "Public domain",
+  "description": ""
+ },
+ "124v": {
+  "file": "Book of Durrow - TCL Ms57 (Ox).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Book_of_Durrow_-_TCL_Ms57_(Ox).jpg",
+  "fit": "cover",
+  "artist": "Anonymous Unknown author",
+  "date": "circa 680-700 (?)",
+  "licence": "Public domain",
+  "description": ""
+ },
+ "125v": {
+  "file": "BookOfDurrowFolio125vCarpetPage.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:BookOfDurrowFolio125vCarpetPage.jpg",
+  "fit": "cover",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
+ "192v": {
+  "file": "Book of Durrow folio 192v.png",
+  "page": "https://commons.wikimedia.org/wiki/File:Book_of_Durrow_folio_192v.png",
+  "fit": "contain",
+  "artist": "Unknown author Unknown author",
+  "date": "0700-01-01",
+  "licence": "Public domain",
+  "description": "Folio 192v of the Book of Durrow"
+ }
+}
