@@ -105,6 +105,7 @@
       // The Set Texts Room: a classroom after hours, a clock, and pages turning at the long table.
       'set-texts-room':{beds:[['air',.03]],ticks:[[1,'tock',.022]],events:[['rustle',1.1,.04]]},
       'chance-room':{beds:[['air',.03]],events:[['rustle',1.3,.05],['creak',.9,.04]]},
+      'lost-property':{beds:[['air',.03]],events:[['creak',1.1,.05],['rustle',1.2,.04]]},
       // The Map Room: a quiet room, a clock, and big sheets of paper being turned over.
       'map-room':{beds:[['air',.035]],ticks:[[1.6,'tock',.025]],events:[['rustle',1.4,.04]]},
       // The Poe Room: a still house, its floorboards settling (the heart under them is poe-room.js's own).
