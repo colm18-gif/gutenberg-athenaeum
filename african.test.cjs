@@ -35,7 +35,7 @@ let clock=0;const run=(r,seconds,dt=.05)=>{for(let k=0;k<seconds/dt;k++)r.update
 test('the African Reading Room loads before the game and is wired in: the roof, links, the map, sounds and the shelves',()=>{
   const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(m=>m[1]);assert(order.indexOf('african-room.js')>=0&&order.indexOf('african-room.js')<order.indexOf('game.js'));
   assert.match(game,/const africanRoom=window\.createAfricanRoom\?\.\(/);assert.match(game,/gameActive=function\(\)\{return !africanRoom\.travelling/,'no walking while flying');
-  assert.match(game,/africanRoom\.nearMoor\(/,'the basket is solid on the roof');assert.match(game,/prepareRoof:\(\)=>buildRoofGarden\(\)/,'a flight home can land on a roof not yet built');
+  assert.match(game,/africanRoom\.nearMoor\(/,'the basket is solid on the roof');assert.match(game,/prepareRoof:\(\)=>\{buildRoofGarden\(\);freeableBuilds\.roof\.hold=performance\.now\(\)\/1000\+60\}/,'a flight home can land on a roof not yet built (or freed), and keeps it for the landing');
   for(const alias of ["africa:'african-room'","balloon:'african-room'"])assert(game.includes(alias),alias);
   assert.match(game,/\{title:'By balloon',places:\[\['african-courtyard'/);
   const ambience=fs.readFileSync('room-ambience.js','utf8');for(const key of ["'african-courtyard':","'african-room':"])assert(ambience.includes(key),key);

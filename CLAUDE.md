@@ -15,7 +15,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`, `map-room.js`, `set-texts-room.js`)
   are built only when the reader approaches and freed ~25 s after they leave. So are the Room of Chance (its portrait
   stays) and the high staircase, Rocket Hall, Moon and rocket cabin (`high-staircase.js`: only its door in the west wing
-  is built at startup; a stair book carried away keeps it). A freed room marks its lights `userData.freed` so the light
+  is built at startup; a stair book carried away keeps it). The basement and the roof garden, built in `game.js` on a first visit, are
+  freed the same way (`beginFreeable`/`endFreeable`/`freeBuild`: their zone's new parts go, and the colliders, seats,
+  interactables and lamps they registered are given back). A freed room marks its lights `userData.freed` so the light
   budget lets them go. Each gets an ambience recipe in
   `room-ambience.js` and a place in `PLACE_GROUPS` in `game.js`.
 - The Poe Room (`poe-room.js`, x −330, z −140) is behind a chamber door in the Gothic Parlour's west wall, under a raven on a

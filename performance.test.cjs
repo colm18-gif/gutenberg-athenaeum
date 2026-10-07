@@ -209,3 +209,19 @@ test('deep down the view narrows, the air warms and the sea is heard, all withou
   assert.match(fs.readFileSync('soundscape.js','utf8'),/function setSea\(level\)\{\s*if\(!sea\)\{if\(level<=0\)return;/);
   const descent=fs.readFileSync('verne-descent.js','utf8');assert.doesNotMatch(descent.slice(descent.indexOf('// ---------- Warmth'),descent.indexOf('    function build(){')),/PointLight/);
 });
+
+test('the basement and the roof garden are freed a while after the reader leaves, and give back what they registered',()=>{
+  assert.match(game,/function buildBasement\(\)\{if\(basementBuilt\)return;basementBuilt=true;const existing=new Set\(scene\.children\),freeMark=beginFreeable\('basement'\)/);
+  assert.match(game,/registerPerformanceZoneObjects\('basement',existing\);endFreeable\(freeMark,\(\)=>\{basementBuilt=false;/);
+  assert.match(game,/function buildRoofGarden\(\)\{if\(roofBuilt\)return;roofBuilt=true;const existing=new Set\(scene\.children\),freeMark=beginFreeable\('roof'\)/);
+  assert.match(game,/registerPerformanceZoneObjects\('roof',existing\);endFreeable\(freeMark,\(\)=>\{roofBuilt=false;vaneArrow=null;windChimes\.length=0;roofNight=null\}\)/);
+  const free=game.slice(game.indexOf('function freeBuild('),game.indexOf('function freeIdleBuilds('));
+  for(const list of ['interactables','coverQueue','pendingPaintings','colliders','seats','flickerLights','lampSpots'])assert.match(free,new RegExp(`drop\\(${list},`),list+' is given back');
+  assert.match(free,/for\(const cell of colliderCells\.values\(\)\)drop\(cell,gone\)/,'and the colliders leave the spatial index');
+  assert.match(free,/if\(b===selected\)return false/,'a book in the reader’s hands keeps the room');
+  assert.match(free,/b\.parent!==home\?\.parent\|\|b\.position\.distanceToSquared\(home\.position\)>1e-6\)return false/,'so does one put down elsewhere');
+  assert.match(free,/o\.userData\.freed=true/,'its lamps leave the light budget');
+  assert.match(game,/performanceLights\[i\]\.userData\.freed\)performanceLights\.splice\(i,1\)/);
+  assert.match(game,/freeIdleBuilds\(\);lightVisibilityTimer/);
+  assert.match(game,/const FREE_AFTER=25/);
+});

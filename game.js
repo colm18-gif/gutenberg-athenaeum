@@ -541,6 +541,7 @@ box(.45,.12,.45,MAT.paper,-27,1.72,-3,false);cylinder(.22,.18,.35,16,new THREE.M
       if(!['armchair','sofa','feature'].includes(modelKey)||lowBandwidth||lowPowerDevice)return;
       const asset=seatAssets[modelKey];
       seatTemplate(asset).then(template=>{
+        let root=group;while(root.parent)root=root.parent;if(root!==scene&&!Object.values(performanceZones).some(zone=>zone.group===root))return;
         const model=template.clone(true);
         model.rotation.y=asset.yaw;
         const bounds=new THREE.Box3().setFromObject(model),size=bounds.getSize(new THREE.Vector3());
@@ -763,8 +764,28 @@ const verneEngraving=plateTexture('assets/plates/verne-nautilus-window.jpg',vern
     for(let i=0;i<5;i++)box(.11,.05,2.2,MAT.brass,-8.2+i*.6,.18,-25.8,false);
     for(const x of [-7.75,-6.25])cylinder(.07,.07,1.55,8,iron,x,.82,-26.55);for(let i=0;i<5;i++)box(1.55,.07,.08,iron,-7,.3+i*.27,-26.55,false);
     const hatchGlow=new THREE.PointLight(0x5a9b76,0,7,2);hatchGlow.position.set(-7,.3,-25.8);scene.add(hatchGlow);
+    // The basement and the roof garden are built on a first visit and freed again once the reader has been away a
+    // while: the parts the build added to its zone are dropped, and what it registered (colliders, seats, lamps, the
+    // things to point at) is taken back. A book from there that is out in the library keeps it until it comes home.
+    const FREE_AFTER=25,freeableBuilds={};
+    function beginFreeable(name){return {name,colliders:colliders.length,seats:seats.length,flicker:flickerLights.length,lamps:lampSpots.length,objects:new Set(interactables),zoneChildren:new Set(performanceZones[name].group.children)}}
+    function endFreeable(mark,reset){freeableBuilds[mark.name]={reset,added:performanceZones[mark.name].group.children.filter(o=>!mark.zoneChildren.has(o)),colliders:colliders.slice(mark.colliders),seats:seats.slice(mark.seats),flicker:flickerLights.slice(mark.flicker),lamps:lampSpots.slice(mark.lamps),books:interactables.filter(o=>!mark.objects.has(o)&&o.userData.type==='book'),seen:performance.now()/1000,hold:0}}
+    function freeBuild(name){const built=freeableBuilds[name],parts=new Set(),strays=[];for(const o of built.added)o.traverse(n=>parts.add(n));
+      for(const b of built.books){if(b===selected)return false;if(parts.has(b))continue;const home=b.userData.home;if(b.parent!==home?.parent||b.position.distanceToSquared(home.position)>1e-6)return false;strays.push(b)}
+      for(const o of [...built.added,...strays]){o.removeFromParent();o.traverse(n=>parts.add(n))}
+      const drop=(list,gone)=>{for(let i=list.length-1;i>=0;i--)if(gone(list[i]))list.splice(i,1)},among=items=>{const set=new Set(items);return x=>set.has(x)},isPart=o=>parts.has(o);
+      drop(interactables,isPart);drop(coverQueue,isPart);drop(pendingPaintings,entry=>parts.has(entry.group));
+      const gone=among(built.colliders);drop(colliders,gone);for(const cell of colliderCells.values())drop(cell,gone);
+      drop(seats,among(built.seats));drop(flickerLights,among(built.flicker));drop(lampSpots,among(built.lamps));
+      // Geometry, materials and textures still used elsewhere stay; the library's shared materials always do.
+      const used=new Set(Object.values(MAT)),note=o=>{if(parts.has(o))return;if(o.geometry)used.add(o.geometry);for(const m of [].concat(o.material||[])){used.add(m);if(m.map)used.add(m.map)}};
+      scene.traverse(note);for(const zone of Object.values(performanceZones))zone.group.traverse(note);
+      for(const o of parts){if(o.isLight)o.userData.freed=true;if(o.geometry&&!used.has(o.geometry))o.geometry.dispose();for(const m of [].concat(o.material||[])){if(used.has(m))continue;if(m.map&&!used.has(m.map)&&o.userData.type!=='book')m.map.dispose();m.dispose();used.add(m)}}
+      delete freeableBuilds[name];built.reset();return true}
+    // Timed by the clock rather than by frames, which are capped and run slow on a struggling device.
+    function freeIdleBuilds(){const now=performance.now()/1000;for(const name in freeableBuilds){const built=freeableBuilds[name];if(performanceZones[name].isNeeded()||now<built.hold){built.seen=now;continue}if(now-built.seen>FREE_AFTER&&!freeBuild(name))built.seen=now-FREE_AFTER+5}}
     let basementBuilt=false,basementFurnaceLight=null,basementMotes=null;
-    function buildBasement(){if(basementBuilt)return;basementBuilt=true;const existing=new Set(scene.children);addBox(36,.5,28,dampStone,0,basementFloorY-.28,-54,false);addBox(36,6,.55,dampStone,0,basementFloorY+3,-68);addBox(36,6,.55,dampStone,0,basementFloorY+3,-40);addBox(.55,6,28,dampStone,-18,basementFloorY+3,-54);addBox(.55,6,28,dampStone,18,basementFloorY+3,-54);box(36,.4,28,dampStone,0,basementFloorY+6.1,-54,false);
+    function buildBasement(){if(basementBuilt)return;basementBuilt=true;const existing=new Set(scene.children),freeMark=beginFreeable('basement');addBox(36,.5,28,dampStone,0,basementFloorY-.28,-54,false);addBox(36,6,.55,dampStone,0,basementFloorY+3,-68);addBox(36,6,.55,dampStone,0,basementFloorY+3,-40);addBox(.55,6,28,dampStone,-18,basementFloorY+3,-54);addBox(.55,6,28,dampStone,18,basementFloorY+3,-54);box(36,.4,28,dampStone,0,basementFloorY+6.1,-54,false);
     const basementRug=rug(0,-54,14,8,0x18362e);basementRug.position.y=basementFloorY+.02;
     for(const x of [-12,-4,4,12]){const arch=mesh(new THREE.TorusGeometry(4.8,.24,8,24,Math.PI),dampStone,x,basementFloorY+4.8,-54);arch.rotation.y=Math.PI/2}
     const belowSignTex=canvasTexture((c,w,h)=>{c.fillStyle='#101915';c.fillRect(0,0,w,h);c.strokeStyle='#73977c';c.lineWidth=7;c.strokeRect(10,10,w-20,h-20);c.fillStyle='#b8c5a9';c.textAlign='center';c.font='32px Georgia';c.fillText('WHAT LIES BENEATH',w/2,55);c.font='italic 20px Georgia';c.fillText('Not every name made the index',w/2,92)},640,120);const belowSign=mesh(new THREE.PlaneGeometry(6.2,1.15),new THREE.MeshStandardMaterial({map:belowSignTex,roughness:.9}),0,basementFloorY+4.75,-67.65,false);belowSign.userData={type:'object',title:'WHAT LIES BENEATH',author:'Several names have been scratched from the lower edge.',action:'READ'};interactables.push(belowSign);
@@ -782,7 +803,7 @@ const verneEngraving=plateTexture('assets/plates/verne-nautilus-window.jpg',vern
     const basementSteps=box(4,.35,1.4,MAT.stone,0,basementFloorY+.88,-41.25,false),ladderReturnTarget=box(1.9,5.45,.12,new THREE.MeshBasicMaterial({transparent:true,opacity:.001,depthWrite:false}),0,basementFloorY+2.72,-40.31,false),ladderReturnData={type:'basement-stairs',title:'The ladder to the library',author:'Warm firelight trembles at the top.',action:'RETURN UPSTAIRS'};basementSteps.userData=ladderReturnData;ladderReturnTarget.userData=ladderReturnData;interactables.push(basementSteps,ladderReturnTarget);
     function basementStool(x,z){return chair(x,z,0,{model:'painted',title:'A mismatched basement chair',author:'Something scratches the stone beneath it when you begin to read.',categories:['Gothic','Strange','Uncanny','Contested']})}
     basementStool(-6,-59);basementStool(6,-59);
-    addLamp(-7,basementFloorY+1.2,-61,.7);addLamp(7,basementFloorY+1.2,-61,.7);basementMotes=particles(240,[34,5.5,26],0x91b69a,.035);basementMotes.position.set(0,basementFloorY,-54);memoryDoor(17.72,-48,'returning',[64.6,0,-20],-Math.PI/2,'A narrow door behind the pipes','A tarnished card bears several names, all nearly rubbed away.',basementFloorY+1.9);registerPerformanceZoneObjects('basement',existing)}
+    addLamp(-7,basementFloorY+1.2,-61,.7);addLamp(7,basementFloorY+1.2,-61,.7);basementMotes=particles(240,[34,5.5,26],0x91b69a,.035);basementMotes.position.set(0,basementFloorY,-54);memoryDoor(17.72,-48,'returning',[64.6,0,-20],-Math.PI/2,'A narrow door behind the pipes','A tarnished card bears several names, all nearly rubbed away.',basementFloorY+1.9);registerPerformanceZoneObjects('basement',existing);endFreeable(freeMark,()=>{basementBuilt=false;basementFurnaceLight=null;basementMotes=null})}
 
     // The rooms of cultural memory: each space is less cared for than the last, and reading quietly repairs it.
     const repositoryRails=[],memoryZones=[{key:'returning',cx:72,cz:-20,w:18,d:18},{key:'quiet',cx:96,cz:-20,w:18,d:18},{key:'unread',cx:122,cz:-20,w:22,d:22},{key:'repository',cx:153,cz:-20,w:28,d:24}],memoryRoomVisuals={},agedMasonry=lowBandwidth?null:tileTex((ctx,w,h)=>{ctx.drawImage(entranceStone.map.image,0,0,w,h);const grime=ctx.createLinearGradient(0,0,0,h);grime.addColorStop(0,'rgba(43,33,27,.13)');grime.addColorStop(.52,'rgba(43,33,27,0)');grime.addColorStop(1,'rgba(39,30,24,.34)');ctx.fillStyle=grime;ctx.fillRect(0,0,w,h);for(let i=0;i<16;i++){const x=24+(i*83)%465,y=32+(i*107)%430;ctx.strokeStyle='rgba(49,38,30,.22)';ctx.lineWidth=i%3===0?2:1;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+3+(i%4)*2,y+14);ctx.lineTo(x+(i%2?0:5),y+20+(i%3)*5);ctx.stroke()}},512,512,8,4),neglectedStone=new THREE.MeshStandardMaterial({color:lowBandwidth?0x34312d:0x786d63,roughness:1,map:agedMasonry||masonryTex,bumpMap:agedMasonry||masonryTex,bumpScale:lowBandwidth?.07:.025}),unreadStone=lowBandwidth?neglectedStone:new THREE.MeshStandardMaterial({color:0x625a54,roughness:1,map:agedMasonry,bumpMap:agedMasonry,bumpScale:.03}),repositoryMetal=new THREE.MeshStandardMaterial({color:0x343b3d,metalness:.52,roughness:.62,map:metalTex,bumpMap:metalTex,bumpScale:.02});
@@ -872,7 +893,7 @@ const verneEngraving=plateTexture('assets/plates/verne-nautilus-window.jpg',vern
     for(let i=0;i<13;i++){const y=5.18+i*.4,z=27+i*.8;box(5.6,.38,.86,MAT.wood,14.2,y,z);trim(11.35,6+i*.4,z,.16,1.35,.16);trim(17.05,6+i*.4,z,.16,1.35,.16)}
     trim(11.35,8.2,31.8,.18,.18,10.4);trim(17.05,8.2,31.8,.18,.18,10.4);
     let roofBuilt=false,vaneArrow=null;const windChimes=[];
-    function buildRoofGarden(){if(roofBuilt)return;roofBuilt=true;const existing=new Set(scene.children);addBox(34,.45,24,MAT.stone,0,9.78,49,false);rug(0,49,15,9,0x33424b).position.y=10.021;
+    function buildRoofGarden(){if(roofBuilt)return;roofBuilt=true;const existing=new Set(scene.children),freeMark=beginFreeable('roof');addBox(34,.45,24,MAT.stone,0,9.78,49,false);rug(0,49,15,9,0x33424b).position.y=10.021;
     addBox(28.4,.9,.55,MAT.stone,-2.8,10.35,37,false);collider(-2.8,37,28.4,.55,'roof parapet',9,13);
     addBox(34,.9,.55,MAT.stone,0,10.35,61,false);collider(0,61,34,.55,'roof parapet',9,13);
     addBox(.55,.9,24,MAT.stone,-17,10.35,49,false);collider(-17,49,.55,24,'roof parapet',9,13);
@@ -887,7 +908,7 @@ const verneEngraving=plateTexture('assets/plates/verne-nautilus-window.jpg',vern
     const roofBook=looseBook(books[46],-13.2,10.44,41.15,.18,'roof-book');roofBook.userData.machineNote='Rain has blurred one sentence into a map of the roof.';
     const vanePole=cylinder(.1,.16,3.6,10,MAT.brass,11.5,11.8,48);vaneArrow=box(2.4,.12,.12,MAT.gold,11.5,13.45,48,false);const vaneTail=mesh(new THREE.ConeGeometry(.42,.9,3),MAT.gold,10.5,13.45,48,false);vaneTail.rotation.z=Math.PI/2;vanePole.userData={type:'weather-vane',title:'The library weather vane',author:'Its arrow refuses to point north.',action:'READ WEATHER'};interactables.push(vanePole);
     for(let i=0;i<5;i++){const chime=cylinder(.055,.07,.75+i*.11,8,MAT.brass,5.3+i*.3,13.65-i*.08,43.8);windChimes.push(chime)}
-    for(const p of [[-12,11.2,39],[12,11.2,39],[-12,11.2,59],[12,11.2,59]])addLamp(p[0],p[1],p[2],.65);roofNight=dressRoofGarden();registerPerformanceZoneObjects('roof',existing)}
+    for(const p of [[-12,11.2,39],[12,11.2,39],[-12,11.2,59],[12,11.2,59]])addLamp(p[0],p[1],p[2],.65);roofNight=dressRoofGarden();registerPerformanceZoneObjects('roof',existing);endFreeable(freeMark,()=>{roofBuilt=false;vaneArrow=null;windChimes.length=0;roofNight=null})}
 
     // ---- The roof garden at night: a starry sky with a moon and the odd falling star, the rooftops of the old
     // town all around, lavender, roses and lemon trees, string lights under the canopy, fireflies over the beds
@@ -1142,7 +1163,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // Dark filler lights far below the world top the count up, so exactly LIGHT_BUDGET point lights are always on.
     // Every lit pixel pays for every one of them, so the budget is kept small: the nearest lamps carry the look.
     const budgetFillers=Array.from({length:LIGHT_BUDGET},()=>{const filler=new THREE.PointLight(0x000000,0,1,2);filler.position.set(0,-5000,0);filler.castShadow=false;filler.userData.budgetFiller=true;scene.add(filler);return filler});
-    function updatePerformanceVisibility(dt){if(!roofBuilt&&player.pos.y>8.5&&player.pos.z>34)buildRoofGarden();for(const zone of Object.values(performanceZones)){const needed=zone.isNeeded();if(needed&&!zone.active){scene.add(zone.group);zone.active=true}else if(!needed&&zone.active){zone.group.removeFromParent();zone.active=false}}lightVisibilityTimer-=dt;if(lightVisibilityTimer>0)return;lightVisibilityTimer=.3;applyLightBudget()}
+    function updatePerformanceVisibility(dt){if(!roofBuilt&&player.pos.y>8.5&&player.pos.z>34)buildRoofGarden();for(const zone of Object.values(performanceZones)){const needed=zone.isNeeded();if(needed&&!zone.active){scene.add(zone.group);zone.active=true}else if(!needed&&zone.active){zone.group.removeFromParent();zone.active=false}}freeIdleBuilds();lightVisibilityTimer-=dt;if(lightVisibilityTimer>0)return;lightVisibilityTimer=.3;applyLightBudget()}
     function applyLightBudget(){refreshBudgetLights();lightCandidates.length=0;camera.getWorldDirection(budgetViewDirection);for(const light of performanceLights){let root=light,shown=true;while(root.parent){root=root.parent;if(!root.visible)shown=false}const attached=root===scene;light.castShadow=false;if(!attached||!shown){light.visible=false;continue}light.getWorldPosition(tmpWorldPosition);const distance=tmpWorldPosition.distanceTo(camera.position),range=Math.max(14,(light.distance||10)+4),facing=distance<4?1:clamp(.75+tmpWorldPosition.sub(camera.position).dot(budgetViewDirection)/distance,.35,1.5),reach=distance<range?facing*light.intensity/(1+distance*distance*.05)*(1-distance/range):-distance*.001;light.userData.lightScore=light.parent===camera?Infinity:reach*(light.visible?1.3:1);lightCandidates.push(light)}lightCandidates.sort((a,b)=>b.userData.lightScore-a.userData.lightScore);let shownPoints=0;for(let i=0;i<lightCandidates.length;i++){const on=i<LIGHT_BUDGET;lightCandidates[i].visible=on;if(on&&lightCandidates[i].isPointLight)shownPoints++}for(let i=0;i<budgetFillers.length;i++)budgetFillers[i].visible=i<LIGHT_BUDGET-shownPoints}
     // Every material shader is compiled for an exact number of lights, so the budget keeps that
     // number constant: the strongest nearby lamps win, and walking never triggers a recompile.
@@ -1831,7 +1852,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     const cloudOverlay=(()=>{const el=document.createElement('div');el.setAttribute('aria-hidden','true');el.style.cssText='position:fixed;inset:0;background:#aab4c4;opacity:0;pointer-events:none;z-index:22;';document.body.appendChild(el);return o=>{el.style.opacity=String(o)}})();
     const africanRoom=window.createAfricanRoom?.({THREE,scene,MAT,player,camera,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,sound,
       findBook:id=>books.find(b=>b.id===id),arrivals:{ancient:arrivalIds('african-ancient'),voices:arrivalIds('african-voices'),tales:arrivalIds('african-tales')},
-      moveTo:(x,y,z,yaw)=>moveReaderTo(x,y,z,yaw),floorAt:(x,z)=>floorHeight(x,z),prepareRoof:()=>buildRoofGarden(),overlay:cloudOverlay,
+      moveTo:(x,y,z,yaw)=>moveReaderTo(x,y,z,yaw),floorAt:(x,z)=>floorHeight(x,z),prepareRoof:()=>{buildRoofGarden();freeableBuilds.roof.hold=performance.now()/1000+60},overlay:cloudOverlay,
       analytics:window.libraryAnalytics,isHolding:()=>!!selected,isReducedMotion:()=>reducedMotion});
     if(africanRoom){
       const preAfricaFloor=floorHeight;floorHeight=function(x,z){return africanRoom.floorAt(x,z)??preAfricaFloor(x,z)};
