@@ -6,7 +6,7 @@ const vm=require('node:vm');
 const source=fs.readFileSync('chance-room.js','utf8'),game=fs.readFileSync('game.js','utf8'),stairs=fs.readFileSync('high-staircase.js','utf8');
 class V{constructor(){this.x=0;this.y=0;this.z=0}set(x,y,z){Object.assign(this,{x,y,z});return this}clone(){return new V().set(this.x,this.y,this.z)}}
 class O{constructor(){this.children=[];this.parent=null;this.position=new V();this.rotation={x:0,y:0,z:0};this.quaternion={clone:()=>({})};this.userData={}}
-  add(...m){for(const c of m){c.parent=this;this.children.push(c)}return this}removeFromParent(){if(this.parent)this.parent.children.splice(this.parent.children.indexOf(this),1);this.parent=null}}
+  add(...m){for(const c of m){c.parent=this;this.children.push(c)}return this}removeFromParent(){if(this.parent)this.parent.children.splice(this.parent.children.indexOf(this),1);this.parent=null}traverse(f){f(this);for(const c of this.children)c.traverse(f)}}
 class Mesh extends O{constructor(g,m){super();this.geometry=g;this.material=m}}
 const G=class{constructor(...a){this.args=a}dispose(){}},M=class{constructor(p){Object.assign(this,p)}dispose(){}};
 const THREE={Group:O,Mesh,BoxGeometry:G,PlaneGeometry:G,MeshStandardMaterial:M,PointLight:class extends O{}};

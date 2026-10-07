@@ -101,7 +101,7 @@
     function atExit(x=player.pos.x,z=player.pos.z){return !!root&&Math.abs(x-ROOM.cx)<1.6&&z>ROOM.cz+ROOM.d/2-2.6&&contains(x,z)}
     function interact(object){const d=object?.userData;if(d?.type==='chance-door'){enter();return true}if(d?.type==='chance-exit'){leave();return true}return false}
     function unload(){
-      if(!root)return;root.removeFromParent();root=null;
+      if(!root)return;root.removeFromParent();root.traverse(object=>{if(object.isLight)object.userData.freed=true});root=null;
       for(let i=interactables.length-1;i>=0;i--)if(interactables[i]!==portrait&&ours.includes(interactables[i]))interactables.splice(i,1);
       for(const thing of owned.splice(0))thing.dispose?.();
       ours.length=0;if(portrait)ours.push(portrait);books.length=0;blockers.length=0;
