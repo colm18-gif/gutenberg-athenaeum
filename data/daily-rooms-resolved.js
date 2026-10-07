@@ -1,7 +1,7 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-06",
+ "updated": "2026-10-07",
  "days": {
   "2026-09-25": {
    "books": [
@@ -769,6 +769,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 5616,
      "title": "The Madman: His Parables and Poems",
      "author": "Kahlil Gibran"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-09": {
+   "books": [
+    {
+     "id": 205,
+     "title": "Walden, and On The Duty Of Civil Disobedience",
+     "author": "Henry David Thoreau"
+    },
+    {
+     "id": 2944,
+     "title": "Essays — First Series",
+     "author": "Ralph Waldo Emerson"
+    },
+    {
+     "id": 29433,
+     "title": "Nature",
+     "author": "Ralph Waldo Emerson"
+    },
+    {
+     "id": 33,
+     "title": "The Scarlet Letter",
+     "author": "Nathaniel Hawthorne"
+    },
+    {
+     "id": 1322,
+     "title": "Leaves of Grass",
+     "author": "Walt Whitman"
+    },
+    {
+     "id": 2945,
+     "title": "Essays — Second Series",
+     "author": "Ralph Waldo Emerson"
+    },
+    {
+     "id": 514,
+     "title": "Little Women",
+     "author": "Louisa May Alcott"
+    },
+    {
+     "id": 46209,
+     "title": "Concord Days",
+     "author": "Amos Bronson Alcott"
+    },
+    {
+     "id": 42500,
+     "title": "The Maine Woods",
+     "author": "Henry David Thoreau"
+    },
+    {
+     "id": 6312,
+     "title": "Representative Men",
+     "author": "Ralph Waldo Emerson"
     }
    ],
    "missing": []
