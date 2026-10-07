@@ -149,13 +149,16 @@
     // ---------- the camera ----------
     const portrait=()=>innerWidth/innerHeight<.9;
     function captionHeight(){return caption?caption.getBoundingClientRect().height+16:0}
+    // The book is framed in the band between the title and close button above and the caption below: the camera
+    // draws a taller frame (full) and shows the part of it (offset) that puts the book's middle in that band.
+    function topHeight(){if(!dom)return 0;const b=Math.max(dom.querySelector('header').getBoundingClientRect().bottom,dom.querySelector('.kv-close').getBoundingClientRect().bottom);return Math.min(innerHeight*.2,b+6)}
     function setView(){
-      const w=innerWidth,h=innerHeight,cap=Math.min(h*.45,captionHeight()),vh=h+cap,tan=Math.tan(FOV*Math.PI/360);
+      const w=innerWidth,h=innerHeight,top=topHeight(),cap=Math.min(h*.6-top,captionHeight()),vh=h+cap-top,tan=Math.tan(FOV*Math.PI/360);
       let cx,wide;
       if(turned===0){cx=CW/2;wide=CW}else if(portrait()){cx=focus===0?-CW/2:CW/2;wide=CW}else{cx=0;wide=CW*2}
-      const needW=wide*1.1+.08,needH=CH*1.1+.06,fracH=(h-cap)/vh;
+      const needW=wide*1.1+.08,needH=CH*1.1+.06,fracH=(h-cap-top)/vh;
       const d=Math.max(needH/(2*tan*fracH),needW/(2*tan*w/vh))+.1;
-      view={x:cx,z:0,d,cap};
+      view={x:cx,z:0,d,full:vh,offset:cap-top};
     }
     function updateCamera(dt){
       const k=1-Math.exp(-dt*7);zoom+=(zoomTarget-zoom)*k;pan.x+=(panTarget.x-pan.x)*k;pan.z+=(panTarget.z-pan.z)*k;
@@ -163,14 +166,14 @@
       camera.userData.x+=(view.x-camera.userData.x)*k;camera.userData.d+=(view.d-camera.userData.d)*k;
       const d=camera.userData.d/zoom,tx=camera.userData.x+pan.x,tz=pan.z;
       camera.position.set(tx,.05+Math.cos(LOOK)*d,tz+Math.sin(LOOK)*d);camera.lookAt(tx,.05,tz);
-      const w=innerWidth,h=innerHeight,cap=view.cap||0;camera.aspect=w/(h+cap);camera.setViewOffset(w,h+cap,0,cap,w,h);camera.updateProjectionMatrix();
+      const w=innerWidth,h=innerHeight,full=view.full||h;camera.aspect=w/full;camera.setViewOffset(w,full,0,view.offset||0,w,h);camera.updateProjectionMatrix();
       lamp.target.position.set(camera.userData.x*.6,0,0);
     }
     function clampPan(){const lim=zoomTarget<=1.02?0:1;const rx=(portrait()||turned===0?CW*.5:CW)*lim,rz=CH*.5*lim;panTarget.x=Math.max(-rx,Math.min(rx,panTarget.x));panTarget.z=Math.max(-rz,Math.min(rz,panTarget.z));if(zoomTarget<=1.02){panTarget.x=panTarget.z=0}}
     // Where on the open book (its top surface, near enough) a point of the screen falls.
     const ray=()=>new THREE.Raycaster();
     function pointOn(clientX,clientY){
-      const r=dom.getBoundingClientRect(),cap=view.cap||0,ndc=new THREE.Vector2((clientX-r.left)/r.width*2-1,-((clientY-r.top)/r.height*2-1));
+      const r=dom.getBoundingClientRect(),ndc=new THREE.Vector2((clientX-r.left)/r.width*2-1,-((clientY-r.top)/r.height*2-1));
       const caster=ray();caster.setFromCamera(ndc,camera);const plane=new THREE.Plane(new THREE.Vector3(0,1,0),-.12),hit=new THREE.Vector3();return caster.ray.intersectPlane(plane,hit)?hit:null;
     }
     function zoomAt(factor,clientX,clientY){
@@ -180,7 +183,7 @@
       clampPan();updateZoomButtons();
     }
     function resetZoom(){zoomTarget=1;panTarget.x=panTarget.z=0;updateZoomButtons()}
-    function worldPerPixel(){return 2*Math.tan(FOV*Math.PI/360)*(camera.userData.d/zoom)/(innerHeight+(view.cap||0))}
+    function worldPerPixel(){return 2*Math.tan(FOV*Math.PI/360)*(camera.userData.d/zoom)/(view.full||innerHeight)}
 
     // ---------- the viewer ----------
     function style(){
@@ -196,7 +199,11 @@
 .fine-book .kv-tools{display:flex;gap:6px;align-self:center}.fine-book button{font:inherit;font-size:15px;color:#f0dfbd;background:#2c2014;border:1px solid #9a7a48;border-radius:3px;padding:7px 12px;cursor:pointer}
 .fine-book button:hover,.fine-book button:focus-visible{background:#4a3520;outline:none}.fine-book button:disabled{opacity:.4;cursor:default}
 .fine-book .kv-hint{position:absolute;top:34px;left:18px;font-size:13px;font-style:italic;color:#9d8e72;pointer-events:none;text-shadow:0 1px 6px #000;max-width:60vw}
-@media (max-aspect-ratio:9/10){.fine-book .kv-caption{grid-template-columns:1fr;gap:8px}.fine-book .kv-tools{order:2;justify-content:center}.fine-book .kv-page.kv-hidden{display:none}.fine-book .kv-page p{font-size:13px}.fine-book .kv-hint{display:none}}`;
+.fine-book .kv-notes{display:none}
+@media (max-aspect-ratio:9/10){.fine-book .kv-caption{grid-template-columns:1fr;gap:8px}.fine-book .kv-tools{order:2;justify-content:center}.fine-book .kv-page.kv-hidden{display:none}.fine-book .kv-page p{font-size:13px}}
+@media (max-aspect-ratio:9/10),(max-height:520px){.fine-book header{right:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px;letter-spacing:.16em;top:19px}.fine-book .kv-close{font-size:14px;padding:6px 10px}
+.fine-book .kv-hint{display:none}.fine-book .kv-notes{display:inline-block}.fine-book .kv-caption{padding-top:9px;gap:6px 14px}.fine-book .kv-page h2{font-size:17px;margin:2px 0 3px}
+.fine-book.kv-brief .kv-page p{display:none}.fine-book.kv-brief .kv-page h2{margin-bottom:0}}`;
       document.head.appendChild(s);
     }
     function buildDom(){
@@ -204,9 +211,9 @@
       dom.innerHTML=`<div class="kv-stage" aria-label="The open book. Drag a page to turn it; scroll or pinch to look closer."></div>
         <header></header><p class="kv-hint">Drag a page to turn it, or use the arrows. Scroll, pinch or double-click to look closer. Escape closes the book.</p>
         <button type="button" class="kv-close" data-act="close">Close the book</button>
-        <div class="kv-caption"><div class="kv-page kv-left"></div><div class="kv-tools"><button type="button" data-act="prev" aria-label="Turn back">←</button><button type="button" data-act="out" aria-label="Look less closely">−</button><button type="button" data-act="in" aria-label="Look closer">+</button><button type="button" data-act="next" aria-label="Turn the page">→</button></div><div class="kv-page kv-right"></div></div>`;
-      dom.querySelector('header').textContent=spec.header;document.body.appendChild(dom);stage=dom.querySelector('.kv-stage');caption=dom.querySelector('.kv-caption');
-      dom.addEventListener('click',e=>{const act=e.target.closest('[data-act]')?.dataset.act;if(!act)return;if(act==='close')close();else if(act==='next')next();else if(act==='prev')prev();else if(act==='in')zoomAt(1.6);else if(act==='out'){if(zoomTarget/1.6<=1.02)resetZoom();else zoomAt(1/1.6)}});
+        <div class="kv-caption"><div class="kv-page kv-left"></div><div class="kv-tools"><button type="button" data-act="prev" aria-label="Turn back">←</button><button type="button" data-act="out" aria-label="Look less closely">−</button><button type="button" data-act="in" aria-label="Look closer">+</button><button type="button" data-act="next" aria-label="Turn the page">→</button><button type="button" class="kv-notes" data-act="notes" aria-pressed="false">Notes</button></div><div class="kv-page kv-right"></div></div>`;
+      dom.querySelector('header').textContent=spec.header;dom.classList.add('kv-brief');document.body.appendChild(dom);stage=dom.querySelector('.kv-stage');caption=dom.querySelector('.kv-caption');
+      dom.addEventListener('click',e=>{const act=e.target.closest('[data-act]')?.dataset.act;if(!act)return;if(act==='close')close();else if(act==='next')next();else if(act==='prev')prev();else if(act==='notes')toggleNotes();else if(act==='in')zoomAt(1.6);else if(act==='out'){if(zoomTarget/1.6<=1.02)resetZoom();else zoomAt(1/1.6)}});
       stage.addEventListener('wheel',e=>{e.preventDefault();const f=Math.exp(-e.deltaY*.0015);if(zoomTarget*f<=1.01)resetZoom();else zoomAt(f,e.clientX,e.clientY)},{passive:false});
       stage.addEventListener('dblclick',e=>{if(zoomTarget>1.3)resetZoom();else zoomAt(2.6,e.clientX,e.clientY)});
       stage.addEventListener('pointerdown',down);stage.addEventListener('pointermove',move);stage.addEventListener('pointerup',up);stage.addEventListener('pointercancel',up);
@@ -228,6 +235,8 @@
       dom.querySelector('[data-act="prev"]').disabled=turned===0&&!(port&&focus===1&&turned>0);dom.querySelector('[data-act="next"]').disabled=turned===TURNING&&(!port||focus===1);
       requestAnimationFrame(()=>{if(open)setView()});
     }
+    // On a small screen the pages' notes are folded away, leaving each page's name, so the book is not covered.
+    function toggleNotes(){const brief=dom.classList.toggle('kv-brief');dom.querySelector('[data-act="notes"]').setAttribute('aria-pressed',String(!brief));setView()}
     function updateZoomButtons(){if(!dom)return;dom.querySelector('[data-act="out"]').disabled=zoomTarget<=1.02;dom.querySelector('[data-act="in"]').disabled=zoomTarget>=4.98}
 
     // A page is turned by taking hold of it and drawing it over; let go past a third of the way and it falls the rest.
