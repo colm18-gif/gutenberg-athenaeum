@@ -1134,8 +1134,13 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     memoryShell(contested,contestedPlaster);
     rug(contested.cx,contested.cz,12,10,0x4a1620);
     memorySign(contested,'THE UNWELCOME SPINES','Every spine here was, at some point, called dangerous.',-.03);
-    const contestedAcquisitions=books.filter(book=>book.sourceKey&&book.room==='contested').map(book=>book.id),contestedBooks=[...contestedAcquisitions,...[61,33,140,408,203,3420,160,153,1998,1228].filter(id=>!contestedAcquisitions.includes(id))].slice(0,10);
-    curatedShelf(contestedBooks.slice(0,5),contested.cx-4.6,contested.cz-contested.d/2+.55,0);curatedShelf(contestedBooks.slice(5),contested.cx+4.6,contested.cz-contested.d/2+.55,0);
+    // The room's own stock is the shelf contested in data/new-books.js: books on no other shelf, since the single-copy
+    // register shows each book once and the Restricted Catalogue's copies of the older list always won. Those ten stand
+    // in only if the new arrivals are missing. Three cases of two rows: two on the north wall, one on the east.
+    const contestedAcquisitions=books.filter(book=>book.sourceKey&&book.room==='contested').map(book=>book.id),contestedArrivals=newArrivals.list('contested').map(book=>book.id).filter(id=>!contestedAcquisitions.includes(id));
+    const contestedBooks=(contestedArrivals.length?[...contestedAcquisitions,...contestedArrivals]:[...contestedAcquisitions,...[61,33,140,408,203,3420,160,153,1998,1228].filter(id=>!contestedAcquisitions.includes(id))]).slice(0,30);
+    curatedShelf(contestedBooks.slice(0,10),contested.cx-4.6,contested.cz-contested.d/2+.55,0);curatedShelf(contestedBooks.slice(10,20),contested.cx+4.6,contested.cz-contested.d/2+.55,0);
+    if(contestedBooks.length>20)curatedShelf(contestedBooks.slice(20,30),contested.cx+contested.w/2-.55,contested.cz-.6,-Math.PI/2);
     chair(contested.cx-5.4,contested.cz+2.4,.35,{model:'feature',title:'A chair meant for uncomfortable reading',author:'Every book here argued its way into being burned, banned, or both.',categories:['Contested']});
     memoryRoomLight(contested,0xa74646,18);readerTraces(contested,contestedBooks,'contested');
     const motes=particles(90,[contested.w-2,4.5,contested.d-2],0xcbb98a,.03);motes.position.set(contested.cx,.2,contested.cz);
