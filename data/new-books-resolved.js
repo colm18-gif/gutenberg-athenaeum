@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-10-03",
+ "updated": "2026-10-07",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -886,6 +886,150 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Julius Caesar": {
    "id": 1522,
    "words": 21055
+  },
+  "The Analects of Confucius": {
+   "id": 3330,
+   "words": 29126
+  },
+  "The Anatomy of Melancholy": {
+   "id": 10800,
+   "words": 530389
+  },
+  "Babbitt": {
+   "id": 1156,
+   "words": 125556
+  },
+  "The Book of Snobs": {
+   "id": 2686,
+   "words": 64807
+  },
+  "The Book of Tea": {
+   "id": 769,
+   "words": 18268
+  },
+  "Botchan": {
+   "id": 8868,
+   "words": 48223
+  },
+  "The Divine Comedy": {
+   "id": 8800,
+   "words": 108886
+  },
+  "The Elements of Style": {
+   "id": 37134,
+   "words": 13806
+  },
+  "Eminent Victorians": {
+   "id": 2447,
+   "words": 99287
+  },
+  "Ethan Frome": {
+   "id": 4517,
+   "words": 35077
+  },
+  "Gitanjali": {
+   "id": 7164,
+   "words": 14527
+  },
+  "The Song of Hiawatha": {
+   "id": 19,
+   "words": 32999
+  },
+  "Howards End": {
+   "id": 2946,
+   "words": 110210
+  },
+  "The Expedition of Humphry Clinker": {
+   "id": 2160,
+   "words": 151409
+  },
+  "Jacob’s Room": {
+   "id": 5670,
+   "words": 55438
+  },
+  "Lysistrata": {
+   "id": 7700,
+   "words": 14626
+  },
+  "Moll Flanders": {
+   "id": 370,
+   "words": 138230
+  },
+  "The Napoleon of Notting Hill": {
+   "id": 20058,
+   "words": 55837
+  },
+  "Of Human Bondage": {
+   "id": 351,
+   "words": 260956
+  },
+  "On Liberty": {
+   "id": 34901,
+   "words": 52244
+  },
+  "Pensées": {
+   "id": 18269,
+   "words": 108018
+  },
+  "The Pilgrim’s Progress": {
+   "id": 131,
+   "words": 57398
+  },
+  "A Journal of the Plague Year": {
+   "id": 376,
+   "words": 94580
+  },
+  "The Praise of Folly": {
+   "id": 9371,
+   "words": 36970
+  },
+  "Riders of the Purple Sage": {
+   "id": 1300,
+   "words": 106017
+  },
+  "Rubáiyát of Omar Khayyám": {
+   "id": 246,
+   "words": 11975
+  },
+  "A Sentimental Journey Through France and Italy": {
+   "id": 804,
+   "words": 40936
+  },
+  "A Shropshire Lad": {
+   "id": 5720,
+   "words": 9124
+  },
+  "Sons and Lovers": {
+   "id": 217,
+   "words": 162198
+  },
+  "Tender Buttons": {
+   "id": 15396,
+   "words": 15003
+  },
+  "Three Lives": {
+   "id": 15408,
+   "words": 86259
+  },
+  "The Way of All Flesh": {
+   "id": 2084,
+   "words": 163347
+  },
+  "Winesburg, Ohio": {
+   "id": 416,
+   "words": 74314
+  },
+  "The Sorrows of Young Werther": {
+   "id": 2527,
+   "words": 42705
+  },
+  "Zuleika Dobson": {
+   "id": 1845,
+   "words": 82190
+  },
+  "The Peterkin Papers": {
+   "id": 25648,
+   "words": 44054
   },
   "Don Quijote [es]": {
    "id": 2000,
