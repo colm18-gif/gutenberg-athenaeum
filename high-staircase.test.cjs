@@ -57,7 +57,7 @@ test('western entrance is clear of the north-wall bookcase and visibly marked',(
 test('a primitive rocket makes a reversible journey from the summit to the Moon',()=>{
   assert.match(stair,/function primitiveRocket/);
   assert.match(stair,/interactiveParts=\[\],rocketData=\{type,title,author,action:'BOARD'\}/);
-  assert.match(stair,/for\(const interactive of interactiveParts\)\{interactive\.userData=rocketData;interactables\.push\(interactive\)\}/);
+  assert.match(stair,/for\(const interactive of interactiveParts\)\{interactive\.userData=rocketData;own\(interactive\)\}/);
   assert.match(stair,/The Librarian’s Lunar Projectile/);
   assert.match(stair,/type==='moon-rocket-launch'/);
   assert.match(stair,/moveTo\(mx,0,mz\+6,Math\.PI\)/);
@@ -128,4 +128,60 @@ test('the lunar outpost is walkable and holds an early science-fiction collectio
   assert.doesNotMatch(stair,/scienceFiction=\[35,36,62/);
   assert.match(stair,/moonBooks\.push\(bm\)/);
   assert.match(stair,/scene\.background\.setHex\(0x03050b\)/);
+});
+
+// The module run for real against a stand-in for Three.js: every object keeps its children, position and userData,
+// and anything else it is asked to do is a no-op.
+function runStair(){
+  const vm=require('node:vm');
+  const anything=()=>new Proxy(function(){},{get:(t,k)=>k===Symbol.toPrimitive?()=>0:k in t?t[k]:(t[k]=anything()),apply:()=>anything(),construct:()=>anything()});
+  class V{constructor(x=0,y=0,z=0){this.x=x;this.y=y;this.z=z}set(x,y,z){Object.assign(this,{x,y,z});return this}copy(v){return this.set(v.x,v.y,v.z)}clone(){return new V(this.x,this.y,this.z)}}
+  const counts={disposed:0};
+  class Node{constructor(geometry,material){this.geometry=geometry;this.material=material;this.children=[];this.parent=null;this.position=new V();this.rotation=new V();this.scale=new V(1,1,1);this.scale.setScalar=()=>{};this.quaternion={clone:()=>({})};this.userData={};this.visible=true;this.instanceMatrix={};this.matrix={};this.holes=[];this.attributes={uv:{count:0},position:{count:0}};this.image={getContext:()=>anything()}}
+    add(...m){for(const c of m){c.removeFromParent();c.parent=this;this.children.push(c)}return this}
+    removeFromParent(){if(this.parent)this.parent.children.splice(this.parent.children.indexOf(this),1);this.parent=null}
+    traverse(f){f(this);for(const c of this.children)c.traverse(f)}
+    dispose(){counts.disposed++}updateMatrixWorld(){}updateProjectionMatrix(){}absarc(){}moveTo(){}lineTo(){}closePath(){}setMatrixAt(){}updateMatrix(){}setAttribute(){}setIndex(){}computeVertexNormals(){}}
+  const THREE=new Proxy({},{get:(t,k)=>k==='BackSide'||k==='DoubleSide'?1:class extends Node{constructor(...a){super(...a);this.isPointLight=k==='PointLight';this.isLight=/Light$/.test(k)}}});
+  const context={window:{},Math,localStorage:{getItem:()=>'1',setItem(){}},document:{getElementById:()=>null,createElement:()=>anything(),body:anything()}};vm.runInNewContext(stair,context);
+  const scene=new Node(),interactables=[],notices=[],player={pos:new V(-33.5,0,-11),vel:new V(),yaw:0,pitch:0},camera=new Node();
+  const MAT={wood:new Node(),wood2:new Node(),darkWood:new Node(),brass:new Node()};
+  const s=context.window.createHighStaircase({THREE,scene,MAT,player,camera,interactables,books:[26,35,4552].map(id=>({id,title:'Book '+id})),coverTexture:()=>new Node(),canvasTexture:()=>new Node(),
+    showNotice:t=>notices.push(t),sound(){},playSample:()=>true,lastSafePosition:new V()});
+  return {s,scene,interactables,notices,player,camera,counts};
+}
+
+test('only the door in the western wing is built at startup; the stair, the Moon and the rocket are built on the way in',()=>{
+  const {s,scene,interactables,player}=runStair(),startChildren=scene.children.length,startInteractables=interactables.length;
+  assert.equal(s.built,false);
+  assert.deepEqual(interactables.map(o=>o.userData.type).sort(),['high-stair-door','high-stair-door','rocket-interior-detail']);
+  // What the game asks before anything is built is still answered.
+  assert.equal(s.contains(224,30),true);assert.equal(s.onMoon(340,30),true);assert.equal(s.contains(0,0),false);assert.equal(s.floorAt(0,0),null);
+  assert.equal(s.built,false,'asking about the hall does not build the stair');
+  assert.equal(s.interact(interactables.find(o=>o.userData.type==='rocket-interior-detail')),true,'the hatch answers on its own');assert.equal(s.built,false);
+  assert.equal(s.interact(interactables.find(o=>o.userData.type==='high-stair-door')),true);
+  assert.equal(s.built,true);assert.equal(s.contains(player.pos.x,player.pos.z),true,'the door takes the reader to the foot of the stair');
+  assert(interactables.length>startInteractables+40);assert(interactables.some(o=>o.userData.type==='moon-rocket-launch'));
+  assert.equal(scene.children.length,startChildren+1);
+});
+
+test('the stair is freed a while after the reader leaves, and built again for a room link or a flight home from Mars',()=>{
+  const {s,scene,interactables,player,counts}=runStair(),startChildren=scene.children.length,startInteractables=interactables.length;
+  s.interact(interactables.find(o=>o.userData.type==='high-stair-door'));s.update(1,.016);
+  player.pos.set(-33.5,0,-11);s.update(20,.016);assert.equal(s.built,true,'kept while the reader may come back');
+  s.update(27,.016);assert.equal(s.built,false);
+  assert.equal(scene.children.length,startChildren);assert.equal(interactables.length,startInteractables);assert(counts.disposed>100);
+  assert(interactables.some(o=>o.userData.type==='high-stair-door'),'the door stays');
+  // ?room=rocket-hall puts the reader up there, then the game asks for the floor under them.
+  player.pos.set(s.center.x-1.3,s.topY,s.center.z+1.6);assert.equal(s.floorAt(player.pos.x,player.pos.z),s.topY);assert.equal(s.built,true);
+  s.update(30,.016);player.pos.set(-33.5,0,-11);s.update(60,.016);assert.equal(s.built,false);
+  s.board('summit-mars');assert.equal(s.built,true);assert.equal(s.contains(player.pos.x,player.pos.z),true,'boarded in the cabin');
+});
+
+test('a stair book carried away keeps the stair until it comes home',()=>{
+  const {s,interactables,player,camera}=runStair();
+  s.interact(interactables.find(o=>o.userData.type==='high-stair-door'));s.update(1,.016);
+  const book=interactables.find(o=>o.userData.type==='book');assert(book);const home=book.parent;camera.add(book);
+  player.pos.set(-33.5,0,-11);s.update(60,.016);assert.equal(s.built,true);
+  home.add(book);s.update(61,.016);assert.equal(s.built,false);
 });

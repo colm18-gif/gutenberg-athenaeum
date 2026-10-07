@@ -6,7 +6,7 @@ const vm=require('node:vm');
 const source=fs.readFileSync('chance-room.js','utf8'),game=fs.readFileSync('game.js','utf8'),stairs=fs.readFileSync('high-staircase.js','utf8');
 class V{constructor(){this.x=0;this.y=0;this.z=0}set(x,y,z){Object.assign(this,{x,y,z});return this}clone(){return new V().set(this.x,this.y,this.z)}}
 class O{constructor(){this.children=[];this.parent=null;this.position=new V();this.rotation={x:0,y:0,z:0};this.quaternion={clone:()=>({})};this.userData={}}
-  add(...m){for(const c of m){c.parent=this;this.children.push(c)}return this}}
+  add(...m){for(const c of m){c.parent=this;this.children.push(c)}return this}removeFromParent(){if(this.parent)this.parent.children.splice(this.parent.children.indexOf(this),1);this.parent=null}}
 class Mesh extends O{constructor(g,m){super();this.geometry=g;this.material=m}}
 const G=class{constructor(...a){this.args=a}dispose(){}},M=class{constructor(p){Object.assign(this,p)}dispose(){}};
 const THREE={Group:O,Mesh,BoxGeometry:G,PlaneGeometry:G,MeshStandardMaterial:M,PointLight:class extends O{}};
@@ -48,4 +48,14 @@ test('the way back is lit, in a clear gap, works while carrying a book, and the 
   assert.match(game,/if\(carryingBook&&chanceRoom\?\.atExit\(\)\)\{returnSelected\(false\);chanceRoom\.leave\(true\)/,'carrying a book does not trap the reader');
   assert.match(game,/\['chance-room','The Room of Chance'\]/);assert.match(game,/chanceRoom\?\.contains\(x,z\)\)return 'chance-room'/);
   assert.match(fs.readFileSync('room-ambience.js','utf8'),/'chance-room':\{/);
+});
+
+test('the room is freed a while after the reader leaves, keeps the portrait, and is built again on the next visit',()=>{
+  const a=room();const portrait=a.interactables.find(o=>o.userData.type==='chance-door');
+  a.r.enter();a.r.update(1);assert.equal(a.r.built,true);
+  a.r.interact(a.interactables.find(o=>o.userData.type==='chance-exit'));a.r.update(2);a.r.update(20);assert.equal(a.r.built,true,'not straight away');
+  a.r.update(40);assert.equal(a.r.built,false,'freed after twenty-five seconds away');
+  assert(!a.interactables.some(o=>o.userData.chance||o.userData.type==='chance-exit'),'its books and its way back go with it');
+  assert(a.interactables.includes(portrait),'the portrait in the east wing stays');
+  a.r.interact(portrait);assert.equal(a.r.built,true);assert.equal(a.interactables.filter(o=>o.userData.chance).length,42,'and the room is built again');
 });
