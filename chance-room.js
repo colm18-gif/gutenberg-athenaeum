@@ -11,7 +11,11 @@
     const ENTRANCE={x:36.6,z:2.05,yaw:-Math.PI/2};
     const ROOM={cx:500,cz:60,w:18,d:16,h:5.2};
     const IDS=[1342,84,2701,11,1661,98,174,345,5200,1232,1952,1400,4300,1080,46,768,2554,219,16328,6130,19942,55,244,514,1260,2097,1727,5740,1064,145,35,5230,236,1524,10002,389,1695,1934,2005,10897,204,215];
+    // Like the other rooms behind doors, the room is built when the reader goes in and freed a while after they leave;
+    // the portrait in the east wing stays.
+    const KEEP=25;
     let root=null,time=0,lastNeeded=-1e9,portrait=null;
+    const books=[];
     const ours=[],owned=[],blockers=[];
 
     const own=o=>{owned.push(o);return o};
@@ -54,7 +58,7 @@
         const bm=add(own(new THREE.BoxGeometry(1.05,1.2,.16)),own(bookMaterial(book)),-2.35+col*2.35,.9+row*1.44,-.46,g);
         bm.rotation.x=(Math.random()-.5)*.05;bm.rotation.z=(Math.random()-.5)*.05;
         bm.userData={type:'book',book,loaded:false,chance:true,home:{position:bm.position.clone(),quaternion:bm.quaternion.clone(),parent:g}};
-        interactables.push(bm);ours.push(bm);
+        interactables.push(bm);ours.push(bm);books.push(bm);
       });
       block(x,z,Math.abs(Math.cos(yaw))*W+Math.abs(Math.sin(yaw))*D,Math.abs(Math.sin(yaw))*W+Math.abs(Math.cos(yaw))*D);
     }
@@ -96,8 +100,16 @@
     // Standing at the way back (in the gap between the south bookcases): a reader carrying a book can leave from here too.
     function atExit(x=player.pos.x,z=player.pos.z){return !!root&&Math.abs(x-ROOM.cx)<1.6&&z>ROOM.cz+ROOM.d/2-2.6&&contains(x,z)}
     function interact(object){const d=object?.userData;if(d?.type==='chance-door'){enter();return true}if(d?.type==='chance-exit'){leave();return true}return false}
-    function update(t){time=t;if(contains(player.pos.x,player.pos.z))lastNeeded=t}
+    function unload(){
+      if(!root)return;root.removeFromParent();root.traverse(object=>{if(object.isLight)object.userData.freed=true});root=null;
+      for(let i=interactables.length-1;i>=0;i--)if(interactables[i]!==portrait&&ours.includes(interactables[i]))interactables.splice(i,1);
+      for(const thing of owned.splice(0))thing.dispose?.();
+      ours.length=0;if(portrait)ours.push(portrait);books.length=0;blockers.length=0;
+    }
+    function update(t){time=t;if(contains(player.pos.x,player.pos.z))lastNeeded=t;
+      // A book the reader is carrying, or has put down outside, keeps the room until it comes home.
+      else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==b.userData.home?.parent))unload()}
     buildEntrance();
-    return {contains,floorAt,allowed,interact,update,enter,leave,atExit,room:ROOM,entrance:ENTRANCE,get built(){return !!root},zoneAt:(x,z)=>contains(x,z)?'room-of-chance':null};
+    return {contains,floorAt,allowed,interact,update,enter,unload,leave,atExit,room:ROOM,entrance:ENTRANCE,get built(){return !!root},zoneAt:(x,z)=>contains(x,z)?'room-of-chance':null};
   };
 })();

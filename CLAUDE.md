@@ -13,7 +13,10 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Files the jobs rewrite without a new build are listed in `LIVE_DATA` there.
 - Rooms behind doors (`evening-room.js`, `learners-room.js`, `periodicals-room.js`, `international-wing.js`,
   `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`, `map-room.js`, `set-texts-room.js`)
-  are built only when the reader approaches and freed ~25 s after they leave. Each gets an ambience recipe in
+  are built only when the reader approaches and freed ~25 s after they leave. So are the Room of Chance (its portrait
+  stays) and the high staircase, Rocket Hall, Moon and rocket cabin (`high-staircase.js`: only its door in the west wing
+  is built at startup; a stair book carried away keeps it). A freed room marks its lights `userData.freed` so the light
+  budget lets them go. Each gets an ambience recipe in
   `room-ambience.js` and a place in `PLACE_GROUPS` in `game.js`.
 - The Poe Room (`poe-room.js`, x −330, z −140) is behind a chamber door in the Gothic Parlour's west wall, under a raven on a
   bust of Pallas (`?room=poe`). A heart beats under the floor, louder near the loose board (made with game.js's `sound`, no
