@@ -61,7 +61,7 @@ const ROOM_NAMES={secret:'The secret bookcase in the west wing','evening-quick':
   signal:'The Signal House, on the night railway',tide:'Tidebound Quay, on the night railway',mars:'The Reading Room of Helium, on Mars',periodicals:'The Periodicals Room',spanish:'The International Wing',portuguese:'The Portuguese Reading Room',chinese:'The Chinese Reading Room',french:'The French Reading Room',latin:'The Latin Reading Room',ukrainian:'The Ukrainian Reading Room',
   antipodes:'The Antipodes, through the Earth from the Grand Hall',australian:'The Australian Room, at the Antipodes','new-zealand':'The New Zealand Room, at the Antipodes',
   'african-ancient':'The African Reading Room','african-voices':'The African Reading Room','african-tales':'The African Reading Room',
-  'map-voyages':'The Map Room','map-makers':'The Map Room','map-lands':'The Map Room','set-texts':'The Set Texts Room','lost-property':'The Lost Property Office, down the book lift in the west wing'};
+  'map-voyages':'The Map Room','map-makers':'The Map Room','map-lands':'The Map Room','set-texts':'The Set Texts Room','lost-property':'The Lost Property Office, down the book lift in the west wing',contested:'The Unwelcome Spines, beyond the Restricted Catalogue'};
 const CURIOUS={horologist:'The Horologist’s Study',conservatory:'The Night Conservatory',parlour:'The Ghost-Story Parlour',attic:'The attic behind the curious doors',
   repository:'The Repository',unread:'The Unread Room',returning:'The Room of Returning Names',quiet:'The Quiet Stacks',sorting:'The Sorting Room',departures:'Departures'};
 // Places with a link straight into them (/?room=…, handled in game.js).

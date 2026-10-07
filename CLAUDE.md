@@ -67,6 +67,11 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   are out at random on each visit, in pigeonholes, each with an invented tag saying where it was found (`FOUND`); the
   bell on the counter clears them and brings out a lot that was not just there. A book carried to the car is put back.
   Keep its books off every other shelf (a test checks), and keep the stock at thirty or more so two lots never overlap.
+- The Unwelcome Spines (`buildContestedRoom` in `game.js`, x 170, z 14) is behind the door bound in banned pages beyond
+  the Restricted Catalogue: books once banned, burned, prosecuted or suppressed, from the shelf `contested` in
+  `data/new-books.js` (category `Contested`, which the room's chair and the east-side recommendations draw on), in
+  three cases of ten. They must be books held nowhere else (a test checks): the single-copy register shows each book
+  once, and when the room's books were the Restricted Catalogue's, its shelves stood almost empty.
 - The Map Room (`map-room.js`, x −420, z −60) is behind a door in the west wing's north wall (x −21.4; `?room=maps`): twenty
   old maps hung edge to edge (Mercator, Waldseemüller, the Hereford Mappa Mundi, Piri Reis, the Catalan Atlas, Ricci,
   John Snow's cholera map and William Smith's on the map table…), each with a card in `MAPS`. Looking at one opens the
