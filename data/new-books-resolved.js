@@ -1031,6 +1031,114 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 25648,
    "words": 44054
   },
+  "The Rainbow": {
+   "id": 28948,
+   "words": 187774
+  },
+  "Women in Love": {
+   "id": 4240,
+   "words": 182855
+  },
+  "The Kreutzer Sonata": {
+   "id": 689,
+   "words": 64398
+  },
+  "Areopagitica": {
+   "id": 608,
+   "words": 18047
+  },
+  "Rights of Man": {
+   "id": 3742,
+   "words": 93129
+  },
+  "The Age of Reason": {
+   "id": 3743,
+   "words": 72418
+  },
+  "Philosophical Dictionary": {
+   "id": 18569,
+   "words": 86271
+  },
+  "Emile": {
+   "id": 5427,
+   "words": 252843
+  },
+  "A Theologico-Political Treatise": {
+   "id": 989,
+   "words": 30284
+  },
+  "Gargantua and Pantagruel": {
+   "id": 1200,
+   "words": 323000
+  },
+  "The Flowers of Evil": {
+   "id": 36098,
+   "words": 8003
+  },
+  "Nana": {
+   "id": 5250,
+   "words": 143497
+  },
+  "Salome": {
+   "id": 42704,
+   "words": 13181
+  },
+  "Mrs. Warren’s Profession": {
+   "id": 1097,
+   "words": 34889
+  },
+  "Ghosts": {
+   "id": 8121,
+   "words": 24644
+  },
+  "Jurgen": {
+   "id": 8771,
+   "words": 96013
+  },
+  "Sister Carrie": {
+   "id": 233,
+   "words": 157950
+  },
+  "The Decameron": {
+   "id": 23700,
+   "words": 308699
+  },
+  "The Well of Loneliness": {
+   "id": 73042,
+   "words": 165679
+  },
+  "All Quiet on the Western Front": {
+   "id": 75011,
+   "words": 63695
+  },
+  "A Farewell to Arms": {
+   "id": 75201,
+   "words": 89128
+  },
+  "Elmer Gantry": {
+   "id": 72609,
+   "words": 155094
+  },
+  "Ten Days That Shook the World": {
+   "id": 3076,
+   "words": 122246
+  },
+  "Anarchism and Other Essays": {
+   "id": 2162,
+   "words": 67831
+  },
+  "Walker’s Appeal": {
+   "id": 16516,
+   "words": 32577
+  },
+  "The Awakening of Spring": {
+   "id": 35242,
+   "words": 25204
+  },
+  "The Impending Crisis of the South": {
+   "id": 36055,
+   "words": 106162
+  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633
@@ -2063,6 +2171,7 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
  "missing": [
   "Benito Cereno",
   "History of the Expedition under the Command of Captains Lewis and Clark, Vol. 1.",
+  "The Necessity of Atheism",
   "María [es]",
   "Poesías [es]"
  ]
