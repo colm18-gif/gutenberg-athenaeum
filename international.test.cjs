@@ -169,7 +169,7 @@ test('the French Reading Room: classics in French behind the blue door, kept apa
 
 test('the wing’s rooms stand clear of every other place, Crusoe’s island included',()=>{
   const rooms=[...wing.matchAll(/(\w+):\{cx:(-?\d+),cz:(-?\d+),w:(\d+),d:(\d+)/g)].map(m=>({key:m[1],cx:+m[2],cz:+m[3],w:+m[4],d:+m[5]}));
-  assert.equal(rooms.length,6);
+  assert.equal(rooms.length,7);
   const isle=fs.readFileSync('crusoe-island.js','utf8'),[,ix,iz]=isle.match(/ISLE=\{x:(-?\d+),z:(-?\d+)/),[,rx,rz]=isle.match(/SAND=\{rx:(\d+),rz:(\d+)\}/);
   for(const a of rooms){
     // The nearest point of the room to the island's centre must lie outside its sand.
@@ -203,11 +203,11 @@ test('the Latin Reading Room: Latin texts behind a stone door in the south wall,
 
 test('the wing’s books load only on the way there, or on a link that may lead there',()=>{
   const main=load('data/new-books.js','ATHENAEUM_NEW_BOOKS'),wingList=load('data/new-books-wing.js','ATHENAEUM_NEW_BOOKS_WING');
-  const WING=new Set(['spanish','portuguese','french','latin','chinese','ukrainian']);
+  const WING=new Set(['spanish','portuguese','french','latin','italian','chinese','ukrainian']);
   assert.ok(main.every(entry=>!WING.has(entry[4])),'the wing’s books belong in data/new-books-wing.js');
   assert.ok(wingList.length>150&&wingList.every(entry=>WING.has(entry[4])),'only the wing’s books in data/new-books-wing.js');
   // Not among the files every visitor downloads: only for a ?book= or a ?room= in the wing.
-  assert.match(html,/if\(q\.has\('book'\)\|\|\/\^\(international\|international-wing\|es\|[^)]*latin-room\|zh[^)]*\)\$\/\.test\(room\)\)startupScript\('data\/new-books-wing\.js'\)/);
+  assert.match(html,/if\(q\.has\('book'\)\|\|\/\^\(international\|international-wing\|es\|[^)]*latin-room\|[^)]*zh[^)]*\)\$\/\.test\(room\)\)startupScript\('data\/new-books-wing\.js'\)/);
   assert.match(html,/window\.libraryVersionedSource=src=>versionedSource\(src\)/);
   // In the library: fetched within 9 m of the door (the reader starts 10.7 m away), at one of the wing's doors, or before a link enters a room.
   assert.match(game,/add\(window\.ATHENAEUM_NEW_BOOKS\);add\(window\.ATHENAEUM_NEW_BOOKS_WING\);/);
@@ -273,7 +273,7 @@ test('the Ukrainian Reading Room: classics from Wikisource behind a blue door wi
 
 test('a reader whose browser speaks one of the wing\'s languages is shown the way to its room, and books can report a mistake',()=>{
   const html=fs.readFileSync('index.html','utf8'),game=fs.readFileSync('game.js','utf8');
-  for(const code of ['es','pt','fr','zh','uk'])assert.ok(html.includes(`href="/?room=${code}"`),code);
+  for(const code of ['es','pt','fr','it','zh','uk'])assert.ok(html.includes(`href="/?room=${code}"`),code);
   assert.match(html,/navigator\.languages/);assert.match(html,/class="reader-source reader-report"/);
   assert.match(game,/const REPORT_LABELS=\{en:\['Report a mistake'/);assert.match(game,/uk:\['Повідомити про помилку'/);
   assert.match(game,/report\.href='mailto:libraryafterdark1@gmail\.com\?subject='/);
@@ -285,4 +285,32 @@ test('the Ukrainian room has its flags, a Petrykivka painting under a rushnyk, s
   assert.ok(i>0);assert.match(src,/if\(key==='ukrainian'\)dressUkrainian\(/);
   for(const word of ['Прапор України','Петриківський розпис','Писанки','Соняшники','#0057b7','#ffd500','InstancedMesh'])assert.ok(body.includes(word),word);
   assert.doesNotMatch(body,/Light\(/);
+});
+
+test('the Italian Reading Room: Italian texts behind a green door in the Latin room, under a della Robbia roundel',async()=>{
+  const italian=shelves.filter(entry=>entry[4]==='italian');
+  const {ROOMS,ROOM_LANGUAGES,validate}=await import('./scripts/new-books.mjs');assert.ok(ROOMS.includes('italian'));assert.equal(ROOM_LANGUAGES.italian,'it');
+  assert.ok(italian.length>=24&&italian.length<=48,`${italian.length} Italian books`);assert.deepEqual(validate(italian),[]);
+  assert.equal(new Set(italian.map(entry=>entry[1])).size,italian.length,'each title once');
+  for(const [id,title,,,,note] of italian){assert.ok(Number.isInteger(id),`${title}: give its number from Gutenberg's catalogue`);assert.ok(note.length>=80&&/\b(il|che|di|della|una)\b/.test(note)&&!/\b(the|and|which|with)\b/i.test(note),`${title}: a note in Italian`)}
+  const {textMatches}=await import('./scripts/daily-room.mjs'),head=lang=>`Title: I promessi sposi\nAuthor: Alessandro Manzoni\nLanguage: ${lang}\n`;
+  assert.ok(textMatches(head('Italian'),'I promessi sposi','Alessandro Manzoni','it'));assert.ok(!textMatches(head('English'),'I promessi sposi','Alessandro Manzoni','it'),'a translation is not the text');
+  // From Virgil to Dante: the door is in the Latin room's east wall, and the way back leads there.
+  assert.match(wing,/italian:\{cx:-530,cz:132,w:24,d:15,h:6,language:'it',sign:'SALA DI LETTURA IN ITALIANO'/);
+  assert.match(wing,/italian:\{from:'latin',x:ROOMS\.latin\.cx\+ROOMS\.latin\.w\/2-\.2,z:ROOMS\.latin\.cz,yaw:-Math\.PI\/2\}/);
+  assert.match(wing,/if\(key==='latin'\)eastDoor\(ROOM_DOORS\.italian\.z,'italian',\{type:'intl-go',room:'italian'/);
+  assert.match(wing,/key==='italian'\?\{type:'intl-go',room:'latin',back:key/);assert.match(wing,/into=outOf\(data\.back\);activate\(into\)/);
+  assert.match(wing,/if\(here===outOf\(key\)&&Math\.hypot/);assert.match(wing,/if\(key==='italian'\)\{\/\/ A glazed terracotta roundel/);assert.match(wing,/if\(kind==='maiolica'\)/);
+  const src=fs.readFileSync('international-wing.js','utf8'),i=src.indexOf('function dressItalian('),body=src.slice(i,src.indexOf('\n    }\n',i));
+  assert.ok(i>0);assert.match(body,/InstancedMesh/);assert.doesNotMatch(body,/Light\(/);
+  assert.match(game,/it:'italian-room',italian:'italian-room'/);assert.match(game,/'italian-room':internationalWing&&\(\(\)=>enterWing\('italian'\)\)/);assert.match(game,/italian:'it'/);
+  assert.match(html,/\|it\|italian\|italiano\|italia\|italian-room\|/);
+  const out=fs.mkdtempSync(path.join(os.tmpdir(),'it-pages-'));
+  execFileSync(process.execPath,['scripts/book-pages.mjs'],{env:{...process.env,OUT:out}});
+  const it=fs.readFileSync(path.join(out,'it/index.html'),'utf8');
+  assert.match(it,/<html lang="it">/);assert.match(it,/<h1>Libri in italiano<\/h1>/);assert.match(it,/href="\/\?room=italian-room"/);
+  assert.equal(fs.readFileSync('it/index.html','utf8'),it,'run: node scripts/book-pages.mjs');
+  assert.match(fs.readFileSync(path.join(out,'sitemap.xml'),'utf8'),/<loc>https:\/\/libraryafterdark\.space\/it\/<\/loc>/);
+  const {readingTime}=await import('./scripts/book-pages.mjs');assert.equal(readingTime(15000,'it'),'un’ora');assert.equal(readingTime(30000,'it'),'2 ore');
+  for(const file of ['.github/workflows/new-books.yml','.github/workflows/book-pages.yml'])assert.match(fs.readFileSync(file,'utf8'),/ la it uk /,file);
 });

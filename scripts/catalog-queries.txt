@@ -1,84 +1,56 @@
-# The Italian Reading Room: Italian texts, by author.
- ; Dante ; it
- ; Petrarca ; it
- ; Boccaccio ; it
- ; Ariosto ; it
- ; Tasso, Torquato ; it
- ; Machiavelli ; it
- ; Manzoni ; it
- ; Leopardi ; it
- ; Foscolo ; it
- ; Verga ; it
- ; Collodi ; it
- ; De Amicis|Amicis ; it
+# The Italian Reading Room: titles, and authors in any language (to see how the catalogue spells them).
+Malavoglia|rusticane|Mastro-don|Vita dei campi|Eva|Storia di una capinera ; ; it
+Ortis|Sepolcri ; ; it
+Gerusalemme|Aminta ; ; it
+Canzoniere|Rime|Trionfi ; Petrarc ; 
+Decameron ; ; 
+Principe|Discorsi sopra|Mandragola ; ; it
+Locandiera|Goldoni|Bottega del caff|Baruffe ; ; it
+Coscienza di Zeno|Senilit|Una vita ; ; it
+Confessioni d'un|Confessioni di un ; ; it
+^Cuore ; ; it
+Mattia Pascal|Uno, nessuno|Novelle per un anno|Quaderni di Serafino ; ; it
+Piccolo mondo|Malombra|Daniele Cortis|Il santo ; ; it
+mie prigioni|Francesca da Rimini ; ; it
+Canne al vento|Elias Portolu|Cenere|Marianna Sirca ; ; it
+Corsaro Nero|Mompracem|pirati della Malesia|Jolanda ; ; it
+Dialogo|Sidereus|Saggiatore ; Galil ; 
+Vite de|Vasari ; ; it
+Cortegiano|Cortigiano ; ; 
+delitti e delle pene ; ; 
+Gian Burrasca ; ; it
+Myricae|Castelvecchio|Poemetti ; ; it
+Odi barbare|Rime nuove|Giambi ; ; it
+^Il piacere|Trionfo della morte|Alcyone|Laudi ; ; it
+Operette morali|Zibaldone|Pensieri ; Leopardi ; 
+Vita nuova|Convivio|Rime ; Dante ; it
+Fioretti|Cantico ; ; it
+Novellino|Morgante|Orlando ; ; it
+Ricordi|Storia d'Italia ; Guicciardini ; 
+Citt. del Sole ; ; 
+Vita di Benvenuto|Vita ; Cellini ; 
+ ; Verga ; 
+ ; Goldoni ; 
+ ; Foscolo ; 
+ ; Tasso ; 
+ ; Svevo|Schmitz ; 
+ ; Nievo ; 
+ ; Petrarc ; 
+ ; Boccaccio ; 
+ ; Machiavelli ; 
+ ; Leopardi ; 
+ ; Collodi|Lorenzini ; 
+ ; Deledda ; 
  ; Salgari ; it
- ; Fogazzaro ; it
- ; Annunzio ; it
- ; Pirandello ; it
- ; Svevo ; it
- ; Deledda ; it
  ; Carducci ; it
  ; Pascoli ; it
- ; Goldoni ; it
- ; Alfieri ; it
- ; Parini ; it
- ; Cellini ; it
- ; Polo, Marco ; it
- ; Galilei ; it
- ; Vasari ; it
- ; Castiglione ; it
- ; Serao ; it
- ; Capuana ; it
- ; De Roberto|Roberto, Federico ; it
- ; Nievo ; it
- ; Tarchetti ; it
- ; Gozzano ; it
- ; Pellico ; it
- ; Neera|Radius ; it
- ; Aleramo ; it
- ; Gozzi ; it
- ; Metastasio ; it
- ; Beccaria ; it
- ; Campanella ; it
- ; Boiardo ; it
- ; Pulci ; it
- ; Guicciardini ; it
- ; Basile, Giambattista ; it
- ; Buonarroti ; it
- ; Francesco d'Assisi|Francis of Assisi ; it
- ; Fioretti ; it
-Fioretti ; ; it
- ; Iacopone|Jacopone ; it
- ; Cavalcanti ; it
- ; Leonardo ; it
- ; Gozzi, Carlo ; it
- ; Giusti ; it
- ; Belli ; it
- ; Porta, Carlo ; it
- ; Imbriani ; it
- ; Praga ; it
- ; Boito ; it
- ; Scarfoglio ; it
- ; Oriani ; it
- ; Panzini ; it
- ; Papini ; it
- ; Palazzeschi ; it
- ; Marinetti ; it
- ; Gentile ; it
- ; Croce ; it
- ; Mazzini ; it
- ; Garibaldi ; it
- ; Abba ; it
- ; Settembrini ; it
- ; D'Azeglio|Azeglio ; it
- ; Guerrazzi ; it
- ; Grossi ; it
- ; Rovetta ; it
- ; Invernizio ; it
- ; Vamba|Bertelli ; it
- ; Capuana ; it
- ; Barrili ; it
- ; Stecchetti|Guerrini ; it
- ; Negri, Ada ; it
- ; Vivanti ; it
- ; Marchesa Colombi|Torriani ; it
+ ; Fogazzaro ; it
+ ; Settembrini ; 
+ ; Giusti, Giuseppe ; 
+ ; Porta, Carlo|Belli, Giuseppe ; 
+ ; Montessori ; it
+ ; Gozzano ; 
+ ; Corazzini|Govoni ; it
+ ; Stuparich|Slataper|Saba ; it
+ ; Tozzi ; it
+ ; Campana, Dino ; it

@@ -58,14 +58,14 @@ export function loadCatalogue(){
 // ---------- where each book lives ----------
 const ROOM_NAMES={secret:'The secret bookcase in the west wing','evening-quick':'The Evening Room','evening-hour':'The Evening Room','evening-evening':'The Evening Room',
   'learners-1':'The English Reading Room','learners-2':'The English Reading Room','learners-3':'The English Reading Room','learners-4':'The English Reading Room','learners-short':'The English Reading Room',
-  signal:'The Signal House, on the night railway',tide:'Tidebound Quay, on the night railway',mars:'The Reading Room of Helium, on Mars',periodicals:'The Periodicals Room',spanish:'The International Wing',portuguese:'The Portuguese Reading Room',chinese:'The Chinese Reading Room',french:'The French Reading Room',latin:'The Latin Reading Room',ukrainian:'The Ukrainian Reading Room',
+  signal:'The Signal House, on the night railway',tide:'Tidebound Quay, on the night railway',mars:'The Reading Room of Helium, on Mars',periodicals:'The Periodicals Room',spanish:'The International Wing',portuguese:'The Portuguese Reading Room',chinese:'The Chinese Reading Room',french:'The French Reading Room',latin:'The Latin Reading Room',italian:'The Italian Reading Room',ukrainian:'The Ukrainian Reading Room',
   antipodes:'The Antipodes, through the Earth from the Grand Hall',australian:'The Australian Room, at the Antipodes','new-zealand':'The New Zealand Room, at the Antipodes',
   'african-ancient':'The African Reading Room','african-voices':'The African Reading Room','african-tales':'The African Reading Room',
   'map-voyages':'The Map Room','map-makers':'The Map Room','map-lands':'The Map Room','set-texts':'The Set Texts Room','lost-property':'The Lost Property Office, down the book lift in the west wing',contested:'The Unwelcome Spines, beyond the Restricted Catalogue'};
 const CURIOUS={horologist:'The Horologist’s Study',conservatory:'The Night Conservatory',parlour:'The Ghost-Story Parlour',attic:'The attic behind the curious doors',
   repository:'The Repository',unread:'The Unread Room',returning:'The Room of Returning Names',quiet:'The Quiet Stacks',sorting:'The Sorting Room',departures:'Departures'};
 // Places with a link straight into them (/?room=…, handled in game.js).
-const ROOM_LINKS={'The International Wing':'international-wing','The Portuguese Reading Room':'portuguese-room','The Chinese Reading Room':'chinese-room','The French Reading Room':'french-room','The Latin Reading Room':'latin-room','The Ukrainian Reading Room':'ukrainian-room','The Evening Room':'evening-room','The English Reading Room':'learners-room','The Periodicals Room':'periodicals-room','The Reading Room of Helium, on Mars':'mars',
+const ROOM_LINKS={'The International Wing':'international-wing','The Portuguese Reading Room':'portuguese-room','The Chinese Reading Room':'chinese-room','The French Reading Room':'french-room','The Latin Reading Room':'latin-room','The Italian Reading Room':'italian-room','The Ukrainian Reading Room':'ukrainian-room','The Evening Room':'evening-room','The English Reading Room':'learners-room','The Periodicals Room':'periodicals-room','The Reading Room of Helium, on Mars':'mars',
   'The Selenite Reading Outpost, on the Moon':'moon','The Consulting Room':'consulting-room','The Time Laboratory':'time-laboratory','The Lost Kingdoms':'lost-kingdoms','The Verne rooms':'verne-rooms',
   'The Antipodes, through the Earth from the Grand Hall':'antipodes','The Australian Room, at the Antipodes':'australia','The New Zealand Room, at the Antipodes':'new-zealand','The African Reading Room':'africa','The Map Room':'maps','The Set Texts Room':'set-texts','The Lost Property Office, down the book lift in the west wing':'lost-property'};
 const CATEGORY_ROOMS={'Extraordinary Voyages':'The Verne rooms','The Consulting Room':'The Consulting Room','The Time Laboratory':'The Time Laboratory','The Lost Kingdoms':'The Lost Kingdoms'};
@@ -98,6 +98,7 @@ export const pageName=book=>`${book.id}-${slug(book.title)}.html`;
 export function readingTime(words,lang='en'){if(!words)return null;
   // Chinese is counted by the character (scripts/new-books.mjs); a reader takes in some 350 of them a minute.
   if(lang.startsWith('zh')){const m=Math.max(1,Math.round(words/350));if(m<15)return `${m} 分鐘`;const r=Math.round(m/5)*5;if(r<60)return `${r} 分鐘`;const h=Math.floor(r/60),rest=r%60;return rest?`${h} 小時 ${rest} 分鐘`:`${h} 小時`}
+  if(lang==='it'){const m=Math.max(1,Math.round(words/250));if(m<15)return `${m} minuti`;const r=Math.round(m/5)*5;if(r<60)return `${r} minuti`;const h=Math.floor(r/60),rest=r%60;return rest?`${h} h ${rest} min`:h===1?'un’ora':`${h} ore`}
   if(lang==='uk'){const m=Math.max(1,Math.round(words/250));if(m<15)return `${m} хв`;const r=Math.round(m/5)*5;if(r<60)return `${r} хв`;const h=Math.floor(r/60),rest=r%60;return rest?`${h} год ${rest} хв`:`${h} год`}
   const es=lang==='es'||lang==='pt'||lang==='fr',m=Math.max(1,Math.round(words/250));if(m<15)return `${m} ${es?'minutos':'minutes'}`;const r=Math.round(m/5)*5;if(r<60)return `${r} ${es?'minutos':'minutes'}`;const h=Math.floor(r/60),rest=r%60;return rest?`${h} ${es?'h':'hr'} ${rest} min`:lang==='fr'?(h===1?'une heure':`${h} heures`):es?(h===1?'una hora':`${h} horas`):`${h===1?'an hour':`${h} hours`}`}
 // The words around each page, in the language of its book.
@@ -132,6 +133,11 @@ const WORDS={
 // Latin books have their pages in English, like their notes, with a way back to the Latin shelf.
 WORDS.la={...WORDS.en,also:()=>'More Latin books',place:place=>place,onShelves:()=>'In the International Wing',
   nav:'<a href="/la/">Libri Latini</a><a href="/book/">Catalogue</a><a class="enter" href="/?room=latin-room">Enter the library</a>'};
+WORDS.it={lang:'it',by:'di',read:'Leggilo nella Library After Dark',plain:'Oppure leggilo come testo semplice',time:'Tempo di lettura',about:'Circa',where:'Dove trovarlo',onShelves:()=>'Nell’ala internazionale',edition:'Edizione',
+  pd:'Di pubblico dominio negli Stati Uniti.',licence:'Licenza',librarian:'La bibliotecaria',moreBy:author=>`Altro di ${author}`,also:()=>'Altri libri in italiano',
+  shelf:shelf=>SHELVES_IT[shelf]||shelf,place:place=>({'The Italian Reading Room':'L’ala internazionale: Sala di lettura in italiano'})[place]||place,
+  nav:'<a href="/it/">Libri in italiano</a><a href="/book/">Catalogue</a><a class="enter" href="/?room=italian-room">Entra nella biblioteca</a>',
+  footer:'The Library After Dark è una biblioteca in 3D che si percorre nel browser, con libri di pubblico dominio da leggere. <a href="/?room=italian-room">Entra</a>.'};
 // Ukrainian books come from Wikisource, and their pages are in Ukrainian.
 WORDS.uk={lang:'uk',by:'',pageTitle:(book,edition)=>`${book.title}${edition} — ${book.author} · The Library After Dark`,read:'Читати в Library After Dark',plain:'Або читати простим текстом',time:'Час читання',about:'Близько',where:'Де знайти',onShelves:()=>'У Міжнародному крилі',edition:'Видання',
   pd:'Суспільне надбання.',licence:'Статус',librarian:'Бібліотекарка',moreBy:author=>`Ще від автора: ${author}`,also:()=>'Інші книжки українською',
@@ -150,6 +156,7 @@ function sourceLink(book){
   if(book.language==='es')return `<a href="https://www.gutenberg.org/ebooks/${book.id}" rel="noopener">Project Gutenberg, libro electrónico n.º ${book.id}</a>`;
   if(book.language==='fr')return `<a href="https://www.gutenberg.org/ebooks/${book.id}" rel="noopener">Project Gutenberg, livre numérique n° ${book.id}</a>`;
   if(book.language==='zh')return `<a href="https://www.gutenberg.org/ebooks/${book.id}" rel="noopener">Project Gutenberg 電子書第 ${book.id} 號</a>`;
+  if(book.language==='it')return `<a href="https://www.gutenberg.org/ebooks/${book.id}" rel="noopener">Project Gutenberg, libro elettronico n. ${book.id}</a>`;
   if(book.language==='pt')return `<a href="https://www.gutenberg.org/ebooks/${book.id}" rel="noopener">Project Gutenberg, livro eletrónico n.º ${book.id}</a>`;
   if(book.sourceKey)return book.sourceUrl?`<a href="${escape(book.sourceUrl)}" rel="noopener">${escape(book.source)}</a>`:escape(book.source);
   return `<a href="https://www.gutenberg.org/ebooks/${book.id}" rel="noopener">Project Gutenberg, eBook #${book.id}</a>`;
@@ -235,6 +242,7 @@ const SHELVES_ES={Comedy:'Comedia',Society:'Novela y sociedad',Drama:'Teatro',Sa
 const SHELVES_PT={Romance:'Amor',Satire:'Sátira',Society:'Romance e sociedade',Poetry:'Poesia',Legend:'Lendas',Adventure:'Aventura',Epic:'Epopeia',Strange:'O estranho',Drama:'Teatro',Journey:'Viagens',History:'História',Philosophy:'Ideias'};
 const SHELVES_FR={Society:'Roman et société',Romance:'Amour',Adventure:'Aventure',Poetry:'Poésie',Drama:'Théâtre',Philosophy:'Idées',Satire:'Satire et conte philosophique',Strange:'L’étrange',Mystery:'Mystère',Wonder:'Contes',History:'Histoire',Journey:'Voyages',Essays:'Essais'};
 const SHELVES_LA={Epic:'Epic',Poetry:'Poetry',History:'History',Oratory:'Oratory',Philosophy:'Philosophy and faith',Drama:'Drama',Science:'Science',Food:'The kitchen',Learners:'For learners'};
+const SHELVES_IT={Poetry:'Poesia',Epic:'Poemi',Society:'Romanzo e società',Romance:'Amore',Drama:'Teatro',Stories:'Novelle',Adventure:'Avventura',History:'Storia',Philosophy:'Idee',Wonder:'Per i più giovani',Legend:'Fiabe',Strange:'Il fantastico',Journey:'Viaggi',Satire:'Satira'};
 const SHELVES_UK={Poetry:'Поезія',Epic:'Поеми',Drama:'Драма',Society:'Повісті й романи',Romance:'Про кохання',Legend:'Легенди й казки',Satire:'Сміх і сатира',History:'Історія',Philosophy:'Думки',Stories:'Новели й оповідання',Fables:'Байки'};
 const SHELVES_ZH={Society:'世情小說',Epic:'歷史演義',Legend:'神魔與奇想',Satire:'諷刺小說',Ghosts:'志怪',Essays:'散文與筆記',Modern:'魯迅',Philosophy:'諸子與經典',Poetry:'詩詞',History:'史書',Drama:'戲曲',Adventure:'俠義',Wonder:'蒙學'};
 // Ukrainian numbers choose their noun: 1 твір, 2–4 твори, 5–20 творів (21 твір, 24 твори…).
@@ -252,6 +260,9 @@ const LANDINGS={
   la:{path:'la',shelves:SHELVES_LA,other:'Other',h1:'Libri Latini',room:'latin-room',button:'Enter the Latin Reading Room',
     intro:n=>`${n} books in Latin, from Virgil, Caesar and Cicero to Augustine, Saint Patrick, Descartes and Newton, and Treasure Island for learners, to read free in a 3D library you walk through in your browser, on a phone too. They are in the Latin Reading Room in the International Wing, each with a note from the librarian. No downloads, no sign-up and no adverts.`,
     title:'Libri Latini: Latin books · The Library After Dark',description:n=>`${n} Latin classics to read free in a 3D library, each with a librarian’s note: Virgil, Caesar, Cicero, Horace, Catullus, Ovid, Augustine and more.`},
+  it:{path:'it',shelves:SHELVES_IT,other:'Altri',h1:'Libri in italiano',room:'italian-room',button:'Entra nella Sala di lettura in italiano',
+    intro:n=>`${n} classici italiani, da Dante e Ariosto a Manzoni, Leopardi, Collodi e Pirandello, da leggere gratis in una biblioteca in 3D che si percorre nel browser, anche dal telefono. Sono nella Sala di lettura in italiano, nell’ala internazionale, ciascuno con una nota della bibliotecaria. Niente download, niente registrazione e niente pubblicità.`,
+    title:'Libri in italiano · The Library After Dark',description:n=>`${n} classici in italiano da leggere gratis in una biblioteca in 3D, ciascuno con una nota della bibliotecaria: Dante, Ariosto, Manzoni, Leopardi, Collodi, Pirandello e molti altri.`},
   uk:{path:'uk',shelves:SHELVES_UK,other:'Інше',h1:'Книжки українською',room:'ukrainian-room',button:'Увійти до Української читальні',
     intro:n=>`${n} ${ukWorks(n)} української класики, від «Енеїди» Котляревського і Шевченка до Лесі Українки, Франка й Коцюбинського, які можна безкоштовно читати в 3D-бібліотеці просто в браузері, зокрема з телефона. Вони стоять в Українській читальні Міжнародного крила, кожна з приміткою бібліотекарки. Тексти з Вікіджерел. Без завантажень, без реєстрації й без реклами.`,
     title:'Книжки українською · The Library After Dark',description:n=>`${n} ${ukWorks(n)} української класики для безкоштовного читання в 3D-бібліотеці, кожен із приміткою бібліотекарки: Шевченко, Франко, Леся Українка, Коцюбинський, Котляревський та інші.`},
@@ -347,7 +358,7 @@ export function build(){
   for(const lang of Object.keys(LANDINGS)){const out=path.join(OUT,LANDINGS[lang].path);fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'index.html'),languagePage(lang,byLanguage.get(lang)||[]))}
   {const out=path.join(OUT,'set-texts');fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});fs.writeFileSync(path.join(out,'index.html'),setTextsPage(listed))}
   fs.writeFileSync(path.join(dir,'index.html'),cataloguePage(listed,byShelf));fs.writeFileSync(path.join(dir,'authors.html'),authorsPage(byAuthor));fs.writeFileSync(path.join(dir,'book.css'),CSS);
-  const urls=[`${SITE}/`,`${SITE}/book/`,`${SITE}/book/authors.html`,`${SITE}/es/`,`${SITE}/pt/`,`${SITE}/fr/`,`${SITE}/la/`,`${SITE}/uk/`,`${SITE}/zh/`,`${SITE}/set-texts/`,...listed.map(b=>`${SITE}/book/${pageName(b)}`)];
+  const urls=[`${SITE}/`,`${SITE}/book/`,`${SITE}/book/authors.html`,`${SITE}/es/`,`${SITE}/pt/`,`${SITE}/fr/`,`${SITE}/la/`,`${SITE}/it/`,`${SITE}/uk/`,`${SITE}/zh/`,`${SITE}/set-texts/`,...listed.map(b=>`${SITE}/book/${pageName(b)}`)];
   fs.writeFileSync(path.join(OUT,'sitemap.xml'),`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u=>`  <url><loc>${encodeURI(u)}</loc></url>`).join('\n')}\n</urlset>\n`);
   fs.writeFileSync(path.join(OUT,'robots.txt'),`User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
   return {pages:listed.length,withNotes:listed.filter(b=>b.note).length};
