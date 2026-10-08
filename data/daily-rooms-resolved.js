@@ -1,7 +1,7 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-07",
+ "updated": "2026-10-08",
  "days": {
   "2026-09-25": {
    "books": [
@@ -824,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 6312,
      "title": "Representative Men",
      "author": "Ralph Waldo Emerson"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-10": {
+   "books": [
+    {
+     "id": 580,
+     "title": "The Pickwick Papers",
+     "author": "Charles Dickens"
+    },
+    {
+     "id": 720,
+     "title": "Almayer's Folly",
+     "author": "Joseph Conrad"
+    },
+    {
+     "id": 863,
+     "title": "The Mysterious Affair at Styles",
+     "author": "Agatha Christie"
+    },
+    {
+     "id": 805,
+     "title": "This Side of Paradise",
+     "author": "F. Scott Fitzgerald"
+    },
+    {
+     "id": 144,
+     "title": "The Voyage Out",
+     "author": "Virginia Woolf"
+    },
+    {
+     "id": 3044,
+     "title": "Desperate Remedies",
+     "author": "Thomas Hardy"
+    },
+    {
+     "id": 161,
+     "title": "Sense and Sensibility",
+     "author": "Jane Austen"
+    },
+    {
+     "id": 5998,
+     "title": "Waverley",
+     "author": "Walter Scott"
+    },
+    {
+     "id": 62,
+     "title": "A Princess of Mars",
+     "author": "Edgar Rice Burroughs"
+    },
+    {
+     "id": 1900,
+     "title": "Typee",
+     "author": "Herman Melville"
     }
    ],
    "missing": []
