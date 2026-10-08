@@ -154,12 +154,16 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   the blue door between them, the French Reading Room (`french`, notes in French), and through the stone door in
   the Spanish room's south wall, the Latin Reading Room (`latin`, notes and book pages in English, signs in Latin), and
   through the blue door with a rushnyk beside it, the Ukrainian Reading Room (`ukrainian`, notes in Ukrainian, authors in
-  Cyrillic, book-page addresses in Latin letters by Ukraine's official transliteration). Gutenberg has no Ukrainian texts,
+  Cyrillic, book-page addresses in Latin letters by Ukraine's official transliteration), and through the green door
+  under a della Robbia roundel in the Latin room's east wall (from Virgil to Dante), the Italian Reading Room (`italian`,
+  notes in Italian, maiolica tiles, a lemon tree; x −530, z 132; a door with `from:'latin'` in `ROOM_DOORS` leads back
+  to the room it opens from). Gutenberg's Italian holdings are thinner than one might think (no Decameron, Petrarch,
+  Tasso, Verga, Goldoni or Svevo in Italian): check the Catalogue lookup before promising a title. Gutenberg has no Ukrainian texts,
   so its books are `['ws:<Wikisource page>', …]`: `scripts/wikisource.mjs` reads the page and its chapter subpages from
   uk.wikisource.org (checking it links to the author's page, leaving out navigation and editors' notes), keeps it in
   `texts/bundled-gzip` under a stable number from 950000 with a `WIKISOURCE TEXT` header, and credits Wikisource. Rooms in `ROOM_LANGUAGES` (`scripts/new-books.mjs`, and in `game.js`) are
   searched on Gutendex in their language, get `book.language` (word help steps aside) and book pages in it;
-  `/es/`, `/pt/`, `/fr/`, `/la/`, `/uk/` and `/zh/` are the landing pages. Their books are keyed
+  `/es/`, `/pt/`, `/fr/`, `/la/`, `/it/`, `/uk/` and `/zh/` are the landing pages. Their books are keyed
   in `data/new-books-resolved.js` as `Title [lang]` (`resolvedKey`), so a French *Madame Bovary* and the English one
   can both stand. The rooms share two lamps
   that move to the reader's room, so adding a room adds no lights. Their reading-table chairs are the library's
@@ -168,7 +172,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   For these rooms the text's own `Language:` line must match (a title alone lets translations through). Gutendex
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
-- `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, ukrainian-room or uk, evening-room, periodicals-room, learners-room, boathouse,
+- `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, boathouse,
   daily-room, poe, irish, maps, set-texts, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text.
 - **Halloween night** (`halloween.js`): 24 October to 2 November by the reader's own date (`?halloween` previews it,

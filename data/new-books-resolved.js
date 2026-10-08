@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-10-07",
+ "updated": "2026-10-08",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -2022,6 +2022,138 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "The Hymns of Prudentius [la]": {
    "id": 14959,
    "words": 29535
+  },
+  "La Divina Commedia di Dante [it]": {
+   "id": 1012,
+   "words": 97616
+  },
+  "La vita nuova [it]": {
+   "id": 71218,
+   "words": 22194
+  },
+  "Orlando Furioso [it]": {
+   "id": 3747,
+   "words": 266189
+  },
+  "Orlando innamorato [it]": {
+   "id": 57787,
+   "words": 240517
+  },
+  "I Canti [it]": {
+   "id": 55236,
+   "words": 25790
+  },
+  "Le Laude [it]": {
+   "id": 29977,
+   "words": 68483
+  },
+  "Le tragedie, gl'inni sacri e le odi [it]": {
+   "id": 57565,
+   "words": 177518
+  },
+  "Maternità [it]": {
+   "id": 36061,
+   "words": 13767
+  },
+  "Il sogno di Scipione [it]": {
+   "id": 11684,
+   "words": 2520
+  },
+  "I promessi sposi [it]": {
+   "id": 45334,
+   "words": 230175
+  },
+  "Le avventure di Pinocchio [it]": {
+   "id": 52484,
+   "words": 41538
+  },
+  "La mandragola - La Clizia - Belfagor [it]": {
+   "id": 56498,
+   "words": 29263
+  },
+  "Il Comento alla Divina Commedia [it]": {
+   "id": 21424,
+   "words": 87926
+  },
+  "Il Pentamerone [it]": {
+   "id": 77385,
+   "words": 87874
+  },
+  "La novellaja fiorentina [it]": {
+   "id": 46898,
+   "words": 209962
+  },
+  "Sei personaggi in cerca d'autore [it]": {
+   "id": 18457,
+   "words": 19026
+  },
+  "Enrico IV [it]": {
+   "id": 18456,
+   "words": 19009
+  },
+  "Un cavallo nella luna [it]": {
+   "id": 56775,
+   "words": 35755
+  },
+  "L'Innocente [it]": {
+   "id": 22642,
+   "words": 78006
+  },
+  "Le Novelle della Pescara [it]": {
+   "id": 53184,
+   "words": 80447
+  },
+  "Dopo il divorzio [it]": {
+   "id": 43226,
+   "words": 56910
+  },
+  "Una Donna [it]": {
+   "id": 47786,
+   "words": 60159
+  },
+  "La conquista di Roma [it]": {
+   "id": 42316,
+   "words": 78671
+  },
+  "Racconti fantastici [it]": {
+   "id": 28867,
+   "words": 27627
+  },
+  "Ettore Fieramosca [it]": {
+   "id": 44797,
+   "words": 88173
+  },
+  "La favorita del Mahdi [it]": {
+   "id": 25180,
+   "words": 113371
+  },
+  "I manifesti del futurismo [it]": {
+   "id": 28144,
+   "words": 44013
+  },
+  "Il codice di Perelà [it]": {
+   "id": 48850,
+   "words": 41448
+  },
+  "Le lettere di Michelangelo Buonarroti [it]": {
+   "id": 46599,
+   "words": 182234
+  },
+  "Frammenti letterari e filosofici [it]": {
+   "id": 67931,
+   "words": 77730
+  },
+  "I Mille [it]": {
+   "id": 31002,
+   "words": 87657
+  },
+  "Marocco [it]": {
+   "id": 30725,
+   "words": 94147
+  },
+  "Beatrice Cenci [it]": {
+   "id": 17837,
+   "words": 214345
   },
   "Енеїда [uk]": {
    "id": 952441,

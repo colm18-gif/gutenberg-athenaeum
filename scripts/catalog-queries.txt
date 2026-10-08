@@ -1,17 +1,56 @@
-# The Map Room: books about maps, charts, atlases, geography and surveying, voyages of discovery, and imaginary lands.
-\bmaps?\b|\bmap-|\bcharts?\b|atlas|cartograph ; ; en
-geograph ; ; en
-navigat|longitude|latitude|surveying|compass ; ; en
-discover(y|ies|ers) ; ; en
-explor(ation|ers?) ; ; en
-Columbus|Magellan|Vespucci|Cabot|Drake|Raleigh|Frobisher|Hudson|Vasco|Henry the Navigator ; ; en
- ; Hakluyt ; en
- ; Pigafetta|Columbus|Colon, Cristobal ; en
- ; Park, Mungo|Humboldt|Livingstone|Burton, Richard|Speke|Stanley, Henry ; en
- ; Lewis, Meriwether|Clark, William ; en
- ; Nansen|Amundsen|Peary|Scott, Robert|Franklin, John|Parry, William ; en
- ; Bird, Isabella|Kingsley, Mary|Bates, Henry Walter|Wallace, Alfred ; en
- ; Strabo|Herodotus|Pausanias|Ptolemy|Mandeville|Ibn Batuta|Battuta|Polo, Marco|Carpini|Rubruck ; en
-Sylvie and Bruno|New Atlantis|City of the Sun|Herland|Islandia|Lilliput|Brobdingnag ; ; en
- ; Jacobs, Joseph ; en
- ; Heawood|Beazley|Keltie|Mill, Hugh Robert|Markham ; en
+# The Italian Reading Room: titles, and authors in any language (to see how the catalogue spells them).
+Malavoglia|rusticane|Mastro-don|Vita dei campi|Eva|Storia di una capinera ; ; it
+Ortis|Sepolcri ; ; it
+Gerusalemme|Aminta ; ; it
+Canzoniere|Rime|Trionfi ; Petrarc ; 
+Decameron ; ; 
+Principe|Discorsi sopra|Mandragola ; ; it
+Locandiera|Goldoni|Bottega del caff|Baruffe ; ; it
+Coscienza di Zeno|Senilit|Una vita ; ; it
+Confessioni d'un|Confessioni di un ; ; it
+^Cuore ; ; it
+Mattia Pascal|Uno, nessuno|Novelle per un anno|Quaderni di Serafino ; ; it
+Piccolo mondo|Malombra|Daniele Cortis|Il santo ; ; it
+mie prigioni|Francesca da Rimini ; ; it
+Canne al vento|Elias Portolu|Cenere|Marianna Sirca ; ; it
+Corsaro Nero|Mompracem|pirati della Malesia|Jolanda ; ; it
+Dialogo|Sidereus|Saggiatore ; Galil ; 
+Vite de|Vasari ; ; it
+Cortegiano|Cortigiano ; ; 
+delitti e delle pene ; ; 
+Gian Burrasca ; ; it
+Myricae|Castelvecchio|Poemetti ; ; it
+Odi barbare|Rime nuove|Giambi ; ; it
+^Il piacere|Trionfo della morte|Alcyone|Laudi ; ; it
+Operette morali|Zibaldone|Pensieri ; Leopardi ; 
+Vita nuova|Convivio|Rime ; Dante ; it
+Fioretti|Cantico ; ; it
+Novellino|Morgante|Orlando ; ; it
+Ricordi|Storia d'Italia ; Guicciardini ; 
+Citt. del Sole ; ; 
+Vita di Benvenuto|Vita ; Cellini ; 
+ ; Verga ; 
+ ; Goldoni ; 
+ ; Foscolo ; 
+ ; Tasso ; 
+ ; Svevo|Schmitz ; 
+ ; Nievo ; 
+ ; Petrarc ; 
+ ; Boccaccio ; 
+ ; Machiavelli ; 
+ ; Leopardi ; 
+ ; Collodi|Lorenzini ; 
+ ; Deledda ; 
+ ; Salgari ; it
+ ; Carducci ; it
+ ; Pascoli ; it
+ ; Fogazzaro ; it
+ ; Settembrini ; 
+ ; Giusti, Giuseppe ; 
+ ; Porta, Carlo|Belli, Giuseppe ; 
+ ; Montessori ; it
+ ; Gozzano ; 
+ ; Corazzini|Govoni ; it
+ ; Stuparich|Slataper|Saba ; it
+ ; Tozzi ; it
+ ; Campana, Dino ; it
