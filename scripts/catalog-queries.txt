@@ -1,17 +1,84 @@
-# The Map Room: books about maps, charts, atlases, geography and surveying, voyages of discovery, and imaginary lands.
-\bmaps?\b|\bmap-|\bcharts?\b|atlas|cartograph ; ; en
-geograph ; ; en
-navigat|longitude|latitude|surveying|compass ; ; en
-discover(y|ies|ers) ; ; en
-explor(ation|ers?) ; ; en
-Columbus|Magellan|Vespucci|Cabot|Drake|Raleigh|Frobisher|Hudson|Vasco|Henry the Navigator ; ; en
- ; Hakluyt ; en
- ; Pigafetta|Columbus|Colon, Cristobal ; en
- ; Park, Mungo|Humboldt|Livingstone|Burton, Richard|Speke|Stanley, Henry ; en
- ; Lewis, Meriwether|Clark, William ; en
- ; Nansen|Amundsen|Peary|Scott, Robert|Franklin, John|Parry, William ; en
- ; Bird, Isabella|Kingsley, Mary|Bates, Henry Walter|Wallace, Alfred ; en
- ; Strabo|Herodotus|Pausanias|Ptolemy|Mandeville|Ibn Batuta|Battuta|Polo, Marco|Carpini|Rubruck ; en
-Sylvie and Bruno|New Atlantis|City of the Sun|Herland|Islandia|Lilliput|Brobdingnag ; ; en
- ; Jacobs, Joseph ; en
- ; Heawood|Beazley|Keltie|Mill, Hugh Robert|Markham ; en
+# The Italian Reading Room: Italian texts, by author.
+ ; Dante ; it
+ ; Petrarca ; it
+ ; Boccaccio ; it
+ ; Ariosto ; it
+ ; Tasso, Torquato ; it
+ ; Machiavelli ; it
+ ; Manzoni ; it
+ ; Leopardi ; it
+ ; Foscolo ; it
+ ; Verga ; it
+ ; Collodi ; it
+ ; De Amicis|Amicis ; it
+ ; Salgari ; it
+ ; Fogazzaro ; it
+ ; Annunzio ; it
+ ; Pirandello ; it
+ ; Svevo ; it
+ ; Deledda ; it
+ ; Carducci ; it
+ ; Pascoli ; it
+ ; Goldoni ; it
+ ; Alfieri ; it
+ ; Parini ; it
+ ; Cellini ; it
+ ; Polo, Marco ; it
+ ; Galilei ; it
+ ; Vasari ; it
+ ; Castiglione ; it
+ ; Serao ; it
+ ; Capuana ; it
+ ; De Roberto|Roberto, Federico ; it
+ ; Nievo ; it
+ ; Tarchetti ; it
+ ; Gozzano ; it
+ ; Pellico ; it
+ ; Neera|Radius ; it
+ ; Aleramo ; it
+ ; Gozzi ; it
+ ; Metastasio ; it
+ ; Beccaria ; it
+ ; Campanella ; it
+ ; Boiardo ; it
+ ; Pulci ; it
+ ; Guicciardini ; it
+ ; Basile, Giambattista ; it
+ ; Buonarroti ; it
+ ; Francesco d'Assisi|Francis of Assisi ; it
+ ; Fioretti ; it
+Fioretti ; ; it
+ ; Iacopone|Jacopone ; it
+ ; Cavalcanti ; it
+ ; Leonardo ; it
+ ; Gozzi, Carlo ; it
+ ; Giusti ; it
+ ; Belli ; it
+ ; Porta, Carlo ; it
+ ; Imbriani ; it
+ ; Praga ; it
+ ; Boito ; it
+ ; Scarfoglio ; it
+ ; Oriani ; it
+ ; Panzini ; it
+ ; Papini ; it
+ ; Palazzeschi ; it
+ ; Marinetti ; it
+ ; Gentile ; it
+ ; Croce ; it
+ ; Mazzini ; it
+ ; Garibaldi ; it
+ ; Abba ; it
+ ; Settembrini ; it
+ ; D'Azeglio|Azeglio ; it
+ ; Guerrazzi ; it
+ ; Grossi ; it
+ ; Rovetta ; it
+ ; Invernizio ; it
+ ; Vamba|Bertelli ; it
+ ; Capuana ; it
+ ; Barrili ; it
+ ; Stecchetti|Guerrini ; it
+ ; Negri, Ada ; it
+ ; Vivanti ; it
+ ; Marchesa Colombi|Torriani ; it
