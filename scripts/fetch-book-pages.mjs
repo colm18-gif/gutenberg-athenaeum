@@ -7,6 +7,8 @@
 //   durrow     The Irish Room's Book of Durrow (durrow-book.js): leaves of about 245 by 145 mm, on vellum.
 //   kelmscott  The Periodicals Room's Kelmscott Chaucer (kelmscott-book.js): folio pages of about 425 by 292 mm, on
 //              Morris's handmade paper.
+//   vesalius   Andreas Vesalius's De humani corporis fabrica (Basel, 1543): folio leaves of about 420 by 280 mm. Not on show
+//              yet: only surveyed, with numbered sheets of its usable files in assets/vesalius/survey.
 //
 // Each page names the Commons files wanted, in order of preference. If none of them is there and public domain, a book
 // with a `pattern` tries the files in its categories whose names match (KellsFol034r…, "folio 34r"…), then a search;
@@ -87,6 +89,14 @@ export const BOOKS = {
       { key: 'p552', scan: 564 },
       { key: 'p553', scan: 565 }
     ]
+  },
+  // The Fabrica of 1543, Vesalius's anatomy, with the woodcuts of Titian's workshop: being surveyed, to choose its plates.
+  vesalius: {
+    dir: 'assets/vesalius', manifest: 'vesalius.json', width: 1190, height: 1780, paper: '#e8dcc0',
+    categories: ['Category:De humani corporis fabrica'], must: /vesal|fabrica/i,
+    survey: ['De humani corporis fabrica 1543', 'Vesalius Fabrica woodcut', 'Vesalius 1543 plate', 'Vesalius muscle man', 'Vesalius skeleton'],
+    surveyOnly: /vesal|fabrica/i, thumbs: 'usable',
+    pages: []
   }
 };
 
@@ -182,7 +192,8 @@ async function survey(name, book) {
   }
   console.log(`=== ${pages.length} files, ${pages.filter(usable).length} usable ===`);
   if (book.openings) await openingSheets(book);
-  if (book.thumbs) await thumbSheets(book, pages.filter(p => (p.imageinfo?.[0]?.height || 0) >= 900 && /jpeg|png|tiff/.test(p.imageinfo?.[0]?.mime || '')));
+  // thumbs: 'usable' draws only the files the book could take (public domain, upright, large), at most 20 sheets.
+  if (book.thumbs) await thumbSheets(book, pages.filter(p => book.thumbs === 'usable' ? usable(p) : (p.imageinfo?.[0]?.height || 0) >= 900 && /jpeg|png|tiff/.test(p.imageinfo?.[0]?.mime || '')).slice(0, 160));
 }
 // Survey pictures of single files, numbered, eight to a sheet with their names, to be looked at and then removed.
 async function thumbSheets(book, pages) {
