@@ -211,9 +211,9 @@
       dom.innerHTML=`<div class="kv-stage" aria-label="The open book. Drag a page to turn it; scroll or pinch to look closer."></div>
         <header></header><p class="kv-hint">Drag a page to turn it, or use the arrows. Scroll, pinch or double-click to look closer. Escape closes the book.</p>
         <button type="button" class="kv-close" data-act="close">Close the book</button>
-        <div class="kv-caption"><div class="kv-page kv-left"></div><div class="kv-tools"><button type="button" data-act="prev" aria-label="Turn back">←</button><button type="button" data-act="out" aria-label="Look less closely">−</button><button type="button" data-act="in" aria-label="Look closer">+</button><button type="button" data-act="next" aria-label="Turn the page">→</button><button type="button" class="kv-notes" data-act="notes" aria-pressed="false">Notes</button></div><div class="kv-page kv-right"></div></div>`;
+        <div class="kv-caption"><div class="kv-page kv-left"></div><div class="kv-tools"><button type="button" data-act="prev" aria-label="Turn back">←</button><button type="button" data-act="out" aria-label="Look less closely">−</button><button type="button" data-act="in" aria-label="Look closer">+</button><button type="button" data-act="next" aria-label="Turn the page">→</button><button type="button" class="kv-notes" data-act="notes" aria-pressed="false">Notes</button>${spec.whole&&window.createWholeBook?'<button type="button" class="kv-whole" data-act="whole">The whole book</button>':''}</div><div class="kv-page kv-right"></div></div>`;
       dom.querySelector('header').textContent=spec.header;dom.classList.add('kv-brief');document.body.appendChild(dom);stage=dom.querySelector('.kv-stage');caption=dom.querySelector('.kv-caption');
-      dom.addEventListener('click',e=>{const act=e.target.closest('[data-act]')?.dataset.act;if(!act)return;if(act==='close')close();else if(act==='next')next();else if(act==='prev')prev();else if(act==='notes')toggleNotes();else if(act==='in')zoomAt(1.6);else if(act==='out'){if(zoomTarget/1.6<=1.02)resetZoom();else zoomAt(1/1.6)}});
+      dom.addEventListener('click',e=>{const act=e.target.closest('[data-act]')?.dataset.act;if(!act)return;if(act==='close')close();else if(act==='next')next();else if(act==='prev')prev();else if(act==='notes')toggleNotes();else if(act==='whole')openWhole();else if(act==='in')zoomAt(1.6);else if(act==='out'){if(zoomTarget/1.6<=1.02)resetZoom();else zoomAt(1/1.6)}});
       stage.addEventListener('wheel',e=>{e.preventDefault();const f=Math.exp(-e.deltaY*.0015);if(zoomTarget*f<=1.01)resetZoom();else zoomAt(f,e.clientX,e.clientY)},{passive:false});
       stage.addEventListener('dblclick',e=>{if(zoomTarget>1.3)resetZoom();else zoomAt(2.6,e.clientX,e.clientY)});
       stage.addEventListener('pointerdown',down);stage.addEventListener('pointermove',move);stage.addEventListener('pointerup',up);stage.addEventListener('pointercancel',up);
@@ -236,6 +236,13 @@
       requestAnimationFrame(()=>{if(open)setView()});
     }
     // On a small screen the pages' notes are folded away, leaving each page's name, so the book is not covered.
+    // The whole book (whole-book.js): every page of the original, from a complete scan on Wikimedia Commons, opened at
+    // the page the facsimile lies open at when the book knows where that is.
+    let whole=null;
+    function openWhole(){
+      if(!spec.whole||!window.createWholeBook)return;whole=whole||window.createWholeBook(spec.whole,{onOpen,onClose,analytics:window.libraryAnalytics});
+      const [left,right]=spread(turned),at=[focus===0?left:right,right,left].map(k=>k&&spec.whole.pageFor?.(k)).find(Boolean);close();whole.open(at||undefined);
+    }
     function toggleNotes(){const brief=dom.classList.toggle('kv-brief');dom.querySelector('[data-act="notes"]').setAttribute('aria-pressed',String(!brief));setView()}
     function updateZoomButtons(){if(!dom)return;dom.querySelector('[data-act="out"]').disabled=zoomTarget<=1.02;dom.querySelector('[data-act="in"]').disabled=zoomTarget>=4.98}
 
@@ -309,6 +316,6 @@
       g.add(b,leavesBlock,f);parts.push(b,leavesBlock,f);
       return {group:g,parts,height:cover*2+block,dispose(){for(const p of parts){p.geometry.dispose()}leather.dispose();top.dispose();gilt.dispose()}};
     }
-    return {open:openBook,close,next,prev,turnTo,closedBook,get isOpen(){return open},get turned(){return turned},get spread(){return spread(turned)},folios:FOLIOS,faces:FACES,spreadAt:spread,pages:TURNING,id};
+    return {open:openBook,close,next,prev,turnTo,closedBook,get isOpen(){return open||!!whole?.isOpen},openWhole,get whole(){return whole},get turned(){return turned},get spread(){return spread(turned)},folios:FOLIOS,faces:FACES,spreadAt:spread,pages:TURNING,id};
   };
 })();
