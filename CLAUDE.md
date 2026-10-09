@@ -72,6 +72,10 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `data/new-books.js` (category `Contested`, which the room's chair and the east-side recommendations draw on), in
   three cases of ten. They must be books held nowhere else (a test checks): the single-copy register shows each book
   once, and when the room's books were the Restricted Catalogue's, its shelves stood almost empty.
+- The Kipling bookcase (`kipling-shelf.js`) stands against the Grand Hall's west wall in the south-west corner (x −18.54,
+  z 29.1, between the column at z 27 and the corner; `?room=kipling`): Rudyard Kipling's books face-out in the order he
+  published them, four shelves of three, from the shelf `kipling` in `data/new-books.js` (books of his held nowhere else;
+  a test checks), under a brass plate whose card says where his other books are. Added after the Kipling Society wrote in.
 - The Map Room (`map-room.js`, x −420, z −60) is behind a door in the west wing's north wall (x −21.4; `?room=maps`): twenty
   old maps hung edge to edge (Mercator, Waldseemüller, the Hereford Mappa Mundi, Piri Reis, the Catalan Atlas, Ricci,
   John Snow's cholera map and William Smith's on the map table…), each with a card in `MAPS`. Looking at one opens the
@@ -173,7 +177,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, boathouse,
-  daily-room, poe, irish, maps, set-texts, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms) goes to a room.
+  daily-room, poe, irish, maps, set-texts, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text.
 - **Halloween night** (`halloween.js`): 24 October to 2 November by the reader's own date (`?halloween` previews it,
   `?nohalloween` hides it). Carved lanterns (one InstancedMesh, glowing through emissive faces, no lights) by the south
