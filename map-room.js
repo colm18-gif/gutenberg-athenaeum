@@ -141,6 +141,9 @@
     const DOOR={x:-21.4,z:-13.45,yaw:0};
     const ROOM={cx:-420,cz:-60,w:18,d:14,h:6};
     const PRELOAD=8,KEEP=25;
+    // The east wall's shelf, from its middle (along the wall from the room's centre, southwards) and its length: it leaves
+    // the wall's south end clear for the door to the Medicine Room.
+    const EAST_SHELF={z:-1.3,length:7};
     // Its own side of the door: oak, with a fanlight lit warm from the map table.
     const DOOR_LOOK={style:'walnut',color:0x6b4a2a,fanColor:0xffc878,width:1.9,height:3.1};
     const through=(data,go)=>doorKit&&data.kit?doorKit.pass(data.kit,data,go):go();
@@ -244,14 +247,16 @@
       // The books: west wall (voyages), east wall (maps and their makers), and either side of the door (not on any map).
       const groups=catalogue(),geometry=own(new THREE.BoxGeometry(.72,.96,.13));
       const ROWS=[1.35,2.5];
-      const sideSpots=(side,count)=>{const out=[],x=side<0?cx-w/2+.3:cx+w/2-.3,yaw=side<0?Math.PI/2:-Math.PI/2,per=Math.ceil(count/2),gap=Math.min(1.4,10/per);for(let i=0;i<count;i++){const row=i<per?0:1,col=row?i-per:i,n=row?count-per:per;out.push({x,z:cz+(col-(n-1)/2)*gap*-side,y:ROWS[row],yaw})}return out};
+      // The east wall's shelf stops short of its south end, where the door to the Medicine Room is (medicine-room.js).
+      const SHELF={voyages:{z:cz,length:10.4},makers:{z:cz+EAST_SHELF.z,length:EAST_SHELF.length}};
+      const sideSpots=(side,count)=>{const out=[],x=side<0?cx-w/2+.3:cx+w/2-.3,yaw=side<0?Math.PI/2:-Math.PI/2,shelf=SHELF[side<0?'voyages':'makers'],per=Math.ceil(count/2),gap=Math.min(1.4,(shelf.length-.4)/per);for(let i=0;i<count;i++){const row=i<per?0:1,col=row?i-per:i,n=row?count-per:per;out.push({x,z:shelf.z+(col-(n-1)/2)*gap*-side,y:ROWS[row],yaw})}return out};
       const southSpots=count=>{const out=[];for(let i=0;i<count;i++){const half=i%2,k=Math.floor(i/2),row=k<4?0:1,col=k%4;out.push({x:half?cx+2.4+col*1.3:cx-2.4-col*1.3,z:cz+d/2-.3,y:ROWS[row],yaw:Math.PI})}return out};
       const spots={voyages:sideSpots(-1,groups[0].books.length),makers:sideSpots(1,groups[1].books.length),lands:southSpots(16)};
       for(const group of groups){
         group.books.forEach((book,i)=>placeBook(book,spots[group.key][i],geometry,group.key));
         const info={type:'map-card',title:group.name,author:group.sub+'.',action:'READ'};
-        if(group.key!=='lands'){const s=spots[group.key][0],x=s?.x??(group.key==='voyages'?cx-w/2+.3:cx+w/2-.3);for(const y of ROWS)box(.34,.05,10.4,MAT.darkWood,x,y-.5,cz,root);
-          const label=sign(root,group.name,group.sub,2.9,.46,x+(group.key==='voyages'?.08:-.08),3.36,cz);label.rotation.y=group.key==='voyages'?Math.PI/2:-Math.PI/2;mark(label,info);block(x,cz,.7,10.8)}
+        if(group.key!=='lands'){const s=spots[group.key][0],x=s?.x??(group.key==='voyages'?cx-w/2+.3:cx+w/2-.3),shelf=SHELF[group.key];for(const y of ROWS)box(.34,.05,shelf.length,MAT.darkWood,x,y-.5,shelf.z,root);
+          const label=sign(root,group.name,group.sub,2.9,.46,x+(group.key==='voyages'?.08:-.08),3.36,shelf.z);label.rotation.y=group.key==='voyages'?Math.PI/2:-Math.PI/2;mark(label,info);block(x,shelf.z,.7,shelf.length+.4)}
         else{for(const side of [-1,1])for(const y of ROWS)box(5.4,.05,.34,MAT.darkWood,cx+side*4.35,y-.5,cz+d/2-.34,root);const label=sign(root,group.name,group.sub,2.6,.44,cx-4.35,3.36,cz+d/2-.2);label.rotation.y=Math.PI;mark(label,info);block(cx-4.35,cz+d/2-.4,5.6,.6);block(cx+4.35,cz+d/2-.4,5.6,.6)}
       }
       // A lamp hung over the map table, and one before the great maps of the north wall.
@@ -308,7 +313,7 @@
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==root))unload();
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,unload,catalogue,viewer,door:DOOR,room:ROOM,groups:GROUPS,records:RECORDS,maps:MAPS,hang:HANG,table:TABLE,
+    return {contains,floorAt,allowed,interact,update,enter,unload,catalogue,viewer,door:DOOR,room:ROOM,eastShelf:EAST_SHELF,groups:GROUPS,records:RECORDS,maps:MAPS,hang:HANG,table:TABLE,
       get built(){return !!root},get books(){return books.slice()},get frames(){return frames.slice()},get manifest(){return manifest},zoneAt:(x,z)=>contains(x,z)?'map-room':null};
   };
 })();

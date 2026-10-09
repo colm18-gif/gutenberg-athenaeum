@@ -1183,6 +1183,82 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 36055,
    "words": 106162
   },
+  "The Genuine Works of Hippocrates": {
+   "id": 72583,
+   "words": 189790
+  },
+  "Of Medicine": {
+   "id": 64207,
+   "words": 191028
+  },
+  "The Complete Herbal": {
+   "id": 49513,
+   "words": 252502
+  },
+  "Religio Medici": {
+   "id": 586,
+   "words": 59518
+  },
+  "Domestic Medicine": {
+   "id": 74359,
+   "words": 239479
+  },
+  "An Anatomical Disquisition on the Motion of the Heart and Blood in Animals": {
+   "id": 67065,
+   "words": 75489
+  },
+  "An Account of the Foxglove": {
+   "id": 24886,
+   "words": 46208
+  },
+  "An Inquiry into the Causes and Effects of the Variolae Vaccinae": {
+   "id": 29414,
+   "words": 10902
+  },
+  "On the Mode of Communication of Cholera": {
+   "id": 72894,
+   "words": 59987
+  },
+  "On Chloroform and Other Anæsthetics": {
+   "id": 68315,
+   "words": 164208
+  },
+  "Medical Essays": {
+   "id": 2700,
+   "words": 131974
+  },
+  "The Life of Pasteur": {
+   "id": 60956,
+   "words": 194933
+  },
+  "Notes on Nursing": {
+   "id": 12439,
+   "words": 44137
+  },
+  "Wonderful Adventures of Mrs. Seacole in Many Lands": {
+   "id": 23031,
+   "words": 60367
+  },
+  "Pioneer Work in Opening the Medical Profession to Women": {
+   "id": 65496,
+   "words": 77881
+  },
+  "Medical Women": {
+   "id": 52297,
+   "words": 52139
+  },
+  "The Evolution of Modern Medicine": {
+   "id": 1566,
+   "words": 65730
+  },
+  "The Gold-Headed Cane": {
+   "id": 53557,
+   "words": 49947
+  },
+  "Microbe Hunters": {
+   "id": 77842,
+   "words": 126549
+  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633
@@ -2356,6 +2432,7 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Benito Cereno",
   "History of the Expedition under the Command of Captains Lewis and Clark, Vol. 1.",
   "The Necessity of Atheism",
+  "Scientific Papers",
   "María [es]",
   "Poesías [es]"
  ]

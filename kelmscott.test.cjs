@@ -30,7 +30,7 @@ test('the Kelmscott Chaucer loads before the game and is handed to the Periodica
 
 test('every page of the facsimile has a card, a public-domain photograph, and a place in the book',()=>{
   const folios=Object.keys(book.folios);assert(folios.length>=10,'at least ten of its pages');
-  const block=fetcher.slice(fetcher.indexOf('kelmscott: {')),fetched=[...block.matchAll(/key: '([a-z0-9-]+)'/g)].map(m=>m[1]);
+  const block=fetcher.slice(fetcher.indexOf('kelmscott: {'),fetcher.indexOf('vesalius: {')),fetched=[...block.matchAll(/key: '([a-z0-9-]+)'/g)].map(m=>m[1]);
   assert.deepEqual(fetched,folios,'scripts/fetch-book-pages.mjs fetches the same pages, in the same order');
   for(const key of folios){
     assert(fs.existsSync(`assets/kelmscott/${key}.jpg`),`${key}.jpg`);assert.match(manifest[key]?.licence||'',/public domain|^pd|cc0/i,`${key} is in the public domain`);

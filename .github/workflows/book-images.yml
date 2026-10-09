@@ -1,6 +1,6 @@
 name: Book images
 
-# Downloads the pages of the library's fine books, the Book of Kells and the Kelmscott Chaucer
+# Downloads the pages of the library's fine books (the Book of Kells, the Book of Durrow, the Kelmscott Chaucer, the Fabrica)
 # (scripts/fetch-book-pages.mjs), from Wikimedia Commons, public-domain images only, resizes them and commits anything
 # new to assets/kells and assets/kelmscott. A book with no pages chosen yet is only surveyed, in the log. Cloud sessions
 # cannot reach Commons, so this runs whenever the script changes, on main or on a working branch, or by hand.
@@ -33,9 +33,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p assets/kelmscott assets/durrow
-          git add assets/kells assets/kelmscott assets/durrow
-          git diff --cached --quiet -- assets/kells assets/kelmscott assets/durrow && { echo "No new pages."; exit 0; }
+          mkdir -p assets/kelmscott assets/durrow assets/vesalius
+          git add assets/kells assets/kelmscott assets/durrow assets/vesalius
+          git diff --cached --quiet -- assets/kells assets/kelmscott assets/durrow assets/vesalius && { echo "No new pages."; exit 0; }
           git commit -m "Book images: download from Wikimedia Commons"
           for attempt in 1 2 3; do git pull --rebase origin "${GITHUB_REF_NAME}" && git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0; sleep 10; done
           exit 1

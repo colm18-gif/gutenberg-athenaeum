@@ -7,6 +7,8 @@
 //   durrow     The Irish Room's Book of Durrow (durrow-book.js): leaves of about 245 by 145 mm, on vellum.
 //   kelmscott  The Periodicals Room's Kelmscott Chaucer (kelmscott-book.js): folio pages of about 425 by 292 mm, on
 //              Morris's handmade paper.
+//   vesalius   The Medicine Room's Fabrica (vesalius-book.js): Andreas Vesalius's De humani corporis fabrica (Basel, 1543),
+//              folio leaves of about 420 by 280 mm.
 //
 // Each page names the Commons files wanted, in order of preference. If none of them is there and public domain, a book
 // with a `pattern` tries the files in its categories whose names match (KellsFol034r…, "folio 34r"…), then a search;
@@ -86,6 +88,31 @@ export const BOOKS = {
       { key: 'p471', scan: 483 },
       { key: 'p552', scan: 564 },
       { key: 'p553', scan: 565 }
+    ]
+  },
+  // The Medicine Room's great book: the Fabrica of 1543, Vesalius's anatomy, with the woodcuts of Titian's workshop, folio
+  // leaves of about 420 by 280 mm. Its pages were chosen from a survey of Commons: the title, Vesalius's portrait, the three
+  // skeletons, four of the muscle men, a page of text, and the arteries, the nerves and the organs of nutrition. The plates
+  // are named for their page in the 1543 edition, as the scans are.
+  vesalius: {
+    dir: 'assets/vesalius', manifest: 'vesalius.json', width: 1190, height: 1780, paper: '#e8dcc0',
+    categories: ['Category:De humani corporis fabrica'], must: /vesal|fabrica/i,
+    survey: ['De humani corporis fabrica 1543', 'Vesalius Fabrica woodcut', 'Vesalius 1543 plate', 'Vesalius muscle man', 'Vesalius skeleton'],
+    surveyOnly: /vesal|fabrica/i,
+    pages: [
+  { key: 'title', files: ['Vesalius Fabrica fronticepiece.jpg', 'Vesalius01.jpg', 'Fabrica titlepg frc.png'] },
+  { key: 'portrait', files: ["Portrait of Andreas Vesalius, half-length in profile standing in front of a table dissecting the arm of a body; frontispiece to Andreas Vesalius 'De humani corporis fabrica libri septem' MET DP853465.jpg", 'Vesalius Fabrica portrait.jpg'] },
+  { key: 'p163', files: ['Vesalius Fabrica p163.jpg'] },
+  { key: 'p164', files: ['Vesalius Fabrica p164.jpg', 'Vesalius 164frc.png'] },
+  { key: 'p165', files: ['Vesalius Fabrica p165.jpg'] },
+  { key: 'p174', files: ['Vesalius Fabrica p174.jpg', 'Houghton Typ 565.43.868 - De humani corporis fabrica, 174.jpg'] },
+  { key: 'p178', files: ['Vesalius Fabrica p178.jpg'] },
+  { key: 'p184', files: ['Vesalius Fabrica p184.jpg'] },
+  { key: 'p194', files: ['Vesalius Fabrica p194.jpg'] },
+  { key: 'p239', files: ['De Humani Corporis Fabrica Libri Septem, page 239.jpg'] },
+  { key: 'p295', files: ['Vesalius Fabrica p295.jpg'] },
+  { key: 'p332', files: ['Vesalius Fabrica p332.jpg'] },
+  { key: 'p355', files: ['Vesalius Fabrica p355.jpg'] }
     ]
   }
 };
@@ -182,7 +209,8 @@ async function survey(name, book) {
   }
   console.log(`=== ${pages.length} files, ${pages.filter(usable).length} usable ===`);
   if (book.openings) await openingSheets(book);
-  if (book.thumbs) await thumbSheets(book, pages.filter(p => (p.imageinfo?.[0]?.height || 0) >= 900 && /jpeg|png|tiff/.test(p.imageinfo?.[0]?.mime || '')));
+  // thumbs: 'usable' draws only the files the book could take (public domain, upright, large), at most 20 sheets.
+  if (book.thumbs) await thumbSheets(book, pages.filter(p => book.thumbs === 'usable' ? usable(p) : (p.imageinfo?.[0]?.height || 0) >= 900 && /jpeg|png|tiff/.test(p.imageinfo?.[0]?.mime || '')).slice(0, 160));
 }
 // Survey pictures of single files, numbered, eight to a sheet with their names, to be looked at and then removed.
 async function thumbSheets(book, pages) {
@@ -246,7 +274,13 @@ async function fetchBook(name, book) {
       const page = await choose(book, entry);
       if (!page) { console.log(`${entry.key}: NOTHING USABLE FOUND`); failed++; continue }
       const i = page.imageinfo[0], meta = i.extmetadata || {}, source = i.thumburl || i.url;
-      const response = await fetch(source, { headers: HEADERS });
+      // Commons answers 429 when asked for many large files in a row: wait and ask again.
+      let response;
+      for (let attempt = 1; ; attempt++) {
+        response = await fetch(source, { headers: HEADERS });
+        if (response.status !== 429 || attempt >= 5) break;
+        await new Promise(res => setTimeout(res, 4000 * attempt));
+      }
       if (!response.ok) throw new Error(`${response.status} downloading ${source}`);
       const image = sharp(Buffer.from(await response.arrayBuffer()), { limitInputPixels: false }).flatten({ background: book.paper });
       const { width, height } = await image.metadata();
