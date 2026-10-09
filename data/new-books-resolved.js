@@ -2432,7 +2432,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Benito Cereno",
   "History of the Expedition under the Command of Captains Lewis and Clark, Vol. 1.",
   "The Necessity of Atheism",
-  "Scientific Papers",
   "María [es]",
   "Poesías [es]"
  ]
