@@ -14,7 +14,7 @@ const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..')
 const strip = html => String(html || '').replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
 async function get(url, binary = false) {
   for (let attempt = 1; ; attempt++) {
-    const response = await fetch(url, { headers: HEADERS });
+    const response = await fetch(url, { headers: HEADERS, signal: AbortSignal.timeout(60000) });
     if (response.ok) return binary ? Buffer.from(await response.arrayBuffer()) : response.json();
     if (attempt >= 5) throw new Error(`${response.status} for ${url}`);
     await new Promise(res => setTimeout(res, 3000 * attempt));
@@ -38,7 +38,7 @@ for (const book of BOOKS) {
   console.log(`  description page: ${i.descriptionurl}`);
   console.log(`  the API's page 5 at 1280: ${i.thumburl}`);
   console.log(`  ours:                     ${pageUrl(book.file, 5, 1280)}`);
-  for (const [page, width] of [[5, 1280], [5, 960], [book.sample.at(-1), 1280], [300, 640]]) {
+  for (const [page, width] of []) {
     const url = pageUrl(book.file, page, width), started = Date.now();
     try { const r = await fetch(url, { headers: HEADERS }); const body = Buffer.from(await r.arrayBuffer()); console.log(`  fetch page ${page} at ${width}: ${r.status} ${r.headers.get('content-type')} ${Math.round(body.length / 1024)} KB in ${Date.now() - started} ms; cache ${r.headers.get('x-cache-status') || r.headers.get('x-cache') || '?'}`) } catch (error) { console.log(`  fetch page ${page} at ${width}: ${error.message}`) }
   }
@@ -49,7 +49,7 @@ for (const book of BOOKS) {
     const cells = [], group = book.sample.slice(k, k + PER);
     for (const [n, page] of group.entries()) {
       const left = (n % 4) * TW, top = Math.floor(n / 4) * (TH + 36);
-      try { cells.push({ input: await sharp(await get(pageUrl(book.file, page, 640), true)).resize({ width: TW - 8, height: TH, fit: 'inside' }).toBuffer(), left: left + 4, top: top + 36 }) } catch (error) { console.log(`  page ${page}: ${error.message}`) }
+      try { cells.push({ input: await sharp(await get(pageUrl(book.file, page, 960), true)).resize({ width: TW - 8, height: TH, fit: 'inside' }).toBuffer(), left: left + 4, top: top + 36 }) } catch (error) { console.log(`  page ${page}: ${error.message}`) }
       cells.push({ input: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${TW}" height="32"><text x="6" y="24" font-size="22" font-family="DejaVu Sans" fill="#ff0">pdf page ${page}</text></svg>`), left, top });
       await new Promise(res => setTimeout(res, 400));
     }
