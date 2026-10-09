@@ -12,7 +12,8 @@
 //
 // Each page names the Commons files wanted, in order of preference. If none of them is there and public domain, a book
 // with a `pattern` tries the files in its categories whose names match (KellsFol034r…, "folio 34r"…), then a search;
-// the log lists the candidates and says which was taken. A book with no pages yet is only surveyed: its categories and
+// the log lists the candidates and says which was taken. The pages a book's room shows in its glass case or on its walls
+// (`display`) are also written small, as <key>-case.jpg, so the room does not load the full pages to show them. A book with no pages yet is only surveyed: its categories and
 // searches are listed in the log, so its pages can be chosen from what Commons really holds.
 import { mkdir, readFile, writeFile, access } from 'node:fs/promises';
 import path from 'node:path';
@@ -24,7 +25,7 @@ export const folioPattern = key => { const n = Number(key.slice(0, 3)), side = k
 export const BOOKS = {
   kells: {
     dir: 'assets/kells', manifest: 'kells.json', width: 1290, height: 1700, paper: '#e6d6b4',
-    categories: ['Category:Book of Kells'], must: /kells/i, pattern: folioPattern,
+    categories: ['Category:Book of Kells'], must: /kells/i, pattern: folioPattern, display: ['032v', '033r'],
     search: key => `Book of Kells folio ${Number(key.slice(0, 3))}${key[3]}`,
     pages: [
   { key: '005r', files: ['KellsFol005rCanonTable.jpg', 'KellsFol005rCanon.jpg'] },
@@ -98,7 +99,7 @@ export const BOOKS = {
     dir: 'assets/vesalius', manifest: 'vesalius.json', width: 1190, height: 1780, paper: '#e8dcc0',
     categories: ['Category:De humani corporis fabrica'], must: /vesal|fabrica/i,
     survey: ['De humani corporis fabrica 1543', 'Vesalius Fabrica woodcut', 'Vesalius 1543 plate', 'Vesalius muscle man', 'Vesalius skeleton'],
-    surveyOnly: /vesal|fabrica/i,
+    surveyOnly: /vesal|fabrica/i, display: ['title', 'portrait', 'p164', 'p165'],
     pages: [
   { key: 'title', files: ['Vesalius Fabrica fronticepiece.jpg', 'Vesalius01.jpg', 'Fabrica titlepg frc.png'] },
   { key: 'portrait', files: ["Portrait of Andreas Vesalius, half-length in profile standing in front of a table dissecting the arm of a body; frontispiece to Andreas Vesalius 'De humani corporis fabrica libri septem' MET DP853465.jpg", 'Vesalius Fabrica portrait.jpg'] },
@@ -295,6 +296,12 @@ async function fetchBook(name, book) {
       };
       console.log(`${entry.key}: ${page.title}${entry.scan ? ` page ${entry.scan}` : ''} (${width}x${height}, ${fit}) -> ${Math.round(data.length / 1024)} KB · ${manifest[entry.key].licence} · ${manifest[entry.key].artist}`);
     } catch (error) { console.log(`${entry.key}: FAILED ${error.message}`); failed++ }
+  }
+  for (const key of book.display || []) {
+    const from = path.join(OUT, `${key}.jpg`), to = path.join(OUT, `${key}-case.jpg`);
+    if (!await exists(from) || await exists(to)) continue;
+    await sharp(from).resize({ width: 768, height: 768, fit: 'inside' }).jpeg({ quality: 78, mozjpeg: true }).toFile(to);
+    console.log(`${key}: small copy for the room written`);
   }
   const ordered = Object.fromEntries(book.pages.filter(p => manifest[p.key]).map(p => [p.key, manifest[p.key]]));
   await writeFile(manifestFile, JSON.stringify(ordered, null, 1) + '\n');

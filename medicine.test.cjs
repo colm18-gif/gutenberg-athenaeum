@@ -17,7 +17,7 @@ class Instanced extends Mesh{constructor(g,m,n){super(g,m);this.count=n;this.ins
 let disposed=0;const G=class{dispose(){disposed++}},M=class{constructor(p){Object.assign(this,p)}dispose(){disposed++}};
 class Q{setFromAxisAngle(){return this}}class M4{compose(){return this}}
 const THREE={Group:O,Mesh,InstancedMesh:Instanced,Vector3:V,Quaternion:Q,Matrix4:M4,BoxGeometry:G,CylinderGeometry:G,PlaneGeometry:G,MeshStandardMaterial:M,DoubleSide:2,RepeatWrapping:1000,SRGBColorSpace:'srgb',
-  PointLight:class extends O{constructor(c,i){super();this.isPointLight=true;this.intensity=i}}};
+  PointLight:class extends O{constructor(c,i){super();this.isPointLight=true;this.isLight=true;this.intensity=i}}};
 function room(){
   const context={window:{},Math};vm.runInNewContext(source,context);
   const scene=new O(),interactables=[],notices=[],player={pos:new V(),radius:.42},opened=[],tracked=[],seats=[];
@@ -81,7 +81,9 @@ test('the room is built on approach: three shelves of its books, the Fabrica in 
   assert(a.seats.length>=2,'chairs to read in');
   const exit=a.interactables.find(o=>o.userData.type==='medicine-exit');a.r.interact(exit);assert(!a.r.contains(a.player.pos.x,a.player.pos.z),'back to the Map Room');
   assert(Math.abs(a.player.pos.x-(a.r.door.x-1.6))<.01);
+  const lamps=[];a.scene.traverse(o=>{if(o.isPointLight)lamps.push(o)});assert(lamps.length>=1);
   a.player.pos.set(0,0,0);a.r.update(100);assert.equal(a.r.built,false,'freed once the reader has gone');
+  for(const lamp of lamps)assert.equal(lamp.userData.freed,true,'its lamp is let go by the light budget');
   assert(!a.interactables.some(o=>/^medicine-(fabrica|exit|card)$/.test(o.userData.type)),'its parts go with it');assert(a.interactables.some(o=>o.userData.type==='medicine-door'),'but the door stays');
 });
 
@@ -94,3 +96,12 @@ test('its books are held nowhere else, and each has a note of three sentences',(
   }
   assert.equal(new Set(medicine.map(e=>e[0])).size,medicine.length,'each once');
 });
+
+test('the case and the walls show small copies of the pages, made by the Book images workflow, not the full pages',()=>{
+  for(const [dir,keys] of [['assets/vesalius',['title','portrait','p164','p165']],['assets/kells',['032v','033r']]]){
+    const block=fetcher.slice(fetcher.indexOf(dir==='assets/kells'?'kells: {':'vesalius: {'));assert.match(block.slice(0,600),new RegExp(`display: \\[${keys.map(k=>`'${k}'`).join(', ')}\\]`),`${dir}: the workflow makes them`);
+    for(const key of keys){const file=`${dir}/${key}-case.jpg`;if(!fs.existsSync(`${dir}/${key}.jpg`))continue;assert(fs.existsSync(file),`${file} has been made`);assert(fs.statSync(file).size<200e3,`${file} is small`)}
+  }
+  assert.doesNotMatch(source,/assets\/vesalius\/\$\{(key|file)\}\.jpg/,'the room never loads a full page');assert.match(fs.readFileSync('irish-room.js','utf8'),/assets\/kells\/\$\{key\}-case\.jpg/);
+});
+

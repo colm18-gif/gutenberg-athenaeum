@@ -88,7 +88,7 @@
       for(const [key,dx,file] of [['title',-3.6,'title'],['portrait',3.6,'portrait']]){
         const g=new THREE.Group();g.position.set(cx+dx,2.7,cz+d/2-.2);g.rotation.y=Math.PI;root.add(g);
         const frame=box(1.5,2.1,.08,MAT.darkWood,0,0,0,g),mount=add(own(new THREE.PlaneGeometry(1.32,1.92)),own(new THREE.MeshStandardMaterial({color:0xe6dcc4,roughness:.95})),0,0,.045,g);
-        const map=photo(`assets/vesalius/${file}.jpg`),print=add(own(new THREE.PlaneGeometry(1.12,1.68)),own(new THREE.MeshStandardMaterial({color:0xddd2bb,map,emissive:0xffffff,emissiveMap:map,emissiveIntensity:.08,roughness:.9})),0,0,.05,g);
+        const map=photo(`assets/vesalius/${file}-case.jpg`),print=add(own(new THREE.PlaneGeometry(1.12,1.68)),own(new THREE.MeshStandardMaterial({color:0xddd2bb,map,emissive:0xffffff,emissiveMap:map,emissiveIntensity:.08,roughness:.9})),0,0,.05,g);
         for(const part of [frame,mount,print])mark(part,card(key));
       }
       // An apothecary's cabinet in the south-west corner, with a row of blue-and-white drug jars on it.
@@ -130,7 +130,7 @@
       const data={type:'medicine-fabrica',title:'The Fabrica of Vesalius, in facsimile',author:`De humani corporis fabrica, Basel, 1543, open at its skeletons.${leaves?` ${leaves} of its pages, on board leaves.`:''}`,action:'OPEN'};
       const plinth=box(1.5,.95,1.05,MAT.darkWood,0,.475,0,g);box(1.6,.06,1.15,MAT.darkWood,0,.97,0,g);box(1.6,.08,1.15,MAT.darkWood,0,.04,0,g);
       const pageW=.5,pageH=.75;
-      const page=(key,side)=>{const map=photo(`assets/vesalius/${key}.jpg`);
+      const page=(key,side)=>{const map=photo(`assets/vesalius/${key}-case.jpg`);
         const mat=own(new THREE.MeshStandardMaterial({color:0xd8cdb6,map,emissive:0xffffff,emissiveMap:map,emissiveIntensity:.1,roughness:.9}));
         const hinge=new THREE.Group();hinge.position.set(side*.01,1.09,0);hinge.rotation.z=side*-.16;g.add(hinge);
         const m=add(own(new THREE.PlaneGeometry(pageW,pageH)),mat,side*pageW/2,0,0,hinge);m.rotation.x=-Math.PI/2;return m};
@@ -179,7 +179,8 @@
     // ---------- lifecycle ----------
     function activate(){if(!root)buildRoom();lastNeeded=time}
     function unload(){
-      if(!root)return;root.removeFromParent();root=null;
+      // Its lamp is marked freed, so the light budget lets it go.
+      if(!root)return;root.removeFromParent();root.traverse(object=>{if(object.isLight)object.userData.freed=true});root=null;
       for(let i=interactables.length-1;i>=0;i--)if(ours.includes(interactables[i]))interactables.splice(i,1);
       for(const thing of owned.splice(0))thing.dispose?.();ours.length=0;books.length=0;blockers.length=0;
     }
