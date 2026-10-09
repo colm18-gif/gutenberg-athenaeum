@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-08",
+ "updated": "2026-10-09",
  "days": {
-  "2026-09-25": {
-   "books": [
-    {
-     "id": 583,
-     "title": "The Woman in White",
-     "author": "Wilkie Collins"
-    },
-    {
-     "id": 8486,
-     "title": "Ghost Stories of an Antiquary",
-     "author": "M. R. James"
-    },
-    {
-     "id": 2852,
-     "title": "The Hound of the Baskervilles",
-     "author": "Arthur Conan Doyle"
-    },
-    {
-     "id": 1023,
-     "title": "Bleak House",
-     "author": "Charles Dickens"
-    },
-    {
-     "id": 121,
-     "title": "Northanger Abbey",
-     "author": "Jane Austen"
-    },
-    {
-     "id": 932,
-     "title": "The Fall of the House of Usher",
-     "author": "Edgar Allan Poe"
-    },
-    {
-     "id": 564,
-     "title": "The Mystery of Edwin Drood",
-     "author": "Charles Dickens"
-    },
-    {
-     "id": 14851,
-     "title": "Uncle Silas",
-     "author": "J. Sheridan Le Fanu"
-    },
-    {
-     "id": 2014,
-     "title": "The Lodger",
-     "author": "Marie Belloc Lowndes"
-    },
-    {
-     "id": 974,
-     "title": "The Secret Agent",
-     "author": "Joseph Conrad"
-    }
-   ],
-   "missing": []
-  },
   "2026-09-26": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 1900,
      "title": "Typee",
      "author": "Herman Melville"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-11": {
+   "books": [
+    {
+     "id": 139,
+     "title": "The Lost World",
+     "author": "Arthur Conan Doyle"
+    },
+    {
+     "id": 2166,
+     "title": "King Solomon's Mines",
+     "author": "H. Rider Haggard"
+    },
+    {
+     "id": 3155,
+     "title": "She",
+     "author": "H. Rider Haggard"
+    },
+    {
+     "id": 551,
+     "title": "The Land That Time Forgot",
+     "author": "Edgar Rice Burroughs"
+    },
+    {
+     "id": 18857,
+     "title": "A Journey to the Centre of the Earth",
+     "author": "Jules Verne"
+    },
+    {
+     "id": 123,
+     "title": "At the Earth's Core",
+     "author": "Edgar Rice Burroughs"
+    },
+    {
+     "id": 1906,
+     "title": "Erewhon",
+     "author": "Samuel Butler"
+    },
+    {
+     "id": 1951,
+     "title": "The Coming Race",
+     "author": "Edward Bulwer-Lytton"
+    },
+    {
+     "id": 765,
+     "title": "The Moon Pool",
+     "author": "A. Merritt"
+    },
+    {
+     "id": 14301,
+     "title": "Atlantida",
+     "author": "Pierre Benoit"
     }
    ],
    "missing": []
