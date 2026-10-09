@@ -16,8 +16,8 @@
     let root=null,img=null,stage=null,open=false,page=1,scale=1,x=0,y=0,fitScale=1,swipe=null,ahead=[],tries=0;
     const pointers=new Map();let pinch=null,drag=null;
     const clampPage=n=>Math.max(1,Math.min(PAGES,Math.round(n)||1));
-    // A standard width Commons keeps in its cache: the larger for big or sharp screens.
-    const width=()=>Math.max(innerWidth,innerHeight)*(window.devicePixelRatio||1)>1400?1280:960;
+    // A standard width Commons serves (it refuses others): the larger for big or sharp screens, if the scan is that wide.
+    const widths=spec.widths||[960],width=()=>widths.length>1&&Math.max(innerWidth,innerHeight)*(window.devicePixelRatio||1)>1400?widths.at(-1):widths[0];
     function remembered(){try{const n=Number(storage?.getItem(KEY));return n>=1&&n<=PAGES?n:null}catch(e){return null}}
     function remember(){try{storage?.setItem(KEY,String(page))}catch(e){}}
 
