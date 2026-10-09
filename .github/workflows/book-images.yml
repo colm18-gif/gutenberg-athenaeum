@@ -32,7 +32,9 @@ jobs:
       - name: Survey whole books
         if: hashFiles('scripts/survey-whole-books.mjs') != ''
         continue-on-error: true
-        run: node scripts/survey-whole-books.mjs
+        run: |
+          mkdir -p assets/vesalius/survey assets/kells/survey
+          node scripts/survey-whole-books.mjs
       - name: Publish
         run: |
           git config user.name "github-actions[bot]"
