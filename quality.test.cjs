@@ -87,3 +87,16 @@ test('tablets render sharply with smoothing and lamp glow, and only weak hardwar
   assert.match(visual,/sceneTarget=makeTarget\(width,height,tier==='high'\?4:2\)/,'every post tier multisamples');
   assert.match(game,/antialias:!window\.WebGL2RenderingContext,/,'edges are smoothed in the scene target instead');
 });
+
+test('the train’s sounds are fetched only where a train can be heard',()=>{
+  assert.match(game,/trainRumble:\{[^}]*lazy:true\}/);assert.match(game,/trainWhistle:\{[^}]*lazy:true\}/);
+  assert.match(game,/function prepareSamples\(\)\{if\(samplePools\.size\)return;for\(const\[name,definition\]of Object\.entries\(sampleDefinitions\)\)\{if\(definition\.lazy\)continue;/,'not at the door');
+  assert.match(game,/soundscape\?\.preload\(sampleDefinitions,Object\.keys\(sampleDefinitions\)\.filter\(name=>sampleDefinitions\[name\]\.lazy\)\)/);
+  assert.match(game,/trainZoneWasActive=zone;ensureSample\('trainRumble'\)/,'the rumble before it can pass');assert.match(game,/if\(nightRailway\?\.zoneAt\(player\.pos\.x,player\.pos\.z\)\)ensureSample\('trainWhistle'\)/,'the whistle on the platform');
+  assert.match(game,/entry=samplePools\.get\(name\)\|\|\(definition\?\.lazy\?ensureSample\(name\):null\)/,'and on first use, if it comes to that');
+});
+
+test('rooms behind doors let their lamps go when they are freed',()=>{
+  for(const file of ['map-room.js','set-texts-room.js','medicine-room.js','chance-room.js'])assert.match(fs.readFileSync(file,'utf8'),/root\.removeFromParent\(\);root\.traverse\(object=>\{if\(object\.isLight\)object\.userData\.freed=true\}\)/,file);
+});
+
