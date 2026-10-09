@@ -179,7 +179,8 @@
     // ---------- lifecycle ----------
     function activate(){if(!root)buildRoom();lastNeeded=time}
     function unload(){
-      if(!root)return;root.removeFromParent();root=null;
+      // Its lamp is marked freed, so the light budget lets it go.
+      if(!root)return;root.removeFromParent();root.traverse(object=>{if(object.isLight)object.userData.freed=true});root=null;
       for(let i=interactables.length-1;i>=0;i--)if(ours.includes(interactables[i]))interactables.splice(i,1);
       for(const thing of owned.splice(0))thing.dispose?.();ours.length=0;books.length=0;blockers.length=0;
     }
