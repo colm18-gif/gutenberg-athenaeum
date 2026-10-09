@@ -7,8 +7,8 @@
 //   durrow     The Irish Room's Book of Durrow (durrow-book.js): leaves of about 245 by 145 mm, on vellum.
 //   kelmscott  The Periodicals Room's Kelmscott Chaucer (kelmscott-book.js): folio pages of about 425 by 292 mm, on
 //              Morris's handmade paper.
-//   vesalius   Andreas Vesalius's De humani corporis fabrica (Basel, 1543): folio leaves of about 420 by 280 mm. Not on show
-//              yet: only surveyed, with numbered sheets of its usable files in assets/vesalius/survey.
+//   vesalius   The Medicine Room's Fabrica (vesalius-book.js): Andreas Vesalius's De humani corporis fabrica (Basel, 1543),
+//              folio leaves of about 420 by 280 mm.
 //
 // Each page names the Commons files wanted, in order of preference. If none of them is there and public domain, a book
 // with a `pattern` tries the files in its categories whose names match (KellsFol034r…, "folio 34r"…), then a search;
@@ -90,13 +90,30 @@ export const BOOKS = {
       { key: 'p553', scan: 565 }
     ]
   },
-  // The Fabrica of 1543, Vesalius's anatomy, with the woodcuts of Titian's workshop: being surveyed, to choose its plates.
+  // The Medicine Room's great book: the Fabrica of 1543, Vesalius's anatomy, with the woodcuts of Titian's workshop, folio
+  // leaves of about 420 by 280 mm. Its pages were chosen from a survey of Commons: the title, Vesalius's portrait, the three
+  // skeletons, four of the muscle men, a page of text, and the arteries, the nerves and the organs of nutrition. The plates
+  // are named for their page in the 1543 edition, as the scans are.
   vesalius: {
     dir: 'assets/vesalius', manifest: 'vesalius.json', width: 1190, height: 1780, paper: '#e8dcc0',
     categories: ['Category:De humani corporis fabrica'], must: /vesal|fabrica/i,
     survey: ['De humani corporis fabrica 1543', 'Vesalius Fabrica woodcut', 'Vesalius 1543 plate', 'Vesalius muscle man', 'Vesalius skeleton'],
-    surveyOnly: /vesal|fabrica/i, thumbs: 'usable',
-    pages: []
+    surveyOnly: /vesal|fabrica/i,
+    pages: [
+  { key: 'title', files: ['Vesalius Fabrica fronticepiece.jpg', 'Vesalius01.jpg', 'Fabrica titlepg frc.png'] },
+  { key: 'portrait', files: ["Portrait of Andreas Vesalius, half-length in profile standing in front of a table dissecting the arm of a body; frontispiece to Andreas Vesalius 'De humani corporis fabrica libri septem' MET DP853465.jpg", 'Vesalius Fabrica portrait.jpg'] },
+  { key: 'p163', files: ['Vesalius Fabrica p163.jpg'] },
+  { key: 'p164', files: ['Vesalius Fabrica p164.jpg', 'Vesalius 164frc.png'] },
+  { key: 'p165', files: ['Vesalius Fabrica p165.jpg'] },
+  { key: 'p174', files: ['Vesalius Fabrica p174.jpg', 'Houghton Typ 565.43.868 - De humani corporis fabrica, 174.jpg'] },
+  { key: 'p178', files: ['Vesalius Fabrica p178.jpg'] },
+  { key: 'p184', files: ['Vesalius Fabrica p184.jpg'] },
+  { key: 'p194', files: ['Vesalius Fabrica p194.jpg'] },
+  { key: 'p239', files: ['De Humani Corporis Fabrica Libri Septem, page 239.jpg'] },
+  { key: 'p295', files: ['Vesalius Fabrica p295.jpg'] },
+  { key: 'p332', files: ['Vesalius Fabrica p332.jpg'] },
+  { key: 'p355', files: ['Vesalius Fabrica p355.jpg'] }
+    ]
   }
 };
 
