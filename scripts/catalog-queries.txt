@@ -1,11 +1,43 @@
-# Venezuelan authors, for the Spanish Reading Room (asked about by Banco del Libro): looser patterns, second round.
- ; Bello ; 
- ; Bol.var ; 
- ; D.az ; es
- ; Blanco ; es
- ; Parra ; es
- ; Fombona ; 
- ; Bonalde ; 
- ; Campano ; 
- ; P.ez, Ram ; 
-cuervo ; ; es
+# The history of medicine room: texts for its shelves.
+notes on nursing ; nightingale ; en
+ ; nightingale, florence ; en
+wonderful adventures ; seacole ; en
+ ; hippocrates ; en
+ ; galen ; en
+herbal ; culpeper ; en
+scientific papers ; ; en
+ ; harvey, william ; en
+motion of the heart ; ; en
+aequanimitas ; osler ; en
+ ; osler, william ; en
+ ; lister, joseph ; en
+ ; pasteur ; en
+ ; jenner ; en
+ ; par., ambroise ; en
+ ; paracelsus ; en
+religio medici ; browne ; en
+ ; snow, john ; en
+anatomy ; gray, henry ; en
+ ; vesalius ; 
+ ; blackwell, elizabeth ; en
+pioneer work ; ; en
+ ; semmelweis ; 
+ ; holmes, oliver wendell ; en
+ ; laennec ; 
+ ; koch, robert ; en
+history of medicine ; ; en
+ ; garrison, fielding ; en
+ ; withering ; en
+ ; nostradamus ; en
+domestic medicine ; ; en
+ ; beaumont, william ; en
+ ; cheselden ; 
+ ; sydenham ; en
+ ; celsus ; en
+ ; avicenna ; 
+ ; jex-blake ; en
+ ; simpson, james ; en
+anaesthe|anesthe ; ; en
+ ; hunter, john ; en
+microbe hunters ; ; en
+ ; carrel ; en
