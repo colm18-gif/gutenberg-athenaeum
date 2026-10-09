@@ -188,7 +188,7 @@
     // ---------- the viewer ----------
     function style(){
       if(document.getElementById('fineBookStyle'))return;const s=document.createElement('style');s.id='fineBookStyle';
-      s.textContent=`body.fine-book-open>:not(.fine-book):not(canvas){visibility:hidden!important}
+      s.textContent=`body.fine-book-open>:not(.fine-book):not(.whole-book):not(canvas){visibility:hidden!important}
 .fine-book{position:fixed;inset:0;z-index:42;color:#eadcbc;font-family:Georgia,serif;pointer-events:none}
 .fine-book.hidden{display:none}.fine-book .kv-stage{position:absolute;inset:0;pointer-events:auto;touch-action:none;cursor:grab}.fine-book .kv-stage.dragging{cursor:grabbing}
 .fine-book header{position:absolute;top:14px;left:18px;right:180px;pointer-events:none;letter-spacing:.22em;font-size:12px;color:#c9a46b;text-shadow:0 1px 6px #000}

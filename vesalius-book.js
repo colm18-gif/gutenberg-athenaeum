@@ -109,6 +109,16 @@
       c.fillStyle=GOLD;c.textAlign='center';c.font=`58px ${fontFamily()}`;c.fillText('VESALIVS',w/2,h*.255);c.font=`28px ${fontFamily()}`;c.fillText('DE HVMANI CORPORIS FABRICA',w/2,h*.255+44);c.fillText('MDXLIII',w/2,h*.255+80);
     }
   };
+  // The whole book (whole-book.js): every page of the US National Library of Medicine's copy of the 1543 edition, a
+  // complete scan on Wikimedia Commons (730 pages, the binding included). Its numbering is the scan's, not the book's: the
+  // skeletons of pages 163 to 165 are the scan's 185 to 187, and the book's own page numbers have errors of their own.
+  VESALIUS.whole={id:'fabrica',title:'De humani corporis fabrica',sub:'Andreas Vesalius, Basel, 1543: all of it',pages:730,widths:[960,1280],
+    file:'Andreae Vesalii Bruxellensis, scholae medicorum Patauinae professoris De humani corporis fabrica libri septem .. (IA 2295005R.nlm.nih.gov).pdf',hash:'5/53',
+    commons:'https://commons.wikimedia.org/wiki/File:Andreae_Vesalii_Bruxellensis,_scholae_medicorum_Patauinae_professoris_De_humani_corporis_fabrica_libri_septem_.._(IA_2295005R.nlm.nih.gov).pdf',
+    source:'The copy in the US National Library of Medicine.',label:n=>`Page ${n} of the scan, of 730`,goLabel:'Go to a page of the scan',goPlaceholder:'1–730',start:11,
+    marks:[['The binding',1],['The title page',11],['The dedication to the Emperor Charles V',13],['The skeleton from the front (page 163)',185],['The thinking skeleton (page 164)',186],['The mourning skeleton (page 165)',187],['The second book begins: the muscles',191],['The back of the binding',730]],
+    // Where the facsimile's pages are in the scan: the title and the skeletons as seen, the others near their place.
+    pageFor:key=>({title:11,portrait:12,p163:185,p164:186,p165:187})[key]||(/^p\d+$/.test(key)?Number(key.slice(1))+22:null)};
   window.VESALIUS_BOOK=VESALIUS;
   window.createVesaliusBook=options=>window.createFineBook(options,VESALIUS);
 })();

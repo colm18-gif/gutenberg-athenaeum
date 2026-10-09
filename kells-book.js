@@ -105,6 +105,16 @@
       c.fillStyle=GOLD;c.textAlign='center';c.font=`64px ${fontFamily()}`;c.fillText('Leabhar Cheanannais',w/2,h*.17);c.font='italic 30px Georgia, serif';c.fillText('The Book of Kells',w/2,h*.17+50);
     }
   };
+  // The whole book (whole-book.js): every leaf of the manuscript, Trinity College Dublin's own full scan, on Wikimedia
+  // Commons as one file of 681 images. Its numbering is the scan's: it runs two ahead of the folios from somewhere between
+  // folios 34 and 114, so the marked places are those checked by eye, and the facsimile's other pages are found near theirs.
+  KELLS.whole={id:'kells',title:'Leabhar Cheanannais',sub:'The Book of Kells: every leaf',pages:681,widths:[960],file:'Book of Kells.pdf',hash:'9/9d',
+    commons:'https://commons.wikimedia.org/wiki/File:Book_of_Kells.pdf',source:'Trinity College Dublin, MS 58: the College’s own scan.',
+    label:n=>`Image ${n} of 681`,goLabel:'Go to an image of the scan',goPlaceholder:'1–681',start:1,
+    marks:[['The first leaf',1],['The canon tables',2],['Christ enthroned (folio 32v)',65],['The carpet page (folio 33r)',66],['The Chi Rho (folio 34r)',68],['The arrest of Christ (folio 114r)',230],
+      ['The four symbols (folio 290v)',583],['Saint John (folio 291v)',585],['In principio erat verbum (folio 292r)',586],['The last leaf',681]],
+    pageFor:key=>{const known={'032v':65,'033r':66,'034r':68,'114r':230,'290v':583,'291v':585,'292r':586};if(known[key])return known[key];const m=/^(\d{3})([rv])$/.exec(key);if(!m)return null;
+      const f=Number(m[1]),side=m[2]==='v'?1:0;return f<=34?2*f+side:2*f+side+2}};
   KELLS.ornament=ornament;KELLS.colours={INK,RED,YELLOW,GREEN,BLUE};
   window.KELLS_BOOK=KELLS;
   window.createKellsBook=options=>window.createFineBook(options,KELLS);

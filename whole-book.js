@@ -24,7 +24,7 @@
     function style(){
       if(document.getElementById('wholeBookStyle'))return;const s=document.createElement('style');s.id='wholeBookStyle';
       s.textContent=`.whole-book{position:fixed;inset:0;z-index:43;display:grid;grid-template-columns:1fr minmax(260px,330px);background:rgba(8,7,6,.96);color:#e8dcc0;font-family:Georgia,serif}
-.whole-book.hidden{display:none}.whole-book .wb-stage{position:relative;overflow:hidden;touch-action:none;cursor:grab;background:radial-gradient(circle at 50% 50%,#2a2218,#0b0a08)}
+.whole-book.hidden,.whole-book [hidden]{display:none!important}.whole-book .wb-stage{position:relative;overflow:hidden;touch-action:none;cursor:grab;background:radial-gradient(circle at 50% 50%,#2a2218,#0b0a08)}
 .whole-book .wb-stage.dragging{cursor:grabbing}.whole-book img{position:absolute;left:0;top:0;transform-origin:0 0;max-width:none;user-select:none;-webkit-user-drag:none;box-shadow:0 10px 60px #000}
 .whole-book .wb-wait{position:absolute;inset:0;display:grid;place-items:center;padding:30px;text-align:center;font-style:italic;color:#bfae8e;pointer-events:none}
 .whole-book .wb-wait button{pointer-events:auto;margin-top:12px}.whole-book aside{padding:26px 22px 18px;overflow:auto;border-left:1px solid #5a4528;background:linear-gradient(160deg,#241a10,#121512)}
@@ -54,8 +54,8 @@
       const credit=root.querySelector('.wb-credit');credit.append(`${spec.source} Scan: `);const a=document.createElement('a');a.href=spec.commons;a.target='_blank';a.rel='noopener';a.textContent='Wikimedia Commons';credit.append(a,', in the public domain. Each page comes from Commons as you turn to it.');
       const select=root.querySelector('select');for(const [label,n] of spec.marks||[]){const o=document.createElement('option');o.value=String(n);o.textContent=label;select.append(o)}
       if(!(spec.marks||[]).length)select.hidden=true;
-      select.addEventListener('change',()=>{if(select.value)show(Number(select.value));select.value=''});
-      root.querySelector('form').addEventListener('submit',e=>{e.preventDefault();const input=root.querySelector('input'),n=(spec.parse||(t=>Number(t)))(input.value.trim());if(n)show(n);else input.select()});
+      select.addEventListener('change',()=>{if(select.value)show(Number(select.value));select.value='';select.blur()});
+      root.querySelector('form').addEventListener('submit',e=>{e.preventDefault();const input=root.querySelector('input'),n=(spec.parse||(t=>Number(t)))(input.value.trim());if(n){show(n);input.value='';input.blur()}else input.select()});
       root.addEventListener('click',e=>{const act=e.target.closest('[data-act]')?.dataset.act;if(!act)return;if(act==='close')close();else if(act==='prev')show(page-1);else if(act==='next')show(page+1);else if(act==='in')zoom(1.6);else if(act==='out')zoom(1/1.6);else if(act==='retry'){tries=0;show(page,true)}});
       img.addEventListener('load',()=>{tries=0;waiting(false);fit()});
       img.addEventListener('error',()=>{if(!open)return;
@@ -76,7 +76,7 @@
       stage.addEventListener('pointerup',up);stage.addEventListener('pointercancel',up);
       window.addEventListener('resize',()=>{if(open)fit()});
       // While the book is open, keys belong to it: nothing walks, and Escape puts it back.
-      window.addEventListener('keydown',e=>{if(!open||e.target?.tagName==='INPUT')return;e.stopImmediatePropagation();const k=e.key;
+      window.addEventListener('keydown',e=>{if(!open)return;const k=e.key;if(e.target?.tagName==='INPUT'&&k!=='Escape')return;e.stopImmediatePropagation();
         if(k==='Escape'){e.preventDefault();close()}else if(k==='ArrowRight'||k==='PageDown'||k===' '){e.preventDefault();show(page+1)}else if(k==='ArrowLeft'||k==='PageUp'){e.preventDefault();show(page-1)}
         else if(k==='Home'){show(1)}else if(k==='End'){show(PAGES)}else if(k==='+'||k==='='){zoom(1.4)}else if(k==='-'||k==='_'){zoom(1/1.4)}else if(k==='0'){fit()}},true);
       window.addEventListener('keyup',e=>{if(open&&e.target?.tagName!=='INPUT')e.stopImmediatePropagation()},true);
