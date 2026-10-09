@@ -274,7 +274,13 @@ async function fetchBook(name, book) {
       const page = await choose(book, entry);
       if (!page) { console.log(`${entry.key}: NOTHING USABLE FOUND`); failed++; continue }
       const i = page.imageinfo[0], meta = i.extmetadata || {}, source = i.thumburl || i.url;
-      const response = await fetch(source, { headers: HEADERS });
+      // Commons answers 429 when asked for many large files in a row: wait and ask again.
+      let response;
+      for (let attempt = 1; ; attempt++) {
+        response = await fetch(source, { headers: HEADERS });
+        if (response.status !== 429 || attempt >= 5) break;
+        await new Promise(res => setTimeout(res, 4000 * attempt));
+      }
       if (!response.ok) throw new Error(`${response.status} downloading ${source}`);
       const image = sharp(Buffer.from(await response.arrayBuffer()), { limitInputPixels: false }).flatten({ background: book.paper });
       const { width, height } = await image.metadata();

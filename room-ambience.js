@@ -108,6 +108,8 @@
       'lost-property':{beds:[['air',.03]],events:[['creak',1.1,.05],['rustle',1.2,.04]]},
       // The Map Room: a quiet room, a clock, and big sheets of paper being turned over.
       'map-room':{beds:[['air',.035]],ticks:[[1.6,'tock',.025]],events:[['rustle',1.4,.04]]},
+      // The Medicine Room: a still room, a clock, and the heavy leaves of the Fabrica being turned.
+      'medicine-room':{beds:[['air',.03]],ticks:[[1.2,'tock',.022]],events:[['rustle',1,.04],['creak',.4,.03]]},
       // The Poe Room: a still house, its floorboards settling (the heart under them is poe-room.js's own).
       'poe-room':{beds:[['air',.03]],events:[['creak',.9,.05],['rustle',.6,.03]]},
       // The periodicals room: a clock, and pages turning at the reading slopes.

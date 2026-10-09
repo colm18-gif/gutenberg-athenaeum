@@ -12,7 +12,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   startup script means updating the script count in `experience.test.cjs` and bumping `BUILD` in `index.html`.
   Files the jobs rewrite without a new build are listed in `LIVE_DATA` there.
 - Rooms behind doors (`evening-room.js`, `learners-room.js`, `periodicals-room.js`, `international-wing.js`,
-  `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`, `map-room.js`, `set-texts-room.js`)
+  `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`, `map-room.js`, `medicine-room.js`, `set-texts-room.js`)
   are built only when the reader approaches and freed ~25 s after they leave. So are the Room of Chance (its portrait
   stays), the Lost Property Office (its hatch stays) and the high staircase, Rocket Hall, Moon and rocket cabin (`high-staircase.js`: only its door in the west wing
   is built at startup; a stair book carried away keeps it). The basement and the roof garden, built in `game.js` on a first visit, are
@@ -36,14 +36,22 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   evangelists' symbols), hidden as the great Gospel of Colum Cille was found under a sod in 1007 (found once, found for
   good: `athenaeum-durrow-found`; `?durrow` shows it at once).
 - The fine books share one engine, `fine-books.js` (cradle, stiff board leaves, zoom, captions, loading only the spreads
-  either side of the open one); each book is a description: `kells-book.js`, `durrow-book.js` (which borrows the Kells ornament), `kelmscott-book.js`
-  (pages and cards, drawn pages, binding, paper, type). Their photographs come from Wikimedia Commons by `scripts/fetch-book-pages.mjs` (Book
+  either side of the open one); each book is a description: `kells-book.js`, `durrow-book.js` (which borrows the Kells ornament), `kelmscott-book.js`,
+  `vesalius-book.js` (pages and cards, drawn pages, binding, paper, type). Their photographs come from Wikimedia Commons by `scripts/fetch-book-pages.mjs` (Book
   images workflow; public domain only). A book listed with no pages is surveyed in the log instead (with `thumbs`, it also commits
   numbered sheets of the larger files to `<dir>/survey`, to be looked at and removed), which is how pages are chosen from
   what Commons really holds. Commons has no large copies of Kells 124r, 129v, 285r, 290v or 291v. The Periodicals Room's secret is the Kelmscott Chaucer: pull the bar of the
   Albion hand press by the door and it prints the Chaucer's first page and gives up the book (`?kelmscott` shows it). Its
   pages are the woodcut title and seven facing openings from the Internet Archive's scan (a page's number is its place in
   the scan less twelve).
+- The Medicine Room (`medicine-room.js`, x −420, z −140) is behind a door at the south end of the Map Room's east wall
+  (`?room=medicine`), a few steps from Snow's cholera map; `map-room.js` stops its east shelf short (`EAST_SHELF`) to leave
+  that end of the wall clear. A history of medicine on three shelves, `medicine-physic`, `medicine-discovery` and
+  `medicine-healers` in `data/new-books.js` (books held nowhere else; a test checks). In the middle, under glass, the
+  facsimile of Vesalius's Fabrica of 1543 (`vesalius-book.js`) lies open at the skeletons of pages 164 and 165: its title,
+  the portrait and eleven pages from Wikimedia Commons (`assets/vesalius`, chosen from a survey), named for their page in
+  the 1543 edition. The title page and portrait also hang framed either side of the room's door. The muscle men are flayed
+  figures: keep the plates on the walls and in the case to the skeletons, the title and the portrait.
 - The Set Texts Room (`set-texts-room.js`, x −330, z 60) is behind a blue door in the English Reading Room's east wall
   (`?room=set-texts`): the plays and novels most often set for GCSE English Literature (Shakespeare on the west wall, from
   `PLAYS` and the room `set-texts` in `data/new-books.js`; the nineteenth-century novel on the north wall, `NOVELS`), a long
@@ -177,7 +185,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, boathouse,
-  daily-room, poe, irish, maps, set-texts, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
+  daily-room, poe, irish, maps, medicine, set-texts, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text.
 - **Halloween night** (`halloween.js`): 24 October to 2 November by the reader's own date (`?halloween` previews it,
   `?nohalloween` hides it). Carved lanterns (one InstancedMesh, glowing through emissive faces, no lights) by the south
