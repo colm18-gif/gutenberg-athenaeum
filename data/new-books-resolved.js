@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-10-08",
+ "updated": "2026-10-09",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -482,6 +482,50 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "The Works of Edgar Allan Poe — Volume 5": {
    "id": 2151,
    "words": 74183
+  },
+  "Plain Tales from the Hills": {
+   "id": 1858,
+   "words": 73412
+  },
+  "Soldiers Three": {
+   "id": 6120,
+   "words": 90730
+  },
+  "The Light That Failed": {
+   "id": 2876,
+   "words": 72683
+  },
+  "Life’s Handicap": {
+   "id": 5777,
+   "words": 107947
+  },
+  "Barrack-Room Ballads": {
+   "id": 2819,
+   "words": 16280
+  },
+  "The Second Jungle Book": {
+   "id": 1937,
+   "words": 65280
+  },
+  "The Day’s Work": {
+   "id": 2569,
+   "words": 107524
+  },
+  "Stalky & Co.": {
+   "id": 3006,
+   "words": 66817
+  },
+  "Traffics and Discoveries": {
+   "id": 9790,
+   "words": 95284
+  },
+  "Puck of Pook’s Hill": {
+   "id": 557,
+   "words": 58951
+  },
+  "Rewards and Fairies": {
+   "id": 556,
+   "words": 74281
   },
   "The Gift of the Magi": {
    "id": 7256,
