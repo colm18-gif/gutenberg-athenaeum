@@ -144,7 +144,7 @@
       const plinth=box(1.5,.95,1,MAT.darkWood,0,.475,0,g);box(1.6,.06,1.1,MAT.darkWood,0,.97,0,g);box(1.6,.08,1.1,MAT.darkWood,0,.04,0,g);
       // The open book: two pages in a cradle, each sloping down from the spine.
       const loader=THREE.TextureLoader?new THREE.TextureLoader():null,pageW=.52,pageH=.68;
-      const page=(key,side)=>{const map=loader?own(loader.load(`assets/kells/${key}.jpg`)):null;if(map&&THREE.SRGBColorSpace)map.colorSpace=THREE.SRGBColorSpace;
+      const page=(key,side)=>{const map=loader?own(loader.load(`assets/kells/${key}-case.jpg`)):null;if(map&&THREE.SRGBColorSpace)map.colorSpace=THREE.SRGBColorSpace;
         const mat=own(new THREE.MeshStandardMaterial({color:0xd6cdbb,map,emissive:0xffffff,emissiveMap:map,emissiveIntensity:.1,roughness:.9}));
         const hinge=new THREE.Group();hinge.position.set(side*.01,1.09,0);hinge.rotation.z=side*-.16;g.add(hinge);
         const m=add(own(new THREE.PlaneGeometry(pageW,pageH)),mat,side*pageW/2,0,0,hinge);m.rotation.x=-Math.PI/2;return m};

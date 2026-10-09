@@ -96,3 +96,12 @@ test('its books are held nowhere else, and each has a note of three sentences',(
   }
   assert.equal(new Set(medicine.map(e=>e[0])).size,medicine.length,'each once');
 });
+
+test('the case and the walls show small copies of the pages, made by the Book images workflow, not the full pages',()=>{
+  for(const [dir,keys] of [['assets/vesalius',['title','portrait','p164','p165']],['assets/kells',['032v','033r']]]){
+    const block=fetcher.slice(fetcher.indexOf(dir==='assets/kells'?'kells: {':'vesalius: {'));assert.match(block.slice(0,600),new RegExp(`display: \\[${keys.map(k=>`'${k}'`).join(', ')}\\]`),`${dir}: the workflow makes them`);
+    for(const key of keys){const file=`${dir}/${key}-case.jpg`;if(!fs.existsSync(`${dir}/${key}.jpg`))continue;assert(fs.existsSync(file),`${file} has been made`);assert(fs.statSync(file).size<200e3,`${file} is small`)}
+  }
+  assert.doesNotMatch(source,/assets\/vesalius\/\$\{(key|file)\}\.jpg/,'the room never loads a full page');assert.match(fs.readFileSync('irish-room.js','utf8'),/assets\/kells\/\$\{key\}-case\.jpg/);
+});
+
