@@ -1,37 +1,11 @@
-# Venezuelan authors, for the Spanish Reading Room (asked about by Banco del Libro). Authors in any language first,
-# to see how the catalogue spells them; then Venezuela in Spanish titles.
- ; Bello, Andr ;
- ; Bol.var, Sim ;
- ; Miranda, Francisco ;
- ; Rodr.guez, Sim.n ;
- ; Parra, Teresa ;
- ; D.az Rodr.guez ;
- ; Blanco.Fombona ;
- ; Blanco, Eduardo ;
- ; P.rez Bonalde ;
- ; Gil Fortoul ;
- ; Febres Cordero ;
- ; Rojas, Ar.stides ;
- ; Acosta, Cecilio ;
- ; Toro, Ferm.n ;
- ; Gonz.lez, Juan Vicente ;
- ; Pic.n.Febres ;
- ; Coll, Pedro Emilio ;
- ; Urbaneja ;
- ; Lazo Mart ;
- ; Pocaterra ;
- ; Blanco, Andr.s Eloy ;
- ; Arvelo ;
- ; Alvarado, Lisandro ;
- ; Romero Garc.a ;
- ; Calc.ao ;
- ; Maitin|Lozano, Abig ;
- ; Mendoza, Cristóbal|Mendoza, Crist ;
- ; Gallegos, R.mulo ;
- ; Uslar ;
- ; Ram.rez, Lisandro|Key.Ayala|Pardo, Isaac ;
- ; Pi.ango|Guzm.n Blanco|Pa.z, Jos. Antonio ;
-Ifigenia|Las lanzas coloradas|Peonía|Venezuela heroica|Ídolos rotos|Sangre patricia|El hombre de hierro ; ;
-Silva a la agricultura|Alocución a la poesía|Gramática de la lengua castellana ; ;
-Venezuela|Caracas|Orinoco|Maracaibo|Bol.var ; ; es
-Venezuela|Caracas|Orinoco ; ; en
+# Venezuelan authors, for the Spanish Reading Room (asked about by Banco del Libro): looser patterns, second round.
+ ; Bello ; 
+ ; Bol.var ; 
+ ; D.az ; es
+ ; Blanco ; es
+ ; Parra ; es
+ ; Fombona ; 
+ ; Bonalde ; 
+ ; Campano ; 
+ ; P.ez, Ram ; 
+cuervo ; ; es
