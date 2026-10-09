@@ -26,7 +26,7 @@ const PLAUSIBLE_SCRIPT_URL = 'https://plausible.io/js/pa-nD_g44fQQBbeVFD1ofS4k.j
     'Journey Taken', 'Stair Slide', 'Librarian Talked To', 'Cat Petted', 'Rabbit Door Entered',
     'Quote Opened', 'Quote Shared', 'Audiobook Played', 'Audiobook Link Opened',
     'Engaged 5 Minutes', 'Engaged 10 Minutes', 'Support Box Opened', 'Stripe Support Opened',
-    'Visitors Book Signed', 'Map Viewed'];
+    'Visitors Book Signed', 'Map Viewed', 'Whole Book Opened'];
   const rooms = new Set(['main-library', 'upper-floor', 'roof-garden', 'west-wing', 'east-wing',
     'restricted-stacks', 'below-catalogue', 'portrait-room', 'tunnel', 'archive',
     'rabbit-room', 'returning', 'quiet', 'unread', 'repository', 'gothic', 'inquiry',
@@ -38,6 +38,7 @@ const PLAUSIBLE_SCRIPT_URL = 'https://plausible.io/js/pa-nD_g44fQQBbeVFD1ofS4k.j
     secret: label,
     how: value => ['copy', 'download', 'share'].includes(value),
     map: label,
+    whole: label,
     book: value => Number.isInteger(value) && value > 0 && value < 1e6
   };
   window.libraryAnalytics = {

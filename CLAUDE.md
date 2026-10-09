@@ -40,7 +40,12 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `vesalius-book.js` (pages and cards, drawn pages, binding, paper, type). Their photographs come from Wikimedia Commons by `scripts/fetch-book-pages.mjs` (Book
   images workflow; public domain only). A book listed with no pages is surveyed in the log instead (with `thumbs`, it also commits
   numbered sheets of the larger files to `<dir>/survey`, to be looked at and removed), which is how pages are chosen from
-  what Commons really holds. A room that shows pages in a glass case or a frame lists them as `display`, and loads the
+  what Commons really holds. A book whose description has `whole` (Kells and the Fabrica) also has
+  a button, The whole book, that opens `whole-book.js`: every page of a complete public-domain scan on Commons (Trinity's
+  681-image scan of Kells; the National Library of Medicine's 730-page Fabrica), fetched page by page from
+  upload.wikimedia.org as the reader turns, never kept in the repository. Commons serves only standard widths (960 and 1280
+  work; 640 is refused) and is slow the first time a page is drawn. Pages are numbered as in the scan; marked places and
+  `pageFor` were checked by eye (Kells's scan runs two ahead of the folios from somewhere between folios 34 and 114). A room that shows pages in a glass case or a frame lists them as `display`, and loads the
   768-pixel `<key>-case.jpg` copies the workflow writes, never the full pages. Commons has no large copies of Kells 124r, 129v, 285r, 290v or 291v. The Periodicals Room's secret is the Kelmscott Chaucer: pull the bar of the
   Albion hand press by the door and it prints the Chaucer's first page and gives up the book (`?kelmscott` shows it). Its
   pages are the woodcut title and seven facing openings from the Internet Archive's scan (a page's number is its place in
