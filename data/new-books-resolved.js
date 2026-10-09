@@ -1351,6 +1351,14 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 18600,
    "words": 715
   },
+  "Cuentos de poeta [es]": {
+   "id": 60376,
+   "words": 24003
+  },
+  "Poemas [es]": {
+   "id": 25807,
+   "words": 12034
+  },
   "Dom Casmurro [pt]": {
    "id": 55752,
    "words": 67239
