@@ -1,0 +1,110 @@
+{
+ "title": {
+  "file": "Vesalius Fabrica fronticepiece.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Vesalius_Fabrica_fronticepiece.jpg",
+  "fit": "cover",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
+ "portrait": {
+  "file": "Portrait of Andreas Vesalius, half-length in profile standing in front of a table dissecting the arm of a body; frontispiece to Andreas Vesalius 'De humani corporis fabrica libri septem' MET DP853465.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Portrait_of_Andreas_Vesalius,_half-length_in_profile_standing_in_front_of_a_table_dissecting_the_arm_of_a_body;_frontispiece_to_Andreas_Vesalius_%27De_humani_corporis_fabrica_libri_septem%27_MET_DP853465.jpg",
+  "fit": "cover",
+  "artist": "Jan van Calcar",
+  "date": "1542 date QS:P571,+1542-00-00T00:00:00Z/9",
+  "licence": "CC0",
+  "description": "Print; Prints"
+ },
+ "p163": {
+  "file": "Vesalius Fabrica p163.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Vesalius_Fabrica_p163.jpg",
+  "fit": "contain",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
+ "p164": {
+  "file": "Vesalius Fabrica p164.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Vesalius_Fabrica_p164.jpg",
+  "fit": "contain",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
+ "p165": {
+  "file": "Vesalius Fabrica p165.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Vesalius_Fabrica_p165.jpg",
+  "fit": "contain",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
+ "p174": {
+  "file": "Vesalius Fabrica p174.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Vesalius_Fabrica_p174.jpg",
+  "fit": "contain",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
+ "p178": {
+  "file": "Vesalius Fabrica p178.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Vesalius_Fabrica_p178.jpg",
+  "fit": "contain",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
+ "p184": {
+  "file": "Vesalius Fabrica p184.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Vesalius_Fabrica_p184.jpg",
+  "fit": "contain",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
+ "p194": {
+  "file": "Vesalius Fabrica p194.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Vesalius_Fabrica_p194.jpg",
+  "fit": "contain",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
+ "p239": {
+  "file": "De Humani Corporis Fabrica Libri Septem, page 239.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:De_Humani_Corporis_Fabrica_Libri_Septem,_page_239.jpg",
+  "fit": "cover",
+  "artist": "Andreas Vesalius",
+  "date": "1543",
+  "licence": "Public domain",
+  "description": "De Humani Corporis Fabrica Libri Septem, page 239 https://www.vesaliusfabrica.com/en/original-fabrica/the-art-of-the-fabrica/newly-digitized-1543-edition.html"
+ },
+ "p295": {
+  "file": "Vesalius Fabrica p295.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Vesalius_Fabrica_p295.jpg",
+  "fit": "contain",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
+ "p332": {
+  "file": "Vesalius Fabrica p332.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Vesalius_Fabrica_p332.jpg",
+  "fit": "contain",
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ }
+}
