@@ -115,6 +115,15 @@ export const BOOKS = {
   { key: 'p332', files: ['Vesalius Fabrica p332.jpg'] },
   { key: 'p355', files: ['Vesalius Fabrica p355.jpg'] }
     ]
+  },
+  // The Restricted Catalogue's secret: the Voynich Manuscript (Yale, Beinecke Library, MS 408), in a script nobody has
+  // read, leaves of about 235 by 162 mm, on vellum. No pages chosen yet: surveyed, with numbered sheets of the files.
+  voynich: {
+    dir: 'assets/voynich', manifest: 'voynich.json', width: 1160, height: 1690, paper: '#e4d6b6',
+    categories: ['Category:Voynich manuscript'], must: /voynich/i,
+    survey: ['Voynich manuscript', 'Voynich manuscript folio', 'Beinecke MS 408', 'Voynich filemime:application/pdf'],
+    surveyOnly: /voynich|beinecke|ms[ _.-]?408/i, thumbs: true, thumbLimit: 280,
+    pages: []
   }
 };
 
@@ -137,7 +146,7 @@ async function api(params) {
   }
 }
 const info = book => ({ prop: 'imageinfo', iiprop: 'url|size|mime|extmetadata', iiurlwidth: String(book.width * 2) });
-const describe = page => `${page.title} ${page.imageinfo?.[0]?.width}x${page.imageinfo?.[0]?.height} ${strip(page.imageinfo?.[0]?.extmetadata?.LicenseShortName?.value)}`;
+const describe = page => `${page.title} ${page.imageinfo?.[0]?.width}x${page.imageinfo?.[0]?.height}${page.imageinfo?.[0]?.pagecount ? ` (${page.imageinfo[0].pagecount} pages)` : ''} ${strip(page.imageinfo?.[0]?.extmetadata?.LicenseShortName?.value)}`;
 const usable = page => { const i = page?.imageinfo?.[0]; return i && !page.missing && /jpeg|png|tiff/.test(i.mime) && i.height >= 1000 && i.height > i.width && isPublicDomain(i.extmetadata) };
 const area = page => (page.imageinfo?.[0]?.width || 0) * (page.imageinfo?.[0]?.height || 0);
 
@@ -211,7 +220,7 @@ async function survey(name, book) {
   console.log(`=== ${pages.length} files, ${pages.filter(usable).length} usable ===`);
   if (book.openings) await openingSheets(book);
   // thumbs: 'usable' draws only the files the book could take (public domain, upright, large), at most 20 sheets.
-  if (book.thumbs) await thumbSheets(book, pages.filter(p => book.thumbs === 'usable' ? usable(p) : (p.imageinfo?.[0]?.height || 0) >= 900 && /jpeg|png|tiff/.test(p.imageinfo?.[0]?.mime || '')).slice(0, 160));
+  if (book.thumbs) await thumbSheets(book, pages.filter(p => book.thumbs === 'usable' ? usable(p) : (p.imageinfo?.[0]?.height || 0) >= 900 && /jpeg|png|tiff/.test(p.imageinfo?.[0]?.mime || '')).slice(0, book.thumbLimit || 160));
 }
 // Survey pictures of single files, numbered, eight to a sheet with their names, to be looked at and then removed.
 async function thumbSheets(book, pages) {

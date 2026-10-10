@@ -1,37 +1,17 @@
-# The Burns Room: his poems, songs and letters, his lives, and what he drew on and inspired.
- ; Burns, Robert ; en
-Burns ; ; en
- ; Lockhart ; en
- ; Currie, James ; 
- ; Cunningham, Allan ; en
- ; Ramsay, Allan ; en
- ; Fergusson, Robert ; 
-Tea-Table ; ; 
-Scots Musical Museum ; ; 
- ; Hogg, James ; en
- ; Scott, Walter ; en
-Minstrelsy ; ; en
- ; Galt, John ; en
- ; Baillie, Joanna ; en
- ; Nairne ; 
-Auld Lang Syne ; ; 
-Ballads ; Child ; en
-Scottish ; Song ; en
-Scottish Ballads ; ; en
- ; Ossian ; en
- ; Macpherson, James ; en
- ; Stevenson, Robert Louis ; en
-Familiar Studies ; ; en
-Tam O' ; ; 
- ; Henley ; en
-Carlyle ; Burns ; 
- ; Carlyle, Thomas ; en
- ; Wordsworth, Dorothy ; en
-Recollections of a Tour ; ; en
- ; Thomson, James ; en
- ; Hume, David ; en
- ; Smith, Adam ; en
- ; Mackenzie, Henry ; en
-Man of Feeling ; ; en
- ; Boswell ; en
-Highland ; ; en
+Voynich ; ; 
+ ; Voynich ; 
+Gadfly ; ; 
+ ; Bacon, Roger ; 
+ ; Kircher ; 
+ ; Dee, John ; 
+ ; Kelley, Edward ; 
+Cipher|Cypher|Cryptogra|Secret Writing ; ; en
+ ; Hitt, Parker ; 
+ ; Friedman, William ; 
+Gold.Bug ; ; en
+Dancing Men ; ; en
+Rudolf II|Rudolph II ; ; 
+Herbal ; ; en
+ ; Trithemius ; 
+ ; Porta ; 
+Steganograph ; ; 
