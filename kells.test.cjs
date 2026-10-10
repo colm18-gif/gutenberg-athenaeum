@@ -26,7 +26,7 @@ function irishRoom(stored={}){
 test('the Book of Kells loads before the game, is handed to the Irish Room, and stops the world while it is open',()=>{
   const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(m=>m[1]);assert(order.indexOf('kells-book.js')>0&&order.indexOf('kells-book.js')<order.indexOf('game.js'));
   assert.match(game,/const kellsBook=window\.createKellsBook\?\.\(/);assert.match(game,/kells:kellsBook/);
-  assert.match(game,/const fineBookOpen=\(\)=>!!\(kellsBook\?\.isOpen\|\|durrowBook\?\.isOpen\|\|kelmscottBook\?\.isOpen\|\|vesaliusBook\?\.isOpen\)/);
+  assert.match(game,/const fineBookOpen=\(\)=>!!\(kellsBook\?\.isOpen\|\|durrowBook\?\.isOpen\|\|kelmscottBook\?\.isOpen\|\|vesaliusBook\?\.isOpen\|\|voynichBook\?\.isOpen\)/);
   assert.match(game,/worldIsCovered=function\(\)\{return fineBookOpen\(\)\|\|preFineCovered\(\)\}/,'the library does not draw the world under the open book');
   assert.match(game,/gameActive=function\(\)\{return !fineBookOpen\(\)&&preFineActive\(\)\}/,'nothing walks while the book is open');
   assert.match(fs.readFileSync('analytics.js','utf8'),/'Secret Found'/);assert(fs.existsSync('assets/fonts/uncial-antiqua-latin-400-normal.woff2')&&fs.existsSync('assets/fonts/OFL-Uncial-Antiqua.txt'));

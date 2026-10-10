@@ -118,16 +118,14 @@ export const BOOKS = {
   },
   // The Restricted Catalogue's book: the Voynich Manuscript (Yale, Beinecke Library, MS 408), in a script nobody has
   // read, leaves of about 235 by 162 mm, on vellum. Its pages were chosen from a survey of Commons: the Beinecke's own
-  // photographs, numbered in the manuscript's order (1 is the front cover, 3 is folio 1r; folio 12 and folios 59 to 64,
-  // 74, 91, 92, 97, 98, 109 and 110 are lost, and a fold-out is one photograph), checked against the folio numbers
-  // written on the rectos. Each page is named for its folio. Real openings, one from each part of the book.
+  // photographs, numbered in the manuscript's order (1 is the front cover, 3 is folio 1r; lost leaves, such as folio 12
+  // and folios 59 to 64, have none, and a fold-out is one photograph), checked against the folio numbers written on the
+  // rectos. Each page is named for its folio. Real openings, one from each part of the book.
   voynich: {
     dir: 'assets/voynich', manifest: 'voynich.json', width: 1160, height: 1690, paper: '#e4d6b6',
     categories: ['Category:Voynich manuscript'], must: /voynich/i, display: ['009v', '010r'],
-    // The whole manuscript, scanned by the Beinecke and passed on by the Internet Archive (214 pages): looked at in
-    // openings, to find where its folios fall for the whole-book reader.
-    scan: 'Voynich Manuscript (IA voynich MS 408).pdf', openingLabel: n => `pdf ${n}`, surveyOpenings: true,
-    openings: [[3, 4], [5, 6], [7, 8], [20, 21], [22, 23], [24, 25], [141, 142], [143, 144], [145, 146], [158, 159], [160, 161], [162, 163], [206, 207], [208, 209], [210, 211], [212, 213]],
+    // The whole manuscript (voynich-book.js reads it page by page from Commons): Voynich Manuscript (IA voynich MS 408).pdf,
+    // 214 images, each one ahead of the photographs above; its openings were looked at with `openings` and `surveyOpenings`.
     pages: [
   { key: '001r', files: ['Voynich Manuscript (3).jpg'] },
   { key: '009v', files: ['Voynich Manuscript (20).jpg'] },

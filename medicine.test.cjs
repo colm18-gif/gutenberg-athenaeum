@@ -32,7 +32,7 @@ test('the Medicine Room and the Fabrica load before the game and are wired in li
   const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(m=>m[1]);
   for(const file of ['vesalius-book.js','medicine-room.js'])assert(order.indexOf(file)>=0&&order.indexOf(file)<order.indexOf('game.js'),file);
   assert(order.indexOf('fine-books.js')<order.indexOf('vesalius-book.js'));assert(order.indexOf('map-room.js')<order.indexOf('medicine-room.js'));
-  assert.match(game,/vesaliusBook=window\.createVesaliusBook\?\.\(fineBookOptions\)/);assert.match(game,/\|\|vesaliusBook\?\.isOpen\)/,'the world stops while the book is open');
+  assert.match(game,/vesaliusBook=window\.createVesaliusBook\?\.\(fineBookOptions\)/);assert.match(game,/\|\|vesaliusBook\?\.isOpen(\|\||\))/,'the world stops while the book is open');
   assert.match(game,/const medicineRoom=window\.createMedicineRoom\?\.\(/);assert.match(game,/vesalius:vesaliusBook/);assert.match(game,/mapRoom:mapRoom\?\.room/);
   assert(game.indexOf('const mapRoom=')<game.indexOf('const medicineRoom='),'the Map Room is built first: its east wall holds the door');
   assert.match(game,/\['medicine-room','The medicine room'\]/);assert.match(game,/medicine:'medicine-room'/);assert.match(game,/'medicine-room':medicineRoom&&\(\(\)=>medicineRoom\.enter\(\)\)/);
