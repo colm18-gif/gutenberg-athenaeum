@@ -1,11 +1,47 @@
-# Venezuelan authors, for the Spanish Reading Room (asked about by Banco del Libro): looser patterns, second round.
- ; Bello ; 
- ; Bol.var ; 
- ; D.az ; es
- ; Blanco ; es
- ; Parra ; es
- ; Fombona ; 
- ; Bonalde ; 
- ; Campano ; 
- ; P.ez, Ram ; 
-cuervo ; ; es
+# The Austen Room: her own books, what she read, and the seven "horrid" novels Isabella Thorpe lists in Northanger Abbey.
+ ; Austen, Jane ; en
+ ; Austen-Leigh ; en
+ ; Austen, Caroline ; en
+ ; Brabourne ; 
+Jane Austen ; ; en
+ ; Burney, Fanny ; en
+ ; Edgeworth, Maria ; en
+Grandison ; Richardson ; en
+Clarissa ; Richardson ; en
+Pamela ; Richardson ; en
+ ; Radcliffe, Ann ; en
+Female Quixote ; ; en
+ ; Inchbald ; en
+Lovers' Vows ; ; en
+Sermons to Young Women ; ; en
+ ; Fordyce ; en
+ ; Gisborne ; en
+ ; Cowper, William ; en
+ ; Crabbe, George ; en
+Rasselas ; ; en
+ ; Gilpin, William ; en
+Marmion ; Scott ; en
+Lady of the Lake ; Scott ; en
+Giaour ; Byron ; en
+Coelebs ; ; en
+ ; More, Hannah ; en
+Castle of Wolfenbach ; ; 
+Mysterious Warning ; ; 
+Clermont ; Roche ; 
+ ; Roche, Regina ; 
+Necromancer ; ; en
+Midnight Bell ; ; 
+ ; Lathom ; 
+Orphan of the Rhine ; ; 
+ ; Sleath ; 
+Horrid Mysteries ; ; 
+ ; Grosse ; 
+ ; Parsons, Eliza ; 
+Spectator ; Addison ; en
+Sir Charles ; ; en
+Goldsmith ; ; en
+History of England ; Goldsmith ; en
+ ; Mitford, Mary Russell ; en
+ ; Smith, Goldwin ; en
+ ; Hill, Constance ; en
+Jane Austen and Her ; ; en
