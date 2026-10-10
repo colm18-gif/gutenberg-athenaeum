@@ -227,7 +227,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - The English Reading Room keeps only one darker book (Jekyll and Hyde, with a note).
 - Traces of other readers are invented, not real data.
 
-## Open to-dos (as of 1 October 2026)
+## Open to-dos (as of 10 October 2026)
 
 - Gutenberg has no Hindi, Urdu or Bengali texts (Wikisource would be the source, now that `scripts/wikisource.mjs` exists; Urdu needs right-to-left reading)
   and only a handful in Irish (four are on the Irish Room's shelf); CELT (celt.ucc.ie) needs permission to republish.
@@ -238,3 +238,10 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   jsDelivr is unreliable there.
 - The owner is moving the Gmail connector to the library's own address for press correspondence; press follow-ups
   were planned for around 2–3 October.
+- Austen Room outreach sent 10 October from colm18@gmail.com (20 emails): JASNA (info@, cc e-communications@), JASNA
+  News, JASNA's VP for Regions (asked to pass it to the regions), the UK Jane Austen Society (hq@, asked to pass it to the
+  branches) and its newsletter editor, JASA (Australia), the Netherlands and Italy societies; the UK branches London,
+  Scottish, South West, Midlands and Cambridge; the JASNA regions New York, Chicago, Northern California, North Carolina,
+  Louisiana, Vancouver and Toronto (the last three addresses unverified). Each invites corrections to the room's
+  librarian's notes: make any that come back. No address found yet for Pakistan, Buenos Aires, Brazil, Melbourne, or
+  the UK Society's Bath and Hampshire branches.
