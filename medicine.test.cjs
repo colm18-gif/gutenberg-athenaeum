@@ -43,7 +43,7 @@ test('the Medicine Room and the Fabrica load before the game and are wired in li
 });
 
 test('every page of the Fabrica has a card and a public-domain photograph, and the book is bound in order',()=>{
-  const folios=Object.keys(book.folios),block=fetcher.slice(fetcher.indexOf('vesalius: {')),fetched=[...block.matchAll(/key: '([a-z0-9-]+)'/g)].map(m=>m[1]);
+  const folios=Object.keys(book.folios),block=fetcher.slice(fetcher.indexOf('vesalius: {'),fetcher.indexOf('voynich: {')),fetched=[...block.matchAll(/key: '([a-z0-9-]+)'/g)].map(m=>m[1]);
   assert.deepEqual(fetched,folios,'scripts/fetch-book-pages.mjs fetches the same pages, in the same order');
   for(const key of folios){
     const [label,title,note]=book.folios[key];assert(label&&title&&note.length>40,`${key} has a card`);

@@ -116,14 +116,35 @@ export const BOOKS = {
   { key: 'p355', files: ['Vesalius Fabrica p355.jpg'] }
     ]
   },
-  // The Restricted Catalogue's secret: the Voynich Manuscript (Yale, Beinecke Library, MS 408), in a script nobody has
-  // read, leaves of about 235 by 162 mm, on vellum. No pages chosen yet: surveyed, with numbered sheets of the files.
+  // The Restricted Catalogue's book: the Voynich Manuscript (Yale, Beinecke Library, MS 408), in a script nobody has
+  // read, leaves of about 235 by 162 mm, on vellum. Its pages were chosen from a survey of Commons: the Beinecke's own
+  // photographs, numbered in the manuscript's order (1 is the front cover, 3 is folio 1r; folio 12 and folios 59 to 64,
+  // 74, 91, 92, 97, 98, 109 and 110 are lost, and a fold-out is one photograph), checked against the folio numbers
+  // written on the rectos. Each page is named for its folio. Real openings, one from each part of the book.
   voynich: {
     dir: 'assets/voynich', manifest: 'voynich.json', width: 1160, height: 1690, paper: '#e4d6b6',
-    categories: ['Category:Voynich manuscript'], must: /voynich/i,
-    survey: ['Voynich manuscript', 'Voynich manuscript folio', 'Beinecke MS 408', 'Voynich filemime:application/pdf'],
-    surveyOnly: /voynich|beinecke|ms[ _.-]?408/i, thumbs: true, thumbLimit: 280,
-    pages: []
+    categories: ['Category:Voynich manuscript'], must: /voynich/i, display: ['009v', '010r'],
+    // The whole manuscript, scanned by the Beinecke and passed on by the Internet Archive (214 pages): looked at in
+    // openings, to find where its folios fall for the whole-book reader.
+    scan: 'Voynich Manuscript (IA voynich MS 408).pdf', openingLabel: n => `pdf ${n}`, surveyOpenings: true,
+    openings: [[3, 4], [5, 6], [7, 8], [20, 21], [22, 23], [24, 25], [141, 142], [143, 144], [145, 146], [158, 159], [160, 161], [162, 163], [206, 207], [208, 209], [210, 211], [212, 213]],
+    pages: [
+  { key: '001r', files: ['Voynich Manuscript (3).jpg'] },
+  { key: '009v', files: ['Voynich Manuscript (20).jpg'] },
+  { key: '010r', files: ['Voynich Manuscript (21).jpg'] },
+  { key: '055v', files: ['Voynich Manuscript (110).jpg'] },
+  { key: '056r', files: ['DroseraVoynichManuscriptF56r.jpg', 'Voynich Manuscript (111).jpg'] },
+  { key: '070v1', files: ['Voynich Manuscript (128).jpg'] },
+  { key: '071r', files: ['Voynich Manuscript (129).jpg'] },
+  { key: '077v', files: ['Voynich Manuscript (140).jpg'] },
+  { key: '078r', files: ['Voynich Manuscript (141).jpg'] },
+  { key: 'rosettes', files: ['Voynich Manuscript (158).jpg'], wide: true },
+  { key: '099v', files: ['Voynich Manuscript (176).jpg'] },
+  { key: '100r', files: ['Voynich Manuscript (177).jpg'] },
+  { key: '102v', files: ['Voynich Manuscript (182).jpg'] },
+  { key: '103r', files: ['Voynich Manuscript (183).jpg'] },
+  { key: '116v', files: ['Voynich Manuscript (206).jpg'] }
+    ]
   }
 };
 
@@ -147,7 +168,8 @@ async function api(params) {
 }
 const info = book => ({ prop: 'imageinfo', iiprop: 'url|size|mime|extmetadata', iiurlwidth: String(book.width * 2) });
 const describe = page => `${page.title} ${page.imageinfo?.[0]?.width}x${page.imageinfo?.[0]?.height}${page.imageinfo?.[0]?.pagecount ? ` (${page.imageinfo[0].pagecount} pages)` : ''} ${strip(page.imageinfo?.[0]?.extmetadata?.LicenseShortName?.value)}`;
-const usable = page => { const i = page?.imageinfo?.[0]; return i && !page.missing && /jpeg|png|tiff/.test(i.mime) && i.height >= 1000 && i.height > i.width && isPublicDomain(i.extmetadata) };
+// A page is upright, unless it is a fold-out opened flat (`wide`).
+const usable = (page, wide = false) => { const i = page?.imageinfo?.[0]; return i && !page.missing && /jpeg|png|tiff/.test(i.mime) && i.height >= 1000 && (wide || i.height > i.width) && isPublicDomain(i.extmetadata) };
 const area = page => (page.imageinfo?.[0]?.width || 0) * (page.imageinfo?.[0]?.height || 0);
 
 // Every file in a book's categories and their subcategories, looked up once.
@@ -187,7 +209,7 @@ async function choose(book, entry) {
   }
   for (const file of entry.files) {
     const page = (await infoFor(book, [`File:${file}`]))[0];
-    if (usable(page)) return page;
+    if (usable(page, entry.wide)) return page;
     console.log(`  ${entry.key}: File:${file} ${page?.missing ? 'is not on Commons' : `is not usable (${describe(page)})`}`);
   }
   if (!book.pattern) return null;
@@ -196,7 +218,7 @@ async function choose(book, entry) {
   if (named.length) {
     const pages = await infoFor(book, named);
     for (const page of pages) console.log(`    category candidate: ${describe(page)}`);
-    const best = pages.filter(usable).sort((a, b) => area(b) - area(a))[0];
+    const best = pages.filter(p => usable(p)).sort((a, b) => area(b) - area(a))[0];
     if (best) return best;
   }
   const data = await api({ ...info(book), generator: 'search', gsrsearch: book.search(entry.key), gsrnamespace: '6', gsrlimit: '20' });
@@ -217,7 +239,7 @@ async function survey(name, book) {
     const meta = page.imageinfo?.[0]?.extmetadata || {};
     console.log(`${usable(page) ? 'USABLE ' : '       '}${describe(page)} | ${strip(meta.ImageDescription?.value).slice(0, 160)}`);
   }
-  console.log(`=== ${pages.length} files, ${pages.filter(usable).length} usable ===`);
+  console.log(`=== ${pages.length} files, ${pages.filter(p => usable(p)).length} usable ===`);
   if (book.openings) await openingSheets(book);
   // thumbs: 'usable' draws only the files the book could take (public domain, upright, large), at most 20 sheets.
   if (book.thumbs) await thumbSheets(book, pages.filter(p => book.thumbs === 'usable' ? usable(p) : (p.imageinfo?.[0]?.height || 0) >= 900 && /jpeg|png|tiff/.test(p.imageinfo?.[0]?.mime || '')).slice(0, book.thumbLimit || 160));
@@ -258,7 +280,7 @@ async function openingSheets(book) {
     const cells = [], group = book.openings.slice(k, k + PER);
     for (const [row, pair] of group.entries()) for (const [col, n] of pair.entries()) {
       try { cells.push({ input: await sharp(await get(first.replace(/page1-(\d+)px/, `page${n}-$1px`))).resize({ width: PW, height: PH - 24, fit: 'inside' }).toBuffer(), left: col * PW, top: row * PH + 24 }) } catch (error) { console.log(`  page ${n}: ${error.message}`) }
-      cells.push({ input: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${PW}" height="22"><text x="6" y="17" font-size="18" font-family="DejaVu Sans" fill="#ff0">pdf ${n} = page ${n - 12}</text></svg>`), left: col * PW, top: row * PH });
+      cells.push({ input: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${PW}" height="22"><text x="6" y="17" font-size="18" font-family="DejaVu Sans" fill="#ff0">${book.openingLabel ? book.openingLabel(n) : `pdf ${n} = page ${n - 12}`}</text></svg>`), left: col * PW, top: row * PH });
     }
     const name = `openings-${String(k / PER + 1).padStart(2, '0')}.jpg`;
     await sharp({ create: { width: PW * 2, height: PH * group.length, channels: 3, background: '#222' } }).composite(cells).jpeg({ quality: 78 }).toFile(path.join(OUT, name));
@@ -315,6 +337,8 @@ async function fetchBook(name, book) {
   const ordered = Object.fromEntries(book.pages.filter(p => manifest[p.key]).map(p => [p.key, manifest[p.key]]));
   await writeFile(manifestFile, JSON.stringify(ordered, null, 1) + '\n');
   console.log(`\n${name}: ${Object.keys(ordered).length} of ${book.pages.length} pages in ${book.dir}; ${failed} not found.`);
+  // surveyOpenings: openings of the book's scan drawn to <dir>/survey as well, to be looked at and then removed.
+  if (book.surveyOpenings && book.openings) await openingSheets(book);
   return Object.keys(ordered).length;
 }
 async function main() {
