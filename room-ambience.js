@@ -111,6 +111,8 @@
       // The Medicine Room: a still room, a clock, and the heavy leaves of the Fabrica being turned.
       'medicine-room':{beds:[['air',.03]],ticks:[[1.2,'tock',.022]],events:[['rustle',1,.04],['creak',.4,.03]]},
       // The Austen Room: a quiet drawing room at night, a mantel clock, a page turned, and now and then the door.
+      // The Burns Room: a cottage at night, the fire, rain at the window, and the clock on the wall.
+      'burns-room':{beds:[['fire',.05],['air',.03]],ticks:[[1.1,'tock',.02]],events:[['creak',.5,.03],['rustle',.6,.03]]},
       'austen-room':{beds:[['air',.025]],ticks:[[1,'tick',.016]],events:[['rustle',.8,.035],['creak',.3,.03]]},
       // The Poe Room: a still house, its floorboards settling (the heart under them is poe-room.js's own).
       'poe-room':{beds:[['air',.03]],events:[['creak',.9,.05],['rustle',.6,.03]]},
