@@ -61,25 +61,26 @@ const ROOM_NAMES={secret:'The secret bookcase in the west wing','evening-quick':
   signal:'The Signal House, on the night railway',tide:'Tidebound Quay, on the night railway',mars:'The Reading Room of Helium, on Mars',periodicals:'The Periodicals Room',spanish:'The International Wing',portuguese:'The Portuguese Reading Room',chinese:'The Chinese Reading Room',french:'The French Reading Room',latin:'The Latin Reading Room',italian:'The Italian Reading Room',ukrainian:'The Ukrainian Reading Room',
   antipodes:'The Antipodes, through the Earth from the Grand Hall',australian:'The Australian Room, at the Antipodes','new-zealand':'The New Zealand Room, at the Antipodes',
   'african-ancient':'The African Reading Room','african-voices':'The African Reading Room','african-tales':'The African Reading Room',
-  'map-voyages':'The Map Room','map-makers':'The Map Room','map-lands':'The Map Room','medicine-physic':'The Medicine Room','medicine-discovery':'The Medicine Room','medicine-healers':'The Medicine Room','set-texts':'The Set Texts Room','lost-property':'The Lost Property Office, down the book lift in the west wing',contested:'The Unwelcome Spines, beyond the Restricted Catalogue'};
+  'map-voyages':'The Map Room','map-makers':'The Map Room','map-lands':'The Map Room','medicine-physic':'The Medicine Room','medicine-discovery':'The Medicine Room','medicine-healers':'The Medicine Room','austen-novels':'The Austen Room','austen-writings':'The Austen Room','austen-lives':'The Austen Room','austen-read':'The Austen Room','austen-horrid':'The Austen Room','set-texts':'The Set Texts Room','lost-property':'The Lost Property Office, down the book lift in the west wing',contested:'The Unwelcome Spines, beyond the Restricted Catalogue'};
 const CURIOUS={horologist:'The Horologist’s Study',conservatory:'The Night Conservatory',parlour:'The Ghost-Story Parlour',attic:'The attic behind the curious doors',
   repository:'The Repository',unread:'The Unread Room',returning:'The Room of Returning Names',quiet:'The Quiet Stacks',sorting:'The Sorting Room',departures:'Departures'};
 // Places with a link straight into them (/?room=…, handled in game.js).
 const ROOM_LINKS={'The International Wing':'international-wing','The Portuguese Reading Room':'portuguese-room','The Chinese Reading Room':'chinese-room','The French Reading Room':'french-room','The Latin Reading Room':'latin-room','The Italian Reading Room':'italian-room','The Ukrainian Reading Room':'ukrainian-room','The Evening Room':'evening-room','The English Reading Room':'learners-room','The Periodicals Room':'periodicals-room','The Reading Room of Helium, on Mars':'mars',
   'The Selenite Reading Outpost, on the Moon':'moon','The Consulting Room':'consulting-room','The Time Laboratory':'time-laboratory','The Lost Kingdoms':'lost-kingdoms','The Verne rooms':'verne-rooms',
-  'The Antipodes, through the Earth from the Grand Hall':'antipodes','The Australian Room, at the Antipodes':'australia','The New Zealand Room, at the Antipodes':'new-zealand','The African Reading Room':'africa','The Map Room':'maps','The Medicine Room':'medicine','The Set Texts Room':'set-texts','The Lost Property Office, down the book lift in the west wing':'lost-property'};
+  'The Antipodes, through the Earth from the Grand Hall':'antipodes','The Australian Room, at the Antipodes':'australia','The New Zealand Room, at the Antipodes':'new-zealand','The African Reading Room':'africa','The Map Room':'maps','The Medicine Room':'medicine','The Austen Room':'austen','The Set Texts Room':'set-texts','The Lost Property Office, down the book lift in the west wing':'lost-property'};
 const CATEGORY_ROOMS={'Extraordinary Voyages':'The Verne rooms','The Consulting Room':'The Consulting Room','The Time Laboratory':'The Time Laboratory','The Lost Kingdoms':'The Lost Kingdoms'};
 function idsIn(file,pattern){const source=read(file),match=source.match(pattern);return match?[...match[1].matchAll(/\d+/g)].map(m=>Number(m[0])):[]}
 function roomsFrom(books){
   const evening=new Set(idsIn('evening-room.js',/const GROUPS=\[([\s\S]*?)\];/)),learners=new Set([...idsIn('learners-room.js',/const SHELVES=\[([\s\S]*?)\];/),...idsIn('learners-room.js',/const SHORT=\[([^\]]*)\]/)]);
   const setTexts=new Set([ANTHOLOGY.id,...idsIn('set-texts-room.js',/const NOVELS=\[([^\]]*)\]/),...idsIn('set-texts-room.js',/const PLAYS=\[([^\]]*)\]/)]);
+  const austen=new Set([...idsIn('austen-room.js',/const NOVELS=\[([^\]]*)\]/),...idsIn('austen-room.js',/const CABINET=\[([^\]]*)\]/)]);
   const moon=new Set(idsIn('high-staircase.js',/const lunarCollection=\[([^\]]*)\]/)),mars=new Set(idsIn('mars.js',/const SHELF=\[([^\]]*)\]/)),railway=new Set();
   for(const book of books)if(book.depotNote)railway.add(book.id);
   return book=>{
     const places=new Set();
     for(const room of book.arrivalRooms)if(ROOM_NAMES[room])places.add(ROOM_NAMES[room]);
     if(CURIOUS[book.room])places.add(CURIOUS[book.room]);
-    if(evening.has(book.id))places.add('The Evening Room');if(learners.has(book.id))places.add('The English Reading Room');if(setTexts.has(book.id))places.add('The Set Texts Room');
+    if(evening.has(book.id))places.add('The Evening Room');if(learners.has(book.id))places.add('The English Reading Room');if(setTexts.has(book.id))places.add('The Set Texts Room');if(austen.has(book.id))places.add('The Austen Room');
     if(moon.has(book.id))places.add('The Selenite Reading Outpost, on the Moon');if(mars.has(book.id))places.add('The Reading Room of Helium, on Mars');
     if(railway.has(book.id)&&!book.sourceKey)places.add('The Collections Depot, on the night railway');
     if(CATEGORY_ROOMS[book.category])places.add(CATEGORY_ROOMS[book.category]);

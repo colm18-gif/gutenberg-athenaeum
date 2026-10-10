@@ -12,7 +12,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   startup script means updating the script count in `experience.test.cjs` and bumping `BUILD` in `index.html`.
   Files the jobs rewrite without a new build are listed in `LIVE_DATA` there.
 - Rooms behind doors (`evening-room.js`, `learners-room.js`, `periodicals-room.js`, `international-wing.js`,
-  `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`, `map-room.js`, `medicine-room.js`, `set-texts-room.js`)
+  `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`, `map-room.js`, `medicine-room.js`, `set-texts-room.js`,
+  `austen-room.js`)
   are built only when the reader approaches and freed ~25 s after they leave. So are the Room of Chance (its portrait
   stays), the Lost Property Office (its hatch stays) and the high staircase, Rocket Hall, Moon and rocket cabin (`high-staircase.js`: only its door in the west wing
   is built at startup; a stair book carried away keeps it). The basement and the roof garden, built in `game.js` on a first visit, are
@@ -58,6 +59,16 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   the portrait and eleven pages from Wikimedia Commons (`assets/vesalius`, chosen from a survey), named for their page in
   the 1543 edition. The title page and portrait also hang framed either side of the room's door. The muscle men are flayed
   figures: keep the plates on the walls and in the case to the skeletons, the title and the portrait.
+- The Austen Room (`austen-room.js`, x 500, z −160) is behind a door in the Grand Hall's east wall (x 18.72, z 24.6), between
+  the great portrait and the south-east column (`?room=austen`): a Regency drawing room for Jane Austen. Her six novels stand
+  face-out on the north wall in the order they were published (`NOVELS`: five are the hall's own copies; Northanger Abbey is
+  the shelf `austen-novels`), under a silhouette; shelves `austen-writings`, `austen-lives` and `austen-read` in
+  `data/new-books.js` (books held nowhere else; a test checks). A writing table by the window, a sofa and its chair are
+  seats; the square pianoforte plays a country-dance strain (`tone`, game.js's `pianoTone`, no file); the door creaks, as the
+  one at Chawton did. The portrait beside the door is hinged and swings out as far as z 22.8: keep the door clear of it. The
+  room's secret is Catherine Morland's black japanned cabinet: opening it finds a list of linen and, behind it, Mrs Radcliffe
+  (Udolpho, the library's own copy, and the shelf `austen-horrid`); found once, found for good (`athenaeum-austen-cabinet`;
+  `?udolpho` opens it). None of the seven Northanger "horrid novels" is on Gutenberg.
 - The Set Texts Room (`set-texts-room.js`, x −330, z 60) is behind a blue door in the English Reading Room's east wall
   (`?room=set-texts`): the plays and novels most often set for GCSE English Literature (Shakespeare on the west wall, from
   `PLAYS` and the room `set-texts` in `data/new-books.js`; the nineteenth-century novel on the north wall, `NOVELS`), a long
@@ -192,7 +203,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, boathouse,
-  daily-room, poe, irish, maps, medicine, set-texts, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
+  daily-room, poe, irish, maps, medicine, austen, set-texts, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text.
 - **Halloween night** (`halloween.js`): 24 October to 2 November by the reader's own date (`?halloween` previews it,
   `?nohalloween` hides it). Carved lanterns (one InstancedMesh, glowing through emissive faces, no lights) by the south
