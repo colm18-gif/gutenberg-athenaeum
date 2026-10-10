@@ -54,6 +54,10 @@
       // A floorboard or shelf taking weight: slow, irregular stick-slip catches exciting a low wooden body.
       // (An earlier, higher and faster version read as crickets.)
       creak:()=>buffer(1.1,(d,n)=>{let next=0,lp=0,b1=0,v1=0,b2=0,v2=0,hp=0,prev=0;const w1=2*Math.PI*190/sr,w2=2*Math.PI*310/sr;for(let i=0;i<n;i++){const t=i/sr,env=Math.pow(Math.sin(Math.PI*t/1.1),1.5);let kick=0;if(i>=next){kick=.6+Math.random()*.4;next=i+Math.floor(sr/(16+22*Math.sin(Math.PI*t/1.1)+Math.random()*9))}const w=Math.random()*2-1;lp+=(w-lp)*.08;const drive=kick+lp*.05;v1=v1*.9985-b1*w1*w1+drive*.02;b1+=v1;v2=v2*.998-b2*w2*w2+drive*.012;b2+=v2;const x=b1*1.4+b2*.8;hp=x-prev+.96*hp;prev=x;d[i]=hp*env}let peak=0;for(let i=0;i<n;i++)peak=Math.max(peak,Math.abs(d[i]));for(let i=0;i<n;i++)d[i]*=.45/Math.max(1e-6,peak)}),
+      // A coal fire crackling: a run of sharp little pops, each a click of bright noise that dies in a few milliseconds.
+      crackle:()=>buffer(.7,(d,n)=>{let pops=7+Math.floor(Math.random()*6);const at=[];while(pops--)at.push(Math.floor(Math.random()*(n-sr*.02)));for(const start of at){const size=.3+Math.random()*.7,length=Math.floor(sr*(.002+Math.random()*.006));let prev=0;for(let j=0;j<length;j++){const w=Math.random()*2-1,hp=w-prev;prev=w;d[start+j]+=hp*size*Math.exp(-j/(length*.3))}}}),
+      // A single louder snap, as a lump of coal splits.
+      snap:()=>buffer(.25,(d,n)=>{let prev=0;for(let i=0;i<n;i++){const t=i/sr,w=Math.random()*2-1,hp=w-prev;prev=w;d[i]=(hp*.9*decay(t,140)+Math.sin(t*2*Math.PI*900)*.25*decay(t,60))*(t<.0015?t/.0015:1)}}),
       clink:()=>buffer(.6,(d,n)=>{for(let i=0;i<n;i++){const t=i/sr;d[i]=(Math.sin(t*2*Math.PI*2900)*.5+Math.sin(t*2*Math.PI*4350)*.3+Math.sin(t*2*Math.PI*6120)*.2)*decay(t,9)*.6}}),
       rustle:()=>buffer(.45,(d,n)=>{let hp=0,lp=0;for(let i=0;i<n;i++){const t=i/sr,w=Math.random()*2-1;lp+=(w-lp)*.5;hp=w-lp;const env=Math.pow(Math.sin(Math.PI*t/.45),2)*(.6+.4*Math.sin(t*70));d[i]=hp*env*.5}}),
       gull:()=>buffer(1.1,(d,n)=>{let phase=0;for(let i=0;i<n;i++){const t=i/sr,k=t<.45?0:1,u=((t-(k?.55:0))/.45),on=u>=0&&u<=1?Math.sin(Math.PI*u):0,f=1750-650*clamp(u,0,1);phase+=2*Math.PI*f/sr;d[i]=(Math.sin(phase)+Math.sin(phase*2)*.35+Math.sin(phase*3)*.15)*on*.3}}),
@@ -112,7 +116,7 @@
       'medicine-room':{beds:[['air',.03]],ticks:[[1.2,'tock',.022]],events:[['rustle',1,.04],['creak',.4,.03]]},
       // The Austen Room: a quiet drawing room at night, a mantel clock, a page turned, and now and then the door.
       // The Burns Room: a cottage at night, the fire, rain at the window, and the clock on the wall.
-      'burns-room':{beds:[['fire',.05],['air',.03]],ticks:[[1.1,'tock',.02]],events:[['creak',.5,.03],['rustle',.6,.03]]},
+      'burns-room':{beds:[['fire',.09],['air',.025]],ticks:[[1.1,'tock',.018]],events:[['crackle',36,.11],['snap',7,.09],['creak',.5,.03]]},
       'austen-room':{beds:[['air',.025]],ticks:[[1,'tick',.016]],events:[['rustle',.8,.035],['creak',.3,.03]]},
       // The Poe Room: a still house, its floorboards settling (the heart under them is poe-room.js's own).
       'poe-room':{beds:[['air',.03]],events:[['creak',.9,.05],['rustle',.6,.03]]},

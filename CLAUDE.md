@@ -25,7 +25,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   bust of Pallas (`?room=poe`). A heart beats under the floor, louder near the loose board (made with game.js's `sound`, no
   file); lifting the board gives up Volume 2 of the Raven Edition, which opens at The Tell-Tale Heart (`pendingStory`).
 - The Irish Room (`irish-room.js`, x −330, z −205), Seomra na hÉireann, is behind a green Georgian door in the Grand Hall's
-  south wall (x −8.3; `?room=irish`): shelves `irish-myth`, `irish-revival`, `irish-writers` and `irish-gaeilge` in
+  south wall (x −8.3; `?room=irish`), gilded IRELAND & SCOTLAND on the hall side because the Burns Room opens off it: shelves `irish-myth`, `irish-revival`, `irish-writers` and `irish-gaeilge` in
   `data/new-books.js` (the last checked as Irish, `ga`), round a turf fire, with a harp, a St Brigid's cross and an ogham stone.
   In the middle of the room, under a glass case on a plinth, the facsimile of the Book of Kells (`kells-book.js`) lies open at
   a real opening (folio 32v, Christ enthroned, facing 33r, the carpet page); anything on the case opens it in its own viewer:
@@ -73,7 +73,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   with a box bed, a coal fire, a table set for a Burns Supper (haggis, quaich) and two chairs that are seats. Shelves
   `burns-works`, `burns-lives` and `burns-scotland` in `data/new-books.js` (books held nowhere else; a test checks, and
   walks the Irish Room's own floor to the door). The fiddle by the hearth plays Auld Lang Syne (`pianoTone` with voice
-  `fiddle`). The secret is Tam o' Shanter's: the window looks out to Alloway Kirk; looking in, the witches dance to the
+  `fiddle`). Its coal fire crackles (`crackle` and `snap` events in `room-ambience.js`) and its embers flicker. The secret is Tam o' Shanter's: the window looks out to Alloway Kirk; looking in, the witches dance to the
   Devil's pipes (voice `pipes`) until "Weel done, Cutty-sark!", and Tam O'Shanter (shelf `burns-cutty`) is left on the
   sill, found for good (`athenaeum-burns-cutty-sark`; `?cuttysark`). The Grand Hall's walls are full, which is why the
   door is in the Irish Room. Built for Burns Night (25 January): Burns clubs plan their suppers in November and December.

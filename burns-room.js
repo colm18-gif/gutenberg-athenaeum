@@ -44,7 +44,7 @@
     const through=(data,go)=>doorKit&&data.kit?doorKit.pass(data.kit,data,go):go();
     const FOUND_KEY='athenaeum-burns-cutty-sark';
     const wasFound=()=>{try{return storage?.getItem(FOUND_KEY)==='1'||/[?&]cuttysark\b/.test(location.search)}catch(e){return false}};
-    let root=null,time=0,lastNeeded=-1e9,kirk=null;
+    let root=null,time=0,lastNeeded=-1e9,kirk=null,fire=null;
     const owned=[],ours=[],books=[],blockers=[];
     const own=thing=>{owned.push(thing);return thing};
     function add(geometry,material,x,y,z,parent){const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);parent.add(m);return m}
@@ -117,6 +117,7 @@
       box(1.1,.08,.5,black,x,.2,wallZ+.85,root);
       const kettle=add(own(new THREE.SphereGeometry(.17,12,8)),black,x+.25,.72,wallZ+.85,root);kettle.scale.set(1,.8,1);
       box(.04,.04,.6,black,x+.25,.98,wallZ+.62,root);
+      fire=embers.material;
       for(const part of [breast,embers,kettle])mark(part,card('fire'));
       block(x,wallZ+.6,3.2,1.2);
       // A sampler over the mantel.
@@ -244,7 +245,7 @@
     function activate(){if(!root)buildRoom();lastNeeded=time}
     function unload(){
       // Its lamp is marked freed, so the light budget lets it go.
-      if(!root)return;root.removeFromParent();root.traverse(object=>{if(object.isLight)object.userData.freed=true});root=null;kirk=null;
+      if(!root)return;root.removeFromParent();root.traverse(object=>{if(object.isLight)object.userData.freed=true});root=null;kirk=null;fire=null;
       for(let i=interactables.length-1;i>=0;i--)if(ours.includes(interactables[i]))interactables.splice(i,1);
       for(const thing of owned.splice(0))thing.dispose?.();ours.length=0;books.length=0;blockers.length=0;
     }
@@ -252,6 +253,8 @@
       const dt=Math.min(.1,Math.max(0,t-time));time=t;const inside=contains(player.pos.x,player.pos.z),near=Math.hypot(player.pos.x-DOOR.x,player.pos.z-DOOR.z)<PRELOAD;
       if(inside||near)activate();
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==root&&b.parent!==kirk?.g))unload();
+      // The fire flickers as it crackles.
+      if(fire)fire.emissiveIntensity=1.35+.35*Math.sin(t*9.1)*Math.sin(t*3.7)+(Math.random()<.04?.5:0);
       // The dance in the window: it blazes, flickers, and goes out all at once.
       if(kirk&&kirk.lit>0){kirk.lit=Math.max(0,kirk.lit-dt/4.5);const on=kirk.lit>0;kirk.glassMat.map=kirk.glassMat.emissiveMap=on?kirk.dance:kirk.night;kirk.glassMat.emissiveIntensity=on?.8+.3*Math.sin(t*23):.6;kirk.glassMat.needsUpdate=true}
     }
