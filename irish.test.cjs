@@ -65,7 +65,7 @@ test('Quill is sometimes found asleep in the rooms behind doors, as the same cat
 
 test('the Grand Hall side of every room behind a door is the library’s walnut, with the room’s name gilded on the glass',()=>{
   const kit=fs.readFileSync('library-doors.js','utf8');assert.match(kit,/const readingRoom=\(title,sub=''\)=>\(\{style:'walnut',color:null/);assert.match(kit,/if\(label&&!gilt\)/,'no brass plate over the gilding');
-  for(const [file,name] of [['irish-room.js','THE IRISH ROOM'],['periodicals-room.js','THE PERIODICALS ROOM'],['crusoe-island.js','THE BOATHOUSE'],['evening-room.js','THE EVENING ROOM'],['learners-room.js','THE ENGLISH\\nREADING ROOM'],['international-wing.js','THE INTERNATIONAL WING']])
+  for(const [file,name] of [['irish-room.js','IRELAND & SCOTLAND'],['periodicals-room.js','THE PERIODICALS ROOM'],['crusoe-island.js','THE BOATHOUSE'],['evening-room.js','THE EVENING ROOM'],['learners-room.js','THE ENGLISH\\nREADING ROOM'],['international-wing.js','THE INTERNATIONAL WING']])
     assert(fs.readFileSync(file,'utf8').includes(`readingRoom?.('${name}'`),file);
 });
 

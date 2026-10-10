@@ -41,7 +41,8 @@ test('the Burns Room loads before the game and is wired in like the other rooms 
   assert.match(game,/const burnsRoom=window\.createBurnsRoom\?\.\(/);assert.match(game,/irishRoom:irishRoom\?\.room/);assert(game.indexOf('const irishRoom=')<game.indexOf('const burnsRoom='),'the Irish Room is built first: its wall holds the door');
   assert.match(game,/\['burns-room','The Burns room'\]/);assert.match(game,/burns:'burns-room'/);assert.match(game,/cuttysark:'burns-room'/);
   assert.match(game,/'burns-room':burnsRoom&&\(\(\)=>burnsRoom\.enter\(\)\)/);assert.match(game,/burnsRoom\?\.update\(t\)/);assert.match(game,/if\(burnsRoom\?\.contains\(x,z\)\)return 'burns-room'/);
-  assert.match(game,/voice==='fiddle'/,'the fiddle has a voice of its own');assert.match(fs.readFileSync('room-ambience.js','utf8'),/'burns-room':\{/);
+  assert.match(game,/voice==='fiddle'/,'the fiddle has a voice of its own');
+  const ambience=fs.readFileSync('room-ambience.js','utf8');assert.match(ambience,/'burns-room':\{beds:\[\['fire',/);assert.match(ambience,/\['crackle',\d+,/,'the fire crackles');assert.match(ambience,/crackle:\(\)=>buffer/);
   const pages=fs.readFileSync('scripts/book-pages.mjs','utf8'),resolver=fs.readFileSync('scripts/new-books.mjs','utf8');
   for(const key of ['burns-works','burns-lives','burns-scotland','burns-cutty']){assert.match(resolver,new RegExp(`'${key}'`));assert.match(pages,new RegExp(`'${key}':'The Burns Room'`))}
   assert.match(pages,/'The Burns Room':'burns'/);
@@ -58,6 +59,8 @@ test('the door is in the Irish Room’s south wall, past the harp and the ogham 
   while(queue.length&&!reached){const [x,z]=queue.shift();for(const [dx,dz] of [[.2,0],[-.2,0],[0,.2],[0,-.2]]){const nx=x+dx,nz=z+dz,k=key(nx,nz);if(seen.has(k)||!ir.allowed(nx,nz))continue;seen.add(k);
     if(Math.hypot(nx-front.x,nz-front.z)<.25){reached=true;break}queue.push([nx,nz])}}
   assert(reached,'a reader can walk to the door from the middle of the Irish Room');
+  // The Irish Room's door in the Grand Hall is the way to both rooms, and says so on its glass.
+  const irishSource=fs.readFileSync('irish-room.js','utf8');assert.match(irishSource,/readingRoom\?\.\('IRELAND & SCOTLAND','The Irish Room · The Burns Room'\)/);assert.match(irishSource,/leads on to Scotland and the Burns Room/);
   const {cx,cz,w,d}=r.room;
   for(const [ox,oz,ow,od] of [[500,-160,16,14],[500,60,18,16],[500,220,14,12],[340,30,36,36],[384,-20,20,10],[300,-70,18,16],[620,120,68,68]])
     assert(Math.abs(cx-ox)>(w+ow)/2+60||Math.abs(cz-oz)>(d+od)/2+60,`well clear of ${ox}, ${oz}`);

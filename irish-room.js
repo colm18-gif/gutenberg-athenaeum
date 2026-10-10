@@ -65,8 +65,9 @@
     // ---------- the door, in the Grand Hall ----------
     function buildDoor(){
       const g=new THREE.Group();g.name='irish-door';g.position.set(DOOR.x,0,DOOR.z);g.rotation.y=DOOR.yaw;scene.add(g);
-      const data={type:'irish-door',title:'The Irish Room',author:'Seomra na hÉireann: the stories of Ireland, its writers, and books in Irish.',action:'ENTER'};
-      if(!doorKit?.hang(g,{data,mark:markDoor,...DOOR_LOOK,...doorKit.readingRoom?.('THE IRISH ROOM','Seomra na hÉireann')}))markDoor(add(new THREE.BoxGeometry(1.9,3.1,.14),new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.7}),0,1.55,.08,g),data);
+      // The door is shared with the Burns Room, which opens off the Irish Room, so it carries both their names.
+      const data={type:'irish-door',title:'Ireland and Scotland',author:'The Irish Room, Seomra na hÉireann, and through it the Burns Room: the stories and writers of Ireland, and Robert Burns.',action:'ENTER'};
+      if(!doorKit?.hang(g,{data,mark:markDoor,...DOOR_LOOK,...doorKit.readingRoom?.('IRELAND & SCOTLAND','The Irish Room · The Burns Room')}))markDoor(add(new THREE.BoxGeometry(1.9,3.1,.14),new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.7}),0,1.55,.08,g),data);
       const plate=canvasTexture((c,W,H)=>{c.fillStyle='#14281c';c.fillRect(0,0,W,H);c.strokeStyle='#c9a45a';c.lineWidth=6;c.strokeRect(5,5,W-10,H-10);c.textAlign='center';c.fillStyle='#f1e2b8';c.font='bold 32px Georgia';c.fillText('THE IRISH ROOM',W/2,46);c.font='italic 22px Georgia';c.fillText('Seomra na hÉireann',W/2,80)},600,100);
       // The name is gilded on the door's glass; the old board above is kept only for a door built without the kit.
       if(!doorKit?.readingRoom)markDoor(add(new THREE.PlaneGeometry(2.1,.35),new THREE.MeshStandardMaterial({map:plate,emissive:0x3a2a12,emissiveIntensity:.35}),0,4.82,.12,g),data);
@@ -226,7 +227,7 @@
     // ---------- doing things ----------
     function enter(){
       activate();move(ROOM.cx,ROOM.cz+ROOM.d/2-1.4,0);playSample?.('doorOpen',.8,.96);
-      showNotice('Seomra na hÉireann, the Irish Room. A turf fire, the old stories and the writers of Ireland, a shelf of books in Irish, and under glass, the Book of Kells, open for you to turn. Fáilte romhat.',10);
+      showNotice('Seomra na hÉireann, the Irish Room. A turf fire, the old stories and the writers of Ireland, a shelf of books in Irish, and under glass, the Book of Kells, open for you to turn. The door at the far end of this wall leads on to Scotland and the Burns Room. Fáilte romhat.',12);
       analytics?.track('Room Explored',{room:'irish-room'});
     }
     function interact(object){
