@@ -173,9 +173,10 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   the Spanish room's south wall, the Latin Reading Room (`latin`, notes and book pages in English, signs in Latin), and
   through the blue door with a rushnyk beside it, the Ukrainian Reading Room (`ukrainian`, notes in Ukrainian, authors in
   Cyrillic, book-page addresses in Latin letters by Ukraine's official transliteration), and through the green door
-  under a della Robbia roundel in the Latin room's east wall (from Virgil to Dante), the Italian Reading Room (`italian`,
-  notes in Italian, maiolica tiles, a lemon tree; x −530, z 132; a door with `from:'latin'` in `ROOM_DOORS` leads back
-  to the room it opens from). Gutenberg's Italian holdings are thinner than one might think (no Decameron, Petrarch,
+  under a della Robbia roundel in the Spanish room's south wall (a second stands in the Latin room's east wall, from
+  Virgil to Dante), the Italian Reading Room (`italian`,
+  notes in Italian, maiolica tiles, a lemon tree; x −530, z 132; a door with `from:'latin'` in `ROOM_DOORS` opens from the Latin room, and `room:` names the room a
+  second door opens on; the Italian room's way out leads back through whichever door the reader came in by). Gutenberg's Italian holdings are thinner than one might think (no Decameron, Petrarch,
   Tasso, Verga, Goldoni or Svevo in Italian): check the Catalogue lookup before promising a title. Gutenberg has no Ukrainian texts,
   so its books are `['ws:<Wikisource page>', …]`: `scripts/wikisource.mjs` reads the page and its chapter subpages from
   uk.wikisource.org (checking it links to the author's page, leaving out navigation and editors' notes), keeps it in
