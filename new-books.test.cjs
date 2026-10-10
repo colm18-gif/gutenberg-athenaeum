@@ -17,6 +17,7 @@ test('every new book is well formed and brings a librarian’s note',async()=>{
   }
   assert.ok(validate([[1,'A','B','C','nowhere','note']]).some(error=>/unknown room/.test(error)));
   assert.ok(validate([[1,'A','B','C','secret','']]).some(error=>/librarian's note/.test(error)));
+  assert.ok(validate([[1,'Poems','A. Writer','Poetry','secret','note'],[2,'Poems','B. Poet','Poetry','shelves','note']]).some(error=>/same title/.test(error)),'two books with one title would share one text');
 });
 
 test('each room gets as many books as it has room for',()=>{

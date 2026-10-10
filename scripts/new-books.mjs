@@ -46,6 +46,8 @@ export function validate(list){
   // Two Wikisource pages must not share a number.
   const numbers=new Map();for(const [id,title] of list)if(isWikisource(id)){const n=wikisourceId(wikisourcePage(id)),other=numbers.get(n);if(other&&other!==wikisourcePage(id))errors.push(`${title}: its Wikisource number ${n} is taken; list the page under another name`);numbers.set(n,wikisourcePage(id))}
   const seen=new Map();for(const [,title,,,room] of list){const key=title+'|'+room;if(seen.has(key))errors.push(`${title}: listed twice in ${room}`);seen.set(key,true)}
+  // Books are resolved by title (resolvedKey), so two different books with the same title would share one text.
+  const byKey=new Map();for(const [,title,author,,room] of list){const key=resolvedKey(title,room),other=byKey.get(key);if(other&&other!==author)errors.push(`${title}: ${author}'s book has the same title as ${other}'s; give one its fuller title`);if(!other)byKey.set(key,author)}
   return errors;
 }
 
