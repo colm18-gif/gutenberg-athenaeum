@@ -20,7 +20,7 @@ import {isWikisource,wikisourcePage,wikisourceId,fetchWikisource,wikisourceText,
 const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),'..');
 const LIST=path.join(root,'data/new-books.js'),WING=path.join(root,'data/new-books-wing.js'),RESOLVED=path.join(root,'data/new-books-resolved.js'),TRACKED=path.join(root,'data/daily-room-texts.json');
 const BUNDLED=path.join(root,'texts/bundled-gzip');
-export const ROOMS=['secret','shelves','evening-quick','evening-hour','evening-evening','learners-1','learners-2','learners-3','learners-4','learners-short','signal','tide','mars','periodicals','irish-myth','irish-revival','irish-writers','irish-gaeilge','antipodes','australian','new-zealand','african-ancient','african-voices','african-tales','map-voyages','map-makers','map-lands','medicine-physic','medicine-discovery','medicine-healers','austen-novels','austen-writings','austen-lives','austen-read','austen-horrid','set-texts','lost-property','contested','kipling','spanish','portuguese','chinese','french','latin','italian','ukrainian'];
+export const ROOMS=['secret','shelves','evening-quick','evening-hour','evening-evening','learners-1','learners-2','learners-3','learners-4','learners-short','signal','tide','mars','periodicals','irish-myth','irish-revival','irish-writers','irish-gaeilge','antipodes','australian','new-zealand','african-ancient','african-voices','african-tales','map-voyages','map-makers','map-lands','medicine-physic','medicine-discovery','medicine-healers','burns-works','burns-lives','burns-scotland','burns-cutty','austen-novels','austen-writings','austen-lives','austen-read','austen-horrid','set-texts','lost-property','contested','kipling','spanish','portuguese','chinese','french','latin','italian','ukrainian'];
 // Rooms whose books are not in English: the language of their texts (used to search Gutendex, and by the reader
 // and the book pages). Every other room is English.
 export const ROOM_LANGUAGES={spanish:'es',portuguese:'pt',chinese:'zh',french:'fr',latin:'la',italian:'it',ukrainian:'uk','irish-gaeilge':'ga'};
@@ -46,6 +46,8 @@ export function validate(list){
   // Two Wikisource pages must not share a number.
   const numbers=new Map();for(const [id,title] of list)if(isWikisource(id)){const n=wikisourceId(wikisourcePage(id)),other=numbers.get(n);if(other&&other!==wikisourcePage(id))errors.push(`${title}: its Wikisource number ${n} is taken; list the page under another name`);numbers.set(n,wikisourcePage(id))}
   const seen=new Map();for(const [,title,,,room] of list){const key=title+'|'+room;if(seen.has(key))errors.push(`${title}: listed twice in ${room}`);seen.set(key,true)}
+  // Books are resolved by title (resolvedKey), so two different books with the same title would share one text.
+  const byKey=new Map();for(const [,title,author,,room] of list){const key=resolvedKey(title,room),other=byKey.get(key);if(other&&other!==author)errors.push(`${title}: ${author}'s book has the same title as ${other}'s; give one its fuller title`);if(!other)byKey.set(key,author)}
   return errors;
 }
 

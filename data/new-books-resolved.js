@@ -1259,6 +1259,78 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 77842,
    "words": 126549
   },
+  "Poems and Songs of Robert Burns": {
+   "id": 1279,
+   "words": 129551
+  },
+  "The Letters of Robert Burns": {
+   "id": 9863,
+   "words": 121248
+  },
+  "Songs and Lyrics of Robert Burns": {
+   "id": 75462,
+   "words": 47578
+  },
+  "Essay on Burns": {
+   "id": 69284,
+   "words": 31350
+  },
+  "Robert Burns": {
+   "id": 21330,
+   "words": 62930
+  },
+  "Robert Burns: How To Know Him": {
+   "id": 18388,
+   "words": 63489
+  },
+  "Robert Burns: A Play": {
+   "id": 68535,
+   "words": 17197
+  },
+  "Phrenological Development of Robert Burns": {
+   "id": 30489,
+   "words": 1703
+  },
+  "The Gentle Shepherd": {
+   "id": 40639,
+   "words": 55833
+  },
+  "The Man of Feeling": {
+   "id": 5083,
+   "words": 37379
+  },
+  "Minstrelsy of the Scottish Border": {
+   "id": 12742,
+   "words": 87024
+  },
+  "The Annals of the Parish": {
+   "id": 1310,
+   "words": 66060
+  },
+  "The Private Memoirs and Confessions of a Justified Sinner": {
+   "id": 2276,
+   "words": 84357
+  },
+  "Recollections of a Tour Made in Scotland": {
+   "id": 28880,
+   "words": 105535
+  },
+  "The Journal of a Tour to the Hebrides": {
+   "id": 6018,
+   "words": 125066
+  },
+  "The Romantic Scottish Ballads": {
+   "id": 35602,
+   "words": 15697
+  },
+  "Poems, &c.": {
+   "id": 14617,
+   "words": 20656
+  },
+  "Tam O’Shanter": {
+   "id": 25733,
+   "words": 1721
+  },
   "Northanger Abbey": {
    "id": 121,
    "words": 77813
