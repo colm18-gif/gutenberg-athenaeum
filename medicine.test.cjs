@@ -32,7 +32,7 @@ test('the Medicine Room and the Fabrica load before the game and are wired in li
   const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(m=>m[1]);
   for(const file of ['vesalius-book.js','medicine-room.js'])assert(order.indexOf(file)>=0&&order.indexOf(file)<order.indexOf('game.js'),file);
   assert(order.indexOf('fine-books.js')<order.indexOf('vesalius-book.js'));assert(order.indexOf('map-room.js')<order.indexOf('medicine-room.js'));
-  assert.match(game,/vesaliusBook=window\.createVesaliusBook\?\.\(fineBookOptions\)/);assert.match(game,/\|\|vesaliusBook\?\.isOpen\)/,'the world stops while the book is open');
+  assert.match(game,/vesaliusBook=window\.createVesaliusBook\?\.\(fineBookOptions\)/);assert.match(game,/\|\|vesaliusBook\?\.isOpen(\|\||\))/,'the world stops while the book is open');
   assert.match(game,/const medicineRoom=window\.createMedicineRoom\?\.\(/);assert.match(game,/vesalius:vesaliusBook/);assert.match(game,/mapRoom:mapRoom\?\.room/);
   assert(game.indexOf('const mapRoom=')<game.indexOf('const medicineRoom='),'the Map Room is built first: its east wall holds the door');
   assert.match(game,/\['medicine-room','The medicine room'\]/);assert.match(game,/medicine:'medicine-room'/);assert.match(game,/'medicine-room':medicineRoom&&\(\(\)=>medicineRoom\.enter\(\)\)/);
@@ -43,7 +43,7 @@ test('the Medicine Room and the Fabrica load before the game and are wired in li
 });
 
 test('every page of the Fabrica has a card and a public-domain photograph, and the book is bound in order',()=>{
-  const folios=Object.keys(book.folios),block=fetcher.slice(fetcher.indexOf('vesalius: {')),fetched=[...block.matchAll(/key: '([a-z0-9-]+)'/g)].map(m=>m[1]);
+  const folios=Object.keys(book.folios),block=fetcher.slice(fetcher.indexOf('vesalius: {'),fetcher.indexOf('voynich: {')),fetched=[...block.matchAll(/key: '([a-z0-9-]+)'/g)].map(m=>m[1]);
   assert.deepEqual(fetched,folios,'scripts/fetch-book-pages.mjs fetches the same pages, in the same order');
   for(const key of folios){
     const [label,title,note]=book.folios[key];assert(label&&title&&note.length>40,`${key} has a card`);

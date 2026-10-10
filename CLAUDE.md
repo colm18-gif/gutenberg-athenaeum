@@ -36,9 +36,17 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Book of Durrow (`durrow-book.js`, Trinity MS 57, five pages in `assets/durrow`, and a drawn page on its older order of the
   evangelists' symbols), hidden as the great Gospel of Colum Cille was found under a sod in 1007 (found once, found for
   good: `athenaeum-durrow-found`; `?durrow` shows it at once).
+- The Restricted Catalogue (game.js, x 37–57, z −12–8, built at startup) has the Voynich Manuscript (`voynich-book.js`,
+  Beinecke MS 408) lying open on its lectern at the pansy of folio 9v facing 10r, chained, its padlock open (moved aside to
+  x 47.95): the one book there nobody has needed to forbid. Anything on it, or its card, opens the facsimile (`?room=voynich`
+  stands the reader before it). Fifteen pages, a real opening from each part, from the Beinecke's numbered photographs on
+  Commons (photograph n: 3 is folio 1r; checked against the folio numbers on the rectos), and drawn pages written in its
+  script (`glyphs`, after its commonest EVA words); The whole book reads the Beinecke scan on Commons (214 images, one ahead
+  of the photographs; marks checked against the scan's own captions). Behind the lectern, on the south wall, a case of
+  books on ciphers, herbals and failed decipherments, the shelf `ciphers` in `data/new-books.js` (held nowhere else; a test checks).
 - The fine books share one engine, `fine-books.js` (cradle, stiff board leaves, zoom, captions, loading only the spreads
   either side of the open one); each book is a description: `kells-book.js`, `durrow-book.js` (which borrows the Kells ornament), `kelmscott-book.js`,
-  `vesalius-book.js` (pages and cards, drawn pages, binding, paper, type). Their photographs come from Wikimedia Commons by `scripts/fetch-book-pages.mjs` (Book
+  `vesalius-book.js`, `voynich-book.js` (pages and cards, drawn pages, binding, paper, type). Their photographs come from Wikimedia Commons by `scripts/fetch-book-pages.mjs` (Book
   images workflow; public domain only). A book listed with no pages is surveyed in the log instead (with `thumbs`, it also commits
   numbered sheets of the larger files to `<dir>/survey`, to be looked at and removed), which is how pages are chosen from
   what Commons really holds. A book whose description has `whole` (Kells and the Fabrica) also has
@@ -214,7 +222,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, boathouse,
-  daily-room, poe, irish, maps, medicine, austen, burns, set-texts, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
+  daily-room, poe, irish, maps, medicine, austen, burns, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text.
 - **Halloween night** (`halloween.js`): 24 October to 2 November by the reader's own date (`?halloween` previews it,
   `?nohalloween` hides it). Carved lanterns (one InstancedMesh, glowing through emissive faces, no lights) by the south

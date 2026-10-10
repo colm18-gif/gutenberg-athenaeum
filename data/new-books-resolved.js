@@ -1183,6 +1183,42 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 36055,
    "words": 106162
   },
+  "The Gadfly": {
+   "id": 3431,
+   "words": 101754
+  },
+  "The Mirror of Alchimy": {
+   "id": 58393,
+   "words": 22533
+  },
+  "Herbals, Their Origin and Evolution": {
+   "id": 46889,
+   "words": 59309
+  },
+  "The Old English Herbals": {
+   "id": 33654,
+   "words": 87409
+  },
+  "Manual for the Solution of Military Ciphers": {
+   "id": 48871,
+   "words": 27284
+  },
+  "Concerning the Bi-literal Cypher of Francis Bacon": {
+   "id": 70119,
+   "words": 73428
+  },
+  "The Little Cryptogram": {
+   "id": 46464,
+   "words": 4520
+  },
+  "The Discovery and Decipherment of the Trilingual Cuneiform Inscriptions": {
+   "id": 71905,
+   "words": 139945
+  },
+  "The Key to the Family Deed Chest": {
+   "id": 67771,
+   "words": 29455
+  },
   "The Genuine Works of Hippocrates": {
    "id": 72583,
    "words": 189790
