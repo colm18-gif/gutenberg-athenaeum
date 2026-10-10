@@ -1323,6 +1323,10 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 35602,
    "words": 15697
   },
+  "Poems, &c.": {
+   "id": 14617,
+   "words": 20656
+  },
   "Tam O’Shanter": {
    "id": 25733,
    "words": 1721
