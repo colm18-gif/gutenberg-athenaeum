@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-09",
+ "updated": "2026-10-10",
  "days": {
-  "2026-09-26": {
-   "books": [
-    {
-     "id": 103,
-     "title": "Around the World in Eighty Days",
-     "author": "Jules Verne"
-    },
-    {
-     "id": 46597,
-     "title": "In Search of the Castaways",
-     "author": "Jules Verne"
-    },
-    {
-     "id": 2895,
-     "title": "Following the Equator",
-     "author": "Mark Twain"
-    },
-    {
-     "id": 3176,
-     "title": "The Innocents Abroad",
-     "author": "Mark Twain"
-    },
-    {
-     "id": 944,
-     "title": "The Voyage of the Beagle",
-     "author": "Charles Darwin"
-    },
-    {
-     "id": 6317,
-     "title": "Sailing Alone Around the World",
-     "author": "Joshua Slocum"
-    },
-    {
-     "id": 282,
-     "title": "Eothen",
-     "author": "A. W. Kinglake"
-    },
-    {
-     "id": 535,
-     "title": "Travels with a Donkey in the Cevennes",
-     "author": "Robert Louis Stevenson"
-    },
-    {
-     "id": 10636,
-     "title": "The Travels of Marco Polo",
-     "author": "Marco Polo"
-    },
-    {
-     "id": 829,
-     "title": "Gulliver's Travels",
-     "author": "Jonathan Swift"
-    }
-   ],
-   "missing": []
-  },
   "2026-09-27": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 14301,
      "title": "Atlantida",
      "author": "Pierre Benoit"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-12": {
+   "books": [
+    {
+     "id": 20203,
+     "title": "Autobiography of Benjamin Franklin",
+     "author": "Benjamin Franklin"
+    },
+    {
+     "id": 20321,
+     "title": "A Short Account of the Destruction of the Indies",
+     "author": "Bartolomé de las Casas"
+    },
+    {
+     "id": 147,
+     "title": "Common Sense",
+     "author": "Thomas Paine"
+    },
+    {
+     "id": 15399,
+     "title": "The Interesting Narrative of the Life of Olaudah Equiano",
+     "author": "Olaudah Equiano"
+    },
+    {
+     "id": 4666,
+     "title": "Letters from an American Farmer",
+     "author": "J. Hector St. John de Crèvecoeur"
+    },
+    {
+     "id": 675,
+     "title": "American Notes",
+     "author": "Charles Dickens"
+    },
+    {
+     "id": 10345,
+     "title": "Domestic Manners of the Americans",
+     "author": "Frances Milton Trollope"
+    },
+    {
+     "id": 940,
+     "title": "The Last of the Mohicans",
+     "author": "James Fenimore Cooper"
+    },
+    {
+     "id": 815,
+     "title": "Democracy in America",
+     "author": "Alexis de Tocqueville"
+    },
+    {
+     "id": 24,
+     "title": "O Pioneers!",
+     "author": "Willa Cather"
     }
    ],
    "missing": []
