@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-10-09",
+ "updated": "2026-10-10",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -1259,6 +1259,102 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 77842,
    "words": 126549
   },
+  "Northanger Abbey": {
+   "id": 121,
+   "words": 77813
+  },
+  "Lady Susan": {
+   "id": 946,
+   "words": 23191
+  },
+  "Love and Freindship": {
+   "id": 1212,
+   "words": 33774
+  },
+  "The Watsons": {
+   "id": 63569,
+   "words": 35836
+  },
+  "Fragment of a Novel": {
+   "id": 74233,
+   "words": 29657
+  },
+  "The Letters of Jane Austen": {
+   "id": 42078,
+   "words": 78793
+  },
+  "Memoir of Jane Austen": {
+   "id": 17797,
+   "words": 51678
+  },
+  "Jane Austen, Her Life and Letters": {
+   "id": 22536,
+   "words": 136426
+  },
+  "Jane Austen’s Sailor Brothers": {
+   "id": 69815,
+   "words": 67011
+  },
+  "Jane Austen and Her Times": {
+   "id": 52622,
+   "words": 101000
+  },
+  "Jane Austen and Her Works": {
+   "id": 70809,
+   "words": 130082
+  },
+  "Evelina": {
+   "id": 6053,
+   "words": 156906
+  },
+  "Cecilia; or, Memoirs of an Heiress": {
+   "id": 6346,
+   "words": 108337
+  },
+  "Camilla": {
+   "id": 40619,
+   "words": 358804
+  },
+  "Lovers’ Vows": {
+   "id": 4554,
+   "words": 18811
+  },
+  "The Task": {
+   "id": 3698,
+   "words": 42592
+  },
+  "Rasselas, Prince of Abyssinia": {
+   "id": 652,
+   "words": 38017
+  },
+  "Tales": {
+   "id": 5217,
+   "words": 79120
+  },
+  "Marmion": {
+   "id": 4010,
+   "words": 39522
+  },
+  "The Female Quixote": {
+   "id": 50054,
+   "words": 147639
+  },
+  "Coelebs in Search of a Wife": {
+   "id": 31879,
+   "words": 137526
+  },
+  "The Romance of the Forest": {
+   "id": 64701,
+   "words": 136482
+  },
+  "A Sicilian Romance": {
+   "id": 7371,
+   "words": 67930
+  },
+  "The Italian": {
+   "id": 74643,
+   "words": 54498
+  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633
@@ -2432,6 +2528,7 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Benito Cereno",
   "History of the Expedition under the Command of Captains Lewis and Clark, Vol. 1.",
   "The Necessity of Atheism",
+  "Belinda",
   "María [es]",
   "Poesías [es]"
  ]
