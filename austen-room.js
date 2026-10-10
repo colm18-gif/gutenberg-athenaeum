@@ -1,10 +1,10 @@
-// The Austen Room: a Regency drawing room behind a door in the Grand Hall's east wall, between the great portrait and
-// the south-east column, for Jane Austen. Her six novels stand face-out on the north wall between two sash windows, in
-// the order they were published, under a silhouette; the west wall holds what else she wrote (the juvenilia, Lady Susan,
-// the unfinished novels, her letters) and the books her family and her first critics wrote about her; the east wall,
-// the books she read and her characters argue over. A little round writing table stands by the window, a square
-// pianoforte in the corner plays a few bars, and the door creaks, as the swing door at Chawton did, which she would not
-// have mended because it warned her that someone was coming.
+// The Austen Room: a Regency drawing room behind a door in the Grand Hall's west wall, beside the gramophone, for Jane
+// Austen. Her six novels stand face-out on the north wall between two sash windows, in the order they were published,
+// under a silhouette; the west wall holds what else she wrote (the juvenilia, Lady Susan, the unfinished novels, her
+// letters) and the books her family and her first critics wrote about her; the east wall, the books she read and her
+// characters argue over. A little round writing table stands by the window, a square pianoforte in the corner plays a
+// few bars, and the door creaks, as the swing door at Chawton did, which she would not have mended because it warned
+// her that someone was coming.
 //
 // The room's secret is Catherine Morland's: a high, old-fashioned black cabinet, japanned in black and yellow. Open it
 // and there is a roll of paper at the back, which by daylight is only a list of linen; behind it, where Catherine never
@@ -40,9 +40,10 @@
 
   window.createAustenRoom=function(options){
     const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,move,analytics,isHolding=()=>false,registerSeat=null,doorKit=null,tone=null,storage=window.localStorage}=options;
-    // In the Grand Hall's east wall, between the great portrait and the south-east column. The portrait is hinged at z 17.2
-    // and swings out into the hall, its free edge reaching z 22.8, so the door stands clear of that sweep.
-    const DOOR={x:18.72,z:24.6,yaw:-Math.PI/2};
+    // In the Grand Hall's west wall, between the gramophone's listening corner (z 10) and the botanist's portrait (from
+    // z 17.25), on the hall floor. (Not the east side south of the stair: the upper gallery runs over it, and the floor
+    // there is the gallery's.)
+    const DOOR={x:-18.72,z:12.9,yaw:Math.PI/2};
     const ROOM={cx:500,cz:-160,w:16,d:14,h:5};
     const PRELOAD=7,KEEP=25;
     // The room's side of its door: a Regency door painted a soft grey-green, with a fanlight.
@@ -250,7 +251,7 @@
     function interact(object){
       const data=object?.userData;if(!data||typeof data.type!=='string'||!data.type.startsWith('austen-'))return false;
       if(data.type==='austen-door'){creak();through(data,enter);return true}
-      if(data.type==='austen-exit'){creak();through(data,()=>{move(DOOR.x-1.9,DOOR.z,Math.PI/2);playSample?.('doorOpen',.7,1);showNotice('The Grand Hall again.',3)});return true}
+      if(data.type==='austen-exit'){creak();through(data,()=>{move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.7,1);showNotice('The Grand Hall again.',3)});return true}
       if(data.type==='austen-piano'){play();showNotice(`${data.title}: ${data.author}`,9);return true}
       if(data.type==='austen-cabinet'){
         openCabinet(false);try{storage?.setItem(FOUND_KEY,'1')}catch(e){}playSample?.('doorOpen',.45,1.25);
