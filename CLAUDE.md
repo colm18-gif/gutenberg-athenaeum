@@ -59,14 +59,13 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   the portrait and eleven pages from Wikimedia Commons (`assets/vesalius`, chosen from a survey), named for their page in
   the 1543 edition. The title page and portrait also hang framed either side of the room's door. The muscle men are flayed
   figures: keep the plates on the walls and in the case to the skeletons, the title and the portrait.
-- The Austen Room (`austen-room.js`, x 500, z −160) is behind a door in the Grand Hall's east wall (x 18.72, z 24.6), between
-  the great portrait and the south-east column (`?room=austen`): a Regency drawing room for Jane Austen. Her six novels stand
+- The Austen Room (`austen-room.js`, x 500, z −160) is behind a door in the Grand Hall's west wall (x −18.72, z 12.9), between
+  the gramophone and the botanist's portrait (`?room=austen`): a Regency drawing room for Jane Austen. Her six novels stand
   face-out on the north wall in the order they were published (`NOVELS`: five are the hall's own copies; Northanger Abbey is
   the shelf `austen-novels`), under a silhouette; shelves `austen-writings`, `austen-lives` and `austen-read` in
   `data/new-books.js` (books held nowhere else; a test checks). A writing table by the window, a sofa and its chair are
   seats; the square pianoforte plays a country-dance strain (`tone`, game.js's `pianoTone`, no file); the door creaks, as the
-  one at Chawton did. The portrait beside the door is hinged and swings out as far as z 22.8: keep the door clear of it. The
-  room's secret is Catherine Morland's black japanned cabinet: opening it finds a list of linen and, behind it, Mrs Radcliffe
+  one at Chawton did. The room's secret is Catherine Morland's black japanned cabinet: opening it finds a list of linen and, behind it, Mrs Radcliffe
   (Udolpho, the library's own copy, and the shelf `austen-horrid`); found once, found for good (`athenaeum-austen-cabinet`;
   `?udolpho` opens it). None of the seven Northanger "horrid novels" is on Gutenberg.
 - The Set Texts Room (`set-texts-room.js`, x −330, z 60) is behind a blue door in the English Reading Room's east wall
@@ -129,6 +128,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - Every chair, sofa and bench is one of the library's seats: build it with `chair()`/`sofa()`/`bench()` in game.js, or
   pass `registerSeat` into a room module and call it (with a `bookIds` getter for that room's books; push the parts
   onto the room's list so they are freed with it). `?debug` exposes `__athenaeum.seats`.
+- The upper gallery runs along the Grand Hall's east side south of the stair (x 11–19, z 16 and beyond): `floorHeight` gives
+  that floor as the gallery's (y 5), so nothing there is reachable from the hall floor. A door at ground level needs open hall
+  floor in front of it (the Austen Room's test checks its own approach against `floorHeight`).
 - Doors come from the shared kit in `library-doors.js`. A room behind a door is given `doorKit` and hangs both sides of
   its door with `doorKit.hang(parent,{data,mark,...look})` (`color`, `glazed`, `planked`, `plain`, `fanColor`, `frame`,
   `cornice`, `pediment`; no light of its own), then lets the reader through with `doorKit.pass(data.kit,data,go)` so

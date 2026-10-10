@@ -39,15 +39,21 @@ test('the Austen Room loads before the game and is wired in like the other rooms
   assert.match(fs.readFileSync('book/1342-pride-and-prejudice.html','utf8'),/<a href="\/\?room=austen">The Austen Room<\/a>/,'the book pages say where the novels are');
 });
 
-test('the door is in the Grand Hall’s east wall, clear of the great portrait, the column and the painting above, and the room stands apart',()=>{
-  const {r}=room();assert.equal(r.door.x,18.72);assert.equal(r.door.yaw,-Math.PI/2);
-  // The secret librarian's portrait is hinged at its north edge and swings out into the hall (game.js), so its whole sweep,
-  // frame and all, is a circle round the hinge; the south-east column stands at x 17, z 27.
-  const portrait=game.match(/painting\(18\.65,5,([\d.]+),([\d.]+),[\d.]+,-Math\.PI\/2,\[[^\]]*\],'assets\/secret-librarian-portrait\.jpg',true\)/);assert(portrait,'the hinged portrait');
-  const hinge=Number(portrait[1]),reach=Number(portrait[2])+.3;assert(Math.hypot(.2,r.door.z-1.25-hinge)>reach,'clear of the portrait as it swings');
-  assert(r.door.z+1.25<27-.7-.3,'clear of the column');
-  const above=game.match(/galleryPicture\(18\.65,([\d.]+),27,([\d.]+),([\d.]+),/);assert(above);assert(Number(above[1])-Number(above[3])/2>3.7,'the painting above hangs higher than the door and its cornice');
-  for(const d of [...fs.readFileSync('curious-doors.js','utf8').matchAll(/door:\{x:18\.72,z:(-?[\d.]+)/g)])assert(Math.abs(Number(d[1])-r.door.z)>4,'clear of the curious doors');
+test('the door is in the Grand Hall’s west wall, on the hall floor and clear of its neighbours, and the room stands apart',()=>{
+  const {r}=room();assert.equal(r.door.x,-18.72);assert.equal(r.door.yaw,Math.PI/2);
+  // The hall's own floor: where the upper gallery runs (the east side south of the stair) the floor is the gallery's,
+  // and a door there can only be reached from above. The way up to the door must be ground floor all the way.
+  const floorSource=game.match(/function floorHeight\(x,z\)\{[^\n]*?return 0\}/);assert(floorSource,'game.js floorHeight');
+  const floorHeight=vm.runInNewContext(`(()=>{const basementFloorY=-6;${floorSource[0]};return floorHeight})()`);
+  const ix=Math.sin(r.door.yaw),iz=Math.cos(r.door.yaw);
+  for(let d=.6;d<=6;d+=.3)for(const across of [-.5,0,.5])assert.equal(floorHeight(r.door.x+ix*d+iz*across,r.door.z+iz*d-ix*across),0,`the hall floor ${d.toFixed(1)} m in front of the door`);
+  // The gramophone's corner (game.js) and the botanist's portrait either side; the column at x −17, z 15 is passed on its open side.
+  const gramophone=game.match(/g\.position\.set\((-?[\d.]+),0,([\d.]+)\);g\.rotation\.y=Math\.PI\/2;scene\.add\(g\);\s*const part=/);assert(gramophone,'the gramophone');
+  assert(r.door.z-1.25>Number(gramophone[2])+.55+.5,'clear of the gramophone');
+  const botanist=game.match(/painting\(-18\.65,([\d.]+),([\d.]+),([\d.]+),([\d.]+),Math\.PI\/2,\[[^\]]*\],'assets\/botanist\.jpg'/);assert(botanist,'the botanist');
+  assert(r.door.z+1.25<Number(botanist[2])-Number(botanist[3])/2,'clear of the botanist’s portrait');
+  assert(r.door.z+.95<15-.7,'the doorway itself is not behind the column');
+  for(const file of ['curious-doors.js','daily-room.js'])for(const d of [...fs.readFileSync(file,'utf8').matchAll(/x:-18\.72,z:(-?[\d.]+)/g)])assert(Math.abs(Number(d[1])-r.door.z)>4,`clear of the door at z ${d[1]}`);
   const {cx,cz,w,d}=r.room;
   // The Room of Chance, the Lost Property Office, the Moon, the railway platforms and the Mars approach.
   for(const [ox,oz,ow,od] of [[500,60,18,16],[500,220,14,12],[340,30,36,36],[384,-20,20,10],[300,-70,18,16],[620,120,68,68]])
@@ -55,7 +61,7 @@ test('the door is in the Grand Hall’s east wall, clear of the great portrait, 
 });
 
 test('the room is built on approach: six novels in order, three shelves, the writing table, the pianoforte, seats, and a door back',()=>{
-  const a=room();assert.equal(a.r.built,false);a.player.pos.set(a.r.door.x-2,0,a.r.door.z);a.r.update(1);assert.equal(a.r.built,true);
+  const a=room();assert.equal(a.r.built,false);a.player.pos.set(a.r.door.x+2,0,a.r.door.z);a.r.update(1);assert.equal(a.r.built,true);
   const door=find(a,'austen-door');assert(door);a.r.interact(door);
   assert(a.r.contains(a.player.pos.x,a.player.pos.z));assert(a.r.allowed(a.player.pos.x,a.player.pos.z),'onto open floor');assert.match(a.notices.at(-1),/^The Austen Room/);
   assert(a.sounds.includes('floorboardCreak'),'the door creaks');assert.deepEqual(JSON.stringify(a.tracked.at(-1)),JSON.stringify(['Room Explored',{room:'austen-room'}]));
@@ -65,7 +71,7 @@ test('the room is built on approach: six novels in order, three shelves, the wri
   assert(!a.r.books.some(m=>m.userData.shelf==='cabinet'),'Mrs Radcliffe is not on show yet');
   assert.equal(a.seats.length,2,'the sofa and the writing chair');
   a.r.interact(find(a,'austen-piano'));assert(a.tones.length>=a.r.tune.length,'the pianoforte plays');
-  const exit=find(a,'austen-exit');a.r.interact(exit);assert(!a.r.contains(a.player.pos.x,a.player.pos.z),'back to the Grand Hall');assert(Math.abs(a.player.pos.x-(a.r.door.x-1.9))<.01);
+  const exit=find(a,'austen-exit');a.r.interact(exit);assert(!a.r.contains(a.player.pos.x,a.player.pos.z),'back to the Grand Hall');assert(Math.abs(a.player.pos.x-(a.r.door.x+1.9))<.01,'out into the hall');assert.equal(a.player.pos.z,a.r.door.z);
   const lamps=[];a.scene.traverse(o=>{if(o.isPointLight)lamps.push(o)});assert.equal(lamps.length,1,'one lamp');
   a.player.pos.set(0,0,0);a.r.update(100);assert.equal(a.r.built,false,'freed once the reader has gone');for(const lamp of lamps)assert.equal(lamp.userData.freed,true);
   assert(!a.interactables.some(o=>/^austen-(card|exit|piano|cabinet)$/.test(o.userData.type)),'its parts go with it');assert(find(a,'austen-door'),'but the door stays');
