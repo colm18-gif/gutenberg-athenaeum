@@ -9,8 +9,9 @@
 //   the 中文閱覽室 (the Chinese Reading Room), through the red door;
 //   the Latin Reading Room (Conclave Latinum), through the stone door in the Spanish room's south wall. Its notes
 //   are in English: Latin's readers today read it from every other language;
-//   the Sala di lettura in italiano (the Italian Reading Room), through the green door in the Latin room's east wall,
-//   under a glazed roundel in the manner of the della Robbia: from Virgil's Latin to Dante's Italian;
+//   the Sala di lettura in italiano (the Italian Reading Room), through its own green door in the Spanish room's south
+//   wall, under a glazed roundel in the manner of the della Robbia, or through a second such door in the Latin room's
+//   east wall: from Virgil's Latin to Dante's Italian;
 //   the Українська читальня (the Ukrainian Reading Room), through the blue door beside it with an embroidered rushnyk
 //   over the lintel. Its books come from Ukrainian Wikisource (scripts/wikisource.mjs), as Gutenberg has none.
 //
@@ -66,13 +67,15 @@
     const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),
       wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
     const DOOR={x:8.6,z:30.45,yaw:Math.PI};
-    // The doors in the Spanish room's east and south walls, to the other rooms, and in the Latin room's east wall, to the
-    // Italian (from: the room a door is in, when it is not the Spanish room).
-    // yaw: which way the reader faces when they come back out through it.
+    // The doors in the Spanish room's east and south walls, to the other rooms, and a second door to the Italian in the
+    // Latin room's east wall (room: the room a door opens on, when it is not its key; from: the room a door is in, when
+    // it is not the Spanish room). yaw: which way the reader faces when they come back out through it.
     const ROOM=ROOMS.spanish,EAST=ROOM.cx+ROOM.w/2-.2,SOUTH=ROOM.cz+ROOM.d/2-.2,ROOM_DOORS={portuguese:{x:EAST,z:ROOM.cz-4.7,yaw:-Math.PI/2},french:{x:EAST,z:ROOM.cz,yaw:-Math.PI/2},
       chinese:{x:EAST,z:ROOM.cz+4.7,yaw:-Math.PI/2},latin:{x:ROOM.cx+7,z:SOUTH,yaw:0},ukrainian:{x:ROOM.cx-7,z:SOUTH,yaw:0},
-      italian:{from:'latin',x:ROOMS.latin.cx+ROOMS.latin.w/2-.2,z:ROOMS.latin.cz,yaw:-Math.PI/2}};
-    const outOf=key=>ROOM_DOORS[key]?.from||'spanish';
+      italian:{x:ROOM.cx+3.5,z:SOUTH,yaw:0},'italian-latin':{room:'italian',from:'latin',x:ROOMS.latin.cx+ROOMS.latin.w/2-.2,z:ROOMS.latin.cz,yaw:-Math.PI/2}};
+    const outOf=door=>ROOM_DOORS[door]?.from||'spanish',opensOn=door=>ROOM_DOORS[door]?.room||door;
+    // The door each room was last entered by, so its way out leads back the way the reader came (the Italian has two).
+    const via={};
     const PRELOAD=7,KEEP=25;
     let time=0,lamps=null;
     const built={},lastNeeded=Object.fromEntries(Object.keys(ROOMS).map(key=>[key,-1e9]));
@@ -86,7 +89,7 @@
     const DOOR_LOOKS={spanish:{color:0x1f3350,glazed:true,fanColor:0xd9923a},portuguese:{color:0x1f4a33,glazed:true,fanColor:0xffc978},
       french:{color:0x1f3160,glazed:true,fanColor:0xffd48a},chinese:{color:0x5a1c1a,plain:true,fanlight:false,cornice:false},latin:{color:()=>stone('leaf',0x8c8272),fanlight:false,cornice:false},
       ukrainian:{color:0x1f4f9a,glazed:true,fanColor:0xffc93a},italian:{color:0x2b4a2c,fanlight:false}};
-    const EXIT_LABELS={spanish:'THE GRAND HALL',portuguese:'SALA ESPANHOLA',french:'SALLE ESPAGNOLE',chinese:'西班牙文閱覽室',latin:'EXITVS',italian:'SALA LATINA',ukrainian:'ІСПАНСЬКА ЧИТАЛЬНЯ'};
+    const EXIT_LABELS={spanish:'THE GRAND HALL',portuguese:'SALA ESPANHOLA',french:'SALLE ESPAGNOLE',chinese:'西班牙文閱覽室',latin:'EXITVS',italian:'USCITA',ukrainian:'ІСПАНСЬКА ЧИТАЛЬНЯ'};
     let lacquer=null;const stones={},stone=(key,color)=>stones[key]||(stones[key]=new THREE.MeshStandardMaterial({color,roughness:.9}));
     const FRAMES={chinese:()=>lacquer||(lacquer=new THREE.MeshStandardMaterial({color:0x2a0d0a,roughness:.45})),latin:()=>stone('dressed',0xa89b84)};
     const through=(data,go)=>doorKit&&data.kit?doorKit.pass(data.kit,data,go):go();
@@ -341,10 +344,14 @@
         {const d=ROOM_DOORS.ukrainian,data={type:'intl-go',room:'ukrainian',title:'Українська читальня',author:'Класика українською мовою, кожна книжка з приміткою бібліотекарки. (The Ukrainian Reading Room.)',action:'ENTER'};
           if(!hangWing(root,'ukrainian',{data,mark,x:d.x,z:d.z,yaw:Math.PI,own}))plainDoor(d.x,d.z,0,DOOR_LOOKS.ukrainian.color,data);
           doorSign('УКРАЇНСЬКА ЧИТАЛЬНЯ','Заходьте · The Ukrainian Reading Room','Georgia',d.x,d.z-.14,Math.PI,data);block(d.x,d.z-.3,2.4,.6)}
+        // The Italian room's own door from the lobby, between the way out and the Latin room's door.
+        {const d=ROOM_DOORS.italian,data={type:'intl-go',room:'italian',door:'italian',title:'Sala di lettura in italiano',author:'Classici in italiano, ciascuno con una nota della bibliotecaria. (The Italian Reading Room.)',action:'ENTER'};
+          if(!hangWing(root,'italian',{data,mark,x:d.x,z:d.z,yaw:Math.PI,own}))plainDoor(d.x,d.z,0,DOOR_LOOKS.italian.color,data);
+          doorSign('SALA DI LETTURA IN ITALIANO','Entrate · The Italian Reading Room','Georgia',d.x,d.z-.14,Math.PI,data);block(d.x,d.z-.3,2.4,.6)}
         eastDoor(ROOM_DOORS.chinese.z,'chinese',{type:'intl-go',room:'chinese',title:'中文閱覽室',author:'中文經典，每一本都附有館員的短評。(The Chinese Reading Room.)',action:'ENTER'},'中文閱覽室','請進 · The Chinese Reading Room',CJK);
       }
       // From Virgil to Dante: the Latin room's east wall opens on the Italian.
-      if(key==='latin')eastDoor(ROOM_DOORS.italian.z,'italian',{type:'intl-go',room:'italian',title:'Sala di lettura in italiano',author:'Classici in italiano, ciascuno con una nota della bibliotecaria. (The Italian Reading Room.)',action:'ENTER'},'SALA DI LETTURA IN ITALIANO','Entrate · The Italian Reading Room');
+      if(key==='latin')eastDoor(ROOM_DOORS['italian-latin'].z,'italian',{type:'intl-go',room:'italian',door:'italian-latin',title:'Sala di lettura in italiano',author:'Classici in italiano, ciascuno con una nota della bibliotecaria. (The Italian Reading Room.)',action:'ENTER'},'SALA DI LETTURA IN ITALIANO','Entrate · The Italian Reading Room');
       // The reading table, with a lamp, and the lectern by the door with tonight's book.
       box(4.2,.08,1.6,MAT.darkWood,cx+1.5,.78,cz+1.2);for(const [dx,dz] of [[-1.9,-.6],[1.9,-.6],[-1.9,.6],[1.9,.6]])box(.1,.74,.1,MAT.darkWood,cx+1.5+dx,.39,cz+1.2+dz);block(cx+1.5,cz+1.2,4.4,1.8);
       const leather=own(new THREE.MeshStandardMaterial({color:0x5b2418,roughness:.75}));
@@ -357,13 +364,20 @@
       if(pick){const lx=cx-4,lz=cz+d/2-2.6;box(.5,1.05,.4,MAT.darkWood,lx,.52,lz);const top=box(.8,.05,.6,MAT.darkWood,lx,1.1,lz);top.rotation.x=.3;block(lx,lz,.8,.7);
         const card=own(plaque(def.lectern,'',420,70,'#1d2a3d',def.font));const label=add(own(new THREE.PlaneGeometry(.8,.14)),own(new THREE.MeshStandardMaterial({map:card,roughness:.8,emissive:0xffffff,emissiveMap:card,emissiveIntensity:.3})),lx,1.34,lz-.2,root);label.rotation.x=-.2;
         const mesh=placeBook(pick,{x:lx,y:1.42,z:lz-.02,yaw:0});mesh.rotation.x=-1.05;mesh.userData.home.quaternion.copy(mesh.quaternion);mesh.userData.featured=true}
-      // The way out: to the Grand Hall from the Spanish room, back to the Spanish room from the others (the Italian, to the Latin).
+      // The way out: to the Grand Hall from the Spanish room, back to the Spanish room from the others (the Italian, back
+      // to whichever room the reader came in from: see italianExit).
       const exit=key==='spanish'?{type:'intl-exit',title:'Back to the Grand Hall',author:'The visitors’ book is just outside.',action:'RETURN'}
-        :key==='italian'?{type:'intl-go',room:'latin',back:key,title:'Conclave Latinum',author:'Torna alla sala latina. Back to the Latin Reading Room.',action:'RETURN'}
+        :key==='italian'?italianExit({type:'intl-go',action:'RETURN'})
         :{type:'intl-go',room:'spanish',back:key,title:'Sala de lectura en español',author:({chinese:'回到西班牙文閱覽室。',french:'Retour à la salle espagnole. ',latin:'Redi. ',ukrainian:'Назад до іспанської читальні. '}[key]||'')+'Back to the Spanish Reading Room.',action:'RETURN'};
       if(!hangWing(root,key,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,label:EXIT_LABELS[key],own}))plainDoor(cx,cz+d/2-.2,0,DOOR_LOOKS[key].color,exit);
-      scene.add(root);
+      room.exit=exit;scene.add(root);
     }
+    // The Italian room's way out goes back through the door the reader came in by: to the Latin room, or the Spanish.
+    function italianExit(exit){
+      const door=via.italian==='italian-latin'?'italian-latin':'italian';
+      return Object.assign(exit,{room:outOf(door),back:door},door==='italian-latin'
+        ?{title:'Conclave Latinum',author:'Torna alla sala latina. Back to the Latin Reading Room.'}
+        :{title:'Sala de lectura en español',author:'Torna alla sala spagnola. Back to the Spanish Reading Room.'})}
 
     // The wing's two lamps, moved to the room the reader is in: one overhead, one on the reading table.
     function placeLamps(key){
@@ -383,8 +397,9 @@
     }
 
     // ---------- doing things ----------
-    function enter(key='spanish'){
+    function enter(key='spanish',door=key){
       const def=ROOMS[key]||ROOMS.spanish;key=ROOMS[key]?key:'spanish';
+      via[key]=ROOM_DOORS[door]&&opensOn(door)===key?door:key;if(key==='italian'&&built.italian)italianExit(built.italian.exit);
       activate(key);placeLamps(key);move(def.cx,def.cz+def.d/2-1.4,0);playSample?.('doorOpen',.8,.96);
       showNotice(def.welcome(featured(key)),9);
       analytics?.track('Room Explored',{room:key==='spanish'?'international-wing':`international-wing-${key}`});
@@ -395,7 +410,7 @@
       if(data.type==='intl-go'){
         // Back from another room: out through its door, into the room it opens from (the Spanish room, or the Latin).
         through(data,()=>{if(data.back){const from=ROOM_DOORS[data.back]||ROOM_DOORS.portuguese,into=outOf(data.back);activate(into);placeLamps(into);move(from.x-Math.sin(-from.yaw)*1.8,from.z-Math.cos(from.yaw)*1.8,from.yaw);playSample?.('doorOpen',.8,1);showNotice(`${ROOMS[into].card[0]}.`,3)}
-        else enter(data.room)});
+        else enter(data.room,data.door)});
         return true;
       }
       if(data.type==='intl-exit'){through(data,()=>{move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again, beside the visitors’ book.',3)});return true}
@@ -415,7 +430,7 @@
       time=t;const {x,z}=player.pos,here=roomAt(x,z);
       if(here){activate(here);placeLamps(here)}
       if(Math.hypot(x-DOOR.x,z-DOOR.z)<PRELOAD)activate('spanish');
-      for(const [key,door] of Object.entries(ROOM_DOORS))if(here===outOf(key)&&Math.hypot(x-door.x,z-door.z)<PRELOAD)activate(key);
+      for(const [key,door] of Object.entries(ROOM_DOORS))if(here===outOf(key)&&Math.hypot(x-door.x,z-door.z)<PRELOAD)activate(opensOn(key));
       for(const key of Object.keys(built)){const room=built[key];
         if(key!==here&&t-lastNeeded[key]>KEEP&&!isHolding()&&!room.books.some(b=>b.parent!==room.root))unload(key)}
     }

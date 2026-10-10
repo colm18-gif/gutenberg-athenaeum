@@ -287,7 +287,7 @@ test('the Ukrainian room has its flags, a Petrykivka painting under a rushnyk, s
   assert.doesNotMatch(body,/Light\(/);
 });
 
-test('the Italian Reading Room: Italian texts behind a green door in the Latin room, under a della Robbia roundel',async()=>{
+test('the Italian Reading Room: Italian texts behind green doors in the Spanish and Latin rooms, under a della Robbia roundel',async()=>{
   const italian=shelves.filter(entry=>entry[4]==='italian');
   const {ROOMS,ROOM_LANGUAGES,validate}=await import('./scripts/new-books.mjs');assert.ok(ROOMS.includes('italian'));assert.equal(ROOM_LANGUAGES.italian,'it');
   assert.ok(italian.length>=24&&italian.length<=48,`${italian.length} Italian books`);assert.deepEqual(validate(italian),[]);
@@ -297,10 +297,11 @@ test('the Italian Reading Room: Italian texts behind a green door in the Latin r
   assert.ok(textMatches(head('Italian'),'I promessi sposi','Alessandro Manzoni','it'));assert.ok(!textMatches(head('English'),'I promessi sposi','Alessandro Manzoni','it'),'a translation is not the text');
   // From Virgil to Dante: the door is in the Latin room's east wall, and the way back leads there.
   assert.match(wing,/italian:\{cx:-530,cz:132,w:24,d:15,h:6,language:'it',sign:'SALA DI LETTURA IN ITALIANO'/);
-  assert.match(wing,/italian:\{from:'latin',x:ROOMS\.latin\.cx\+ROOMS\.latin\.w\/2-\.2,z:ROOMS\.latin\.cz,yaw:-Math\.PI\/2\}/);
-  assert.match(wing,/if\(key==='latin'\)eastDoor\(ROOM_DOORS\.italian\.z,'italian',\{type:'intl-go',room:'italian'/);
-  assert.match(wing,/key==='italian'\?\{type:'intl-go',room:'latin',back:key/);assert.match(wing,/into=outOf\(data\.back\);activate\(into\)/);
-  assert.match(wing,/if\(here===outOf\(key\)&&Math\.hypot/);assert.match(wing,/if\(key==='italian'\)\{\/\/ A glazed terracotta roundel/);assert.match(wing,/if\(kind==='maiolica'\)/);
+  assert.match(wing,/italian:\{x:ROOM\.cx\+3\.5,z:SOUTH,yaw:0\},'italian-latin':\{room:'italian',from:'latin',x:ROOMS\.latin\.cx\+ROOMS\.latin\.w\/2-\.2,z:ROOMS\.latin\.cz,yaw:-Math\.PI\/2\}/);
+  assert.match(wing,/const d=ROOM_DOORS\.italian,data=\{type:'intl-go',room:'italian',door:'italian'/,'its own door from the lobby');
+  assert.match(wing,/if\(key==='latin'\)eastDoor\(ROOM_DOORS\['italian-latin'\]\.z,'italian',\{type:'intl-go',room:'italian',door:'italian-latin'/);
+  assert.match(wing,/key==='italian'\?italianExit\(/);assert.match(wing,/const door=via\.italian==='italian-latin'\?'italian-latin':'italian'/);assert.match(wing,/into=outOf\(data\.back\);activate\(into\)/);
+  assert.match(wing,/if\(here===outOf\(key\)&&Math\.hypot\(x-door\.x,z-door\.z\)<PRELOAD\)activate\(opensOn\(key\)\)/);assert.match(wing,/if\(key==='italian'\)\{\/\/ A glazed terracotta roundel/);assert.match(wing,/if\(kind==='maiolica'\)/);
   const src=fs.readFileSync('international-wing.js','utf8'),i=src.indexOf('function dressItalian('),body=src.slice(i,src.indexOf('\n    }\n',i));
   assert.ok(i>0);assert.match(body,/InstancedMesh/);assert.doesNotMatch(body,/Light\(/);
   assert.match(game,/it:'italian-room',italian:'italian-room'/);assert.match(game,/'italian-room':internationalWing&&\(\(\)=>enterWing\('italian'\)\)/);assert.match(game,/italian:'it'/);
