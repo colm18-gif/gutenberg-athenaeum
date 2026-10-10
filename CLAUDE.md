@@ -238,10 +238,12 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   jsDelivr is unreliable there.
 - The owner is moving the Gmail connector to the library's own address for press correspondence; press follow-ups
   were planned for around 2–3 October.
-- Austen Room outreach sent 10 October from colm18@gmail.com (20 emails): JASNA (info@, cc e-communications@), JASNA
+- Austen Room outreach sent 10 October from colm18@gmail.com (26 emails): JASNA (info@, cc e-communications@), JASNA
   News, JASNA's VP for Regions (asked to pass it to the regions), the UK Jane Austen Society (hq@, asked to pass it to the
   branches) and its newsletter editor, JASA (Australia), the Netherlands and Italy societies; the UK branches London,
   Scottish, South West, Midlands and Cambridge; the JASNA regions New York, Chicago, Northern California, North Carolina,
   Louisiana, Vancouver and Toronto (the last three addresses unverified). Each invites corrections to the room's
-  librarian's notes: make any that come back. No address found yet for Pakistan, Buenos Aires, Brazil, Melbourne, or
-  the UK Society's Bath and Hampshire branches.
+  librarian's notes: make any that come back. Later the same day, six more: the Jane Austen Sociedade do Brasil, the
+  Jane Austen Society of Melbourne, the UK Society's Hampshire and Northern branches, JASNA Southwest (Southern
+  California), and the Kent branch's membership secretary. No email found for Pakistan (Facebook JaneitesPakistan,
+  Instagram @janeausten_pk), Buenos Aires or JASNA Massachusetts; the UK Society lists no Bath branch now.
