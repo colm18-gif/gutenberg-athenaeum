@@ -1569,7 +1569,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     let clickStart=null;
     renderer.domElement.addEventListener('pointerdown',e=>{if(e.button===0&&e.pointerType!=='touch')clickStart={x:e.clientX,y:e.clientY,t:performance.now()}});
     renderer.domElement.addEventListener('pointerup',e=>{const s=clickStart;clickStart=null;if(!s||e.button!==0||!gameActive()||performance.now()-s.t>450||Math.hypot(e.clientX-s.x,e.clientY-s.y)>6)return;
-      if(locked){if(focus)interact()}else interactAt(e.clientX,e.clientY)});
+      if(locked){const r=renderer.domElement.getBoundingClientRect();interactAt(r.left+r.width/2,r.top+r.height/2)}else interactAt(e.clientX,e.clientY)});
     document.addEventListener('pointerup',()=>dragging=false);window.addEventListener('blur',()=>{dragging=false;for(const k in keys)keys[k]=false});
     document.addEventListener('pointerlockchange',()=>{locked=document.pointerLockElement===renderer.domElement;if(locked){hadPointerLock=true;ui.pause.classList.add('hidden')}else if(started&&hadPointerLock&&!chatOpen&&!supportOpen&&!settingsOpen&&!telescopeViewer?.isOpen&&!correspondenceDesk?.isOpen&&(!selected||carryingBook)&&ui.reader.classList.contains('hidden')&&ui.journal.classList.contains('hidden'))ui.pause.classList.remove('hidden')});
     document.addEventListener('mousemove',e=>{if(!locked&&!dragging)return;const dx=locked?e.movementX:e.clientX-lastPointerX,dy=locked?e.movementY:e.clientY-lastPointerY;lastPointerX=e.clientX;lastPointerY=e.clientY;if(dx||dy)noteCoverMotion();player.yaw-=dx*.00185;player.pitch=clamp(player.pitch-dy*.0017,-1.42,1.42)});

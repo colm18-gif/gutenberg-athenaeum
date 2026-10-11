@@ -278,7 +278,7 @@ test('a quick tap or click on a book takes it, as E and the round button do; a d
   const game=fs.readFileSync('game.js','utf8');
   assert.match(game,/function interactAt\(clientX,clientY\)\{/);
   assert.match(game,/screenCentre\.set\(\(clientX-r\.left\)\/r\.width\*2-1,-\(\(clientY-r\.top\)\/r\.height\)\*2\+1\);focusCheckTimer=0;\s*try\{updateFocus\(0\)\}finally\{screenCentre\.set\(0,0\);focusCheckTimer=0\}/,'the ring in the middle of the view is put back');
-  assert.match(game,/if\(locked\)\{if\(focus\)interact\(\)\}else interactAt\(e\.clientX,e\.clientY\)/,'a click: under the ring when the pointer is locked, else under the pointer');
+  assert.match(game,/if\(locked\)\{const r=renderer\.domElement\.getBoundingClientRect\(\);interactAt\(r\.left\+r\.width\/2,r\.top\+r\.height\/2\)\}else interactAt\(e\.clientX,e\.clientY\)/,'a click: under the ring when the pointer is locked (walking there if it is far), else under the pointer');
   assert.match(game,/Math\.hypot\(e\.clientX-s\.x,e\.clientY-s\.y\)>6\)return/,'a mouse drag is not a click');
   assert.match(game,/performance\.now\(\)-s\.t<450&&Math\.hypot\(e\.clientX-s\.x,e\.clientY-s\.y\)<12\)interactAt\(e\.clientX,e\.clientY\)/,'a touch drag is not a tap');
 });
