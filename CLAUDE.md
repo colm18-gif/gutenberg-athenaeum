@@ -243,6 +243,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - The AI Journal is not to be featured anywhere in the library.
 - The English Reading Room keeps only one darker book (Jekyll and Hyde, with a note).
 - Traces of other readers are invented, not real data.
+- The point of the library is exploration: in outreach and replies to readers, never offer a list of books or a direct
+  plain-text link as a way round the rooms. Send people to a room and help them find their way in it.
 
 ## Open to-dos (as of 10 October 2026)
 
