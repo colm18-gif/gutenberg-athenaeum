@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-10",
+ "updated": "2026-10-11",
  "days": {
-  "2026-09-27": {
-   "books": [
-    {
-     "id": 1342,
-     "title": "Pride and Prejudice",
-     "author": "Jane Austen"
-    },
-    {
-     "id": 14314,
-     "title": "Etiquette",
-     "author": "Emily Post"
-    },
-    {
-     "id": 208,
-     "title": "Daisy Miller: A Study",
-     "author": "Henry James"
-    },
-    {
-     "id": 8399,
-     "title": "Manners and Social Usages",
-     "author": "Mrs. John Sherwood"
-    },
-    {
-     "id": 2641,
-     "title": "A Room with a View",
-     "author": "E. M. Forster"
-    },
-    {
-     "id": 67799,
-     "title": "The Book of the Courtier",
-     "author": "Baldassare Castiglione"
-    },
-    {
-     "id": 10766,
-     "title": "Enquire Within Upon Everything",
-     "author": "Anonymous"
-    },
-    {
-     "id": 35123,
-     "title": "The Ladies' Book of Etiquette, and Manual of Politeness",
-     "author": "Florence Hartley"
-    },
-    {
-     "id": 39293,
-     "title": "The Gentlemen's Book of Etiquette and Manual of Politeness",
-     "author": "Cecil B. Hartley"
-    },
-    {
-     "id": 17609,
-     "title": "Our Deportment",
-     "author": "John H. Young"
-    }
-   ],
-   "missing": []
-  },
   "2026-09-28": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 24,
      "title": "O Pioneers!",
      "author": "Willa Cather"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-13": {
+   "books": [
+    {
+     "id": 24518,
+     "title": "Memoirs of Extraordinary Popular Delusions and the Madness of Crowds",
+     "author": "Charles Mackay"
+    },
+    {
+     "id": 7116,
+     "title": "Vestiges of the Natural History of Creation",
+     "author": "Robert Chambers"
+    },
+    {
+     "id": 54329,
+     "title": "Symmes's Theory of Concentric Spheres",
+     "author": "James McBride"
+    },
+    {
+     "id": 19553,
+     "title": "The Private Diary of Dr. John Dee",
+     "author": "John Dee"
+    },
+    {
+     "id": 19229,
+     "title": "Anticipations",
+     "author": "H. G. Wells"
+    },
+    {
+     "id": 39910,
+     "title": "Omphalos",
+     "author": "Philip Henry Gosse"
+    },
+    {
+     "id": 1638,
+     "title": "The New Revelation",
+     "author": "Arthur Conan Doyle"
+    },
+    {
+     "id": 22472,
+     "title": "The Book of the Damned",
+     "author": "Charles Fort"
+    },
+    {
+     "id": 47015,
+     "title": "Mars",
+     "author": "Percival Lowell"
+    },
+    {
+     "id": 285,
+     "title": "The Lost Continent",
+     "author": "C. J. Cutcliffe Hyne"
     }
    ],
    "missing": []
