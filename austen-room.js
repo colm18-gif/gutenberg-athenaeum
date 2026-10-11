@@ -110,7 +110,8 @@
         const label=sign(root,group.name,group.sub,2.9,.46,cx+side*(w/2-.17),3.55,zc);label.rotation.y=-side*Math.PI/2;mark(label,{type:'austen-card',title:group.name.charAt(0)+group.name.slice(1).toLowerCase(),author:group.sub+'.',action:'READ'});
       }
       buildRug(cx,cz+.4);
-      buildSofa(cx,cz+2.2);
+      // The sofa stands to the east of the rug, facing in, so the way from the door to the novels is clear.
+      buildSofa(cx+3.3,cz+.6,Math.PI/2);
       buildWritingTable(cx-4.4,cz-3.9);
       buildPiano(cx+4.6,cz+d/2-.75);
       buildCabinet(cx-4.6,cz+d/2-.5,hidden);
@@ -155,12 +156,12 @@
       const rug=add(own(new THREE.PlaneGeometry(4.4,5.6)),own(new THREE.MeshStandardMaterial({map,roughness:.95})),x,.012,z,root);rug.rotation.x=-Math.PI/2;mark(rug,card('rug'));
     }
     // A sofa in pale silk, facing the novels: one of the library's seats.
-    function buildSofa(x,z){
-      const silk=own(new THREE.MeshStandardMaterial({color:0xc9b98a,roughness:.75})),g=new THREE.Group();g.position.set(x,0,z);root.add(g);
+    function buildSofa(x,z,yaw=0){
+      const silk=own(new THREE.MeshStandardMaterial({color:0xc9b98a,roughness:.75})),g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=yaw;root.add(g);
       const seat=box(2.1,.22,.8,silk,0,.5,0,g),back=box(2.1,.6,.14,silk,0,.88,.36,g);
       for(const side of [-1,1])box(.12,.36,.8,silk,side*1.06,.72,0,g);for(const sx of [-.95,.95])for(const sz of [-.32,.32])box(.07,.4,.07,MAT.darkWood,sx,.2,sz,g);
-      block(x,z,2.4,1.1);
-      if(registerSeat){const data=registerSeat([seat,back],g,new THREE.Vector3(0,1.2,.05),0,{title:'A sofa in pale silk',author:'Sit and read one of the Austen Room’s books.'});
+      const across=Math.abs(Math.sin(yaw))>.5;block(x,z,across?1.1:2.4,across?2.4:1.1);
+      if(registerSeat){const data=registerSeat([seat,back],g,new THREE.Vector3(0,1.2,.05),yaw,{title:'A sofa in pale silk',author:'Sit and read one of the Austen Room’s books.'});
         Object.defineProperty(data,'bookIds',{get:()=>books.map(mesh=>mesh.userData.book.id),configurable:true});ours.push(seat,back)}
     }
     // The little twelve-sided table she wrote at, with a writing slope, sheets of paper, a quill and a candle.

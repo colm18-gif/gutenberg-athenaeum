@@ -282,3 +282,14 @@ test('a quick tap or click on a book takes it, as E and the round button do; a d
   assert.match(game,/Math\.hypot\(e\.clientX-s\.x,e\.clientY-s\.y\)>6\)return/,'a mouse drag is not a click');
   assert.match(game,/performance\.now\(\)-s\.t<450&&Math\.hypot\(e\.clientX-s\.x,e\.clientY-s\.y\)<12\)interactAt\(e\.clientX,e\.clientY\)/,'a touch drag is not a tap');
 });
+
+test('a click on a book across the room walks the reader to it and takes it; the left and right arrows turn',()=>{
+  const game=fs.readFileSync('game.js','utf8'),html=fs.readFileSync('index.html','utf8');
+  assert.match(game,/if\(focus\)\{approach=null;interact\(\);return true\}\s*return approachAt\(clientX,clientY\);/,'out of reach: walk there instead');
+  assert.match(game,/const far=raycaster\.far;raycaster\.far=24;[\s\S]{0,400}finally\{raycaster\.far=far\}/,'the long look is put back to the library’s reach');
+  assert.match(game,/if\(dist<=reach\)\{approach=null;player\.vel\.set\(0,0,0\);focus=a\.target;interact\(\);return 0\}/,'and takes the book on arrival');
+  assert.match(game,/showNotice\('Something is in the way\. Walk round it with the arrow keys, or W, A, S and D\.',6\)/,'a blocked walk says so');
+  assert.match(game,/const turn=\(keys\.ArrowLeft\?1:0\)-\(keys\.ArrowRight\?1:0\);if\(turn\)\{player\.yaw\+=turn\*1\.9\*dt/,'the side arrows turn');
+  assert.match(game,/keySide=\(keys\.KeyD\?1:0\)-\(keys\.KeyA\?1:0\)/,'A and D still step sideways');
+  assert.match(html,/<div id="hint">↑ ↓ walk · ← → turn · Shift quicken<br>Click a book, or E/);
+});
