@@ -291,7 +291,7 @@ test('a click on a book across the room walks the reader to it and takes it; the
   assert.match(game,/showNotice\('Something is in the way\. Walk round it with the arrow keys, or W, A, S and D\.',6\)/,'a blocked walk says so');
   assert.match(game,/const turn=\(keys\.ArrowLeft\?1:0\)-\(keys\.ArrowRight\?1:0\);if\(turn\)\{player\.yaw\+=turn\*1\.9\*dt/,'the side arrows turn');
   assert.match(game,/keySide=\(keys\.KeyD\?1:0\)-\(keys\.KeyA\?1:0\)/,'A and D still step sideways');
-  assert.match(html,/<div id="hint">↑ ↓ walk · ← → turn · drag to look<br>Click a book to take it/);
+  assert.match(html,/<div id="hint">↑ ↓ walk · ← → turn · move the mouse to look<br>Click a book to take it/);
 });
 
 test('the number-pad arrows (8, 4, 6, 2) walk and turn, with Num Lock on or off, except while typing',()=>{
@@ -301,11 +301,11 @@ test('the number-pad arrows (8, 4, 6, 2) walk and turn, with Num Lock on or off,
   assert.match(game,/document\.addEventListener\('keyup',e=>\{const arrow=arrowFor\(e\);if\(arrow\)keys\[arrow\]=false\}\);/,'and they let go');
 });
 
-test('the mouse arrow stays on screen unless the reader chooses mouse-look in Settings',()=>{
+test('moving the mouse looks around unless the reader chooses, in Settings, to keep the arrow and drag',()=>{
   const game=fs.readFileSync('game.js','utf8'),html=fs.readFileSync('index.html','utf8');
-  assert.match(game,/function requestLookLock\(\)\{renderer\.domElement\.focus\(\);if\(touchMode\|\|!mouseLook\)return;/,'no pointer lock by default');
-  assert.match(game,/mouseLook=localStorage\.getItem\('athenaeum-mouse-look'\)==='1'/);assert.match(game,/localStorage\.setItem\('athenaeum-mouse-look',mouseLook\?'1':'0'\)/);
+  assert.match(game,/function requestLookLock\(\)\{renderer\.domElement\.focus\(\);if\(touchMode\|\|!mouseLook\)return;/,'pointer lock unless the arrow is chosen');
+  assert.match(game,/mouseLook=localStorage\.getItem\('athenaeum-mouse-arrow'\)!=='1'/,'mouse-look by default');assert.match(game,/localStorage\.setItem\('athenaeum-mouse-arrow',mouseLook\?'0':'1'\)/);
   assert.match(html,/<input id="mouseLook" type="checkbox">/);
   assert.match(game,/c\.style\.cursor=gameActive\(\)&&pickAt\(e\.clientX,e\.clientY\)\?'pointer':''/,'a hand over what a click would take');
-  assert.match(game,/text:key\('Hold the mouse button down and drag to look around\.'/,'and the first-visit tour says so');
+  assert.match(game,/text:key\(mouseLook\?'Click the view, then move the mouse to look around\.':'Hold the mouse button down and drag to look around\.'/,'and the first-visit tour says so');
 });

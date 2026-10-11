@@ -93,7 +93,7 @@
     <div id="tour" class="tour hidden" role="status" aria-live="polite"><div class="tour-step" id="tourStep"></div><p id="tourText"></p><button type="button" id="tourSkip" class="tour-skip">Skip tour</button></div><div id="exploreNudge" class="explore-nudge" aria-live="polite">There is no required route. Follow a lamp, Quill, or a book left out of place. Press J to record what you discover.</div>
     <div id="status"><div id="timeLabel">EVENING</div><div><span id="weatherLabel">RAIN</span> beyond the glass</div><div>Mysteries <span id="secretCount">0 / 9</span></div></div>
     <button id="mute" aria-label="Mute sound" title="Mute sound">♪</button><button id="settingsButton" aria-label="Library settings" title="Library settings">⚙</button>
-    <div id="hint">↑ ↓ walk · ← → turn · drag to look<br>Click a book to take it · J journal · O settings · R return</div>
+    <div id="hint">↑ ↓ walk · ← → turn · move the mouse to look<br>Click a book to take it · J journal · O settings · R return</div>
     <div id="touchLook" class="touch-ui"></div>
     <div id="touchMove" class="touch-ui"><div id="touchStick"></div></div>
     <button id="touchInteract" class="touch-ui" aria-label="Interact">E</button>
@@ -139,7 +139,7 @@
     const applyEntryAppearance=()=>{document.body.classList.toggle('reduced-motion',document.getElementById('entryReducedMotion').checked);document.body.classList.toggle('high-contrast',document.getElementById('entryHighContrast').checked);document.body.classList.toggle('large-text',document.getElementById('entryLargeText').checked)};
     for(const [kind,[id,key]] of Object.entries(preferences)){const input=document.getElementById(id),saved=localStorage.getItem(key);if(kind==='volume')input.value=saved??13;else input.checked=saved==='1';input.addEventListener('input',()=>{localStorage.setItem(key,kind==='volume'?input.value:input.checked?'1':'0');applyEntryAppearance()})}applyEntryAppearance();
     const webglAvailable=()=>{try{const canvas=document.createElement('canvas');return !!(canvas.getContext('webgl2')||canvas.getContext('webgl'))}catch(error){return false}};
-    const BUILD='20261011-arrow-stays';
+    const BUILD='20261011-mouse-look';
     // Files the jobs rewrite without a new BUILD (new Room of the Day books, new recordings, new arrivals): their address
     // changes every hour, so a browser holding an older copy picks up the new one within the hour.
     const LIVE_DATA=new Set(['data/daily-rooms-resolved.js','data/audiobooks.js','data/visitors-book-config.js','data/new-books-resolved.js']);
