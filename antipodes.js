@@ -37,7 +37,7 @@
     hallSign:['The Antipodes','You fell through the Earth to get here. The Australian Room is through the arch to the west, the New Zealand Room through the arch to the east, and the globe will take you home.']
   };
   // What the reader hears on the way down (and up), at fractions of the fall.
-  const DOWN=[[.02,'“Down, down, down. Would the fall never come to an end!”'],
+  const DOWN=[[.02,'“Down, down, down. Would the fall never come to an end?”'],
     [.14,'The sides of the well are filled with cupboards and book-shelves; here and there, maps and pictures hung upon pegs.'],
     [.3,'“I wonder how many miles I’ve fallen by this time? I must be getting somewhere near the centre of the earth.”'],
     [.45,'The centre of the Earth, glowing and very warm. Here everything turns over: from now on, down is the way you came.'],
