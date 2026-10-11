@@ -269,3 +269,14 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Jane Austen Society of Melbourne, the UK Society's Hampshire and Northern branches, JASNA Southwest (Southern
   California), and the Kent branch's membership secretary. No email found for Pakistan (Facebook JaneitesPakistan,
   Instagram @janeausten_pk), Buenos Aires or JASNA Massachusetts; the UK Society lists no Bath branch now.
+- Lewis Carroll outreach sent 11 October from colm18@gmail.com: the Lewis Carroll Society (secretary@), the LCSNA
+  (community@lewiscarroll.org) and the Lewis Carroll Centre at Daresbury (director@, an address from its Facebook page).
+  The Daresbury Lewis Carroll Society has only a contact form, which the owner is to fill in by hand. Every Carroll
+  quotation in the library was checked against the texts first (two fixed: the fall's "never come to an end?" and the
+  Bellman's quatrain); make any corrections that come back.
+- Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
+  LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
+  AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
+  Belfast, 10–12 March 2027). The papers say plainly that the library is built with AI coding assistants and describe
+  this file, the tests and the quotation checks as how its values are kept. If accepted, the talk includes a live walk
+  from the Grand Hall through the globe: keep that route working, and gather real usage figures from Plausible.
