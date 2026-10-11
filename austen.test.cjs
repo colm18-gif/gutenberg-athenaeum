@@ -70,6 +70,7 @@ test('the room is built on approach: six novels in order, three shelves, the wri
   for(const mesh of a.r.books){assert(a.r.contains(mesh.position.x,mesh.position.z),'every book is inside the room');assert(mesh.userData.austen)}
   assert(!a.r.books.some(m=>m.userData.shelf==='cabinet'),'Mrs Radcliffe is not on show yet');
   assert.equal(a.seats.length,2,'the sofa and the writing chair');
+  for(let z=a.r.room.cz+a.r.room.d/2-1.4;z>a.r.room.cz-a.r.room.d/2+1.6;z-=.2)assert(a.r.allowed(a.r.room.cx,z),`the way from the door to the novels is clear at z ${z.toFixed(1)}`);
   a.r.interact(find(a,'austen-piano'));assert(a.tones.length>=a.r.tune.length,'the pianoforte plays');
   const exit=find(a,'austen-exit');a.r.interact(exit);assert(!a.r.contains(a.player.pos.x,a.player.pos.z),'back to the Grand Hall');assert(Math.abs(a.player.pos.x-(a.r.door.x+1.9))<.01,'out into the hall');assert.equal(a.player.pos.z,a.r.door.z);
   const lamps=[];a.scene.traverse(o=>{if(o.isPointLight)lamps.push(o)});assert.equal(lamps.length,1,'one lamp');
