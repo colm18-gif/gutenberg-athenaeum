@@ -293,3 +293,10 @@ test('a click on a book across the room walks the reader to it and takes it; the
   assert.match(game,/keySide=\(keys\.KeyD\?1:0\)-\(keys\.KeyA\?1:0\)/,'A and D still step sideways');
   assert.match(html,/<div id="hint">↑ ↓ walk · ← → turn · Shift quicken<br>Click a book, or E/);
 });
+
+test('the number-pad arrows (8, 4, 6, 2) walk and turn, with Num Lock on or off, except while typing',()=>{
+  const game=fs.readFileSync('game.js','utf8');
+  assert.match(game,/const ARROW_CODES=\{Numpad8:'ArrowUp',Numpad2:'ArrowDown',Numpad4:'ArrowLeft',Numpad6:'ArrowRight'\};/);
+  assert.match(game,/\/\^\(INPUT\|TEXTAREA\|SELECT\)\$\/\.test\(e\.target\?\.tagName\|\|''\)/,'not while typing');
+  assert.match(game,/document\.addEventListener\('keyup',e=>\{const arrow=arrowFor\(e\);if\(arrow\)keys\[arrow\]=false\}\);/,'and they let go');
+});
