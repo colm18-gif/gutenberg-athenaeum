@@ -248,6 +248,11 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - Traces of other readers are invented, not real data.
 - The point of the library is exploration: in outreach and replies to readers, never offer a list of books or a direct
   plain-text link as a way round the rooms. Send people to a room and help them find their way in it.
+- Outbound email uses short links (`https://libraryafterdark.space`, `https://libraryafterdark.space/?room=irish`). The Gmail
+  connector rewrites every link it is given, in `body` or as an `href`, with or without `https://`, into a long
+  `google.com/url?q=…` redirect; the emails sent up to 11 October went out that way. Write drafts as `htmlBody` with each
+  address broken by tags, unlinked (`https<span>://</span>libraryafterdark<span>.</span>space/?room=irish`), which it leaves
+  alone and mail programs show (and usually link) as typed. Check a draft with `get_draft` before it is sent.
 
 ## Open to-dos (as of 10 October 2026)
 
