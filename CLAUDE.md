@@ -146,8 +146,11 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   pass `registerSeat` into a room module and call it (with a `bookIds` getter for that room's books; push the parts
   onto the room's list so they are freed with it). `?debug` exposes `__athenaeum.seats`.
 - The upper gallery runs along the Grand Hall's east side south of the stair (x 11–19, z 16 and beyond): `floorHeight` gives
-  that floor as the gallery's (y 5), so nothing there is reachable from the hall floor. A door at ground level needs open hall
-  floor in front of it (the Austen Room's test checks its own approach against `floorHeight`).
+  that floor as the gallery's (y 5) to a reader up there and as the hall's (y 0) to one on the ground (by the reader's own
+  height), so the space under it is walkable; a ground-only collider stops readers at the stair's masonry. In its south-east
+  corner is the cupboard under the stairs (`stairCupboard` in game.js): a walnut door that opens on brooms, a candle stub and
+  The Circular Staircase. A door at ground level needs open hall floor in front of it (the Austen Room's test checks its own
+  approach against `floorHeight`).
 - Doors come from the shared kit in `library-doors.js`. A room behind a door is given `doorKit` and hangs both sides of
   its door with `doorKit.hang(parent,{data,mark,...look})` (`color`, `glazed`, `planked`, `plain`, `fanColor`, `frame`,
   `cornice`, `pediment`; no light of its own), then lets the reader through with `doorKit.pass(data.kit,data,go)` so

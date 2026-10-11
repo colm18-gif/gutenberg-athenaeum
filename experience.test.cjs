@@ -309,3 +309,14 @@ test('moving the mouse looks around unless the reader chooses, in Settings, to k
   assert.match(game,/c\.style\.cursor=gameActive\(\)&&pickAt\(e\.clientX,e\.clientY\)\?'pointer':''/,'a hand over what a click would take');
   assert.match(game,/text:key\(mouseLook\?'Click the view, then move the mouse to look around\.':'Hold the mouse button down and drag to look around\.'/,'and the first-visit tour says so');
 });
+
+test('the space under the gallery is the hall floor for a reader on the ground, with a cupboard under the stairs in its corner',()=>{
+  const game=fs.readFileSync('game.js','utf8');
+  const source=game.match(/function floorHeight\(x,z\)\{[^\n]*?return 0\}/)[0];
+  const at=(y,x,z)=>vm.runInNewContext(`(()=>{const basementFloorY=-6,galleryReaderY=${y};${source};return floorHeight(${x},${z})})()`);
+  assert.equal(at(0,15,22),0,'on the ground under the gallery');assert.match(game,/galleryReaderY=5\b/,'things built at startup stand on the gallery as before');assert.equal(at(5,15,22),5,'up on the gallery');assert.equal(at(5,14,28),5.5,'on the roof stair');
+  assert.match(game,/collider\(15,15\.6,6\.3,\.7,'under the stair',-1,2\.5\)/,'the ground stops at the stair masonry');
+  assert.match(game,/collider\(18\.05,31,1\.9,\.6,'south wall',2\.5\)/,'the wall above the cupboard still holds the gallery');
+  assert.match(game,/type:'stair-cupboard'/);assert.match(game,/doorWay\.inactive=open>\.55/,'the open door lets the reader in');
+  assert.doesNotMatch(game,/publicDado\(18\.05,30\.58,1\.65\)/,'no stray panel that looks like a door');
+});
