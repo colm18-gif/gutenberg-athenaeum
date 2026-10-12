@@ -238,7 +238,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, boathouse,
   daily-room, poe, irish, maps, medicine, austen, burns, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
-- `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text.
+- `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
+  book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
+  gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.
 - **Halloween night** (`halloween.js`): 24 October to 2 November by the reader's own date (`?halloween` previews it,
   `?nohalloween` hides it). Carved lanterns (one InstancedMesh, glowing through emissive faces, no lights) by the south
   doors and the rug, a turnip lantern, and the Oíche Shamhna table of ghost stories near the entrance with a card on
