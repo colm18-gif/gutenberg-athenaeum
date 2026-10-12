@@ -116,8 +116,8 @@ test('Jules Verne has a concealed author-only voyages room',()=>{
   const context={window:{}};
   vm.runInNewContext(fs.readFileSync('data/verne-catalog.js','utf8'),context);
   const verneBooks=context.window.ATHENAEUM_VERNE_BOOKS;
-  assert.equal(verneBooks.length,70);
-  assert.equal(new Set(verneBooks.map(([id])=>id)).size,70);
+  assert.equal(verneBooks.length,53);
+  assert.equal(new Set(verneBooks.map(([id])=>id)).size,53);
   assert(verneBooks.every(([,title])=>!/\((?:French|Dutch|German|Portuguese|Finnish|Icelandic|Danish|Hungarian|Italian|Modern Greek)/.test(title)));
   assert.match(game,/function vernePortalTexture/);
   assert.match(game,/destination:'verne',spawn:\[190,0,70\]/);
@@ -138,8 +138,8 @@ test('Haggard and Conan Doyle have concealed author rooms with distinct period e
   vm.runInNewContext(fs.readFileSync('data/haggard-catalog.js','utf8'),haggardContext);
   vm.runInNewContext(fs.readFileSync('data/haggard-notes.js','utf8'),haggardContext);
   const haggardBooks=haggardContext.window.ATHENAEUM_HAGGARD_BOOKS;
-  assert.equal(haggardBooks.length,68);
-  assert.equal(new Set(haggardBooks.map(([id])=>id)).size,68);
+  assert.equal(haggardBooks.length,65);
+  assert.equal(new Set(haggardBooks.map(([id])=>id)).size,65);
   assert(haggardBooks.every(([,title])=>!/\((?:Portuguese|Dutch|French|Finnish)\)$/.test(title)));
   assert(haggardBooks.every(([id])=>haggardContext.window.ATHENAEUM_EXTRA_NOTES[id]?.length>80));
   assert.match(html,/startupScript\('data\/haggard-catalog\.js'\)/);
@@ -148,8 +148,8 @@ test('Haggard and Conan Doyle have concealed author rooms with distinct period e
   vm.runInNewContext(fs.readFileSync('data/doyle-catalog.js','utf8'),doyleContext);
   vm.runInNewContext(fs.readFileSync('data/doyle-notes.js','utf8'),doyleContext);
   const doyleBooks=doyleContext.window.ATHENAEUM_DOYLE_BOOKS;
-  assert.equal(doyleBooks.length,128);
-  assert.equal(new Set(doyleBooks.map(([id])=>id)).size,128);
+  assert.equal(doyleBooks.length,90);
+  assert.equal(new Set(doyleBooks.map(([id])=>id)).size,90);
   assert(doyleBooks.every(([,title])=>!/\((?:Finnish|French|Dutch|Danish|German|Polish|Spanish|Interlingua)/.test(title)));
   assert(doyleBooks.every(([id])=>doyleContext.window.ATHENAEUM_EXTRA_NOTES[id]?.length>80));
   assert.match(html,/startupScript\('data\/doyle-catalog\.js'\)/);
@@ -202,8 +202,8 @@ test('H. G. Wells has a complete English-only Project Gutenberg room with librar
   vm.runInNewContext(fs.readFileSync('data/wells-catalog.js','utf8'),wellsContext);
   vm.runInNewContext(fs.readFileSync('data/wells-notes.js','utf8'),wellsContext);
   const wellsBooks=wellsContext.window.ATHENAEUM_WELLS_BOOKS;
-  assert.equal(wellsBooks.length,104);
-  assert.equal(new Set(wellsBooks.map(([id])=>id)).size,104);
+  assert.equal(wellsBooks.length,82);
+  assert.equal(new Set(wellsBooks.map(([id])=>id)).size,82);
   assert(wellsBooks.every(([,title])=>!/\((?:Dutch|Finnish|French|Hungarian)\)$/.test(title)));
   assert(wellsBooks.every(([id])=>wellsContext.window.ATHENAEUM_EXTRA_NOTES[id]?.length>80));
   assert.match(html,/startupScript\('data\/wells-catalog\.js'\)/);

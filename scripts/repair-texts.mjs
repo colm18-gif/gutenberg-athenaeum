@@ -13,7 +13,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
-import {download,textMatches} from './daily-room.mjs';
+import {download,textMatches,titleMatches,header,surname,languageMatches} from './daily-room.mjs';
 import {loadCatalogue} from './book-pages.mjs';
 
 const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),'..'),BUNDLED=path.join(root,'texts/bundled-gzip');
@@ -32,6 +32,13 @@ export function damaged(){
 export function missing(books=loadCatalogue().books){
   return books.filter(book=>Number.isInteger(book.id)&&book.id<900000&&!book.textPath&&!fs.existsSync(path.join(BUNDLED,`pg${book.id}.txt.gz`))&&!fs.existsSync(path.join(root,`texts/pg${book.id}.txt`)));
 }
+// An anthology's header names its editor, not each contributor; one of its writers' books is accepted when the title
+// matches and the writer is named in its opening pages (its contents), so a wrong number still cannot slip through.
+export function bundleMatches(text,book){
+  if(textMatches(text,book.title,book.author,book.language||'en'))return true;
+  const name=surname(book.author);
+  return !!name&&titleMatches(book.title,header(text).title)&&languageMatches(text,book.language||'en')&&new RegExp(`\\b${name}\\b`,'i').test(text.slice(0,60000));
+}
 const MISSING_BUDGET_MS=Number(process.env.MISSING_BUDGET_MS??40*60*1000);
 async function bundleMissing(){
   const todo=missing(),started=Date.now();let added=0,refused=0;
@@ -41,7 +48,7 @@ async function bundleMissing(){
     if(Date.now()-started>MISSING_BUDGET_MS){console.log(`  out of time; ${todo.length-added-refused} left for the next run`);break}
     const text=await download(book.id);
     if(!text){console.log(`  ${book.id}: could not be downloaded`);refused++;continue}
-    if(!textMatches(text,book.title,book.author,book.language||'en')){console.log(`  ${book.id}: the download is not “${book.title}” by ${book.author}; left unbundled`);refused++;continue}
+    if(!bundleMatches(text,book)){console.log(`  ${book.id}: the download is not “${book.title}” by ${book.author}; left unbundled`);refused++;continue}
     fs.writeFileSync(path.join(BUNDLED,`pg${book.id}.txt.gz`),zlib.gzipSync(text,{level:9}));added++;console.log(`  + ${book.id} ${book.title}`);
   }
   console.log(`\n${added} bundled; ${refused} could not be.`);

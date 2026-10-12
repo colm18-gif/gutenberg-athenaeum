@@ -241,6 +241,10 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.
+  Gutenberg's audio books (catalogue type Sound) have numbers like texts but no text: never list one as a book (the
+  Doyle, Verne, Wells and Haggard lists held 79, all recordings of books held as text; a test keeps them out). The
+  Catalogue lookup line `= 8613 8614 …` prints each number's type and the texts with the same title. An anthology is
+  bundled when its title matches and the author is named in its opening pages (its header names only the editor).
 - **Halloween night** (`halloween.js`): 24 October to 2 November by the reader's own date (`?halloween` previews it,
   `?nohalloween` hides it). Carved lanterns (one InstancedMesh, glowing through emissive faces, no lights) by the south
   doors and the rug, a turnip lantern, and the Oíche Shamhna table of ghost stories near the entrance with a card on
