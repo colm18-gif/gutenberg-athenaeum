@@ -117,6 +117,8 @@
       // The Austen Room: a quiet drawing room at night, a mantel clock, a page turned, and now and then the door.
       // The Burns Room: a cottage at night, the fire, rain at the window, and the clock on the wall.
       'burns-room':{beds:[['fire',.09],['air',.025]],ticks:[[1.1,'tock',.018]],events:[['crackle',36,.11],['snap',7,.09],['creak',.5,.03]]},
+      // Books Within Books: a still room, a clock, pages turning, and now and then a drawer in the catalogue.
+      'within-room':{beds:[['air',.03]],ticks:[[1.2,'tock',.02]],events:[['rustle',1.2,.045],['creak',.4,.03]]},
       'austen-room':{beds:[['air',.025]],ticks:[[1,'tick',.016]],events:[['rustle',.8,.035],['creak',.3,.03]]},
       // The Poe Room: a still house, its floorboards settling (the heart under them is poe-room.js's own).
       'poe-room':{beds:[['air',.03]],events:[['creak',.9,.05],['rustle',.6,.03]]},

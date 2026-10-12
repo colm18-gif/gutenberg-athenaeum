@@ -13,7 +13,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Files the jobs rewrite without a new build are listed in `LIVE_DATA` there.
 - Rooms behind doors (`evening-room.js`, `learners-room.js`, `periodicals-room.js`, `international-wing.js`,
   `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`, `map-room.js`, `medicine-room.js`, `set-texts-room.js`,
-  `austen-room.js`, `burns-room.js`)
+  `austen-room.js`, `burns-room.js`, `within-room.js`)
   are built only when the reader approaches and freed ~25 s after they leave. So are the Room of Chance (its portrait
   stays), the Lost Property Office (its hatch stays) and the high staircase, Rocket Hall, Moon and rocket cabin (`high-staircase.js`: only its door in the west wing
   is built at startup; a stair book carried away keeps it). The basement and the roof garden, built in `game.js` on a first visit, are
@@ -85,6 +85,18 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Devil's pipes (voice `pipes`) until "Weel done, Cutty-sark!", and Tam O'Shanter (shelf `burns-cutty`) is left on the
   sill, found for good (`athenaeum-burns-cutty-sark`; `?cuttysark`). The Grand Hall's walls are full, which is why the
   door is in the Irish Room. Built for Burns Night (25 January): Burns clubs plan their suppers in November and December.
+- The Room of Books Within Books (`within-room.js`, x 500, z −440) is reached through the card catalogue against the Grand
+  Hall's west wall (x −18.45, z 7.3, between the wing door's open leaf and the gramophone; `?room=within`). The first drawer
+  pulled holds a card for a book that was never written; the next, the drawer marked with a dash between Li–Ly and Ma–Me,
+  slides out further than the cabinet is deep, and the reader goes in (found for good: `athenaeum-within-found`; `?within`).
+  West wall: the books that never were (`NEVER`: Holmes's monographs, Moriarty's, Dr Mortimer's, then Casaubon's Key,
+  Branderham's sermon, Mr Dick's Memorial, the Looking-glass book…), drawn on one atlas texture; reading a card twice opens
+  the real book at the page (`openBook` in game.js sets `pendingPassage`, matched on letters alone). Dorian Gray and The King
+  in Yellow are secret editions, so their cards never open them. East wall: real books read in other books (`READS`, shelves
+  `within-copperfield` and `within-read`); Heimskringla on the lectern (`within-lectern`) with Saknussemm's parchment;
+  hosts the library holds nowhere else are `within-hosts`. Every quotation on a card must be in its book: a test checks each
+  against the bundled text where there is one, and the rest were checked against the texts by hand. Never invent a title for
+  an imaginary book the text doesn't give (say so on the card, as for Holmes's cipher monograph).
 - The Set Texts Room (`set-texts-room.js`, x −330, z 60) is behind a blue door in the English Reading Room's east wall
   (`?room=set-texts`): the plays and novels most often set for GCSE English Literature (Shakespeare on the west wall, from
   `PLAYS` and the room `set-texts` in `data/new-books.js`; the nineteenth-century novel on the north wall, `NOVELS`), a long
@@ -225,7 +237,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, boathouse,
-  daily-room, poe, irish, maps, medicine, austen, burns, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
+  daily-room, poe, irish, maps, medicine, austen, burns, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text.
 - **Halloween night** (`halloween.js`): 24 October to 2 November by the reader's own date (`?halloween` previews it,
   `?nohalloween` hides it). Carved lanterns (one InstancedMesh, glowing through emissive faces, no lights) by the south
