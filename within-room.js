@@ -5,7 +5,7 @@
 //
 // On the west wall, the books that never were: Sherlock Holmes's monographs (with his enemy's mathematics and Dr
 // Mortimer's papers), and the others: Mr Casaubon's Key to all Mythologies, the Reverend Jabez Branderham's sermon, Mr
-// Dick's Memorial, the play called The King in Yellow, and the rest, each bound by the library and each with a card.
+// Dick's Memorial, the Necronomicon, Teufelsdröckh's treatise on clothes, the play called The King in Yellow, and the rest, each bound by the library and each with a card.
 // Reading the card offers the real book, opened at the page where the imaginary one appears. On the east wall, the real
 // books read in other books: David Copperfield's father's books in the little room upstairs, and the books of Frankenstein's
 // creature, Jane Eyre, the March girls and Maggie Tulliver. In the middle, on a lectern, Professor Lidenbrock's
@@ -59,6 +59,10 @@
       card:'In chapter IX of Don Quixote, Cervantes says he found the rest of the story “in the Alcana of Toledo,” in Arabic pamphlets a boy was selling to a silk mercer: “History of Don Quixote of La Mancha, written by Cide Hamete Benengeli, an Arab historian.”'},
     {key:'looking-glass',group:'never',title:'JABBERWOCKY',by:'A Looking-glass book',mirror:true,host:12,hostTitle:'Through the Looking-Glass',passage:'looking glass book',colour:'#2e3a5a',
       card:'The book lying near Alice on the table in the Looking-glass room, which she cannot read until a bright thought strikes her: “Why, it’s a Looking-glass book, of course! And if I hold it up to a glass, the words will all go the right way again.”'},
+    {key:'necronomicon',group:'never',title:'Necronomicon',by:'The mad Arab Alhazred',host:50133,hostTitle:'The Dunwich Horror',passage:'necronomicon of the mad arab',colour:'#2a1e18',
+      card:'Wilbur Whateley, almost eight feet tall, goes to Arkham for it in The Dunwich Horror: “the dreaded volume kept under lock and key at the college library—the hideous Necronomicon of the mad Arab Alhazred in Olaus Wormius’ Latin version, as printed in Spain in the Seventeenth Century.” Lovecraft invented it.'},
+    {key:'kleider',group:'never',title:'Die Kleider, ihr Werden und Wirken',by:'Diogenes Teufelsdröckh',host:1051,hostTitle:'Sartor Resartus',passage:'ihr werden und wirken',colour:'#3a3a30',
+      card:'The German treatise on clothes that Carlyle’s Sartor Resartus pretends to review: “Die Kleider, ihr Werden und Wirken (Clothes, their Origin and Influence): von Diog. Teufelsdrockh, J. U. D. etc. Stillschweigen und Cognie. Weissnichtwo, 1831.” Weissnichtwo means Know-not-where.'},
     {key:'king-in-yellow',group:'never',title:'The King in Yellow',by:'A play in two acts',host:8492,hostTitle:'The King in Yellow',hidden:true,colour:'#b8921e',
       card:'The play that drives its readers mad, in Robert W. Chambers’s stories. “I remember after finishing the first act that it occurred to me that I had better stop.” The library has Chambers’s book, but keeps it where it has to be found.'}
   ];
@@ -251,7 +255,7 @@
       const desk=box(.78,.05,.56,MAT.darkWood,0,1.16,0,g);desk.rotation.x=.32;
       block(x,z,.9,.8);
       const [book]=shelfBooks([],'lectern',1);
-      if(book){const mesh=add(own(new THREE.BoxGeometry(.5,.07,.38)),own(bookMaterial(book)),0,1.24,-.02,g);mesh.rotation.x=.32;
+      if(book){const mesh=add(own(new THREE.BoxGeometry(.38,.5,.07)),own(bookMaterial(book)),0,1.24,-.02,g);mesh.rotation.set(-Math.PI/2+.32,0,0);// cover up, its top away from the reader, at the desk's slope
         mesh.userData={type:'book',book,loaded:false,within:true,shelf:'lectern',home:{position:mesh.position.clone(),quaternion:mesh.quaternion.clone(),parent:g}};interactables.push(mesh);ours.push(mesh);books.push(mesh)}
       const parchment=own(canvasTexture((c,W,H)=>{c.fillStyle='#d9c69a';c.fillRect(0,0,W,H);c.fillStyle='rgba(120,90,40,.25)';for(let i=0;i<40;i++){c.beginPath();c.arc((i*53)%W,(i*31)%H,4+(i%5)*3,0,7);c.fill()}
         // Strokes in the manner of runes: the facsimile in the book is a picture, not text, so these are only marks.
