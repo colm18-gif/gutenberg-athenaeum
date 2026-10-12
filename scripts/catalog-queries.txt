@@ -1,17 +1,20 @@
-Voynich ; ; 
- ; Voynich ; 
-Gadfly ; ; 
- ; Bacon, Roger ; 
- ; Kircher ; 
- ; Dee, John ; 
- ; Kelley, Edward ; 
-Cipher|Cypher|Cryptogra|Secret Writing ; ; en
- ; Hitt, Parker ; 
- ; Friedman, William ; 
-Gold.Bug ; ; en
-Dancing Men ; ; en
-Rudolf II|Rudolph II ; ; 
-Herbal ; ; en
- ; Trithemius ; 
- ; Porta ; 
-Steganograph ; ; 
+Heimskringla ; ; en
+Plutarch.s Lives|Lives of the Noble ; Plutarch ; en
+Arabian Nights|Thousand and One Nights ; ; en
+Peregrine Pickle ; ; en
+Roderick Random ; ; en
+Gil Blas ; ; en
+Tales of the Genii ; ; en
+British Birds ; Bewick ; en
+History of the Devil ; Defoe ; en
+Imitation of Christ ; ; en
+Sermons to Young Women ; ; en
+Undine ; ; en
+Sintram ; ; en
+Dunwich ; Lovecraft ; en
+ ; Lovecraft ; en
+Pickwick ; ; en
+Sartor Resartus ; ; en
+Cornelius Agrippa|Occult Philosophy ; ; en
+Paracelsus ; ; en
+Albertus Magnus|Secrets of Albertus ; ; en

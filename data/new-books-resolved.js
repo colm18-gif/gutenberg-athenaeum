@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-10-10",
+ "updated": "2026-10-12",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -1462,6 +1462,54 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "The Italian": {
    "id": 74643,
    "words": 54498
+  },
+  "Heimskringla": {
+   "id": 598,
+   "words": 306377
+  },
+  "Lives of the Noble Grecians and Romans": {
+   "id": 674,
+   "words": 741995
+  },
+  "The Adventures of Peregrine Pickle": {
+   "id": 4084,
+   "words": 318881
+  },
+  "The Adventures of Roderick Random": {
+   "id": 4085,
+   "words": 192165
+  },
+  "The Adventures of Gil Blas of Santillane": {
+   "id": 66677,
+   "words": 118184
+  },
+  "The Arabian Nights Entertainments": {
+   "id": 128,
+   "words": 111936
+  },
+  "The History of the Devil": {
+   "id": 31053,
+   "words": 129608
+  },
+  "The Imitation of Christ": {
+   "id": 1653,
+   "words": 62645
+  },
+  "Sintram and His Companions": {
+   "id": 2824,
+   "words": 39995
+  },
+  "The Pickwick Papers": {
+   "id": 580,
+   "words": 305172
+  },
+  "The Dunwich Horror": {
+   "id": 50133,
+   "words": 17602
+  },
+  "Sartor Resartus": {
+   "id": 1051,
+   "words": 81922
   },
   "Don Quijote [es]": {
    "id": 2000,
