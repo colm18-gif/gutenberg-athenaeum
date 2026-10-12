@@ -47,9 +47,16 @@ export function htmlToText(html){
     .replace(/<[^>]+>/g,'').replace(/&#x([0-9a-f]+);/gi,(m,h)=>String.fromCodePoint(parseInt(h,16))).replace(/&#(\d+);/g,(m,d)=>String.fromCodePoint(Number(d)))
     .replace(/&([a-z]+);/gi,(m,n)=>entities[n.toLowerCase()]??m).replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
 }
-async function downloadHtml(id){
-  for(const url of [`https://www.gutenberg.org/cache/epub/${id}/pg${id}-images.html`,`https://www.gutenberg.org/ebooks/${id}.html.images`]){
-    try{const response=await fetch(url,{signal:AbortSignal.timeout(30000)});if(!response.ok)continue;const text=htmlToText(await response.text());if(text.length>2000)return text}catch(error){}
+// Older books are sometimes only in the files/ tree (plain text in Latin-1 as -8.txt, or HTML as -h.htm). Each address
+// tried is logged, so a book that still cannot be found says why.
+async function downloadOther(id){
+  const base=`https://www.gutenberg.org/files/${id}`;
+  for(const [url,html] of [[`${base}/${id}-0.txt`],[`${base}/${id}.txt`],[`${base}/${id}-8.txt`,false,'latin1'],[`https://www.gutenberg.org/cache/epub/${id}/pg${id}-images.html`,true],
+    [`https://www.gutenberg.org/ebooks/${id}.html.images`,true],[`${base}/${id}-h/${id}-h.htm`,true],[`${base}/${id}-h.htm`,true]].map(([u,h,e])=>[u,{html:!!h,encoding:e||'utf-8'}])){
+    try{
+      const response=await fetch(url,{signal:AbortSignal.timeout(30000)});console.log(`    ${url}: ${response.status}`);if(!response.ok)continue;
+      const raw=new TextDecoder(html.encoding).decode(await response.arrayBuffer()),text=html.html?htmlToText(raw):raw;if(text.length>2000)return text;
+    }catch(error){console.log(`    ${url}: ${error.name}`)}
   }
   return null;
 }
@@ -60,7 +67,7 @@ async function bundleMissing(){
   console.log(`\n${todo.length} catalogue books have no bundled text.`);
   for(const book of todo){
     if(Date.now()-started>MISSING_BUDGET_MS){console.log(`  out of time; ${todo.length-added-refused} left for the next run`);break}
-    const text=await download(book.id)||await downloadHtml(book.id);
+    const text=await download(book.id)||await downloadOther(book.id);
     if(!text){console.log(`  ${book.id}: could not be downloaded`);refused++;continue}
     if(!bundleMatches(text,book)){console.log(`  ${book.id}: the download is not “${book.title}” by ${book.author}; left unbundled`);refused++;continue}
     fs.writeFileSync(path.join(BUNDLED,`pg${book.id}.txt.gz`),zlib.gzipSync(text,{level:9}));added++;console.log(`  + ${book.id} ${book.title}`);
