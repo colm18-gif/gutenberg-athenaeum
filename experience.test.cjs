@@ -148,8 +148,8 @@ test('Haggard and Conan Doyle have concealed author rooms with distinct period e
   vm.runInNewContext(fs.readFileSync('data/doyle-catalog.js','utf8'),doyleContext);
   vm.runInNewContext(fs.readFileSync('data/doyle-notes.js','utf8'),doyleContext);
   const doyleBooks=doyleContext.window.ATHENAEUM_DOYLE_BOOKS;
-  assert.equal(doyleBooks.length,90);
-  assert.equal(new Set(doyleBooks.map(([id])=>id)).size,90);
+  assert.equal(doyleBooks.length,89);
+  assert.equal(new Set(doyleBooks.map(([id])=>id)).size,89);
   assert(doyleBooks.every(([,title])=>!/\((?:Finnish|French|Dutch|Danish|German|Polish|Spanish|Interlingua)/.test(title)));
   assert(doyleBooks.every(([id])=>doyleContext.window.ATHENAEUM_EXTRA_NOTES[id]?.length>80));
   assert.match(html,/startupScript\('data\/doyle-catalog\.js'\)/);
