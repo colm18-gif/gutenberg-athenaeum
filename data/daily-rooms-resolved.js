@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-11",
+ "updated": "2026-10-12",
  "days": {
-  "2026-09-28": {
-   "books": [
-    {
-     "id": 107,
-     "title": "Far from the Madding Crowd",
-     "author": "Thomas Hardy"
-    },
-    {
-     "id": 507,
-     "title": "Adam Bede",
-     "author": "George Eliot"
-    },
-    {
-     "id": 1408,
-     "title": "The Natural History of Selborne",
-     "author": "Gilbert White"
-    },
-    {
-     "id": 34238,
-     "title": "Rural Rides",
-     "author": "William Cobbett"
-    },
-    {
-     "id": 232,
-     "title": "The Georgics",
-     "author": "Virgil"
-    },
-    {
-     "id": 9092,
-     "title": "The Farmer's Boy",
-     "author": "Robert Bloomfield"
-    },
-    {
-     "id": 110,
-     "title": "Tess of the d'Urbervilles",
-     "author": "Thomas Hardy"
-    },
-    {
-     "id": 482,
-     "title": "The Woodlanders",
-     "author": "Thomas Hardy"
-    },
-    {
-     "id": 349,
-     "title": "The Harvester",
-     "author": "Gene Stratton-Porter"
-    },
-    {
-     "id": 242,
-     "title": "My Antonia",
-     "author": "Willa Cather"
-    }
-   ],
-   "missing": []
-  },
   "2026-09-29": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 285,
      "title": "The Lost Continent",
      "author": "C. J. Cutcliffe Hyne"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-14": {
+   "books": [
+    {
+     "id": 678,
+     "title": "The Cricket on the Hearth",
+     "author": "Charles Dickens"
+    },
+    {
+     "id": 20226,
+     "title": "Snow-Bound",
+     "author": "John Greenleaf Whittier"
+    },
+    {
+     "id": 27924,
+     "title": "Mugby Junction",
+     "author": "Charles Dickens"
+    },
+    {
+     "id": 503,
+     "title": "The Blue Fairy Book",
+     "author": "Andrew Lang"
+    },
+    {
+     "id": 25153,
+     "title": "Tales of a Wayside Inn",
+     "author": "Henry Wadsworth Longfellow"
+    },
+    {
+     "id": 2383,
+     "title": "The Canterbury Tales",
+     "author": "Geoffrey Chaucer"
+    },
+    {
+     "id": 128,
+     "title": "The Arabian Nights' Entertainments",
+     "author": "Anonymous"
+    },
+    {
+     "id": 23700,
+     "title": "The Decameron",
+     "author": "Giovanni Boccaccio"
+    },
+    {
+     "id": 14107,
+     "title": "The Lost Stradivarius",
+     "author": "John Meade Falkner"
+    },
+    {
+     "id": 751,
+     "title": "The Autocrat of the Breakfast-Table",
+     "author": "Oliver Wendell Holmes"
     }
    ],
    "missing": []
