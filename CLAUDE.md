@@ -292,6 +292,12 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Jane Austen Society of Melbourne, the UK Society's Hampshire and Northern branches, JASNA Southwest (Southern
   California), and the Kent branch's membership secretary. No email found for Pakistan (Facebook JaneitesPakistan,
   Instagram @janeausten_pk), Buenos Aires or JASNA Massachusetts; the UK Society lists no Bath branch now.
+- Replies answered 12 October: passed on by Cambridge Ukrainian Studies (to teaching staff), UCD's School of English
+  liaison (to colleagues; Marta Bustillo is on leave), the Shakespeare Birthplace Trust (to its Leadership and Collections &
+  Archives teams), St Bride Library (to library colleagues; no newsletter), the Schoenberg Institute (to Dot Porter, SIMS
+  Curator of Digital Humanities), JASNA, the Edward Thomas Fellowship (in its eBulletin to teachers) and the RLS Club's
+  secretary. Declined: the UK Jane Austen Society's Kent branch (thought it not for its members, after trouble with the
+  controls on a laptop) and Golden Hare Books. Poe Baltimore suggested entering the Saturday Visiter Awards next year.
 - Lewis Carroll outreach sent 11 October from colm18@gmail.com: the Lewis Carroll Society (secretary@), the LCSNA
   (community@lewiscarroll.org) and the Lewis Carroll Centre at Daresbury (director@, an address from its Facebook page).
   The Daresbury Lewis Carroll Society has only a contact form, which the owner is to fill in by hand. Every Carroll
