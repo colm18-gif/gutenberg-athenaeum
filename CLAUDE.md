@@ -306,6 +306,15 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   The Daresbury Lewis Carroll Society has only a contact form, which the owner is to fill in by hand. Every Carroll
   quotation in the library was checked against the texts first (two fixed: the fall's "never come to an end?" and the
   Bellman's quatrain); make any corrections that come back.
+- Outreach sent 13 October from colm18@gmail.com, one room each, to organisations outside Ireland none of which had been
+  written to before: the Osher Map Library (oml-usm@maine.edu) and the IMCoS Journal's editor (Ljiljana.editor@gmail.com)
+  for the Map Room; the Royal College of Physicians of Edinburgh library (library@rcpe.ac.uk) and the Thackray Museum of
+  Medicine (collections@thackraymuseum.org) for the Medicine Room; the Classical Association (office@) for the Latin room;
+  the Sherlock Holmes Society of London (SHSLMembSec@outlook.com) for the Room of Books Within Books; KCL Digital
+  Humanities (digitalhumanities@kcl.ac.uk) for the library and how it is built; ASAUK (secretary@asauk.net) for the
+  African Reading Room, asking for public-domain African writers it lacks; the Dante Society of America
+  (dantesociety@gmail.com) for the Italian room. The SHSL, KCL and IMCoS addresses are from older or third-party listings.
+  A draft to the William Morris Society (wmsadmin@) is held unsent at the owner's wish. Make any corrections that come back.
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
   AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
