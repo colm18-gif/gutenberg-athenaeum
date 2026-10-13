@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-12",
+ "updated": "2026-10-13",
  "days": {
-  "2026-09-29": {
-   "books": [
-    {
-     "id": 394,
-     "title": "Cranford",
-     "author": "Elizabeth Cleghorn Gaskell"
-    },
-    {
-     "id": 4276,
-     "title": "North and South",
-     "author": "Elizabeth Cleghorn Gaskell"
-    },
-    {
-     "id": 2153,
-     "title": "Mary Barton",
-     "author": "Elizabeth Cleghorn Gaskell"
-    },
-    {
-     "id": 4274,
-     "title": "Wives and Daughters",
-     "author": "Elizabeth Cleghorn Gaskell"
-    },
-    {
-     "id": 4275,
-     "title": "Ruth",
-     "author": "Elizabeth Cleghorn Gaskell"
-    },
-    {
-     "id": 4268,
-     "title": "Cousin Phillis",
-     "author": "Elizabeth Cleghorn Gaskell"
-    },
-    {
-     "id": 4537,
-     "title": "Sylvia's Lovers",
-     "author": "Elizabeth Cleghorn Gaskell"
-    },
-    {
-     "id": 996,
-     "title": "Don Quixote",
-     "author": "Miguel de Cervantes Saavedra"
-    },
-    {
-     "id": 14420,
-     "title": "Exemplary Novels",
-     "author": "Miguel de Cervantes Saavedra"
-    },
-    {
-     "id": 61561,
-     "title": "The Wanderings of Persiles and Sigismunda",
-     "author": "Miguel de Cervantes Saavedra"
-    }
-   ],
-   "missing": []
-  },
   "2026-09-30": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 751,
      "title": "The Autocrat of the Breakfast-Table",
      "author": "Oliver Wendell Holmes"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-15": {
+   "books": [
+    {
+     "id": 8164,
+     "title": "My Man Jeeves",
+     "author": "P. G. Wodehouse"
+    },
+    {
+     "id": 2042,
+     "title": "Something New",
+     "author": "P. G. Wodehouse"
+    },
+    {
+     "id": 6753,
+     "title": "Psmith in the City",
+     "author": "P. G. Wodehouse"
+    },
+    {
+     "id": 2005,
+     "title": "Piccadilly Jim",
+     "author": "P. G. Wodehouse"
+    },
+    {
+     "id": 2233,
+     "title": "A Damsel in Distress",
+     "author": "P. G. Wodehouse"
+    },
+    {
+     "id": 1998,
+     "title": "Thus Spake Zarathustra",
+     "author": "Friedrich Wilhelm Nietzsche"
+    },
+    {
+     "id": 4363,
+     "title": "Beyond Good and Evil",
+     "author": "Friedrich Wilhelm Nietzsche"
+    },
+    {
+     "id": 228,
+     "title": "The Aeneid",
+     "author": "Virgil"
+    },
+    {
+     "id": 230,
+     "title": "The Bucolics and Eclogues",
+     "author": "Virgil"
+    },
+    {
+     "id": 52881,
+     "title": "The Joyful Wisdom",
+     "author": "Friedrich Wilhelm Nietzsche"
     }
    ],
    "missing": []
