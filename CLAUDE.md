@@ -298,6 +298,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Curator of Digital Humanities), JASNA, the Edward Thomas Fellowship (in its eBulletin to teachers) and the RLS Club's
   secretary. Declined: the UK Jane Austen Society's Kent branch (thought it not for its members, after trouble with the
   controls on a laptop) and Golden Hare Books. Poe Baltimore suggested entering the Saturday Visiter Awards next year.
+- 13 October: SLANZA (School Library Association of New Zealand Aotearoa; Sarah Stretch, National Administrator,
+  admin@slanza.org.nz) replied to libraryafterdark1@gmail.com and copied in its President, Trena Lile
+  (president@slanza.org.nz), to consider how best to support the New Zealand Room. Answer from that address.
 - Lewis Carroll outreach sent 11 October from colm18@gmail.com: the Lewis Carroll Society (secretary@), the LCSNA
   (community@lewiscarroll.org) and the Lewis Carroll Centre at Daresbury (director@, an address from its Facebook page).
   The Daresbury Lewis Carroll Society has only a contact form, which the owner is to fill in by hand. Every Carroll
