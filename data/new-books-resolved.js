@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-10-12",
+ "updated": "2026-10-14",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -1510,6 +1510,14 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Sartor Resartus": {
    "id": 1051,
    "words": 81922
+  },
+  "The French Revolution: A History": {
+   "id": 1301,
+   "words": 308989
+  },
+  "Elene; Judith; Athelstan, or the Fight at Brunanburh; Byrhtnoth, or the Fight at Maldon; and the Dream of the Rood": {
+   "id": 15879,
+   "words": 22934
   },
   "Don Quijote [es]": {
    "id": 2000,
