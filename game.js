@@ -1835,7 +1835,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const preChanceInteract=interact;interact=function(){if(focus&&!selected&&chanceRoom.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preChanceInteract()};
     }
     // The archive script downloads only after the cold hearth is discovered.
-    const cinderArchive=window.createCinderArchive?.({THREE,scene,MAT,player,interactables,canvasTexture,showNotice,playSample,isHolding:()=>!!selected,
+    const cinderArchive=window.createCinderArchive?.({THREE,scene,MAT,player,interactables,canvasTexture,showNotice,playSample,isHolding:()=>!!selected,isLowBandwidth:()=>lowBandwidth,
       findBook:id=>books.find(b=>b.id===id),arrivals:()=>newArrivals.list('cinder'),prepareReturn:()=>buildThemeRooms('gothic'),
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
     });

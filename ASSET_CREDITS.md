@@ -142,3 +142,12 @@ from the `wordnet-db` npm package. WordNet's licence requires this notice on all
 
 The meanings are shortened, and the words chosen and ranked by how often they appear in the library's own books.
 A few meanings are rewritten by hand where WordNet's first sense is unusual (see `OVERRIDES` in the build script).
+
+## Cinder Archive materials
+
+The archive reuses the locally hosted **Sandstone Blocks 08** (Rob Tuytel,
+https://polyhaven.com/a/sandstone_blocks_08) and **Smoked Walnut Veneer**
+(https://polyhaven.com/a/smoked_walnut_veneer) diffuse and normal maps, both
+CC0 1.0. Source paths are recorded in `assets/polyhaven/manifest.json`.
+The vault ribs, lamps, display furniture, flagstone pattern and fire damage are
+original geometry and canvas artwork. Maps load only upon entering the room.
