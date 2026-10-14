@@ -6,10 +6,10 @@ class Mesh extends O{constructor(g,m){super();this.geometry=g;this.material=m}}
 const G=class{constructor(...a){this.args=a}dispose(){this.disposed=true}},M=class{constructor(p){Object.assign(this,p);this.emissive={setHex(){}}}dispose(){this.disposed=true}};
 const THREE={Group:O,Mesh,BoxGeometry:G,PlaneGeometry:G,MeshStandardMaterial:M,CylinderGeometry:G,PointLight:class extends O{constructor(){super();this.isLight=true}}};
 
-function setup(){
+function setup(extra={}){
  const context={window:{},Math};vm.runInNewContext(fs.readFileSync('cinder-room.js','utf8'),context);
  const scene=new O(),interactables=[],player={pos:new V(),radius:.42},notices=[];
- const r=context.window.buildCinderRoom({THREE,scene,MAT:{},player,interactables,canvasTexture:()=>({dispose(){this.disposed=true}}),findBook:id=>({id,title:'Book '+id}),arrivals:()=>[],entrance:{x:101,z:21.55},showNotice:t=>notices.push(t),move:(x,z)=>player.pos.set(x,0,z)});
+ const r=context.window.buildCinderRoom({THREE,scene,MAT:{},player,interactables,canvasTexture:()=>({dispose(){this.disposed=true}}),findBook:id=>({id,title:'Book '+id}),arrivals:()=>[],entrance:{x:101,z:21.55},showNotice:t=>notices.push(t),move:(x,z)=>player.pos.set(x,0,z),...extra});
  return {r,scene,interactables,player,notices};
 }
 test('Cinder Archive builds on entry, has safe arrival and exit routes, and frees its resources',()=>{
@@ -40,4 +40,27 @@ test('the hearth reveals before downloading, shares a load request, and retries 
  r.interact(interactables.find(o=>o.userData.type==='cinder-key'));assert.equal(scripts.length,0);assert(interactables.some(o=>o.userData.type==='cinder-door'));
  const first=r.enter();r.enter();assert.equal(scripts.length,1);assert.match(scripts[0].src,/cinder-room.js\?v=test/);scripts[0].onerror();await first;assert.equal(r.pending,false);assert.match(notices.at(-1),/Try the hearth again/);
  let entered=0;const retry=r.enter();assert.equal(scripts.length,2);context.window.buildCinderRoom=()=>({enter(){entered++},built:true});scripts[1].onload();await retry;assert.equal(entered,1);assert(r.built);
+});
+
+test('every exhibit is reachable from the hearth, with room to stand and return',()=>{
+ for(const radius of [.42,.6]){
+  const a=setup();a.player.radius=radius;a.r.enter();const R=a.r.room,step=.1;
+  const key=(x,z)=>`${x},${z}`,queue=[[0,59]],seen=new Set([key(0,59)]);
+  for(let head=0;head<queue.length;head++){
+   const [x,z]=queue[head];
+   for(const [dx,dz] of [[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,nz=z+dz,k=key(nx,nz);if(!seen.has(k)&&a.r.allowed(R.cx+nx*step,R.cz+nz*step)){seen.add(k);queue.push([nx,nz])}}
+  }
+  const exhibits=a.interactables.filter(o=>o.userData.type==='cinder-note'&&o.geometry.args.length===2&&['BEOWULF','THE FRENCH REVOLUTION','THE BATTLE OF MALDON','COTTON GENESIS','HORTUS DELICIARUM','THE HERCULANEUM PAPYRI'].includes(o.userData.title));
+  for(const o of exhibits){const x=Math.round((o.position.x-R.cx)/step),z=Math.round((o.position.z-R.cz+.8)/step);assert(seen.has(key(x,z)),`${o.userData.title} must have a reachable viewing position (radius ${radius})`)}
+  for(let z=-48;z<40;z++)assert(seen.has(key(0,z)),'the central aisle must be continuously open');
+ }
+});
+
+test('optional photo textures stay lazy, respect low bandwidth, and dispose late responses',()=>{
+ const requests=[],PhotoTHREE={...THREE,TextureLoader:class{load(url,ok){requests.push({url,ok})}}};
+ const a=setup({THREE:PhotoTHREE});assert.equal(requests.length,0);a.r.enter();assert.equal(requests.length,4);
+ const texture=()=>({repeat:{set(){}},dispose(){this.disposed=true}});
+ const accepted=texture();requests[0].ok(accepted);a.r.unload();assert(accepted.disposed);
+ a.r.enter();const late=texture();requests[1].ok(late);assert(late.disposed,'old textures must not attach to a rebuilt room');a.r.unload();
+ requests.length=0;const low=setup({THREE:PhotoTHREE,isLowBandwidth:()=>true});low.r.enter();assert.equal(requests.length,0);
 });

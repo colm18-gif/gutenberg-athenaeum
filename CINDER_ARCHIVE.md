@@ -17,3 +17,11 @@ Historical sources:
 - Readable editions: https://www.gutenberg.org/ebooks/16328 , https://www.gutenberg.org/ebooks/1301 , https://www.gutenberg.org/ebooks/15879
 
 Checks: `node --check cinder-archive.js`, `node --check cinder-room.js`, `node --check game.js`, `node --test cinder-archive.test.cjs`, and the full Library tests workflow before merge.
+
+## Access and material pass (14 October 2026)
+
+The central workbench previously sealed the room across its middle: after the player's radius was added, its collider overlapped both adjacent exhibit colliders. The workbench now stands at the north wall. A continuous central aisle reaches all six displays; the shorter hearth passage also leaves a cross-route in front of the southern exhibits. The navigation test flood-fills the actual collision layout from arrival to every exhibit's viewing position for radii 0.42 and 0.60 m.
+
+The archive now uses locally hosted CC0 Poly Haven Sandstone Blocks 08 and Smoked Walnut Veneer diffuse/normal maps, with metre-scale UVs. Original geometry adds masonry vault ribs, brass display lamps and inlay, green-grey exhibit pads, open shelving and a worn flagstone floor. Two existing room lights provide warmer, stronger illumination; the pass adds no lights. Display labels sit below the books so they do not obscure their covers.
+
+Photo maps load only after room entry and are skipped in low-bandwidth mode. They are disposed with the room; late texture callbacks cannot attach to an unloaded or rebuilt room. No new runtime CDN or startup asset is required.
