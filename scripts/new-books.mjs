@@ -1,3 +1,4 @@
+// Includes the Cinder Archive’s surviving reading copies.
 // New arrivals (run by .github/workflows/new-books.yml).
 //
 // For every book in data/new-books.js it makes sure the Gutenberg number really is the book named, using the
@@ -20,7 +21,7 @@ import {isWikisource,wikisourcePage,wikisourceId,fetchWikisource,wikisourceText,
 const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),'..');
 const LIST=path.join(root,'data/new-books.js'),WING=path.join(root,'data/new-books-wing.js'),RESOLVED=path.join(root,'data/new-books-resolved.js'),TRACKED=path.join(root,'data/daily-room-texts.json');
 const BUNDLED=path.join(root,'texts/bundled-gzip');
-export const ROOMS=['secret','shelves','evening-quick','evening-hour','evening-evening','learners-1','learners-2','learners-3','learners-4','learners-short','signal','tide','mars','periodicals','irish-myth','irish-revival','irish-writers','irish-gaeilge','antipodes','australian','new-zealand','african-ancient','african-voices','african-tales','map-voyages','map-makers','map-lands','medicine-physic','medicine-discovery','medicine-healers','burns-works','burns-lives','burns-scotland','burns-cutty','within-copperfield','within-read','within-lectern','within-hosts','austen-novels','austen-writings','austen-lives','austen-read','austen-horrid','set-texts','lost-property','contested','ciphers','kipling','spanish','portuguese','chinese','french','latin','italian','ukrainian'];
+export const ROOMS=['cinder','secret','shelves','evening-quick','evening-hour','evening-evening','learners-1','learners-2','learners-3','learners-4','learners-short','signal','tide','mars','periodicals','irish-myth','irish-revival','irish-writers','irish-gaeilge','antipodes','australian','new-zealand','african-ancient','african-voices','african-tales','map-voyages','map-makers','map-lands','medicine-physic','medicine-discovery','medicine-healers','burns-works','burns-lives','burns-scotland','burns-cutty','within-copperfield','within-read','within-lectern','within-hosts','austen-novels','austen-writings','austen-lives','austen-read','austen-horrid','set-texts','lost-property','contested','ciphers','kipling','spanish','portuguese','chinese','french','latin','italian','ukrainian'];
 // Rooms whose books are not in English: the language of their texts (used to search Gutendex, and by the reader
 // and the book pages). Every other room is English.
 export const ROOM_LANGUAGES={spanish:'es',portuguese:'pt',chinese:'zh',french:'fr',latin:'la',italian:'it',ukrainian:'uk','irish-gaeilge':'ga'};
@@ -102,3 +103,4 @@ async function main(){
   console.log(`\n${Object.keys(books).length} books ready, ${missing.length} not found${missing.length?': '+missing.join('; '):''}.`);
 }
 if(import.meta.url===`file://${process.argv[1]}`)await main();
+
