@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-13",
+ "updated": "2026-10-14",
  "days": {
-  "2026-09-30": {
-   "books": [
-    {
-     "id": 1952,
-     "title": "The Yellow Wallpaper",
-     "author": "Charlotte Perkins Gilman"
-    },
-    {
-     "id": 11231,
-     "title": "Bartleby, the Scrivener",
-     "author": "Herman Melville"
-    },
-    {
-     "id": 5200,
-     "title": "Metamorphosis",
-     "author": "Franz Kafka"
-    },
-    {
-     "id": 7256,
-     "title": "The Gift of the Magi",
-     "author": "O. Henry"
-    },
-    {
-     "id": 1080,
-     "title": "A Modest Proposal",
-     "author": "Jonathan Swift"
-    },
-    {
-     "id": 11757,
-     "title": "The Velveteen Rabbit",
-     "author": "Margery Williams"
-    },
-    {
-     "id": 12122,
-     "title": "The Monkey's Paw",
-     "author": "W. W. Jacobs"
-    },
-    {
-     "id": 375,
-     "title": "An Occurrence at Owl Creek Bridge",
-     "author": "Ambrose Bierce"
-    },
-    {
-     "id": 60976,
-     "title": "Rip Van Winkle",
-     "author": "Washington Irving"
-    },
-    {
-     "id": 6373,
-     "title": "The Luck of Roaring Camp",
-     "author": "Bret Harte"
-    }
-   ],
-   "missing": []
-  },
   "2026-10-01": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 52881,
      "title": "The Joyful Wisdom",
      "author": "Friedrich Wilhelm Nietzsche"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-16": {
+   "books": [
+    {
+     "id": 902,
+     "title": "The Happy Prince, and Other Tales",
+     "author": "Oscar Wilde"
+    },
+    {
+     "id": 873,
+     "title": "A House of Pomegranates",
+     "author": "Oscar Wilde"
+    },
+    {
+     "id": 14522,
+     "title": "The Canterville Ghost",
+     "author": "Oscar Wilde"
+    },
+    {
+     "id": 773,
+     "title": "Lord Arthur Savile's Crime; The Portrait of Mr. W. H., and Other Stories",
+     "author": "Oscar Wilde"
+    },
+    {
+     "id": 844,
+     "title": "The Importance of Being Earnest",
+     "author": "Oscar Wilde"
+    },
+    {
+     "id": 301,
+     "title": "The Ballad of Reading Gaol",
+     "author": "Oscar Wilde"
+    },
+    {
+     "id": 921,
+     "title": "De Profundis",
+     "author": "Oscar Wilde"
+    },
+    {
+     "id": 887,
+     "title": "Intentions",
+     "author": "Oscar Wilde"
+    },
+    {
+     "id": 790,
+     "title": "Lady Windermere's Fan",
+     "author": "Oscar Wilde"
+    },
+    {
+     "id": 1017,
+     "title": "The Soul of Man under Socialism",
+     "author": "Oscar Wilde"
     }
    ],
    "missing": []
