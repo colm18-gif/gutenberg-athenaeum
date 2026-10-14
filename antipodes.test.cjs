@@ -125,6 +125,32 @@ test('the polar hut has an open approach and every book can be reached inside it
   assert(!a.allowed(r.cx+4.5,r.cz-6),'hut side walls are solid');
 });
 
+test('the quay gangway can be walked up to board and down to disembark without pressing E',()=>{
+  const {a,player,interactables}=world();a.enter('australian-room');
+  a.interact(interactables.find(o=>o.userData.type==='antipodes-polar-chart'));run(a,1);
+  const q=a.rooms.quay;let lastHeight=0;
+  for(let offset=0;offset<=3.4;offset+=.05){const x=q.cx+offset,z=q.cz+1;
+    assert(a.allowed(x,z),`quay to ship: blocked at ${offset.toFixed(2)} m`);
+    const height=a.floorAt(x,z);assert(height>=lastHeight-1e-6&&height-lastHeight<.06,'continuous ramp up to the deck');
+    player.pos.set(x,height,z);a.update(clock+=.05,.05);lastHeight=height;
+  }
+  assert(a.aboard&&!a.travelling,'walking aboard offers cast-off without starting the journey');assert.equal(lastHeight,.91);
+  for(let offset=3.4;offset>=0;offset-=.05){const x=q.cx+offset,z=q.cz+1;assert(a.allowed(x,z),'return across the gangway');player.pos.set(x,a.floorAt(x,z),z);a.update(clock+=.05,.05);}
+  assert(!a.aboard);assert.equal(a.floorAt(q.cx,q.cz+1),0);
+  assert(!a.allowed(q.cx+1.5,q.cz+2.2),'water alongside the gangway stays out of bounds');
+});
+
+test('the Antarctic gangway also connects the moored ship and landing in both directions',()=>{
+  const {a,player,interactables}=world();a.enter('australian-room');
+  a.interact(interactables.find(o=>o.userData.type==='antipodes-antarctic-boat'));
+  a.interact(interactables.find(o=>o.userData.type==='antipodes-antarctic-castoff'));run(a,15);
+  const r=a.rooms.antarctic;
+  for(let offset=-6;offset<=-3;offset+=.05){const x=r.cx+offset,z=r.cz+7;assert(a.allowed(x,z),`ship to ice: blocked at ${offset}`);player.pos.set(x,a.floorAt(x,z),z);a.update(clock+=.05,.05);}
+  assert(!a.aboard);assert.equal(player.pos.y,0);
+  for(let offset=-3;offset>=-6;offset-=.05){const x=r.cx+offset,z=r.cz+7;assert(a.allowed(x,z),'walking back onto the waiting ship');player.pos.set(x,a.floorAt(x,z),z);a.update(clock+=.05,.05);}
+  assert(a.aboard);assert.equal(player.pos.y,.91);
+});
+
 test('reduced motion keeps the deck steady, and resetting cancels travel without a delayed teleport',()=>{
   const {a,interactables,player,scene}=world();a.enter('australian-room');
   a.interact(interactables.find(o=>o.userData.type==='antipodes-antarctic-boat'));a.interact(interactables.find(o=>o.userData.type==='antipodes-antarctic-castoff'));

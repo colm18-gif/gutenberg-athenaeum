@@ -73,7 +73,7 @@
 
   window.createAntipodes=function(options){
     const {THREE,scene,MAT,player,camera,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,sound,move,fade,analytics,
-      isHolding=()=>false,isReducedMotion=()=>false,registerSeat=null,canUseVoyageControls=()=>true}=options;
+      isHolding=()=>false,isReducedMotion=()=>false,registerSeat=null,canUseVoyageControls=()=>true,getFocusedObject=()=>null}=options;
     // In the Grand Hall: the globe on the open floor between the reading tables and the long north bookcase, with
     // the trapdoor on the side the reader comes from.
     const GLOBE={x:0,z:-9.6},HATCH={x:0,z:-7.7,r:.62};
@@ -83,7 +83,7 @@
     const ARCH=3,KEEP=25,SHAFT={x:-330,z:-420,r:2.6,top:62};
     const TAU=Math.PI*2,clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),smooth=p=>p*p*(3-2*p);
     let timber=null,root=null,shaft=null,time=0,lastNeeded=-1e9,fall=null,fire=null,laughing=0;
-    let polarEntrance=null,polarShip=null,polarSea=null,voyage=null,aboard=false,shipLocation='australia',voyageUI=null;
+    let polarEntrance=null,polarShip=null,polarSea=null,polarGangways=null,voyage=null,aboard=false,shipLocation='australia',voyageUI=null;
     const owned=[],ours=[],books=[],blockers=[];
     const own=thing=>{owned.push(thing);return thing};
     function add(geometry,material,x,y,z,parent){const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);parent.add(m);return m}
@@ -262,6 +262,10 @@
     }
     const ANTARCTIC={cx:-345,cz:-321,w:18,d:24,h:6};
     const QUAY={cx:AUS.cx+6.5,cz:AUS.cz+AUS.d/2+4,w:6,d:8},PASSAGE={x:QUAY.cx,z:AUS.cz+AUS.d/2,w:2.8,h:3.5};
+    const DECK_Y=.91,GANGWAYS={
+      australia:{shoreX:QUAY.cx+.6,deckX:QUAY.cx+2.75,z:QUAY.cz+1,w:1.8},
+      antarctica:{shoreX:ANTARCTIC.cx-3.4,deckX:ANTARCTIC.cx-5.35,z:ANTARCTIC.cz+7,w:1.8}
+    };
     const OCEAN={x:-820,z:-620};
     function buildFar(){
       root=new THREE.Group();root.name='antipodes';
@@ -483,9 +487,16 @@
       picture(root,(c,W,H)=>starrySky(c,W,H,{cross:false,glow:'#304c60'}),34,12,QUAY.cx+2,4.8,QUAY.cz+24,Math.PI,null);
       for(const s of [-1,1]){box(.16,3.7,.16,timber,QUAY.cx+s*1.55,1.85,QUAY.cz-2.7,root);
         add(own(new THREE.SphereGeometry(.14,8,6)),own(new THREE.MeshBasicMaterial({color:0xffd19a})),QUAY.cx+s*1.55,2.45,QUAY.cz-2.7,root);}
-      const board={type:'antipodes-antarctic-boat',title:'The expedition ship',author:'Step aboard, then turn the wheel to cast off for Antarctica.',action:'BOARD THE SHIP',performanceDynamic:true};
-      const gangway=mark(box(2.3,.09,1.2,timber,QUAY.cx+1.85,.025,QUAY.cz+1,root),board);gangway.name='polar-quay-gangway';
-      mark(sign(root,'SOUTHERN PASSAGE','Board the ship · cast off at the wheel',2.4,.5,QUAY.cx,2.05,QUAY.cz+3.6),board).rotation.y=Math.PI;
+      polarGangways={};
+      for(const [where,bounds] of Object.entries(GANGWAYS)){
+        const {shoreX,deckX,z,w}=bounds,dx=deckX-shoreX,angle=Math.atan(DECK_Y/dx);
+        const data={type:where==='australia'?'antipodes-antarctic-boat':'antipodes-antarctic-return',title:'The ship’s gangway',author:'Walk up the ramp to board. The wheel starts the crossing.',action:'BOARD THE SHIP',performanceDynamic:true};
+        const ramp=mark(box(Math.hypot(dx,DECK_Y),.09,w,timber,(shoreX+deckX)/2,DECK_Y/2-.045*Math.cos(angle),z,root),data);ramp.rotation.z=angle;ramp.name='polar-'+where+'-gangway';
+        polarGangways[where]={ramp,data};
+      }
+      const board=polarGangways.australia.data;
+      box(.07,1.4,.07,timber,QUAY.cx+.7,.7,QUAY.cz+2.2,root);
+      mark(sign(root,'BOARD THE SHIP','Walk up the gangway · E also boards',1.85,.5,QUAY.cx+.65,1.45,QUAY.cz+2.2),board).rotation.y=-Math.PI/2;
       polarShip=buildPolarShip();shipLocation='australia';moorPolarShip('australia');
     }
     function buildPolarShip(){
@@ -497,7 +508,11 @@
       const geometry=points=>{const g=own(new THREE.BufferGeometry()),uv=[];for(let i=0;i<points.length;i+=3)uv.push((points[i]+1.5)/3,(points[i+2]+4.8)/8.8);g.setAttribute('position',new THREE.Float32BufferAttribute(points,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.computeVertexNormals?.();return g;};
       const hull=add(geometry(sides),hullMat,0,0,0,group);add(geometry(deck),deckMat,0,0,0,group);
       const parts=new Map(),part=(w,h,d,mat,x,y,z,rx=0,ry=0,rz=0)=>{if(!parts.has(mat))parts.set(mat,[]);parts.get(mat).push([new THREE.BoxGeometry(w,h,d),x,y,z,rx,ry,rz]);};
-      for(const s of [-1,1]){for(const z of [-2.7,-1.4,0,1.4,2.8])part(.075,.7,.075,MAT.brass,s*1.36,1.22,z);part(.075,.08,6.4,MAT.darkWood,s*1.36,1.6,0);}
+      for(const s of [-1,1]){
+        for(const z of s<0?[-2.7,-1.4,0,1.4,2.8]:[-2.7,-1.9,0,1.9,2.8])part(.075,.7,.075,MAT.brass,s*1.36,1.22,z);
+        if(s<0)part(.075,.08,6.4,MAT.darkWood,s*1.36,1.6,0);
+        else for(const [a,b] of [[-3.2,-1.9],[-.1,.1],[1.9,3.2]])part(.075,.08,b-a,MAT.darkWood,s*1.36,1.6,(a+b)/2);
+      }
       const sails=[];for(const [z,height,width] of [[-2.2,6.5,3.1],[.6,7.3,3.5]]){part(.13,height,.13,MAT.darkWood,0,.9+height/2,z);part(width+.5,.09,.09,MAT.darkWood,0,height-.1,z);
         const sail=add(own(new THREE.PlaneGeometry(width,2.5)),sailMat,0,height-1.3,z,group);sail.rotation.y=.1;sails.push(sail);
         for(const s of [-1,1])part(.025,5.5,.025,MAT.brass,s*.65,3.5,z+.4,0,0,-s*.19);}
@@ -511,7 +526,7 @@
       for(let i=0;i<4;i++)mark(box(.035,.76,.035,MAT.brass,0,1.67,.8,group),wheelData).rotation.z=i*Math.PI/4;
       box(.09,.7,.09,MAT.darkWood,0,1.22,.85,group);
       const exitData={type:'antipodes-antarctic-disembark',title:'The gangway',author:'Step back onto the quay.',action:'STEP ASHORE',performanceDynamic:true};
-      const exit=mark(box(.25,.55,1.05,MAT.brass,1.35,1.22,1.1,group),exitData);
+      const exit=mark(box(.04,.24,.3,MAT.brass,1.4,1.5,1.95,group),exitData);
       for(const s of [-1,1])add(own(new THREE.SphereGeometry(.12,8,6)),own(new THREE.MeshBasicMaterial({color:0xffd298})),s*1.2,1.72,2.7,group);
       group.traverse(o=>{if(o.geometry)o.userData.performanceDynamic=true;});
       return {group,boarding,wheelData,exitData,exit,wheel,sails};
@@ -523,14 +538,29 @@
       Object.assign(polarShip.boarding,{type:where==='australia'?'antipodes-antarctic-boat':'antipodes-antarctic-return',author:where==='australia'?'Board, then cast off at the wheel for Antarctica.':'Board, then cast off at the wheel for the Australian Room.'});
       polarShip.wheelData.author=where==='australia'?'Cast off for the southern ice.':'Cast off for the Australian Room.';
       polarShip.exitData.author=where==='australia'?'Step onto the lantern-lit quay.':'Step onto the ice. Follow the lanterns to the open hut and polar shelves.';
+      syncPolarGangways();
+    }
+    function syncPolarGangways(){
+      if(!polarGangways)return;
+      if(polarShip)Object.assign(polarShip.boarding,{type:aboard?'antipodes-antarctic-castoff':shipLocation==='australia'?'antipodes-antarctic-boat':'antipodes-antarctic-return',action:aboard?'CAST OFF':'BOARD THE SHIP',author:aboard?'Cast off at the wheel or use the voyage card.':'Walk up the gangway to board. E also boards.'});
+      for(const [where,entry] of Object.entries(polarGangways)){
+        entry.ramp.visible=!voyage&&shipLocation===where;
+        Object.assign(entry.data,{type:aboard?'antipodes-antarctic-disembark':where==='australia'?'antipodes-antarctic-boat':'antipodes-antarctic-return',action:aboard?'STEP ASHORE':'BOARD THE SHIP',author:aboard?'Walk down the gangway to the shore. G also steps ashore.':'Walk up the ramp to board. E also boards; cast off at the wheel once aboard.'});
+      }
+    }
+    function gangwayAt(x,z){
+      if(!polarShip||voyage)return null;const b=GANGWAYS[shipLocation];
+      return x>=Math.min(b.shoreX,b.deckX)&&x<=Math.max(b.shoreX,b.deckX)&&Math.abs(z-b.z)<b.w/2?b:null;
     }
     function shipPoint(x,z){const g=polarShip.group,a=g.rotation.y;return {x:g.position.x+x*Math.cos(a)+z*Math.sin(a),z:g.position.z-x*Math.sin(a)+z*Math.cos(a)};}
     function boardPolarShip(){
       if(voyage||aboard)return;if(!polarShip)activate();aboard=true;const p=shipPoint(0,1.85);move(p.x,p.z,polarShip.group.rotation.y);player.pos.y=.91;player.pitch=-.55;
+      syncPolarGangways();
       showNotice('Aboard the expedition ship. Turn the brass wheel to CAST OFF, or use the voyage card. The gangway takes you ashore.',7);updateVoyageUI();
     }
     function disembarkPolarShip(){
       if(voyage||!aboard)return;aboard=false;
+      syncPolarGangways();
       if(shipLocation==='australia')move(QUAY.cx,QUAY.cz+1,Math.PI);
       else{move(ANTARCTIC.cx-2.7,ANTARCTIC.cz+7,0);analytics?.track('Room Explored',{room:'antarctica-expedition'});}
       showNotice(shipLocation==='australia'?'The Australian quay. Walk back through the sea-chart cabinet to the reading room.':'Antarctica. Follow the lanterns to the open hut; the books are on its back shelves. The ship waits here for your return.',8);updateVoyageUI();
@@ -548,6 +578,7 @@
     function startPolarVoyage(){
       if(voyage)return;if(!aboard){boardPolarShip();return;}buildPolarSea();
       const reduced=isReducedMotion();voyage={from:shipLocation,t:0,duration:reduced?14:shipLocation==='australia'?30:24,said:-1,stage:'castoff'};
+      syncPolarGangways();
       player.pitch=-.08;
       playSample?.('doorOpen',.4,.8);sound?.(110,.8,'triangle',.035);updateVoyageUI();
     }
@@ -587,7 +618,7 @@
         const ashore=document.createElement('button');ashore.type='button';ashore.className='polar-ashore';ashore.textContent='Step ashore';ashore.addEventListener('click',disembarkPolarShip);el.append(ashore);voyageUI.ashore=ashore;
         document.addEventListener('keydown',event=>{
           if(!aboard||!canUseVoyageControls()||event.repeat||event.target?.closest?.('input,textarea,select'))return;
-          if(event.code==='KeyE'){event.preventDefault();event.stopImmediatePropagation();if(voyage)finishPolarVoyage();else startPolarVoyage();}
+          if(event.code==='KeyE'){if(!voyage&&getFocusedObject())return;event.preventDefault();event.stopImmediatePropagation();if(voyage)finishPolarVoyage();else startPolarVoyage();}
           else if(event.code==='KeyG'&&!voyage){event.preventDefault();event.stopImmediatePropagation();disembarkPolarShip();}
           else if(event.code==='Escape'&&document.pointerLockElement){event.preventDefault();event.stopImmediatePropagation();document.exitPointerLock?.();}
         },true);
@@ -753,7 +784,8 @@
 
     // ---------- walking ----------
     function zoneAt(x,z){
-      if(aboard&&polarShip){const g=polarShip.group;if(Math.abs(x-g.position.x)<1.6&&Math.abs(z-g.position.z)<4.8)return 'antarctic-deck';}
+      if(gangwayAt(x,z))return 'antarctic-quay';
+      if(polarShip){const g=polarShip.group;if(Math.abs(x-g.position.x)<1.6&&Math.abs(z-g.position.z)<4.8)return 'antarctic-deck';}
       if(Math.abs(x-QUAY.cx)<1.3&&z>=PASSAGE.z-.3&&z<QUAY.cz+QUAY.d/2-.2)return 'antarctic-quay';
       // The Antarctic landing is a separate remote zone south of the Antipodes rooms.
       if(z<HALL.cz-HALL.d/2||z>HALL.cz+HALL.d/2){if(x>ANTARCTIC.cx-ANTARCTIC.w/2&&x<ANTARCTIC.cx+ANTARCTIC.w/2&&z>ANTARCTIC.cz-ANTARCTIC.d/2&&z<ANTARCTIC.cz+ANTARCTIC.d/2)return 'antarctica';return null}
@@ -761,9 +793,10 @@
       if(x>AUS.cx-AUS.w/2&&x<HALL.cx-HALL.w/2)return 'australian-room';if(x>=HALL.cx-HALL.w/2&&x<=HALL.cx+HALL.w/2)return 'antipodes';if(x>HALL.cx+HALL.w/2&&x<NZ.cx+NZ.w/2)return 'new-zealand-room';return null;
     }
     const contains=(x,z)=>!!zoneAt(x,z);
-    const floorAt=(x,z)=>zoneAt(x,z)==='antarctic-deck'?.91:contains(x,z)?0:null;
+    function floorAt(x,z){const b=gangwayAt(x,z);if(b)return DECK_Y*clamp((x-b.shoreX)/(b.deckX-b.shoreX),0,1);return zoneAt(x,z)==='antarctic-deck'?DECK_Y:contains(x,z)?0:null;}
     function allowed(x,z){
       if(!contains(x,z))return false;const r=player.radius||.42;
+      const gangway=gangwayAt(x,z);if(gangway)return Math.abs(z-gangway.z)<gangway.w/2-r;
       if(zoneAt(x,z)==='antarctic-deck'){const g=polarShip.group;return Math.abs(x-g.position.x)<1.23-r&&z>g.position.z-2.6+r&&z<g.position.z+2.4-r;}
       // Only the cut-out aperture joins the room and quay; the shut chart remains solid.
       if(Math.abs(z-PASSAGE.z)<.32+r&&x>AUS.cx-AUS.w/2&&x<AUS.cx+AUS.w/2){if(!polarEntrance||polarEntrance.open<.9||Math.abs(x-PASSAGE.x)>PASSAGE.w/2-r)return false;}
@@ -815,11 +848,11 @@
     // ---------- lifecycle ----------
     function activate(){if(!root)buildFar();lastNeeded=time}
     function unload(){
-      if(!root||voyage||aboard)return;root.removeFromParent();root=null;fire=null;clocks=null;clockStamp='';freeShaft();far={globe:null,hatch:null};polarEntrance=polarShip=polarSea=null;
+      if(!root||voyage||aboard)return;root.removeFromParent();root=null;fire=null;clocks=null;clockStamp='';freeShaft();far={globe:null,hatch:null};polarEntrance=polarShip=polarSea=polarGangways=null;
       for(let i=interactables.length-1;i>=0;i--)if(ours.includes(interactables[i]))interactables.splice(i,1);
       for(const thing of owned.splice(0))thing.dispose?.();ours.length=0;books.length=0;blockers.length=0;sharedBookGeometry=null;
     }
-    function reset(){if(fall){fall=null;fade?.(0)}if(voyage){voyage=null;moorPolarShip(shipLocation);fade?.(0)}aboard=false;updateVoyageUI();}
+    function reset(){if(fall){fall=null;fade?.(0)}if(voyage){voyage=null;moorPolarShip(shipLocation);fade?.(0)}aboard=false;syncPolarGangways();updateVoyageUI();}
     function update(t,dt=0){
       time=t;const reduced=isReducedMotion(),x=player.pos.x,z=player.pos.z,inside=contains(x,z);
       updateGlobe(hall.globe,dt);updateHatch(hall.hatch,dt);
@@ -830,6 +863,8 @@
       else if(hall.hatch.target>0&&t-hall.hatch.openedAt>40&&Math.hypot(x-HATCH.x,z-HATCH.z)>4)closeHatch(hall.hatch,hallHatchData);
       if(inside)activate();
       if(root){
+        const onDeck=zoneAt(x,z)==='antarctic-deck';
+        if(aboard!==onDeck){aboard=onDeck;syncPolarGangways();updateVoyageUI();if(onDeck)showNotice('Aboard the expedition ship. Turn the wheel or use the voyage card to cast off. Walk down the gangway or press G to step ashore.',7);}
         if(polarEntrance){polarEntrance.open=Math.min(polarEntrance.target,polarEntrance.open+dt*(reduced?3:1));polarEntrance.hinge.rotation.y=polarEntrance.open*Math.PI*.49;polarEntrance.needle.rotation.z=polarEntrance.open*Math.PI;}
         const snow=root.userData.antarcticSnow;if(snow&&zoneAt(x,z)==='antarctica'){const p=snow.geometry.attributes.position;for(let i=1;i<p.count*3;i+=3){p.array[i]-=dt*1.1;if(p.array[i]<0)p.array[i]=ANTARCTIC.h;p.array[i-1]+=Math.sin(t*.7+i)*dt*.08}p.needsUpdate=true}
         updateGlobe(far.globe,dt);updateHatch(far.hatch,dt);
