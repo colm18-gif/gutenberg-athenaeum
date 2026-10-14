@@ -30,7 +30,7 @@
     swag:['A swag','A blanket rolled round a few belongings and carried on the shoulder by men who walked from station to station looking for work. Carrying it was “humping the bluey”, or, as in the song, “waltzing Matilda”.'],
     kookaburra:['A kookaburra','The laughing kookaburra, a big kingfisher of eastern Australia, calls in a chorus that sounds like laughter, most of all at dawn and dusk; bushmen called it the bushman’s clock. It eats insects, lizards and small snakes.'],
     bush:['The bush at night','Grey-green gum trees under the stars. There are more than seven hundred kinds of eucalyptus, and almost all of them grow wild only in Australia.'],
-    ausSign:['The Australian Room','Bush ballads and bush stories, convicts and bushrangers, the novels of the towns and the stations, and a few books for children. Pull up the bench by the fire.'],
+    ausSign:['The Australian Room','Bush ballads and bush stories, convicts and bushrangers, the novels of the towns and the stations, and a few books for children. Pull up the bench by the fire. The sea-chart cabinet in the south-east corner opens onto a quay: turn its compass for a voyage to the southern ice.'],
     alps:['The Southern Alps by night','Aoraki / Mount Cook, at 3,724 metres the highest mountain in New Zealand, above the snowfields. Samuel Butler ran sheep in the high country of Canterbury in the 1860s, and the mountains and the passes behind his station became the way into Erewhon.'],
     fern:['A silver fern','The ponga, or silver fern, whose fronds are silver-white underneath. Turned over, they catch the moonlight, and it is said they were used to mark a path through the bush at night. It is the emblem of many New Zealand teams.'],
     kiwi:['A kiwi','New Zealand’s flightless bird, about the size of a hen and out and about at night. Its nostrils are at the very tip of its long bill, which it pushes into the ground to smell out worms, and the female lays an egg up to a fifth of her own weight.'],
@@ -73,7 +73,7 @@
 
   window.createAntipodes=function(options){
     const {THREE,scene,MAT,player,camera,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,sound,move,fade,analytics,
-      isHolding=()=>false,isReducedMotion=()=>false,registerSeat=null}=options;
+      isHolding=()=>false,isReducedMotion=()=>false,registerSeat=null,canUseVoyageControls=()=>true}=options;
     // In the Grand Hall: the globe on the open floor between the reading tables and the long north bookcase, with
     // the trapdoor on the side the reader comes from.
     const GLOBE={x:0,z:-9.6},HATCH={x:0,z:-7.7,r:.62};
@@ -83,6 +83,7 @@
     const ARCH=3,KEEP=25,SHAFT={x:-330,z:-420,r:2.6,top:62};
     const TAU=Math.PI*2,clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),smooth=p=>p*p*(3-2*p);
     let timber=null,root=null,shaft=null,time=0,lastNeeded=-1e9,fall=null,fire=null,laughing=0;
+    let polarEntrance=null,polarShip=null,polarSea=null,voyage=null,aboard=false,shipLocation='australia',voyageUI=null;
     const owned=[],ours=[],books=[],blockers=[];
     const own=thing=>{owned.push(thing);return thing};
     function add(geometry,material,x,y,z,parent){const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);parent.add(m);return m}
@@ -260,6 +261,8 @@
       ridge(H*.78,4,'#232c38',[[.1,.6,.6],[.8,.58,.5]]);ridge(H*.9,2,'#10151a',[[.5,.84,.3]]);
     }
     const ANTARCTIC={cx:-345,cz:-321,w:18,d:24,h:6};
+    const QUAY={cx:AUS.cx+6.5,cz:AUS.cz+AUS.d/2+4,w:6,d:8},PASSAGE={x:QUAY.cx,z:AUS.cz+AUS.d/2,w:2.8,h:3.5};
+    const OCEAN={x:-820,z:-620};
     function buildFar(){
       root=new THREE.Group();root.name='antipodes';
       timber=own(new THREE.MeshStandardMaterial({color:0x5e3c22,roughness:.75}));
@@ -273,13 +276,17 @@
       const west=AUS.cx-AUS.w/2,east=NZ.cx+NZ.w/2,north=HALL.cz-HALL.d/2,south=HALL.cz+HALL.d/2,length=east-west;
       box(length,.3,HALL.d,floor,(west+east)/2,-.15,HALL.cz,root);
       box(AUS.w,.25,AUS.d,timber,AUS.cx,AUS.h+.12,AUS.cz,root);box(NZ.w,.25,NZ.d,timber,NZ.cx,NZ.h+.12,NZ.cz,root);
-      for(const [room,wall] of [[AUS,ochre],[HALL,HALL_W(HALL.w)],[NZ,kauri]]){box(room.w,room.h,.3,wall,room.cx,room.h/2,north,root);box(room.w,room.h,.3,wall,room.cx,room.h/2,south,root)}
+      for(const [room,wall] of [[AUS,ochre],[HALL,HALL_W(HALL.w)],[NZ,kauri]]){box(room.w,room.h,.3,wall,room.cx,room.h/2,north,root);
+        if(room===AUS){const left=room.cx-room.w/2,right=room.cx+room.w/2;
+          for(const [a,b] of [[left,PASSAGE.x-PASSAGE.w/2],[PASSAGE.x+PASSAGE.w/2,right]])box(b-a,room.h,.3,wall,(a+b)/2,room.h/2,south,root);
+          box(PASSAGE.w,room.h-PASSAGE.h,.3,wall,PASSAGE.x,(room.h+PASSAGE.h)/2,south,root);
+        }else box(room.w,room.h,.3,wall,room.cx,room.h/2,south,root)}
       box(.3,AUS.h,AUS.d,AUS_W(AUS.d),west,AUS.h/2,AUS.cz,root);box(.3,NZ.h,NZ.d,NZ_W(NZ.d),east,NZ.h/2,NZ.cz,root);
       // The walls between, each with an arch through it, and the hall's higher walls above the rooms' ceilings.
       for(const x of [HALL.cx-HALL.w/2,HALL.cx+HALL.w/2]){const side=(HALL.d-ARCH)/2;for(const s of [-1,1])box(.4,HALL.h,side,plaster,x,HALL.h/2,HALL.cz+s*(ARCH+side)/2,root);box(.4,HALL.h-3.6,ARCH,plaster,x,3.6+(HALL.h-3.6)/2,HALL.cz,root);
         for(const s of [-1,1])box(.5,3.6,.18,timber,x,1.8,HALL.cz+s*(ARCH/2+.05),root);box(.5,.2,ARCH+.3,timber,x,3.6,HALL.cz,root);
         block(x,HALL.cz-(ARCH+(HALL.d-ARCH)/2)/2,.5,(HALL.d-ARCH)/2+.1);block(x,HALL.cz+(ARCH+(HALL.d-ARCH)/2)/2,.5,(HALL.d-ARCH)/2+.1)}
-      buildHallRoom(plaster);buildAustralia();buildNewZealand();buildAntarctica();
+      buildHallRoom(plaster);buildAustralia();buildNewZealand();buildAntarctica();buildPolarPassage();
       scene.add(root);
     }
     let far={globe:null,hatch:null},farGlobeData=null,farHatchData=null,clocks=null,clockStamp='';
@@ -349,7 +356,8 @@
       const {cx,cz,w,d,h}=AUS,west=cx-w/2,north=cz-d/2,south=cz+d/2;
       // Slab walls: a dado of rough boards round the room.
       const slab=own(new THREE.MeshStandardMaterial({color:0x5a3a22,roughness:1}));
-      for(const [x,z,sw,sd] of [[cx,north+.17,w-.4,.05],[cx,south-.17,w-.4,.05],[west+.17,cz,.05,d-.4]])box(sw,1.05,sd,slab,x,.52,z,root);
+      for(const [x,z,sw,sd] of [[cx,north+.17,w-.4,.05],[west+.17,cz,.05,d-.4]])box(sw,1.05,sd,slab,x,.52,z,root);
+      for(const [a,b] of [[west+.2,PASSAGE.x-PASSAGE.w/2],[PASSAGE.x+PASSAGE.w/2,cx+w/2-.2]])box(b-a,1.05,.05,slab,(a+b)/2,.52,south-.17,root);
       for(let i=0;i<5;i++)box(.2,.18,d-.3,timber,west+1.8+i*3.6,h-.05,cz,root);// rafters
       // A bush fireplace of stone in the west wall, with a billy hung over the fire.
       const stone=own(new THREE.MeshStandardMaterial({roughness:1,map:own(canvasTexture(stoneWork,256,256))})),fz=cz,fx=west+.55;
@@ -379,8 +387,8 @@
       const northSpots=rowSpots(10,{x0:cx-3.6,z0:north+.3,dx:1,dz:0,yaw:0});
       const southSpots=[[-3,1.55],[3,1.55],[-4.6,1.55],[4.6,1.55],[-3.8,2.85],[3.8,2.85]].map(([dx,y])=>({x:cx+dx,z:south-.3,y,yaw:Math.PI}));
       wallBooks('australian',list.slice(0,10),northSpots);wallBooks('australian',list.slice(10),southSpots);
-      shelfBoards(cx,north+.34,9.6,'x',[1.55,2.85]);for(const s of [-1,1])shelfBoards(cx+s*3.8,south-.34,3,'x',[1.55,2.85]);
-      block(cx,north+.4,9.8,.6);for(const s of [-1,1])block(cx+s*3.8,south-.4,3.2,.6);
+      shelfBoards(cx,north+.34,9.6,'x',[1.55,2.85]);shelfBoards(cx-3.8,south-.34,3,'x',[1.55,2.85]);shelfBoards(cx+3.5,south-.34,2.4,'x',[1.55,2.85]);
+      block(cx,north+.4,9.8,.6);block(cx-3.8,south-.4,3.2,.6);block(cx+3.5,south-.4,2.5,.6);
       mark(sign(root,'AUSTRALIA','The Australian Room',3,.56,cx,4.05,north+.2,['#3a1e10','#f0dcb0','#c98f5a']),card('ausSign'));
       // A window on the bush at night, a kookaburra on a gum branch above it, and a card for the first Australians.
       picture(root,bushNight,2.6,1.7,cx,2.2,south-.2,Math.PI,card('bush'),timber);
@@ -405,31 +413,189 @@
       for(const [at,f] of notes)setTimeout(()=>sound?.(f+Math.random()*60,.11,'sawtooth',.035),at);
     }
     function buildAntarctica(){
-      const {cx,cz,w,d,h}=ANTARCTIC,north=cz-d/2,south=cz+d/2,west=cx-w/2,east=cx+w/2;
-      const ice=own(new THREE.MeshStandardMaterial({color:0x9baeb4,roughness:.96})),snow=own(new THREE.MeshStandardMaterial({color:0xd8e0df,roughness:1})),dark=own(new THREE.MeshStandardMaterial({color:0x26353d,roughness:.92})),wall=own(new THREE.MeshStandardMaterial({color:0x667983,roughness:.95}));
-      box(w,.3,d,ice,cx,-.15,cz,root);box(w,.2,d,timber,cx,h+.1,cz,root);
-      box(w,h,.3,wall,cx,h/2,north,root);box(w,h,.3,wall,cx,h/2,south,root);box(.3,h,d,wall,west,h/2,cz,root);box(.3,h,d,wall,east,h/2,cz,root);
-      for(let i=0;i<7;i++){const peak=add(own(new THREE.ConeGeometry(2.1+(i%3)*.55,3.8+(i%4)*.8,5)),snow,cx-8+i*2.6,1.4,north+.7,root);peak.rotation.z=i%2?-.12:.12}
-      // Expedition hut, warmed by a lantern, with a polar reading collection inside.
-      box(4.8,2.8,3.8,dark,cx+4,1.4,cz-4,root);box(5.3,.25,4.3,timber,cx+4,2.9,cz-4,root);
-      for(const dx of [-1.65,1.65])box(.12,1.6,.12,MAT.brass,cx+4+dx,1.25,cz-5.96,root);
-      const glowMat=own(new THREE.MeshStandardMaterial({color:0xffc779,emissive:0xffa53a,emissiveIntensity:1.2}));add(own(new THREE.SphereGeometry(.12,8,6)),glowMat,cx+4,2.1,cz-6.1,root);
-      mark(sign(root,'THE POLAR READING ROOM','Books saved from the southern ice',3.8,.7,cx+4,2.05,cz-5.82,['#18232a','#e2e7df','#b9c9cc']),card('antarcticSign'));
-      const polarBooks=shelfBooks('antarctic'),spots=[];for(let i=0;i<polarBooks.length;i++){const row=Math.floor(i/4),col=i%4;spots.push({x:cx-5.4+col*1.8,y:1.45+row*1.45,z:north+.42,yaw:0,lean:.03})}
-      wallBooks('antarctic',polarBooks,spots);shelfBoards(cx,north+.5,7.8,'x',[1.45,2.9]);block(cx,north+.5,8,.7);
-      for(let i=0;i<4;i++){const stone=add(own(new THREE.SphereGeometry(.48-i*.06,5,3)),dark,cx-5.5,.35+i*.48,cz+4,root);stone.rotation.set(i*.2,i*.7,i*.13)}
-      box(.07,3,.07,MAT.brass,cx-5.5,2,cz+4,root);box(1.15,.62,.04,own(new THREE.MeshStandardMaterial({color:0x8a2825,roughness:.9})),cx-4.95,2.7,cz+4,root);
-      // The vessel is waiting at the Australian shore and on the Antarctic landing.
-      function ship(x,z,returning){const g=new THREE.Group();g.position.set(x,0,z);root.add(g);const hullMat=own(new THREE.MeshStandardMaterial({color:0x4a2818,roughness:.78}));
-        const hull=add(own(new THREE.BoxGeometry(4.2,.68,1.35)),hullMat,0,.62,0,g);hull.rotation.y=.03;
-        for(const dx of [-1.55,-.8,0,.8,1.55])box(.08,.42,1.3,MAT.brass,dx,.84,0,g);box(3.5,.12,.12,MAT.darkWood,0,1.04,0,g);
-        box(.12,3.2,.12,MAT.darkWood,-.25,2.5,0,g);const sail=add(own(new THREE.PlaneGeometry(1.45,1.85)),own(new THREE.MeshStandardMaterial({color:0xc9c0a6,side:THREE.DoubleSide,roughness:1})),.48,2.5,0,g);sail.rotation.y=.12;box(1.5,.12,.12,MAT.darkWood,-.25,3.98,0,g);
-        add(own(new THREE.SphereGeometry(.13,8,6)),own(new THREE.MeshStandardMaterial({color:0xffd18a,emissive:0xe58b32,emissiveIntensity:1.4})),1.65,1.25,.1,g);
-        const data={type:returning?'antipodes-antarctic-return':'antipodes-antarctic-boat',title:returning?'The expedition ship':'A ship bound for Antarctica',author:returning?'Return to the Australian Room':'A weather-beaten polar ship. Board to cross the Southern Ocean and reach the Antarctic reading room.',action:'BOARD THE SHIP'};mark(hull,data);mark(sail,data);block(x,z,4.6,2);return g;}
-      ship(AUS.cx+4,AUS.cz+3,false);ship(cx-4,cz+7,true);
-      mark(sign(root,'ANTARCTICA','The farthest library in the world',3.5,.62,cx,4.1,north+.18,['#18232a','#e2e7df','#b9c9cc']),card('antarcticSign'));
-      const points=[];for(let i=0;i<150;i++)points.push(cx+(Math.random()-.5)*w,Math.random()*h,cz+(Math.random()-.5)*d);
-      const geo=own(new THREE.BufferGeometry());geo.setAttribute('position',new THREE.Float32BufferAttribute(points,3));root.userData.antarcticSnow=add(geo,own(new THREE.PointsMaterial({color:0xe5eef0,size:.055,transparent:true,opacity:.6,depthWrite:false})),0,0,0,root);
+      const {cx,cz,w,d,h}=ANTARCTIC;
+      const ice=own(new THREE.MeshStandardMaterial({color:0xb9d5df,emissive:0x254555,emissiveIntensity:.45,roughness:.96})),snow=own(new THREE.MeshBasicMaterial({color:0xc4dfe8})),dark=own(new THREE.MeshStandardMaterial({color:0x33434d,roughness:.92}));
+      box(w,.3,d,ice,cx,-.15,cz,root);
+      polarSky(root,cx,cz,30);
+      const mountains=[];for(let i=0;i<12;i++){const x=cx-22+i*4,z=cz-19-Math.sin(i*2)*4;mountains.push([new THREE.ConeGeometry(3+(i%3),6+(i%4)*2,5),x,2.5,z,0,i*.7,(i%2?-.1:.1)])}
+      add(own(merged(mountains)),snow,0,0,0,root);
+      // A real hut: walls surround an open doorway and its books, rather than a solid cube.
+      const wall=own(new THREE.MeshStandardMaterial({map:own(canvasTexture(boards,512,512)),color:0x94755b,emissive:0x5b3717,emissiveIntensity:.4,roughness:.9}));
+      const front=cz-3,back=cz-9;
+      box(9,.16,6,timber,cx,-.03,cz-6,root);box(9,3.2,.25,wall,cx,1.6,back,root);block(cx,back,9,.35);
+      for(const s of [-1,1]){box(.25,3.2,6,wall,cx+s*4.5,1.6,cz-6,root);block(cx+s*4.5,cz-6,.35,6);
+        box(3.1,3.2,.25,wall,cx+s*2.95,1.6,front,root);block(cx+s*2.95,front,3.1,.35);
+        const roof=box(5.1,.22,6.8,timber,cx+s*2.2,3.7,cz-6,root);roof.rotation.z=-s*.23;
+        const cap=box(5.1,.07,6.8,snow,cx+s*2.2,3.84,cz-6,root);cap.rotation.z=-s*.23;}
+      box(2.8,.65,.25,wall,cx,2.875,front,root);
+      mark(sign(root,'THE POLAR READING ROOM','Shackleton · Scott · the southern ice',4.9,.65,cx,3.15,front+.16,['#172a33','#f2e2bf','#b49a62']),card('antarcticSign'));
+      const glowMat=own(new THREE.MeshBasicMaterial({color:0xffd79c}));
+      for(const s of [-1,1]){add(own(new THREE.SphereGeometry(.15,8,6)),glowMat,cx+s*1.65,2.2,front+.27,root);box(.36,.48,.3,MAT.brass,cx+s*1.65,2.2,front+.08,root);}
+      // All polar books are inside the hut, clear of glaciers and within reading reach.
+      const polarBooks=shelfBooks('antarctic'),spots=[];for(let i=0;i<polarBooks.length;i++){const row=Math.floor(i/4),col=i%4;spots.push({x:cx-2.7+col*1.8,y:1.45+row*1.3,z:back+.5,yaw:0,lean:.03})}
+      wallBooks('antarctic',polarBooks,spots);shelfBoards(cx,back+.5,7.8,'x',[1.45,2.75,4.05]);block(cx,back+.5,8,.7);
+      box(1.3,.65,.6,timber,cx+3, .325,cz-5.3,root);block(cx+3,cz-5.3,1.4,.7);
+      for(let i=0;i<4;i++){const stone=add(own(new THREE.SphereGeometry(.48-i*.06,5,3)),dark,cx+5.8,.35+i*.48,cz+1,root);stone.rotation.set(i*.2,i*.7,i*.13)}
+      block(cx+5.8,cz+1,1.2,1.2);box(.07,3,.07,MAT.brass,cx+5.8,2,cz+1,root);box(1.15,.62,.04,own(new THREE.MeshStandardMaterial({color:0x8a2825,roughness:.9})),cx+6.35,2.7,cz+1,root);
+      // Lantern stakes mark the clear path from the gangway to the open hut.
+      for(let i=0;i<5;i++)for(const s of [-1,1]){const z=cz+7-i*2.3;box(.055,.6,.055,timber,cx+s*1.5,.3,z,root);add(own(new THREE.SphereGeometry(.08,6,4)),glowMat,cx+s*1.5,.62,z,root);}
+      const quay=box(3,.18,2,timber,cx-3.4,-.08,cz+7,root);quay.name='antarctic-landing-quay';
+      const points=[];for(let i=0;i<100;i++)points.push(cx+(Math.random()-.5)*w,Math.random()*h,cz+(Math.random()-.5)*d);
+      const geo=own(new THREE.BufferGeometry());geo.setAttribute('position',new THREE.Float32BufferAttribute(points,3));
+      const flakes=new THREE.Points(geo,own(new THREE.PointsMaterial({color:0xe5eef0,size:.055,transparent:true,opacity:.6,depthWrite:false})));root.add(flakes);root.userData.antarcticSnow=flakes;
+    }
+
+    // ---------- the southern passage ----------
+    // Original canvas art, boat geometry and scenery: no new downloads or additional lights.
+    function polarSky(parent,x,z,r){
+      const texture=own(canvasTexture((c,W,H)=>{starrySky(c,W,H,{cross:false,glow:'#365b70'});
+        const aurora=c.createLinearGradient(0,H*.12,0,H*.58);aurora.addColorStop(0,'rgba(66,173,164,0)');aurora.addColorStop(.5,'rgba(96,200,173,.25)');aurora.addColorStop(1,'rgba(66,173,164,0)');
+        c.fillStyle=aurora;c.beginPath();c.moveTo(0,H*.2);for(let i=0;i<=W;i+=20)c.lineTo(i,H*.28+Math.sin(i*.012)*H*.08);for(let i=W;i>=0;i-=20)c.lineTo(i,H*.55+Math.sin(i*.012)*H*.08);c.closePath();c.fill();},1024,512));
+      const dome=add(own(new THREE.SphereGeometry(r,24,12)),own(new THREE.MeshBasicMaterial({map:texture,side:THREE.BackSide,fog:false})),x,0,z,parent);dome.name='polar-night-sky';return dome;
+    }
+    function seaChart(c,W,H){
+      c.fillStyle='#d8c89d';c.fillRect(0,0,W,H);c.strokeStyle='rgba(68,77,67,.24)';c.lineWidth=1;
+      for(let i=1;i<9;i++){c.beginPath();c.moveTo(W*i/9,0);c.lineTo(W*i/9,H);c.stroke();c.beginPath();c.moveTo(0,H*i/9);c.lineTo(W,H*i/9);c.stroke();}
+      c.fillStyle='#667769';c.beginPath();for(const [x,y] of [[.15,.13],[.52,.08],[.63,.21],[.55,.32],[.39,.35],[.22,.29]])c.lineTo(W*x,H*y);c.closePath();c.fill();
+      c.fillStyle='#f1e7cc';c.beginPath();c.moveTo(0,H*.84);for(let i=0;i<=W;i+=16)c.lineTo(i,H*(.77+Math.sin(i*.04)*.035));c.lineTo(W,H);c.lineTo(0,H);c.closePath();c.fill();
+      c.strokeStyle='#883f33';c.lineWidth=3;c.setLineDash([8,6]);c.beginPath();c.moveTo(W*.45,H*.32);c.bezierCurveTo(W*.8,H*.48,W*.2,H*.58,W*.48,H*.81);c.stroke();c.setLineDash([]);
+      c.fillStyle='#394c49';c.textAlign='center';c.font='bold 28px Georgia';c.fillText('THE SOUTHERN PASSAGE',W/2,H*.06);c.font='19px Georgia';c.fillText('AUSTRALIA',W*.4,H*.23);c.fillText('ANTARCTICA',W*.5,H*.9);c.font='italic 20px Georgia';c.fillText('Turn the compass. Follow the sea.',W/2,H*.63);
+      const x=W*.78,y=H*.42;c.strokeStyle='#756035';for(let i=0;i<8;i++){const a=i*Math.PI/4;c.beginPath();c.moveTo(x,y);c.lineTo(x+Math.sin(a)*35,y-Math.cos(a)*35);c.stroke();}
+      c.beginPath();c.arc(x,y,28,0,TAU);c.stroke();c.fillText('S',x,y+52);
+    }
+    function buildPolarPassage(){
+      const {x,z,w,h}=PASSAGE;
+      const frame=own(new THREE.MeshStandardMaterial({color:0x3c2a22,emissive:0x241c12,emissiveIntensity:.3,roughness:.8}));
+      for(const s of [-1,1]){box(.2,h+.2,.5,frame,x+s*(w/2+.05),h/2,z,root);box(.045,h,.04,MAT.brass,x+s*(w/2-.05),h/2,z-.29,root);}
+      box(w+.4,.2,.5,frame,x,h+.05,z,root);
+      const hinge=new THREE.Group();hinge.position.set(x-w/2,0,z-.21);root.add(hinge);
+      const panel=box(w,h,.12,frame,w/2,h/2,0,hinge);
+      const chart=add(own(new THREE.PlaneGeometry(w-.16,h-.2)),own(new THREE.MeshBasicMaterial({map:own(canvasTexture(seaChart,640,768))})),w/2,h/2,-.066,hinge);chart.rotation.y=Math.PI;
+      const data={type:'antipodes-polar-chart',title:'The Southern Passage',author:'A sea chart set in a brass-bound cabinet. Turn its compass towards the southern ice.',action:'TURN THE COMPASS',performanceDynamic:true};
+      mark(panel,data);mark(chart,data);
+      const compass=add(own(new THREE.TorusGeometry(.2,.023,5,24)),MAT.brass,w/2,.72,-.12,hinge);mark(compass,data);
+      const needle=box(.035,.3,.045,MAT.brass,w/2,.72,-.14,hinge);mark(needle,data);
+      polarEntrance={hinge,data,needle,open:0,target:0};
+      mark(sign(root,'THE SOUTHERN PASSAGE','Turn the compass to find the quay',2.9,.5,x,h+.47,z-.3),data).rotation.y=Math.PI;
+      // This pocket harbour is reached on foot through the real opening in the south wall.
+      box(2.6,.18,7.7,timber,QUAY.cx,-.09,QUAY.cz-.15,root);
+      const harbour=add(own(new THREE.PlaneGeometry(18,20)),own(new THREE.MeshBasicMaterial({color:0x203c4c})),QUAY.cx+4,-.35,QUAY.cz+4,root);harbour.rotation.x=-Math.PI/2;
+      picture(root,(c,W,H)=>starrySky(c,W,H,{cross:false,glow:'#304c60'}),34,12,QUAY.cx+2,4.8,QUAY.cz+24,Math.PI,null);
+      for(const s of [-1,1]){box(.16,3.7,.16,timber,QUAY.cx+s*1.55,1.85,QUAY.cz-2.7,root);
+        add(own(new THREE.SphereGeometry(.14,8,6)),own(new THREE.MeshBasicMaterial({color:0xffd19a})),QUAY.cx+s*1.55,2.45,QUAY.cz-2.7,root);}
+      const board={type:'antipodes-antarctic-boat',title:'The expedition ship',author:'Step aboard, then turn the wheel to cast off for Antarctica.',action:'BOARD THE SHIP',performanceDynamic:true};
+      const gangway=mark(box(2.3,.09,1.2,timber,QUAY.cx+1.85,.025,QUAY.cz+1,root),board);gangway.name='polar-quay-gangway';
+      mark(sign(root,'SOUTHERN PASSAGE','Board the ship · cast off at the wheel',2.4,.5,QUAY.cx,2.05,QUAY.cz+3.6),board).rotation.y=Math.PI;
+      polarShip=buildPolarShip();shipLocation='australia';moorPolarShip('australia');
+    }
+    function buildPolarShip(){
+      const group=new THREE.Group();group.name='polar-expedition-ship';root.add(group);
+      const hullMat=own(new THREE.MeshStandardMaterial({color:0x332820,roughness:.85,emissive:0x1b1711,emissiveIntensity:.35})),deckMat=own(new THREE.MeshStandardMaterial({color:0x94704b,map:MAT.wood?.map||null,roughness:.85,emissive:0x3e2d1b,emissiveIntensity:.35})),sailMat=own(new THREE.MeshStandardMaterial({color:0xdad1b4,side:THREE.DoubleSide,roughness:1,emissive:0x39392f,emissiveIntensity:.4}));
+      const outline=[[-.95,4],[.95,4],[1.5,2],[1.5,-2],[.6,-4.3],[0,-4.8],[-.6,-4.3],[-1.5,-2],[-1.5,2]],sides=[],deck=[];
+      const top=([x,z])=>[x,.9,z],bottom=([x,z])=>[x*.55,-.35,z*.82];
+      for(let i=0;i<outline.length;i++){const a=outline[i],b=outline[(i+1)%outline.length];sides.push(...top(a),...bottom(a),...top(b),...top(b),...bottom(a),...bottom(b),0,-.35,0,...bottom(b),...bottom(a));deck.push(0,.91,0,...top(a),...top(b));}
+      const geometry=points=>{const g=own(new THREE.BufferGeometry()),uv=[];for(let i=0;i<points.length;i+=3)uv.push((points[i]+1.5)/3,(points[i+2]+4.8)/8.8);g.setAttribute('position',new THREE.Float32BufferAttribute(points,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.computeVertexNormals?.();return g;};
+      const hull=add(geometry(sides),hullMat,0,0,0,group);add(geometry(deck),deckMat,0,0,0,group);
+      const parts=new Map(),part=(w,h,d,mat,x,y,z,rx=0,ry=0,rz=0)=>{if(!parts.has(mat))parts.set(mat,[]);parts.get(mat).push([new THREE.BoxGeometry(w,h,d),x,y,z,rx,ry,rz]);};
+      for(const s of [-1,1]){for(const z of [-2.7,-1.4,0,1.4,2.8])part(.075,.7,.075,MAT.brass,s*1.36,1.22,z);part(.075,.08,6.4,MAT.darkWood,s*1.36,1.6,0);}
+      const sails=[];for(const [z,height,width] of [[-2.2,6.5,3.1],[.6,7.3,3.5]]){part(.13,height,.13,MAT.darkWood,0,.9+height/2,z);part(width+.5,.09,.09,MAT.darkWood,0,height-.1,z);
+        const sail=add(own(new THREE.PlaneGeometry(width,2.5)),sailMat,0,height-1.3,z,group);sail.rotation.y=.1;sails.push(sail);
+        for(const s of [-1,1])part(.025,5.5,.025,MAT.brass,s*.65,3.5,z+.4,0,0,-s*.19);}
+      part(1.7,1.1,1.5,hullMat,0,1.45,3.05);part(1.9,.13,1.7,deckMat,0,2.04,3.05);
+      part(.55,.12,1.9,deckMat,-.6,1.18,-2.2);part(.55,.12,1.9,deckMat,.6,1.18,-2.2);
+      for(const s of [-1,1])part(.4,.35,.3,MAT.brass,s*1.2,1.6,2.7);
+      for(const [mat,p] of parts)add(own(merged(p)),mat,0,0,0,group);
+      const boarding={type:'antipodes-antarctic-boat',title:'The expedition ship',author:'Board the wooden deck. The wheel starts the crossing.',action:'BOARD THE SHIP',performanceDynamic:true};mark(hull,boarding);
+      const wheelData={type:'antipodes-antarctic-castoff',title:'The ship’s wheel',author:'Cast off for the southern ice.',action:'CAST OFF',performanceDynamic:true};
+      const wheel=add(own(new THREE.TorusGeometry(.32,.035,6,24)),MAT.brass,0,1.67,.8,group);mark(wheel,wheelData);
+      for(let i=0;i<4;i++)mark(box(.035,.76,.035,MAT.brass,0,1.67,.8,group),wheelData).rotation.z=i*Math.PI/4;
+      box(.09,.7,.09,MAT.darkWood,0,1.22,.85,group);
+      const exitData={type:'antipodes-antarctic-disembark',title:'The gangway',author:'Step back onto the quay.',action:'STEP ASHORE',performanceDynamic:true};
+      const exit=mark(box(.25,.55,1.05,MAT.brass,1.35,1.22,1.1,group),exitData);
+      for(const s of [-1,1])add(own(new THREE.SphereGeometry(.12,8,6)),own(new THREE.MeshBasicMaterial({color:0xffd298})),s*1.2,1.72,2.7,group);
+      group.traverse(o=>{if(o.geometry)o.userData.performanceDynamic=true;});
+      return {group,boarding,wheelData,exitData,exit,wheel,sails};
+    }
+    function moorPolarShip(where){
+      shipLocation=where;const g=polarShip.group;
+      if(where==='australia'){g.position.set(QUAY.cx+3.4,0,QUAY.cz);g.rotation.set(0,Math.PI,0);}
+      else{g.position.set(ANTARCTIC.cx-6,0,ANTARCTIC.cz+6);g.rotation.set(0,0,0);}
+      Object.assign(polarShip.boarding,{type:where==='australia'?'antipodes-antarctic-boat':'antipodes-antarctic-return',author:where==='australia'?'Board, then cast off at the wheel for Antarctica.':'Board, then cast off at the wheel for the Australian Room.'});
+      polarShip.wheelData.author=where==='australia'?'Cast off for the southern ice.':'Cast off for the Australian Room.';
+      polarShip.exitData.author=where==='australia'?'Step onto the lantern-lit quay.':'Step onto the ice. Follow the lanterns to the open hut and polar shelves.';
+    }
+    function shipPoint(x,z){const g=polarShip.group,a=g.rotation.y;return {x:g.position.x+x*Math.cos(a)+z*Math.sin(a),z:g.position.z-x*Math.sin(a)+z*Math.cos(a)};}
+    function boardPolarShip(){
+      if(voyage||aboard)return;if(!polarShip)activate();aboard=true;const p=shipPoint(0,1.85);move(p.x,p.z,polarShip.group.rotation.y);player.pos.y=.91;player.pitch=-.55;
+      showNotice('Aboard the expedition ship. Turn the brass wheel to CAST OFF, or use the voyage card. The gangway takes you ashore.',7);updateVoyageUI();
+    }
+    function disembarkPolarShip(){
+      if(voyage||!aboard)return;aboard=false;
+      if(shipLocation==='australia')move(QUAY.cx,QUAY.cz+1,Math.PI);
+      else{move(ANTARCTIC.cx-2.7,ANTARCTIC.cz+7,0);analytics?.track('Room Explored',{room:'antarctica-expedition'});}
+      showNotice(shipLocation==='australia'?'The Australian quay. Walk back through the sea-chart cabinet to the reading room.':'Antarctica. Follow the lanterns to the open hut; the books are on its back shelves. The ship waits here for your return.',8);updateVoyageUI();
+    }
+    function buildPolarSea(){
+      if(polarSea)return;const group=new THREE.Group();group.name='polar-crossing';group.position.set(OCEAN.x,0,OCEAN.z);root.add(group);
+      polarSky(group,0,0,90);
+      const texture=own(canvasTexture((c,W,H)=>{c.fillStyle='#233f50';c.fillRect(0,0,W,H);for(let i=0;i<110;i++){c.strokeStyle=i%3?'rgba(141,187,198,.23)':'rgba(219,233,228,.38)';c.lineWidth=i%3?2:3;c.beginPath();const y=(i*67)%H;for(let x=0;x<=W;x+=16)c.lineTo(x,y+Math.sin(x*.04+i)*3);c.stroke();}},512,512));texture.wrapS=texture.wrapT=THREE.RepeatWrapping;texture.repeat.set(12,12);
+      const water=add(own(new THREE.PlaneGeometry(190,190)),own(new THREE.MeshBasicMaterial({map:texture})),0,-.32,0,group);water.rotation.x=-Math.PI/2;
+      const bergs=[],ice=own(new THREE.MeshStandardMaterial({color:0xc2dfe7,emissive:0x426778,emissiveIntensity:.65,roughness:1}));
+      for(let i=0;i<22;i++){const side=i%2?1:-1,x=side*(9+(i*7)%38),z=-80+i*7.5,height=2+(i*3)%9;
+        const berg=add(own(new THREE.ConeGeometry(2+(i%3),height,5)),ice,x,height*.25,z,group);berg.rotation.set(.12,i*.8,side*.16);berg.userData.performanceDynamic=true;bergs.push({mesh:berg,z});}
+      polarSea={group,texture,bergs};
+    }
+    function startPolarVoyage(){
+      if(voyage)return;if(!aboard){boardPolarShip();return;}buildPolarSea();
+      const reduced=isReducedMotion();voyage={from:shipLocation,t:0,duration:reduced?14:shipLocation==='australia'?30:24,said:-1,stage:'castoff'};
+      player.pitch=-.08;
+      playSample?.('doorOpen',.4,.8);sound?.(110,.8,'triangle',.035);updateVoyageUI();
+    }
+    function updatePolarVoyage(dt,reduced){
+      const v=voyage;if(!v)return;v.t+=dt;const p=clamp(v.t/v.duration,0,1),g=polarShip.group,oldYaw=g.rotation.y;
+      const stage=p<.12?'castoff':p<.82?'ocean':'approach';
+      if(stage!==v.stage){v.stage=stage;updateVoyageUI();}
+      const from=v.from==='australia'?{x:QUAY.cx+3.4,z:QUAY.cz,yaw:Math.PI}:{x:ANTARCTIC.cx-6,z:ANTARCTIC.cz+6,yaw:0};
+      const to=v.from==='australia'?{x:ANTARCTIC.cx-6,z:ANTARCTIC.cz+6,yaw:0}:{x:QUAY.cx+3.4,z:QUAY.cz,yaw:Math.PI};
+      if(stage==='castoff'){const k=smooth(p/.12);g.position.set(from.x,0,from.z-Math.cos(from.yaw)*k*8);g.rotation.y=from.yaw;}
+      else if(stage==='ocean'){g.position.set(OCEAN.x,0,OCEAN.z);g.rotation.y=0;const k=(p-.12)/.7;
+        polarSea.texture.offset.y=-v.t*.014;polarSea.bergs.forEach((b,i)=>{b.mesh.visible=v.from==='australia'?k>.22:k<.75;b.mesh.position.z=((b.z+v.t*4+90)%180)-90;});}
+      else{const k=smooth((p-.82)/.18);g.position.set(to.x,0,to.z+Math.cos(to.yaw)*(1-k)*12);g.rotation.y=to.yaw;}
+      player.yaw+=g.rotation.y-oldYaw;
+      const cover=Math.max(0,1-Math.abs(p-.12)/.025,1-Math.abs(p-.82)/.025);fade?.(cover);
+      g.position.y=reduced?0:Math.sin(v.t*1.6)*.045;g.rotation.z=reduced?0:Math.sin(v.t*.8)*.009;
+      polarShip.sails.forEach((s,i)=>{s.rotation.y=.1+(reduced?0:Math.sin(v.t*2.2+i)*.035);});
+      const eye=shipPoint(0,.1);player.pos.set(eye.x,.91+g.position.y,eye.z);
+      camera.position.set(eye.x,2.63+g.position.y,eye.z);camera.rotation.set(player.pitch||0,player.yaw,g.rotation.z,'YXZ');camera.updateMatrixWorld();
+      if(stage==='ocean'){scene.background.setRGB(.08,.14,.21);scene.fog.color.copy(scene.background);scene.fog.density=.003;}
+      const beat=p<.12?0:p<.42?1:p<.65?2:p<.82?3:4;
+      if(beat!==v.said){v.said=beat;const lines=v.from==='australia'?['The ropes fall free. The lantern-lit quay slips behind the stern.','Open water. The Southern Ocean stretches beneath the stars.','The first icebergs. The ship follows a dark channel between them.','Beyond the pack ice, a lantern shines on the shore.','Antarctica ahead. The sails slacken as the ship draws alongside the landing.']:['Casting off from the ice. The expedition hut’s lanterns grow smaller.','Through the pack ice. The ship turns north for warmer waters.','The last iceberg falls behind. Open sea again.','The Australian quay comes into view beneath the stars.','The ship draws alongside. The sea-chart cabinet is your way back into the library.'];showNotice(lines[beat],6);}
+      if(p>=1)finishPolarVoyage();
+    }
+    function finishPolarVoyage(){
+      if(!voyage)return;const to=voyage.from==='australia'?'antarctica':'australia';voyage=null;moorPolarShip(to);fade?.(0);
+      const p=shipPoint(0,.1);move(p.x,p.z,polarShip.group.rotation.y);player.pos.y=.91;
+      showNotice(to==='antarctica'?'Moored in Antarctica. Use the gangway to STEP ASHORE, then follow the lanterns to the hut.':'Moored at the Australian quay. STEP ASHORE, then walk through the chart cabinet.',8);updateVoyageUI();
+    }
+    function updateVoyageUI(){
+      if(typeof document==='undefined')return;
+      if(!voyageUI&&!aboard)return;
+      if(!voyageUI){const el=document.createElement('section');el.className='polar-voyage';el.setAttribute('aria-label','Southern Passage');
+        const label=document.createElement('small');label.textContent='THE SOUTHERN PASSAGE';const status=document.createElement('p');status.setAttribute('role','status');status.setAttribute('aria-live','polite');
+        const action=document.createElement('button');action.type='button';el.append(label,status,action);document.body.append(el);voyageUI={el,status,action};
+        action.addEventListener('click',()=>{if(voyage)finishPolarVoyage();else startPolarVoyage();});
+        const ashore=document.createElement('button');ashore.type='button';ashore.className='polar-ashore';ashore.textContent='Step ashore';ashore.addEventListener('click',disembarkPolarShip);el.append(ashore);voyageUI.ashore=ashore;
+        document.addEventListener('keydown',event=>{
+          if(!aboard||!canUseVoyageControls()||event.repeat||event.target?.closest?.('input,textarea,select'))return;
+          if(event.code==='KeyE'){event.preventDefault();event.stopImmediatePropagation();if(voyage)finishPolarVoyage();else startPolarVoyage();}
+          else if(event.code==='KeyG'&&!voyage){event.preventDefault();event.stopImmediatePropagation();disembarkPolarShip();}
+          else if(event.code==='Escape'&&document.pointerLockElement){event.preventDefault();event.stopImmediatePropagation();document.exitPointerLock?.();}
+        },true);
+      }
+      voyageUI.el.hidden=!aboard;voyageUI.ashore.hidden=!!voyage;
+      voyageUI.status.textContent=voyage?({castoff:'Casting off · the quay falls behind',ocean:voyage.from==='australia'?'Crossing the Southern Ocean · towards the ice':'Crossing the Southern Ocean · towards Australia',approach:'Drawing alongside · prepare to step ashore'}[voyage.stage]):shipLocation==='australia'?'Aboard at the Australian quay · ready to sail':'Moored in Antarctica · the lanterns lead to the hut';
+      voyageUI.action.textContent=voyage?'Continue to landing · E':shipLocation==='australia'?'Cast off for Antarctica · E':'Cast off for Australia · E';
+      voyageUI.ashore.textContent='Step ashore · G';
     }
 
     function buildNewZealand(){
@@ -542,7 +708,7 @@
     // dir 1: from the Grand Hall to the Antipodes (down the world's y); dir -1: home again. The reader turns over at
     // the centre, so that after it the far end is up.
     function startFall(dir){
-      if(fall)return;activate();buildShaft();const reduced=isReducedMotion();
+      if(fall||voyage||aboard)return;activate();buildShaft();const reduced=isReducedMotion();
       fall={dir,t:0,duration:reduced?9:(dir>0?26:16),said:0,lines:dir>0?DOWN:UP,yaw:player.yaw,faded:false};
       fade?.(1);setTimeout(()=>fade?.(0),reduced?150:350);playSample?.('secretDoor',.7,.8);sound?.(140,1.6,'sine',.05);
       analytics?.track('Room Explored',{room:dir>0?'antipodes-fall':'antipodes-return'});
@@ -574,6 +740,7 @@
     // Arriving: on the trapdoor, which closes under you, facing north (Australia to the left, as on a map).
     function enterFar(fromWell){
       activate();far.hatch.open=fromWell?1:0;far.hatch.target=0;Object.assign(farHatchData,{title:'A trapdoor',author:'The one you came up through, closed again behind you.',action:'LOOK'});
+      if(!aboard&&!voyage)moorPolarShip('australia');
       move(FAR_HATCH.x,FAR_HATCH.z+.9,0);analytics?.track('Room Explored',{room:'antipodes'});
     }
     // A link (/?room=antipodes, australia, new-zealand) goes straight there, the fall saved for the way home.
@@ -586,18 +753,25 @@
 
     // ---------- walking ----------
     function zoneAt(x,z){
+      if(aboard&&polarShip){const g=polarShip.group;if(Math.abs(x-g.position.x)<1.6&&Math.abs(z-g.position.z)<4.8)return 'antarctic-deck';}
+      if(Math.abs(x-QUAY.cx)<1.3&&z>=PASSAGE.z-.3&&z<QUAY.cz+QUAY.d/2-.2)return 'antarctic-quay';
       // The Antarctic landing is a separate remote zone south of the Antipodes rooms.
       if(z<HALL.cz-HALL.d/2||z>HALL.cz+HALL.d/2){if(x>ANTARCTIC.cx-ANTARCTIC.w/2&&x<ANTARCTIC.cx+ANTARCTIC.w/2&&z>ANTARCTIC.cz-ANTARCTIC.d/2&&z<ANTARCTIC.cz+ANTARCTIC.d/2)return 'antarctica';return null}
       if(x>ANTARCTIC.cx-ANTARCTIC.w/2&&x<ANTARCTIC.cx+ANTARCTIC.w/2&&z>ANTARCTIC.cz-ANTARCTIC.d/2&&z<ANTARCTIC.cz+ANTARCTIC.d/2)return 'antarctica';
       if(x>AUS.cx-AUS.w/2&&x<HALL.cx-HALL.w/2)return 'australian-room';if(x>=HALL.cx-HALL.w/2&&x<=HALL.cx+HALL.w/2)return 'antipodes';if(x>HALL.cx+HALL.w/2&&x<NZ.cx+NZ.w/2)return 'new-zealand-room';return null;
     }
     const contains=(x,z)=>!!zoneAt(x,z);
-    const floorAt=(x,z)=>contains(x,z)?0:null;
+    const floorAt=(x,z)=>zoneAt(x,z)==='antarctic-deck'?.91:contains(x,z)?0:null;
     function allowed(x,z){
       if(!contains(x,z))return false;const r=player.radius||.42;
+      if(zoneAt(x,z)==='antarctic-deck'){const g=polarShip.group;return Math.abs(x-g.position.x)<1.23-r&&z>g.position.z-2.6+r&&z<g.position.z+2.4-r;}
+      // Only the cut-out aperture joins the room and quay; the shut chart remains solid.
+      if(Math.abs(z-PASSAGE.z)<.32+r&&x>AUS.cx-AUS.w/2&&x<AUS.cx+AUS.w/2){if(!polarEntrance||polarEntrance.open<.9||Math.abs(x-PASSAGE.x)>PASSAGE.w/2-r)return false;}
+      if(zoneAt(x,z)==='antarctic-quay')return Math.abs(x-QUAY.cx)<1.3-r&&z<QUAY.cz+QUAY.d/2-.2-r;
       if(zoneAt(x,z)==='antarctica'){if(x-r<ANTARCTIC.cx-ANTARCTIC.w/2+.45||x+r>ANTARCTIC.cx+ANTARCTIC.w/2-.45||z-r<ANTARCTIC.cz-ANTARCTIC.d/2+.45||z+r>ANTARCTIC.cz+ANTARCTIC.d/2-.45)return false;return !blockers.some(b=>x+r>b.minX&&x-r<b.maxX&&z+r>b.minZ&&z-r<b.maxZ)}
       const west=AUS.cx-AUS.w/2,east=NZ.cx+NZ.w/2;
-      if(x-r<west+.45||x+r>east-.45||z-r<HALL.cz-HALL.d/2+.45||z+r>HALL.cz+HALL.d/2-.45)return false;
+      if(x-r<west+.45||x+r>east-.45||z-r<HALL.cz-HALL.d/2+.45)return false;
+      if(z+r>HALL.cz+HALL.d/2-.45&&(!polarEntrance||polarEntrance.open<.9||Math.abs(x-PASSAGE.x)>PASSAGE.w/2-r))return false;
       return !blockers.some(b=>x+r>b.minX&&x-r<b.maxX&&z+r>b.minZ&&z-r<b.maxZ);
     }
     // The globe's stand, in the Grand Hall.
@@ -606,12 +780,16 @@
     // ---------- doing things ----------
     function interact(object){
       const data=object?.userData;if(!data||typeof data.type!=='string'||!data.type.startsWith('antipodes-'))return false;
-      if(fall)return true;
+      if(fall||voyage)return true;
       switch(data.type){
+        case 'antipodes-polar-chart':
+          polarEntrance.target=1;Object.assign(polarEntrance.data,{author:'The chart has swung aside. Walk through to the quay, board the ship, then cast off at the wheel.',action:'THE QUAY IS OPEN'});
+          playSample?.('secretDoor',.65,.75);showNotice('You turn the compass south. The sea-chart cabinet swings aside: salt air, a lantern-lit quay, and an expedition ship waiting beyond. Walk through to board.',9);return true;
         case 'antipodes-antarctic-boat':
-          fade?.(1);setTimeout(()=>{move(ANTARCTIC.cx+1,ANTARCTIC.cz+7,Math.PI);fade?.(0);showNotice('The Southern Ocean falls away behind the ship. Antarctica: ice underfoot, the expedition hut ahead, and the polar shelves waiting.',8);analytics?.track('Room Explored',{room:'antarctica-expedition'})},650);return true;
         case 'antipodes-antarctic-return':
-          fade?.(1);setTimeout(()=>{move(AUS.cx+3,AUS.cz+2,-Math.PI/2);fade?.(0);showNotice('Back in the Australian Room. The polar ship waits if you wish to make the crossing again.',6);analytics?.track('Room Explored',{room:'antarctica-return'})},650);return true;
+          boardPolarShip();return true;
+        case 'antipodes-antarctic-castoff':startPolarVoyage();return true;
+        case 'antipodes-antarctic-disembark':disembarkPolarShip();return true;
         case 'antipodes-globe':
           if(hall.globe.turn)return true;
           if(hall.hatch.target>0){showNotice('The globe is turned to the far side of the world, and the trapdoor at your feet is open.',5);return true}
@@ -637,31 +815,34 @@
     // ---------- lifecycle ----------
     function activate(){if(!root)buildFar();lastNeeded=time}
     function unload(){
-      if(!root)return;root.removeFromParent();root=null;fire=null;clocks=null;clockStamp='';freeShaft();far={globe:null,hatch:null};
+      if(!root||voyage||aboard)return;root.removeFromParent();root=null;fire=null;clocks=null;clockStamp='';freeShaft();far={globe:null,hatch:null};polarEntrance=polarShip=polarSea=null;
       for(let i=interactables.length-1;i>=0;i--)if(ours.includes(interactables[i]))interactables.splice(i,1);
       for(const thing of owned.splice(0))thing.dispose?.();ours.length=0;books.length=0;blockers.length=0;sharedBookGeometry=null;
     }
-    function reset(){if(fall){fall=null;fade?.(0)}}
+    function reset(){if(fall){fall=null;fade?.(0)}if(voyage){voyage=null;moorPolarShip(shipLocation);fade?.(0)}aboard=false;updateVoyageUI();}
     function update(t,dt=0){
       time=t;const reduced=isReducedMotion(),x=player.pos.x,z=player.pos.z,inside=contains(x,z);
       updateGlobe(hall.globe,dt);updateHatch(hall.hatch,dt);
       if(fall){lastNeeded=t;updateFall(dt,reduced);return}
+      if(voyage){lastNeeded=t;updatePolarVoyage(dt,reduced);return}
       // Stepping onto an open trapdoor.
       if(hall.hatch.target>0&&Math.hypot(x-HATCH.x,z-HATCH.z)<HATCH.r*.75&&player.pos.y<.5)startFall(1);
       else if(hall.hatch.target>0&&t-hall.hatch.openedAt>40&&Math.hypot(x-HATCH.x,z-HATCH.z)>4)closeHatch(hall.hatch,hallHatchData);
       if(inside)activate();
       if(root){
+        if(polarEntrance){polarEntrance.open=Math.min(polarEntrance.target,polarEntrance.open+dt*(reduced?3:1));polarEntrance.hinge.rotation.y=polarEntrance.open*Math.PI*.49;polarEntrance.needle.rotation.z=polarEntrance.open*Math.PI;}
         const snow=root.userData.antarcticSnow;if(snow&&zoneAt(x,z)==='antarctica'){const p=snow.geometry.attributes.position;for(let i=1;i<p.count*3;i+=3){p.array[i]-=dt*1.1;if(p.array[i]<0)p.array[i]=ANTARCTIC.h;p.array[i-1]+=Math.sin(t*.7+i)*dt*.08}p.needsUpdate=true}
         updateGlobe(far.globe,dt);updateHatch(far.hatch,dt);
         if(clocks&&inside){const stamp=new Date().getMinutes();if(stamp!==clockStamp){clockStamp=stamp;const c=clocks.texture.image.getContext('2d');drawClocks(c,c.canvas.width,c.canvas.height);clocks.texture.needsUpdate=true}}
         if(far.hatch.target>0&&Math.hypot(x-FAR_HATCH.x,z-FAR_HATCH.z)<FAR_HATCH.r*.75)startFall(-1);
         if(fire&&zoneAt(x,z)==='australian-room'&&!reduced){for(const f of fire.flames)f.mesh.scale.y=1+Math.sin(t*8+f.phase)*.16;fire.light.intensity=7+Math.sin(t*5)*.8+Math.sin(t*11.3)*.3}
-        if(!inside&&hall.hatch.target===0&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==root))unload();
+        if(!inside&&!aboard&&hall.hatch.target===0&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==root))unload();
       }
     }
     buildHall();
     return {contains,floorAt,allowed,blocksHall,interact,update,reset,enter,unload,startFall,zoneAt,shelfBooks,clockWords,
-      globe:GLOBE,hatch:HATCH,hall:HALL,rooms:{australian:AUS,nz:NZ},shelves:SHELVES,records:RECORDS,cards:CARDS,
-      get travelling(){return !!fall},get built(){return !!root},get shaftBuilt(){return !!shaft},get books(){return books.slice()},get hatchOpen(){return hall.hatch.target>0}};
+      globe:GLOBE,hatch:HATCH,hall:HALL,rooms:{australian:AUS,nz:NZ,antarctic:ANTARCTIC,quay:QUAY},shelves:SHELVES,records:RECORDS,cards:CARDS,
+      get travelling(){return !!fall||!!voyage},get aboard(){return aboard},get voyageStage(){return voyage?.stage||null},get shipLocation(){return shipLocation},get passageOpen(){return (polarEntrance?.open||0)>=.9},
+      get built(){return !!root},get shaftBuilt(){return !!shaft},get books(){return books.slice()},get hatchOpen(){return hall.hatch.target>0}};
   };
 })();

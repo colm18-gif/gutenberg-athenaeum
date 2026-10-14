@@ -312,3 +312,11 @@ body.mobile-started:has(#correspondence:not(.hidden)) #rotateDevice{display:none
 .paper-trail summary:focus-visible{outline:2px solid #d7ad67;outline-offset:3px}
 .paper-trail p{margin:6px 0 12px;color:#4d402f}
 #mapViewer .mv-trail{padding:14px;border:1px solid #9a7a48;background:#302519;color:#f1dfbb;font-style:italic}
+.polar-voyage{position:fixed;z-index:38;left:50%;bottom:5.7rem;transform:translateX(-50%);width:min(32rem,calc(100% - 2rem));padding:.9rem 1.1rem;background:rgba(17,31,39,.95);border:1px solid #9d895e;border-radius:4px;color:#eee1c4;box-shadow:0 8px 30px #0007;text-align:center;font-family:Georgia,serif}
+.polar-voyage[hidden],.polar-voyage button[hidden]{display:none}
+.polar-voyage small{font-size:.66rem;letter-spacing:.2em;color:#d0b87b}
+.polar-voyage p{margin:.45rem 0 .65rem;font-size:.94rem;line-height:1.4}
+.polar-voyage button{border:1px solid #b6a274;background:#d8c79f;color:#1e2d34;padding:.5rem .8rem;font:inherit;font-size:.85rem;cursor:pointer;border-radius:2px;min-height:40px}
+.polar-voyage .polar-ashore{margin-left:.5rem;background:transparent;color:#eee1c4}
+.polar-voyage button:focus-visible{outline:3px solid #fff3c4;outline-offset:3px}
+@media(max-width:600px){.polar-voyage{bottom:8rem;padding:.7rem}.polar-voyage p{font-size:.84rem}.polar-voyage button{font-size:.8rem}}
