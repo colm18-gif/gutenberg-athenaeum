@@ -108,6 +108,7 @@
       'african-room':{beds:[['air',.035]],events:[['rustle',1,.035],['creak',.3,.03]]},
       // The Set Texts Room: a classroom after hours, a clock, and pages turning at the long table.
       'set-texts-room':{beds:[['air',.03]],ticks:[[1,'tock',.022]],events:[['rustle',1.1,.04]]},
+      'cinder-archive':{beds:[['air',.035]],events:[['rustle',1.4,.04],['creak',1.1,.055]]},
       'chance-room':{beds:[['air',.03]],events:[['rustle',1.3,.05],['creak',.9,.04]]},
       'lost-property':{beds:[['air',.03]],events:[['creak',1.1,.05],['rustle',1.2,.04]]},
       // The Map Room: a quiet room, a clock, and big sheets of paper being turned over.
@@ -221,3 +222,4 @@
     return {update,get room(){return current},get active(){return rooms.size},recipes:RECIPES};
   };
 })();
+
