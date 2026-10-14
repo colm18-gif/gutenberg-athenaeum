@@ -15,9 +15,9 @@ O.prototype.updateMatrix=function(){this.matrix={}};
 class Mesh extends O{constructor(g,m){super();this.geometry=g;this.material=m}}
 let disposed=0;const G=class{constructor(){this.index=null;this.attributes={position:{array:new Float32Array(9)},normal:{array:new Float32Array(9)},uv:{array:new Float32Array(6)}}}dispose(){disposed++}setAttribute(){}clone(){return new G()}applyMatrix4(){return this}computeBoundingSphere(){}},M=class{constructor(p){Object.assign(this,p)}dispose(){disposed++}};
 const any=new Proxy(function(){},{get:(t,k)=>k==='width'?100:k===Symbol.toPrimitive?()=>0:any,apply:()=>any,set:()=>true});
-const canvasTexture=(draw,w=384,h=560)=>{const ctx=new Proxy({canvas:{width:w,height:h}},{get:(t,k)=>k in t?t[k]:any,set:()=>true});draw(ctx,w,h);return {dispose(){disposed++},repeat:{set(){}},image:{getContext:()=>ctx},needsUpdate:false}};
+const canvasTexture=(draw,w=384,h=560)=>{const ctx=new Proxy({canvas:{width:w,height:h}},{get:(t,k)=>k in t?t[k]:any,set:()=>true});draw(ctx,w,h);return {dispose(){disposed++},repeat:{set(){}},offset:{x:0,y:0},image:{getContext:()=>ctx},needsUpdate:false}};
 const THREE={Group:O,Mesh,Vector3:V,BoxGeometry:G,CylinderGeometry:G,SphereGeometry:G,PlaneGeometry:G,ConeGeometry:G,TorusGeometry:G,CircleGeometry:G,BufferGeometry:G,
-  MeshStandardMaterial:M,MeshBasicMaterial:M,PointsMaterial:M,Float32BufferAttribute:class{},Points:Mesh,RepeatWrapping:1,BackSide:1,DoubleSide:2,
+  MeshStandardMaterial:M,MeshBasicMaterial:M,PointsMaterial:M,Float32BufferAttribute:class{},Points:class extends Mesh{constructor(g,m){super(g,m);this.isPoints=true}},RepeatWrapping:1,BackSide:1,DoubleSide:2,
   Object3D:O,BufferAttribute:class{constructor(a,n){this.array=a;this.itemSize=n}},InstancedMesh:class extends Mesh{constructor(g,m,n){super(g,m);this.count=n}setMatrixAt(){}},Matrix4:class{compose(){return this}},Quaternion:class{setFromEuler(){return this}},Euler:class{set(){return this}},
   PointLight:class extends O{constructor(c,i){super();this.isPointLight=true;this.intensity=i}}};
 function world({reduced=true}={}){
@@ -91,4 +91,44 @@ test('a link goes straight to either room, and the clocks keep Perth, Sydney and
   a.enter('new-zealand-room');assert.equal(a.zoneAt(player.pos.x,player.pos.z),'new-zealand-room');
   const words=a.clockWords(new Date('2026-10-02T08:06:00Z'));assert.match(words,/Perth 16:06/);assert.match(words,/Sydney 18:06/);assert.match(words,/Wellington 21:06/);
   const summer=a.clockWords(new Date('2027-01-15T00:00:00Z'));assert.match(summer,/Sydney 11:00/);assert.match(summer,/Wellington 13:00/,'their summer time');
+});
+
+test('the compass opens a walkable passage to a quay, and books do not block the entrance',()=>{
+  const {a,interactables}=world();a.enter('australian-room');const q=a.rooms.quay,z=a.rooms.australian.cz+7;
+  assert(!a.allowed(q.cx,z),'the closed chart is solid');
+  a.interact(interactables.find(o=>o.userData.type==='antipodes-polar-chart'));run(a,1);
+  assert(a.passageOpen);
+  for(let dz=-2;dz<7;dz+=.15)assert(a.allowed(q.cx,z+dz),`clear passage and quay at ${dz}`);
+  assert(!a.allowed(q.cx+2,z),'the wall beside the opening remains solid');
+  assert(!a.allowed(q.cx+1.2,q.cz),'cannot walk off the edge of the quay');
+});
+
+test('boarding waits for cast-off, the ship crosses visible ocean, and both shores require disembarking',()=>{
+  const {a,interactables,player,notices}=world({reduced:false});a.enter('australian-room');
+  const use=type=>a.interact(interactables.find(o=>o.userData.type===type));
+  use('antipodes-antarctic-boat');assert(a.aboard);assert(!a.travelling,'boarding does not start sailing');
+  assert.equal(a.zoneAt(player.pos.x,player.pos.z),'antarctic-deck');assert.equal(a.floorAt(player.pos.x,player.pos.z),.91);assert(a.allowed(player.pos.x,player.pos.z));
+  use('antipodes-antarctic-castoff');assert(a.travelling);run(a,8);assert.equal(a.voyageStage,'ocean');assert(player.pos.x<-800,'a separate ocean scene, rather than a shore teleport');
+  use('antipodes-antarctic-disembark');assert(a.aboard&&a.travelling,'cannot jump overboard');run(a,24);
+  assert(!a.travelling&&a.aboard);assert.equal(a.shipLocation,'antarctica');assert(notices.some(n=>/first icebergs/.test(n)));assert(a.allowed(player.pos.x,player.pos.z));
+  use('antipodes-antarctic-disembark');assert(!a.aboard);assert.equal(a.zoneAt(player.pos.x,player.pos.z),'antarctica');assert(a.allowed(player.pos.x,player.pos.z));
+  use('antipodes-antarctic-return');use('antipodes-antarctic-castoff');run(a,25);assert.equal(a.shipLocation,'australia');assert(a.aboard&&!a.travelling);
+  use('antipodes-antarctic-disembark');assert.equal(a.zoneAt(player.pos.x,player.pos.z),'antarctic-quay');assert(a.allowed(player.pos.x,player.pos.z));
+});
+
+test('the polar hut has an open approach and every book can be reached inside it',()=>{
+  const {a,scene}=world();a.enter('australian-room');const r=a.rooms.antarctic;
+  assert(scene.children.find(o=>o.name==='antipodes').userData.antarcticSnow.isPoints,'snow is particles, not random triangles stretched across the hut');
+  for(let z=r.cz+7;z>r.cz-7;z-=.15)assert(a.allowed(r.cx,z),`clear path to the hut at ${z}`);
+  const polar=a.books.filter(b=>b.userData.shelf==='antarctic');assert.equal(polar.length,4);
+  for(const b of polar){assert(b.position.z<r.cz-3&&b.position.z>r.cz-9,'books inside the hut');assert(a.allowed(b.position.x,b.position.z+1.5),'standing in front of the book');}
+  assert(!a.allowed(r.cx+4.5,r.cz-6),'hut side walls are solid');
+});
+
+test('reduced motion keeps the deck steady, and resetting cancels travel without a delayed teleport',()=>{
+  const {a,interactables,player,scene}=world();a.enter('australian-room');
+  a.interact(interactables.find(o=>o.userData.type==='antipodes-antarctic-boat'));a.interact(interactables.find(o=>o.userData.type==='antipodes-antarctic-castoff'));
+  run(a,5);const ship=scene.children.find(o=>o.name==='antipodes').children.find(o=>o.name==='polar-expedition-ship');assert.equal(ship.rotation.z,0);assert.equal(ship.position.y,0);
+  a.reset();assert(!a.travelling&&!a.aboard);player.pos.set(0,0,24);run(a,40);
+  assert.equal(player.pos.z,24,'no lingering arrival callback');assert(!a.built);assert(!interactables.some(o=>o.userData.type==='antipodes-antarctic-castoff'),'ship controls freed');
 });

@@ -103,6 +103,9 @@
       antipodes:{beds:[['air',.035]],events:[['rustle',.8,.035],['creak',.3,.03]]},
       'australian-room':{beds:[['fire',.05],['insects',.04]],events:[['cricket',5,.03],['bird',.5,.035],['rustle',.8,.03]]},
       'new-zealand-room':{beds:[['wind',.04],['air',.025]],events:[['owl',.7,.045],['rustle',1,.035]]},
+      'antarctic-quay':{beds:[['waves',.07],['air',.025]],events:[['creak',1.1,.04]]},
+      'antarctic-deck':{beds:[['waves',.13],['wind',.055]],events:[['creak',1.8,.055]]},
+      antarctica:{beds:[['wind',.07],['waves',.035]],events:[['rustle',.5,.025],['creak',.4,.025]]},
       // The African Reading Room: night insects and a breeze in the courtyard; pages turning inside.
       'african-courtyard':{beds:[['insects',.06],['wind',.03]],events:[['cricket',8,.035],['owl',.25,.035]]},
       'african-room':{beds:[['air',.035]],events:[['rustle',1,.035],['creak',.3,.03]]},

@@ -143,6 +143,20 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   and comes up in a hall under a skylight of southern stars, with live clocks for Perth, Sydney and Wellington. The
   Australian Room is to the west, the New Zealand Room to the east (rooms `antipodes`, `australian`, `new-zealand` in
   `data/new-books.js`); a second globe there falls back home. `?room=antipodes`, `australia` or `nz` go straight there.
+- The southern passage (`antipodes.js`) starts at the sea-chart cabinet in the Australian Room's south-east corner
+  (x −338.5, z −283). Turn the compass: the panel swings aside over a real cut-out in the wall and dado, revealing a
+  walkable lantern-lit quay. Board the expedition ship, then turn its brass wheel to cast off. The outward voyage is
+  30 seconds (return 24; reduced motion 14 with no roll), with departure, ocean/icebergs and approach stages. The
+  voyage card offers cast-off, an optional continue-to-landing control and explicit disembarkation (E casts off or
+  finishes the crossing; G steps ashore; Escape releases mouse lock without opening pause while aboard). The open hut at
+  x −345, z −327 holds the four polar books on its back shelves. Follow the lanterns from the landing to its door;
+  use the waiting ship to return. The quay, deck and hut enter the journal only as discovered. All scenery and sea
+  chart art are procedural, with no extra downloads or point lights; the ocean is built on cast-off and freed with
+  the Antipodes. Moving boat controls use `performanceDynamic` for the focus index and batching exclusions.
+  `travelling` locks walking only while sailing; aboard a moored ship, `floorAt` supplies the deck's 0.91 m floor.
+  Reset cancels the voyage synchronously, so R cannot trigger a late arrival; a new Antipodes visit remooring in
+  Australia keeps the boat available. Sea, wind and timber sounds use existing generated ambience recipes.
+  Snow is a `THREE.Points` object: using the mesh helper would connect the flakes into huge triangles across the hut.
 - The African Reading Room (`african-room.js`, courtyard x −600, z −294; room north of it) is reached by balloon: a
   balloon moored in the roof garden's south-west corner (x −13, z 51.5) rises over the town, crosses a cloud sea (built at
   x −900 for the flight, inside the camera's 130 m) and sinks into a walled courtyard with a baobab. The room is in the
