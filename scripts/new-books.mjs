@@ -1,3 +1,4 @@
+// Includes the Cinder Archive’s surviving reading copies.
 // New arrivals (run by .github/workflows/new-books.yml).
 //
 // For every book in data/new-books.js it makes sure the Gutenberg number really is the book named, using the

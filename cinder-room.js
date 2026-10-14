@@ -55,6 +55,9 @@
       box(2,.15,1.3,stone,cx,1,cz);block(cx,cz,2.2,1.5);for(const dx of [-.8,.8])box(.16,1,.8,char,cx+dx,.5,cz);
       for(const dx of [-.45,.45]){const sheet=box(.72,.025,.8,paper,cx+dx,1.1,cz);sheet.rotation.y=dx*.2;mark(sheet,{type:'cinder-note',title:'A conservator’s table',author:'The room and its bindings are imagined. The losses and survivals on its labels are documented. A destroyed manuscript and a destroyed work are not always the same thing.',action:'EXAMINE'})}
       const exit=print('THE COLD HEARTH','Back to the Gothic Parlour',cx,1.9,cz+d/2-.2,Math.PI,2.8);exit.material.emissive.setHex(0xb18b4c);exit.material.emissiveIntensity=.7;mark(exit,{type:'cinder-exit',title:'The passage through the hearth',author:'Familiar lamplight waits beyond.',action:'RETURN'});
+      // A short soot-blackened passage leads out into the archive.
+      for(const side of [-1,1]){box(.18,3,2.6,char,cx+side*1.35,1.5,cz+d/2-1.5);block(cx+side*1.35,cz+d/2-1.5,.18,2.6)}
+      for(let i=0;i<7;i++){const scrap=box(.12,.012,.18,paper,cx+(i%3-1)*.36,.015,cz+d/2-1-i*.36);scrap.rotation.y=i*.9}
       lastNeeded=time;
     }
     function contains(x,z){return x>ROOM.cx-ROOM.w/2&&x<ROOM.cx+ROOM.w/2&&z>ROOM.cz-ROOM.d/2&&z<ROOM.cz+ROOM.d/2}

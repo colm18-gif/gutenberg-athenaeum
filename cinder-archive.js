@@ -26,7 +26,7 @@
           script.src=window.libraryVersionedSource?.('cinder-room.js')||'cinder-room.js';
           script.onload=()=>{clearTimeout(timer);resolve()};script.onerror=()=>{clearTimeout(timer);script.remove();reject(new Error('load'))};document.head.appendChild(script);
         });
-        room=window.buildCinderRoom({...options,entrance});room.enter();
+        room=window.buildCinderRoom({...options,entrance});if(isHolding()){showNotice('The passage is ready. Set down your book, then enter the hearth.',5);return}room.enter();
       })().catch(()=>showNotice('The passage has not opened. Try the hearth again.',5)).finally(()=>{pending=null});
       return pending;
     }
