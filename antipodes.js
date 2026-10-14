@@ -586,7 +586,8 @@
 
     // ---------- walking ----------
     function zoneAt(x,z){
-      if(z<HALL.cz-HALL.d/2||z>HALL.cz+HALL.d/2)return null;
+      // The Antarctic landing is a separate remote zone south of the Antipodes rooms.
+      if(z<HALL.cz-HALL.d/2||z>HALL.cz+HALL.d/2){if(x>ANTARCTIC.cx-ANTARCTIC.w/2&&x<ANTARCTIC.cx+ANTARCTIC.w/2&&z>ANTARCTIC.cz-ANTARCTIC.d/2&&z<ANTARCTIC.cz+ANTARCTIC.d/2)return 'antarctica';return null}
       if(x>ANTARCTIC.cx-ANTARCTIC.w/2&&x<ANTARCTIC.cx+ANTARCTIC.w/2&&z>ANTARCTIC.cz-ANTARCTIC.d/2&&z<ANTARCTIC.cz+ANTARCTIC.d/2)return 'antarctica';
       if(x>AUS.cx-AUS.w/2&&x<HALL.cx-HALL.w/2)return 'australian-room';if(x>=HALL.cx-HALL.w/2&&x<=HALL.cx+HALL.w/2)return 'antipodes';if(x>HALL.cx+HALL.w/2&&x<NZ.cx+NZ.w/2)return 'new-zealand-room';return null;
     }
