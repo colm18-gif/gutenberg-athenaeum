@@ -31,3 +31,13 @@ test('only the entrance bootstrap is warmed at startup and the room is wired int
  assert.match(entry,/libraryVersionedSource\?\.\('cinder-room.js'\)/);assert.match(entry,/script.onerror/);assert.match(entry,/if\(pending\)return pending/);
  assert.match(game,/cinderArchive\?\.contains\(x,z\)\)return 'cinder-archive'/);assert.match(game,/carryingBook&&cinderArchive\?\.atExit/);assert.match(game,/object.userData.cinderBinding/);
 });
+test('the hearth reveals before downloading, shares a load request, and retries network failure',async()=>{
+ const scripts=[],notices=[],interactables=[],scene=new O();let timer;
+ const context={window:{libraryVersionedSource:s=>s+'?v=test'},Math,document:{createElement:()=>({remove(){}}),head:{appendChild:s=>scripts.push(s)}},setTimeout:f=>{timer=f;return 1},clearTimeout(){}};
+ vm.runInNewContext(fs.readFileSync('cinder-archive.js','utf8'),context);
+ const r=context.window.createCinderArchive({THREE,scene,MAT:{},interactables,canvasTexture:()=>({}),showNotice:s=>notices.push(s)});
+ assert.equal(scripts.length,0);assert.equal(r.built,false);
+ r.interact(interactables.find(o=>o.userData.type==='cinder-key'));assert.equal(scripts.length,0);assert(interactables.some(o=>o.userData.type==='cinder-door'));
+ const first=r.enter();r.enter();assert.equal(scripts.length,1);assert.match(scripts[0].src,/cinder-room.js\?v=test/);scripts[0].onerror();await first;assert.equal(r.pending,false);assert.match(notices.at(-1),/Try the hearth again/);
+ let entered=0;const retry=r.enter();assert.equal(scripts.length,2);context.window.buildCinderRoom=()=>({enter(){entered++},built:true});scripts[1].onload();await retry;assert.equal(entered,1);assert(r.built);
+});
