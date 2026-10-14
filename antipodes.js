@@ -413,7 +413,7 @@
       // Expedition hut, warmed by a lantern, with a polar reading collection inside.
       box(4.8,2.8,3.8,dark,cx+4,1.4,cz-4,root);box(5.3,.25,4.3,timber,cx+4,2.9,cz-4,root);
       for(const dx of [-1.65,1.65])box(.12,1.6,.12,MAT.brass,cx+4+dx,1.25,cz-5.96,root);
-      const glow=new THREE.PointLight(0xffc779,5,10,2);glow.position.set(cx+4,2.1,cz-6.1);root.add(glow);
+      const glowMat=own(new THREE.MeshStandardMaterial({color:0xffc779,emissive:0xffa53a,emissiveIntensity:1.2}));add(own(new THREE.SphereGeometry(.12,8,6)),glowMat,cx+4,2.1,cz-6.1,root);
       mark(sign(root,'THE POLAR READING ROOM','Books saved from the southern ice',3.8,.7,cx+4,2.05,cz-5.82,['#18232a','#e2e7df','#b9c9cc']),card('antarcticSign'));
       const polarBooks=shelfBooks('antarctic'),spots=[];for(let i=0;i<polarBooks.length;i++){const row=Math.floor(i/4),col=i%4;spots.push({x:cx-5.4+col*1.8,y:1.45+row*1.45,z:north+.42,yaw:0,lean:.03})}
       wallBooks('antarctic',polarBooks,spots);shelfBoards(cx,north+.5,7.8,'x',[1.45,2.9]);block(cx,north+.5,8,.7);
