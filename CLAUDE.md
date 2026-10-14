@@ -157,6 +157,10 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Reset cancels the voyage synchronously, so R cannot trigger a late arrival; a new Antipodes visit remooring in
   Australia keeps the boat available. Sea, wind and timber sounds use existing generated ambience recipes.
   Snow is a `THREE.Points` object: using the mesh helper would connect the flakes into huge triangles across the hut.
+  Both moorings have walkable 1.8 m gangways rising continuously from shore to deck height. `GANGWAYS` supplies the
+  visible ramps, floor heights and walking bounds; the boat rail has matching gaps. Walking on/off the deck updates
+  boarding automatically, with E/G and the voyage card retained as alternatives. Keep these paths available before
+  `aboard` is set: making deck or gangway collision depend on boarding first prevents walking aboard.
 - The African Reading Room (`african-room.js`, courtyard x −600, z −294; room north of it) is reached by balloon: a
   balloon moored in the roof garden's south-west corner (x −13, z 51.5) rises over the town, crosses a cloud sea (built at
   x −900 for the flight, inside the camera's 130 m) and sinks into a walled courtyard with a baobab. The room is in the

@@ -2049,6 +2049,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       findBook:id=>books.find(b=>b.id===id),arrivals:{voyages:arrivalIds('antipodes'),australian:arrivalIds('australian'),nz:arrivalIds('new-zealand')},
       fade:o=>{returnFade.style.opacity=String(o)},analytics:window.libraryAnalytics,isHolding:()=>!!selected,isReducedMotion:()=>reducedMotion,
       canUseVoyageControls:()=>!chatOpen&&!settingsOpen&&!supportOpen&&(!selected||carryingBook)&&ui.reader.classList.contains('hidden')&&ui.journal.classList.contains('hidden'),
+      getFocusedObject:()=>focus,
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
     });
     if(antipodes){
