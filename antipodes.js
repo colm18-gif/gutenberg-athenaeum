@@ -415,8 +415,8 @@
       for(const dx of [-1.65,1.65])box(.12,1.6,.12,MAT.brass,cx+4+dx,1.25,cz-5.96,root);
       const glow=new THREE.PointLight(0xffc779,5,10,2);glow.position.set(cx+4,2.1,cz-6.1);root.add(glow);
       mark(sign(root,'THE POLAR READING ROOM','Books saved from the southern ice',3.8,.7,cx+4,2.05,cz-5.82,['#18232a','#e2e7df','#b9c9cc']),card('antarcticSign'));
-      const polarBooks=shelfBooks('antarctic'),spots=[];for(let i=0;i<polarBooks.length;i++){const row=Math.floor(i/4),col=i%4;spots.push({x:cx-5.4+col*1.8,y:1.45+row*1.45,z:south-.42,yaw:Math.PI,lean:.03})}
-      wallBooks('antarctic',polarBooks,spots);shelfBoards(cx,south-.5,7.8,'x',[1.45,2.9]);block(cx,south-.5,8,.7);
+      const polarBooks=shelfBooks('antarctic'),spots=[];for(let i=0;i<polarBooks.length;i++){const row=Math.floor(i/4),col=i%4;spots.push({x:cx-5.4+col*1.8,y:1.45+row*1.45,z:north+.42,yaw:0,lean:.03})}
+      wallBooks('antarctic',polarBooks,spots);shelfBoards(cx,north+.5,7.8,'x',[1.45,2.9]);block(cx,north+.5,8,.7);
       for(let i=0;i<4;i++){const stone=add(own(new THREE.IcosahedronGeometry(.48-i*.06,0)),dark,cx-5.5,.35+i*.48,cz+4,root);stone.rotation.set(i*.2,i*.7,i*.13)}
       box(.07,3,.07,MAT.brass,cx-5.5,2,cz+4,root);box(1.15,.62,.04,own(new THREE.MeshStandardMaterial({color:0x8a2825,roughness:.9})),cx-4.95,2.7,cz+4,root);
       // The vessel is waiting at the Australian shore and on the Antarctic landing.
