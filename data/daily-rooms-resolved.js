@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-14",
+ "updated": "2026-10-15",
  "days": {
-  "2026-10-01": {
-   "books": [
-    {
-     "id": 1260,
-     "title": "Jane Eyre",
-     "author": "Charlotte Brontë"
-    },
-    {
-     "id": 768,
-     "title": "Wuthering Heights",
-     "author": "Emily Brontë"
-    },
-    {
-     "id": 767,
-     "title": "Agnes Grey",
-     "author": "Anne Brontë"
-    },
-    {
-     "id": 969,
-     "title": "The Tenant of Wildfell Hall",
-     "author": "Anne Brontë"
-    },
-    {
-     "id": 9182,
-     "title": "Villette",
-     "author": "Charlotte Brontë"
-    },
-    {
-     "id": 30486,
-     "title": "Shirley",
-     "author": "Charlotte Brontë"
-    },
-    {
-     "id": 1028,
-     "title": "The Professor",
-     "author": "Charlotte Brontë"
-    },
-    {
-     "id": 1019,
-     "title": "Poems by Currer, Ellis, and Acton Bell",
-     "author": "Charlotte, Emily and Anne Brontë"
-    },
-    {
-     "id": 1827,
-     "title": "The Life of Charlotte Bronte",
-     "author": "Elizabeth Cleghorn Gaskell"
-    },
-    {
-     "id": 3011,
-     "title": "The Lady of the Lake",
-     "author": "Walter Scott"
-    }
-   ],
-   "missing": []
-  },
   "2026-10-02": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 1017,
      "title": "The Soul of Man under Socialism",
      "author": "Oscar Wilde"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-17": {
+   "books": [
+    {
+     "id": 204,
+     "title": "The Innocence of Father Brown",
+     "author": "G. K. Chesterton"
+    },
+    {
+     "id": 1155,
+     "title": "The Secret Adversary",
+     "author": "Agatha Christie"
+    },
+    {
+     "id": 2568,
+     "title": "Trent's Last Case",
+     "author": "E. C. Bentley"
+    },
+    {
+     "id": 1872,
+     "title": "The Red House Mystery",
+     "author": "A. A. Milne"
+    },
+    {
+     "id": 1685,
+     "title": "The Mystery of the Yellow Room",
+     "author": "Gaston Leroux"
+    },
+    {
+     "id": 434,
+     "title": "The Circular Staircase",
+     "author": "Mary Roberts Rinehart"
+    },
+    {
+     "id": 10556,
+     "title": "The Old Man in the Corner",
+     "author": "Baroness Orczy"
+    },
+    {
+     "id": 558,
+     "title": "The Thirty-Nine Steps",
+     "author": "John Buchan"
+    },
+    {
+     "id": 4047,
+     "title": "The Leavenworth Case",
+     "author": "Anna Katharine Green"
+    },
+    {
+     "id": 28164,
+     "title": "The Big Bow Mystery",
+     "author": "Israel Zangwill"
     }
    ],
    "missing": []
