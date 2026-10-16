@@ -333,6 +333,15 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   African Reading Room, asking for public-domain African writers it lacks; the Dante Society of America
   (dantesociety@gmail.com) for the Italian room. The SHSL, KCL and IMCoS addresses are from older or third-party listings.
   A draft to the William Morris Society (wmsadmin@) is held unsent at the owner's wish. Make any corrections that come back.
+- Outreach sent 16 October from colm18@gmail.com on the library as a whole, to ten organisations not written to before:
+  Wikimedia UK (info@; thanks for Commons and Wikisource), Europeana (info@; the International Wing), the Australian School
+  Library Association (asla@asla.org.au; the globe and the Australian Room), the National Videogame Museum (via its charity,
+  info@thebgi.uk), UCL Centre for Digital Humanities (Lucy Stagg), Scottish Book Trust (info@; the Burns Room for Burns
+  Night), The Strong National Museum of Play (info@museumofplay.org), the Bibliographical Society of America
+  (bsa@bibsocamer.org; the facsimiles), Games for Change (contact@) and the Federation of Children's Book Groups
+  (info@fcbg.org.uk; families). The Scottish Book Trust and Strong addresses are from third-party listings. Already written
+  to before, so left out: the Reading Agency, the National Literacy Trust, the Folger, CILIP, the SLA, LibriVox, the
+  Internet Archive and the Public Domain Review.
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
   AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
