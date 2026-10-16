@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-15",
+ "updated": "2026-10-16",
  "days": {
-  "2026-10-02": {
-   "books": [
-    {
-     "id": 84,
-     "title": "Frankenstein",
-     "author": "Mary Wollstonecraft Shelley"
-    },
-    {
-     "id": 2147,
-     "title": "The Works of Edgar Allan Poe — Volume 1",
-     "author": "Edgar Allan Poe"
-    },
-    {
-     "id": 696,
-     "title": "The Castle of Otranto",
-     "author": "Horace Walpole"
-    },
-    {
-     "id": 521,
-     "title": "Robinson Crusoe",
-     "author": "Daniel Defoe"
-    },
-    {
-     "id": 325,
-     "title": "Phantastes",
-     "author": "George MacDonald"
-    },
-    {
-     "id": 155,
-     "title": "The Moonstone",
-     "author": "Wilkie Collins"
-    },
-    {
-     "id": 6124,
-     "title": "Pamela",
-     "author": "Samuel Richardson"
-    },
-    {
-     "id": 18247,
-     "title": "The Last Man",
-     "author": "Mary Shelley"
-    },
-    {
-     "id": 244,
-     "title": "A Study in Scarlet",
-     "author": "Arthur Conan Doyle"
-    },
-    {
-     "id": 2130,
-     "title": "Utopia",
-     "author": "Thomas More"
-    }
-   ],
-   "missing": []
-  },
   "2026-10-03": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 28164,
      "title": "The Big Bow Mystery",
      "author": "Israel Zangwill"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-18": {
+   "books": [
+    {
+     "id": 1228,
+     "title": "On the Origin of Species",
+     "author": "Charles Darwin"
+    },
+    {
+     "id": 46036,
+     "title": "The Sidereal Messenger",
+     "author": "Galileo Galilei"
+    },
+    {
+     "id": 33504,
+     "title": "Opticks",
+     "author": "Isaac Newton"
+    },
+    {
+     "id": 14474,
+     "title": "The Chemical History of a Candle",
+     "author": "Michael Faraday"
+    },
+    {
+     "id": 15491,
+     "title": "Micrographia",
+     "author": "Robert Hooke"
+    },
+    {
+     "id": 30155,
+     "title": "Relativity: The Special and General Theory",
+     "author": "Albert Einstein"
+    },
+    {
+     "id": 45515,
+     "title": "Experiments and Observations on Electricity",
+     "author": "Benjamin Franklin"
+    },
+    {
+     "id": 29414,
+     "title": "An Inquiry into the Causes and Effects of the Variolae Vaccinae",
+     "author": "Edward Jenner"
+    },
+    {
+     "id": 33224,
+     "title": "Principles of Geology",
+     "author": "Charles Lyell"
+    },
+    {
+     "id": 3300,
+     "title": "An Inquiry into the Nature and Causes of the Wealth of Nations",
+     "author": "Adam Smith"
     }
    ],
    "missing": []
