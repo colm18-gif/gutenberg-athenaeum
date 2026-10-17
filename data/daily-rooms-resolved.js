@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-16",
+ "updated": "2026-10-17",
  "days": {
-  "2026-10-03": {
-   "books": [
-    {
-     "id": 4200,
-     "title": "The Diary of Samuel Pepys",
-     "author": "Samuel Pepys"
-    },
-    {
-     "id": 42856,
-     "title": "Journals of Dorothy Wordsworth",
-     "author": "Dorothy Wordsworth"
-    },
-    {
-     "id": 16623,
-     "title": "Letters of a Woman Homesteader",
-     "author": "Elinore Pruitt Stewart"
-    },
-    {
-     "id": 35977,
-     "title": "Letters of Abelard and Heloise",
-     "author": "Pierre Abelard"
-    },
-    {
-     "id": 3361,
-     "title": "Letters to His Son",
-     "author": "Earl of Chesterfield"
-    },
-    {
-     "id": 39585,
-     "title": "The Journal of a Disappointed Man",
-     "author": "W. N. P. Barbellion"
-    },
-    {
-     "id": 2680,
-     "title": "Meditations",
-     "author": "Marcus Aurelius"
-    },
-    {
-     "id": 78579,
-     "title": "Letters of Madame de Sévigné",
-     "author": "Madame de Sévigné"
-    },
-    {
-     "id": 6053,
-     "title": "Evelina",
-     "author": "Fanny Burney"
-    },
-    {
-     "id": 946,
-     "title": "Lady Susan",
-     "author": "Jane Austen"
-    }
-   ],
-   "missing": []
-  },
   "2026-10-04": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 3300,
      "title": "An Inquiry into the Nature and Causes of the Wealth of Nations",
      "author": "Adam Smith"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-19": {
+   "books": [
+    {
+     "id": 113,
+     "title": "The Secret Garden",
+     "author": "Frances Hodgson Burnett"
+    },
+    {
+     "id": 1327,
+     "title": "Elizabeth and Her German Garden",
+     "author": "Elizabeth von Arnim"
+    },
+    {
+     "id": 36279,
+     "title": "Wood and Garden",
+     "author": "Gertrude Jekyll"
+    },
+    {
+     "id": 16389,
+     "title": "The Enchanted April",
+     "author": "Elizabeth von Arnim"
+    },
+    {
+     "id": 136,
+     "title": "A Child's Garden of Verses",
+     "author": "Robert Louis Stevenson"
+    },
+    {
+     "id": 125,
+     "title": "A Girl of the Limberlost",
+     "author": "Gene Stratton-Porter"
+    },
+    {
+     "id": 1429,
+     "title": "The Garden Party",
+     "author": "Katherine Mansfield"
+    },
+    {
+     "id": 47349,
+     "title": "The Wild Garden",
+     "author": "William Robinson"
+    },
+    {
+     "id": 3135,
+     "title": "My Summer in a Garden",
+     "author": "Charles Dudley Warner"
+    },
+    {
+     "id": 512,
+     "title": "Mosses from an Old Manse",
+     "author": "Nathaniel Hawthorne"
     }
    ],
    "missing": []
