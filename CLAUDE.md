@@ -171,8 +171,13 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   x −900 for the flight, inside the camera's 130 m) and sinks into a walled courtyard with a baobab. The room is in the
   Sahelian manner of Djenné and Timbuktu (shelves `african-ancient`, `african-voices`, `african-tales` in
   `data/new-books.js`); the courtyard's balloon flies home. `?room=africa` goes straight to the courtyard.
-- Quill, the library cat, is sometimes found asleep in the Irish Room, the Poe Room or a wing reading room (the same
-  cat moved and curled up; `?quill` makes it every time). The librarian stays in the Grand Hall.
+- Clio (once Quill), the library cat, has a corner under the portrait on the Grand Hall's west wall by the fire
+  (`clioCorner` in game.js, x −18, z −21 to −19): a wicker basket she sometimes sleeps in, a saucer of milk she drinks
+  from (the jug beside it fills it), a scratching post, and a tin of treats on a shelf. Her errands to them are run
+  after her haunts ("Clio's errands", wrapping `updateCat`, `guideCat` and `interact`); shaking the tin brings her at a
+  run for a treat, three in five minutes and then she has had enough. Showing the reader something always comes first.
+- Clio, the library cat, is sometimes found asleep in the Irish Room, the Poe Room or a wing reading room (the same
+  cat moved and curled up; `?clio` makes it every time). The librarian stays in the Grand Hall.
 - The doors between the Grand Hall and each wing (x ±19) are bookcases that part and slide into the walls (`wingLeaf` in
   `game.js`: one shared spine texture, instanced shelf boards).
 - Plain text: `read.html?book=ID` shows any book as one readable page (linked from every book page and the reader). Reading

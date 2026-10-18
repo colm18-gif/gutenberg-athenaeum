@@ -35,7 +35,7 @@ const CLOUDFLARE_BEACON_TOKEN = '10c90b1abbfe4fe9a38a09f48adbfc7b';
   // library itself registers, short fixed labels for journeys and secrets, and Project Gutenberg book numbers.
   const allowed = ['Library Entered', 'Room Explored', 'Book Picked Up', 'Book Opened', 'Book Link Opened', 'Room Link Opened',
     'Reading Started', 'Book Returned', 'Book Left at Desk', 'Secret Discovered', 'Secret Found',
-    'Journey Taken', 'Stair Slide', 'Librarian Talked To', 'Cat Petted', 'Rabbit Door Entered',
+    'Journey Taken', 'Stair Slide', 'Librarian Talked To', 'Cat Petted', 'Cat Treat', 'Rabbit Door Entered',
     'Quote Opened', 'Quote Shared', 'Audiobook Played', 'Audiobook Link Opened',
     'Engaged 5 Minutes', 'Engaged 10 Minutes', 'Support Box Opened', 'Stripe Support Opened',
     'Visitors Book Signed', 'Map Viewed', 'Whole Book Opened'];

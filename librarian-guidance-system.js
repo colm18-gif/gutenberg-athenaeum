@@ -2,7 +2,7 @@
 'use strict';
 
 /**
- * Librarian and Quill guidance layer.
+ * Librarian and Clio guidance layer.
  * Keeps guidance contextual without replacing exploration.
  */
 window.createLibrarianGuidanceSystem=function(){
@@ -36,10 +36,10 @@ window.createLibrarianGuidanceSystem=function(){
     return list[Math.floor(Math.random()*list.length)];
   }
 
-  function quillInteract(){
-    return 'Quill watches the shelves quietly, waiting for the next discovery.';
+  function clioInteract(){
+    return 'Clio watches the shelves quietly, waiting for the next discovery.';
   }
 
-  return {discover,hasDiscovered,getHint,quillInteract};
+  return {discover,hasDiscovered,getHint,clioInteract};
 };
 })();

@@ -29,7 +29,7 @@
     {id:'candle',on:'table',title:'A candle stub',text:'A candle burned right down to the saucer. Someone read here very late indeed.'},
     {id:'ticket',on:'table',title:'A railway ticket',text:'A ticket for the night railway, punched once. On the back, in pencil: “Missed my stop on purpose.”'},
     {id:'notebook',on:'table',title:'An open notebook',text:'A notebook left open at a list headed “To read before I am old”. It runs to four pages. The last entry is “everything else”.'},
-    {id:'drawing',on:'table',title:'A child’s drawing',text:'A crayon drawing of the library cat, labelled QUILL (ASLEEP). It is a very good likeness.'},
+    {id:'drawing',on:'table',title:'A child’s drawing',text:'A crayon drawing of the library cat, labelled CLIO (ASLEEP). It is a very good likeness.'},
     {id:'flower',on:'table',title:'A pressed violet',text:'A pressed violet, fallen out of some book and left here as if to be put back later. Nobody remembers which book.'},
     {id:'slip',on:'table',title:'A reservation slip',text:'A library slip: “Reserved for Thomas, aged 9. He is coming back for the one with the dragon.”'},
     {id:'knitting',on:'table',title:'Some knitting',text:'Half a sock on four needles, abandoned mid-row. The pattern is pencilled in the margin of a cookery book.'},
@@ -88,7 +88,7 @@
       candle(g){cyl(.12,.12,.02,colours.china,0,.01,0,g,14);cyl(.035,.035,.06,colours.wax,0,.05,0,g);part(new THREE.ConeGeometry(.018,.05,6),flameMaterial,0,.105,0,g)},
       ticket(g){box(.22,.004,.1,colours.ticket,0,.003,0,g)},
       notebook(g){box(.3,.02,.42,colours.paper,0,.01,0,g);const pencil=cyl(.008,.008,.34,colours.ticket,.22,.02,0,g,6);pencil.rotation.x=Math.PI/2},
-      drawing(g){const map=canvasTexture((c,W,H)=>{c.fillStyle='#f3ecda';c.fillRect(0,0,W,H);c.strokeStyle='#2b2b2b';c.lineWidth=5;c.beginPath();c.ellipse(W/2,H*.62,W*.28,H*.2,0,0,7);c.stroke();c.beginPath();c.arc(W*.3,H*.42,W*.12,0,7);c.stroke();c.beginPath();c.moveTo(W*.22,H*.33);c.lineTo(W*.25,H*.22);c.lineTo(W*.29,H*.31);c.moveTo(W*.32,H*.31);c.lineTo(W*.37,H*.22);c.lineTo(W*.39,H*.33);c.stroke();c.fillStyle='#d9822b';c.font='bold 26px Comic Sans MS, cursive';c.textAlign='center';c.fillText('QUILL (ASLEEP)',W/2,H*.92)},256,256);
+      drawing(g){const map=canvasTexture((c,W,H)=>{c.fillStyle='#f3ecda';c.fillRect(0,0,W,H);c.strokeStyle='#2b2b2b';c.lineWidth=5;c.beginPath();c.ellipse(W/2,H*.62,W*.28,H*.2,0,0,7);c.stroke();c.beginPath();c.arc(W*.3,H*.42,W*.12,0,7);c.stroke();c.beginPath();c.moveTo(W*.22,H*.33);c.lineTo(W*.25,H*.22);c.lineTo(W*.29,H*.31);c.moveTo(W*.32,H*.31);c.lineTo(W*.37,H*.22);c.lineTo(W*.39,H*.33);c.stroke();c.fillStyle='#d9822b';c.font='bold 26px Comic Sans MS, cursive';c.textAlign='center';c.fillText('CLIO (ASLEEP)',W/2,H*.92)},256,256);
         const sheet=part(new THREE.PlaneGeometry(.36,.36),std({map,roughness:1}),0,.004,0,g);sheet.rotation.x=-Math.PI/2},
       flower(g){part(new THREE.SphereGeometry(.03,8,6),colours.violet,0,.015,0,g).scale.y=.3;const stem=cyl(.004,.004,.16,colours.green,0,.006,.09,g,4);stem.rotation.x=Math.PI/2},
       slip(g){box(.1,.003,.2,colours.paper,0,.002,0,g)},

@@ -13,7 +13,7 @@
   // Where each book was found: invented, like the library's other traces of readers.
   const FOUND=['Left on a seat in the reading carriage of the night train','Found in the roof garden, in the rain','Handed in at the Antipodes, upside down',
     'Found in the basket of the balloon','Left on the Moon','Found in the Boathouse, rather damp','Left beside the great globe in the Grand Hall',
-    'Found behind the turf creel in the Irish Room','Left open on the map table in the Map Room','Handed in by Quill, the library cat',
+    'Found behind the turf creel in the Irish Room','Left open on the map table in the Map Room','Handed in by Clio, the library cat',
     'Found halfway up the high staircase','Left in the Evening Room when the fire burned down','Found in the Room of Chance, which did not want it',
     'Left on the lectern in the Set Texts Room','Found on the rug in the Children’s Attic','Left in the Poe Room, under the raven',
     'Handed in by the conductor of the night train','Found among the returns, with no slip'];
