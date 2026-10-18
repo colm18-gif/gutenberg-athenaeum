@@ -52,3 +52,10 @@ test('no one is left stuck on a spot the walls consider solid',()=>{
   assert.match(game,/if\(!allowed\(player\.pos\.x,player\.pos\.z\)\)\{const spot=nearestWalkable/,'a blocked safe position is itself repaired');
   assert.match(game,/const south=i===2\?\[room\.cx-room\.w\/2\+\.55,room\.cz-5,Math\.PI\/2\]/,'Doyle shelves no longer stand in front of the exit');
 });
+
+test('covers are painted only on book meshes, never on furniture that carries a book to resume',()=>{
+  // The Continue Reading stand's desk, rest and posts carry the reader's latest book but are the shared wood and brass.
+  assert.match(game,/emptyData\.book=started\[0\]/,'the stand still carries its book');
+  assert.match(game,/function applyBookCover\(id,texture,detailed=true\)\{refreshCoverFrustum\(\);for\(const object of interactables\)\{const book=object\.userData\?\.book;if\(object\.userData\.type!=='book'\|\|/);
+  assert.match(game,/function visibleCoverNeeded\(id\)\{refreshCoverFrustum\(\);return interactables\.some\(object=>object\.userData\?\.type==='book'&&/);
+});
