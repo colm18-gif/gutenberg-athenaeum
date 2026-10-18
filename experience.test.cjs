@@ -79,7 +79,7 @@ test('leave at desk persists a central-stand copy and has a working control',()=
   assert.match(game,/\$\('#leaveBook'\)\.addEventListener\('click',leaveSelectedAtDesk\)/);
 });
 
-test('librarian and Quill can physically guide a visitor',()=>{
+test('librarian and Clio can physically guide a visitor',()=>{
   assert.match(game,/function guideLibrarian/);
   assert.match(game,/librarianGuideTarget/);
   assert.match(game,/Walk with me/);
@@ -87,10 +87,22 @@ test('librarian and Quill can physically guide a visitor',()=>{
   assert.match(game,/looks directly at you/);
 });
 
-test('Quill only meows after direct interaction',()=>{
+test('Clio only meows after direct interaction',()=>{
   const catUpdate=game.match(/function updateCat\([\s\S]*?function updateLibrarian/)?.[0]||'';
   assert.doesNotMatch(catUpdate,/meow\(\)/);
   assert.match(game,/function petCat\([\s\S]*?meow\(\)/);
+});
+
+test('Clio has a corner by the fire: a bed she sleeps in, a saucer of milk she drinks, a scratching post and a tin of treats',()=>{
+  assert.doesNotMatch(game,/\bQuill\b/,'the cat is called Clio now');
+  for(const type of ['clio-bed','clio-bowl','clio-post','clio-treats'])assert(game.includes(`type:'${type}'`),type);
+  const block=game.slice(game.indexOf("// Clio's errands"),game.indexOf("// ---- First visit"));
+  assert.match(block,/c\.curl\(true\)/,'she sleeps curled up in her basket');
+  assert.match(block,/c\.milk=Math\.max\(0,c\.milk-dt/,'drinking empties the saucer');
+  assert.match(block,/start\('treat',to,2\.3/,'the tin brings her at a run');
+  assert.match(block,/treats\.length>=3/,'three treats, and then she has had enough');
+  assert.match(block,/if\(catGuideTarget\)\{stop\(\);return preErrandCat\(dt\)\}/,'showing the reader something comes first');
+  assert.match(fs.readFileSync('analytics.js','utf8'),/'Cat Treat'/);
 });
 
 test('neglected rooms progressively disorder their books',()=>{
@@ -264,7 +276,7 @@ test('visual repair pass keeps library materials and wayfinding legible',()=>{
   assert.match(game,/fillText\('THE WHITE'/);
   assert.match(game,/whiteVolumeGroup\.position\.y=THREE\.MathUtils\.damp/);
   assert.match(game,/picturePassage:\{src:'assets\/audio\/painting-passage\.ogg'/);
-  assert.match(game,/if\(\/Quill\/i\.test\(t\)&&!inMainLibrary\)return/);
+  assert.match(game,/if\(\/Clio\/i\.test\(t\)&&!inMainLibrary\)return/);
   assert.match(game,/new THREE\.AmbientLight\(0xd0a879,atmosphericFill\?1\.5:1\.75\)/);
   assert.match(game,/ambient\.intensity=1\.68\+daylight\*\.68/);
   assert.match(game,/toneMappingExposure=1\.95\+daylight\*\.32/);

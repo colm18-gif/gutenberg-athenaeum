@@ -55,12 +55,12 @@ test('the room builds on approach, shows its four shelves, and is freed after',(
   assert.equal(r.built,false);assert.equal(scene.children.length,doorOnly);assert(disposed>40);assert(interactables.some(o=>o.userData.type==='irish-door'));
 });
 
-test('Quill is sometimes found asleep in the rooms behind doors, as the same cat, and goes home with the reader',()=>{
-  const block=game.slice(game.indexOf("// Quill's haunts"),game.indexOf("// Quill's haunts")+4000);
+test('Clio is sometimes found asleep in the rooms behind doors, as the same cat, and goes home with the reader',()=>{
+  const block=game.slice(game.indexOf("// Clio's haunts"),game.indexOf("// Clio's haunts")+4000);
   for(const zone of ['irish-room','poe-room','international-wing'])assert(block.includes(`zone==='${zone}'`),zone);
   assert.match(block,/home=cat\.position\.clone\(\)/);assert.match(block,/cat\.position\.copy\(home\)/,'back to the Grand Hall afterwards');
   assert.match(block,/!catGuideTarget/,'never while leading the reader');assert.doesNotMatch(block,/new THREE\.|PointLight/,'nothing new is built');
-  assert.match(block,/has\('quill'\)/,'?quill shows Quill every time, for checking');
+  assert(block.includes("['clio','quill'].some(k=>new URLSearchParams(location.search).has(k))"),'?clio (or the old ?quill) shows Clio every time, for checking');
 });
 
 test('the Grand Hall side of every room behind a door is the library’s walnut, with the room’s name gilded on the glass',()=>{

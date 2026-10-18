@@ -23,10 +23,10 @@ test('desk stationery opens a private letter and closes with Escape',()=>{
   s.keydown({code:'Escape',stopImmediatePropagation(){stopped++},preventDefault(){prevented++}});assert.equal(s.desk.isOpen,false);assert.equal(s.callbacks.closes,1);assert.equal(prevented,1);
 });
 test('letters preserve punctuation and Unicode in an encoded email draft, without claiming delivery',()=>{
-  const s=setup(),e=s.elements;s.desk.open();e.letterSubject.value='Books & suggestions?';e.letterMessage.value='I loved Quill.\nA suggestion: Éire & Mars #2';e.letterName.value='A reader';
+  const s=setup(),e=s.elements;s.desk.open();e.letterSubject.value='Books & suggestions?';e.letterMessage.value='I loved Clio.\nA suggestion: Éire & Mars #2';e.letterName.value='A reader';
   e.letterForm.events.submit({preventDefault(){}});
   assert(s.window.location.href.startsWith('mailto:libraryafterdark1@gmail.com?'));
-  const params=new URLSearchParams(s.window.location.href.split('?')[1]);assert.equal(params.get('subject'),'[Library After Dark] Books & suggestions?');assert.match(params.get('body'),/Éire & Mars #2\n\nFrom A reader/);assert.match(e.letterStatus.textContent,/Send it there/);assert.equal(e.letterMessage.value,'I loved Quill.\nA suggestion: Éire & Mars #2','draft survives closing and reopening');
+  const params=new URLSearchParams(s.window.location.href.split('?')[1]);assert.equal(params.get('subject'),'[Library After Dark] Books & suggestions?');assert.match(params.get('body'),/Éire & Mars #2\n\nFrom A reader/);assert.match(e.letterStatus.textContent,/Send it there/);assert.equal(e.letterMessage.value,'I loved Clio.\nA suggestion: Éire & Mars #2','draft survives closing and reopening');
 });
 test('blank letters cannot launch email and clipboard denial leaves selectable text',async()=>{
   const s=setup({writeText:async()=>{throw Error('denied')}}),e=s.elements;e.letterMessage.value='  ';e.letterForm.events.submit({preventDefault(){}});assert.equal(s.window.location.href,'');assert(e.letterMessage.error);
