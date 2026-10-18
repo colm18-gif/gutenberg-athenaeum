@@ -105,6 +105,15 @@ test('Clio has a corner by the fire: a bed she sleeps in, a saucer of milk she d
   assert.match(fs.readFileSync('analytics.js','utf8'),/'Cat Treat'/);
 });
 
+test('Clio purrs: when petted, after a treat, and softly in her basket to a reader close by, with no sound file',()=>{
+  const purr=game.match(/function purr\([\s\S]*?\n/)?.[0]||'';
+  assert.match(purr,/createBuffer/);assert.doesNotMatch(purr,/playSample/);
+  assert.match(game,/function petCat\([^\n]*purr\(/);
+  const block=game.slice(game.indexOf("// Clio's errands"),game.indexOf("// ---- First visit"));
+  assert.match(block,/meow\(\);paperNoise\([^)]*\);setTimeout\(\(\)=>purr\(/,'after a treat');
+  assert.match(block,/if\(by<3&&now>soundAt\)\{soundAt=now\+3200;purr\(/,'asleep, to a reader close by');
+});
+
 test('neglected rooms progressively disorder their books',()=>{
   assert.match(game,/function curatedShelf\(ids,x,z,rot=0,neglect=0\)/);
   assert.match(game,/fallen=neglect>=2/);
