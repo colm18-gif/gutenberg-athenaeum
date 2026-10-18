@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-17",
+ "updated": "2026-10-18",
  "days": {
-  "2026-10-04": {
-   "books": [
-    {
-     "id": 2701,
-     "title": "Moby-Dick",
-     "author": "Herman Melville"
-    },
-    {
-     "id": 2055,
-     "title": "Two Years Before the Mast",
-     "author": "Richard Henry Dana"
-    },
-    {
-     "id": 1074,
-     "title": "The Sea-Wolf",
-     "author": "Jack London"
-    },
-    {
-     "id": 2186,
-     "title": "Captains Courageous",
-     "author": "Rudyard Kipling"
-    },
-    {
-     "id": 1142,
-     "title": "Typhoon",
-     "author": "Joseph Conrad"
-    },
-    {
-     "id": 120,
-     "title": "Treasure Island",
-     "author": "Robert Louis Stevenson"
-    },
-    {
-     "id": 6629,
-     "title": "Mr. Midshipman Easy",
-     "author": "Frederick Marryat"
-    },
-    {
-     "id": 151,
-     "title": "The Rime of the Ancient Mariner",
-     "author": "Samuel Taylor Coleridge"
-    },
-    {
-     "id": 1356,
-     "title": "The Cruise of the Cachalot",
-     "author": "Frank T. Bullen"
-    },
-    {
-     "id": 164,
-     "title": "Twenty Thousand Leagues under the Sea",
-     "author": "Jules Verne"
-    }
-   ],
-   "missing": []
-  },
   "2026-10-05": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 512,
      "title": "Mosses from an Old Manse",
      "author": "Nathaniel Hawthorne"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-20": {
+   "books": [
+    {
+     "id": 213,
+     "title": "The Man from Snowy River",
+     "author": "A. B. Paterson"
+    },
+    {
+     "id": 41234,
+     "title": "Scrambles Amongst the Alps in the Years 1860-69",
+     "author": "Edward Whymper"
+    },
+    {
+     "id": 119,
+     "title": "A Tramp Abroad",
+     "author": "Mark Twain"
+    },
+    {
+     "id": 1448,
+     "title": "Heidi",
+     "author": "Johanna Spyri"
+    },
+    {
+     "id": 10012,
+     "title": "The Mountains of California",
+     "author": "John Muir"
+    },
+    {
+     "id": 32540,
+     "title": "My First Summer in the Sierra",
+     "author": "John Muir"
+    },
+    {
+     "id": 755,
+     "title": "A Lady's Life in the Rocky Mountains",
+     "author": "Isabella L. Bird"
+    },
+    {
+     "id": 2226,
+     "title": "Kim",
+     "author": "Rudyard Kipling"
+    },
+    {
+     "id": 61083,
+     "title": "The Assault on Mount Everest, 1922",
+     "author": "C. G. Bruce"
+    },
+    {
+     "id": 47209,
+     "title": "Hours of Exercise in the Alps",
+     "author": "John Tyndall"
     }
    ],
    "missing": []
