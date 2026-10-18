@@ -1,5 +1,17 @@
 // Site-specific URL supplied by the owner from Plausible's installation screen.
 const PLAUSIBLE_SCRIPT_URL = 'https://plausible.io/js/pa-nD_g44fQQBbeVFD1ofS4k.js';
+// Site token from Cloudflare's Web Analytics screen (Add a site → libraryafterdark.space). Empty leaves the beacon off.
+const CLOUDFLARE_BEACON_TOKEN = '10c90b1abbfe4fe9a38a09f48adbfc7b';
+
+// Cloudflare Web Analytics counts page views only (no cookies, no events); Plausible below keeps the library's events.
+(() => {
+  if (!/^[0-9a-f]{32}$/.test(CLOUDFLARE_BEACON_TOKEN) || location.hostname !== 'libraryafterdark.space') return;
+  const beacon = document.createElement('script');
+  beacon.defer = true;
+  beacon.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+  beacon.setAttribute('data-cf-beacon', JSON.stringify({ token: CLOUDFLARE_BEACON_TOKEN }));
+  document.head.appendChild(beacon);
+})();
 
 (() => {
   const enabled = /^https:\/\/plausible\.io\/js\/pa-[A-Za-z0-9_-]+\.js$/.test(PLAUSIBLE_SCRIPT_URL)
