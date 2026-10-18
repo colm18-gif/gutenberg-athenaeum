@@ -1567,6 +1567,10 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 10832,
    "words": 54173
   },
+  "The Wind in the Rose-Bush": {
+   "id": 1617,
+   "words": 40668
+  },
   "A Beleaguered City": {
    "id": 11521,
    "words": 47673
