@@ -125,6 +125,11 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `data/new-books.js` (category `Contested`, which the room's chair and the east-side recommendations draw on), in
   three cases of ten. They must be books held nowhere else (a test checks): the single-copy register shows each book
   once, and when the room's books were the Restricted Catalogue's, its shelves stood almost empty.
+- The four memory rooms below the catalogue (`buildMemoryRooms` in `game.js`, x 72–167, z −20, through the basement:
+  Names in the Dust, The Longer Silence, St—ll W—ting and What Was Kept) are stocked from the shelves `returning`,
+  `quiet`, `unread` and `repository` in `data/new-books.js` (books held nowhere else; a test checks): the hidden reading
+  room behind the west shelf, built first, holds the older lists' copies, which left these rooms empty. The Repository's
+  four racks hold 36 distinct books and its request desk one more.
 - The Kipling bookcase (`kipling-shelf.js`) stands against the Grand Hall's west wall in the south-west corner (x −18.54,
   z 29.1, between the column at z 27 and the corner; `?room=kipling`): Rudyard Kipling's books face-out in the order he
   published them, four shelves of three, from the shelf `kipling` in `data/new-books.js` (books of his held nowhere else;
@@ -211,7 +216,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 ## Books and data
 
 - The catalogue: the core list in `game.js`, plus `data/*` catalogues and the new arrivals. `scripts/book-pages.mjs`
-  rebuilds the same list (742 books at the time of writing).
+  rebuilds the same list (1,288 books on 18 October 2026, the International Wing's included).
 - **New books**: add `[id or null, title, author, category, room, note]` to `data/new-books.js` (rooms are listed at
   the top of that file and in `ROOMS` in `scripts/new-books.mjs`); the International Wing's rooms go in
   `data/new-books-wing.js`, which the library fetches only within 9 m of the wing door, at one of its doors, or at
