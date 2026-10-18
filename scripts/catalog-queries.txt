@@ -1,93 +1,11 @@
-# Memory rooms below the catalogue: Returning Voices
-; Wilson, Harriet E ; en
-; Hopkins, Pauline ; en
-; Chesnutt ; en
-; Dunbar, Paul Laurence ; en
-; Du Bois ; en
-; Johnson, James Weldon ; en
-; Griggs, Sutton ; en
-; Harper, Frances ; en
-; Gilman, Charlotte ; en
-; Zitkala ; en
-; Sui Sin Far|Eaton, Edith ; en
-; Johnson, E. Pauline ; en
-; Ruiz de Burton ; en
-; Kelley.Hawkins|Kelley, Emma ; en
-; Jacobs, Harriet ; en
-; Brown, William Wells ; en
-; Wells.Barnett|Wells, Ida ; en
-; Truth, Sojourner ; en
-; Equiano ; en
-; Prince, Mary ; en
-; Seacole ; en
-; Wheatley, Phillis ; en
-; Cooper, Anna Julia ; en
-; Washington, Booker ; en
-; Pokagon|Eastman, Charles ; en
-; Ridge, John Rollin|Yellow Bird ; en
-# The Longer Silence: fading supernatural
-; Machen ; en
-; Hodgson, William Hope ; en
-; Blackwood, Algernon ; en
-; Crawford, F. Marion ; en
-; Freeman, Mary E. Wilkins ; en
-; Wharton, Edith ; en
-; Benson, E. F. ; en
-; Onions, Oliver ; en
-; Le Fanu ; en
-; Riddell ; en
-; Oliphant ; en
-; Shiel ; en
-; Middleton, Richard ; en
-; Lee, Vernon|Paget, Violet ; en
-; Hunt, Violet ; en
-; Bierce ; en
-; Hearn, Lafcadio ; en
-; Edwards, Amelia ; en
-; Broughton, Rhoda ; en
-; Marsh, Richard ; en
-# St—ll W—ting: almost unread
-; Arnold, Edwin Lester ; en
-; Beresford, J. D. ; en
-; Serviss ; en
-; Cavendish, Margaret ; en
-; Morrison, Arthur ; en
-; Griffiths, Arthur ; en
-; Boothby ; en
-; Jokai ; en
-; O.Donnell, Elliott ; en
-; Benson, Robert Hugh ; en
-# What Was Kept: books about books
-; Lang, Andrew ; en
-Philobiblon ; ; en
-; Lowell, James Russell ; en
-Bookbinding ; ; en
-Gutenberg ; Pearson ; en
-Books Fatal ; ; en
-Amenities of Literature ; ;
-Bibliotaph ; ;
-; Wheatley, Henry ; en
-Bibliomania ; ; en
-Books and Characters ; Strachey ;
-Choice of Books ; ;
-; Birrell ; en
-Printers. Marks ; ;
-; Pearson, Edmund ; en
-Booklover|Book.?lover|Book.?Lover ; ; en
-Enchiridion ; Ireland ;
-; Blades, William ; en
-; Dibdin ; en
-; Clark, John Willis ; en
-; Savage, Ernest ; en
-; Spofford ; en
-; Field, Eugene ; en
-; Burton, John Hill ; en
-; Browne, Irving ; en
-; Humphreys, Arthur ; en
-; De Vinne ; en
-Book.?(plates|-plates)|Ex Libris ; ; en
-Libraries ; ; en
-Library ; ; en
-Bookseller|Book.?selling|Booksellers ; ; en
-Printing ; ; en
-Manuscripts ; ; en
+# Quiet room: a replacement for Widdershins (Onions is in copyright in Ireland until 2032)
+Room in the Tower ; Benson ; en
+Uncanny Stories ; Sinclair ; en
+Lady of the Barge ; Jacobs ; en
+In a Glass Darkly ; Le Fanu ; en
+Twilight Stories ; Broughton ; en
+Lifted Veil ; Eliot ; en
+Visible and Invisible ; Benson ; en
+Wind in the Rose.?Bush ; Freeman ; en
+Jewel of Seven Stars ; Stoker ; en
+Ghost Stories and Tales of Mystery ; Le Fanu ; en
