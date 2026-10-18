@@ -1274,7 +1274,13 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     $('#closeChat').onclick=closeChat;
     $('#closeJourney').addEventListener('click',closeJourneyPicker);
     const petLines=['You scratch behind Clio’s ears. “Mrrrow.” The tail curls happily.','Clio leans into your hand with a soft meow.','A slow blink, a little head-bump, and an approving “mew”.','Clio headbutts your palm and demands you keep going.','A rumbling purr starts up before your hand even lands.','Clio flops onto their side, offering the other ear next.','A single paw pats your wrist, requesting more.','Clio’s eyes narrow to contented slits and stay that way.'];
-    function petCat(){if(petTime>0)return;window.libraryAnalytics?.track('Cat Petted');petTime=2.8;catPause=4;petCount++;showNotice(petLines[Math.floor(Math.random()*petLines.length)],4);meow()}
+    function petCat(){if(petTime>0)return;window.libraryAnalytics?.track('Cat Petted');petTime=2.8;catPause=4;petCount++;showNotice(petLines[Math.floor(Math.random()*petLines.length)],4);meow();setTimeout(()=>purr(3.4),650)}
+    // Her purr, made rather than recorded: noise pulsed about 26 times a second, through a low filter, in breaths (the
+    // in-breath quieter and a little lower than the out-breath). One at a time; a new one only extends the old.
+    let purrUntil=0;
+    function purr(dur=3,vol=.3){startAudio();if(!audioCtx||muted)return;const now=audioCtx.currentTime;if(now<purrUntil-.4)return;audioCtx.resume();const rate=audioCtx.sampleRate,len=Math.floor(rate*dur),buffer=audioCtx.createBuffer(1,len,rate),d=buffer.getChannelData(0),breath=1.05+Math.random()*.2,hz=24+Math.random()*4;let lo=0;
+      for(let i=0;i<len;i++){const t=i/rate,ph=(t%breath)/breath,out=ph>=.45,b=Math.sin(Math.PI*(out?(ph-.45)/.55:ph/.45))**.6*(out?1:.6),pulse=(.5+.5*Math.sin(2*Math.PI*hz*(out?1:.92)*t))**3;lo+=(Math.random()*2-1-lo)*.18;d[i]=lo*pulse*b*Math.min(1,t/.25,(dur-t)/.4)}
+      const src=audioCtx.createBufferSource();src.buffer=buffer;const f=audioCtx.createBiquadFilter();f.type='lowpass';f.frequency.value=380;f.Q.value=.7;const g=audioCtx.createGain();g.gain.value=vol*6;src.connect(f).connect(g).connect(master);src.start(now);purrUntil=now+dur;src.onended=()=>{src.disconnect();f.disconnect();g.disconnect()}}
     function meow(){startAudio();if(playSample('catMeow',1,.97+Math.random()*.07))return;audioCtx.resume();const t=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain(),f=audioCtx.createBiquadFilter();o.type='sawtooth';o.frequency.setValueAtTime(510,t);o.frequency.exponentialRampToValueAtTime(790,t+.12);o.frequency.exponentialRampToValueAtTime(430,t+.5);o.frequency.exponentialRampToValueAtTime(320,t+.7);f.type='bandpass';f.Q.value=2.4;f.frequency.setValueAtTime(1450,t);f.frequency.exponentialRampToValueAtTime(720,t+.7);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.65,t+.07);g.gain.exponentialRampToValueAtTime(.001,t+.75);o.connect(f).connect(g).connect(master);o.start(t);o.stop(t+.8);o.onended=()=>{o.disconnect();f.disconnect();g.disconnect()}}
 
     function noisyAction(){}
@@ -2356,7 +2362,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const towards=(o,gap)=>c.spot.set(o.x+gap,0,o.z);
       const arrive=()=>{errand.at=true;const k=errand.kind;errand.t=k==='bed'?35+Math.random()*45:k==='milk'?7:k==='post'?3.6:2.6;
         if(k==='bed'){cat.position.y=.1;c.curl(true);errand.greeted=false}
-        if(k==='treat'){treats.push(performance.now());meow();paperNoise(.12,.2,1300,1.4);
+        if(k==='treat'){treats.push(performance.now());meow();paperNoise(.12,.2,1300,1.4);setTimeout(()=>purr(3),900);
           if(near(4))showNotice(treats.length>=3?'That is her third. Clio eats it, winds once round your ankles, purring, and does not ask again for a while.':['You tip a treat into your palm. Clio takes it delicately, crunches it loudly, and looks at the tin for another.','Clio eats the treat in one crunch and then, to be safe, sniffs your empty hand.','The treat vanishes. Clio sits, wraps her tail round her feet and gives you a slow blink: high praise.'][Math.floor(Math.random()*3)],5)}};
       const walk=dt=>{const to=errand.pts[0],v=tmpVector.set(to.x-cat.position.x,0,to.z-cat.position.z),d=v.length();if(d<.12){errand.pts.shift();if(!errand.pts.length)arrive();return}
         v.multiplyScalar(1/d);const step=Math.min(d,dt*errand.speed),fast=errand.speed>1;cat.position.x+=v.x*step;cat.position.z+=v.z*step;cat.rotation.y=THREE.MathUtils.damp(cat.rotation.y,Math.atan2(-v.z,v.x),fast?6:4,dt);cat.position.y=.02+Math.abs(Math.sin(performance.now()*(fast?.012:.006)))*.025;tail.rotation.x=Math.sin(clock.elapsedTime*2)*.12};
@@ -2372,6 +2378,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
         else if(k==='post'){cat.rotation.z=THREE.MathUtils.damp(cat.rotation.z,.75,6,dt);cat.position.x=c.post.x+.6+Math.sin(t*14)*.015;if(near(8)&&now>soundAt){soundAt=now+340;paperNoise(.2,.09,3200,1.5)}}
         else if(k==='treat'){headTo(.82,.75+Math.abs(Math.sin(t*7))*.08);tail.rotation.x=Math.sin(t*6)*.25}
         else{petTime=Math.max(0,petTime-dt);head.rotation.z=petTime>0?Math.sin(petTime*5)*.13:0;body.scale.y=.8+Math.sin(t*1.6)*.02;// asleep, and breathing
+          const by=Math.hypot(player.pos.x-cat.position.x,player.pos.z-cat.position.z);if(by<3&&now>soundAt){soundAt=now+3200;purr(3.2,.22*(1-by/3.4))}// a sleepy purr, for a reader who comes close
           if(!errand.greeted&&near(3)){errand.greeted=true;showNotice('Clio is asleep in her basket, nose tucked under her tail. One ear turns toward you; the rest of her does not.',6)}}
         if(errand.t<=0)stop()};
       // Readers' hints don't wake her (the librarian's "show me something" does).

@@ -176,6 +176,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   from (the jug beside it fills it), a scratching post, and a tin of treats on a shelf. Her errands to them are run
   after her haunts ("Clio's errands", wrapping `updateCat`, `guideCat` and `interact`); shaking the tin brings her at a
   run for a treat, three in five minutes and then she has had enough. Showing the reader something always comes first.
+  She purrs (`purr` in game.js, made from pulsed noise, no file) when petted, after a treat, and in her basket when a
+  reader comes close.
 - Clio, the library cat, is sometimes found asleep in the Irish Room, the Poe Room or a wing reading room (the same
   cat moved and curled up; `?clio` makes it every time). The librarian stays in the Grand Hall.
 - The doors between the Grand Hall and each wing (x ±19) are bookcases that part and slide into the walls (`wingLeaf` in
