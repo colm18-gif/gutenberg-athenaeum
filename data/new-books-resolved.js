@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-10-14",
+ "updated": "2026-10-18",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -1518,6 +1518,274 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Elene; Judith; Athelstan, or the Fight at Brunanburh; Byrhtnoth, or the Fight at Maldon; and the Dream of the Rood": {
    "id": 15879,
    "words": 22934
+  },
+  "Of One Blood": {
+   "id": 69255,
+   "words": 53444
+  },
+  "The Wife of His Youth": {
+   "id": 11057,
+   "words": 82005
+  },
+  "The Colonel’s Dream": {
+   "id": 19746,
+   "words": 85073
+  },
+  "The Uncalled": {
+   "id": 25171,
+   "words": 53363
+  },
+  "The Hindered Hand": {
+   "id": 24577,
+   "words": 75049
+  },
+  "The Autobiography of an Ex-Colored Man": {
+   "id": 11012,
+   "words": 52216
+  },
+  "Minnie’s Sacrifice": {
+   "id": 11053,
+   "words": 30444
+  },
+  "Mrs. Spring Fragrance": {
+   "id": 62940,
+   "words": 71270
+  },
+  "The Squatter and the Don": {
+   "id": 35538,
+   "words": 137873
+  },
+  "American Indian Stories": {
+   "id": 10376,
+   "words": 32536
+  },
+  "The Ghost Pirates": {
+   "id": 10966,
+   "words": 47878
+  },
+  "Carnacki, the Ghost Finder": {
+   "id": 10832,
+   "words": 54173
+  },
+  "Widdershins": {
+   "id": 14168,
+   "words": 79585
+  },
+  "A Beleaguered City": {
+   "id": 11521,
+   "words": 47673
+  },
+  "The Uninhabited House": {
+   "id": 8602,
+   "words": 52788
+  },
+  "Hauntings": {
+   "id": 9956,
+   "words": 56812
+  },
+  "Tales of Men and Ghosts": {
+   "id": 4514,
+   "words": 95913
+  },
+  "The Upper Berth": {
+   "id": 22246,
+   "words": 18591
+  },
+  "Can Such Things Be?": {
+   "id": 4366,
+   "words": 60802
+  },
+  "The Willows": {
+   "id": 11438,
+   "words": 19751
+  },
+  "The Wonderful Adventures of Phra the Phoenician": {
+   "id": 67345,
+   "words": 150673
+  },
+  "The Hampdenshire Wonder": {
+   "id": 53028,
+   "words": 59131
+  },
+  "A Columbus of Space": {
+   "id": 8673,
+   "words": 70741
+  },
+  "The Hole in the Wall": {
+   "id": 34538,
+   "words": 64835
+  },
+  "The Rome Express": {
+   "id": 11451,
+   "words": 35606
+  },
+  "A Bid for Fortune": {
+   "id": 21640,
+   "words": 86013
+  },
+  "Tales for Christmas Eve": {
+   "id": 69297,
+   "words": 30627
+  },
+  "The Light Invisible": {
+   "id": 58433,
+   "words": 37158
+  },
+  "Prince Zaleski": {
+   "id": 10709,
+   "words": 33201
+  },
+  "Tales of the Uneasy": {
+   "id": 78605,
+   "words": 90141
+  },
+  "The Library": {
+   "id": 2018,
+   "words": 37902
+  },
+  "Books and Bookmen": {
+   "id": 1961,
+   "words": 33144
+  },
+  "Adventures Among Books": {
+   "id": 1994,
+   "words": 73253
+  },
+  "The Love of Books: The Philobiblon of Richard de Bury": {
+   "id": 626,
+   "words": 24884
+  },
+  "Among My Books": {
+   "id": 8503,
+   "words": 124830
+  },
+  "Bookbinding, and the Care of Books": {
+   "id": 26672,
+   "words": 52108
+  },
+  "Gutenberg, and the Art of Printing": {
+   "id": 51358,
+   "words": 60577
+  },
+  "Books Fatal to Their Authors": {
+   "id": 8485,
+   "words": 48362
+  },
+  "Amenities of Literature": {
+   "id": 36298,
+   "words": 278297
+  },
+  "The Bibliotaph, and Other People": {
+   "id": 21272,
+   "words": 54944
+  },
+  "Literary Blunders": {
+   "id": 371,
+   "words": 38771
+  },
+  "Bibliomania in the Middle Ages": {
+   "id": 21630,
+   "words": 85022
+  },
+  "Book-Lovers, Bibliomaniacs and Book Clubs": {
+   "id": 22605,
+   "words": 13439
+  },
+  "The Bibliomaniac": {
+   "id": 66552,
+   "words": 7767
+  },
+  "On the Choice of Books": {
+   "id": 13435,
+   "words": 36960
+  },
+  "Obiter Dicta": {
+   "id": 7299,
+   "words": 34213
+  },
+  "In the Name of the Bodleian, and Other Essays": {
+   "id": 12244,
+   "words": 56952
+  },
+  "Printers’ Marks": {
+   "id": 25663,
+   "words": 37262
+  },
+  "The Librarian at Play": {
+   "id": 46933,
+   "words": 37821
+  },
+  "The Booklover and His Books": {
+   "id": 22606,
+   "words": 54430
+  },
+  "Confessions of a Book-Lover": {
+   "id": 24003,
+   "words": 53621
+  },
+  "Shakspere & Typography": {
+   "id": 40841,
+   "words": 7167
+  },
+  "Books in Chains, and Other Bibliographical Papers": {
+   "id": 79115,
+   "words": 40858
+  },
+  "Libraries in the Medieval and Renaissance Periods": {
+   "id": 19415,
+   "words": 9602
+  },
+  "The Invention of Printing": {
+   "id": 51034,
+   "words": 194726
+  },
+  "Book-Plates": {
+   "id": 41142,
+   "words": 49873
+  },
+  "The Beginnings of Libraries": {
+   "id": 49849,
+   "words": 24771
+  },
+  "A Brief Outline of the History of Libraries": {
+   "id": 78256,
+   "words": 11489
+  },
+  "Notes on the Cathedral Libraries of England": {
+   "id": 78788,
+   "words": 113667
+  },
+  "Gossip in a Library": {
+   "id": 11628,
+   "words": 54120
+  },
+  "A History of Booksellers, the Old and the New": {
+   "id": 52362,
+   "words": 132554
+  },
+  "Literary Taste: How to Form It": {
+   "id": 3640,
+   "words": 23935
+  },
+  "English Embroidered Bookbindings": {
+   "id": 17585,
+   "words": 30975
+  },
+  "The Biography and Typography of William Caxton": {
+   "id": 78654,
+   "words": 119124
+  },
+  "Library Essays": {
+   "id": 58241,
+   "words": 126517
+  },
+  "The Building of a Book": {
+   "id": 23754,
+   "words": 88824
+  },
+  "Men, Women, and Books": {
+   "id": 64985,
+   "words": 31628
   },
   "Don Quijote [es]": {
    "id": 2000,

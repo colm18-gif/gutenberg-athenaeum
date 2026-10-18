@@ -1,1 +1,93 @@
-= 6538 8979 8980 8981 8982 8983 8984 8985 8986 8987 8988 8989 8990 10547 19513 20000 28918 28947 8613 8614 8615 8616 8617 8618 8619 8620 8621 8622 8623 8624 8625 8626 8627 8628 8629 8630 8631 8632 8633 8634 8635 8636 8637 9551 9552 9553 9554 9555 9556 9557 9558 21520 21586 21587 28733 35348 36050 6620 8965 8966 8967 8968 8969 8970 8971 8972 8973 8974 8975 8976 8977 8978 17401 26246 26290 26291 26578 28840 34921 21438 21440 22454 2038 15466 62942 74782
+# Memory rooms below the catalogue: Returning Voices
+; Wilson, Harriet E ; en
+; Hopkins, Pauline ; en
+; Chesnutt ; en
+; Dunbar, Paul Laurence ; en
+; Du Bois ; en
+; Johnson, James Weldon ; en
+; Griggs, Sutton ; en
+; Harper, Frances ; en
+; Gilman, Charlotte ; en
+; Zitkala ; en
+; Sui Sin Far|Eaton, Edith ; en
+; Johnson, E. Pauline ; en
+; Ruiz de Burton ; en
+; Kelley.Hawkins|Kelley, Emma ; en
+; Jacobs, Harriet ; en
+; Brown, William Wells ; en
+; Wells.Barnett|Wells, Ida ; en
+; Truth, Sojourner ; en
+; Equiano ; en
+; Prince, Mary ; en
+; Seacole ; en
+; Wheatley, Phillis ; en
+; Cooper, Anna Julia ; en
+; Washington, Booker ; en
+; Pokagon|Eastman, Charles ; en
+; Ridge, John Rollin|Yellow Bird ; en
+# The Longer Silence: fading supernatural
+; Machen ; en
+; Hodgson, William Hope ; en
+; Blackwood, Algernon ; en
+; Crawford, F. Marion ; en
+; Freeman, Mary E. Wilkins ; en
+; Wharton, Edith ; en
+; Benson, E. F. ; en
+; Onions, Oliver ; en
+; Le Fanu ; en
+; Riddell ; en
+; Oliphant ; en
+; Shiel ; en
+; Middleton, Richard ; en
+; Lee, Vernon|Paget, Violet ; en
+; Hunt, Violet ; en
+; Bierce ; en
+; Hearn, Lafcadio ; en
+; Edwards, Amelia ; en
+; Broughton, Rhoda ; en
+; Marsh, Richard ; en
+# St—ll W—ting: almost unread
+; Arnold, Edwin Lester ; en
+; Beresford, J. D. ; en
+; Serviss ; en
+; Cavendish, Margaret ; en
+; Morrison, Arthur ; en
+; Griffiths, Arthur ; en
+; Boothby ; en
+; Jokai ; en
+; O.Donnell, Elliott ; en
+; Benson, Robert Hugh ; en
+# What Was Kept: books about books
+; Lang, Andrew ; en
+Philobiblon ; ; en
+; Lowell, James Russell ; en
+Bookbinding ; ; en
+Gutenberg ; Pearson ; en
+Books Fatal ; ; en
+Amenities of Literature ; ;
+Bibliotaph ; ;
+; Wheatley, Henry ; en
+Bibliomania ; ; en
+Books and Characters ; Strachey ;
+Choice of Books ; ;
+; Birrell ; en
+Printers. Marks ; ;
+; Pearson, Edmund ; en
+Booklover|Book.?lover|Book.?Lover ; ; en
+Enchiridion ; Ireland ;
+; Blades, William ; en
+; Dibdin ; en
+; Clark, John Willis ; en
+; Savage, Ernest ; en
+; Spofford ; en
+; Field, Eugene ; en
+; Burton, John Hill ; en
+; Browne, Irving ; en
+; Humphreys, Arthur ; en
+; De Vinne ; en
+Book.?(plates|-plates)|Ex Libris ; ; en
+Libraries ; ; en
+Library ; ; en
+Bookseller|Book.?selling|Booksellers ; ; en
+Printing ; ; en
+Manuscripts ; ; en
