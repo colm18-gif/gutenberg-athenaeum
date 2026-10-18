@@ -31,3 +31,11 @@ test('each room shelves its own arrivals first, and the Repository’s racks hol
   assert.match(game,/repositoryRack\(147,-29,0\);repositoryRack\(157,-29,9\);repositoryRack\(147,-20,18\);repositoryRack\(157,-20,27\);/);
   assert.match(game,/requestBook=looseBook\(memoryBooks\.repository\[0\]/);
 });
+
+// Oliver Onions died in 1961: his books are public domain in the US but in copyright in Ireland and the EU until 2032.
+// Ray Russell of Tartarus Press pointed this out, and Widdershins left The Longer Silence for Freeman's stories.
+test('no book by Oliver Onions is on the shelves',()=>{
+  const all=[game,...fs.readdirSync('data').filter(f=>f.endsWith('.js')).map(f=>fs.readFileSync('data/'+f,'utf8'))].join('\n');
+  assert.doesNotMatch(all,/Oliver Onions|Widdershins/);
+  assert(!fs.existsSync('texts/bundled-gzip/pg14168.txt.gz'));
+});

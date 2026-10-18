@@ -1567,10 +1567,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 10832,
    "words": 54173
   },
-  "Widdershins": {
-   "id": 14168,
-   "words": 79585
-  },
   "A Beleaguered City": {
    "id": 11521,
    "words": 47673
