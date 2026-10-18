@@ -3,14 +3,15 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const source = fs.readFileSync(require('node:path').join(__dirname, 'analytics.js'), 'utf8');
 
-function run(url, hostname, preloaded = true) {
+function run(url, hostname, preloaded = true, token = '') {
   const appended = [], events = [];
   const context = {
     location: { hostname },
     window: preloaded ? { plausible: (...args) => events.push(args) } : {},
-    document: { createElement: () => ({}), head: { appendChild: el => appended.push(el) } }
+    document: { createElement: () => ({ setAttribute(k, v) { this[k] = v; } }), head: { appendChild: el => appended.push(el) } }
   };
-  vm.runInNewContext(source.replace(/const PLAUSIBLE_SCRIPT_URL = '[^']*';/, `const PLAUSIBLE_SCRIPT_URL = '${url}';`), context);
+  vm.runInNewContext(source.replace(/const PLAUSIBLE_SCRIPT_URL = '[^']*';/, `const PLAUSIBLE_SCRIPT_URL = '${url}';`)
+    .replace(/const CLOUDFLARE_BEACON_TOKEN = '[^']*';/, `const CLOUDFLARE_BEACON_TOKEN = '${token}';`), context);
   return { context, appended, events };
 }
 
@@ -66,4 +67,13 @@ assert.equal(later.events[4].length, 1);
 assert.equal(JSON.stringify(later.events[5][1].props), '{"how":"share"}');
 const disabledLater = run('', 'libraryafterdark.space');
 disabledLater.context.window.libraryAnalytics.allowRooms(['x']);
+// The Cloudflare beacon loads only on the live site with a well-formed token, with or without Plausible.
+const cfToken = '0123456789abcdef0123456789abcdef';
+assert.equal(run('', 'localhost', true, cfToken).appended.length, 0);
+assert.equal(run('', 'libraryafterdark.space', true, 'not-a-token').appended.length, 0);
+const cfOnly = run('', 'libraryafterdark.space', true, cfToken);
+assert.equal(cfOnly.appended.length, 1);
+assert.equal(cfOnly.appended[0].src, 'https://static.cloudflareinsights.com/beacon.min.js');
+assert.equal(JSON.parse(cfOnly.appended[0]['data-cf-beacon']).token, cfToken);
+assert.equal(run('https://plausible.io/js/pa-TEST123.js', 'libraryafterdark.space', true, cfToken).appended.length, 2);
 console.log('Analytics guard and event tests passed');
