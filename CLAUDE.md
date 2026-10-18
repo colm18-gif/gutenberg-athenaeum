@@ -347,6 +347,17 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   (info@fcbg.org.uk; families). The Scottish Book Trust and Strong addresses are from third-party listings. Already written
   to before, so left out: the Reading Agency, the National Literacy Trust, the Folger, CILIP, the SLA, LibriVox, the
   Internet Archive and the Public Domain Review.
+- Outreach sent 18 October from colm18@gmail.com to twenty not written to before, each pointed at one room. Books about
+  books (the Repository below the catalogue, the Kelmscott press, the facsimiles): the Book Club of California (info@),
+  APHA (secretary@printinghistory.org), the Guild of Book Workers (communications@), Designer Bookbinders (secretary@),
+  Fine Books & Collections (Allison Meier), the Ticknor Society (ticknorinfo@gmail.com), Oak Knoll (oakknoll@), the ABA
+  (secretary@aba.org.uk), the ABAA (hq@abaa.org) and the Caxton Club (info@). Ghosts and Gothic, for Halloween (the Quiet
+  Room, the Poe Room, the lanterns): the Folklore Society (thefolkloresociety@gmail.com; asked to correct the Samhain card),
+  the Wilkie Collins Society (Paul Lewis), the International Gothic Association (info@globalgoth.org), the Ghost Club
+  (gensec@) and Tartarus Press (Ray Russell). Returning Voices (asked to check its notes): the Recovery Hub for American
+  Women Writers (recoveryhub@siue.edu) and Just Teach One (Duncan Faherty, cc Ed White). Outlets: Atlas Obscura (pitches@),
+  Hyperallergic (tips@) and Electric Literature (editors@). The Designer Bookbinders, ABA, ABAA, Ghost Club, Guild and
+  Atlas Obscura addresses are from registers, directories or older pages. Make any corrections that come back.
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
   AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
