@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-18",
+ "updated": "2026-10-19",
  "days": {
-  "2026-10-05": {
-   "books": [
-    {
-     "id": 10136,
-     "title": "The Book of Household Management",
-     "author": "Isabella Beeton"
-    },
-    {
-     "id": 72482,
-     "title": "Modern Cookery for Private Families",
-     "author": "Eliza Acton"
-    },
-    {
-     "id": 69519,
-     "title": "A New System of Domestic Cookery",
-     "author": "Maria Eliza Ketelby Rundell"
-    },
-    {
-     "id": 5434,
-     "title": "The Physiology of Taste",
-     "author": "Jean Anthelme Brillat-Savarin"
-    },
-    {
-     "id": 65061,
-     "title": "The Boston Cooking-School Cook Book",
-     "author": "Fannie Merritt Farmer"
-    },
-    {
-     "id": 46,
-     "title": "A Christmas Carol",
-     "author": "Charles Dickens"
-    },
-    {
-     "id": 730,
-     "title": "Oliver Twist",
-     "author": "Charles Dickens"
-    },
-    {
-     "id": 8102,
-     "title": "The Forme of Cury",
-     "author": "Samuel Pegge"
-    },
-    {
-     "id": 1400,
-     "title": "Great Expectations",
-     "author": "Charles Dickens"
-    },
-    {
-     "id": 24407,
-     "title": "The Italian Cook Book",
-     "author": "Maria Gentile"
-    }
-   ],
-   "missing": []
-  },
   "2026-10-06": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 47209,
      "title": "Hours of Exercise in the Alps",
      "author": "John Tyndall"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-21": {
+   "books": [
+    {
+     "id": 31591,
+     "title": "Language of Flowers",
+     "author": "Kate Greenaway"
+    },
+    {
+     "id": 1934,
+     "title": "Songs of Innocence and of Experience",
+     "author": "William Blake"
+    },
+    {
+     "id": 71779,
+     "title": "The Language and Poetry of Flowers",
+     "author": "Anonymous"
+    },
+    {
+     "id": 29042,
+     "title": "A Tangled Tale",
+     "author": "Lewis Carroll"
+    },
+    {
+     "id": 108,
+     "title": "The Return of Sherlock Holmes",
+     "author": "Arthur Conan Doyle"
+    },
+    {
+     "id": 2002,
+     "title": "Sonnets from the Portuguese",
+     "author": "Elizabeth Barrett Browning"
+    },
+    {
+     "id": 10118,
+     "title": "The Folk-Lore of Plants",
+     "author": "T. F. Thiselton-Dyer"
+    },
+    {
+     "id": 44638,
+     "title": "Plant Lore, Legends, and Lyrics",
+     "author": "Richard Folkard"
+    },
+    {
+     "id": 12,
+     "title": "Through the Looking-Glass",
+     "author": "Lewis Carroll"
+    },
+    {
+     "id": 163,
+     "title": "Flower Fables",
+     "author": "Louisa May Alcott"
     }
    ],
    "missing": []
