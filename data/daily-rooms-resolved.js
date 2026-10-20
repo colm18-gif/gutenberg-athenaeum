@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-19",
+ "updated": "2026-10-20",
  "days": {
-  "2026-10-06": {
-   "books": [
-    {
-     "id": 1463,
-     "title": "The Private Papers of Henry Ryecroft",
-     "author": "George Gissing"
-    },
-    {
-     "id": 9846,
-     "title": "Excursions",
-     "author": "Henry David Thoreau"
-    },
-    {
-     "id": 2048,
-     "title": "The Sketch Book of Geoffrey Crayon",
-     "author": "Washington Irving"
-    },
-    {
-     "id": 45,
-     "title": "Anne of Green Gables",
-     "author": "L. M. Montgomery"
-    },
-    {
-     "id": 36949,
-     "title": "Wild Life in a Southern County",
-     "author": "Richard Jefferies"
-    },
-    {
-     "id": 4232,
-     "title": "A Week on the Concord and Merrimack Rivers",
-     "author": "Henry David Thoreau"
-    },
-    {
-     "id": 534,
-     "title": "An Inland Voyage",
-     "author": "Robert Louis Stevenson"
-    },
-    {
-     "id": 2496,
-     "title": "Our Village",
-     "author": "Mary Russell Mitford"
-    },
-    {
-     "id": 122,
-     "title": "The Return of the Native",
-     "author": "Thomas Hardy"
-    },
-    {
-     "id": 289,
-     "title": "The Wind in the Willows",
-     "author": "Kenneth Grahame"
-    }
-   ],
-   "missing": []
-  },
   "2026-10-07": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 163,
      "title": "Flower Fables",
      "author": "Louisa May Alcott"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-22": {
+   "books": [
+    {
+     "id": 3623,
+     "title": "The Golden Bough",
+     "author": "James George Frazer"
+    },
+    {
+     "id": 51568,
+     "title": "Some Haunted Houses of England & Wales",
+     "author": "Elliott O'Donnell"
+    },
+    {
+     "id": 7885,
+     "title": "Celtic Fairy Tales",
+     "author": "Joseph Jacobs"
+    },
+    {
+     "id": 34853,
+     "title": "The Fairy-Faith in Celtic Countries",
+     "author": "W. Y. Evans-Wentz"
+    },
+    {
+     "id": 33887,
+     "title": "Fairy and Folk Tales of the Irish Peasantry",
+     "author": "W. B. Yeats"
+    },
+    {
+     "id": 10897,
+     "title": "The Wendigo",
+     "author": "Algernon Blackwood"
+    },
+    {
+     "id": 58894,
+     "title": "Witchcraft & Second Sight in the Highlands & Islands of Scotland",
+     "author": "John Gregorson Campbell"
+    },
+    {
+     "id": 1279,
+     "title": "Poems and Songs of Robert Burns",
+     "author": "Robert Burns"
+    },
+    {
+     "id": 14461,
+     "title": "Letters on Demonology and Witchcraft",
+     "author": "Walter Scott"
+    },
+    {
+     "id": 7439,
+     "title": "English Fairy Tales",
+     "author": "Joseph Jacobs"
     }
    ],
    "missing": []
