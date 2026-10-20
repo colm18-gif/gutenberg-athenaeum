@@ -365,6 +365,16 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Women Writers (recoveryhub@siue.edu) and Just Teach One (Duncan Faherty, cc Ed White). Outlets: Atlas Obscura (pitches@),
   Hyperallergic (tips@) and Electric Literature (editors@). The Designer Bookbinders, ABA, ABAA, Ghost Club, Guild and
   Atlas Obscura addresses are from registers, directories or older pages. Make any corrections that come back.
+  (Atlas Obscura's pitches inbox auto-replied that it is paused.)
+- Outreach sent 20 October from colm18@gmail.com to ten outlets not written to before, each pointed at one room: Hackaday
+  (tips@; how it is built), History Ireland (editor@historyireland.com, Tommy Graham; Kells and Durrow), Medievalists.net
+  (medievalists.net@gmail.com; Kells, Durrow, the Voynich, the Mappa Mundi), Mental Floss (contact@; the Room of Books
+  Within Books), Kotaku (tips@; the globe, the polar voyage, the balloon), the Irish Examiner (news@examiner.ie; the Irish
+  Room), Irish America (submit@irishamerica.com; the Irish and Burns Rooms), Words Without Borders (info@; the International
+  Wing), Tes (newsdesk@tes.com; the Set Texts Room) and Lifehacker (tips@; reading and bookmarks). The Irish America, Tes
+  and Lifehacker addresses are from directories. Already written to, so left out: Open Culture, Kottke, Boing Boing, Lit
+  Hub, Book Riot, American Libraries, Rock Paper Shotgun, PC Gamer, The Verge, Engadget, Gizmodo, the Irish Times, RTÉ,
+  TheJournal.ie, the Independent and the Waterford News & Star.
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
   AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
