@@ -396,7 +396,10 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Ukrainian Canadian Congress (ucc@), the UCCA (ucca@), the Ukrainian Institute of America (info@), PEN Ukraine
   (ukraine.pen@gmail.com; asked to look over the Executed Renaissance notes) and the Ukrainian World Congress (uwc@). The
   embassy addresses are from Wikidata and directories. No address found for the Ukrainian Institute in Kyiv or the Ukrainian
-  Book Institute (their sites hide them). Make any corrections that come back.
+  Book Institute (their sites hide them): their sites' contact forms are for the owner to fill in by hand. The same morning,
+  updates in the 8 October threads to the Ukrainian Institute London, HURI (to Olha Aleksic), Cambridge (to Nicole at
+  slavonic@mmll.cam.ac.uk), CIUS and the Shevchenko Scientific Society, and first emails to the Embassies of Ukraine in the US
+  (emb_us@), Canada (emb_ca@) and Australia (emb_au@mfa.gov.ua). Make any corrections that come back.
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
   AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
