@@ -143,6 +143,15 @@ export const BOOKS = {
   { key: '103r', files: ['Voynich Manuscript (183).jpg'] },
   { key: '116v', files: ['Voynich Manuscript (206).jpg'] }
     ]
+  },
+  // The Ukrainian Reading Room's Peresopnytsia Gospel (1556–61), the Gospels in the Ukrainian of its day, on which
+  // Ukraine's presidents take their oath. Surveyed first, with sheets of the usable files, to choose its pages.
+  peresopnytsia: {
+    dir: 'assets/peresopnytsia', manifest: 'peresopnytsia.json', width: 1190, height: 1820, paper: '#e6d8b8',
+    categories: ['Category:Peresopnytsia Gospel', 'Category:Пересопницьке Євангеліє'], must: /peresop|пересоп|ПЄ/i,
+    survey: ['Peresopnytsia Gospel', 'Пересопницьке Євангеліє', 'Пересопницьке Євангеліє мініатюра', 'Peresopnytsia Gospel 1911 facsimile'],
+    surveyOnly: /peresop|пересоп|ПЄ|ukraina-1556|жеславськ/i, thumbs: 'usable',
+    pages: []
   }
 };
 

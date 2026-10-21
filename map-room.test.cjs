@@ -37,7 +37,7 @@ test('the Map Room loads before the game and is wired in like the other rooms be
 test('every map has a card, a public-domain image in two sizes, and a place in the room',()=>{
   const {r}=room(),keys=[...r.hang.map(h=>h[0]),...r.table.map(t=>t[0])];
   assert.equal(new Set(keys).size,keys.length,'each map hangs once');assert.deepEqual([...keys].sort(),Object.keys(r.maps).sort());
-  const fetched=[...fetcher.matchAll(/key: '([a-z-]+)'/g)].map(m=>m[1]);assert.deepEqual([...fetched].sort(),[...keys].sort(),'scripts/fetch-maps.mjs fetches each of them');
+  const fetched=[...fetcher.slice(fetcher.indexOf('export const MAPS'),fetcher.indexOf('export const PICTURES')).matchAll(/key: '([a-z-]+)'/g)].map(m=>m[1]);assert.deepEqual([...fetched].sort(),[...keys].sort(),'scripts/fetch-maps.mjs fetches each of them');
   for(const key of keys){
     const [title,maker,note]=r.maps[key];assert(title&&maker,key);
     assert.equal(note.split(/(?<=[a-z0-9”’)I][.!?])\s+(?=[A-ZÁÉÍÓÚ“])/).length,3,`${key}: a card of three sentences`);

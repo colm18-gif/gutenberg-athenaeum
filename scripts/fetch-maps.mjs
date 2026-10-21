@@ -36,8 +36,17 @@ export const MAPS = [
   { key: 'de-la-cosa', file: '1500 map by Juan de la Cosa.jpg', search: 'Juan de la Cosa map 1500', rotate: -90 }
 ];
 
+// Pictures for the reading rooms' walls, fetched the same way into assets/pictures (pictures.json for the credits).
+//   The Ukrainian Reading Room (international-wing.js): Shevchenko's Kateryna (1842), painted after his own poem, and the
+//   self-portrait he drew by the Syr Darya in 1848, in the years of his exile; Pymonenko's Ukrainian Night (1905).
+export const PICTURES = [
+  { key: 'shevchenko-kateryna', files: ['Шевченко Т. Г. Катерина. 1842.jpg', 'Image-Shevchenko Kateryna Olia 1842 large.jpg', 'Kateryna (Taras Shevchenko).jpg'], search: 'Shevchenko Kateryna 1842 painting' },
+  { key: 'shevchenko-1848', file: '1848 - 201 - Self-portrait at the Syr Darya bank. Rayim, June 1848, Taras Shevchenko.jpg', search: 'Shevchenko self-portrait 1848' },
+  { key: 'pymonenko-night', file: 'Mykola Pymonenko-Ukrayinska nich.jpg', search: 'Pymonenko Ukrainian night 1905' }
+];
+
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
-const OUT = path.join(root, 'assets/maps');
+let OUT = path.join(root, 'assets/maps');
 const API = 'https://commons.wikimedia.org/w/api.php';
 // Wikimedia asks for a User-Agent that says who is asking.
 const HEADERS = { 'User-Agent': 'LibraryAfterDark-map-room/1.0 (https://libraryafterdark.space; map images for a public-domain library)' };
@@ -100,8 +109,13 @@ async function drawSnark(full, wall) {
 
 async function exists(file) { try { await access(file); return true } catch { return false } }
 async function main() {
+  const failed = await fetchAll(MAPS, 'assets/maps', 'maps.json', 'maps') + await fetchAll(PICTURES, 'assets/pictures', 'pictures.json', 'pictures');
+  if (failed > MAPS.length) process.exit(1);
+}
+async function fetchAll(MAPS, dir, manifestName, what) {
+  OUT = path.join(root, dir);
   await mkdir(OUT, { recursive: true });
-  const manifestFile = path.join(OUT, 'maps.json');
+  const manifestFile = path.join(OUT, manifestName);
   let manifest = {};
   try { manifest = JSON.parse(await readFile(manifestFile, 'utf8')) } catch {}
   const wanted = new Set(MAPS.map(m => m.key));
@@ -136,7 +150,7 @@ async function main() {
   }
   const ordered = Object.fromEntries(MAPS.filter(m => manifest[m.key]).map(m => [m.key, manifest[m.key]]));
   await writeFile(manifestFile, JSON.stringify(ordered, null, 1) + '\n');
-  console.log(`\n${Object.keys(ordered).length} of ${MAPS.length} maps in assets/maps; ${failed} not found.`);
-  if (!Object.keys(ordered).length) process.exit(1);
+  console.log(`\n${Object.keys(ordered).length} of ${MAPS.length} ${what} in ${dir}; ${failed} not found.`);
+  return failed;
 }
 if (import.meta.url === `file://${process.argv[1]}`) main().catch(error => { console.error(error); process.exit(1) });
