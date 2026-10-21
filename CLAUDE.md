@@ -389,6 +389,14 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   and Lifehacker addresses are from directories. Already written to, so left out: Open Culture, Kottke, Boing Boing, Lit
   Hub, Book Riot, American Libraries, Rock Paper Shotgun, PC Gamer, The Verge, Engadget, Gizmodo, the Irish Times, RTÉ,
   TheJournal.ie, the Independent and the Waterford News & Star.
+- Outreach sent 21 October from colm18@gmail.com on the expanded Ukrainian Reading Room (thirty-seven books, the Executed
+  Renaissance shelf, the Peresopnytsia Gospel, Shevchenko's boot, the bandura), to nine not written to before: the Embassy of
+  Ireland in Ukraine (kyivembassy@dfa.ie, by the DFA's pattern; its pages show only a form), the Embassies of Ukraine in Ireland
+  (emb_ie@mfa.gov.ua) and the UK (emb_gb@mfa.gov.ua), the Association of Ukrainians in Ireland (info@ukrainians.ie), the
+  Ukrainian Canadian Congress (ucc@), the UCCA (ucca@), the Ukrainian Institute of America (info@), PEN Ukraine
+  (ukraine.pen@gmail.com; asked to look over the Executed Renaissance notes) and the Ukrainian World Congress (uwc@). The
+  embassy addresses are from Wikidata and directories. No address found for the Ukrainian Institute in Kyiv or the Ukrainian
+  Book Institute (their sites hide them). Make any corrections that come back.
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
   AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
