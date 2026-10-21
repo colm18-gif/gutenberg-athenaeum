@@ -150,7 +150,10 @@ export const BOOKS = {
     dir: 'assets/peresopnytsia', manifest: 'peresopnytsia.json', width: 1190, height: 1820, paper: '#e6d8b8',
     categories: ['Category:Peresopnytsia Gospel', 'Category:Пересопницьке Євангеліє'], must: /peresop|пересоп|ПЄ/i,
     survey: ['Peresopnytsia Gospel', 'Пересопницьке Євангеліє', 'Пересопницьке Євангеліє мініатюра', 'Peresopnytsia Gospel 1911 facsimile'],
-    surveyOnly: /peresop|пересоп|ПЄ|ukraina-1556|жеславськ/i, thumbs: 'usable',
+    surveyOnly: /gospel|євангел|евангел|ПЄ|ukraina-1556|жеславськ/i, thumbs: 'usable',
+    // The 1911 printed facsimile on Commons (World Digital Library), surveyed as openings to find the Gospel's pages in it.
+    scan: 'Peresopnytsia Gospel, a Monument of the 16th Century Renaissance Art from South Russia WDL10018.pdf',
+    openings: Array.from({ length: 24 }, (_, i) => [2 * i + 1, 2 * i + 2]), openingLabel: n => `pdf ${n}`,
     pages: []
   }
 };
@@ -203,7 +206,8 @@ async function inCategories(book) {
 }
 async function infoFor(book, titles) {
   const pages = [];
-  for (let i = 0; i < titles.length; i += 40) pages.push(...((await api({ ...info(book), titles: titles.slice(i, i + 40).join('|') })).query?.pages || []));
+  // Fifteen at a time: long Cyrillic names make a longer batch's address too long for Commons (414).
+  for (let i = 0; i < titles.length; i += 15) pages.push(...((await api({ ...info(book), titles: titles.slice(i, i + 15).join('|') })).query?.pages || []));
   return pages;
 }
 async function choose(book, entry) {
