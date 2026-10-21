@@ -70,7 +70,7 @@
 
   window.createInternationalWing=function(options){
     const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),
-      wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null,tone=null,storage=window.localStorage}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
+      wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null,tone=null,gospel=null,storage=window.localStorage}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
     const DOOR={x:8.6,z:30.45,yaw:Math.PI};
     // The doors in the Spanish room's east and south walls, to the other rooms, and a second door to the Italian in the
     // Latin room's east wall (room: the room a door opens on, when it is not its key; from: the room a door is in, when
@@ -327,6 +327,27 @@
       const banduraCard={type:'intl-bandura',title:'Бандура',author:'Бандура, інструмент кобзарів. Торкніться струн, і вона заграє «Щедрик» Миколи Леонтовича: його вперше заспівав хор Київського університету 1916 року, 1922 року хор Олександра Кошиця заспівав його в нью-йоркському Карнегі-холі, а 1936 року Пітер Вільговський написав до нього англійські слова, і світ почув «Carol of the Bells». (A bandura: it plays Leontovych’s Shchedryk, the carol the world knows as Carol of the Bells.)',action:'PLAY'};
       for(const part of [body,face,neck])mark(part,banduraCard);block(ux,uz,.9,.6);
 
+      // The Peresopnytsia Gospel under glass in the middle of the west side (peresopnytsia-book.js): a plinth, the
+      // facsimile open in a cradle at Mark's portrait and the first page of his Gospel, which face each other in the book.
+      if(gospel){const gx=cx-6,gz=cz-.5,g=new THREE.Group();g.position.set(gx,0,gz);root.add(g);
+        const leaves=gospel.folios?Object.keys(gospel.folios).length:10;
+        const data={type:'intl-gospel',title:'Пересопницьке Євангеліє',author:`Факсиміле Пересопницького Євангелія (1556–1561), на якому складають присягу президенти України, розгорнуте на початку Євангелія від Марка. (The Peresopnytsia Gospel, a facsimile: ${leaves} of its pages, on board leaves.)`,action:'OPEN'};
+        const wood=MAT.darkWood,brass=MAT.brass;
+        const plinth=add(own(new THREE.BoxGeometry(1.5,.95,1.05)),wood,0,.475,0,g);add(own(new THREE.BoxGeometry(1.6,.06,1.15)),wood,0,.97,0,g);
+        const pageW=.5,pageH=.5*1820/1190;
+        const page=(key,side)=>{const mat=own(new THREE.MeshStandardMaterial({color:0xd8cdb6,roughness:.9,emissive:0xffffff,emissiveIntensity:.1}));
+          new THREE.TextureLoader().load(`assets/peresopnytsia/${key}-case.jpg`,texture=>{if(!built.ukrainian)return texture.dispose();texture.colorSpace=THREE.SRGBColorSpace;own(texture);mat.map=texture;mat.emissiveMap=texture;mat.needsUpdate=true});
+          const hinge=new THREE.Group();hinge.position.set(side*.01,1.09,0);hinge.rotation.z=side*-.16;g.add(hinge);
+          const m=add(own(new THREE.PlaneGeometry(pageW,pageH)),mat,side*pageW/2,0,0,hinge);m.rotation.x=-Math.PI/2;return m};
+        const left=page('mark',-1),right=page('l129',1);
+        for(const side of [-1,1]){const wedge=add(own(new THREE.BoxGeometry(.54,.08,pageH+.03)),wood,side*.27,.95,0,g);wedge.rotation.z=side*-.16}
+        const glass=own(new THREE.MeshStandardMaterial({color:0xdfeee8,transparent:true,opacity:.045,roughness:.05,depthWrite:false}));
+        const pane=add(own(new THREE.BoxGeometry(1.42,.5,1.05)),glass,0,1.25,0,g);
+        const post=own(new THREE.BoxGeometry(.03,.5,.03));for(const [sx,sz] of [[-1,-1],[1,-1],[-1,1],[1,1]])add(post,brass,sx*.71,1.25,sz*.525,g);
+        for(const sz of [-1,1])add(own(new THREE.BoxGeometry(1.45,.03,.03)),brass,0,1.5,sz*.525,g);
+        const label=add(own(new THREE.PlaneGeometry(1.05,.3)),own(new THREE.MeshStandardMaterial({map:own(plaque('ПЕРЕСОПНИЦЬКЕ ЄВАНГЕЛІЄ','The Peresopnytsia Gospel · 1556–1561 · a facsimile',560,160,'#1d2a3d')),roughness:.85,emissive:0x3a2a12,emissiveIntensity:.3})),0,.7,.53,g);
+        for(const part of [plinth,pane,left,right,label])mark(part,data);block(gx,gz,1.8,1.4)}
+
       // A didukh, the sheaf of the Christmas table, from Christmas Eve (24 December) to Vodokhreshche (19 January, by the old calendar).
       const now=today(),md=now.getMonth()*100+now.getDate();
       if(md>=1124||md<=19){const dx=EX-.45,dz=cz-3.05,dummy=new THREE.Object3D();
@@ -505,6 +526,7 @@
         if(room){const card=room.bootCard();for(const part of room.bootParts)part.userData=card;room.showBootBook()}
         showNotice('За халявою — маленька саморобна книжечка, списана дрібним почерком. На засланні Шевченкові заборонили писати й малювати, і він ховав вірші в чоботі. (Tucked in the boot: a tiny handmade notebook of poems, as Shevchenko hid his in exile. It lies on the trunk now.)',10);
         playSample?.('pageTurn',.7,.9);analytics?.track('Secret Found',{secret:'shevchenko-boot'});return true}
+      if(data.type==='intl-gospel'){if(gospel)gospel.open();return true}
       if(data.type==='intl-bandura'){showNotice(`${data.title}: ${data.author}`,12);if(tone&&time>=shchedrykUntil)shchedrykUntil=time+playShchedryk();return true}
       return false;
     }

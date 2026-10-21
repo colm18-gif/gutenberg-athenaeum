@@ -148,7 +148,7 @@ export const BOOKS = {
   },
   // The Ukrainian Reading Room's Peresopnytsia Gospel (1556–61), the Gospels in the Ukrainian of its day, on which
   // Ukraine's presidents take their oath. Commons has three good photographs of it, in colour, and a printed facsimile of
-  // 1911 (Al. S. Gruzinsky's study, Kiev; World Digital Library), whose eleven plates are its other pages here: a page of the
+  // 1911 (Al. S. Gruzinsky's study, Kiev; World Digital Library), seven of whose eleven plates are its other pages here: a page of the
   // scan is named `scan`, and its plate is set on the book's paper with the 1911 caption beneath it. Chosen from a survey of
   // the scan's openings. Pages are named for their leaf where the caption or the file gives it.
   peresopnytsia: {
@@ -163,7 +163,6 @@ export const BOOKS = {
   { key: 'mark', scan: 29 },
   { key: 'l129', files: ['Сторінка з орнаментними прикрасами арк. 129 ПЄ.jpg'] },
   { key: 'luke', scan: 33 },
-  { key: 'l279', scan: 39 },
   { key: 'l291', files: ['Сторінка з ініціалом арк.291 ПЄ.jpg'] },
   { key: 'l340', files: ['Мініатюра Євангеліст Іоанн з Прохором арк. 340 ПЄ.jpg'] },
   { key: 'john', scan: 37 },

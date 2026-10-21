@@ -11,7 +11,7 @@ const book=context.window.createVoynichBook({THREE:{},renderer:{}}),spec=context
 test('the Voynich Manuscript loads before the game and lies open on the Restricted Catalogue’s lectern',()=>{
   const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(m=>m[1]);
   assert(order.indexOf('fine-books.js')<order.indexOf('voynich-book.js')&&order.indexOf('voynich-book.js')<order.indexOf('game.js'));
-  assert.match(game,/voynichBook=window\.createVoynichBook\?\.\(fineBookOptions\)/);assert.match(game,/\|\|voynichBook\?\.isOpen\)/,'the world stops while the book is open');
+  assert.match(game,/voynichBook=window\.createVoynichBook\?\.\(fineBookOptions\)/);assert.match(game,/\|\|voynichBook\?\.isOpen[|)]/,'the world stops while the book is open');
   assert.match(game,/desk\.position\.set\(47,1\.72,2\.35\);desk\.rotation\.x=-\.22/,'on the lectern, at its slope');
   assert.match(game,/page\('009v',-1\),right=page\('010r',1\)/,'open at the pansy');
   assert.match(game,/focus\.userData\?\.type==='restricted-voynich'\)\{focus=null;ui\.prompt\.style\.opacity=0;voynichBook\.open\(\)/);
@@ -21,7 +21,7 @@ test('the Voynich Manuscript loads before the game and lies open on the Restrict
 });
 
 test('every page of the Voynich has a card and a public-domain photograph, bound in real openings',()=>{
-  const folios=Object.keys(book.folios),block=fetcher.slice(fetcher.indexOf('voynich: {')),fetched=[...block.matchAll(/key: '([a-z0-9]+)'/g)].map(m=>m[1]);
+  const folios=Object.keys(book.folios),block=fetcher.slice(fetcher.indexOf('voynich: {'),fetcher.indexOf('peresopnytsia: {')),fetched=[...block.matchAll(/key: '([a-z0-9]+)'/g)].map(m=>m[1]);
   assert.deepEqual(fetched,folios,'scripts/fetch-book-pages.mjs fetches the same pages, in the same order');
   for(const key of folios){
     const [label,title,note]=book.folios[key];assert(label&&title&&note.length>60,`${key} has a card`);
