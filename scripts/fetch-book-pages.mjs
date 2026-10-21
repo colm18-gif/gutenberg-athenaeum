@@ -155,7 +155,7 @@ export const BOOKS = {
     dir: 'assets/peresopnytsia', manifest: 'peresopnytsia.json', width: 1190, height: 1820, paper: '#e6d8b8',
     categories: ['Category:Peresopnytsia Gospel', 'Category:Пересопницьке Євангеліє'], must: /peresop|пересоп|ПЄ/i,
     scan: 'Peresopnytsia Gospel, a Monument of the 16th Century Renaissance Art from South Russia WDL10018.pdf',
-    display: ['mark', 'l129'],
+    display: ['mark', 'l129'], trimScan: true,
     pages: [
   { key: 'l002', scan: 23 },
   { key: 'matthew', scan: 25 },
@@ -338,7 +338,13 @@ async function fetchBook(name, book) {
         await new Promise(res => setTimeout(res, 4000 * attempt));
       }
       if (!response.ok) throw new Error(`${response.status} downloading ${source}`);
-      const image = sharp(Buffer.from(await response.arrayBuffer()), { limitInputPixels: false }).flatten({ background: book.paper });
+      let image = sharp(Buffer.from(await response.arrayBuffer()), { limitInputPixels: false }).flatten({ background: book.paper });
+      // trim: a plate printed on a larger page loses the bare page round it, and keeps a narrow margin of the book's paper.
+      if (entry.trim || book.trimScan && entry.scan) {
+        const { data, info } = await image.trim({ threshold: 36 }).toBuffer({ resolveWithObject: true }), m = Math.round(Math.max(info.width, info.height) * .04);
+        image = sharp(data).extend({ top: m, bottom: m, left: m, right: m, background: book.paper });
+        image = sharp(await image.toBuffer());
+      }
       const { width, height } = await image.metadata();
       // A scan close to the page's proportions fills it (losing a sliver); any other is set on the book's paper.
       const fit = entry.fit || (Math.abs(width / height - book.width / book.height) < .07 ? 'cover' : 'contain');
