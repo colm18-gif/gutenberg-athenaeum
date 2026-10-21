@@ -130,6 +130,20 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `quiet`, `unread` and `repository` in `data/new-books.js` (books held nowhere else; a test checks): the hidden reading
   room behind the west shelf, built first, holds the older lists' copies, which left these rooms empty. The Repository's
   four racks hold 36 distinct books and its request desk one more.
+- The Ukrainian Reading Room (`international-wing.js`, `dressUkrainian` and `furnishUkrainian`) keeps apart from its main
+  racks (`apart`) the shelf of the Executed Renaissance by its door (`MEMORIAL`: eight titles from the room's list, under a
+  plaque and a candle whose flame flickers in `room.ticks`, no light) and the book in Shevchenko's boot (`boot:'Княжна'`):
+  a soldier's boot under his 1848 self-portrait; looking in finds the little book he hid there in exile, which then lies on
+  the trunk beside it, found for good (`athenaeum-shevchenko-boot`). Its pictures (Kateryna, the 1848 self-portrait,
+  Pymonenko's Ukrainian Night) are fetched by `scripts/fetch-maps.mjs` (`PICTURES`, into `assets/pictures`). The bandura
+  plays Leontovych's Shchedryk on the synthesiser's plucked `bandura` voice (`tone`, game.js's `pianoTone`); a didukh
+  stands from 24 December to 19 January; on 9 November (the Day of Ukrainian Writing and Language) the Eneida is on the
+  lectern. In the middle of its west side, under glass, the Peresopnytsia Gospel (`peresopnytsia-book.js`, handed to the
+  wing as `gospel`) lies open at Mark's portrait facing leaf 129, the first page of his Gospel: three colour photographs
+  from Commons and seven plates of Gruzinsky's printed facsimile of 1911 (pages of its PDF on Commons, `trimScan` cuts away
+  the bare page round each plate), with drawn notes on the word оукраины on leaf 82 and on the presidents' oath. Commons
+  has no other usable photographs of it. The Catalogue lookup also searches Ukrainian Wikisource (`ws <page>`, `ws? <words>`) and Commons
+  (`commons? <words>`). A Wikisource page that only lists editions has too little text: give the edition's own page.
 - The Kipling bookcase (`kipling-shelf.js`) stands against the Grand Hall's west wall in the south-west corner (x −18.54,
   z 29.1, between the column at z 27 and the corner; `?room=kipling`): Rudyard Kipling's books face-out in the order he
   published them, four shelves of three, from the shelf `kipling` in `data/new-books.js` (books of his held nowhere else;

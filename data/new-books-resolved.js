@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-10-18",
+ "updated": "2026-10-21",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -2954,6 +2954,84 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "words": 4946,
    "source": "wikisource",
    "page": "https://uk.wikisource.org/wiki/%D0%9D%D0%BE%D0%B2%D0%B5%D0%BB%D0%B8_(%D0%A1%D1%82%D0%B5%D1%84%D0%B0%D0%BD%D0%B8%D0%BA%2C_1927)"
+  },
+  "Місто [uk]": {
+   "id": 982477,
+   "words": 77648,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9C%D1%96%D1%81%D1%82%D0%BE"
+  },
+  "Я (Романтика) [uk]": {
+   "id": 968864,
+   "words": 4508,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%A2%D0%B2%D0%BE%D1%80%D0%B8_(%D0%A5%D0%B2%D0%B8%D0%BB%D1%8C%D0%BE%D0%B2%D0%B8%D0%B9%2C_1927%E2%80%931930)/2/%D0%AF"
+  },
+  "Камена [uk]": {
+   "id": 993354,
+   "words": 7825,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9A%D0%B0%D0%BC%D0%B5%D0%BD%D0%B0"
+  },
+  "Мина Мазайло [uk]": {
+   "id": 997739,
+   "words": 15341,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9B%D1%96%D1%82%D0%B5%D1%80%D0%B0%D1%82%D1%83%D1%80%D0%BD%D0%B8%D0%B9_%D1%8F%D1%80%D0%BC%D0%B0%D1%80%D0%BE%D0%BA/1929/6/%D0%9C%D0%B8%D0%BD%D0%B0_%D0%9C%D0%B0%D0%B7%D0%B0%D0%B9%D0%BB%D0%BE"
+  },
+  "На Золотих Богів [uk]": {
+   "id": 961430,
+   "words": 8093,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9D%D0%B0_%D0%97%D0%BE%D0%BB%D0%BE%D1%82%D0%B8%D1%85_%D0%91%D0%BE%D0%B3%D1%96%D0%B2"
+  },
+  "Дні [uk]": {
+   "id": 972824,
+   "words": 10290,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%94%D0%BD%D1%96_(%D0%9F%D0%BB%D1%83%D0%B6%D0%BD%D0%B8%D0%BA%2C_1926)"
+  },
+  "Проростень [uk]": {
+   "id": 961132,
+   "words": 2565,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9F%D1%80%D0%BE%D1%80%D0%BE%D1%81%D1%82%D0%B5%D0%BD%D1%8C"
+  },
+  "Подорож ученого доктора Леонардо [uk]": {
+   "id": 993773,
+   "words": 15624,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9B%D1%96%D1%82%D0%B5%D1%80%D0%B0%D1%82%D1%83%D1%80%D0%BD%D0%B8%D0%B9_%D1%8F%D1%80%D0%BC%D0%B0%D1%80%D0%BE%D0%BA/1928/1/%D0%9F%D0%BE%D0%B4%D0%BE%D1%80%D0%BE%D0%B6_%D1%83%D1%87%D0%B5%D0%BD%D0%BE%D0%B3%D0%BE_%D0%B4%D0%BE%D0%BA%D1%82%D0%BE%D1%80%D0%B0_%D0%9B%D0%B5%D0%BE%D0%BD%D0%B0%D1%80%D0%B4%D0%BE_%D1%96_%D0%B9%D0%BE%D0%B3%D0%BE_%D0%BC%D0%B0%D0%B9%D0%B1%D1%83%D1%82%D0%BD%D1%8C%D0%BE%D1%97_%D0%BA%D0%BE%D1%85%D0%B0%D0%BD%D0%BA%D0%B8_%D0%BF%D1%80%D0%B5%D0%BA%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D1%97_%D0%90%D0%BB%D1%8C%D1%86%D0%B5%D1%81%D1%82%D0%B8_%D1%83_%D0%A1%D0%BB%D0%BE%D0%B1%D0%BE%D0%B6%D0%B0%D0%BD%D1%81%D1%8C%D0%BA%D1%83_%D0%A8%D0%B2%D0%B0%D0%B9%D1%86%D0%B0%D1%80%D1%96%D1%8E"
+  },
+  "Байки Харківські [uk]": {
+   "id": 993342,
+   "words": 2450,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%93%D1%80%D0%B8%D0%B3%D0%BE%D1%80%D1%96%D0%B9_%D0%A1%D0%B0%D0%B2%D0%B8%D1%87_%D0%A1%D0%BA%D0%BE%D0%B2%D0%BE%D1%80%D0%BE%D0%B4%D0%B0_(%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D1%84%D1%96%D0%BB%D1%8C%D0%BE%D1%81%D0%BE%D1%84)/%D0%91%D0%B0%D0%B9%D0%BA%D0%B8_%D0%A5%D0%B0%D1%80%D1%8C%D0%BA%D1%96%D0%B2%D1%81%D1%8C%D0%BA%D1%96"
+  },
+  "Мартин Боруля [uk]": {
+   "id": 980525,
+   "words": 13392,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9C%D0%B0%D1%80%D1%82%D0%B8%D0%BD_%D0%91%D0%BE%D1%80%D1%83%D0%BB%D1%8F_(1921)"
+  },
+  "Облога Буші [uk]": {
+   "id": 995917,
+   "words": 24299,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B3%D0%B0_%D0%91%D1%83%D1%88%D1%96"
+  },
+  "Олеся [uk]": {
+   "id": 962966,
+   "words": 1882,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9E%D0%BB%D0%B5%D1%81%D1%8F_(1948)"
+  },
+  "Княжна [uk]": {
+   "id": 954064,
+   "words": 1754,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9A%D0%BE%D0%B1%D0%B7%D0%B0%D1%80%D1%8C_(1876)/%D0%A2%D0%BE%D0%BC_2/%D0%9A%D0%BD%D1%8F%D0%B6%D0%BD%D0%B0"
   }
  },
  "missing": [

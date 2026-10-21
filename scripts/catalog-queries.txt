@@ -1,11 +1,7 @@
-# Quiet room: a replacement for Widdershins (Onions is in copyright in Ireland until 2032)
-Room in the Tower ; Benson ; en
-Uncanny Stories ; Sinclair ; en
-Lady of the Barge ; Jacobs ; en
-In a Glass Darkly ; Le Fanu ; en
-Twilight Stories ; Broughton ; en
-Lifted Veil ; Eliot ; en
-Visible and Invisible ; Benson ; en
-Wind in the Rose.?Bush ; Freeman ; en
-Jewel of Seven Stars ; Stoker ; en
-Ghost Stories and Tales of Mystery ; Le Fanu ; en
+# Editions for the three Ukrainian books that are pages of editions
+ws Сад божественних пісень
+ws Байки Харківські
+ws Подорож ученого доктора Леонардо і його майбутньої коханки прекрасної Альчести у Слобожанську Швейцарію
+ws? Сад божественних пісень
+ws? Байки Харківські Сковорода
+ws? Подорож ученого доктора Леонардо

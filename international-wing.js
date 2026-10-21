@@ -22,6 +22,11 @@
   'use strict';
   const CJK='"Noto Serif TC","Songti TC","PMingLiU","Noto Serif CJK TC",serif';
 
+  // The Ukrainian room's shelf of the Executed Renaissance, and the little book in Shevchenko's boot: these stand apart
+  // from its main shelves (data/new-books-wing.js gives them, with the room's other books).
+  const MEMORIAL=['Місто','Я (Романтика)','Камена','Мина Мазайло','На Золотих Богів','Дні','Проростень','Подорож ученого доктора Леонардо'];
+  // 9 November, the Day of Ukrainian Writing and Language, on the feast of Nestor the Chronicler.
+  const writingDay=(date=new Date())=>date.getMonth()===10&&date.getDate()===9;
   const ROOMS={
     spanish:{cx:-410,cz:100,w:24,d:15,h:6,language:'es',sign:'SALA DE LECTURA EN ESPAÑOL',sub:'The Spanish Reading Room · El ala internacional',
       card:['Sala de lectura en español','Clásicos de España, de América y de Filipinas, cada uno con una nota de la bibliotecaria. El libro de la noche está en el atril. (The Spanish Reading Room: classics from Spain, the Americas and the Philippines.)'],
@@ -58,14 +63,14 @@
       note:'La nota della bibliotecaria',seat:['Una sedia accanto al tavolo','Si sieda e legga un libro di questa sala. (Sit and read a book from this room.)']},
     ukrainian:{cx:-530,cz:100,w:24,d:15,h:6,language:'uk',sign:'УКРАЇНСЬКА ЧИТАЛЬНЯ',sub:'The Ukrainian Reading Room · Міжнародне крило',
       card:['Українська читальня','Класика українською мовою, від Котляревського й Шевченка до Лесі Українки, Франка й Коцюбинського, кожна книжка з приміткою бібліотекарки. Тексти з Вікіджерел, суспільне надбання. (The Ukrainian Reading Room.)'],
-      lectern:'КНИЖКА ВЕЧОРА',shade:0x2b5aa8,tiles:'vyshyvanka',
-      welcome:pick=>`Українська читальня. Ласкаво просимо: класика українською мовою, кожна книжка з приміткою бібліотекарки.${pick?` На пюпітрі сьогодні: ${pick.title}.`:''} (The International Wing: the Ukrainian Reading Room.)`,
+      lectern:'КНИЖКА ВЕЧОРА',shade:0x2b5aa8,tiles:'vyshyvanka',memorial:MEMORIAL,boot:'Княжна',
+      welcome:pick=>`Українська читальня. Ласкаво просимо: класика українською мовою, кожна книжка з приміткою бібліотекарки.${writingDay()?' Сьогодні День української писемності та мови.':''}${pick?` На пюпітрі сьогодні: ${pick.title}.`:''} (The International Wing: the Ukrainian Reading Room.)`,
       note:'Примітка бібліотекарки',seat:['Стілець біля столу','Сідайте й читайте книжку з цієї читальні. (Sit and read a book from this room.)']}
   };
 
   window.createInternationalWing=function(options){
     const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),
-      wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
+      wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null,tone=null,gospel=null,storage=window.localStorage}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
     const DOOR={x:8.6,z:30.45,yaw:Math.PI};
     // The doors in the Spanish room's east and south walls, to the other rooms, and a second door to the Italian in the
     // Latin room's east wall (room: the room a door opens on, when it is not its key; from: the room a door is in, when
@@ -192,7 +197,8 @@
     // Two blue-and-yellow flags either side of the sign, a Petrykivka painting on the east wall with a rushnyk over it,
     // sunflowers in a clay jug and a bowl of pysanky on the reading table. Canvas textures and a few instanced parts;
     // the wing's own two lamps light them.
-    function dressUkrainian({cx,cz,w,d,box,own,mark,root}){
+    function dressUkrainian({cx,cz,w,d,box,own,mark,root,block,placeBook,list,room,def}){
+      furnishUkrainian({cx,cz,w,d,box,own,mark,root,block,placeBook,list,room,def});
       const Z=cz-d/2+.26,EX=cx+w/2-.19;
       // The flags, with a little fold in the cloth, each on a brass rod.
       const flagMap=own(canvasTexture((c,W,H)=>{c.fillStyle='#0057b7';c.fillRect(0,0,W,H/2);c.fillStyle='#ffd500';c.fillRect(0,H/2,W,H/2)},96,64));
@@ -265,10 +271,105 @@
       for(const thing of [pot,leaves,lemons])mark(thing,card);
     }
 
+    // ---------- more of the Ukrainian room ----------
+    // The shelf of the Executed Renaissance by the door, under a candle; three pictures (assets/pictures, fetched by
+    // scripts/fetch-maps.mjs); Shevchenko's boot, with the little book he hid in it, found once and kept; a bandura that
+    // plays Leontovych's Shchedryk; and, from Christmas Eve to Vodokhreshche, a didukh. No lights of their own.
+    const BOOT_KEY='athenaeum-shevchenko-boot';
+    const bootFound=()=>{try{return storage?.getItem(BOOT_KEY)==='1'}catch(e){return false}};
+    let shchedrykUntil=0;
+    function furnishUkrainian({cx,cz,w,d,box,own,mark,root,block,placeBook,list,room,def}){
+      const S=cz+d/2,EX=cx+w/2-.19,byTitle=title=>list.find(book=>book.title===title);
+      const frameMat=own(new THREE.MeshStandardMaterial({color:0x6b4a22,roughness:.55,metalness:.25}));
+      // A picture in a frame, its image loaded from assets/pictures (a plain canvas until it comes).
+      const picture=(key,x,y,z,yaw,pw,ph,card)=>{
+        const mat=own(new THREE.MeshStandardMaterial({color:0x3a3026,roughness:.8}));
+        const face=add(own(new THREE.PlaneGeometry(pw,ph)),mat,x,y,z,root);face.rotation.y=yaw;
+        const back=add(own(new THREE.BoxGeometry(pw+.22,ph+.22,.06)),frameMat,x-Math.sin(yaw)*.04,y,z-Math.cos(yaw)*.04,root);back.rotation.y=yaw;
+        new THREE.TextureLoader().load(`assets/pictures/${key}-wall.jpg`,texture=>{if(!built.ukrainian)return texture.dispose();texture.colorSpace=THREE.SRGBColorSpace;own(texture);mat.map=texture;mat.color.set(0xffffff);mat.needsUpdate=true});
+        mark(face,{type:'intl-card',title:card[0],author:card[1],action:'READ'});mark(back,face.userData);return face};
+      picture('shevchenko-kateryna',EX,2.95,cz-4.9,-Math.PI/2,1.48,2,['Тарас Шевченко. «Катерина», 1842','Картину Шевченко намалював за власною поемою: Катерина прощається з москалем, що від’їжджає геть. Шевченко був не лише поетом, а й художником, учнем Карла Брюллова в Петербурзькій академії мистецтв. (Taras Shevchenko’s painting Kateryna, 1842, after his own poem.)']);
+      picture('shevchenko-1848',EX,2.95,cz+4.9,-Math.PI/2,2.2,1.5,['Тарас Шевченко. Автопортрет, 1848','Шевченко намалював себе на березі Сирдар’ї в червні 1848 року, на засланні, коли його взяли художником до Аральської експедиції. Писати й малювати йому заборонив цар. (Shevchenko’s self-portrait by the Syr Darya, 1848, in the years of his exile.)']);
+      picture('pymonenko-night',cx-7.2,3,S-.2,Math.PI,2.3,1.77,['Микола Пимоненко. «Українська ніч», 1905','Пимоненко все життя малював українське село: його свята, роботу й вечори. Він навчався й викладав у Києві. (Mykola Pymonenko, Ukrainian Night, 1905.)']);
+
+      // The shelf of the Executed Renaissance: two tiers of four, on the south wall east of the door, under a candle.
+      const mx=cx+6,mz=S-.42,held=(def.memorial||[]).map(byTitle).filter(Boolean);
+      box(6.9,2.5,.06,MAT.darkWood,mx,2.3,S-.2);box(7.1,.14,.46,MAT.darkWood,mx,3.55,S-.36);
+      for(let i=0;i<=4;i++)box(.07,2.5,.4,MAT.darkWood,mx-3.4+i*1.7,2.3,S-.38);
+      for(let row=0;row<2;row++)box(6.8,.05,.36,MAT.darkWood,mx,1.1+row*1.12,S-.36);block(mx,S-.4,7.1,.8);
+      held.slice(0,8).forEach((book,i)=>placeBook(book,{x:mx-2.55+(i%4)*1.7,y:1.62+Math.floor(i/4)*1.12,z:mz,yaw:Math.PI}));
+      const memorialCard={type:'intl-card',title:'Розстріляне відродження',author:'Письменники 1920-х років, яких у 1930-х розстріляли, замучили в таборах чи довели до смерті: Підмогильний, Хвильовий, Зеров, Куліш, Косинка, Плужник, Драй-Хмара, Йогансен. Восени 1937 року в урочищі Сандармох у Карелії розстріляли Зерова, Підмогильного, Куліша й Леся Курбаса разом із сотнями інших в’язнів Соловків. Назву «Розстріляне відродження» дала їм антологія Юрія Лавріненка 1959 року. (The Executed Renaissance: Ukrainian writers of the 1920s, shot or worked to death in the camps in the 1930s.)',action:'READ'};
+      const board=add(own(new THREE.PlaneGeometry(4.2,.62)),own(new THREE.MeshStandardMaterial({map:own(plaque('РОЗСТРІЛЯНЕ ВІДРОДЖЕННЯ','The Executed Renaissance · 1920–1937',1000,148,'#151515')),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.2})),mx,4.05,S-.18,root);board.rotation.y=Math.PI;mark(board,memorialCard);
+      const candle=add(own(new THREE.CylinderGeometry(.045,.05,.26,12)),own(new THREE.MeshStandardMaterial({color:0xefe4c8,roughness:.6})),mx,3.75,S-.42,root);mark(candle,memorialCard);
+      const flame=add(own(new THREE.ConeGeometry(.028,.09,10)),own(new THREE.MeshStandardMaterial({color:0xffc060,emissive:0xff9a30,emissiveIntensity:2.2,transparent:true,opacity:.92})),mx,3.93,S-.42,root);
+      room.ticks.push(t=>{const k=1+Math.sin(t*9.1)*.08+Math.sin(t*23.7)*.05;flame.scale.set(1/k,k,1/k);flame.position.x=mx+Math.sin(t*5.3)*.004});
+
+      // Shevchenko's boot under his self-portrait, beside a small trunk; the little book on the trunk once it is found.
+      const bx=EX-.55,bz=cz+4.5,leather=own(new THREE.MeshStandardMaterial({color:0x1d1611,roughness:.55}));
+      const shaft=add(own(new THREE.CylinderGeometry(.085,.075,.46,14,1,true)),leather,bx,.31,bz,root),foot=add(own(new THREE.BoxGeometry(.13,.1,.3)),leather,bx,.05,bz+.08,root);
+      const heel=add(own(new THREE.BoxGeometry(.12,.04,.08)),own(new THREE.MeshStandardMaterial({color:0x3a2a1a,roughness:.7})),bx,.02,bz-.06,root);
+      const trunk=box(.5,.46,.8,MAT.wood,bx,.23,cz+3.55);box(.52,.04,.82,MAT.darkWood,bx,.47,cz+3.55);block(bx,cz+4,.9,1.7);
+      const bootCard=()=>bootFound()?{type:'intl-card',title:'Солдатський чобіт',author:'Порожній. Те, що Шевченко ховав за халявою, тепер лежить на скрині поруч. (Empty now: what Shevchenko hid in it lies on the trunk beside it.)',action:'READ'}
+        :{type:'intl-boot',title:'Солдатський чобіт',author:'Старий солдатський чобіт. За халявою щось є. (An old soldier’s boot. Something is tucked inside the top of it.)',action:'LOOK'};
+      for(const part of [shaft,foot,heel])mark(part,bootCard());
+      const showBook=()=>{const book=byTitle(def.boot);if(!book||room.bootBook)return;const mesh=placeBook(book,{x:bx,y:.5,z:cz+3.55,yaw:-Math.PI/2});mesh.scale.set(.42,.42,1);mesh.rotation.x=-Math.PI/2;mesh.userData.home.quaternion.copy(mesh.quaternion);room.bootBook=mesh};
+      room.bootParts=[shaft,foot,heel];room.showBootBook=showBook;room.bootCard=bootCard;
+      if(bootFound())showBook();
+
+      // The bandura, leaning on the south wall under Pymonenko's picture.
+      const ux=cx-7.2,uz=S-.45,bandura=new THREE.Group();bandura.position.set(ux,0,uz);bandura.rotation.set(-.16,Math.PI,0);root.add(bandura);
+      const woodBody=own(new THREE.MeshStandardMaterial({color:0x8a5426,roughness:.45}));
+      const body=add(own(new THREE.SphereGeometry(.5,20,14)),woodBody,0,.72,0,bandura);body.scale.set(.62,.95,.16);
+      const strings=own(canvasTexture((c,W,H)=>{c.clearRect(0,0,W,H);c.strokeStyle='rgba(235,225,200,.85)';c.lineWidth=1.4;for(let i=0;i<22;i++){const x=W*.18+i*W*.03;c.beginPath();c.moveTo(x,H*.08);c.lineTo(W*.3+i*W*.018,H*.95);c.stroke()}
+        c.fillStyle='#e8c46a';c.beginPath();c.arc(W*.5,H*.62,W*.07,0,Math.PI*2);c.fill();c.fillStyle='#2a160a';c.beginPath();c.arc(W*.5,H*.62,W*.05,0,Math.PI*2);c.fill()},128,256));
+      const face=add(own(new THREE.PlaneGeometry(.6,.9)),own(new THREE.MeshStandardMaterial({map:strings,transparent:true,alphaTest:.05,roughness:.5,side:THREE.DoubleSide})),0,.74,.085,bandura);
+      const neck=add(own(new THREE.BoxGeometry(.09,.42,.07)),woodBody,-.18,1.32,0,bandura);neck.rotation.z=.32;
+      const banduraCard={type:'intl-bandura',title:'Бандура',author:'Бандура, інструмент кобзарів. Торкніться струн, і вона заграє «Щедрик» Миколи Леонтовича: його вперше заспівав хор Київського університету 1916 року, 1922 року хор Олександра Кошиця заспівав його в нью-йоркському Карнегі-холі, а 1936 року Пітер Вільговський написав до нього англійські слова, і світ почув «Carol of the Bells». (A bandura: it plays Leontovych’s Shchedryk, the carol the world knows as Carol of the Bells.)',action:'PLAY'};
+      for(const part of [body,face,neck])mark(part,banduraCard);block(ux,uz,.9,.6);
+
+      // The Peresopnytsia Gospel under glass in the middle of the west side (peresopnytsia-book.js): a plinth, the
+      // facsimile open in a cradle at Mark's portrait and the first page of his Gospel, which face each other in the book.
+      if(gospel){const gx=cx-6,gz=cz-.5,g=new THREE.Group();g.position.set(gx,0,gz);root.add(g);
+        const leaves=gospel.folios?Object.keys(gospel.folios).length:10;
+        const data={type:'intl-gospel',title:'Пересопницьке Євангеліє',author:`Факсиміле Пересопницького Євангелія (1556–1561), на якому складають присягу президенти України, розгорнуте на початку Євангелія від Марка. (The Peresopnytsia Gospel, a facsimile: ${leaves} of its pages, on board leaves.)`,action:'OPEN'};
+        const wood=MAT.darkWood,brass=MAT.brass;
+        const plinth=add(own(new THREE.BoxGeometry(1.5,.95,1.05)),wood,0,.475,0,g);add(own(new THREE.BoxGeometry(1.6,.06,1.15)),wood,0,.97,0,g);
+        const pageW=.5,pageH=.5*1820/1190;
+        const page=(key,side)=>{const mat=own(new THREE.MeshStandardMaterial({color:0xd8cdb6,roughness:.9,emissive:0xffffff,emissiveIntensity:.1}));
+          new THREE.TextureLoader().load(`assets/peresopnytsia/${key}-case.jpg`,texture=>{if(!built.ukrainian)return texture.dispose();texture.colorSpace=THREE.SRGBColorSpace;own(texture);mat.map=texture;mat.emissiveMap=texture;mat.needsUpdate=true});
+          const hinge=new THREE.Group();hinge.position.set(side*.01,1.09,0);hinge.rotation.z=side*-.16;g.add(hinge);
+          const m=add(own(new THREE.PlaneGeometry(pageW,pageH)),mat,side*pageW/2,0,0,hinge);m.rotation.x=-Math.PI/2;return m};
+        const left=page('mark',-1),right=page('l129',1);
+        for(const side of [-1,1]){const wedge=add(own(new THREE.BoxGeometry(.54,.08,pageH+.03)),wood,side*.27,.95,0,g);wedge.rotation.z=side*-.16}
+        const glass=own(new THREE.MeshStandardMaterial({color:0xdfeee8,transparent:true,opacity:.045,roughness:.05,depthWrite:false}));
+        const pane=add(own(new THREE.BoxGeometry(1.42,.5,1.05)),glass,0,1.25,0,g);
+        const post=own(new THREE.BoxGeometry(.03,.5,.03));for(const [sx,sz] of [[-1,-1],[1,-1],[-1,1],[1,1]])add(post,brass,sx*.71,1.25,sz*.525,g);
+        for(const sz of [-1,1])add(own(new THREE.BoxGeometry(1.45,.03,.03)),brass,0,1.5,sz*.525,g);
+        const label=add(own(new THREE.PlaneGeometry(1.05,.3)),own(new THREE.MeshStandardMaterial({map:own(plaque('ПЕРЕСОПНИЦЬКЕ ЄВАНГЕЛІЄ','The Peresopnytsia Gospel · 1556–1561 · a facsimile',560,160,'#1d2a3d')),roughness:.85,emissive:0x3a2a12,emissiveIntensity:.3})),0,.7,.53,g);
+        for(const part of [plinth,pane,left,right,label])mark(part,data);block(gx,gz,1.8,1.4)}
+
+      // A didukh, the sheaf of the Christmas table, from Christmas Eve (24 December) to Vodokhreshche (19 January, by the old calendar).
+      const now=today(),md=now.getMonth()*100+now.getDate();
+      if(md>=1124||md<=19){const dx=EX-.45,dz=cz-3.05,dummy=new THREE.Object3D();
+        const straw=own(new THREE.MeshStandardMaterial({color:0xd8b24a,roughness:.8}));
+        const N=72,stalks=own(new THREE.InstancedMesh(own(new THREE.CylinderGeometry(.007,.009,1,4)),straw,N)),ears=own(new THREE.InstancedMesh(own(new THREE.SphereGeometry(.024,6,5).scale(1,3.2,1)),straw,N));
+        for(let i=0;i<N;i++){const a=i*2.4,r=.03+(i%7)*.016,lean=.1+(i%5)*.05,top=new THREE.Vector3(dx+Math.cos(a)*(r+lean*.9),1.18+(i%4)*.05,dz+Math.sin(a)*(r+lean*.9));
+          const base=new THREE.Vector3(dx+Math.cos(a)*r*.6,.12,dz+Math.sin(a)*r*.6),mid=base.clone().add(top).multiplyScalar(.5);
+          dummy.position.copy(mid);dummy.lookAt(top);dummy.rotateX(Math.PI/2);dummy.scale.set(1,base.distanceTo(top),1);dummy.updateMatrix();stalks.setMatrixAt(i,dummy.matrix);
+          dummy.position.copy(top);dummy.scale.set(1,1,1);dummy.updateMatrix();ears.setMatrixAt(i,dummy.matrix)}
+        root.add(stalks,ears);const tie=add(own(new THREE.TorusGeometry(.075,.018,6,16)),own(new THREE.MeshStandardMaterial({color:0xb3202a,roughness:.6})),dx,.62,dz,root);tie.rotation.x=Math.PI/2;
+        const didukh={type:'intl-card',title:'Дідух',author:'Сніп із колосків, який на Святвечір ставлять на покуті, на почесному місці в хаті. За давнім звичаєм, у ньому на свята гостюють духи предків. (A didukh, the sheaf of wheat set in the place of honour on Christmas Eve.)',action:'READ'};
+        for(const thing of [stalks,ears,tie])mark(thing,didukh);block(dx,dz,.6,.6)}
+    }
+
     // ---------- the books ----------
     function shelf(key){return [...new Set(arrivals(key))].map(id=>findBook(id)).filter(Boolean)}
     // One book is out on each lectern each night, a different one tomorrow.
-    function featured(key='spanish',list=shelf(key)){return list.length?list[((dayNumber()%list.length)+list.length)%list.length]:null}
+    const apart=(def,book)=>!!def&&((def.memorial||[]).includes(book.title)||book.title===def.boot);
+    function featured(key='spanish',list=shelf(key)){list=list.filter(book=>!apart(ROOMS[key],book));
+      // On the Day of Ukrainian Writing and Language, Kotliarevsky's Eneida, the first book in the modern literary language.
+      if(key==='ukrainian'&&writingDay(today())){const eneida=list.find(book=>book.title==='Енеїда');if(eneida)return eneida}
+      return list.length?list[((dayNumber()%list.length)+list.length)%list.length]:null}
 
     // ---------- the door, beside the visitors' book ----------
     function buildDoor(){
@@ -286,7 +387,7 @@
     // ---------- a room ----------
     function buildRoom(key){
       const def=ROOMS[key],{cx,cz,w,d,h}=def,root=new THREE.Group();root.name=`international-${key}`;
-      const room=built[key]={root,owned:[],ours:[],books:[],blockers:[]};
+      const room=built[key]={root,owned:[],ours:[],books:[],blockers:[],ticks:[]};
       const own=thing=>{room.owned.push(thing);return thing};
       const box=(bw,bh,bd,material,x,y,z,parent=root)=>add(own(new THREE.BoxGeometry(bw,bh,bd)),material,x,y,z,parent);
       const mark=(object,data)=>{object.userData=data;interactables.push(object);room.ours.push(object);return object};
@@ -315,7 +416,7 @@
         mesh.userData={type:'book',book,loaded:false,international:true,wingRoom:key,home:{position:mesh.position.clone(),quaternion:mesh.quaternion.clone(),parent:root}};
         interactables.push(mesh);room.ours.push(mesh);room.books.push(mesh);return mesh};
       const corner=def.corner,inCorner=book=>!!corner&&corner.ids.includes(book.id);
-      list.filter(book=>!inCorner(book)).slice(0,spots.length).forEach((book,i)=>placeBook(book,spots[i]));
+      list.filter(book=>!inCorner(book)&&!apart(def,book)).slice(0,spots.length).forEach((book,i)=>placeBook(book,spots[i]));
       // A room's own corner shelf (the French room's Rayon suisse): a short case of two tiers on the east wall.
       if(corner){const ex=cx+w/2,held=corner.ids.map(id=>list.find(book=>book.id===id)).filter(Boolean);
         box(.06,2.4,8.8,MAT.darkWood,ex-.2,2.3,cz);box(.46,.14,9,MAT.darkWood,ex-.36,3.52,cz);for(let i=0;i<=4;i++)box(.4,2.4,.07,MAT.darkWood,ex-.38,2.3,cz-4.4+i*2.2);
@@ -326,7 +427,7 @@
         if(corner.flag){// The white cross on red, beside the sign.
           const flag=own(canvasTexture((c,W,H)=>{c.fillStyle='#d52b1e';c.fillRect(0,0,W,H);c.fillStyle='#ffffff';c.fillRect(W*.41,H*.19,W*.18,H*.62);c.fillRect(W*.19,H*.41,W*.62,H*.18)},64,64));
           const mesh=add(own(new THREE.PlaneGeometry(.5,.5)),own(new THREE.MeshStandardMaterial({map:flag,roughness:.7})),ex-.18,4.15,cz-2.1,root);mesh.rotation.y=-Math.PI/2}}
-      if(key==='ukrainian')dressUkrainian({cx,cz,w,d,box,own,mark,root});
+      if(key==='ukrainian')dressUkrainian({cx,cz,w,d,box,own,mark,root,block,placeBook,list,room,def});
       if(key==='italian')dressItalian({cx,cz,w,d,own,mark,block,root});
       // The doors in the east wall of the Spanish room: green to the Portuguese room, blue to the French, red to the Chinese.
       const doorSign=(signText,signSub,font,x,z,yaw,data)=>{const board=add(own(new THREE.PlaneGeometry(2.6,.5)),own(new THREE.MeshStandardMaterial({map:own(plaque(signText,signSub,780,150,'#23170e',font)),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.25})),x,4.95,z,root);board.rotation.y=yaw;mark(board,data)};
@@ -356,7 +457,7 @@
       box(4.2,.08,1.6,MAT.darkWood,cx+1.5,.78,cz+1.2);for(const [dx,dz] of [[-1.9,-.6],[1.9,-.6],[-1.9,.6],[1.9,.6]])box(.1,.74,.1,MAT.darkWood,cx+1.5+dx,.39,cz+1.2+dz);block(cx+1.5,cz+1.2,4.4,1.8);
       const leather=own(new THREE.MeshStandardMaterial({color:0x5b2418,roughness:.75}));
       // The four chairs can be sat in: the library's own seats (game.js), which open one of this room's books.
-      const bookIds=list.map(book=>book.id);
+      const bookIds=list.filter(book=>book.title!==def.boot).map(book=>book.id);
       for(const [dx,dz,yaw] of [[-1,-1.35,0],[1,-1.35,0],[-1,1.35,Math.PI],[1,1.35,Math.PI]]){const chair=new THREE.Group();chair.position.set(cx+1.5+dx,0,cz+1.2+dz);chair.rotation.y=yaw;root.add(chair);const seat=box(.5,.08,.5,leather,0,.46,0,chair),back=box(.5,.6,.08,leather,0,.78,-.24,chair);for(const [lx,lz] of [[-.2,-.2],[.2,-.2],[-.2,.2],[.2,.2]])box(.05,.44,.05,MAT.darkWood,lx,.22,lz,chair);
         if(registerSeat&&bookIds.length){registerSeat([seat,back],chair,new THREE.Vector3(0,1.28,.08),yaw+Math.PI,{title:def.seat[0],author:def.seat[1],bookIds,wingRoom:key});room.ours.push(seat,back)}}
       box(.1,.5,.1,MAT.brass,cx+1.5,1.07,cz+1.2);add(own(new THREE.CylinderGeometry(.16,.3,.24,14,1,true)),own(new THREE.MeshStandardMaterial({color:def.shade,emissive:def.shade,emissiveIntensity:.7,roughness:.5,side:THREE.DoubleSide})),cx+1.5,1.38,cz+1.2,root);
@@ -404,6 +505,12 @@
       showNotice(def.welcome(featured(key)),9);
       analytics?.track('Room Explored',{room:key==='spanish'?'international-wing':`international-wing-${key}`});
     }
+    // Leontovych's Shchedryk on the bandura: its four-note figure (B flat, A, B flat, G) in bars of three, eight times,
+    // with the bass stepping down from G to D in the second four bars.
+    function playShchedryk(){const beat=.34,Bb=466.16,A=440,G=392,bass=[0,0,0,0,196,174.61,155.56,146.83];let at=0;
+      for(let bar=0;bar<8;bar++){for(const [freq,beats] of [[Bb,1],[A,.5],[Bb,.5],[G,1]]){tone(freq,at,beats*beat+.5,.06,'bandura');at+=beats*beat}
+        if(bass[bar])tone(bass[bar],at-3*beat,3*beat+.4,.05,'bandura')}
+      return at+1}
     function interact(object){
       const data=object?.userData;if(!data||typeof data.type!=='string'||!data.type.startsWith('intl-'))return false;
       if(data.type==='intl-door'){through(data,()=>enter('spanish'));return true}
@@ -415,6 +522,12 @@
       }
       if(data.type==='intl-exit'){through(data,()=>{move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again, beside the visitors’ book.',3)});return true}
       if(data.type==='intl-card'){showNotice(`${data.title}: ${data.author}`,9);return true}
+      if(data.type==='intl-boot'){const room=built.ukrainian;try{storage?.setItem(BOOT_KEY,'1')}catch(e){}
+        if(room){const card=room.bootCard();for(const part of room.bootParts)part.userData=card;room.showBootBook()}
+        showNotice('За халявою — маленька саморобна книжечка, списана дрібним почерком. На засланні Шевченкові заборонили писати й малювати, і він ховав вірші в чоботі. (Tucked in the boot: a tiny handmade notebook of poems, as Shevchenko hid his in exile. It lies on the trunk now.)',10);
+        playSample?.('pageTurn',.7,.9);analytics?.track('Secret Found',{secret:'shevchenko-boot'});return true}
+      if(data.type==='intl-gospel'){if(gospel)gospel.open();return true}
+      if(data.type==='intl-bandura'){showNotice(`${data.title}: ${data.author}`,12);if(tone&&time>=shchedrykUntil)shchedrykUntil=time+playShchedryk();return true}
       return false;
     }
 
@@ -428,7 +541,7 @@
     }
     function update(t){
       time=t;const {x,z}=player.pos,here=roomAt(x,z);
-      if(here){activate(here);placeLamps(here)}
+      if(here){activate(here);placeLamps(here);for(const tick of built[here].ticks)tick(t)}
       if(Math.hypot(x-DOOR.x,z-DOOR.z)<PRELOAD)activate('spanish');
       for(const [key,door] of Object.entries(ROOM_DOORS))if(here===outOf(key)&&Math.hypot(x-door.x,z-door.z)<PRELOAD)activate(opensOn(key));
       for(const key of Object.keys(built)){const room=built[key];
