@@ -9,6 +9,8 @@
 //              Morris's handmade paper.
 //   vesalius   The Medicine Room's Fabrica (vesalius-book.js): Andreas Vesalius's De humani corporis fabrica (Basel, 1543),
 //              folio leaves of about 420 by 280 mm.
+//   peresopnytsia  The Ukrainian Reading Room's Peresopnytsia Gospel (peresopnytsia-book.js): leaves of about 380 by
+//              240 mm, on parchment; three photographs and the plates of a facsimile printed in 1911.
 //
 // Each page names the Commons files wanted, in order of preference. If none of them is there and public domain, a book
 // with a `pattern` tries the files in its categories whose names match (KellsFol034r…, "folio 34r"…), then a search;
@@ -145,16 +147,28 @@ export const BOOKS = {
     ]
   },
   // The Ukrainian Reading Room's Peresopnytsia Gospel (1556–61), the Gospels in the Ukrainian of its day, on which
-  // Ukraine's presidents take their oath. Surveyed first, with sheets of the usable files, to choose its pages.
+  // Ukraine's presidents take their oath. Commons has three good photographs of it, in colour, and a printed facsimile of
+  // 1911 (Al. S. Gruzinsky's study, Kiev; World Digital Library), whose eleven plates are its other pages here: a page of the
+  // scan is named `scan`, and its plate is set on the book's paper with the 1911 caption beneath it. Chosen from a survey of
+  // the scan's openings. Pages are named for their leaf where the caption or the file gives it.
   peresopnytsia: {
     dir: 'assets/peresopnytsia', manifest: 'peresopnytsia.json', width: 1190, height: 1820, paper: '#e6d8b8',
     categories: ['Category:Peresopnytsia Gospel', 'Category:Пересопницьке Євангеліє'], must: /peresop|пересоп|ПЄ/i,
-    survey: ['Peresopnytsia Gospel', 'Пересопницьке Євангеліє', 'Пересопницьке Євангеліє мініатюра', 'Peresopnytsia Gospel 1911 facsimile'],
-    surveyOnly: /gospel|євангел|евангел|ПЄ|ukraina-1556|жеславськ/i, thumbs: 'usable',
-    // The 1911 printed facsimile on Commons (World Digital Library), surveyed as openings to find the Gospel's pages in it.
     scan: 'Peresopnytsia Gospel, a Monument of the 16th Century Renaissance Art from South Russia WDL10018.pdf',
-    openings: Array.from({ length: 24 }, (_, i) => [2 * i + 1, 2 * i + 2]), openingLabel: n => `pdf ${n}`,
-    pages: []
+    display: ['mark', 'l129'],
+    pages: [
+  { key: 'l002', scan: 23 },
+  { key: 'matthew', scan: 25 },
+  { key: 'l082', scan: 27 },
+  { key: 'mark', scan: 29 },
+  { key: 'l129', files: ['Сторінка з орнаментними прикрасами арк. 129 ПЄ.jpg'] },
+  { key: 'luke', scan: 33 },
+  { key: 'l279', scan: 39 },
+  { key: 'l291', files: ['Сторінка з ініціалом арк.291 ПЄ.jpg'] },
+  { key: 'l340', files: ['Мініатюра Євангеліст Іоанн з Прохором арк. 340 ПЄ.jpg'] },
+  { key: 'john', scan: 37 },
+  { key: 'last', scan: 41 }
+    ]
   }
 };
 
