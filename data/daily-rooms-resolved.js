@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-20",
+ "updated": "2026-10-21",
  "days": {
-  "2026-10-07": {
-   "books": [
-    {
-     "id": 1065,
-     "title": "The Raven",
-     "author": "Edgar Allan Poe"
-    },
-    {
-     "id": 51060,
-     "title": "The Narrative of Arthur Gordon Pym of Nantucket",
-     "author": "Edgar Allan Poe"
-    },
-    {
-     "id": 2148,
-     "title": "The Works of Edgar Allan Poe — Volume 2",
-     "author": "Edgar Allan Poe"
-    },
-    {
-     "id": 1064,
-     "title": "The Masque of the Red Death",
-     "author": "Edgar Allan Poe"
-    },
-    {
-     "id": 1063,
-     "title": "The Cask of Amontillado",
-     "author": "Edgar Allan Poe"
-    },
-    {
-     "id": 32037,
-     "title": "Eureka: A Prose Poem",
-     "author": "Edgar Allan Poe"
-    },
-    {
-     "id": 2097,
-     "title": "The Sign of the Four",
-     "author": "Arthur Conan Doyle"
-    },
-    {
-     "id": 10002,
-     "title": "The House on the Borderland",
-     "author": "William Hope Hodgson"
-    },
-    {
-     "id": 14471,
-     "title": "The Empty House and Other Ghost Stories",
-     "author": "Algernon Blackwood"
-    },
-    {
-     "id": 15862,
-     "title": "Afterwhiles",
-     "author": "James Whitcomb Riley"
-    }
-   ],
-   "missing": []
-  },
   "2026-10-08": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 7439,
      "title": "English Fairy Tales",
      "author": "Joseph Jacobs"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-23": {
+   "books": [
+    {
+     "id": 608,
+     "title": "Areopagitica",
+     "author": "John Milton"
+    },
+    {
+     "id": 3207,
+     "title": "Leviathan",
+     "author": "Thomas Hobbes"
+    },
+    {
+     "id": 26,
+     "title": "Paradise Lost",
+     "author": "John Milton"
+    },
+    {
+     "id": 17460,
+     "title": "Lorna Doone",
+     "author": "R. D. Blackmore"
+    },
+    {
+     "id": 1232,
+     "title": "The Prince",
+     "author": "Niccolò Machiavelli"
+    },
+    {
+     "id": 32188,
+     "title": "Eikon Basilike",
+     "author": "Charles I"
+    },
+    {
+     "id": 36462,
+     "title": "King Arthur and the Knights of the Round Table",
+     "author": "Sir Thomas Malory"
+    },
+    {
+     "id": 703,
+     "title": "Lucasta",
+     "author": "Richard Lovelace"
+    },
+    {
+     "id": 9785,
+     "title": "Woodstock",
+     "author": "Walter Scott"
+    },
+    {
+     "id": 21558,
+     "title": "The Children of the New Forest",
+     "author": "Frederick Marryat"
     }
    ],
    "missing": []
