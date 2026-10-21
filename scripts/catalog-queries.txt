@@ -1,11 +1,39 @@
-# Quiet room: a replacement for Widdershins (Onions is in copyright in Ireland until 2032)
-Room in the Tower ; Benson ; en
-Uncanny Stories ; Sinclair ; en
-Lady of the Barge ; Jacobs ; en
-In a Glass Darkly ; Le Fanu ; en
-Twilight Stories ; Broughton ; en
-Lifted Veil ; Eliot ; en
-Visible and Invisible ; Benson ; en
-Wind in the Rose.?Bush ; Freeman ; en
-Jewel of Seven Stars ; Stoker ; en
-Ghost Stories and Tales of Mystery ; Le Fanu ; en
+# The Ukrainian Reading Room: the Executed Renaissance
+ws Автор:Валер'ян Підмогильний
+ws Автор:Валер’ян Підмогильний
+ws? Підмогильний
+ws Автор:Микола Хвильовий
+ws? Хвильовий
+ws Автор:Микола Зеров
+ws Автор:Михайль Семенко
+ws Автор:Микола Куліш
+ws? Мина Мазайло
+ws Автор:Григорій Косинка
+ws Автор:Євген Плужник
+ws Автор:Майк Йогансен
+ws Автор:Михайло Драй-Хмара
+# Shevchenko in exile
+ws Автор:Тарас Шевченко
+ws? Більша книжка
+ws? Шевченко захалявна книжечка
+# More books
+ws Автор:Григорій Сковорода
+ws Автор:Іван Карпенко-Карий
+ws Автор:Михайло Старицький
+ws Автор:Борис Грінченко
+ws Автор:Пантелеймон Куліш
+ws? думи кобзарські
+ws? колядки щедрівки
+ws? Щедрик
+Cossack Fairy ; Bain ; en
+; ; uk
+# Pictures for the walls and the case
+commons? Taras Shevchenko Kateryna 1842 painting
+commons? Shevchenko self-portrait
+commons? Narbut Ukrainian alphabet
+commons? Peresopnytsia Gospel
+commons? Пересопницьке Євангеліє
+commons? Ostroh Bible 1581
+commons? Murashko painting
+commons? Pymonenko painting
+commons? didukh Ukrainian Christmas
