@@ -138,7 +138,11 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Pymonenko's Ukrainian Night) are fetched by `scripts/fetch-maps.mjs` (`PICTURES`, into `assets/pictures`). The bandura
   plays Leontovych's Shchedryk on the synthesiser's plucked `bandura` voice (`tone`, game.js's `pianoTone`); a didukh
   stands from 24 December to 19 January; on 9 November (the Day of Ukrainian Writing and Language) the Eneida is on the
-  lectern. The Catalogue lookup also searches Ukrainian Wikisource (`ws <page>`, `ws? <words>`) and Commons
+  lectern. In the middle of its west side, under glass, the Peresopnytsia Gospel (`peresopnytsia-book.js`, handed to the
+  wing as `gospel`) lies open at Mark's portrait facing leaf 129, the first page of his Gospel: three colour photographs
+  from Commons and seven plates of Gruzinsky's printed facsimile of 1911 (pages of its PDF on Commons, `trimScan` cuts away
+  the bare page round each plate), with drawn notes on the word оукраины on leaf 82 and on the presidents' oath. Commons
+  has no other usable photographs of it. The Catalogue lookup also searches Ukrainian Wikisource (`ws <page>`, `ws? <words>`) and Commons
   (`commons? <words>`). A Wikisource page that only lists editions has too little text: give the edition's own page.
 - The Kipling bookcase (`kipling-shelf.js`) stands against the Grand Hall's west wall in the south-west corner (x −18.54,
   z 29.1, between the column at z 27 and the corner; `?room=kipling`): Rudyard Kipling's books face-out in the order he
