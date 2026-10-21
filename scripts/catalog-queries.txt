@@ -1,39 +1,7 @@
-# The Ukrainian Reading Room: the Executed Renaissance
-ws Автор:Валер'ян Підмогильний
-ws Автор:Валер’ян Підмогильний
-ws? Підмогильний
-ws Автор:Микола Хвильовий
-ws? Хвильовий
-ws Автор:Микола Зеров
-ws Автор:Михайль Семенко
-ws Автор:Микола Куліш
-ws? Мина Мазайло
-ws Автор:Григорій Косинка
-ws Автор:Євген Плужник
-ws Автор:Майк Йогансен
-ws Автор:Михайло Драй-Хмара
-# Shevchenko in exile
-ws Автор:Тарас Шевченко
-ws? Більша книжка
-ws? Шевченко захалявна книжечка
-# More books
-ws Автор:Григорій Сковорода
-ws Автор:Іван Карпенко-Карий
-ws Автор:Михайло Старицький
-ws Автор:Борис Грінченко
-ws Автор:Пантелеймон Куліш
-ws? думи кобзарські
-ws? колядки щедрівки
-ws? Щедрик
-Cossack Fairy ; Bain ; en
-; ; uk
-# Pictures for the walls and the case
-commons? Taras Shevchenko Kateryna 1842 painting
-commons? Shevchenko self-portrait
-commons? Narbut Ukrainian alphabet
-commons? Peresopnytsia Gospel
-commons? Пересопницьке Євангеліє
-commons? Ostroh Bible 1581
-commons? Murashko painting
-commons? Pymonenko painting
-commons? didukh Ukrainian Christmas
+# Editions for the three Ukrainian books that are pages of editions
+ws Сад божественних пісень
+ws Байки Харківські
+ws Подорож ученого доктора Леонардо і його майбутньої коханки прекрасної Альчести у Слобожанську Швейцарію
+ws? Сад божественних пісень
+ws? Байки Харківські Сковорода
+ws? Подорож ученого доктора Леонардо
