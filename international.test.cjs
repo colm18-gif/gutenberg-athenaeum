@@ -139,7 +139,7 @@ test('the French Reading Room: classics in French behind the blue door, kept apa
   assert.ok(swiss.length>=5&&swiss.length<=8,'a short Swiss shelf');
   for(const id of swiss)assert.ok(french.some(entry=>entry[0]===id),`${id} on the Swiss shelf is one of the French room's books`);
   assert.ok(french.length-swiss.length<=48,'the rest fit the racks');
-  assert.match(wing,/list\.filter\(book=>!inCorner\(book\)\)/,'the Swiss books leave the racks for their own case');
+  assert.match(wing,/list\.filter\(book=>!inCorner\(book\)&&!apart\(def,book\)\)/,'the Swiss books leave the racks for their own case');
   assert.equal(new Set(french.map(entry=>entry[1])).size,french.length,'each title once');
   for(const [id,title,,,,note] of french){
     assert.ok(Number.isInteger(id),`${title}: give its number from Gutenberg's catalogue`);
@@ -314,4 +314,27 @@ test('the Italian Reading Room: Italian texts behind green doors in the Spanish 
   assert.match(fs.readFileSync(path.join(out,'sitemap.xml'),'utf8'),/<loc>https:\/\/libraryafterdark\.space\/it\/<\/loc>/);
   const {readingTime}=await import('./scripts/book-pages.mjs');assert.equal(readingTime(15000,'it'),'un’ora');assert.equal(readingTime(30000,'it'),'2 ore');
   for(const file of ['.github/workflows/new-books.yml','.github/workflows/book-pages.yml'])assert.match(fs.readFileSync(file,'utf8'),/ la it uk /,file);
+});
+
+test('the Ukrainian room keeps a shelf for the Executed Renaissance, Shevchenko’s boot, a bandura and, at Christmas, a didukh',()=>{
+  const src=fs.readFileSync('international-wing.js','utf8'),game=fs.readFileSync('game.js','utf8');
+  const wingList=load('data/new-books-wing.js','ATHENAEUM_NEW_BOOKS_WING'),titles=new Set(wingList.filter(entry=>entry[4]==='ukrainian').map(entry=>entry[1]));
+  const memorial=JSON.parse(src.match(/const MEMORIAL=(\[[^\]]*\])/)[1].replace(/'/g,'"'));
+  assert.equal(memorial.length,8,'two tiers of four');
+  for(const title of [...memorial,'Княжна'])assert.ok(titles.has(title),`${title} is on the room's list`);
+  // They stand apart from the main racks and the lectern, and the boot's book is no chair's to open.
+  assert.match(src,/memorial:MEMORIAL,boot:'Княжна'/);assert.match(src,/const bookIds=list\.filter\(book=>book\.title!==def\.boot\)/);
+  assert.match(src,/function featured\(key='spanish',list=shelf\(key\)\)\{list=list\.filter\(book=>!apart\(ROOMS\[key\],book\)\)/);
+  // Found once and kept; the secret is counted like the others.
+  assert.match(src,/const BOOT_KEY='athenaeum-shevchenko-boot'/);assert.match(src,/analytics\?\.track\('Secret Found',\{secret:'shevchenko-boot'\}\)/);
+  // Shchedryk on the bandura, a plucked voice of the library's own synthesiser; no lights in any of it.
+  assert.match(src,/tone\(freq,at,beats\*beat\+\.5,\.06,'bandura'\)/);assert.match(game,/bowed=voice!=='piano'&&voice!=='bandura'/);
+  assert.match(game,/createInternationalWing\?\.\(\{doorKit:getDoorKit\(\),tone:pianoTone,/);
+  const body=src.slice(src.indexOf('function furnishUkrainian('),src.indexOf('// ---------- the books ----------'));
+  for(const word of ['РОЗСТРІЛЯНЕ ВІДРОДЖЕННЯ','Солдатський чобіт','Бандура','Дідух','shevchenko-kateryna','shevchenko-1848','pymonenko-night'])assert.ok(body.includes(word),word);
+  assert.doesNotMatch(body,/Light\(/);assert.match(body,/if\(md>=1124\|\|md<=19\)/,'the didukh from Christmas Eve to Vodokhreshche');
+  // The pictures come from Commons through the map fetcher, into a folder of their own.
+  const fetcher=fs.readFileSync('scripts/fetch-maps.mjs','utf8');for(const key of ['shevchenko-kateryna','shevchenko-1848','pymonenko-night'])assert.ok(fetcher.includes(`key: '${key}'`),key);
+  // The Day of Ukrainian Writing and Language puts the Eneida on the lectern.
+  assert.match(src,/const writingDay=\(date=new Date\(\)\)=>date\.getMonth\(\)===10&&date\.getDate\(\)===9/);
 });

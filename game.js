@@ -2011,10 +2011,11 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // she wrote, the first books about her and what she read, in a Regency drawing room; and Catherine Morland's black
     // cabinet, with Mrs Radcliffe inside. The rooms' instruments play on the library's own audio, no files: the Austen
     // Room's pianoforte, and the Burns Room's fiddle and the Devil's pipes (voice 'fiddle' or 'pipes').
-    const pianoTone=(freq,at=0,dur=.6,vol=.08,voice='piano')=>{if(!audioCtx||muted)return;const start=audioCtx.currentTime+at,g=audioCtx.createGain(),bowed=voice!=='piano';
+    const pianoTone=(freq,at=0,dur=.6,vol=.08,voice='piano')=>{if(!audioCtx||muted)return;const start=audioCtx.currentTime+at,g=audioCtx.createGain(),bowed=voice!=='piano'&&voice!=='bandura';
       g.gain.setValueAtTime(.0001,start);g.gain.exponentialRampToValueAtTime(vol,start+(voice==='fiddle'?.06:.01));if(bowed)g.gain.setValueAtTime(vol,start+Math.max(.07,dur-.12));g.gain.exponentialRampToValueAtTime(.0001,start+dur);
       let out=g;if(bowed){const filter=audioCtx.createBiquadFilter();filter.type='lowpass';filter.frequency.value=voice==='pipes'?2600:1800;filter.connect(g);out=filter}g.connect(master);
-      const partials=bowed?[[1,'sawtooth',1]]:[[1,'triangle',1],[2,'sine',.35],[3,'sine',.12]];
+      // The bandura is plucked like the piano, with brighter overtones.
+      const partials=bowed?[[1,'sawtooth',1]]:voice==='bandura'?[[1,'triangle',1],[2,'triangle',.5],[3,'sine',.28],[5,'sine',.1]]:[[1,'triangle',1],[2,'sine',.35],[3,'sine',.12]];
       for(const [ratio,type,level] of partials){const o=audioCtx.createOscillator(),og=audioCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq*ratio,start);og.gain.value=level;o.connect(og).connect(out);
         // The fiddle's vibrato.
         if(voice==='fiddle'){const lfo=audioCtx.createOscillator(),depth=audioCtx.createGain();lfo.frequency.value=5.5;depth.gain.value=freq*.006;lfo.connect(depth).connect(o.frequency);lfo.start(start);lfo.stop(start+dur+.05)}
@@ -2153,7 +2154,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     }
     // The International Wing (international-wing.js), behind a door on the Grand Hall's south wall beside the visitors'
     // book: the Spanish Reading Room and, through its green door, the Portuguese Reading Room; Chinese to follow.
-    const internationalWing=window.createInternationalWing?.({doorKit:getDoorKit(),THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,playSample,
+    const internationalWing=window.createInternationalWing?.({doorKit:getDoorKit(),tone:pianoTone,THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,playSample,
       findBook:id=>books.find(b=>b.id===id),arrivals:room=>newArrivals.list(room).map(book=>book.id),analytics:window.libraryAnalytics,isHolding:()=>!!selected,registerSeat,
       wallMaterial:wallFinish?photoWall('sandstone_blocks_08',[2.4,2.4],0xb07a50,2):null,
       finishWalls:wallFinish&&(walls=>{for(const [mesh,w,h,d] of walls)wallFinish.finishBox(mesh,w,h,d);wallFinish.settle(walls.map(([mesh])=>mesh),{ceiling:true})}),
