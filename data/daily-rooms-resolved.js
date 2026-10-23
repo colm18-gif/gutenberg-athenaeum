@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-22",
+ "updated": "2026-10-23",
  "days": {
-  "2026-10-09": {
-   "books": [
-    {
-     "id": 205,
-     "title": "Walden, and On The Duty Of Civil Disobedience",
-     "author": "Henry David Thoreau"
-    },
-    {
-     "id": 2944,
-     "title": "Essays — First Series",
-     "author": "Ralph Waldo Emerson"
-    },
-    {
-     "id": 29433,
-     "title": "Nature",
-     "author": "Ralph Waldo Emerson"
-    },
-    {
-     "id": 33,
-     "title": "The Scarlet Letter",
-     "author": "Nathaniel Hawthorne"
-    },
-    {
-     "id": 1322,
-     "title": "Leaves of Grass",
-     "author": "Walt Whitman"
-    },
-    {
-     "id": 2945,
-     "title": "Essays — Second Series",
-     "author": "Ralph Waldo Emerson"
-    },
-    {
-     "id": 514,
-     "title": "Little Women",
-     "author": "Louisa May Alcott"
-    },
-    {
-     "id": 46209,
-     "title": "Concord Days",
-     "author": "Amos Bronson Alcott"
-    },
-    {
-     "id": 42500,
-     "title": "The Maine Woods",
-     "author": "Henry David Thoreau"
-    },
-    {
-     "id": 6312,
-     "title": "Representative Men",
-     "author": "Ralph Waldo Emerson"
-    }
-   ],
-   "missing": []
-  },
   "2026-10-10": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 13,
      "title": "The Hunting of the Snark",
      "author": "Lewis Carroll"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-25": {
+   "books": [
+    {
+     "id": 2554,
+     "title": "Crime and Punishment",
+     "author": "Fyodor Dostoyevsky"
+    },
+    {
+     "id": 1399,
+     "title": "Anna Karenina",
+     "author": "Leo Tolstoy"
+    },
+    {
+     "id": 30723,
+     "title": "Fathers and Children",
+     "author": "Ivan Turgenev"
+    },
+    {
+     "id": 1081,
+     "title": "Dead Souls",
+     "author": "Nikolai Gogol"
+    },
+    {
+     "id": 913,
+     "title": "A Hero of Our Time",
+     "author": "M. Y. Lermontov"
+    },
+    {
+     "id": 28054,
+     "title": "The Brothers Karamazov",
+     "author": "Fyodor Dostoyevsky"
+    },
+    {
+     "id": 2600,
+     "title": "War and Peace",
+     "author": "Leo Tolstoy"
+    },
+    {
+     "id": 54700,
+     "title": "Oblomov",
+     "author": "Ivan Goncharov"
+    },
+    {
+     "id": 23058,
+     "title": "The Queen of Spades",
+     "author": "Alexander Pushkin"
+    },
+    {
+     "id": 13415,
+     "title": "The Lady with the Dog and Other Stories",
+     "author": "Anton Chekhov"
     }
    ],
    "missing": []
