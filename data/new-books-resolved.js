@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-10-21",
+ "updated": "2026-10-23",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -1294,6 +1294,138 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Microbe Hunters": {
    "id": 77842,
    "words": 126549
+  },
+  "The Descent of Man, and Selection in Relation to Sex": {
+   "id": 2300,
+   "words": 306284
+  },
+  "The Expression of the Emotions in Man and Animals": {
+   "id": 1227,
+   "words": 108914
+  },
+  "The Autobiography of Charles Darwin": {
+   "id": 2010,
+   "words": 22692
+  },
+  "The Formation of Vegetable Mould Through the Action of Worms": {
+   "id": 2355,
+   "words": 60716
+  },
+  "Insectivorous Plants": {
+   "id": 5765,
+   "words": 156289
+  },
+  "Coral Reefs": {
+   "id": 2690,
+   "words": 83821
+  },
+  "Vestiges of the Natural History of Creation": {
+   "id": 7116,
+   "words": 80034
+  },
+  "Principles of Geology": {
+   "id": 33224,
+   "words": 422058
+  },
+  "Contributions to the Theory of Natural Selection": {
+   "id": 22428,
+   "words": 101633
+  },
+  "Evidence as to Man’s Place in Nature": {
+   "id": 2931,
+   "words": 17260
+  },
+  "Darwiniana": {
+   "id": 5273,
+   "words": 107900
+  },
+  "On the Reception of the ‘Origin of Species’": {
+   "id": 2089,
+   "words": 9174
+  },
+  "The Malay Archipelago, Volume 2": {
+   "id": 2539,
+   "words": 111351
+  },
+  "A Narrative of Travels on the Amazon and Rio Negro": {
+   "id": 71436,
+   "words": 157401
+  },
+  "Island Life": {
+   "id": 32021,
+   "words": 161361
+  },
+  "Personal Narrative of Travels to the Equinoctial Regions of America, Volume 1": {
+   "id": 6322,
+   "words": 209157
+  },
+  "Himalayan Journals, Volume 1": {
+   "id": 6476,
+   "words": 124099
+  },
+  "The Naturalist in Nicaragua": {
+   "id": 6321,
+   "words": 121651
+  },
+  "Wanderings in South America": {
+   "id": 8159,
+   "words": 85064
+  },
+  "The Naturalist in La Plata": {
+   "id": 7446,
+   "words": 103122
+  },
+  "A Journey in Brazil": {
+   "id": 56171,
+   "words": 174238
+  },
+  "Audubon and His Journals, Volume 1": {
+   "id": 39975,
+   "words": 189943
+  },
+  "Narrative of the Voyage of H.M.S. Rattlesnake": {
+   "id": 12433,
+   "words": 102658
+  },
+  "The Life of the Spider": {
+   "id": 1887,
+   "words": 71420
+  },
+  "The Life of the Bee": {
+   "id": 4511,
+   "words": 60112
+  },
+  "Wake-Robin": {
+   "id": 4203,
+   "words": 61329
+  },
+  "My First Summer in the Sierra": {
+   "id": 32540,
+   "words": 59823
+  },
+  "The Gamekeeper at Home": {
+   "id": 36948,
+   "words": 50240
+  },
+  "The Maine Woods": {
+   "id": 42500,
+   "words": 105985
+  },
+  "Glaucus; Or, The Wonders of the Shore": {
+   "id": 695,
+   "words": 45609
+  },
+  "The Fairy-Land of Science": {
+   "id": 5726,
+   "words": 62013
+  },
+  "Handbook of Nature-Study for Teachers and Parents": {
+   "id": 78142,
+   "words": 410509
+  },
+  "The Foundations of the Origin of Species": {
+   "id": 22728,
+   "words": 89238
   },
   "Poems and Songs of Robert Burns": {
    "id": 1279,
