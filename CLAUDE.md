@@ -13,7 +13,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Files the jobs rewrite without a new build are listed in `LIVE_DATA` there.
 - Rooms behind doors (`evening-room.js`, `learners-room.js`, `periodicals-room.js`, `international-wing.js`,
   `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`, `map-room.js`, `medicine-room.js`, `set-texts-room.js`,
-  `austen-room.js`, `burns-room.js`, `within-room.js`)
+  `austen-room.js`, `burns-room.js`, `within-room.js`, `naturalist-room.js`)
   are built only when the reader approaches and freed ~25 s after they leave. So are the Room of Chance (its portrait
   stays), the Lost Property Office (its hatch stays) and the high staircase, Rocket Hall, Moon and rocket cabin (`high-staircase.js`: only its door in the west wing
   is built at startup; a stair book carried away keeps it). The basement and the roof garden, built in `game.js` on a first visit, are
@@ -67,6 +67,16 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   the portrait and eleven pages from Wikimedia Commons (`assets/vesalius`, chosen from a survey), named for their page in
   the 1543 edition. The title page and portrait also hang framed either side of the room's door. The muscle men are flayed
   figures: keep the plates on the walls and in the case to the skeletons, the title and the portrait.
+- The Naturalist's Cabinet (`naturalist-room.js`, x −500, z −140) is behind a conservatory-green door at the south end of
+  the Medicine Room's west wall (`?room=naturalist`, `darwin`); `medicine-room.js` sets its west shelf back (`WEST_SHELF`) to
+  leave that end clear. Darwin's study and a cabinet of curiosities: shelves `nature-origin` (headed by the library's own
+  Origin, 1228), `nature-collectors` and `nature-observers` (headed by its Selborne, 1408) in `data/new-books.js` (books held
+  nowhere else; a test checks), a dome of hummingbirds, a glazed case of shells, eggs and butterflies, a drawer of beetles,
+  the Sandwalk through the south window, and the writing table with a microscope and Wallace's letter from Ternate.
+  Darwin's armchair and the writing chair are seats. The secret is in the table's drawer: the essay of 1844 with his letter to
+  Emma (shelf `nature-sealed`, The Foundations of the Origin of Species), found for good (`athenaeum-darwin-sketch`;
+  `?sketch`); the letter's words, and Huxley's in his note, are checked against the bundled texts. Audubon's Birds of America
+  is to come as a fine book: `audubon` in `scripts/fetch-book-pages.mjs` is only surveyed so far.
 - The Austen Room (`austen-room.js`, x 500, z −160) is behind a door in the Grand Hall's west wall (x −18.72, z 12.9), between
   the gramophone and the botanist's portrait (`?room=austen`): a Regency drawing room for Jane Austen. Her six novels stand
   face-out on the north wall in the order they were published (`NOVELS`: five are the hall's own copies; Northanger Abbey is
@@ -281,7 +291,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, boathouse,
-  daily-room, poe, irish, maps, medicine, austen, burns, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
+  daily-room, poe, irish, maps, medicine, naturalist, austen, burns, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.

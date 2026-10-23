@@ -4,6 +4,7 @@
 // physic (Hippocrates to the household doctor), discoveries (Harvey to Pasteur), and the healers (nurses, doctors and
 // their historians), from data/new-books.js (rooms medicine-*). The title page and Vesalius's portrait hang either side
 // of the door, a row of apothecary's jars stands on a cabinet, and two chairs at a reading table open the room's books.
+// The door at the south end of the west wall leads on to the Naturalist's Cabinet (naturalist-room.js).
 // Like the other rooms behind doors, nothing is built until the reader walks up to it, and it is freed a little while
 // after they leave.
 (function(){
@@ -29,6 +30,8 @@
     const DOOR={x:mapRoom.cx+mapRoom.w/2-.15,z:mapRoom.cz+mapRoom.d/2-2.1,yaw:-Math.PI/2};
     const ROOM={cx:-420,cz:-140,w:16,d:14,h:5.4};
     const PRELOAD=7,KEEP=25;
+    // The west shelf stops short of the wall's south end, which holds the door to the Naturalist's Cabinet.
+    const WEST_SHELF={z:-2.6,length:6.6};
     // The room's side of its door: an apothecary's green, glazed above.
     const DOOR_LOOK={style:'painted',color:0x2c4a3e,fanColor:0xffd9a0,glazed:true,width:1.9,height:3.1};
     const through=(data,go)=>doorKit&&data.kit?doorKit.pass(data.kit,data,go):go();
@@ -73,15 +76,16 @@
       // The shelves: two rows on each of three walls.
       const groups=catalogue(),geometry=own(new THREE.BoxGeometry(.72,.96,.13)),ROWS=[1.45,2.65];
       for(const group of groups){
-        const along=group.wall==='north'?w-3:d-3.4,per=Math.max(1,Math.ceil(group.books.length/2)),gap=Math.min(1.3,(along-.6)/per);
+        const along=group.wall==='north'?w-3:group.wall==='west'?WEST_SHELF.length:d-3.4,per=Math.max(1,Math.ceil(group.books.length/2)),gap=Math.min(1.3,(along-.6)/per);
+        const sz=group.wall==='west'?cz+WEST_SHELF.z:cz-.4;
         const at=(i,row)=>{const n=row?group.books.length-per:per,col=row?i-per:i,offset=(col-(n-1)/2)*gap;
-          if(group.wall==='north')return {x:cx+offset,z:cz-d/2+.3,yaw:0};if(group.wall==='west')return {x:cx-w/2+.3,z:cz-.4+offset,yaw:Math.PI/2};return {x:cx+w/2-.3,z:cz-.4-offset,yaw:-Math.PI/2}};
+          if(group.wall==='north')return {x:cx+offset,z:cz-d/2+.3,yaw:0};if(group.wall==='west')return {x:cx-w/2+.3,z:sz+offset,yaw:Math.PI/2};return {x:cx+w/2-.3,z:cz-.4-offset,yaw:-Math.PI/2}};
         group.books.forEach((book,i)=>{const row=i<per?0:1,spot=at(i,row);placeBook(book,{...spot,y:ROWS[row]},geometry,group.key)});
         const info={type:'medicine-card',title:group.name,author:group.sub+'.',action:'READ'};
         if(group.wall==='north'){for(const y of ROWS)box(along,.05,.36,MAT.darkWood,cx,y-.5,cz-d/2+.35,root);block(cx,cz-d/2+.4,along+.2,.7);
           mark(sign(root,group.name,group.sub,2.9,.46,cx,3.62,cz-d/2+.17),info)}
-        else{const side=group.wall==='west'?-1:1,x=cx+side*(w/2-.35);for(const y of ROWS)box(.36,.05,along,MAT.darkWood,x,y-.5,cz-.4,root);block(x,cz-.4,.7,along+.2);
-          const label=sign(root,group.name,group.sub,2.9,.46,cx+side*(w/2-.17),3.62,cz-.4);label.rotation.y=-side*Math.PI/2;mark(label,info)}
+        else{const side=group.wall==='west'?-1:1,x=cx+side*(w/2-.35);for(const y of ROWS)box(.36,.05,along,MAT.darkWood,x,y-.5,sz,root);block(x,sz,.7,along+.2);
+          const label=sign(root,group.name,group.sub,2.9,.46,cx+side*(w/2-.17),3.62,sz);label.rotation.y=-side*Math.PI/2;mark(label,info)}
       }
       buildShowcase(cx,cz+.6);
       // The Fabrica's title page and its portrait of Vesalius, framed either side of the door.
@@ -190,6 +194,6 @@
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==root))unload();
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,unload,catalogue,door:DOOR,room:ROOM,groups:GROUPS,get built(){return !!root},get books(){return books.slice()},zoneAt:(x,z)=>contains(x,z)?'medicine-room':null};
+    return {contains,floorAt,allowed,interact,update,enter,unload,catalogue,door:DOOR,room:ROOM,westShelf:WEST_SHELF,groups:GROUPS,get built(){return !!root},get books(){return books.slice()},zoneAt:(x,z)=>contains(x,z)?'medicine-room':null};
   };
 })();
