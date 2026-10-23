@@ -118,6 +118,8 @@
       'map-room':{beds:[['air',.035]],ticks:[[1.6,'tock',.025]],events:[['rustle',1.4,.04]]},
       // The Medicine Room: a still room, a clock, and the heavy leaves of the Fabrica being turned.
       'medicine-room':{beds:[['air',.03]],ticks:[[1.2,'tock',.022]],events:[['rustle',1,.04],['creak',.4,.03]]},
+      // The Naturalist's Cabinet: a study at dusk, a clock, a page turned, and now and then a bird beyond the window.
+      'naturalist-room':{beds:[['air',.03]],ticks:[[1.2,'tock',.02]],events:[['rustle',1,.04],['bird',.3,.025],['creak',.3,.03]]},
       // The Austen Room: a quiet drawing room at night, a mantel clock, a page turned, and now and then the door.
       // The Burns Room: a cottage at night, the fire, rain at the window, and the clock on the wall.
       'burns-room':{beds:[['fire',.09],['air',.025]],ticks:[[1.1,'tock',.018]],events:[['crackle',36,.11],['snap',7,.09],['creak',.5,.03]]},

@@ -9,6 +9,9 @@
 //              Morris's handmade paper.
 //   vesalius   The Medicine Room's Fabrica (vesalius-book.js): Andreas Vesalius's De humani corporis fabrica (Basel, 1543),
 //              folio leaves of about 420 by 280 mm.
+//   audubon    The Naturalist's Cabinet's Birds of America (naturalist-room.js): John James Audubon's plates, engraved
+//              and coloured by Robert Havell in London, 1827–38, double elephant folio sheets of about 990 by 660 mm.
+//              Only surveyed so far, to choose its plates from what Commons holds.
 //   peresopnytsia  The Ukrainian Reading Room's Peresopnytsia Gospel (peresopnytsia-book.js): leaves of about 380 by
 //              240 mm, on parchment; three photographs and the plates of a facsimile printed in 1911.
 //
@@ -169,6 +172,15 @@ export const BOOKS = {
   { key: 'last', scan: 41 }
     ]
   }
+};
+
+// The Naturalist's Cabinet's book to come: Audubon's Birds of America. Surveyed so far (48 usable plates drawn on sheets
+// on 23 October 2026, looked at and removed; the log lists them), so its plates can be chosen from what is there.
+BOOKS.audubon = {
+  dir: 'assets/audubon', manifest: 'audubon.json', width: 1190, height: 1780, paper: '#ece4d0',
+  categories: ['Category:The Birds of America', 'Category:Birds of America (Audubon)', 'Category:The Birds of America by John James Audubon'], must: /audubon|birds of america/i,
+  survey: ['Audubon Birds of America plate', 'Birds of America Havell plate', 'Audubon Havell engraving'], surveyOnly: /audubon|birds of america|havell/i,
+  pages: []
 };
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
