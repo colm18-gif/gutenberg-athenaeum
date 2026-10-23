@@ -174,13 +174,12 @@ export const BOOKS = {
   }
 };
 
-// The Naturalist's Cabinet's book to come: Audubon's Birds of America. Surveyed first (usable files drawn on numbered
-// sheets in assets/audubon/survey, to be looked at and then removed), so its plates can be chosen from what is there.
+// The Naturalist's Cabinet's book to come: Audubon's Birds of America. Surveyed so far (48 usable plates drawn on sheets
+// on 23 October 2026, looked at and removed; the log lists them), so its plates can be chosen from what is there.
 BOOKS.audubon = {
   dir: 'assets/audubon', manifest: 'audubon.json', width: 1190, height: 1780, paper: '#ece4d0',
   categories: ['Category:The Birds of America', 'Category:Birds of America (Audubon)', 'Category:The Birds of America by John James Audubon'], must: /audubon|birds of america/i,
   survey: ['Audubon Birds of America plate', 'Birds of America Havell plate', 'Audubon Havell engraving'], surveyOnly: /audubon|birds of america|havell/i,
-  thumbs: 'usable', thumbLimit: 48,
   pages: []
 };
 
