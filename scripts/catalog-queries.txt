@@ -1,7 +1,40 @@
-# Editions for the three Ukrainian books that are pages of editions
-ws Сад божественних пісень
-ws Байки Харківські
-ws Подорож ученого доктора Леонардо і його майбутньої коханки прекрасної Альчести у Слобожанську Швейцарію
-ws? Сад божественних пісень
-ws? Байки Харківські Сковорода
-ws? Подорож ученого доктора Леонардо
+# The Naturalist's Cabinet: Darwin, the collectors and the observers
+; Darwin, Charles ; en
+; Wallace, Alfred Russel ; en
+; Huxley, Thomas Henry ; en
+; Lyell ; en
+; Humboldt ; en
+; Fabre, Jean-Henri ; en
+; Burroughs, John ; en
+; Muir, John ; en
+; Jefferies, Richard ; en
+; Hudson, W. H. ; en
+; Thoreau ; en
+; Audubon ; en
+; Kingsley, Charles ; en
+; Buckley, Arabella ; en
+; Gosse, Philip Henry ; en
+; Lubbock, John ; en
+; Agassiz ; en
+; Waterton ; en
+; Belt, Thomas ; en
+; Hooker, Joseph ; en
+; North, Marianne ; en
+; Comstock, Anna ; en
+; Chambers, Robert ; en
+; Maeterlinck ; en
+; Haeckel ; en
+; Mendel ; en
+; Gray, Asa ; en
+; Bates, Henry Walter ; en
+; Moseley ; en
+; Gatty ; en
+Foundations of the Origin ; ;
+Vestiges ; ;
+Glaucus ; ;
+Fairy-Land of Science ; ;
+Naturalist ; ; en
+Audubon ; ;
+Birds of America ; ;
+commons? Audubon Birds of America plate
+commons? Haeckel Kunstformen der Natur
