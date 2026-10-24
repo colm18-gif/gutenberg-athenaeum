@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-23",
+ "updated": "2026-10-24",
  "days": {
-  "2026-10-10": {
-   "books": [
-    {
-     "id": 580,
-     "title": "The Pickwick Papers",
-     "author": "Charles Dickens"
-    },
-    {
-     "id": 720,
-     "title": "Almayer's Folly",
-     "author": "Joseph Conrad"
-    },
-    {
-     "id": 863,
-     "title": "The Mysterious Affair at Styles",
-     "author": "Agatha Christie"
-    },
-    {
-     "id": 805,
-     "title": "This Side of Paradise",
-     "author": "F. Scott Fitzgerald"
-    },
-    {
-     "id": 144,
-     "title": "The Voyage Out",
-     "author": "Virginia Woolf"
-    },
-    {
-     "id": 3044,
-     "title": "Desperate Remedies",
-     "author": "Thomas Hardy"
-    },
-    {
-     "id": 161,
-     "title": "Sense and Sensibility",
-     "author": "Jane Austen"
-    },
-    {
-     "id": 5998,
-     "title": "Waverley",
-     "author": "Walter Scott"
-    },
-    {
-     "id": 62,
-     "title": "A Princess of Mars",
-     "author": "Edgar Rice Burroughs"
-    },
-    {
-     "id": 1900,
-     "title": "Typee",
-     "author": "Herman Melville"
-    }
-   ],
-   "missing": []
-  },
   "2026-10-11": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 13415,
      "title": "The Lady with the Dog and Other Stories",
      "author": "Anton Chekhov"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-26": {
+   "books": [
+    {
+     "id": 11,
+     "title": "Alice's Adventures in Wonderland",
+     "author": "Lewis Carroll"
+    },
+    {
+     "id": 14838,
+     "title": "The Tale of Peter Rabbit",
+     "author": "Beatrix Potter"
+    },
+    {
+     "id": 1154,
+     "title": "The Voyages of Doctor Dolittle",
+     "author": "Hugh Lofting"
+    },
+    {
+     "id": 28299,
+     "title": "Orbis Pictus",
+     "author": "John Amos Comenius"
+    },
+    {
+     "id": 1018,
+     "title": "The Water-Babies",
+     "author": "Charles Kingsley"
+    },
+    {
+     "id": 1480,
+     "title": "Tom Brown's School Days",
+     "author": "Thomas Hughes"
+    },
+    {
+     "id": 55,
+     "title": "The Wonderful Wizard of Oz",
+     "author": "L. Frank Baum"
+    },
+    {
+     "id": 12116,
+     "title": "Struwwelpeter",
+     "author": "Heinrich Hoffmann"
+    },
+    {
+     "id": 10607,
+     "title": "The Real Mother Goose",
+     "author": "Anonymous"
+    },
+    {
+     "id": 3836,
+     "title": "The Swiss Family Robinson",
+     "author": "Johann David Wyss"
     }
    ],
    "missing": []
