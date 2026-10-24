@@ -27,6 +27,16 @@ test('the lanterns glow without lights, as one instanced mesh with one shared ma
   for(const id of [345,10007,14851,14522])assert.ok(source.match(/TABLE_BOOKS=\[([^\]]*)\]/)[1].split(',').slice(0,8).map(Number).includes(id),`book ${id} is on the table`);
 });
 
+test('bats and cobwebs are one instanced mesh each, inside the hall and the wings, and the brack tells real fortunes',()=>{
+  assert.match(source,/new THREE\.InstancedMesh\(batGeometry,/);assert.match(source,/new THREE\.InstancedMesh\(new THREE\.PlaneGeometry\(1,\.5\),webMaterial,WEBS\.length\)/);
+  assert.match(source,/flyBats\(t\)\}/,'the bats fly in the same update as the flicker');
+  const bats=eval(source.match(/const BATS=(\[[^;]*\]);/)[1]);
+  for(const [x,z,y,r] of bats){assert.ok(Math.abs(x)+r<18.5&&Math.abs(z)+r*.62<30.5,'a bat stays inside the Grand Hall');assert.ok(y+.25<8.95&&y-.25>7,'and between the column tops and the beams')}
+  const webs=eval(source.match(/const WEBS=(\[[\s\S]*?\]\]);/)[1]);assert.ok(webs.length>=8);
+  for(const [x,z,sx,sz] of webs)assert.ok(Math.abs(sx)===1&&Math.abs(sz)===1&&Math.abs(x)<37&&Math.abs(z)<31,'a web hangs in a corner of the hall or a wing');
+  for(const thing of ['a ring','a pea','a stick','a scrap of cloth','a coin'])assert.ok(source.includes(`['${thing}',`),thing);
+});
+
 test('the library wires Halloween night in, before game.js',()=>{
   const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(m=>m[1]);
   assert.ok(order.indexOf('halloween.js')>-1&&order.indexOf('halloween.js')<order.indexOf('game.js'));
