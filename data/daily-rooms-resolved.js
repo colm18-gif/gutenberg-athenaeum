@@ -721,54 +721,54 @@ window.ATHENAEUM_DAILY_RESOLVED={
   "2026-10-25": {
    "books": [
     {
-     "id": 2554,
-     "title": "Crime and Punishment",
-     "author": "Fyodor Dostoyevsky"
+     "id": 107,
+     "title": "Far from the Madding Crowd",
+     "author": "Thomas Hardy"
     },
     {
-     "id": 1399,
-     "title": "Anna Karenina",
-     "author": "Leo Tolstoy"
+     "id": 143,
+     "title": "The Mayor of Casterbridge",
+     "author": "Thomas Hardy"
     },
     {
-     "id": 30723,
-     "title": "Fathers and Children",
-     "author": "Ivan Turgenev"
+     "id": 122,
+     "title": "The Return of the Native",
+     "author": "Thomas Hardy"
     },
     {
-     "id": 1081,
-     "title": "Dead Souls",
-     "author": "Nikolai Gogol"
+     "id": 110,
+     "title": "Tess of the d'Urbervilles",
+     "author": "Thomas Hardy"
     },
     {
-     "id": 913,
-     "title": "A Hero of Our Time",
-     "author": "M. Y. Lermontov"
+     "id": 153,
+     "title": "Jude the Obscure",
+     "author": "Thomas Hardy"
     },
     {
-     "id": 28054,
-     "title": "The Brothers Karamazov",
-     "author": "Fyodor Dostoyevsky"
+     "id": 482,
+     "title": "The Woodlanders",
+     "author": "Thomas Hardy"
     },
     {
-     "id": 2600,
-     "title": "War and Peace",
-     "author": "Leo Tolstoy"
+     "id": 2662,
+     "title": "Under the Greenwood Tree",
+     "author": "Thomas Hardy"
     },
     {
-     "id": 54700,
-     "title": "Oblomov",
-     "author": "Ivan Goncharov"
+     "id": 3056,
+     "title": "Wessex Tales",
+     "author": "Thomas Hardy"
     },
     {
-     "id": 23058,
-     "title": "The Queen of Spades",
-     "author": "Alexander Pushkin"
+     "id": 224,
+     "title": "A Pair of Blue Eyes",
+     "author": "Thomas Hardy"
     },
     {
-     "id": 13415,
-     "title": "The Lady with the Dog and Other Stories",
-     "author": "Anton Chekhov"
+     "id": 3044,
+     "title": "Desperate Remedies",
+     "author": "Thomas Hardy"
     }
    ],
    "missing": []
