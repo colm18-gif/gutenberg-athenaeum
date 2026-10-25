@@ -143,6 +143,86 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 73413,
    "words": 19593
   },
+  "The Book of the Thousand Nights and a Night": {
+   "id": 3435,
+   "words": 175406
+  },
+  "The Book of the Thousand Nights and One Night": {
+   "id": 8655,
+   "words": 148725
+  },
+  "The Thousand and One Nights": {
+   "id": 34206,
+   "words": 266844
+  },
+  "The Arabian Nights": {
+   "id": 62897,
+   "words": 130742
+  },
+  "Sindbad the Sailor and Other Stories from the Arabian Nights": {
+   "id": 47285,
+   "words": 69510
+  },
+  "Stories from The Arabian Nights": {
+   "id": 51432,
+   "words": 28775
+  },
+  "The Arabian Nights: Their Best-known Tales": {
+   "id": 20916,
+   "words": 115143
+  },
+  "Tales from the Arabic": {
+   "id": 5245,
+   "words": 215302
+  },
+  "Poems from the Divan of Hafiz": {
+   "id": 74883,
+   "words": 35440
+  },
+  "The Bustan of Sadi": {
+   "id": 60471,
+   "words": 26470
+  },
+  "The Mesnevi": {
+   "id": 61724,
+   "words": 126917
+  },
+  "The Improvement of Human Reason": {
+   "id": 16831,
+   "words": 45749
+  },
+  "Antar: A Bedoueen Romance": {
+   "id": 57857,
+   "words": 75715
+  },
+  "The History of Caliph Vathek": {
+   "id": 2060,
+   "words": 37130
+  },
+  "The Adventures of Hajji Baba of Ispahan": {
+   "id": 21331,
+   "words": 186837
+  },
+  "Lalla Rookh": {
+   "id": 76794,
+   "words": 75109
+  },
+  "New Arabian Nights": {
+   "id": 839,
+   "words": 102711
+  },
+  "The Alhambra": {
+   "id": 49947,
+   "words": 121652
+  },
+  "Arabian Society in the Middle Ages": {
+   "id": 41110,
+   "words": 90072
+  },
+  "Alaeddin and the Enchanted Lamp": {
+   "id": 5100,
+   "words": 66567
+  },
   "Captain Cook’s Journal During His First Voyage Round the World": {
    "id": 8106,
    "words": 226309
