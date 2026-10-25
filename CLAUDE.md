@@ -207,6 +207,18 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   x −900 for the flight, inside the camera's 130 m) and sinks into a walled courtyard with a baobab. The room is in the
   Sahelian manner of Djenné and Timbuktu (shelves `african-ancient`, `african-voices`, `african-tales` in
   `data/new-books.js`); the courtyard's balloon flies home. `?room=africa` goes straight to the courtyard.
+- The Thousand and One Nights (`nights-room.js`, courtyard x 700, z −420; the qa'a north of it) is reached by flying carpet:
+  a carpet lies rolled and tied by the Grand Hall's fire (x −11.5, z −14, clear of Clio's corner and the north rug). Untie it
+  and it unrolls (it rolls itself up again once the reader is 14 m away); sit on it and it lifts, crosses a desert at night
+  (a sky built at x 900, y 300, z 600 for the flight, then freed) and sinks into a courtyard with a fountain and orange trees;
+  the carpet there flies home to the fire. Shelves `nights-tales` (the Nights in English: Burton, Payne, Lane, Galland, Dulac),
+  `nights-poets` (Persia and Arabia) and `nights-echoes` (the West's Nights) in `data/new-books.js`, held nowhere else (a test
+  checks; Lang's own Arabian Nights, 128, stays in the Room of Books Within Books). The divan is a seat. The secret is the lamp on
+  the brass tray: rubbed, it smokes, asks "What is thy will?" and leaves Payne's Alaeddin (`nights-lamp`) and a card on Hanna
+  Diyab, who told Galland Aladdin in 1709 (found for good: `athenaeum-nights-lamp`; `?lamp`). A brass plate by the door counts
+  the nights the reader has come (`athenaeum-nights-visits`). Words given to Scheherazade and the genie are Lang's, checked
+  against `texts/bundled-gzip/pg128.txt.gz` by a test (`LANG`). `?room=nights` (`carpet`, `scheherazade`, `aladdin`) goes to
+  the courtyard. Two lights only (a lantern and the room's lamp); the hanging lanterns are one InstancedMesh.
 - Crusoe's island (`crusoe-island.js`, through the Boathouse door in the Grand Hall's south wall) has Robinson himself by his
   fire (goatskin cap, umbrella of skins, his old dog at his right hand), who turns to the reader and speaks lines from the book
   (`ROBINSON`; the footprint and Fridays change what he says), his goats in their pen, the barley, the great canoe that never
