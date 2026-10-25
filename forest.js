@@ -49,7 +49,7 @@
   const mulberry=seed=>()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296};
 
   window.createForest=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,sound,move,analytics,toGarden=null,isHolding=()=>false,isReducedMotion=()=>false,storage=window.localStorage,
+    const {THREE,scene,MAT,player,ambient=null,moon:moonlight=null,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,sound,move,analytics,toGarden=null,isHolding=()=>false,isReducedMotion=()=>false,storage=window.localStorage,
       garden={cx:145,cz:46,w:20,d:16}}=options;
     const FOUND_KEY='athenaeum-forest-found';
     // The window in the Garden Room's west wall, and where the reader stands on coming back through it.
@@ -65,6 +65,8 @@
     const box=(w,h,d,material,x,y,z,parent)=>add(own(new THREE.BoxGeometry(w,h,d)),material,x,y,z,parent);
     const cyl=(rt,rb,h,seg,material,x,y,z,parent)=>add(own(new THREE.CylinderGeometry(rt,rb,h,seg)),material,x,y,z,parent);
     function mark(object,data){object.userData=data;interactables.push(object);ours.push(object);return object}
+    // A point in a group's own frame, in the world (groups here turn only about y).
+    const onGroup=(g,x,y,z)=>{const c=Math.cos(g.rotation.y),s=Math.sin(g.rotation.y);return {x:g.position.x+x*c+z*s,y:g.position.y+y,z:g.position.z-x*s+z*c}};
     const card=(key,title,action='LOOK')=>({type:'forest-card',key,title,author:QUOTES[key],action});
     function block(x,z,w,d){blockers.push({minX:x-w/2,maxX:x+w/2,minZ:z-d/2,maxZ:z+d/2})}
     const found=()=>{try{return new Set(JSON.parse(storage?.getItem(FOUND_KEY)||'[]'))}catch(e){return new Set()}};
@@ -188,8 +190,7 @@
         // The oven at the side, cold.
         const oven=box(1.3,1.1,1.1,stone,2.8,.55,-.6,g);add(own(new THREE.CircleGeometry(.3,12,0,Math.PI)),dark,3.46,.35,-.6,g).rotation.y=Math.PI/2;mark(oven,card('cottage','The oven'));
         block(p.x,p.z,5.6,5.6);
-        g.updateMatrixWorld(true);const sill=new THREE.Vector3(-1.1,1.12,1.9).applyMatrix4(g.matrixWorld);
-        (byPlace.cottage||[]).forEach((book,i)=>standingBook(book,sill.x+i*.5,sill.y+.29,sill.z,g.rotation.y,-.2,'tales'));
+        (byPlace.cottage||[]).forEach((book,i)=>{const s=onGroup(g,-1.1+i*.5,1.12,1.9);standingBook(book,s.x,s.y+.29,s.z,g.rotation.y,-.2,'tales')});
       }
       // Rapunzel's tower: no stairs, no door, a little window at the top, and a golden braid down to the ground.
       {const p=P('tower'),g=new THREE.Group();g.position.set(p.x,0,p.z);root.add(g);
@@ -225,8 +226,7 @@
           const crown=add(own(new THREE.IcosahedronGeometry(2.6,1)),std({color:0x23301e,roughness:1,flatShading:true}),x,6.4,z,g);crown.scale.set(1,.6,1)}
         for(let k=0;k<5;k++)add(own(new THREE.IcosahedronGeometry(.55,0)),std({color:0x2c3a22,roughness:1,flatShading:true}),-2+k,.5,3.2,g);
         block(p.x,p.z,5,5);
-        g.updateMatrixWorld(true);const step=new THREE.Vector3(.7,.3,2.05).applyMatrix4(g.matrixWorld);
-        (byPlace.granny||[]).forEach((book,i)=>standingBook(book,step.x+i*.5,step.y,step.z,g.rotation.y,-.35,'tales'));
+        (byPlace.granny||[]).forEach((book,i)=>{const s=onGroup(g,.7+i*.5,.3,2.05);standingBook(book,s.x,s.y,s.z,g.rotation.y,-.35,'tales')});
       }
       // Red-Cap's basket, set down by the path: cake, a bottle of wine, and a book.
       {const p=P('basket'),g=new THREE.Group();g.position.set(p.x,0,p.z+1.4);g.rotation.y=.4;root.add(g);
@@ -234,7 +234,7 @@
         add(own(new THREE.PlaneGeometry(.6,.6)),std({color:0xe6dccc,roughness:.9,side:THREE.DoubleSide}),0,.31,0,g).rotation.x=-Math.PI/2+.2;
         cyl(.04,.05,.32,8,std({color:0x2a0a12,roughness:.2,metalness:.2}),.12,.38,-.05,g);
         for(const part of [basket,handle])mark(part,card('basket','A basket on the path'));
-        g.updateMatrixWorld(true);(byPlace.basket||[]).forEach((book,i)=>{const s=new THREE.Vector3(-.12+i*.2,.42,.05).applyMatrix4(g.matrixWorld);standingBook(book,s.x,s.y,s.z,g.rotation.y,-.5,'tales')});
+        (byPlace.basket||[]).forEach((book,i)=>{const s=onGroup(g,-.12+i*.2,.42,.05);standingBook(book,s.x,s.y,s.z,g.rotation.y,-.5,'tales')});
       }
       // The hedge of thorns round Briar Rose's palace, a turret above it, and books caught in the briars.
       {const p=P('hedge'),briar=std({color:0x1c2414,roughness:1,flatShading:true}),rose=std({color:0x8a2030,emissive:0x2a0610,emissiveIntensity:.6,roughness:.7});
@@ -270,7 +270,6 @@
         const raven=new THREE.Group();raven.position.set(1.7,4.6,1.3);raven.rotation.y=-.6;g.add(raven);const black=std({color:0x0c0c10,roughness:.5,metalness:.2});
         const rb=add(own(new THREE.SphereGeometry(.16,10,8)),black,0,0,0,raven);rb.scale.set(.8,1,1.6);add(own(new THREE.SphereGeometry(.09,8,6)),black,0,.12,-.22,raven);add(own(new THREE.ConeGeometry(.035,.14,5)),black,0,.11,-.36,raven).rotation.x=-Math.PI/2;
         for(const part of [trunk,hollow,rb])mark(part,card('oak','The old oak','LOOK'));block(p.x,p.z,4,4);
-        g.updateMatrixWorld(true);
         eerie.forEach((book,i)=>{const a=-Math.PI*.15+(i-(eerie.length-1)/2)*.42,r=2.15,x=p.x+Math.sin(a)*r,z=p.z+Math.cos(a)*r;standingBook(book,x,.29,z,a,-.32,'eerie')});
         // A fairy ring of pale toadstools beside it.
         const cap=std({color:0xe2d8c0,emissive:0x3a3a30,emissiveIntensity:.5,roughness:.8});const ring=[];
@@ -286,12 +285,12 @@
       const halo=own(canvasTexture((c,W,H)=>{const g=c.createRadialGradient(W/2,H/2,0,W/2,H/2,W/2);g.addColorStop(0,'rgba(210,225,255,.55)');g.addColorStop(1,'rgba(210,225,255,0)');c.fillStyle=g;c.fillRect(0,0,W,H)},128,128));
       const haloSprite=new THREE.Sprite(own(new THREE.SpriteMaterial({map:halo,fog:false,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending})));haloSprite.scale.set(26,26,1);haloSprite.position.copy(moon.position);root.add(haloSprite);
       // Shafts of moonlight into the clearings: faint, open-ended cones.
-      const beam=own(new THREE.MeshBasicMaterial({color:0xaabcdc,transparent:true,opacity:.055,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide}));
+      const beam=own(new THREE.MeshBasicMaterial({color:0xaabcdc,transparent:true,opacity:.03,depthWrite:false,blending:THREE.AdditiveBlending,side:THREE.DoubleSide}));
       for(const key of ['hub','spring','cottage','oak','window']){const p=at(key),cone=add(own(new THREE.CylinderGeometry(.9,3.2,16,16,1,true)),beam,p.x+1.2,8,p.z-1,root);cone.rotation.z=.12}
       // Mist lying low among the trees.
       const mistMap=own(canvasTexture((c,W,H)=>{c.clearRect(0,0,W,H);const rand=mulberry(5);for(let i=0;i<70;i++){const x=rand()*W,y=rand()*H,r=20+rand()*60,g=c.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,'rgba(200,210,225,.16)');g.addColorStop(1,'rgba(200,210,225,0)');c.fillStyle=g;c.fillRect(x-r,y-r,r*2,r*2)}},512,512));
       mistMap.wrapS=mistMap.wrapT=THREE.RepeatWrapping;mistMap.repeat?.set?.(3,3);
-      state.mist=[];for(const [y,o] of [[.35,.8],[.9,.5]]){const m=add(own(new THREE.PlaneGeometry(EDGE*2,EDGE*2)),own(new THREE.MeshBasicMaterial({map:mistMap,transparent:true,opacity:o,depthWrite:false,color:0xb4bfd0})),CENTRE.x,y,CENTRE.z,root);m.rotation.x=-Math.PI/2;state.mist.push(m)}
+      state.mist=[];for(const [y,o] of [[.35,.38],[.9,.2]]){const m=add(own(new THREE.PlaneGeometry(EDGE*2,EDGE*2)),own(new THREE.MeshBasicMaterial({map:mistMap,transparent:true,opacity:o,depthWrite:false,color:0x8a96aa})),CENTRE.x,y,CENTRE.z,root);m.rotation.x=-Math.PI/2;state.mist.push(m)}
       // Will-o'-the-wisps: the first goes ahead of the reader towards a book not yet found; the rest drift.
       const glow=own(canvasTexture((c,W,H)=>{const g=c.createRadialGradient(W/2,H/2,0,W/2,H/2,W/2);g.addColorStop(0,'rgba(235,255,240,1)');g.addColorStop(.25,'rgba(170,240,210,.6)');g.addColorStop(1,'rgba(120,220,190,0)');c.fillStyle=g;c.fillRect(0,0,W,H)},64,64));
       const wispMaterial=own(new THREE.SpriteMaterial({map:glow,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,color:0xc8ffe8}));
@@ -374,7 +373,8 @@
       time=t;const {x,z}=player.pos,inside=contains(x,z);if(inside)activate();
       if(!root)return;
       if(!inside&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==root)){unload();return}
-      if(inside){scene.background.setRGB(.025,.035,.055);scene.fog.color.setRGB(.045,.06,.08);scene.fog.density=.05}
+      // Night in the wood whatever the hour in the library: a dark sky, dark fog, and the library's light turned down.
+      if(inside){scene.background.setRGB(.006,.009,.018);scene.fog.color.setRGB(.01,.014,.022);scene.fog.density=.045;if(ambient)ambient.intensity*=.4;if(moonlight)moonlight.intensity*=.7}
       const reduced=isReducedMotion(),still=reduced?0:1;
       if(state.hut)state.hut.rotation.y+=dt*.12*still;
       if(state.braid){state.braidSway=Math.max(0,(state.braidSway||0)-dt*.4);state.braid.rotation.z=Math.sin(t*.7)*.02*still+Math.sin(t*3)*.12*state.braidSway*still}

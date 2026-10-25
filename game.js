@@ -2065,7 +2065,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // The Deep Wood (forest.js): a forest at night, out through the window in the Garden Room's west wall, or into the
     // woodcut in the Grimms' Fairy Tales; the books of the tales lie in its clearings, the eerie wood's by the old oak.
     const forestMove=(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null};
-    const forest=window.createForest?.({THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,playSample,sound,
+    const forest=window.createForest?.({THREE,scene,MAT,player,ambient,moon,interactables,canvasTexture,bookMaterial,showNotice,playSample,sound,
       findBook:id=>books.find(b=>b.id===id),arrivals:{tales:arrivalIds('forest-tales'),eerie:arrivalIds('forest-eerie')},garden:themeZones.find(room=>room.key==='garden'),
       analytics:window.libraryAnalytics,isHolding:()=>!!selected,isReducedMotion:()=>reducedMotion,move:forestMove,
       toGarden:spot=>{buildThemeRooms('garden');forestMove(spot.x,spot.z,spot.yaw)}

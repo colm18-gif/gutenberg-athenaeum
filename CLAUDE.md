@@ -13,7 +13,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Files the jobs rewrite without a new build are listed in `LIVE_DATA` there.
 - Rooms behind doors (`evening-room.js`, `learners-room.js`, `periodicals-room.js`, `international-wing.js`,
   `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`, `map-room.js`, `medicine-room.js`, `set-texts-room.js`,
-  `austen-room.js`, `burns-room.js`, `within-room.js`, `naturalist-room.js`)
+  `austen-room.js`, `burns-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`)
   are built only when the reader approaches and freed ~25 s after they leave. So are the Room of Chance (its portrait
   stays), the Lost Property Office (its hatch stays) and the high staircase, Rocket Hall, Moon and rocket cabin (`high-staircase.js`: only its door in the west wing
   is built at startup; a stair book carried away keeps it). The basement and the roof garden, built in `game.js` on a first visit, are
@@ -95,6 +95,18 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Devil's pipes (voice `pipes`) until "Weel done, Cutty-sark!", and Tam O'Shanter (shelf `burns-cutty`) is left on the
   sill, found for good (`athenaeum-burns-cutty-sark`; `?cuttysark`). The Grand Hall's walls are full, which is why the
   door is in the Irish Room. Built for Burns Night (25 January): Burns clubs plan their suppers in November and December.
+- The Deep Wood (`forest.js`, centre x 800, z 400; walkable within 40 m) is a forest at night, eerie, not frightening (no
+  howling, nothing jumps out). Two ways in: the window hung on the Garden Room's west wall (the theme room at x 145, z 46;
+  `hangGardenWindow` is called whenever that room is built), and a button, Step into the woodcut, that the reader shows
+  for the Grimms' Fairy Tales (2591) alone (`?room=forest`, `grimm`, `woods`). The places of the tales stand in clearings:
+  the house of bread with windows of clear sugar, Rapunzel's tower and braid, the cool spring with the golden ball,
+  Grandmother's house under the three large oak-trees, Red-Cap's basket, the hedge of thorns round Briar Rose's palace,
+  Baba Yaga's turning hut and the Little Glass Man's great fir. Books are found, not shelved: shelf `forest-tales` (each
+  placed by `PLACES`) and `forest-eerie` (among the old oak's roots, for older readers) in `data/new-books.js`, held
+  nowhere else (a test checks, and walks from the arrival to every book). Hansel's white pebbles lead back to the
+  freestanding window; the crumbs on the other path lead nowhere. A wisp goes ahead towards the nearest book not yet
+  found (`athenaeum-forest-found`). Every Grimm quotation is checked against pg2591. Trees are two InstancedMeshes,
+  no lights: inside the wood the sky and fog are darkened and the library's ambient and moonlight turned down.
 - The Room of Books Within Books (`within-room.js`, x 500, z −440) is reached through the card catalogue against the Grand
   Hall's west wall (x −18.45, z 7.3, between the wing door's open leaf and the gramophone; `?room=within`). The first drawer
   pulled holds a card for a book that was never written; the next, the drawer marked with a dash between Li–Ly and Ma–Me,
@@ -291,7 +303,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, boathouse,
-  daily-room, poe, irish, maps, medicine, naturalist, austen, burns, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
+  daily-room, poe, irish, maps, medicine, naturalist, austen, burns, forest, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.
