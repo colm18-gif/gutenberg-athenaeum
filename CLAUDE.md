@@ -195,6 +195,13 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   x −900 for the flight, inside the camera's 130 m) and sinks into a walled courtyard with a baobab. The room is in the
   Sahelian manner of Djenné and Timbuktu (shelves `african-ancient`, `african-voices`, `african-tales` in
   `data/new-books.js`); the courtyard's balloon flies home. `?room=africa` goes straight to the courtyard.
+- Crusoe's island (`crusoe-island.js`, through the Boathouse door in the Grand Hall's south wall) has Robinson himself by his
+  fire (goatskin cap, umbrella of skins, his old dog at his right hand), who turns to the reader and speaks lines from the book
+  (`ROBINSON`; the footprint and Fridays change what he says), his goats in their pen, the barley, the great canoe that never
+  reached the water, two earthen jars, raisins drying, the "O drug!" money and his journal on the table (`JOURNAL`, opened at
+  today's date or the last entry before it), and the wreck on the reef. Every word given to him is checked against
+  `texts/pg521.txt` by a test. His own copy of Robinson Crusoe on the sea chest is the one exception to the single-copy
+  register (`ownCopy`, at the owner's wish): it stands there even though the book is shelved elsewhere too.
 - Clio (once Quill), the library cat, has a corner under the portrait on the Grand Hall's west wall by the fire
   (`clioCorner` in game.js, x −18, z −21 to −19): a wicker basket she sometimes sleeps in, a saucer of milk she drinks
   from (the jug beside it fills it), a scratching post, and a tin of treats on a shelf. Her errands to them are run
