@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-10-23",
+ "updated": "2026-10-25",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -1498,6 +1498,70 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Tam O’Shanter": {
    "id": 25733,
    "words": 1721
+  },
+  "Grimm’s Fairy Tales": {
+   "id": 52521,
+   "words": 91492
+  },
+  "The Red Fairy Book": {
+   "id": 540,
+   "words": 125236
+  },
+  "The Green Fairy Book": {
+   "id": 7277,
+   "words": 119585
+  },
+  "The Pink Fairy Book": {
+   "id": 5615,
+   "words": 99178
+  },
+  "The Fairy Tales of Charles Perrault": {
+   "id": 29021,
+   "words": 28405
+  },
+  "Popular Tales from the Norse": {
+   "id": 8933,
+   "words": 176305
+  },
+  "The Little Glass Man": {
+   "id": 45606,
+   "words": 41407
+  },
+  "Snow-White": {
+   "id": 49724,
+   "words": 23390
+  },
+  "The Kiltartan Wonder Book": {
+   "id": 76322,
+   "words": 20378
+  },
+  "Lilith": {
+   "id": 1640,
+   "words": 94972
+  },
+  "The Man Whom the Trees Loved": {
+   "id": 11377,
+   "words": 26462
+  },
+  "A Prisoner in Fairyland": {
+   "id": 6021,
+   "words": 138239
+  },
+  "The Wood Beyond the World": {
+   "id": 3055,
+   "words": 50343
+  },
+  "The Hollow Land": {
+   "id": 15948,
+   "words": 14825
+  },
+  "The King of Elfland’s Daughter": {
+   "id": 61077,
+   "words": 70046
+  },
+  "Mosses from an Old Manse": {
+   "id": 512,
+   "words": 73665
   },
   "Northanger Abbey": {
    "id": 121,
@@ -3170,6 +3234,7 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Benito Cereno",
   "History of the Expedition under the Command of Captains Lewis and Clark, Vol. 1.",
   "The Necessity of Atheism",
+  "Russian Folk-Tales",
   "María [es]",
   "Poesías [es]"
  ]
