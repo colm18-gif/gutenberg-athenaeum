@@ -103,3 +103,30 @@ test('the walkable island keeps the reader on the sand and out of the sea',()=>{
   assert.equal(w.island.allowed(-420,193),true);assert.equal(w.island.allowed(-420,168),false,'not beyond the beach');assert.equal(w.island.floorAt(-420,190),0);assert.equal(w.island.floorAt(-420,250),null);
   assert.equal(w.island.onSand(-420,190),true);assert.equal(w.island.contains(0,24),false);
 });
+
+test('Robinson speaks his own words, and the camp answers with his',()=>{
+  const w=world({reduced:true});w.player.pos.set(-4.5,0,26);w.run(.2);w.island.interact(w.find('isle-door'));w.island.interact(w.find('isle-boat'));w.run(15);
+  const robinson=w.find('isle-robinson');assert(robinson,'Robinson stands by his fire');
+  const heard=new Set();for(let k=0;k<9;k++){w.island.interact(robinson);heard.add(w.notices.at(-1))}
+  assert(heard.size>=7,'he has more than one thing to say');assert([...heard].some(n=>n.includes('The Island of Despair')));
+  w.island.interact(w.find('isle-footprint'));w.island.interact(robinson);assert.match(w.notices.at(-1),/thunderstruck/,'he knows the footprint when the reader has seen it');
+  for(const [type,pattern] of [['isle-goat',/my goats/],['isle-journal',/Crusoe’s journal/]]){w.island.interact(w.find(type));assert.match(w.notices.at(-1),pattern)}
+  for(const key of ['dog','barley','canoe','pots','raisins','money']){const thing=w.interactables.find(o=>o.userData.type==='isle-says'&&o.userData.key===key);assert(thing,key);w.island.interact(thing);assert(w.notices.at(-1).length>60,key)}
+  const own=w.island.books.find(b=>b.userData.book.id===521);assert.equal(own.userData.ownCopy,true,'his own copy of his story stays on the island');
+  assert.match(game,/const identity=data\.ownCopy\?object:key\(data\.book\)/);assert.match(game,/function selectBook\(bm\)\{if\(!bm\.userData\.ownCopy\)bm=singleCopyLibrary\.find/);
+});
+
+test('every word given to Crusoe on the island is in the book',()=>{
+  const flat=text=>text.replace(/\s+/g,' ').replace(/_/g,'');const book=flat(fs.readFileSync('texts/pg521.txt','utf8'));
+  const quoted=[...source.matchAll(/say:'([^']+)'/g)].map(m=>m[1]);
+  for(const m of source.matchAll(/^\s+(?:goats|barley|canoe|pots|raisins|money|dog):'(.+)',?$/gm))for(const q of m[1].matchAll(/“([^”]+)”/g))quoted.push(q[1]);
+  for(const m of source.matchAll(/^\s+\['\d\d-\d\d',\d{4},'(.+)'\],$/gm))quoted.push(m[1].replace(/\\'/g,"'").replace(/…$/,''));
+  assert(quoted.length>70,'Robinson, his camp and sixty-odd journal entries');
+  for(const q of quoted)assert(book.includes(flat(q)),`not in Robinson Crusoe: ${q}`);
+});
+
+test('the journal runs one entry a day from the landing',()=>{
+  const journal=new Function(source.match(/const JOURNAL=\[[\s\S]*?\n    \];/)[0]+';return JOURNAL')();
+  assert.equal(journal[0][0],'09-30');assert(journal.some(e=>e[0]==='10-25'&&/the ship broke in pieces/.test(e[2])));
+  const days=new Set(journal.map(e=>e[0]));assert.equal(days.size,journal.length,'one entry a day');
+});
