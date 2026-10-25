@@ -1,34 +1,42 @@
-# The forest: fairy tales and eerie woods (books the library does not already hold)
-Household (Stories|Tales) ; Grimm ; en
-Grimm ; ; en
-Fairy Book ; Lang ; en
-Perrault ; ; en
-; Perrault ; en
-East o' the Sun ; ;
-Popular Tales from the Norse ; ;
-; Hauff ; en
-; Asbj ; en
-; Bechstein ; en
-Lilith ; MacDonald ; en
-; MacDonald, George ; en
-; Machen ; en
-; Blackwood, Algernon ; en
-; Dunsany ; en
-; Housman, Laurence ; en
-; Hawthorne, Nathaniel ; en
-Undine ; ;
-Sintram ; ;
-Forest ; ; en
-Woods? ; ; en
-Wood Beyond the World ; ;
-; Morris, William ; en
-Russian Fairy Tales ; ;
-; Afanas ; en
-Old Deccan Days ; ;
-; Ewald ; en
-Mabinogion ; ;
-Peter and Wendy ; ;
-Wonder Book ; ;
-Snow.?White ; ;
-Little Red Riding ; ;
-Hansel ; ;
+# The Thousand and One Nights: translations, and the Persian and Arabic books beside them
+Thousand Nights ; ; en
+Arabian Nights ; ; en
+Thousand and One ; ; en
+Supplemental Nights ; ;
+; Burton, Richard ; en
+; Lane, Edward William ; en
+; Payne, John ; en
+; Galland ; 
+Aladdin ; ; en
+Sindbad ; ; en
+Ali Baba ; ; en
+Vathek ; ;
+Hajji Baba ; ;
+Lalla Rookh ; ;
+Gulistan ; ;
+Bustan ; ;
+; Sa.?a?di ; en
+; Hafiz ; en
+Divan ; ; en
+Rub.iy.t ; ; en
+; Rumi ; en
+Masnavi|Mesnevi ; ;
+Epic of Kings ; ;
+Shah ?Nameh|Shahnameh ; ;
+; Firdaus|Firdous ; en
+Kalilah|Kalila|Bidpai|Pilpay ; ;
+; Battuta ; en
+; Ghazali ; en
+Hayy|Improvement of Human Reason ; ;
+Arabia Deserta ; ;
+; Doughty ; en
+Persian Tales|Arabian Tales|Tales from the Arabic ; ;
+Haroun|Harun|Caliph ; ; en
+Alhambra ; Irving ;
+Assemblies|Hariri ; ;
+Antar ; ; en
+Muallakat|Moallakat|Mu'allaqat|Seven Poems ; ;
+; Lyall ; en
+Arabian Poetry|Arabic Poetry|Persian Poetry|Persian Poems ; ; en
+; Attar ; en
+Thousand and Second ; ;
