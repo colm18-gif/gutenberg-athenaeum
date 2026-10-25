@@ -1523,6 +1523,10 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 8933,
    "words": 176305
   },
+  "Russian Folk-Tales": {
+   "id": 62509,
+   "words": 103370
+  },
   "The Little Glass Man": {
    "id": 45606,
    "words": 41407
@@ -3234,7 +3238,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Benito Cereno",
   "History of the Expedition under the Command of Captains Lewis and Clark, Vol. 1.",
   "The Necessity of Atheism",
-  "Russian Folk-Tales",
   "María [es]",
   "Poesías [es]"
  ]
