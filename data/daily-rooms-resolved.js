@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-24",
+ "updated": "2026-10-25",
  "days": {
-  "2026-10-11": {
-   "books": [
-    {
-     "id": 139,
-     "title": "The Lost World",
-     "author": "Arthur Conan Doyle"
-    },
-    {
-     "id": 2166,
-     "title": "King Solomon's Mines",
-     "author": "H. Rider Haggard"
-    },
-    {
-     "id": 3155,
-     "title": "She",
-     "author": "H. Rider Haggard"
-    },
-    {
-     "id": 551,
-     "title": "The Land That Time Forgot",
-     "author": "Edgar Rice Burroughs"
-    },
-    {
-     "id": 18857,
-     "title": "A Journey to the Centre of the Earth",
-     "author": "Jules Verne"
-    },
-    {
-     "id": 123,
-     "title": "At the Earth's Core",
-     "author": "Edgar Rice Burroughs"
-    },
-    {
-     "id": 1906,
-     "title": "Erewhon",
-     "author": "Samuel Butler"
-    },
-    {
-     "id": 1951,
-     "title": "The Coming Race",
-     "author": "Edward Bulwer-Lytton"
-    },
-    {
-     "id": 765,
-     "title": "The Moon Pool",
-     "author": "A. Merritt"
-    },
-    {
-     "id": 14301,
-     "title": "Atlantida",
-     "author": "Pierre Benoit"
-    }
-   ],
-   "missing": []
-  },
   "2026-10-12": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 3836,
      "title": "The Swiss Family Robinson",
      "author": "Johann David Wyss"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-27": {
+   "books": [
+    {
+     "id": 308,
+     "title": "Three Men in a Boat",
+     "author": "Jerome K. Jerome"
+    },
+    {
+     "id": 1257,
+     "title": "The Three Musketeers",
+     "author": "Alexandre Dumas"
+    },
+    {
+     "id": 76,
+     "title": "Adventures of Huckleberry Finn",
+     "author": "Mark Twain"
+    },
+    {
+     "id": 2808,
+     "title": "Treatises on Friendship and Old Age",
+     "author": "Marcus Tullius Cicero"
+    },
+    {
+     "id": 74,
+     "title": "The Adventures of Tom Sawyer",
+     "author": "Mark Twain"
+    },
+    {
+     "id": 236,
+     "title": "The Jungle Book",
+     "author": "Rudyard Kipling"
+    },
+    {
+     "id": 3600,
+     "title": "Essays of Michel de Montaigne — Complete",
+     "author": "Michel de Montaigne"
+    },
+    {
+     "id": 2397,
+     "title": "The Story of My Life",
+     "author": "Helen Keller"
+    },
+    {
+     "id": 1874,
+     "title": "The Railway Children",
+     "author": "E. Nesbit"
+    },
+    {
+     "id": 158,
+     "title": "Emma",
+     "author": "Jane Austen"
     }
    ],
    "missing": []
