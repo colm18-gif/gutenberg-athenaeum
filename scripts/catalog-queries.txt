@@ -1,40 +1,34 @@
-# The Naturalist's Cabinet: Darwin, the collectors and the observers
-; Darwin, Charles ; en
-; Wallace, Alfred Russel ; en
-; Huxley, Thomas Henry ; en
-; Lyell ; en
-; Humboldt ; en
-; Fabre, Jean-Henri ; en
-; Burroughs, John ; en
-; Muir, John ; en
-; Jefferies, Richard ; en
-; Hudson, W. H. ; en
-; Thoreau ; en
-; Audubon ; en
-; Kingsley, Charles ; en
-; Buckley, Arabella ; en
-; Gosse, Philip Henry ; en
-; Lubbock, John ; en
-; Agassiz ; en
-; Waterton ; en
-; Belt, Thomas ; en
-; Hooker, Joseph ; en
-; North, Marianne ; en
-; Comstock, Anna ; en
-; Chambers, Robert ; en
-; Maeterlinck ; en
-; Haeckel ; en
-; Mendel ; en
-; Gray, Asa ; en
-; Bates, Henry Walter ; en
-; Moseley ; en
-; Gatty ; en
-Foundations of the Origin ; ;
-Vestiges ; ;
-Glaucus ; ;
-Fairy-Land of Science ; ;
-Naturalist ; ; en
-Audubon ; ;
-Birds of America ; ;
-commons? Audubon Birds of America plate
-commons? Haeckel Kunstformen der Natur
+# The forest: fairy tales and eerie woods (books the library does not already hold)
+Household (Stories|Tales) ; Grimm ; en
+Grimm ; ; en
+Fairy Book ; Lang ; en
+Perrault ; ; en
+; Perrault ; en
+East o' the Sun ; ;
+Popular Tales from the Norse ; ;
+; Hauff ; en
+; Asbj ; en
+; Bechstein ; en
+Lilith ; MacDonald ; en
+; MacDonald, George ; en
+; Machen ; en
+; Blackwood, Algernon ; en
+; Dunsany ; en
+; Housman, Laurence ; en
+; Hawthorne, Nathaniel ; en
+Undine ; ;
+Sintram ; ;
+Forest ; ; en
+Woods? ; ; en
+Wood Beyond the World ; ;
+; Morris, William ; en
+Russian Fairy Tales ; ;
+; Afanas ; en
+Old Deccan Days ; ;
+; Ewald ; en
+Mabinogion ; ;
+Peter and Wendy ; ;
+Wonder Book ; ;
+Snow.?White ; ;
+Little Red Riding ; ;
+Hansel ; ;

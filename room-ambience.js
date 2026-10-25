@@ -122,6 +122,8 @@
       'naturalist-room':{beds:[['air',.03]],ticks:[[1.2,'tock',.02]],events:[['rustle',1,.04],['bird',.3,.025],['creak',.3,.03]]},
       // The Austen Room: a quiet drawing room at night, a mantel clock, a page turned, and now and then the door.
       // The Burns Room: a cottage at night, the fire, rain at the window, and the clock on the wall.
+      // The Deep Wood: wind high in the firs, owls, and things moving in the leaves; nothing that howls.
+      forest:{beds:[['wind',.07],['air',.03]],events:[['owl',.9,.05],['rustle',1.6,.05],['creak',.7,.04]]},
       'burns-room':{beds:[['fire',.09],['air',.025]],ticks:[[1.1,'tock',.018]],events:[['crackle',36,.11],['snap',7,.09],['creak',.5,.03]]},
       // Books Within Books: a still room, a clock, pages turning, and now and then a drawer in the catalogue.
       'within-room':{beds:[['air',.03]],ticks:[[1.2,'tock',.02]],events:[['rustle',1.2,.045],['creak',.4,.03]]},
