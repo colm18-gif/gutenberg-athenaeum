@@ -57,6 +57,10 @@
       // A coal fire crackling: a run of sharp little pops, each a click of bright noise that dies in a few milliseconds.
       crackle:()=>buffer(.7,(d,n)=>{let pops=7+Math.floor(Math.random()*6);const at=[];while(pops--)at.push(Math.floor(Math.random()*(n-sr*.02)));for(const start of at){const size=.3+Math.random()*.7,length=Math.floor(sr*(.002+Math.random()*.006));let prev=0;for(let j=0;j<length;j++){const w=Math.random()*2-1,hp=w-prev;prev=w;d[start+j]+=hp*size*Math.exp(-j/(length*.3))}}}),
       // A single louder snap, as a lump of coal splits.
+      // A bullfrog's trump from the shore: a low, rough tr-r-r-oonk, a buzz of quick pulses falling into a hollow note.
+      frog:()=>buffer(.9,(d,n)=>{let phase=0;for(let i=0;i<n;i++){const t=i/sr,f=t<.45?150-30*t:118,buzz=t<.45?(Math.sin(t*2*Math.PI*38)>0?1:.25):1;phase+=2*Math.PI*f/sr;d[i]=(Math.sin(phase)+.35*Math.sin(phase*2))*buzz*Math.sin(Math.PI*Math.min(1,t/.9))*.5}}),
+      // A whippoorwill: three quick whistled notes, whip-poor-will, the last rising.
+      whippoorwill:()=>buffer(1.1,(d,n)=>{let phase=0;for(let i=0;i<n;i++){const t=i/sr,k=t<.18?0:t<.42?1:t<.9?2:3,u=k===0?t/.18:k===1?(t-.18)/.24:k===2?(t-.42)/.48:1,f=k===0?1700+600*u:k===1?1500-200*u:2000+900*u*u,on=k<3?Math.sin(Math.PI*u):0;phase+=2*Math.PI*f/sr;d[i]=Math.sin(phase)*on*.42}}),
       snap:()=>buffer(.25,(d,n)=>{let prev=0;for(let i=0;i<n;i++){const t=i/sr,w=Math.random()*2-1,hp=w-prev;prev=w;d[i]=(hp*.9*decay(t,140)+Math.sin(t*2*Math.PI*900)*.25*decay(t,60))*(t<.0015?t/.0015:1)}}),
       clink:()=>buffer(.6,(d,n)=>{for(let i=0;i<n;i++){const t=i/sr;d[i]=(Math.sin(t*2*Math.PI*2900)*.5+Math.sin(t*2*Math.PI*4350)*.3+Math.sin(t*2*Math.PI*6120)*.2)*decay(t,9)*.6}}),
       rustle:()=>buffer(.45,(d,n)=>{let hp=0,lp=0;for(let i=0;i<n;i++){const t=i/sr,w=Math.random()*2-1;lp+=(w-lp)*.5;hp=w-lp;const env=Math.pow(Math.sin(Math.PI*t/.45),2)*(.6+.4*Math.sin(t*70));d[i]=hp*env*.5}}),
@@ -134,6 +138,10 @@
       'naturalist-room':{beds:[['air',.03]],ticks:[[1.2,'tock',.02]],events:[['rustle',1,.04],['bird',.3,.025],['creak',.3,.03]]},
       // The Austen Room: a quiet drawing room at night, a mantel clock, a page turned, and now and then the door.
       // The Burns Room: a cottage at night, the fire, rain at the window, and the clock on the wall.
+      // Walden Pond on a summer night: crickets, a breath of wind in the pines, the bullfrogs' trump from the shore and
+      // the whippoorwill's vespers; in the house, the same, through the open door and the windows.
+      walden:{beds:[['insects',.05],['wind',.035]],events:[['cricket',7,.03],['frog',1.1,.05],['whippoorwill',.5,.04],['owl',.12,.025]]},
+      'walden-house':{beds:[['insects',.025],['air',.03]],events:[['cricket',4,.018],['frog',.6,.025],['whippoorwill',.3,.022],['creak',.3,.025]]},
       // The Deep Wood: wind high in the firs, owls, and things moving in the leaves; nothing that howls.
       forest:{beds:[['wind',.07],['air',.03]],events:[['owl',.9,.05],['rustle',1.6,.05],['creak',.7,.04]]},
       'burns-room':{beds:[['fire',.09],['air',.025]],ticks:[[1.1,'tock',.018]],events:[['crackle',36,.11],['snap',7,.09],['creak',.5,.03]]},
