@@ -4,7 +4,8 @@
 // home) and the observers (those who watched one place closely), from data/new-books.js (rooms nature-*). In the middle,
 // a glass dome of hummingbirds; on the east wall, a glazed case of shells, eggs and butterflies; by the south window,
 // which looks out on the Sandwalk, Darwin's writing table with a microscope and Wallace's letter from Ternate, a cabinet
-// of beetles, and his armchair. The room's secret is in the writing table's drawer: the essay of 1844, put away with a
+// of beetles, and his armchair. At the east end of the south wall, past the window, a garden door opens on Walden Pond
+// (walden.js), which hangs it. The room's secret is in the writing table's drawer: the essay of 1844, put away with a
 // letter asking Emma to publish it if he died (The Foundations of the Origin of Species, room nature-sealed). Found
 // once, found for good (athenaeum-darwin-sketch; ?sketch opens it). Like the other rooms behind doors, nothing is built
 // until the reader walks up to it, and it is freed a little while after they leave.
@@ -270,7 +271,7 @@
     // ---------- doing things ----------
     function enter(){
       activate();move(ROOM.cx+ROOM.w/2-1.4,DOOR_Z,Math.PI/2);playSample?.('doorOpen',.8,1.02);
-      showNotice('The Naturalist’s Cabinet: Darwin and the argument he started ahead of you, the collectors on the right, and those who watched one place closely on the left, by the window. In the middle, a dome of hummingbirds.',10);
+      showNotice('The Naturalist’s Cabinet: Darwin and the argument he started ahead of you, the collectors on the right, and those who watched one place closely on the left, by the window. In the middle, a dome of hummingbirds; past the window, a garden door.',10);
       analytics?.track('Room Explored',{room:'naturalist-room'});
     }
     function interact(object){

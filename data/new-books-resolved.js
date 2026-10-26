@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-10-25",
+ "updated": "2026-10-26",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -1646,6 +1646,98 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Mosses from an Old Manse": {
    "id": 512,
    "words": 73665
+  },
+  "A Week on the Concord and Merrimack Rivers": {
+   "id": 4232,
+   "words": 116201
+  },
+  "Excursions": {
+   "id": 9846,
+   "words": 72472
+  },
+  "Walking": {
+   "id": 1022,
+   "words": 12273
+  },
+  "Wild Apples": {
+   "id": 4066,
+   "words": 9533
+  },
+  "Cape Cod": {
+   "id": 34392,
+   "words": 79357
+  },
+  "A Yankee in Canada": {
+   "id": 70123,
+   "words": 87024
+  },
+  "A Plea for Captain John Brown": {
+   "id": 2567,
+   "words": 9258
+  },
+  "Familiar Letters": {
+   "id": 43523,
+   "words": 130302
+  },
+  "Poems of Nature": {
+   "id": 59988,
+   "words": 10371
+  },
+  "Nature": {
+   "id": 29433,
+   "words": 15414
+  },
+  "Essays — First Series": {
+   "id": 2944,
+   "words": 74732
+  },
+  "Essays — Second Series": {
+   "id": 2945,
+   "words": 58898
+  },
+  "Representative Men": {
+   "id": 6312,
+   "words": 58398
+  },
+  "May-Day, and Other Pieces": {
+   "id": 15963,
+   "words": 17233
+  },
+  "Woman in the Nineteenth Century": {
+   "id": 8642,
+   "words": 110968
+  },
+  "Summer on the Lakes, in 1843": {
+   "id": 11526,
+   "words": 67958
+  },
+  "Concord Days": {
+   "id": 46209,
+   "words": 65540
+  },
+  "The Blithedale Romance": {
+   "id": 2081,
+   "words": 76900
+  },
+  "Transcendentalism in New England": {
+   "id": 38907,
+   "words": 106733
+  },
+  "Bronson Alcott’s Fruitlands": {
+   "id": 53683,
+   "words": 40877
+  },
+  "Henry D. Thoreau": {
+   "id": 51426,
+   "words": 68063
+  },
+  "Brook Farm": {
+   "id": 7932,
+   "words": 95224
+  },
+  "Journal 01, 1837-1846": {
+   "id": 57393,
+   "words": 132786
   },
   "Northanger Abbey": {
    "id": 121,
