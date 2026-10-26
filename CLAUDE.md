@@ -13,7 +13,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Files the jobs rewrite without a new build are listed in `LIVE_DATA` there.
 - Rooms behind doors (`evening-room.js`, `learners-room.js`, `periodicals-room.js`, `international-wing.js`,
   `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`, `map-room.js`, `medicine-room.js`, `set-texts-room.js`,
-  `austen-room.js`, `burns-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`)
+  `austen-room.js`, `burns-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`, `walden.js`)
   are built only when the reader approaches and freed ~25 s after they leave. So are the Room of Chance (its portrait
   stays), the Lost Property Office (its hatch stays) and the high staircase, Rocket Hall, Moon and rocket cabin (`high-staircase.js`: only its door in the west wing
   is built at startup; a stair book carried away keeps it). The basement and the roof garden, built in `game.js` on a first visit, are
@@ -95,6 +95,22 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Devil's pipes (voice `pipes`) until "Weel done, Cutty-sark!", and Tam O'Shanter (shelf `burns-cutty`) is left on the
   sill, found for good (`athenaeum-burns-cutty-sark`; `?cuttysark`). The Grand Hall's walls are full, which is why the
   door is in the Irish Room. Built for Burns Night (25 January): Burns clubs plan their suppers in November and December.
+- Walden Pond (`walden.js`, centre x 900, z −100; walkable within 32 m) is out through a glazed green garden door at the east
+  end of the Naturalist's Cabinet's south wall, past the window and the writing table (`?room=walden`, `thoreau`, `concord`):
+  Thoreau's clearing on a summer night, with the house (ten feet by fifteen, door at the south end, brick fireplace
+  opposite, a large window each side; walkable inside, the reader's radius shrinks to 0.25 m in and around it), his bed,
+  his desk with the japanned lamp (the place's one light) and three chairs that are seats (solitude, friendship, society,
+  the third outside). His own books are on the shelf in the house (shelf `walden-thoreau`, headed by the library's own
+  Walden, 205); the Concord circle's (`walden-concord`: Emerson, Fuller, Bronson Alcott, Hawthorne and their historians)
+  stand by his three-legged table under an awning among the pines; books held nowhere else (a test checks). The
+  bean-field, the woodpile, the boat drawn up on the sand with his flute (`pianoTone` voice `flute`; the perch glint) and
+  the cod-line he sounded the pond with (102 feet), a loon that dives, fireflies, and bullfrogs and whippoorwills in
+  `room-ambience.js`. The secret is the hound, the bay horse and the turtle-dove (the page on his desk): going near each
+  one's place (paw prints north-east, hoofprints on the road north-west, the east shore) brings it once; all three and his
+  Journal (shelf `walden-journal`) is left on the doorstep, found for good (`athenaeum-walden-lost`, `athenaeum-walden-journal`;
+  `?hound` shows it). Every word given to Thoreau is checked against `texts/pg205.txt` by a test (`WALDEN`, and every
+  quotation on a card). Trees are two InstancedMeshes; inside the clearing the sky and fog are darkened and the library's
+  ambient and moonlight turned down, as in the Deep Wood.
 - The Deep Wood (`forest.js`, centre x 800, z 400; walkable within 40 m) is a forest at night, eerie, not frightening (no
   howling, nothing jumps out). Two ways in: the window hung on the Garden Room's west wall (the theme room at x 145, z 46;
   `hangGardenWindow` is called whenever that room is built), and a button, Step into the woodcut, that the reader shows
@@ -334,7 +350,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, boathouse,
-  daily-room, poe, irish, maps, medicine, naturalist, austen, burns, forest, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
+  daily-room, poe, irish, maps, medicine, naturalist, walden, austen, burns, forest, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.

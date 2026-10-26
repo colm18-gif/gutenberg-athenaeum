@@ -187,7 +187,7 @@
       const glitter=own(canvasTexture((c,Wd,Ht)=>{c.clearRect(0,0,Wd,Ht);const rand=mulberry(3);for(let i=0;i<500;i++){const y=rand()*Ht,spread=Wd*(.12+.38*y/Ht),x=Wd/2+(rand()-.5)*spread,a=.2+rand()*.6;c.fillStyle=`rgba(225,232,245,${a*(1-y/Ht*.4)})`;c.fillRect(x,y,2+rand()*5,1.2)}},128,512));
       const path=add(own(new THREE.PlaneGeometry(10,58)),own(new THREE.MeshBasicMaterial({map:glitter,transparent:true,opacity:.55,depthWrite:false,blending:THREE.AdditiveBlending})),CENTRE.x+6,.05,CENTRE.z+42,root);path.rotation.x=-Math.PI/2;path.rotation.z=-.1;state.glitter=path;
       // The sand beach a little proud of the water, so the shore line reads at night.
-      const sand=std({color:0x8a7c60,roughness:1});for(let x=-24;x<=24;x+=4){const z=shoreZ(x)-.2,s=add(own(new THREE.BoxGeometry(4.3,.06,1.4)),sand,CENTRE.x+x,.02,CENTRE.z+z,root);s.rotation.y=Math.atan2(shoreZ(x+1)-shoreZ(x-1),2)*-1}
+      const sand=std({color:0x6a604c,roughness:1});for(let x=-24;x<=24;x+=4){const z=shoreZ(x)-.2,s=add(own(new THREE.BoxGeometry(4.3,.06,1.4)),sand,CENTRE.x+x,.02,CENTRE.z+z,root);s.rotation.y=Math.atan2(shoreZ(x+1)-shoreZ(x-1),2)*-1}
     }
 
     // ---------- the trees ----------
@@ -197,7 +197,7 @@
       for(let tries=0;tries<9000&&pines.length+hickories.length<420;tries++){
         const a=rand()*Math.PI*2,r=Math.sqrt(rand())*EDGE,x=Math.cos(a)*r,z=Math.sin(a)*r;
         if(inPond(x,z,3)||inYard(x,z,.5)||inBeans(x,z,1.5)||nearPath(x,z,2.2))continue;
-        if(Object.values(SPOTS).some(s=>s.w==null&&Math.hypot(s.x-x,s.z-z)<2.4))continue;
+        if(Object.values(SPOTS).some(s=>s.w==null&&Math.hypot(s.x-x,s.z-z)<3.4))continue;
         if([...pines,...hickories].some(t=>Math.hypot(t.x-x,t.z-z)<(r>WALK?1.8:2.6)))continue;
         take(x,z,(r>WALK?12:9)+rand()*7);
       }
@@ -266,7 +266,7 @@
       desk.push(box(.48,.16,.9,bedFrame,w/2-.32,.6,0,g));for(const part of desk)mark(part,card('desk'));block(c.x+w/2-.32,c.z,.6,1.05);
       const lampBody=[cyl(.05,.07,.14,12,std({color:0x111111,roughness:.3,metalness:.5}),w/2-.38,.86,-.3,g),add(own(new THREE.SphereGeometry(.055,12,8)),std({color:0xfff0c8,emissive:0xffc070,emissiveIntensity:1.6,transparent:true,opacity:.9}),w/2-.38,1,-.3,g)];
       for(const part of lampBody)mark(part,card('lamp'));
-      const lamp=new THREE.PointLight(0xffc27a,4.5,11,2);lamp.position.set(w/2-.5,1.25,-.3);g.add(lamp);state.lamp=lamp;
+      const lamp=new THREE.PointLight(0xffc27a,3.4,11,2);lamp.position.set(w/2-.5,1.25,-.3);g.add(lamp);state.lamp=lamp;
       const pageMap=own(canvasTexture((cx,Wd,Ht)=>{cx.fillStyle='#ece2c6';cx.fillRect(0,0,Wd,Ht);cx.strokeStyle='#3e3428';cx.lineWidth=1.3;for(let y=22;y<Ht-12;y+=10){cx.beginPath();cx.moveTo(12,y);for(let x=12;x<Wd-12;x+=7)cx.lineTo(x+7,y+Math.sin(x*.8+y)*1.2);cx.stroke()}},160,200));
       const page=add(own(new THREE.PlaneGeometry(.22,.28)),std({map:pageMap,roughness:.95}),w/2-.3,.79,.12,g);page.rotation.x=-Math.PI/2;page.rotation.z=.2;mark(page,card('page'));
       cyl(.02,.025,.05,8,std({color:0x101010,roughness:.4}),w/2-.18,.81,.32,g);
@@ -384,7 +384,9 @@
       // Fireflies in the long grass by the shore.
       const flies=[],fr=mulberry(13);for(let i=0;i<40;i++){const x=(fr()-.5)*40,z=-6+fr()*14;if(inPond(x,z,1))continue;flies.push(CENTRE.x+x,.5+fr()*1.2,CENTRE.z+z)}
       const flyGeo=own(new THREE.BufferGeometry());flyGeo.setAttribute('position',new THREE.Float32BufferAttribute(flies,3));
-      const fireflies=new THREE.Points(flyGeo,own(new THREE.PointsMaterial({color:0xd8f07a,size:.12,transparent:true,opacity:.7,depthWrite:false,blending:THREE.AdditiveBlending})));fireflies.name='walden-fireflies';root.add(fireflies);state.fireflies=fireflies;
+      // Each a soft round glow, not a square.
+      const spark=own(canvasTexture((c,Wd,Ht)=>{const gr=c.createRadialGradient(Wd/2,Ht/2,0,Wd/2,Ht/2,Wd/2);gr.addColorStop(0,'rgba(255,255,255,1)');gr.addColorStop(.3,'rgba(255,255,255,.5)');gr.addColorStop(1,'rgba(255,255,255,0)');c.fillStyle=gr;c.fillRect(0,0,Wd,Ht)},32,32));
+      const fireflies=new THREE.Points(flyGeo,own(new THREE.PointsMaterial({color:0xd8f07a,map:spark,size:.09,transparent:true,opacity:.7,depthWrite:false,blending:THREE.AdditiveBlending})));fireflies.name='walden-fireflies';root.add(fireflies);state.fireflies=fireflies;
     }
 
     // ---------- building and freeing ----------
