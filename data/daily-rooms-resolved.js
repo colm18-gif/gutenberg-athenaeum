@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-25",
+ "updated": "2026-10-26",
  "days": {
-  "2026-10-12": {
-   "books": [
-    {
-     "id": 20203,
-     "title": "Autobiography of Benjamin Franklin",
-     "author": "Benjamin Franklin"
-    },
-    {
-     "id": 20321,
-     "title": "A Short Account of the Destruction of the Indies",
-     "author": "Bartolomé de las Casas"
-    },
-    {
-     "id": 147,
-     "title": "Common Sense",
-     "author": "Thomas Paine"
-    },
-    {
-     "id": 15399,
-     "title": "The Interesting Narrative of the Life of Olaudah Equiano",
-     "author": "Olaudah Equiano"
-    },
-    {
-     "id": 4666,
-     "title": "Letters from an American Farmer",
-     "author": "J. Hector St. John de Crèvecoeur"
-    },
-    {
-     "id": 675,
-     "title": "American Notes",
-     "author": "Charles Dickens"
-    },
-    {
-     "id": 10345,
-     "title": "Domestic Manners of the Americans",
-     "author": "Frances Milton Trollope"
-    },
-    {
-     "id": 940,
-     "title": "The Last of the Mohicans",
-     "author": "James Fenimore Cooper"
-    },
-    {
-     "id": 815,
-     "title": "Democracy in America",
-     "author": "Alexis de Tocqueville"
-    },
-    {
-     "id": 24,
-     "title": "O Pioneers!",
-     "author": "Willa Cather"
-    }
-   ],
-   "missing": []
-  },
   "2026-10-13": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 158,
      "title": "Emma",
      "author": "Jane Austen"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-28": {
+   "books": [
+    {
+     "id": 83,
+     "title": "From the Earth to the Moon",
+     "author": "Jules Verne"
+    },
+    {
+     "id": 16457,
+     "title": "Around the Moon",
+     "author": "Jules Verne"
+    },
+    {
+     "id": 1013,
+     "title": "The First Men in the Moon",
+     "author": "H. G. Wells"
+    },
+    {
+     "id": 1633,
+     "title": "The Brick Moon, and Other Stories",
+     "author": "Edward Everett Hale"
+    },
+    {
+     "id": 1607,
+     "title": "A Journey in Other Worlds",
+     "author": "John Jacob Astor"
+    },
+    {
+     "id": 19103,
+     "title": "The Discovery of a World in the Moone",
+     "author": "John Wilkins"
+    },
+    {
+     "id": 46547,
+     "title": "A Voyage to the Moon",
+     "author": "Cyrano de Bergerac"
+    },
+    {
+     "id": 19141,
+     "title": "Edison's Conquest of Mars",
+     "author": "Garrett Putman Serviss"
+    },
+    {
+     "id": 10165,
+     "title": "Across the Zodiac",
+     "author": "Percy Greg"
+    },
+    {
+     "id": 43835,
+     "title": "Lumen",
+     "author": "Camille Flammarion"
     }
    ],
    "missing": []
