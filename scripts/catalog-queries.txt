@@ -1,42 +1,25 @@
-# The Thousand and One Nights: translations, and the Persian and Arabic books beside them
-Thousand Nights ; ; en
-Arabian Nights ; ; en
-Thousand and One ; ; en
-Supplemental Nights ; ;
-; Burton, Richard ; en
-; Lane, Edward William ; en
-; Payne, John ; en
-; Galland ; 
-Aladdin ; ; en
-Sindbad ; ; en
-Ali Baba ; ; en
-Vathek ; ;
-Hajji Baba ; ;
-Lalla Rookh ; ;
-Gulistan ; ;
-Bustan ; ;
-; Sa.?a?di ; en
-; Hafiz ; en
-Divan ; ; en
-Rub.iy.t ; ; en
-; Rumi ; en
-Masnavi|Mesnevi ; ;
-Epic of Kings ; ;
-Shah ?Nameh|Shahnameh ; ;
-; Firdaus|Firdous ; en
-Kalilah|Kalila|Bidpai|Pilpay ; ;
-; Battuta ; en
-; Ghazali ; en
-Hayy|Improvement of Human Reason ; ;
-Arabia Deserta ; ;
-; Doughty ; en
-Persian Tales|Arabian Tales|Tales from the Arabic ; ;
-Haroun|Harun|Caliph ; ; en
-Alhambra ; Irving ;
-Assemblies|Hariri ; ;
-Antar ; ; en
-Muallakat|Moallakat|Mu'allaqat|Seven Poems ; ;
-; Lyall ; en
-Arabian Poetry|Arabic Poetry|Persian Poetry|Persian Poems ; ; en
-; Attar ; en
-Thousand and Second ; ;
+# Walden: Thoreau, Concord and the Transcendentalists
+; Thoreau ; en
+Thoreau ; ; en
+; Emerson, Ralph ; en
+; Fuller, Margaret ; en
+; Alcott, A|Alcott, Amos ; en
+Transcendental ; ; en
+Fruitlands|Wild Oats ; ;
+; Channing, William Ellery ; en
+; Sanborn ; en
+Note-?Books|Notebooks ; Hawthorne ;
+Old Manse|Concord ; ; en
+Brook Farm|Blithedale ; ;
+; Ripley, George ; en
+; Peabody, Elizabeth ; en
+; Very, Jones ; en
+; Dickinson, Emily ; en
+; Whitman, Walt ; en
+; Higginson ; en
+; Salt, Henry ; en
+; Japp ; en
+Dial ; ; en
+Pond|Walden ; ; en
+Loon ; ; en
+= 205 4232 9846 1022 2944 2945 29433 6312 46209 8642 42500 1322
