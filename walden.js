@@ -2,7 +2,7 @@
 // the Naturalist's Cabinet (Thoreau, too, watched one place closely). A clearing of pitch pines and hickories on the
 // north shore, half a dozen rods from the water, with the house he built for $28.12½: ten feet wide by fifteen long,
 // one door at the end and a brick fireplace opposite, a large window on each side. Inside, his bed, his desk with its
-// japanned lamp, three chairs, and a shelf of his own books (Walden first, the library's own copy); outside, his
+// japanned lamp and Walden on it (his own copy, always there), three chairs, and a shelf of his own books; outside, his
 // three-legged table set out among the pines as on the mornings he scrubbed the floor, with the books of the Concord
 // circle on it under an awning; the bean-field, the woodpile, the footpath down to the shore and his boat drawn up
 // on the sand, with a flute on the seat and the cod-line and stone he sounded the pond with. A loon on the water.
@@ -126,6 +126,8 @@
     }
 
     // The books: those listed, then the new arrivals; a book the library does not hold is left out.
+    // Walden heads his books, and lies on his desk rather than on the shelf.
+    const OWN=[205];
     const GROUPS=[
       {key:'thoreau',name:'HIS OWN BOOKS',sub:'Henry David Thoreau, 1817–1862',ids:[205],max:12},
       {key:'concord',name:'THE CONCORD CIRCLE',sub:'His neighbours, and their historians',ids:[],max:16}
@@ -254,12 +256,12 @@
       const bedFrame=std({color:0x5a4430,roughness:.8});
       const bed=[box(.78,.36,1.82,bedFrame,-w/2+.47,.18,d/2-1.06,g),box(.72,.08,1.76,std({color:0x5c4a3a,roughness:1}),-w/2+.47,.4,d/2-1.06,g),box(.5,.1,.3,std({color:0xd9d2c0,roughness:1}),-w/2+.47,.48,d/2-.35,g)];
       for(const part of bed)mark(part,card('bed'));block(c.x-w/2+.47,c.z+d/2-1.06,.8,1.86);
-      // His shelf on the west wall, north of the window: Walden first.
+      // His shelf on the west wall, north of the window.
       const shelfX=-w/2+.15,rows=[1.0,1.45,1.9],zs=[-d/2+.4,-d/2+.77,-d/2+1.14,-d/2+1.51];
       for(const y of rows)box(.24,.03,1.62,boards,shelfX+.04,y-.18,-d/2+.96,g);
       const label=sign(GROUPS[0].name,GROUPS[0].sub,1.4,.24);label.position.set(-w/2+.05,2.28,-d/2+.96);label.rotation.y=Math.PI/2;g.add(label);mark(label,card('shelf'));
       const small=own(new THREE.BoxGeometry(.24,.32,.04));
-      groups[0].books.forEach((book,i)=>{const row=Math.floor(i/zs.length),col=i%zs.length;if(row>=rows.length)return;placeBook(book,g,small,{x:shelfX+.06,y:rows[row]-.01,z:zs[col],yaw:Math.PI/2},'thoreau')});
+      groups[0].books.filter(book=>!OWN.includes(book.id)).forEach((book,i)=>{const row=Math.floor(i/zs.length),col=i%zs.length;if(row>=rows.length)return;placeBook(book,g,small,{x:shelfX+.06,y:rows[row]-.01,z:zs[col],yaw:Math.PI/2},'thoreau')});
       block(c.x-w/2+.2,c.z-d/2+.96,.4,1.7);
       // His desk under the east window, the japanned lamp lit on it, the page about the three he lost, and the chair.
       const desk=[box(.52,.05,.95,boards,w/2-.32,.76,0,g)];for(const sz of [-.42,.42])for(const sx of [-.22,.22])desk.push(box(.04,.74,.04,bedFrame,w/2-.32+sx,.37,sz,g));
@@ -268,8 +270,11 @@
       for(const part of lampBody)mark(part,card('lamp'));
       const lamp=new THREE.PointLight(0xffc27a,3.4,11,2);lamp.position.set(w/2-.5,1.25,-.3);g.add(lamp);state.lamp=lamp;
       const pageMap=own(canvasTexture((cx,Wd,Ht)=>{cx.fillStyle='#ece2c6';cx.fillRect(0,0,Wd,Ht);cx.strokeStyle='#3e3428';cx.lineWidth=1.3;for(let y=22;y<Ht-12;y+=10){cx.beginPath();cx.moveTo(12,y);for(let x=12;x<Wd-12;x+=7)cx.lineTo(x+7,y+Math.sin(x*.8+y)*1.2);cx.stroke()}},160,200));
-      const page=add(own(new THREE.PlaneGeometry(.22,.28)),std({map:pageMap,roughness:.95}),w/2-.3,.79,.12,g);page.rotation.x=-Math.PI/2;page.rotation.z=.2;mark(page,card('page'));
-      cyl(.02,.025,.05,8,std({color:0x101010,roughness:.4}),w/2-.18,.81,.32,g);
+      const page=add(own(new THREE.PlaneGeometry(.22,.28)),std({map:pageMap,roughness:.95}),w/2-.3,.79,.22,g);page.rotation.x=-Math.PI/2;page.rotation.z=.2;mark(page,card('page'));
+      cyl(.02,.025,.05,8,std({color:0x101010,roughness:.4}),w/2-.18,.81,.4,g);
+      // Walden itself, on the desk by the lamp: his own copy, which stays here whatever other copy the library holds
+      // (ownCopy, like Crusoe's on his island).
+      for(const book of groups[0].books.filter(book=>OWN.includes(book.id))){const m=placeBook(book,g,own(new THREE.BoxGeometry(.2,.28,.03)),{x:w/2-.32,y:.795,z:-.06,yaw:Math.PI/2},'thoreau');m.rotation.x=-Math.PI/2;m.userData.ownCopy=true;m.userData.home.quaternion=m.quaternion.clone()}
       const mirror=add(own(new THREE.CircleGeometry(.04,16)),std({color:0xcfd8dc,roughness:.05,metalness:.9}),w/2-.06,1.62,.62,g);mirror.rotation.y=-Math.PI/2;mark(mirror,card('mirror'));
       seat(g,.7,0,-Math.PI/2,{title:'The first chair: for solitude',author:WALDEN.chairs+' Sit and read one of his books.'});
       // The second, by the fire: for friendship.
