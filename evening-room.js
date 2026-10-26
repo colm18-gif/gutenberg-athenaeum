@@ -174,6 +174,6 @@
       if(fire&&inside&&!reduced){for(const f of fire.flames)f.mesh.scale.y=1+Math.sin(t*9+f.phase)*.14+Math.sin(t*15+f.phase)*.06;fire.light.intensity=6+Math.sin(t*7)*.8+Math.sin(t*13.7)*.4}
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,unload,catalogue,readingTime,door:DOOR,room:ROOM,groups:GROUPS,records:RECORDS,get built(){return !!root},get books(){return books.slice()},zoneAt:(x,z)=>contains(x,z)?'evening-room':null};
+    return {contains,floorAt,allowed,interact,update,enter,activate,unload,catalogue,readingTime,door:DOOR,room:ROOM,groups:GROUPS,records:RECORDS,get built(){return !!root},get books(){return books.slice()},zoneAt:(x,z)=>contains(x,z)?'evening-room':null};
   };
 })();

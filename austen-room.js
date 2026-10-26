@@ -279,7 +279,7 @@
       else if(cabinet)for(const door of cabinet.doors)door.hinge.rotation.y=door.side*cabinet.open*1.9;
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,unload,catalogue,door:DOOR,room:ROOM,groups:GROUPS,novels:NOVELS,cabinetIds:CABINET,tune:TUNE,
+    return {contains,floorAt,allowed,interact,update,enter,activate,unload,catalogue,door:DOOR,room:ROOM,groups:GROUPS,novels:NOVELS,cabinetIds:CABINET,tune:TUNE,
       get built(){return !!root},get books(){return books.slice()},get cabinetOpen(){return !!cabinet?.target},zoneAt:(x,z)=>contains(x,z)?'austen-room':null};
   };
 })();

@@ -262,7 +262,7 @@
     }
     function reset(){if(ride){ride=null;fade?.(0);if(car)car.position.y=0}}
     buildHatch();
-    return {contains,floorAt,allowed,interact,update,enter,unload,reset,carryUp,room:ROOM,entrance:ENTRANCE,shaft:SHAFT,
+    return {contains,floorAt,allowed,interact,update,enter,activate:buildRoom,unload,reset,carryUp,room:ROOM,entrance:ENTRANCE,shaft:SHAFT,
       get travelling(){return !!ride},get built(){return !!root},get books(){return books.slice()},get stockCount(){return stock().length},
       zoneAt:(x,z)=>contains(x,z)?'lost-property':null};
   };

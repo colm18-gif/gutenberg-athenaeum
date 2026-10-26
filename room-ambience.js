@@ -115,6 +115,15 @@
       // The Set Texts Room: a classroom after hours, a clock, and pages turning at the long table.
       'set-texts-room':{beds:[['air',.03]],ticks:[[1,'tock',.022]],events:[['rustle',1.1,.04]]},
       'cinder-archive':{beds:[['air',.035]],events:[['rustle',1.4,.04],['creak',1.1,.055]]},
+      // Back ways (passages.js): a dripping cellar stair, wind at the Night Corridor's window, a clock in the Long Gallery,
+      // old treads on the stairs, pages and parcels in the Sorting Corridor.
+      'cellar-stair':{beds:[['air',.035]],events:[['drip',3,.04],['creak',.3,.03]]},
+      'night-corridor':{beds:[['wind',.05],['air',.02]],events:[['creak',.6,.035]]},
+      'long-gallery':{beds:[['air',.03]],ticks:[[1.3,'tock',.02]],events:[['rustle',.6,.03]]},
+      'back-stair':{beds:[['air',.03]],events:[['creak',1.2,.045]]},
+      'stacks-stair':{beds:[['air',.03]],events:[['rustle',1.2,.04],['creak',.8,.04]]},
+      'servants-passage':{beds:[['air',.03]],ticks:[[1,'tick',.015]],events:[['creak',.6,.035]]},
+      'sorting-corridor':{beds:[['air',.03]],events:[['rustle',1.2,.04],['thump',.4,.03]]},
       'chance-room':{beds:[['air',.03]],events:[['rustle',1.3,.05],['creak',.9,.04]]},
       'lost-property':{beds:[['air',.03]],events:[['creak',1.1,.05],['rustle',1.2,.04]]},
       // The Map Room: a quiet room, a clock, and big sheets of paper being turned over.

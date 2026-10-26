@@ -235,6 +235,18 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   reader comes close.
 - Clio, the library cat, is sometimes found asleep in the Irish Room, the Poe Room or a wing reading room (the same
   cat moved and curled up; `?clio` makes it every time). The librarian stays in the Grand Hall.
+- Back ways (`passages.js`): seven short passages join neighbouring rooms behind doors, so a reader can wander without
+  going back to the Grand Hall: the Cellar Stair (Poe Room ↔ Irish Room, down), the Night Corridor (English Reading Room
+  ↔ Poe Room), the Long Gallery (Medicine Room ↔ English Reading Room; the Map Room's walls are hung edge to edge, so it
+  is reached through the Medicine Room), the Back Stair (Burns Room ↔ Austen Room, up), the Stacks Stair (Burns Room ↔
+  Room of Books Within Books, up), the Servants' Passage (Evening Room ↔ Periodicals Room, with the Set Texts Room's door
+  halfway) and the Sorting Corridor (Room of Chance ↔ Lost Property Office). The rooms reached by air (the Nights, the
+  African room), by boat (Crusoe's island) and by rocket (Moon, Mars) stay that way, at the owner's wish (a test checks).
+  Each door is a wall and a distance along it (`ends`), measured clear of the rooms' shelves and pictures; a door is hung
+  only while its room is built, and a passage is built when entered and freed 25 s after. Passages stand at x 1200
+  (z −600, 40 m apart), floors between y 0 and 3 (below 0 wakes the basement). One lamp, the module's own, moves to the
+  passage in use. Rooms export `activate` so a passage can build the room before the reader steps in. New back ways:
+  add them to `PASSAGES`, the journal's "Back ways" group and `room-ambience.js`.
 - The doors between the Grand Hall and each wing (x ±19) are bookcases that part and slide into the walls (`wingLeaf` in
   `game.js`: one shared spine texture, instanced shelf boards).
 - Plain text: `read.html?book=ID` shows any book as one readable page (linked from every book page and the reader). Reading

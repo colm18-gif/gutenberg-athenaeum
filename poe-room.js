@@ -222,6 +222,6 @@
       if(hidden&&hidden.visible&&hidden.parent===root&&!reduced){const since=t-lastBeat;hidden.scale.setScalar(1+(since<.4?.07*Math.sin(since/.4*Math.PI):0))}
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,unload,notes:NOTES,ids:IDS,hidden:HIDDEN,door:DOOR,room:ROOM,board:BOARD,get built(){return !!root},get lifted(){return lifted},get books(){return books.slice()},zoneAt:(x,z)=>contains(x,z)?'poe-room':null};
+    return {contains,floorAt,allowed,interact,update,enter,activate,unload,notes:NOTES,ids:IDS,hidden:HIDDEN,door:DOOR,room:ROOM,board:BOARD,get built(){return !!root},get lifted(){return lifted},get books(){return books.slice()},zoneAt:(x,z)=>contains(x,z)?'poe-room':null};
   };
 })();

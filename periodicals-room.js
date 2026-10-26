@@ -262,6 +262,6 @@
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==root))unload();
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,unload,featured,gazetteText,door:DOOR,room:ROOM,notes:NOTES,get built(){return !!root},get books(){return books.slice()},get kelmscottFound(){return !!press?.found},zoneAt:(x,z)=>contains(x,z)?'periodicals-room':null};
+    return {contains,floorAt,allowed,interact,update,enter,activate,unload,featured,gazetteText,door:DOOR,room:ROOM,notes:NOTES,get built(){return !!root},get books(){return books.slice()},get kelmscottFound(){return !!press?.found},zoneAt:(x,z)=>contains(x,z)?'periodicals-room':null};
   };
 })();

@@ -110,6 +110,6 @@
       // A book the reader is carrying, or has put down outside, keeps the room until it comes home.
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==b.userData.home?.parent))unload()}
     buildEntrance();
-    return {contains,floorAt,allowed,interact,update,enter,unload,leave,atExit,room:ROOM,entrance:ENTRANCE,get built(){return !!root},zoneAt:(x,z)=>contains(x,z)?'room-of-chance':null};
+    return {contains,floorAt,allowed,interact,update,enter,activate:buildRoom,unload,leave,atExit,room:ROOM,entrance:ENTRANCE,get built(){return !!root},zoneAt:(x,z)=>contains(x,z)?'room-of-chance':null};
   };
 })();
