@@ -149,6 +149,6 @@
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==root))unload();
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,unload,catalogue,door:DOOR,room:ROOM,novels:NOVELS,plays:PLAYS,anthology:ANTHOLOGY,get built(){return !!root},get books(){return books.slice()},zoneAt:(x,z)=>contains(x,z)?'set-texts-room':null};
+    return {contains,floorAt,allowed,interact,update,enter,activate,unload,catalogue,door:DOOR,room:ROOM,novels:NOVELS,plays:PLAYS,anthology:ANTHOLOGY,get built(){return !!root},get books(){return books.slice()},zoneAt:(x,z)=>contains(x,z)?'set-texts-room':null};
   };
 })();

@@ -259,7 +259,7 @@
       if(kirk&&kirk.lit>0){kirk.lit=Math.max(0,kirk.lit-dt/4.5);const on=kirk.lit>0;kirk.glassMat.map=kirk.glassMat.emissiveMap=on?kirk.dance:kirk.night;kirk.glassMat.emissiveIntensity=on?.8+.3*Math.sin(t*23):.6;kirk.glassMat.needsUpdate=true}
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,unload,catalogue,door:DOOR,room:ROOM,groups:GROUPS,tune:TUNE,
+    return {contains,floorAt,allowed,interact,update,enter,activate,unload,catalogue,door:DOOR,room:ROOM,groups:GROUPS,tune:TUNE,
       get built(){return !!root},get books(){return books.slice()},get cuttySarkSeen(){return !!kirk?.found},zoneAt:(x,z)=>contains(x,z)?'burns-room':null};
   };
 })();

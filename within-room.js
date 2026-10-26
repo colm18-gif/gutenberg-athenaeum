@@ -359,7 +359,7 @@
       if(cabinet.enterAt&&t>cabinet.enterAt){cabinet.enterAt=0;enter();cabinet.long=false;cabinet.target=0;cabinet.out=0;cabinet.drawer.position.z=cabinet.rest;cabinet.glow.material.opacity=0}
     }
     buildCabinet();
-    return {contains,floorAt,allowed,interact,update,enter,unload,readBy,cabinet:CABINET,room:ROOM,groups:GROUPS,never:NEVER,reads:READS,
+    return {contains,floorAt,allowed,interact,update,enter,activate,unload,readBy,cabinet:CABINET,room:ROOM,groups:GROUPS,never:NEVER,reads:READS,
       get built(){return !!root},get books(){return books.slice()},get props(){return props.slice()},get found(){return wasFound()},zoneAt:(x,z)=>contains(x,z)?'within-room':null};
   };
 })();

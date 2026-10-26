@@ -258,6 +258,6 @@
       if(fire&&inside&&!reduced){for(const f of fire.flames)f.mesh.scale.y=1+Math.sin(t*8+f.phase)*.16;fire.light.intensity=6+Math.sin(t*5)*.7+Math.sin(t*11.3)*.3}
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,unload,catalogue,door:DOOR,room:ROOM,groups:GROUPS,records:RECORDS,get built(){return !!root},get books(){return books.slice()},get durrowFound(){return !!secret&&secret.lift>0},zoneAt:(x,z)=>contains(x,z)?'irish-room':null};
+    return {contains,floorAt,allowed,interact,update,enter,activate,unload,catalogue,door:DOOR,room:ROOM,groups:GROUPS,records:RECORDS,get built(){return !!root},get books(){return books.slice()},get durrowFound(){return !!secret&&secret.lift>0},zoneAt:(x,z)=>contains(x,z)?'irish-room':null};
   };
 })();

@@ -217,6 +217,6 @@
       if(root?.userData.spin>0){root.userData.spin=Math.max(0,root.userData.spin-dt);root.userData.globe.rotation.y+=dt*root.userData.spin*2}
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,unload,door:DOOR,room:ROOM,shelves,wordOfTheDay,greeting,get built(){return !!root},get books(){return books.slice()},zoneAt:(x,z)=>contains(x,z)?'learners-room':null};
+    return {contains,floorAt,allowed,interact,update,enter,activate,unload,door:DOOR,room:ROOM,shelves,wordOfTheDay,greeting,get built(){return !!root},get books(){return books.slice()},zoneAt:(x,z)=>contains(x,z)?'learners-room':null};
   };
 })();
