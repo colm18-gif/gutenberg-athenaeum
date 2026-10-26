@@ -441,6 +441,14 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   updates in the 8 October threads to the Ukrainian Institute London, HURI (to Olha Aleksic), Cambridge (to Nicole at
   slavonic@mmll.cam.ac.uk), CIUS and the Shevchenko Scientific Society, and first emails to the Embassies of Ukraine in the US
   (emb_us@), Canada (emb_ca@) and Australia (emb_au@mfa.gov.ua). Make any corrections that come back.
+- Outreach sent 26 October from colm18@gmail.com on the Thousand and One Nights (the carpet, the qa'a, the lamp and Hanna
+  Diyab; `?room=nights`), to nine not written to before: the Chester Beatty (info@cbl.ie), ArabLit (info@arablit.org),
+  Banipal (editor@banipal.co.uk), the Iran Heritage Foundation (info@ihf.org.uk) and the British Institute of Persian
+  Studies (bips@thebritishacademy.ac.uk; both asked to check the Persian shelf's notes), the Aga Khan Museum
+  (information@agakhanmuseum.org), BRISMES (office@brismes.org), the Society for Storytelling (secretary@sfs.org.uk) and
+  TRACS / the Scottish Storytelling Centre (info@tracscotland.org; the Burns Room too). The Chester Beatty, IHF, SfS and
+  BRISMES addresses are from the charity register or directories. No usable address found for Shubbak, the Arab American
+  National Museum, AramcoWorld or NYU's Library of Arabic Literature. Make any corrections that come back.
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
   AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
