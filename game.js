@@ -1282,7 +1282,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     function purr(dur=3,vol=.3){startAudio();if(!audioCtx||muted)return;const now=audioCtx.currentTime;if(now<purrUntil-.4)return;audioCtx.resume();const rate=audioCtx.sampleRate,len=Math.floor(rate*dur),buffer=audioCtx.createBuffer(1,len,rate),d=buffer.getChannelData(0),breath=1.05+Math.random()*.2,hz=24+Math.random()*4;let lo=0;
       for(let i=0;i<len;i++){const t=i/rate,ph=(t%breath)/breath,out=ph>=.45,b=Math.sin(Math.PI*(out?(ph-.45)/.55:ph/.45))**.6*(out?1:.6),pulse=(.5+.5*Math.sin(2*Math.PI*hz*(out?1:.92)*t))**3;lo+=(Math.random()*2-1-lo)*.18;d[i]=lo*pulse*b*Math.min(1,t/.25,(dur-t)/.4)}
       const src=audioCtx.createBufferSource();src.buffer=buffer;const f=audioCtx.createBiquadFilter();f.type='lowpass';f.frequency.value=380;f.Q.value=.7;const g=audioCtx.createGain();g.gain.value=vol*6;src.connect(f).connect(g).connect(master);src.start(now);purrUntil=now+dur;src.onended=()=>{src.disconnect();f.disconnect();g.disconnect()}}
-    function meow(){startAudio();if(playSample('catMeow',1,.97+Math.random()*.07))return;audioCtx.resume();const t=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain(),f=audioCtx.createBiquadFilter();o.type='sawtooth';o.frequency.setValueAtTime(510,t);o.frequency.exponentialRampToValueAtTime(790,t+.12);o.frequency.exponentialRampToValueAtTime(430,t+.5);o.frequency.exponentialRampToValueAtTime(320,t+.7);f.type='bandpass';f.Q.value=2.4;f.frequency.setValueAtTime(1450,t);f.frequency.exponentialRampToValueAtTime(720,t+.7);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.65,t+.07);g.gain.exponentialRampToValueAtTime(.001,t+.75);o.connect(f).connect(g).connect(master);o.start(t);o.stop(t+.8);o.onended=()=>{o.disconnect();f.disconnect();g.disconnect()}}
+    function meow(){startAudio();if(playSample('catMeow'+Math.floor(Math.random()*3),1,.98+Math.random()*.08))return;audioCtx.resume();const t=audioCtx.currentTime,o=audioCtx.createOscillator(),g=audioCtx.createGain(),f=audioCtx.createBiquadFilter();o.type='sawtooth';o.frequency.setValueAtTime(420,t);o.frequency.exponentialRampToValueAtTime(560,t+.1);o.frequency.exponentialRampToValueAtTime(820,t+.32);o.frequency.exponentialRampToValueAtTime(760,t+.42);f.type='bandpass';f.Q.value=2.4;f.frequency.setValueAtTime(1100,t);f.frequency.exponentialRampToValueAtTime(1700,t+.35);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.6,t+.05);g.gain.exponentialRampToValueAtTime(.001,t+.45);o.connect(f).connect(g).connect(master);o.start(t);o.stop(t+.5);o.onended=()=>{o.disconnect();f.disconnect();g.disconnect()}}
 
     function noisyAction(){}
     function updateNoise(){}
@@ -1308,7 +1308,8 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       metalStep1:{src:'assets/audio/footsteps/metal-001.ogg',volume:.12,pool:1,maxDuration:.24},
       metalStep2:{src:'assets/audio/footsteps/metal-002.ogg',volume:.12,pool:1,maxDuration:.24},
       floorboardCreak:{src:'assets/audio/footsteps/floorboard-creak.ogg',volume:.11,pool:2,maxDuration:.55},
-      catMeow:{src:'assets/audio/cat-meow.ogg',volume:.54,pool:2},
+      // Clio's three voices, short and bright: a rising chirrup and two quick mews (CREDITS.md).
+      catMeow0:{src:'assets/audio/cat-meow-0.ogg',volume:.5,pool:1},catMeow1:{src:'assets/audio/cat-meow-1.ogg',volume:.5,pool:1},catMeow2:{src:'assets/audio/cat-meow-2.ogg',volume:.5,pool:1},
       machineFlap:{src:'assets/audio/machine-flap.ogg',volume:.48,pool:2},
       trainRumble:{src:'assets/audio/train-rumble-distant.ogg',volume:.2,pool:1,lazy:true},trainWhistle:{src:'assets/audio/train-whistle.ogg',volume:.5,pool:1,lazy:true}
     },samplePools=new Map();

@@ -10,7 +10,6 @@ terms can be checked before public release.
 | `page-turn.ogg` | `mixkit-single-book-paging-1101.wav` |
 | `door-open.ogg` | `soundreality-opening-door-411632.mp3` |
 | `secret-door.ogg` | `tanweraman-old-door-sound-night-time-505140.mp3` |
-| `cat-meow.ogg` | `dragon-studio-cat-meow-401729.mp3` |
 | `machine-flap.ogg` | `split-flap-display-announcement-pragotron-solariboard-barcelona-airport-crooner.mp3` |
 | `train-rumble-distant.ogg` | `vadim_makes_sound-underground-subway-station-distant-train-rumble-1-546578.mp3` |
 | `train-carriage-loop.ogg` | `209972__jrosin__wales-steam-train.flac` (Freesound sound 209972 by jrosin) |
@@ -67,3 +66,15 @@ Its licence has not yet been checked against the Freesound page; confirm it
 `train-whistle.ogg` is the two-second whistle from the same recording
 (3:02–3:04), faded out and encoded as Opus. It plays as the carriage departs;
 the steam sigh on arrival is synthesised in `game.js`.
+
+### Clio's meows
+
+Clio's three short voices replaced a single long, falling meow that sounded plaintive. Both sources are dedicated to
+the public domain under CC0 1.0 (https://creativecommons.org/publicdomain/zero/1.0/):
+
+| Project file | Source |
+| --- | --- |
+| `cat-meow-0.ogg` | Tsester, “2015-11-24.νιαούρισμα.Νιάου.noise_reduced.flac”, Wikimedia Commons: a cat called Νιάου answering a touch of the hand with a rising chirrup (0:00.12–0:01.04). https://commons.wikimedia.org/wiki/File:2015-11-24.%CE%BD%CE%B9%CE%B1%CE%BF%CF%8D%CF%81%CE%B9%CF%83%CE%BC%CE%B1.%CE%9D%CE%B9%CE%AC%CE%BF%CF%85.noise_reduced.flac |
+| `cat-meow-1.ogg`, `cat-meow-2.ogg` | Joseph Sardin, “Small mewing of a cat” (#0098), BigSoundBank: the third and fourth of its four mews. https://bigsoundbank.com/small-mewing-of-a-cat-s0098.html |
+
+Processing: cut, high-passed at 180 Hz, faded, loudness normalised and encoded as Opus at 48 kb/s.
