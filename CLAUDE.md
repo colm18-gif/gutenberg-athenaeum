@@ -100,8 +100,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Thoreau's clearing on a summer night, with the house (ten feet by fifteen, door at the south end, brick fireplace
   opposite, a large window each side; walkable inside, the reader's radius shrinks to 0.25 m in and around it), his bed,
   his desk with the japanned lamp (the place's one light) and three chairs that are seats (solitude, friendship, society,
-  the third outside). His own books are on the shelf in the house (shelf `walden-thoreau`, headed by the library's own
-  Walden, 205); the Concord circle's (`walden-concord`: Emerson, Fuller, Bronson Alcott, Hawthorne and their historians)
+  the third outside). His own books are on the shelf in the house (shelf `walden-thoreau`); the library's own Walden (205)
+  lies on his desk as `ownCopy`, like Crusoe's, so it is always there (at the owner's wish); the Concord circle's (`walden-concord`: Emerson, Fuller, Bronson Alcott, Hawthorne and their historians)
   stand by his three-legged table under an awning among the pines; books held nowhere else (a test checks). The
   bean-field, the woodpile, the boat drawn up on the sand with his flute (`pianoTone` voice `flute`; the perch glint) and
   the cod-line he sounded the pond with (102 feet), a loon that dives, fireflies, and bullfrogs and whippoorwills in

@@ -88,6 +88,8 @@ test('the clearing is built on approach: the house, two places of books, three c
   assert.equal(a.w.books.length,groups[0].books.length+groups[1].books.length,'every book is out, but the journal');
   for(const mesh of a.w.books){assert(mesh.userData.walden);const p={x:mesh.parent.position.x+mesh.position.x,z:mesh.parent.position.z+mesh.position.z};assert(a.w.contains(p.x,p.z))}
   assert(a.w.books.filter(m=>m.userData.shelf==='thoreau').every(m=>a.w.inHouse(m.parent.position.x+m.position.x,m.parent.position.z+m.position.z)),'his own books are in the house');
+  const own=a.w.books.filter(m=>m.userData.ownCopy);assert.deepEqual([...own.map(m=>m.userData.book.id)],[205],'Walden lies on his desk as his own copy, always there');
+  assert(own[0].position.y>.75&&own[0].position.x>a.w.house.w/2-.6,'on the desk under the east window');
   assert.deepEqual(a.seats.map(s=>s.title),['The first chair: for solitude','The second chair: for friendship','The third chair: for society']);
   for(const key of ['house','fireplace','bed','desk','page','lamp','mirror','limestone','shelf','table','awning','beans','hoe','woodpile','boat','pond','loon','woods','cost'])
     assert(a.interactables.some(o=>o.userData.type==='walden-card'&&o.userData.key===key),key);
