@@ -486,6 +486,17 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   rooms lack. The Exeter, Dalhousie and Delhi addresses are the least certain. No general address found for Yale, Princeton,
   Columbia, Toronto, UBC, McGill, Edinburgh, UCL, Sydney, Melbourne, ANU, Cape Town, Wits, Stellenbosch, Ibadan, Nairobi or
   NUS (only named staff). Make any corrections that come back.
+- A second batch the same day, to English departments in ten more countries, each pointed at one room: UWI Mona, Jamaica
+  (litseng@uwimona.edu.jm) at Crusoe's island; UP Diliman, Philippines (declkal.upd@up.edu.ph) at the Room of Books Within
+  Books and the International Wing; Oslo's ILOS (henvendelser@ilos.uio.no, asked to pass it to English) there too, with the
+  Heimskringla; Uppsala (info@engelska.uu.se) at the Poe Room; Universiti Malaya's Faculty of Languages and Linguistics
+  (fll_info@um.edu.my) at the Thousand and One Nights; the Hebrew University's English secretary (Gal Young,
+  galzohary@savion.huji.ac.il) and ELTE's SEAS (seas@btk.elte.hu; Walden too) at Books Within Books; Charles University
+  (ualk@ff.cuni.cz) at the Voynich, which was in Prague in the seventeenth century; Queen's, Kingston (englishdept@queensu.ca) at the Austen Room; and the
+  Complutense's Estudios Ingleses secretary (Daniel Martín González, danielma@ucm.es) at Books Within Books and the Spanish
+  Reading Room. The ELTE and Mona addresses are the least certain. No general address found for Lagos, Ibadan, Nairobi,
+  Makerere, Pretoria, Rhodes, KwaZulu-Natal, Botswana, Tokyo, Seoul, NTU, Copenhagen, Helsinki, Leiden, Amsterdam,
+  Heidelberg, Bologna, Sorbonne Nouvelle, Lisbon, the Jagiellonian, Malta, Iceland, Western Australia, Tasmania or Macquarie.
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
   AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
