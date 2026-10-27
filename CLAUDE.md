@@ -477,6 +477,18 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   TRACS / the Scottish Storytelling Centre (info@tracscotland.org; the Burns Room too). The Chester Beatty, IHF, SfS and
   BRISMES addresses are from the charity register or directories. No usable address found for Shubbak, the Arab American
   National Museum, AramcoWorld or NYU's Library of Arabic Literature. Make any corrections that come back.
+- Outreach sent 27 October from colm18@gmail.com to fifteen university English departments not written to before (the
+  Irish ones were in the 11 October batch), each pointed at one room: Oxford (english.office@ell.ox.ac.uk), Leeds
+  (english@leeds.ac.uk), Harvard (english@fas.harvard.edu) and Dalhousie (englwww@dal.ca) at the Room of Books Within Books;
+  HKU (english@hku.hk) there too, with the Chinese Reading Room; Delhi (head@english.du.ac.in) there too, with the carpet to
+  the Nights; Cambridge (english-faculty@lists.cam.ac.uk) and Durham (english.studies@durham.ac.uk) at the Austen Room; York
+  (english-enquiries@york.ac.uk) and Exeter (Englishcreativewriting@exeter.ac.uk) at the Poe Room, for Halloween; St Andrews
+  (english@st-andrews.ac.uk) at the Burns Room; Queen's Belfast (ael@qub.ac.uk) at the Irish Room; Victoria University of
+  Wellington (english@vuw.ac.nz) and Otago (english@otago.ac.nz) at the New Zealand Room through the globe; and the
+  University of Ghana (english@ug.edu.gh) at the African Reading Room. The last three ask for public-domain writers their
+  rooms lack. The Exeter, Dalhousie and Delhi addresses are the least certain. No general address found for Yale, Princeton,
+  Columbia, Toronto, UBC, McGill, Edinburgh, UCL, Sydney, Melbourne, ANU, Cape Town, Wits, Stellenbosch, Ibadan, Nairobi or
+  NUS (only named staff). Make any corrections that come back.
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
   AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
