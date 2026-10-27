@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-26",
+ "updated": "2026-10-27",
  "days": {
-  "2026-10-13": {
-   "books": [
-    {
-     "id": 24518,
-     "title": "Memoirs of Extraordinary Popular Delusions and the Madness of Crowds",
-     "author": "Charles Mackay"
-    },
-    {
-     "id": 7116,
-     "title": "Vestiges of the Natural History of Creation",
-     "author": "Robert Chambers"
-    },
-    {
-     "id": 54329,
-     "title": "Symmes's Theory of Concentric Spheres",
-     "author": "James McBride"
-    },
-    {
-     "id": 19553,
-     "title": "The Private Diary of Dr. John Dee",
-     "author": "John Dee"
-    },
-    {
-     "id": 19229,
-     "title": "Anticipations",
-     "author": "H. G. Wells"
-    },
-    {
-     "id": 39910,
-     "title": "Omphalos",
-     "author": "Philip Henry Gosse"
-    },
-    {
-     "id": 1638,
-     "title": "The New Revelation",
-     "author": "Arthur Conan Doyle"
-    },
-    {
-     "id": 22472,
-     "title": "The Book of the Damned",
-     "author": "Charles Fort"
-    },
-    {
-     "id": 47015,
-     "title": "Mars",
-     "author": "Percival Lowell"
-    },
-    {
-     "id": 285,
-     "title": "The Lost Continent",
-     "author": "C. J. Cutcliffe Hyne"
-    }
-   ],
-   "missing": []
-  },
   "2026-10-14": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 43835,
      "title": "Lumen",
      "author": "Camille Flammarion"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-29": {
+   "books": [
+    {
+     "id": 66451,
+     "title": "A Magician Among the Spirits",
+     "author": "Harry Houdini"
+    },
+    {
+     "id": 6133,
+     "title": "The Extraordinary Adventures of Arsène Lupin, Gentleman-Burglar",
+     "author": "Maurice Leblanc"
+    },
+    {
+     "id": 439,
+     "title": "The Vital Message",
+     "author": "Arthur Conan Doyle"
+    },
+    {
+     "id": 47506,
+     "title": "The Coming of the Fairies",
+     "author": "Arthur Conan Doyle"
+    },
+    {
+     "id": 58057,
+     "title": "Modern Magic",
+     "author": "Professor Hoffmann"
+    },
+    {
+     "id": 14275,
+     "title": "The Necromancers",
+     "author": "Robert Hugh Benson"
+    },
+    {
+     "id": 62779,
+     "title": "The Moon Hoax",
+     "author": "Richard Adams Locke"
+    },
+    {
+     "id": 60766,
+     "title": "The Discoverie of Witchcraft",
+     "author": "Reginald Scot"
+    },
+    {
+     "id": 14317,
+     "title": "The Sorcery Club",
+     "author": "Elliott O'Donnell"
+    },
+    {
+     "id": 10430,
+     "title": "Trips to the Moon",
+     "author": "Lucian of Samosata"
     }
    ],
    "missing": []
