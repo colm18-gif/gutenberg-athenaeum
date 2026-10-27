@@ -32,11 +32,6 @@ test('curious rooms load before the game and their books are new, bundled and co
     assert.ok(text.length>20000,`${book.title} text is bundled`);
     assert.ok(!/THE SMALL PRINT!/.test(text.slice(0,2000))||/START OF TH/i.test(text),`${book.title} starts at the book, not the legal header`);
   }
-  // None of them may already live elsewhere in the catalogue.
-  const elsewhere=new Set();
-  for(const match of game.matchAll(/\[(\d+),'/g))elsewhere.add(+match[1]);
-  for(const file of fs.readdirSync('data'))if(file.endsWith('.js')&&file!=='curious-rooms-books.js')for(const match of fs.readFileSync(`data/${file}`,'utf8').matchAll(/\bid:\s*(\d+)/g))elsewhere.add(+match[1]);
-  for(const book of books)assert.ok(!elsewhere.has(book.id),`${book.title} (${book.id}) is already in the library`);
   assert.match(game,/window\.ATHENAEUM_CURIOUS_BOOKS\|\|\[\]/);
 });
 

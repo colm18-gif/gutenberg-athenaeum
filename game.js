@@ -256,10 +256,9 @@
     let visualTierPinned=!!requestedTier;const visual=window.createVisualQuality?.({THREE,renderer,scene,camera,initialTier:visualTier,reducedMotion:()=>reducedMotion})||null;
     const clock=new THREE.Clock(), raycaster=new THREE.Raycaster();raycaster.far=6.5;
     const seats=[],colliders=[], interactables=[], coverQueue=[],pullSequence=[];
-    // A title has one available physical volume, even when several room builders offer it.
-    // The one exception is a copy marked ownCopy (Crusoe's own story on his island): it always stands as itself.
-    // Keep the dormant placements so a lazy room can be freed and rebuilt safely. Only its
-    // chosen volume is visible or pickable; carrying/placing it keeps that volume in charge.
+    // Every room shows its own copy of a title, so a book may stand on several shelves at once.
+    // The register only answers which copy to fetch for a title (the held or carried one first) for
+    // seats and the machine; it hides nothing but books detached from the scene.
     function createSingleCopyLibrary({objects,scene,held=()=>null,priority=()=>0}){
       const states=new WeakMap(),ids=new Map(),winners=new Map();
       const normal=text=>String(text||'').normalize('NFKC').toLowerCase().replace(/[’‘]/g,"'").replace(/\s+/g,' ').trim();
@@ -269,13 +268,13 @@
         winners.clear();const candidates=[];
         for(const object of objects){const data=object.userData;if(data?.type!=='book'||!data.book?.id)continue;
           let state=states.get(object);if(!state){state={wanted:object.visible!==false,suppressed:false};states.set(object,state);
-            // Room scripts can still reveal/hide a secret, but cannot reveal a second copy.
+            // Room scripts still reveal and hide their own books (a secret until it is found).
             Object.defineProperty(object,'visible',{configurable:true,enumerable:true,get:()=>state.wanted&&!state.suppressed,set:value=>{state.wanted=!!value}})}
           state.suppressed=true;if(!attached(object,extraRoot))continue;
           const identity=data.ownCopy?object:key(data.book),score=object===held()?10000:data.singleCopyMoved?1000:priority(object),current=winners.get(identity);
           candidates.push(object);if(!current||score>current.score)winners.set(identity,{object,score});
         }
-        for(const {object} of winners.values())states.get(object).suppressed=false;
+        for(const object of candidates)states.get(object).suppressed=false;
         // Progress labels belong to their displayed volume, not its dormant placements.
         for(const object of candidates)for(const extra of object.userData.continueExtras||[])extra.visible=object.visible;
       }
@@ -1455,7 +1454,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const bm=pool[Math.floor(Math.random()*pool.length)];seated={camera:camera.position.clone(),quaternion:camera.quaternion.clone(),seat};player.vel.set(0,0,0);for(const k in keys)keys[k]=false;seat.group.updateWorldMatrix(true,false);camera.position.copy(seat.group.localToWorld(seat.eye.clone()));camera.rotation.set(-.08,seat.yaw,0,'YXZ');camera.updateMatrixWorld();selectBook(bm);$('#finishReading').textContent='Stand up';openReader()}
     function leaveSeat(){if(!seated)return;if(seated.seat?.group===rockingChair)rockingUntil=performance.now()+7000;camera.position.copy(seated.camera);camera.quaternion.copy(seated.quaternion);camera.updateMatrixWorld();seated=null;$('#finishReading').textContent='Done'}
     function setHeldBookRendering(bm,held){for(const trim of bm.children.filter(child=>child.userData.bindingTrim)){if(!trim.userData.ownMaterial){trim.material=trim.material.clone();trim.userData.ownMaterial=true}trim.material.depthTest=!held;trim.material.depthWrite=!held;trim.renderOrder=held?1001:0}const material=bm.material;if(held){bm.userData.heldRenderState={depthTest:material.depthTest,depthWrite:material.depthWrite,renderOrder:bm.renderOrder};material.depthTest=false;material.depthWrite=false;bm.renderOrder=1000}else{const state=bm.userData.heldRenderState;if(!state)return;material.depthTest=state.depthTest;material.depthWrite=state.depthWrite;bm.renderOrder=state.renderOrder;delete bm.userData.heldRenderState}material.needsUpdate=true}
-    function selectBook(bm){if(!bm.userData.ownCopy)bm=singleCopyLibrary.find(bm.userData.book)||bm;carryingBook=false;window.libraryAnalytics?.track('Book Picked Up',{book:bm.userData.book?.id});selected=bm;singleCopyLibrary.sync();recordBookSequence(bm.userData.book);prefetchBook(bm.userData.book);requestRealCover(bm.userData.book);bm.userData.home.worldPos=new THREE.Vector3();bm.getWorldPosition(bm.userData.home.worldPos);scene.attach(bm);setHeldBookRendering(bm,true);setActionMode('');ui.actions.classList.remove('hidden');ui.actions.querySelector('strong').textContent=bm.userData.book.title;ui.actions.querySelector('em').textContent=bm.userData.book.author;refreshListenAction(bm.userData.book);document.exitPointerLock?.();bookPullSound(bm.userData.book);spawnDustPuff(bm.userData.home.worldPos);triggerGrabKick()}
+    function selectBook(bm){carryingBook=false;window.libraryAnalytics?.track('Book Picked Up',{book:bm.userData.book?.id});selected=bm;singleCopyLibrary.sync();recordBookSequence(bm.userData.book);prefetchBook(bm.userData.book);requestRealCover(bm.userData.book);bm.userData.home.worldPos=new THREE.Vector3();bm.getWorldPosition(bm.userData.home.worldPos);scene.attach(bm);setHeldBookRendering(bm,true);setActionMode('');ui.actions.classList.remove('hidden');ui.actions.querySelector('strong').textContent=bm.userData.book.title;ui.actions.querySelector('em').textContent=bm.userData.book.author;refreshListenAction(bm.userData.book);document.exitPointerLock?.();bookPullSound(bm.userData.book);spawnDustPuff(bm.userData.home.worldPos);triggerGrabKick()}
     // Every book answers: a written note where one exists, otherwise a short introduction from its catalogue record.
     function fallbackNote(book){if(book.category==='Extraordinary Voyages'&&window.ATHENAEUM_VERNE_GENERAL_NOTE)return window.ATHENAEUM_VERNE_GENERAL_NOTE;const shelf=book.category?` It is shelved under ${book.category}, which tells you how it has been read rather than what it must be.`:'';return `${book.title} is ${book.author||'an unsigned author'}’s, and it has waited here for a reader to take it down.${shelf} Read a few pages and come back; I would like to hear what you make of it.`}
     function askLibrarianAboutBook(){if(!selected)return;const book=selected.userData.book,note=librarianNotes[book.id]||window.ATHENAEUM_EXTRA_NOTES?.[book.id]||fallbackNote(book),text=`“${note}”`;bookTalkTimer=clamp(text.length/14,8,20);showNotice(text,bookTalkTimer);sound(340,.35,'triangle',.12)}

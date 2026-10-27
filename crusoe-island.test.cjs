@@ -113,7 +113,6 @@ test('Robinson speaks his own words, and the camp answers with his',()=>{
   for(const [type,pattern] of [['isle-goat',/my goats/],['isle-journal',/Crusoe’s journal/]]){w.island.interact(w.find(type));assert.match(w.notices.at(-1),pattern)}
   for(const key of ['dog','barley','canoe','pots','raisins','money']){const thing=w.interactables.find(o=>o.userData.type==='isle-says'&&o.userData.key===key);assert(thing,key);w.island.interact(thing);assert(w.notices.at(-1).length>60,key)}
   const own=w.island.books.find(b=>b.userData.book.id===521);assert.equal(own.userData.ownCopy,true,'his own copy of his story stays on the island');
-  assert.match(game,/const identity=data\.ownCopy\?object:key\(data\.book\)/);assert.match(game,/function selectBook\(bm\)\{if\(!bm\.userData\.ownCopy\)bm=singleCopyLibrary\.find/);
 });
 
 test('every word given to Crusoe on the island is in the book',()=>{

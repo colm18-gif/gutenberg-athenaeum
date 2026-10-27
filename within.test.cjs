@@ -105,11 +105,10 @@ test('every quotation on the cards is in the book it comes from',()=>{
   assert(checked>=8,`checked ${checked} quotations against the bundled texts`);
 });
 
-test('the room’s new books are held nowhere else, and each has a note of three sentences',()=>{
+test('the room’s new books each have a note of three sentences',()=>{
   const ours=arrivals.filter(e=>/^within-/.test(e[4]));assert(ours.length>=12);
-  const elsewhere=new Set(arrivals.filter(e=>!/^within-/.test(e[4])).map(e=>e[0]));
   for(const [id,title,,,,note] of ours){
-    assert(Number.isInteger(id),`${title} has its number`);assert(!elsewhere.has(id),`${title} is on no other shelf`);
+    assert(Number.isInteger(id),`${title} has its number`);
     assert.equal(note.split(/(?<=[a-z0-9”’)I][.!?])\s+(?=[A-ZÁÉÍÓÚŒ“])/).length,3,`${title}: three sentences`);
   }
   assert.equal(byRoom('within-lectern').length,1,'one book on the lectern');assert.equal(JSON.stringify(byRoom("within-lectern")),"[598]");

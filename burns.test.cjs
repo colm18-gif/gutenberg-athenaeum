@@ -91,12 +91,10 @@ test('through the window, the witches dance and Tam o’ Shanter is left on the 
   const c=room({search:'?cuttysark'});c.r.enter();assert.equal(c.r.cuttySarkSeen,true,'?cuttysark shows it');
 });
 
-test('its books are held nowhere else, and each has a note of three sentences',()=>{
+test('its books each have a note of three sentences',()=>{
   const burns=arrivals.filter(e=>/^burns-/.test(e[4]));assert(burns.length>=18);
-  const elsewhere=new Set(arrivals.filter(e=>!/^burns-/.test(e[4])).map(e=>e[0]));
-  const core=[...game.slice(game.indexOf('const books=['),game.indexOf('const books=[')+40000).matchAll(/\[(\d+),'/g)].map(m=>Number(m[1]));
   for(const [id,title,,,,note] of burns){
-    assert(Number.isInteger(id),`${title} has its number`);assert(!elsewhere.has(id),`${title} is on no other shelf`);assert(!core.includes(id),`${title} is not already in the hall`);
+    assert(Number.isInteger(id),`${title} has its number`);
     assert.equal(note.split(/(?<=[a-z0-9”’)I][.!?])\s+(?=[A-ZÁÉÍÓÚŒ“])/).length,3,`${title}: three sentences`);
   }
   assert.equal(new Set(burns.map(e=>e[0])).size,burns.length,'each once');assert.equal(byRoom('burns-cutty').length,1,'one book on the sill');

@@ -43,7 +43,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Commons (photograph n: 3 is folio 1r; checked against the folio numbers on the rectos), and drawn pages written in its
   script (`glyphs`, after its commonest EVA words); The whole book reads the Beinecke scan on Commons (214 images, one ahead
   of the photographs; marks checked against the scan's own captions). Behind the lectern, on the south wall, a case of
-  books on ciphers, herbals and failed decipherments, the shelf `ciphers` in `data/new-books.js` (held nowhere else; a test checks).
+  books on ciphers, herbals and failed decipherments, the shelf `ciphers` in `data/new-books.js`.
 - The fine books share one engine, `fine-books.js` (cradle, stiff board leaves, zoom, captions, loading only the spreads
   either side of the open one); each book is a description: `kells-book.js`, `durrow-book.js` (which borrows the Kells ornament), `kelmscott-book.js`,
   `vesalius-book.js`, `voynich-book.js` (pages and cards, drawn pages, binding, paper, type). Their photographs come from Wikimedia Commons by `scripts/fetch-book-pages.mjs` (Book
@@ -62,7 +62,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - The Medicine Room (`medicine-room.js`, x −420, z −140) is behind a door at the south end of the Map Room's east wall
   (`?room=medicine`), a few steps from Snow's cholera map; `map-room.js` stops its east shelf short (`EAST_SHELF`) to leave
   that end of the wall clear. A history of medicine on three shelves, `medicine-physic`, `medicine-discovery` and
-  `medicine-healers` in `data/new-books.js` (books held nowhere else; a test checks). In the middle, under glass, the
+  `medicine-healers` in `data/new-books.js`. In the middle, under glass, the
   facsimile of Vesalius's Fabrica of 1543 (`vesalius-book.js`) lies open at the skeletons of pages 164 and 165: its title,
   the portrait and eleven pages from Wikimedia Commons (`assets/vesalius`, chosen from a survey), named for their page in
   the 1543 edition. The title page and portrait also hang framed either side of the room's door. The muscle men are flayed
@@ -70,8 +70,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - The Naturalist's Cabinet (`naturalist-room.js`, x −500, z −140) is behind a conservatory-green door at the south end of
   the Medicine Room's west wall (`?room=naturalist`, `darwin`); `medicine-room.js` sets its west shelf back (`WEST_SHELF`) to
   leave that end clear. Darwin's study and a cabinet of curiosities: shelves `nature-origin` (headed by the library's own
-  Origin, 1228), `nature-collectors` and `nature-observers` (headed by its Selborne, 1408) in `data/new-books.js` (books held
-  nowhere else; a test checks), a dome of hummingbirds, a glazed case of shells, eggs and butterflies, a drawer of beetles,
+  Origin, 1228), `nature-collectors` and `nature-observers` (headed by its Selborne, 1408) in `data/new-books.js`, a dome of hummingbirds, a glazed case of shells, eggs and butterflies, a drawer of beetles,
   the Sandwalk through the south window, and the writing table with a microscope and Wallace's letter from Ternate.
   Darwin's armchair and the writing chair are seats. The secret is in the table's drawer: the essay of 1844 with his letter to
   Emma (shelf `nature-sealed`, The Foundations of the Origin of Species), found for good (`athenaeum-darwin-sketch`;
@@ -81,7 +80,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   the gramophone and the botanist's portrait (`?room=austen`): a Regency drawing room for Jane Austen. Her six novels stand
   face-out on the north wall in the order they were published (`NOVELS`: five are the hall's own copies; Northanger Abbey is
   the shelf `austen-novels`), under a silhouette; shelves `austen-writings`, `austen-lives` and `austen-read` in
-  `data/new-books.js` (books held nowhere else; a test checks). A writing table by the window, a sofa and its chair are
+  `data/new-books.js`. A writing table by the window, a sofa and its chair are
   seats; the square pianoforte plays a country-dance strain (`tone`, game.js's `pianoTone`, no file); the door creaks, as the
   one at Chawton did. The room's secret is Catherine Morland's black japanned cabinet: opening it finds a list of linen and, behind it, Mrs Radcliffe
   (Udolpho, the library's own copy, and the shelf `austen-horrid`); found once, found for good (`athenaeum-austen-cabinet`;
@@ -89,7 +88,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - The Burns Room (`burns-room.js`, x 500, z −300) is through a planked green door at the east end of the Irish Room's
   south wall, past the harp (Kintyre is twelve miles from Antrim; `?room=burns`): an Ayrshire cottage for Robert Burns,
   with a box bed, a coal fire, a table set for a Burns Supper (haggis, quaich) and two chairs that are seats. Shelves
-  `burns-works`, `burns-lives` and `burns-scotland` in `data/new-books.js` (books held nowhere else; a test checks, and
+  `burns-works`, `burns-lives` and `burns-scotland` in `data/new-books.js` (a test
   walks the Irish Room's own floor to the door). The fiddle by the hearth plays Auld Lang Syne (`pianoTone` with voice
   `fiddle`). Its coal fire crackles (`crackle` and `snap` events in `room-ambience.js`) and its embers flicker. The secret is Tam o' Shanter's: the window looks out to Alloway Kirk; looking in, the witches dance to the
   Devil's pipes (voice `pipes`) until "Weel done, Cutty-sark!", and Tam O'Shanter (shelf `burns-cutty`) is left on the
@@ -101,8 +100,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   opposite, a large window each side; walkable inside, the reader's radius shrinks to 0.25 m in and around it), his bed,
   his desk with the japanned lamp (the place's one light) and three chairs that are seats (solitude, friendship, society,
   the third outside). His own books are on the shelf in the house (shelf `walden-thoreau`); the library's own Walden (205)
-  lies on his desk as `ownCopy`, like Crusoe's, so it is always there (at the owner's wish); the Concord circle's (`walden-concord`: Emerson, Fuller, Bronson Alcott, Hawthorne and their historians)
-  stand by his three-legged table under an awning among the pines; books held nowhere else (a test checks). The
+  lies on his desk (`ownCopy`); the Concord circle's (`walden-concord`: Emerson, Fuller, Bronson Alcott, Hawthorne and their historians)
+  stand by his three-legged table under an awning among the pines. The
   bean-field, the woodpile, the boat drawn up on the sand with his flute (`pianoTone` voice `flute`; the perch glint) and
   the cod-line he sounded the pond with (102 feet), a loon that dives, fireflies, and bullfrogs and whippoorwills in
   `room-ambience.js`. The secret is the hound, the bay horse and the turtle-dove (the page on his desk): going near each
@@ -118,8 +117,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   the house of bread with windows of clear sugar, Rapunzel's tower and braid, the cool spring with the golden ball,
   Grandmother's house under the three large oak-trees, Red-Cap's basket, the hedge of thorns round Briar Rose's palace,
   Baba Yaga's turning hut and the Little Glass Man's great fir. Books are found, not shelved: shelf `forest-tales` (each
-  placed by `PLACES`) and `forest-eerie` (among the old oak's roots, for older readers) in `data/new-books.js`, held
-  nowhere else (a test checks, and walks from the arrival to every book). Hansel's white pebbles lead back to the
+  placed by `PLACES`) and `forest-eerie` (among the old oak's roots, for older readers) in `data/new-books.js` (a test
+  walks from the arrival to every book). Hansel's white pebbles lead back to the
   freestanding window; the crumbs on the other path lead nowhere. A wisp goes ahead towards the nearest book not yet
   found (`athenaeum-forest-found`). Every Grimm quotation is checked against pg2591. Trees are two InstancedMeshes,
   no lights: inside the wood the sky and fog are darkened and the library's ambient and moonlight turned down.
@@ -132,7 +131,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   the real book at the page (`openBook` in game.js sets `pendingPassage`, matched on letters alone). Dorian Gray and The King
   in Yellow are secret editions, so their cards never open them. East wall: real books read in other books (`READS`, shelves
   `within-copperfield` and `within-read`); Heimskringla on the lectern (`within-lectern`) with Saknussemm's parchment;
-  hosts the library holds nowhere else are `within-hosts`. Every quotation on a card must be in its book: a test checks each
+  some hosts are `within-hosts`. Every quotation on a card must be in its book: a test checks each
   against the bundled text where there is one, and the rest were checked against the texts by hand. Never invent a title for
   an imaginary book the text doesn't give (say so on the card, as for Holmes's cipher monograph).
 - The Set Texts Room (`set-texts-room.js`, x −330, z 60) is behind a blue door in the English Reading Room's east wall
@@ -154,19 +153,17 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   west wing's south wall (x −33.9, set in the wainscot between the hidden passage and the STAFF · SORTING door). Ring the
   bell and the shutter rolls up; the reader rides the car down a shaft (floors painted on its wall: WEST WING, BASEMENT,
   SUB-BASEMENT) and steps out into the office; the car, or the plaque over its mouth, takes them up again (`?room=lost-property`,
-  `lift`). Its stock is the shelf `lost-property` in `data/new-books.js`: books on no other shelf, of every kind. Eighteen
+  `lift`). Its stock is the shelf `lost-property` in `data/new-books.js`: books of every kind. Eighteen
   are out at random on each visit, in pigeonholes, each with an invented tag saying where it was found (`FOUND`); the
   bell on the counter clears them and brings out a lot that was not just there. A book carried to the car is put back.
-  Keep its books off every other shelf (a test checks), and keep the stock at thirty or more so two lots never overlap.
+  Keep the stock at thirty or more so two lots never overlap.
 - The Unwelcome Spines (`buildContestedRoom` in `game.js`, x 170, z 14) is behind the door bound in banned pages beyond
   the Restricted Catalogue: books once banned, burned, prosecuted or suppressed, from the shelf `contested` in
-  `data/new-books.js` (category `Contested`, which the room's chair and the east-side recommendations draw on), in
-  three cases of ten. They must be books held nowhere else (a test checks): the single-copy register shows each book
-  once, and when the room's books were the Restricted Catalogue's, its shelves stood almost empty.
+  `data/new-books.js` (category `Contested`, which the room's chair and the east-side recommendations draw on),, in
+  three cases of ten.
 - The four memory rooms below the catalogue (`buildMemoryRooms` in `game.js`, x 72–167, z −20, through the basement:
   Names in the Dust, The Longer Silence, St—ll W—ting and What Was Kept) are stocked from the shelves `returning`,
-  `quiet`, `unread` and `repository` in `data/new-books.js` (books held nowhere else; a test checks): the hidden reading
-  room behind the west shelf, built first, holds the older lists' copies, which left these rooms empty. The Repository's
+  `quiet`, `unread` and `repository` in `data/new-books.js`. The Repository's
   four racks hold 36 distinct books and its request desk one more.
 - The Ukrainian Reading Room (`international-wing.js`, `dressUkrainian` and `furnishUkrainian`) keeps apart from its main
   racks (`apart`) the shelf of the Executed Renaissance by its door (`MEMORIAL`: eight titles from the room's list, under a
@@ -184,8 +181,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   (`commons? <words>`). A Wikisource page that only lists editions has too little text: give the edition's own page.
 - The Kipling bookcase (`kipling-shelf.js`) stands against the Grand Hall's west wall in the south-west corner (x −18.54,
   z 29.1, between the column at z 27 and the corner; `?room=kipling`): Rudyard Kipling's books face-out in the order he
-  published them, four shelves of three, from the shelf `kipling` in `data/new-books.js` (books of his held nowhere else;
-  a test checks), under a brass plate whose card says where his other books are. Added after the Kipling Society wrote in.
+  published them, four shelves of three, from the shelf `kipling` in `data/new-books.js`, under a brass plate whose card says where his other books are. Added after the Kipling Society wrote in.
 - The Map Room (`map-room.js`, x −420, z −60) is behind a door in the west wing's north wall (x −21.4; `?room=maps`): twenty
   old maps hung edge to edge (Mercator, Waldseemüller, the Hereford Mappa Mundi, Piri Reis, the Catalan Atlas, Ricci,
   John Snow's cholera map and William Smith's on the map table…), each with a card in `MAPS`. Looking at one opens the
@@ -228,8 +224,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   and it unrolls (it rolls itself up again once the reader is 14 m away); sit on it and it lifts, crosses a desert at night
   (a sky built at x 900, y 300, z 600 for the flight, then freed) and sinks into a courtyard with a fountain and orange trees;
   the carpet there flies home to the fire. Shelves `nights-tales` (the Nights in English: Burton, Payne, Lane, Galland, Dulac),
-  `nights-poets` (Persia and Arabia) and `nights-echoes` (the West's Nights) in `data/new-books.js`, held nowhere else (a test
-  checks; Lang's own Arabian Nights, 128, stays in the Room of Books Within Books). The divan is a seat. The secret is the lamp on
+  `nights-poets` (Persia and Arabia) and `nights-echoes` (the West's Nights) in `data/new-books.js` (Lang's own
+  Arabian Nights, 128, stays in the Room of Books Within Books). The divan is a seat. The secret is the lamp on
   the brass tray: rubbed, it smokes, asks "What is thy will?" and leaves Payne's Alaeddin (`nights-lamp`) and a card on Hanna
   Diyab, who told Galland Aladdin in 1709 (found for good: `athenaeum-nights-lamp`; `?lamp`). A brass plate by the door counts
   the nights the reader has come (`athenaeum-nights-visits`). Words given to Scheherazade and the genie are Lang's, checked
@@ -240,8 +236,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   (`ROBINSON`; the footprint and Fridays change what he says), his goats in their pen, the barley, the great canoe that never
   reached the water, two earthen jars, raisins drying, the "O drug!" money and his journal on the table (`JOURNAL`, opened at
   today's date or the last entry before it), and the wreck on the reef. Every word given to him is checked against
-  `texts/pg521.txt` by a test. His own copy of Robinson Crusoe on the sea chest is the one exception to the single-copy
-  register (`ownCopy`, at the owner's wish): it stands there even though the book is shelved elsewhere too.
+  `texts/pg521.txt` by a test. His own copy of Robinson Crusoe lies on the sea chest (`ownCopy`).
 - Clio (once Quill), the library cat, has a corner under the portrait on the Grand Hall's west wall by the fire
   (`clioCorner` in game.js, x −18, z −21 to −19): a wicker basket she sometimes sleeps in, a saucer of milk she drinks
   from (the jug beside it fills it), a scratching post, and a tin of treats on a shelf. Her errands to them are run
@@ -298,13 +293,15 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 ## The library remembers (4 October 2026)
 
 - `living-library.js` keeps two optional paper trails in `athenaeum-library-memory-v1`: sorting ticket → Bellman’s map → Signal House ledger → *Mugby Junction*, and return slips → Departures luggage → Treasure Island map → *Treasure Island*. Only examined clues appear under **Loose leaves** in the journal; later clues never skip earlier ones. The map viewer callback also handles Previous/Next.
-- Three fictional return histories rotate each visit on the western returns table. They use existing books and the single-copy register; these are invented traces, not visitor data.
+- Three fictional return histories rotate each visit on the western returns table. They use existing books; these are invented traces, not visitor data.
 - The librarian acknowledges the Kells discovery, the Antipodes, the Map Room and completed trails, with repeatable conversation topics. Acknowledgements persist locally.
 - The existing Continue Reading stand uses saved reading timestamps, including the first page and progress below 2%. Its sign resumes the most recent available unfinished book. Failed/offline editions must not overwrite a genuine saved bookmark.
 - Seven secret editions have original library-designed gilt bindings and location notes: Dorian Gray, The Yellow Wallpaper and The King in Yellow behind the upper portrait; The House on the Borderland, The Door in the Wall and A Voyage to Arcturus in the breathing-wall passage; The Private Library in the final archive. Arcturus uses the local Standard Ebooks edition (900002), not the unbundled Gutenberg duplicate. They remain normal readable/carryable books, with binding textures protected from cover replacement. Their display stands leave the passage centre clear.
 
 ## Books and data
 
+- A book may stand on several shelves: every room shows its own copy (the single-copy register that hid all but one
+  copy of a title was removed on 27 October 2026, at the owner's wish).
 - The catalogue: the core list in `game.js`, plus `data/*` catalogues and the new arrivals. `scripts/book-pages.mjs`
   rebuilds the same list (1,288 books on 18 October 2026, the International Wing's included).
 - **New books**: add `[id or null, title, author, category, room, note]` to `data/new-books.js` (rooms are listed at
