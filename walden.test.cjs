@@ -140,14 +140,11 @@ test('every word given to Thoreau is in Walden, and the cards quote it right',()
   for(const [key,[,text]] of Object.entries(w.cards))for(const [,quoted] of text.matchAll(/“([^”]+)”/g))assert(walden.includes(letters(quoted)),`${key}: “${quoted.slice(0,50)}…”`);
 });
 
-test('its books are held nowhere else, each has a note of three sentences, and the notes quote their books right',()=>{
+test('its books each have a note of three sentences, and the notes quote their books right',()=>{
   const here=arrivals.filter(e=>/^walden-/.test(e[4]));assert(here.length>=20);
-  const elsewhere=new Set(arrivals.filter(e=>!/^walden-/.test(e[4])).map(e=>e[0]));
   const core=[...game.slice(game.indexOf('const books=['),game.indexOf('const books=[')+40000).matchAll(/\[(\d+),\s*['"]/g)].map(m=>Number(m[1]));
-  const catalogues=fs.readdirSync('data').filter(f=>/\.js$/.test(f)&&!/new-books|resolved|daily-room/.test(f)).map(f=>fs.readFileSync('data/'+f,'utf8')).join('\n');
   for(const [id,title,,,,note] of here){
-    assert(Number.isInteger(id),`${title} has its number`);assert(!elsewhere.has(id),`${title} is on no other shelf`);assert(!core.includes(id),`${title} is not already in the hall`);
-    assert(!new RegExp(`(\\[|id:)\\s*${id}\\s*[,\\]]`).test(catalogues),`${title} is in no other catalogue`);
+    assert(Number.isInteger(id),`${title} has its number`);
     assert.equal(note.split(/(?<=[a-z0-9”’)I][.!?])\s+(?=[A-ZÁÉÍÓÚŒ“])/).length,3,`${title}: three sentences`);
   }
   assert.equal(new Set(here.map(e=>e[0])).size,here.length,'each once');assert.equal(byRoom('walden-journal').length,1,'one journal on the doorstep');

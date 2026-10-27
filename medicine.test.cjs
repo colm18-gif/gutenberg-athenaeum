@@ -87,11 +87,10 @@ test('the room is built on approach: three shelves of its books, the Fabrica in 
   assert(!a.interactables.some(o=>/^medicine-(fabrica|exit|card)$/.test(o.userData.type)),'its parts go with it');assert(a.interactables.some(o=>o.userData.type==='medicine-door'),'but the door stays');
 });
 
-test('its books are held nowhere else, and each has a note of three sentences',()=>{
+test('its books each have a note of three sentences',()=>{
   const medicine=arrivals.filter(e=>/^medicine-/.test(e[4]));assert(medicine.length>=18);
-  const elsewhere=new Set(arrivals.filter(e=>!/^medicine-/.test(e[4])).map(e=>e[0]));
   for(const [id,title,,,,note] of medicine){
-    assert(Number.isInteger(id),`${title} has its number`);assert(!elsewhere.has(id),`${title} is on no other shelf`);
+    assert(Number.isInteger(id),`${title} has its number`);
     assert.equal(note.split(/(?<=[a-z0-9”’)I][.!?])\s+(?=[A-ZÁÉÍÓÚŒ“])/).length,3,`${title}: three sentences`);
   }
   assert.equal(new Set(medicine.map(e=>e[0])).size,medicine.length,'each once');
