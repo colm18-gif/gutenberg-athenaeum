@@ -51,7 +51,7 @@
   ];
 
   window.createOtherReaders=function(options){
-    const {THREE,scene,MAT,interactables,canvasTexture,findBook,showNotice,playSample,isQuietMoment=()=>true,today=()=>new Date(),visitorsBook=null}=options;
+    const {THREE,scene,MAT,interactables,canvasTexture,findBook,showNotice,playSample,isQuietMoment=()=>true,today=()=>new Date(),visitorsBook=null,collider=null}=options;
     const dayKey=()=>today().toISOString().slice(0,10);
     // A small repeatable shuffle, so each day's choice is the same for everyone.
     function seeded(key){let h=2166136261;for(const ch of key){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}return()=>{h=Math.imul(h^h>>>15,2246822507);h=Math.imul(h^h>>>13,3266489909);return((h^=h>>>16)>>>0)/4294967296}}
@@ -107,7 +107,7 @@
       handle.userData={type:'reader-trace',id:trace.id,title:trace.title,author:'Left by another reader.',action:'LOOK',text:trace.text};interactables.push(handle);
     }
 
-    // ---- the visitors' book on a lectern by the entrance
+    // ---- the visitors' book on a lectern in the Grand Hall, in front of a reader who has just come in
     function entries(key=dayKey()){
       const rand=seeded('visitors:'+key),out=[],base=new Date(key+'T12:00:00Z');
       for(const [i,visitor] of shuffle(VISITORS,rand).slice(0,6).entries()){
@@ -132,7 +132,9 @@
       visitorsBook.onChange(list=>{shown=list;const canvas=pageMap?.image;if(canvas?.getContext){drawPage(canvas.getContext('2d'),canvas.width,canvas.height);pageMap.needsUpdate=true}});
       setTimeout(()=>visitorsBook.refresh().catch(()=>{}),6000);
     }
-    const lectern=new THREE.Group();lectern.position.set(4.5,0,29.7);lectern.rotation.y=Math.PI;scene.add(lectern);
+    // Readers arrive at x 0, z 24 facing north: the lectern stands a few steps ahead, on the rug's west side, turned to them.
+    const LECTERN={x:-2.4,z:19.6,yaw:Math.atan2(2.4,4.4)};
+    const lectern=new THREE.Group();lectern.position.set(LECTERN.x,0,LECTERN.z);lectern.rotation.y=LECTERN.yaw;scene.add(lectern);collider?.(LECTERN.x+.35,LECTERN.z,1.7,1.1);
     box(.5,1.05,.4,MAT.darkWood,0,.52,0,lectern);box(.9,.06,.7,MAT.darkWood,0,.08,0,lectern);
     const desk=box(.86,.05,.58,MAT.darkWood,0,1.12,.02,lectern);desk.rotation.x=.32;
     // The open pages glow a little, as if a reading lamp were on them, so the book catches the eye from the hall.
@@ -146,17 +148,18 @@
       c.fillStyle='#f3dcae';c.font='italic 30px Georgia';
       const lines=visitorsBook?['Please sign your name','and tell us where you are reading from']:['Read the names of readers','who came in after dark'];lines.forEach((line,i)=>c.fillText(line,W/2,168+i*40));
       c.font='34px Georgia';c.fillStyle='#d7ae60';c.fillText('✒',W/2,H-34)},640,300);
-    const stand=new THREE.Group();stand.position.set(-.95,0,.05);lectern.add(stand);
+    const stand=new THREE.Group();stand.position.set(.95,0,.05);lectern.add(stand);
     const signMaterial=std({map:signMap,emissive:0xffffff,emissiveMap:signMap,emissiveIntensity:.55,roughness:.8});
     cyl(.025,.025,1.7,colours.metal,0,.85,0,stand,8);cyl(.2,.24,.04,colours.metal,0,.02,0,stand,16);
     const board=box(1.04,.52,.04,MAT.darkWood,0,1.86,0,stand);board.rotation.x=-.12;
     const sign=part(new THREE.PlaneGeometry(.96,.45),signMaterial,0,1.865,.025,stand);sign.rotation.x=-.12;
-    // And a larger plaque on the wall above, which can be read from across the Grand Hall.
+    // And a larger plaque on the south wall by the entrance, where the book used to stand, for a reader who turns round.
     const plaqueMap=canvasTexture((c,W,H)=>{c.fillStyle='#24170d';c.fillRect(0,0,W,H);c.strokeStyle='#d7ae60';c.lineWidth=10;c.strokeRect(10,10,W-20,H-20);
       c.fillStyle='#ffe2a0';c.textAlign='center';c.font='bold 64px Georgia';c.fillText(visitorsBook?'PLEASE SIGN THE VISITORS’ BOOK':'THE VISITORS’ BOOK',W/2,H/2+10);
-      c.fillStyle='#d7ae60';c.font='italic 30px Georgia';c.fillText(visitorsBook?'Readers from every corner of the world have signed ↓':'Readers who came in after dark ↓',W/2,H-40)},1280,220);
-    box(2.5,.48,.06,MAT.darkWood,0,3.05,-.68,lectern);
-    const plaque=part(new THREE.PlaneGeometry(2.4,.41),std({map:plaqueMap,emissive:0xffffff,emissiveMap:plaqueMap,emissiveIntensity:.6,roughness:.8}),0,3.05,-.645,lectern);
+      c.fillStyle='#d7ae60';c.font='italic 30px Georgia';c.fillText('It lies open on a lectern in the hall, by the rug',W/2,H-40)},1280,220);
+    const wall=new THREE.Group();wall.position.set(4.5,0,29.7);wall.rotation.y=Math.PI;scene.add(wall);
+    box(2.5,.48,.06,MAT.darkWood,0,3.05,-.68,wall);
+    const plaque=part(new THREE.PlaneGeometry(2.4,.41),std({map:plaqueMap,emissive:0xffffff,emissiveMap:plaqueMap,emissiveIntensity:.6,roughness:.8}),0,3.05,-.645,wall);
     for(const m of [pages,desk,board,sign,plaque]){m.userData=bookData;interactables.push(m)}
 
     function interact(object){
