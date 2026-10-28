@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-27",
+ "updated": "2026-10-28",
  "days": {
-  "2026-10-14": {
-   "books": [
-    {
-     "id": 678,
-     "title": "The Cricket on the Hearth",
-     "author": "Charles Dickens"
-    },
-    {
-     "id": 20226,
-     "title": "Snow-Bound",
-     "author": "John Greenleaf Whittier"
-    },
-    {
-     "id": 27924,
-     "title": "Mugby Junction",
-     "author": "Charles Dickens"
-    },
-    {
-     "id": 503,
-     "title": "The Blue Fairy Book",
-     "author": "Andrew Lang"
-    },
-    {
-     "id": 25153,
-     "title": "Tales of a Wayside Inn",
-     "author": "Henry Wadsworth Longfellow"
-    },
-    {
-     "id": 2383,
-     "title": "The Canterbury Tales",
-     "author": "Geoffrey Chaucer"
-    },
-    {
-     "id": 128,
-     "title": "The Arabian Nights' Entertainments",
-     "author": "Anonymous"
-    },
-    {
-     "id": 23700,
-     "title": "The Decameron",
-     "author": "Giovanni Boccaccio"
-    },
-    {
-     "id": 14107,
-     "title": "The Lost Stradivarius",
-     "author": "John Meade Falkner"
-    },
-    {
-     "id": 751,
-     "title": "The Autocrat of the Breakfast-Table",
-     "author": "Oliver Wendell Holmes"
-    }
-   ],
-   "missing": []
-  },
   "2026-10-15": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 10430,
      "title": "Trips to the Moon",
      "author": "Lucian of Samosata"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-30": {
+   "books": [
+    {
+     "id": 345,
+     "title": "Dracula",
+     "author": "Bram Stoker"
+    },
+    {
+     "id": 10007,
+     "title": "Carmilla",
+     "author": "J. Sheridan Le Fanu"
+    },
+    {
+     "id": 209,
+     "title": "The Turn of the Screw",
+     "author": "Henry James"
+    },
+    {
+     "id": 41,
+     "title": "The Legend of Sleepy Hollow",
+     "author": "Washington Irving"
+    },
+    {
+     "id": 43,
+     "title": "The Strange Case of Dr. Jekyll and Mr. Hyde",
+     "author": "Robert Louis Stevenson"
+    },
+    {
+     "id": 175,
+     "title": "The Phantom of the Opera",
+     "author": "Gaston Leroux"
+    },
+    {
+     "id": 389,
+     "title": "The Great God Pan",
+     "author": "Arthur Machen"
+    },
+    {
+     "id": 8492,
+     "title": "The King in Yellow",
+     "author": "Robert W. Chambers"
+    },
+    {
+     "id": 601,
+     "title": "The Monk: A Romance",
+     "author": "M. G. Lewis"
+    },
+    {
+     "id": 170,
+     "title": "The Haunted Hotel",
+     "author": "Wilkie Collins"
     }
    ],
    "missing": []
