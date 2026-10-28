@@ -503,7 +503,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Byrne of Free Technology for Teachers (richardbyrne@freetech4teachers.com; the site now belongs to TeacherMade), Larry
   Ferlazzo at Education Week (lferlazzo@epe.org; the English Reading Room for learners), Matt Miller of Ditch That Textbook
   (matt@ditchthattextbook.com) and the Guardian's games newsletter Pushing Buttons (pushingbuttons@theguardian.com, address
-  unconfirmed). Posts written for the owner to put up himself: a Show HN with a first comment on how it is built (it names
+  unconfirmed). Posts written for the owner to put up: a Show HN with a first comment on how it is built (it names
   the AI coding assistants, so its timing against the double-blind conference papers is the owner's call), r/InternetIsBeautiful,
   r/threejs, the Three.js forum's showcase, and a blurb for the web forms of Laughing Squid, Austin Kleon and Smithsonian.
   Not written to: Colossal (does not cover VR or literature), The Marginalian (takes no pitches); no address found for
