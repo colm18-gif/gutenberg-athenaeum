@@ -190,6 +190,9 @@ BOOKS.folio = {
   categories: ['Category:First Folio', 'Category:Mr. William Shakespeares Comedies, Histories, & Tragedies'], must: /folio|shakespeare|comedies/i,
   survey: ['Shakespeare First Folio 1623', 'First Folio page', 'Comedies, Histories, & Tragedies 1623', 'First Folio Folger', 'Shakespeare 1623 folio pdf'],
   surveyOnly: /folio|shakespeare|comedies|1623/i, thumbs: 'usable', thumbLimit: 96,
+  // The complete scan, First Folio, Shakespeare - 0001.jpg to 0907.jpg: the Comedies (a page's scan is its number plus
+  // eighteen), then every fifth scan through the Tragedies, and the last leaves.
+  thumbOnly: title => { const n = Number(/Shakespeare - (\d{4})\.jpg$/.exec(title)?.[1]); return [117, 118, 119, 120, 121, 179, 180, 181, 182, 183, 271, 272, 273, 274, 275].includes(n) || n >= 600 && n <= 895 && n % 5 === 0 || n >= 898 },
   pages: []
 };
 
@@ -288,7 +291,8 @@ async function survey(name, book) {
   console.log(`=== ${pages.length} files, ${pages.filter(p => usable(p)).length} usable ===`);
   if (book.openings) await openingSheets(book);
   // thumbs: 'usable' draws only the files the book could take (public domain, upright, large), at most 20 sheets.
-  if (book.thumbs) await thumbSheets(book, pages.filter(p => book.thumbs === 'usable' ? usable(p) : (p.imageinfo?.[0]?.height || 0) >= 900 && /jpeg|png|tiff/.test(p.imageinfo?.[0]?.mime || '')).slice(0, book.thumbLimit || 160));
+  // thumbOnly: draws only the files it picks (pages of a numbered scan, say), so far into a long book can be looked at.
+  if (book.thumbs) await thumbSheets(book, pages.filter(p => book.thumbs === 'usable' ? usable(p) : (p.imageinfo?.[0]?.height || 0) >= 900 && /jpeg|png|tiff/.test(p.imageinfo?.[0]?.mime || '')).filter(p => !book.thumbOnly || book.thumbOnly(p.title)).slice(0, book.thumbLimit || 160));
 }
 // Survey pictures of single files, numbered, eight to a sheet with their names, to be looked at and then removed.
 async function thumbSheets(book, pages) {
