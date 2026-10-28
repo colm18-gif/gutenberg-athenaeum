@@ -2293,6 +2293,14 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       onOpen:()=>{dragging=false;for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;player.vel.set(0,0,0);document.exitPointerLock?.()},
       onClose:()=>requestLookLock(),onSigned:()=>{window.libraryAnalytics?.track('Visitors Book Signed');showNotice('Your name is in the visitors’ book. Thank you for coming in.',5)}}):null;
     if(visitorsBook){const preBookActive=gameActive;gameActive=function(){return !visitorsBook.isOpen&&preBookActive()}}
+    // Readers come in facing north, with the book's lectern behind them, so it can also be opened from anywhere: the quill
+    // by the settings, and the pause menu. A reader who has never signed is reminded of it once, a few minutes in.
+    if(visitorsBook){const openFromAnywhere=()=>{ui.pause.classList.add('hidden');visitorsBook.open()};
+      for(const id of ['#visitorsButton','#pauseVisitors']){const button=$(id);button?.classList.remove('hidden');button?.addEventListener('click',openFromAnywhere)}
+      const remembered=key=>{try{return localStorage.getItem(key)}catch(e){return null}};
+      if(!remembered('athenaeum-visitors-signed')&&!remembered('athenaeum-visitors-invited')){let wait=360;const invite=setInterval(()=>{if(!started||!gameActive()||(wait-=15)>0)return;clearInterval(invite);
+        try{localStorage.setItem('athenaeum-visitors-invited','1')}catch(e){}
+        showNotice('If you have a moment, please sign the visitors’ book: it stands on a lectern by the entrance, or use the quill ✒ at the top of the screen.',9)},15000)}}
     const otherReaders=window.createOtherReaders?.({THREE,scene,MAT,interactables,canvasTexture,showNotice,playSample,findBook:id=>books.find(b=>b.id===id),visitorsBook,
       isQuietMoment:()=>gameActive()&&ui.reader.classList.contains('hidden')&&Math.abs(player.pos.x)<58&&Math.abs(player.pos.z)<32&&player.pos.y>-1&&player.pos.y<12});
     if(otherReaders){const preTraceInteract=interact;interact=function(){if(focus&&!selected&&otherReaders.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preTraceInteract()}}
