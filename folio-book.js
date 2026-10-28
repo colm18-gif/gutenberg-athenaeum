@@ -101,11 +101,13 @@
         plays:(c,w,h)=>{paper(c,w,h,9);rules(c,70,70,w-140,h-140);
           c.fillStyle=RED;c.textAlign='center';c.font=`60px ${fontFamily()}`;c.fillText('The thirty-six plays',w/2,200);
           c.fillStyle=INK;c.font=`italic 31px ${fontFamily()}`;lines(c,'In the Folio’s order. The eighteen marked † were printed here for the first time; without this book they might be lost.',w/2,256,w-300,40);
-          let y=380;
+          // Each head's plays run down two columns, in the book's order.
+          let y=430;
           for(const [head,list] of PLAYS){
-            c.fillStyle=RED;c.textAlign='center';c.font=`42px ${fontFamily()}`;c.fillText(head.toUpperCase(),w/2,y);y+=50;c.font=`30px ${fontFamily()}`;
-            list.forEach(([title,first],i)=>{const col=i%2,x=col?w/2+30:150;if(col===0&&i)y+=38;c.textAlign='left';c.fillStyle=INK;c.fillText(title,x+(first?28:0),y);if(first){c.fillStyle=RED;c.fillText('†',x,y)}});
-            y+=74;
+            c.fillStyle=RED;c.textAlign='center';c.font=`42px ${fontFamily()}`;c.fillText(head.toUpperCase(),w/2,y);y+=50;c.font=`28px ${fontFamily()}`;c.textAlign='left';
+            const rows=Math.ceil(list.length/2);
+            list.forEach(([title,first],i)=>{const x=i<rows?120:w/2+6,yy=y+(i%rows)*36;c.fillStyle=INK;c.fillText(title,x+26,yy);if(first){c.fillStyle=RED;c.fillText('†',x,yy)}});
+            y+=rows*36+46;
           }},
         about:(c,w,h)=>{paper(c,w,h,7);rules(c,70,70,w-140,h-140);
           c.fillStyle=RED;c.font=`120px ${fontFamily()}`;c.textAlign='left';c.fillText('S',130,320);
