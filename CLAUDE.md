@@ -46,10 +46,11 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   books on ciphers, herbals and failed decipherments, the shelf `ciphers` in `data/new-books.js`.
 - The fine books share one engine, `fine-books.js` (cradle, stiff board leaves, zoom, captions, loading only the spreads
   either side of the open one); each book is a description: `kells-book.js`, `durrow-book.js` (which borrows the Kells ornament), `kelmscott-book.js`,
-  `vesalius-book.js`, `voynich-book.js` (pages and cards, drawn pages, binding, paper, type). Their photographs come from Wikimedia Commons by `scripts/fetch-book-pages.mjs` (Book
+  `vesalius-book.js`, `voynich-book.js`, `folio-book.js` (pages and cards, drawn pages, binding, paper, type). Their photographs come from Wikimedia Commons by `scripts/fetch-book-pages.mjs` (Book
   images workflow; public domain only). A book listed with no pages is surveyed in the log instead (with `thumbs`, it also commits
-  numbered sheets of the larger files to `<dir>/survey`, to be looked at and removed), which is how pages are chosen from
-  what Commons really holds. A book whose description has `whole` (Kells and the Fabrica) also has
+  numbered sheets of the larger files to `<dir>/survey`, to be looked at and removed; `thumbOnly` picks which, to look far
+  into a long numbered scan), which is how pages are chosen from
+  what Commons really holds. A book whose description has `whole` (Kells, the Fabrica and the First Folio) also has
   a button, The whole book, that opens `whole-book.js`: every page of a complete public-domain scan on Commons (Trinity's
   681-image scan of Kells; the National Library of Medicine's 730-page Fabrica), fetched page by page from
   upload.wikimedia.org as the reader turns, never kept in the repository. Commons serves only standard widths (960 and 1280
@@ -145,7 +146,15 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   from en.wikisource.org by `scripts/anthology.mjs` (Anthology workflow) into `texts/bundled-gzip/pg940001.txt.gz`. Each
   poem (`POEMS`) is taken from its named first line to its last, with its stanza shape checked where a page's layout
   can't be trusted and a transcriber's slip mended only by an explicit `fix`; the teachers' page links each one by its
-  heading (`#ozymandias`). Its librarian's note counts the poems: keep it right when adding one.
+  heading (`#ozymandias`). Its librarian's note counts the poems: keep it right when adding one. In the middle of the
+  room, under glass between the novels and the table, the facsimile of the First Folio (`folio-book.js`, handed to the
+  room as `folio`; `?room=folio`) lies open at Droeshout's title page facing Jonson's To the Reader. Its twenty-five pages
+  are from the one copy on Commons photographed complete, `First Folio, Shakespeare - 0001.jpg` to `0907.jpg` (`SCAN`
+  gives each page's place; Comedies page n is scan n+18; the Tragedies are misnumbered, so a page is named for the number
+  printed on it), bound as real openings (a verso and the next photograph): the preliminaries, the Tempest, Much Ado, the
+  Merchant and Twelfth Night each opposite the FINIS before them, Romeo's feast and orchard, Caesar's Ides, Macbeth's
+  banquet and cauldron, Hamlet's "To be", and the colophon. Every quotation on its cards was read off the photograph. Its
+  whole book reads the same series a file a page (`series`, with each file's MD5 folders in `hashes`; 960 wide only).
 - The Room of Chance (`chance-room.js`, x 500, z 60, clear of the Moon at x 340, z 30) is behind a small crooked portrait
   on the east wing's east wall (x 36.6, z 2.05), between the Restricted Catalogue's gate and the Verne engraving
   (`?room=chance`): forty-two books shuffled afresh on each visit, a table, and a plaque, NO ORDER GOVERNS THESE SHELVES.

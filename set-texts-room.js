@@ -2,7 +2,8 @@
 // GCSE English Literature, for students and their teachers. Shakespeare on the west wall, the nineteenth-century novel
 // on the north wall, a long table with chairs that open one of the room's books, and on the east wall a board telling
 // teachers how to link straight to a book, a chapter or a scene (set-texts/index.html, read.html#…), with the
-// anthology of poems on a lectern beside it (scripts/anthology.mjs).
+// anthology of poems on a lectern beside it (scripts/anthology.mjs). In the middle, under glass, the facsimile of the First
+// Folio (folio-book.js) lies open at its title page, Droeshout's engraving facing Jonson's lines To the Reader.
 //
 // The English Reading Room keeps only one darker book, so these are in a room of their own. Like the other rooms behind
 // doors, nothing is built until the reader walks up to it, and it is freed a little while after they leave.
@@ -17,11 +18,11 @@
   const ANTHOLOGY=940001;
   const CARDS={
     board:['Set texts','The plays and novels most often set for GCSE English Literature. Every one has a page of its own and a plain-text version for any school computer, with a link to each chapter, act and scene: libraryafterdark.space/set-texts'],
-    sign:['The Set Texts Room','Shakespeare on the west wall, the nineteenth-century novel on the north. Sit at the table to read one of them.']
+    sign:['The Set Texts Room','Shakespeare on the west wall, the nineteenth-century novel on the north. Sit at the table to read one of them. Under the glass in the middle, the First Folio lies open for you to turn.']
   };
 
   window.createSetTextsRoom=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=[],showNotice,playSample,move,analytics,isHolding=()=>false,registerSeat=null,doorKit=null,
+    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=[],showNotice,playSample,move,analytics,isHolding=()=>false,registerSeat=null,doorKit=null,folio=null,
       learners={cx:-330,cz:-60,w:16,d:14}}=options;
     // In the English Reading Room's east wall, near its south-east corner, facing into that room.
     const DOOR={x:learners.cx+learners.w/2-.15,z:learners.cz+learners.d/2-1.9,yaw:-Math.PI/2};
@@ -35,6 +36,8 @@
     const own=thing=>{owned.push(thing);return thing};
     function add(geometry,material,x,y,z,parent){const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);parent.add(m);return m}
     const box=(w,h,d,material,x,y,z,parent)=>add(own(new THREE.BoxGeometry(w,h,d)),material,x,y,z,parent);
+    const loader=()=>THREE.TextureLoader?new THREE.TextureLoader():null;
+    function photo(url){const l=loader(),map=l?own(l.load(url)):null;if(map&&THREE.SRGBColorSpace)map.colorSpace=THREE.SRGBColorSpace;return map}
     function mark(object,data){object.userData=data;interactables.push(object);ours.push(object);return object}
     // The door in the English Reading Room stays when this room is freed, so its parts are not among the room's own.
     function markDoor(object,data){object.userData=data;interactables.push(object);return object}
@@ -98,6 +101,8 @@
         if(registerSeat){const data=registerSeat([seat,back],chair,new THREE.Vector3(0,1.3,.1),yaw,{title:'A chair at the long table',author:'Sit and read one of the set texts.'});
           Object.defineProperty(data,'bookIds',{get:()=>books.map(mesh=>mesh.userData.book.id),configurable:true});ours.push(seat,back)}
       }
+      // The First Folio under glass, between the novels and the table.
+      buildShowcase(cx,cz-2.6);
       // A pendant lamp over the table.
       const lamp=new THREE.PointLight(0xffd49a,9,16,2);lamp.position.set(cx,h-1.2,cz+.4);root.add(lamp);
       add(own(new THREE.CylinderGeometry(.2,.38,.32,14,1,true)),own(new THREE.MeshStandardMaterial({color:0xf2d6a0,emissive:0xffb35c,emissiveIntensity:1.1,roughness:.7})),cx,h-1,cz+.4,root);
@@ -105,6 +110,32 @@
       const exit={type:'settexts-exit',title:'Back to the English Reading Room',author:'The schoolroom is just the other side.',action:'RETURN'};
       if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,label:'THE ENGLISH READING ROOM',own,...DOOR_LOOK}))mark(box(1.9,3.1,.16,own(new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.7})),cx,1.55,cz+d/2-.2,root),exit);
       scene.add(root);
+    }
+    // The First Folio on show: a glass case on a plinth, the facsimile lying open in a cradle at its title page, the
+    // engraving of Shakespeare facing Jonson's lines To the Reader, as they face each other in the book.
+    function buildShowcase(x,z){
+      const g=new THREE.Group();g.position.set(x,0,z);root.add(g);
+      const brass=MAT.brass||own(new THREE.MeshStandardMaterial({color:0xb08a3e,metalness:.7,roughness:.35}));
+      const leaves=folio?.folios?Object.keys(folio.folios).length:0;
+      const data={type:'settexts-folio',title:'The First Folio, in facsimile',author:`Mr. William Shakespeares Comedies, Histories, & Tragedies, London, 1623, open at its title page.${leaves?` ${leaves} of its pages, on board leaves, and the whole book.`:''}`,action:'OPEN'};
+      const plinth=box(1.4,.95,1.05,MAT.darkWood,0,.475,0,g);box(1.5,.06,1.15,MAT.darkWood,0,.97,0,g);box(1.5,.08,1.15,MAT.darkWood,0,.04,0,g);
+      const pageW=.46,pageH=.46*1800/1190;
+      const page=(key,side)=>{const map=photo(`assets/folio/${key}-case.jpg`);
+        const mat=own(new THREE.MeshStandardMaterial({color:0xd8cdb6,map,emissive:0xffffff,emissiveMap:map,emissiveIntensity:.1,roughness:.9}));
+        const hinge=new THREE.Group();hinge.position.set(side*.01,1.09,0);hinge.rotation.z=side*-.16;g.add(hinge);
+        const m=add(own(new THREE.PlaneGeometry(pageW,pageH)),mat,side*pageW/2,0,0,hinge);m.rotation.x=-Math.PI/2;return m};
+      const left=page('reader',-1),right=page('title',1);
+      for(const side of [-1,1]){const wedge=box(.5,.08,.72,MAT.darkWood,side*.25,.95,0,g);wedge.rotation.z=side*-.16}
+      const glass=own(new THREE.MeshStandardMaterial({color:0xdfeee8,transparent:true,opacity:.045,roughness:.05,depthWrite:false}));
+      const pane=box(1.32,.5,1.05,glass,0,1.25,0,g);
+      for(const [sx,sz] of [[-1,-1],[1,-1],[-1,1],[1,1]])box(.03,.5,.03,brass,sx*.66,1.25,sz*.525,g);
+      for(const sz of [-1,1])box(1.35,.03,.03,brass,0,1.5,sz*.525,g);for(const sx of [-1,1])box(.03,.03,1.08,brass,sx*.66,1.5,0,g);
+      // The label faces the table, where the reader comes in.
+      const map=own(canvasTexture((c,W,H)=>{c.fillStyle='#1d2c3d';c.fillRect(0,0,W,H);c.strokeStyle='#d7ae60';c.lineWidth=4;c.strokeRect(8,8,W-16,H-16);c.fillStyle='#ffe2a0';c.textAlign='center';
+        c.font='bold 30px Georgia';c.fillText('THE FIRST FOLIO',W/2,60);c.font='italic 24px Georgia';c.fillText('Shakespeare’s Comedies, Histories, & Tragedies, 1623',W/2,98);c.font='20px Georgia';c.fillText('A facsimile. Open the case to turn its pages.',W/2,132)},560,160));
+      const label=add(own(new THREE.PlaneGeometry(1.05,.3)),own(new THREE.MeshStandardMaterial({map,emissive:0x2a2418,emissiveIntensity:.35,roughness:.85})),0,.7,.53,g);
+      for(const part of [plinth,pane,left,right,label])mark(part,data);
+      block(x,z,1.7,1.4);
     }
     function placeBook(book,spot,geometry,shelf){
       const mesh=add(geometry,own(bookMaterial(book)),spot.x,spot.y,spot.z,root);mesh.rotation.order='YXZ';mesh.rotation.y=spot.yaw;mesh.rotation.x=spot.tilt??-.08;
@@ -124,13 +155,14 @@
     // ---------- doing things ----------
     function enter(){
       activate();move(ROOM.cx,ROOM.cz+ROOM.d/2-1.4,0);playSample?.('doorOpen',.8,1.02);
-      showNotice('The Set Texts Room: the plays and novels set for GCSE English Literature. Shakespeare on the left, the nineteenth-century novel ahead, and a board for teachers on the right.',9);
+      showNotice('The Set Texts Room: the plays and novels set for GCSE English Literature. Shakespeare on the left, the nineteenth-century novel ahead, a board for teachers on the right, and under the glass, the First Folio of 1623, open for you to turn.',10);
       analytics?.track('Room Explored',{room:'set-texts-room'});
     }
     function interact(object){
       const data=object?.userData;if(!data||typeof data.type!=='string'||!data.type.startsWith('settexts-'))return false;
       if(data.type==='settexts-door'){through(data,enter);return true}
       if(data.type==='settexts-exit'){through(data,()=>{move(DOOR.x-1.6,DOOR.z,Math.PI/2);playSample?.('doorOpen',.8,1);showNotice('The English Reading Room again.',3)});return true}
+      if(data.type==='settexts-folio'){if(folio)folio.open();else showNotice('The case is locked tonight.',4);return true}
       if(data.type==='settexts-card'){showNotice(`${data.title}: ${data.author}`,10);return true}
       return false;
     }

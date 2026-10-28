@@ -183,6 +183,46 @@ BOOKS.audubon = {
   pages: []
 };
 
+// The Set Texts Room's fine book: Shakespeare's First Folio (Mr. William Shakespeares Comedies, Histories, &
+// Tragedies, London, 1623), folio leaves of about 330 by 210 mm. Commons holds one copy complete, a photograph a page
+// (First Folio, Shakespeare - 0001.jpg to 0907.jpg, public domain), which the facsimile and The whole book both read.
+// Chosen from a survey of the scan: real openings, the left page a verso (its number at the top left), the right a recto.
+// The preliminaries, the Tempest, three comedies beginning opposite the FINIS of the play before, a famous opening each
+// from Romeo, Caesar, Macbeth and Hamlet, and the colophon. The Comedies' page n is scan n+18; the Tragedies are
+// misnumbered and not in step, so their pages are named for the number printed on them.
+const scan = n => `First Folio, Shakespeare - ${String(n).padStart(4, '0')}.jpg`;
+BOOKS.folio = {
+  dir: 'assets/folio', manifest: 'folio.json', width: 1190, height: 1800, paper: '#ebe0c6',
+  categories: ['Category:First Folio'], must: /folio/i, display: ['reader', 'title'],
+  pages: [
+  { key: 'reader', files: [scan(2)] },
+  { key: 'title', files: [scan(3)] },
+  { key: 'dedication', files: [scan(6)] },
+  { key: 'readers', files: [scan(7)] },
+  { key: 'jonson', files: [scan(10)] },
+  { key: 'digges', files: [scan(11)] },
+  { key: 'actors', files: [scan(15)] },
+  { key: 'catalogue', files: [scan(17)] },
+  { key: 'tempest', files: [scan(19)] },
+  { key: 'errors', files: [scan(118)] },
+  { key: 'much-ado', files: [scan(119)] },
+  { key: 'dream', files: [scan(180)] },
+  { key: 'merchant', files: [scan(181)] },
+  { key: 'alls-well', files: [scan(272)] },
+  { key: 'twelfth-night', files: [scan(273)] },
+  { key: 'romeo-58', files: [scan(673)] },
+  { key: 'romeo-59', files: [scan(674)] },
+  { key: 'caesar-118', files: [scan(725)] },
+  { key: 'caesar-119', files: [scan(726)] },
+  { key: 'macbeth-142', files: [scan(749)] },
+  { key: 'macbeth-143', files: [scan(750)] },
+  { key: 'hamlet-264', files: [scan(771)] },
+  { key: 'hamlet-265', files: [scan(772)] },
+  { key: 'cymbeline', files: [scan(905)] },
+  { key: 'colophon', files: [scan(906)] }
+  ]
+};
+
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const API = 'https://commons.wikimedia.org/w/api.php';
 // Wikimedia asks for a User-Agent that says who is asking.
@@ -278,7 +318,8 @@ async function survey(name, book) {
   console.log(`=== ${pages.length} files, ${pages.filter(p => usable(p)).length} usable ===`);
   if (book.openings) await openingSheets(book);
   // thumbs: 'usable' draws only the files the book could take (public domain, upright, large), at most 20 sheets.
-  if (book.thumbs) await thumbSheets(book, pages.filter(p => book.thumbs === 'usable' ? usable(p) : (p.imageinfo?.[0]?.height || 0) >= 900 && /jpeg|png|tiff/.test(p.imageinfo?.[0]?.mime || '')).slice(0, book.thumbLimit || 160));
+  // thumbOnly: draws only the files it picks (pages of a numbered scan, say), so far into a long book can be looked at.
+  if (book.thumbs) await thumbSheets(book, pages.filter(p => book.thumbs === 'usable' ? usable(p) : (p.imageinfo?.[0]?.height || 0) >= 900 && /jpeg|png|tiff/.test(p.imageinfo?.[0]?.mime || '')).filter(p => !book.thumbOnly || book.thumbOnly(p.title)).slice(0, book.thumbLimit || 160));
 }
 // Survey pictures of single files, numbered, eight to a sheet with their names, to be looked at and then removed.
 async function thumbSheets(book, pages) {

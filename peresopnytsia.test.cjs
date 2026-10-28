@@ -10,14 +10,14 @@ const book=context.window.createPeresopnytsiaBook({THREE:{},renderer:{}});
 
 test('the Peresopnytsia Gospel loads before the game, lies under glass in the Ukrainian room and stops the world while it is open',()=>{
   assert(html.indexOf("startupScript('peresopnytsia-book.js')")>html.indexOf("startupScript('fine-books.js')"));
-  assert.match(game,/peresopnytsiaBook=window\.createPeresopnytsiaBook\?\.\(fineBookOptions\)/);assert.match(game,/\|\|peresopnytsiaBook\?\.isOpen\)/);
+  assert.match(game,/peresopnytsiaBook=window\.createPeresopnytsiaBook\?\.\(fineBookOptions\)/);assert.match(game,/\|\|peresopnytsiaBook\?\.isOpen(\|\||\))/);
   assert.match(game,/createInternationalWing\?\.\(\{doorKit:getDoorKit\(\),tone:pianoTone,gospel:peresopnytsiaBook,/);
   assert.match(wing,/type:'intl-gospel'/);assert.match(wing,/data\.type==='intl-gospel'\)\{if\(gospel\)gospel\.open\(\)/);
   assert.match(wing,/page\('mark',-1\),right=page\('l129',1\)/,'the case lies open at Mark and the first page of his Gospel');
 });
 
 test('every page of the Gospel has a card and a public-domain image, and Mark and John face their Gospels',()=>{
-  const folios=Object.keys(book.folios),block=fetcher.slice(fetcher.indexOf('peresopnytsia: {')),fetched=[...block.matchAll(/key: '([a-z0-9]+)'/g)].map(m=>m[1]);
+  const folios=Object.keys(book.folios),block=fetcher.slice(fetcher.indexOf('peresopnytsia: {'),fetcher.indexOf('BOOKS.audubon')),fetched=[...block.matchAll(/key: '([a-z0-9]+)'/g)].map(m=>m[1]);
   assert.deepEqual(fetched,folios,'scripts/fetch-book-pages.mjs fetches the same pages, in the same order');
   for(const key of folios){
     const [label,title,note]=book.folios[key];assert(label&&title&&note.length>60,`${key} has a card`);
