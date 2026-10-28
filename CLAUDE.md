@@ -497,6 +497,17 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Reading Room. The ELTE and Mona addresses are the least certain. No general address found for Lagos, Ibadan, Nairobi,
   Makerere, Pretoria, Rhodes, KwaZulu-Natal, Botswana, Tokyo, Seoul, NTU, Copenhagen, Helsinki, Leiden, Amsterdam,
   Heidelberg, Bologna, Sorbonne Nouvelle, Lisbon, the Jagiellonian, Malta, Iceland, Western Australia, Tasmania or Macquarie.
+  Victoria University of Wellington's School of Arts and Media (Alastair Baldwin) replied on 28 October that it is
+  "brilliant" and passed it to staff.
+- 28 October, aimed at the largest audiences: emails from colm18@gmail.com, with Halloween week as the hook, to Richard
+  Byrne of Free Technology for Teachers (richardbyrne@freetech4teachers.com; the site now belongs to TeacherMade), Larry
+  Ferlazzo at Education Week (lferlazzo@epe.org; the English Reading Room for learners), Matt Miller of Ditch That Textbook
+  (matt@ditchthattextbook.com) and the Guardian's games newsletter Pushing Buttons (pushingbuttons@theguardian.com, address
+  unconfirmed). Posts written for the owner to put up: a Show HN with a first comment on how it is built (it names
+  the AI coding assistants, so its timing against the double-blind conference papers is the owner's call), r/InternetIsBeautiful,
+  r/threejs, the Three.js forum's showcase, and a blurb for the web forms of Laughing Squid, Austin Kleon and Smithsonian.
+  Not written to: Colossal (does not cover VR or literature), The Marginalian (takes no pitches); no address found for
+  Neatorama, TLDR, Recomendo, The Kid Should See This or School Library Journal.
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
   AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
