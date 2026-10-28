@@ -183,17 +183,44 @@ BOOKS.audubon = {
   pages: []
 };
 
-// The Set Texts Room's book to come: Shakespeare's First Folio (Mr. William Shakespeares Comedies, Histories, &
-// Tragedies, London, 1623), folio leaves of about 330 by 210 mm. Surveyed first, to choose its pages from what Commons holds.
+// The Set Texts Room's fine book: Shakespeare's First Folio (Mr. William Shakespeares Comedies, Histories, &
+// Tragedies, London, 1623), folio leaves of about 330 by 210 mm. Commons holds one copy complete, a photograph a page
+// (First Folio, Shakespeare - 0001.jpg to 0907.jpg, public domain), which the facsimile and The whole book both read.
+// Chosen from a survey of the scan: real openings, the left page a verso (its number at the top left), the right a recto.
+// The preliminaries, the Tempest, three comedies beginning opposite the FINIS of the play before, a famous opening each
+// from Romeo, Caesar, Macbeth and Hamlet, and the colophon. The Comedies' page n is scan n+18; the Tragedies are
+// misnumbered and not in step, so their pages are named for the number printed on them.
+const scan = n => `First Folio, Shakespeare - ${String(n).padStart(4, '0')}.jpg`;
 BOOKS.folio = {
-  dir: 'assets/folio', manifest: 'folio.json', width: 1190, height: 1830, paper: '#ebe0c6',
-  categories: ['Category:First Folio', 'Category:Mr. William Shakespeares Comedies, Histories, & Tragedies'], must: /folio|shakespeare|comedies/i,
-  survey: ['Shakespeare First Folio 1623', 'First Folio page', 'Comedies, Histories, & Tragedies 1623', 'First Folio Folger', 'Shakespeare 1623 folio pdf'],
-  surveyOnly: /folio|shakespeare|comedies|1623/i, thumbs: 'usable', thumbLimit: 96,
-  // The complete scan, First Folio, Shakespeare - 0001.jpg to 0907.jpg: the Comedies (a page's scan is its number plus
-  // eighteen), then every fifth scan through the Tragedies, and the last leaves.
-  thumbOnly: title => { const n = Number(/Shakespeare - (\d{4})\.jpg$/.exec(title)?.[1]); return [117, 118, 119, 120, 121, 179, 180, 181, 182, 183, 271, 272, 273, 274, 275].includes(n) || n >= 600 && n <= 895 && n % 5 === 0 || n >= 898 },
-  pages: []
+  dir: 'assets/folio', manifest: 'folio.json', width: 1190, height: 1800, paper: '#ebe0c6',
+  categories: ['Category:First Folio'], must: /folio/i, display: ['reader', 'title'],
+  pages: [
+  { key: 'reader', files: [scan(2)] },
+  { key: 'title', files: [scan(3)] },
+  { key: 'dedication', files: [scan(6)] },
+  { key: 'readers', files: [scan(7)] },
+  { key: 'jonson', files: [scan(10)] },
+  { key: 'digges', files: [scan(11)] },
+  { key: 'actors', files: [scan(15)] },
+  { key: 'catalogue', files: [scan(17)] },
+  { key: 'tempest', files: [scan(19)] },
+  { key: 'errors', files: [scan(118)] },
+  { key: 'much-ado', files: [scan(119)] },
+  { key: 'dream', files: [scan(180)] },
+  { key: 'merchant', files: [scan(181)] },
+  { key: 'alls-well', files: [scan(272)] },
+  { key: 'twelfth-night', files: [scan(273)] },
+  { key: 'romeo-58', files: [scan(673)] },
+  { key: 'romeo-59', files: [scan(674)] },
+  { key: 'caesar-118', files: [scan(725)] },
+  { key: 'caesar-119', files: [scan(726)] },
+  { key: 'macbeth-142', files: [scan(749)] },
+  { key: 'macbeth-143', files: [scan(750)] },
+  { key: 'hamlet-264', files: [scan(771)] },
+  { key: 'hamlet-265', files: [scan(772)] },
+  { key: 'cymbeline', files: [scan(905)] },
+  { key: 'colophon', files: [scan(906)] }
+  ]
 };
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
