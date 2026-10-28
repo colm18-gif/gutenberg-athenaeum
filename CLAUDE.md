@@ -372,6 +372,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 
 ## Services
 
+- The visitors' book's lectern (`other-readers.js`, `LECTERN`) stands on the rug's west side a few steps ahead of where
+  readers arrive (x 0, z 24, facing north), turned to them; its plaque stays on the south wall. The ✒ button and the pause
+  menu open it from anywhere, and a reader who has never signed is reminded once, six minutes in.
 - The visitors' book is a Cloudflare Worker (`worker/visitors-book`, workflow `visitors-book.yml`) at
   library-visitors-book.colm18.workers.dev with KV storage. Never touch the owner's other worker, `theaijournal-mcp`.
   Secrets live in GitHub (`CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, optionally `VISITORS_BOOK_ADMIN_TOKEN`);
