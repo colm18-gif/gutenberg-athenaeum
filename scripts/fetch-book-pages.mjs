@@ -183,6 +183,16 @@ BOOKS.audubon = {
   pages: []
 };
 
+// The Set Texts Room's book to come: Shakespeare's First Folio (Mr. William Shakespeares Comedies, Histories, &
+// Tragedies, London, 1623), folio leaves of about 330 by 210 mm. Surveyed first, to choose its pages from what Commons holds.
+BOOKS.folio = {
+  dir: 'assets/folio', manifest: 'folio.json', width: 1190, height: 1830, paper: '#ebe0c6',
+  categories: ['Category:First Folio', 'Category:Mr. William Shakespeares Comedies, Histories, & Tragedies'], must: /folio|shakespeare|comedies/i,
+  survey: ['Shakespeare First Folio 1623', 'First Folio page', 'Comedies, Histories, & Tragedies 1623', 'First Folio Folger', 'Shakespeare 1623 folio pdf'],
+  surveyOnly: /folio|shakespeare|comedies|1623/i, thumbs: 'usable', thumbLimit: 96,
+  pages: []
+};
+
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const API = 'https://commons.wikimedia.org/w/api.php';
 // Wikimedia asks for a User-Agent that says who is asking.
