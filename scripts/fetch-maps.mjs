@@ -38,7 +38,8 @@ export const MAPS = [
 
 // Pictures for the reading rooms' walls, fetched the same way into assets/pictures (pictures.json for the credits).
 //   The Ukrainian Reading Room (international-wing.js): Shevchenko's Kateryna (1842), painted after his own poem, and the
-//   self-portrait he drew by the Syr Darya in 1848, in the years of his exile; Pymonenko's Ukrainian Night (1905).
+//   his Raim Fortification: View from the Shipyard on the Syr Darya (1848), drawn in exile on the Aral expedition (Commons
+//   calls it a self-portrait; the Ukrainian Book Institute gave its Ukrainian title); Pymonenko's Ukrainian Night (1905).
 export const PICTURES = [
   { key: 'shevchenko-kateryna', files: ['Шевченко Т. Г. Катерина. 1842.jpg', 'Image-Shevchenko Kateryna Olia 1842 large.jpg', 'Kateryna (Taras Shevchenko).jpg'], search: 'Shevchenko Kateryna 1842 painting' },
   { key: 'shevchenko-1848', file: '1848 - 201 - Self-portrait at the Syr Darya bank. Rayim, June 1848, Taras Shevchenko.jpg', search: 'Shevchenko self-portrait 1848' },

@@ -289,7 +289,7 @@
         new THREE.TextureLoader().load(`assets/pictures/${key}-wall.jpg`,texture=>{if(!built.ukrainian)return texture.dispose();texture.colorSpace=THREE.SRGBColorSpace;own(texture);mat.map=texture;mat.color.set(0xffffff);mat.needsUpdate=true});
         mark(face,{type:'intl-card',title:card[0],author:card[1],action:'READ'});mark(back,face.userData);return face};
       picture('shevchenko-kateryna',EX,2.95,cz-4.9,-Math.PI/2,1.48,2,['Тарас Шевченко. «Катерина», 1842','Картину Шевченко намалював за власною поемою: Катерина прощається з москалем, що від’їжджає геть. Шевченко був не лише поетом, а й художником, учнем Карла Брюллова в Петербурзькій академії мистецтв. (Taras Shevchenko’s painting Kateryna, 1842, after his own poem.)']);
-      picture('shevchenko-1848',EX,2.95,cz+4.9,-Math.PI/2,2.2,1.5,['Тарас Шевченко. Автопортрет, 1848','Шевченко намалював себе на березі Сирдар’ї в червні 1848 року, на засланні, коли його взяли художником до Аральської експедиції. Писати й малювати йому заборонив цар. (Shevchenko’s self-portrait by the Syr Darya, 1848, in the years of his exile.)']);
+      picture('shevchenko-1848',EX,2.95,cz+4.9,-Math.PI/2,2.2,1.5,['Тарас Шевченко. «Укріплення Раїм. Вид з верфі на Сир-Дар’ї», 1848','Шевченко намалював це в червні 1848 року, на засланні, коли його взяли художником до Аральської експедиції: на верфі під Раїмом складали шхуну «Костянтин», а вдалині на горі видно укріплення. Писати й малювати йому заборонив цар. (Taras Shevchenko, Raim Fortification: View from the Shipyard on the Syr Darya, 1848, drawn in exile on the Aral expedition.)']);
       picture('pymonenko-night',cx-7.2,3,S-.2,Math.PI,2.3,1.77,['Микола Пимоненко. «Українська ніч», 1905','Пимоненко все життя малював українське село: його свята, роботу й вечори. Він навчався й викладав у Києві. (Mykola Pymonenko, Ukrainian Night, 1905.)']);
 
       // The shelf of the Executed Renaissance: two tiers of four, on the south wall east of the door, under a candle.
@@ -304,7 +304,7 @@
       const flame=add(own(new THREE.ConeGeometry(.028,.09,10)),own(new THREE.MeshStandardMaterial({color:0xffc060,emissive:0xff9a30,emissiveIntensity:2.2,transparent:true,opacity:.92})),mx,3.93,S-.42,root);
       room.ticks.push(t=>{const k=1+Math.sin(t*9.1)*.08+Math.sin(t*23.7)*.05;flame.scale.set(1/k,k,1/k);flame.position.x=mx+Math.sin(t*5.3)*.004});
 
-      // Shevchenko's boot under his self-portrait, beside a small trunk; the little book on the trunk once it is found.
+      // Shevchenko's boot under his drawing of Raim, beside a small trunk; the little book on the trunk once it is found.
       const bx=EX-.55,bz=cz+4.5,leather=own(new THREE.MeshStandardMaterial({color:0x1d1611,roughness:.55}));
       const shaft=add(own(new THREE.CylinderGeometry(.085,.075,.46,14,1,true)),leather,bx,.31,bz,root),foot=add(own(new THREE.BoxGeometry(.13,.1,.3)),leather,bx,.05,bz+.08,root);
       const heel=add(own(new THREE.BoxGeometry(.12,.04,.08)),own(new THREE.MeshStandardMaterial({color:0x3a2a1a,roughness:.7})),bx,.02,bz-.06,root);
