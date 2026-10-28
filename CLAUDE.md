@@ -508,6 +508,17 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   r/threejs, the Three.js forum's showcase, and a blurb for the web forms of Laughing Squid, Austin Kleon and Smithsonian.
   Not written to: Colossal (does not cover VR or literature), The Marginalian (takes no pitches); no address found for
   Neatorama, TLDR, Recomendo, The Kid Should See This or School Library Journal.
+- Press in Ireland and Britain, sent 28 October from colm18@gmail.com to eight not written to before, each pointed at one
+  room: the Irish News, Belfast (newsdesk@irishnews.com; the Irish Room, Kells and the Burns door), RTÉ Radio 1's Arena
+  (arena@rte.ie, to Rick O'Shea; Durrow, the Samhain table, the Poe Room), the Bookseller (Maia.Snow@thebookseller.com,
+  News Editor; the Kelmscott press), the Big Issue (editorial@bigissue.com; the English Reading Room, reading cards), The Week
+  (editorialadmin@theweek.co.uk; the globe, carpet and balloon), Sunday Times Culture (culture@sunday-times.co.uk; Books
+  Within Books), the Guardian's culture desk (culture@theguardian.com; the Poe Room for Halloween) and the London Standard
+  (news@standard.co.uk; Snow's cholera map, the Kelmscott Chaucer). The Arena, Sunday Times and Standard addresses are from
+  directories or copies of contact pages. No usable address for the Munster Express (advertising only; ring 051 500 100),
+  the Business Post, Irish Mirror, Irish Daily Mail, IrishCentral, Tuairisc.ie, Books Ireland, Totally Dublin, Hot Press,
+  Metro, the Telegraph, the i, Prospect, the TLS, Eurogamer or Radio 4's Front Row and Open Book. Letters pages that could
+  take a short letter: The Oldie (letters@theoldie.co.uk) and the Herald, Glasgow (letters@theherald.co.uk; Burns Night).
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
   AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
