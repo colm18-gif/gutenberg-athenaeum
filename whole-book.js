@@ -9,7 +9,12 @@
 
   // The address Commons serves a page of a multi-page file at: its name, the two folders made from the name's MD5 (given
   // by the book, since browsers have no MD5), the page and the width.
-  function pageUrl(spec,page,width){const name=encodeURIComponent(spec.file.replace(/ /g,'_'));return `https://upload.wikimedia.org/wikipedia/commons/thumb/${spec.hash}/${name}/page${page}-${width}px-${name}.jpg`}
+  // A scan kept as one file a page (`series`, as the First Folio's is) gives each file's two folders as `hashes`, two
+  // hexadecimal digits a page.
+  function pageUrl(spec,page,width){
+    if(spec.series){const name=encodeURIComponent(spec.series(page).replace(/ /g,'_')),h=spec.hashes.slice(2*(page-1),2*page);return `https://upload.wikimedia.org/wikipedia/commons/thumb/${h[0]}/${h}/${name}/${width}px-${name}`}
+    const name=encodeURIComponent(spec.file.replace(/ /g,'_'));return `https://upload.wikimedia.org/wikipedia/commons/thumb/${spec.hash}/${name}/page${page}-${width}px-${name}.jpg`;
+  }
 
   window.createWholeBook=function(spec,{onOpen=null,onClose=null,analytics=null,storage=(()=>{try{return window.localStorage}catch(e){return null}})()}={}){
     const KEY=`athenaeum-whole-${spec.id}`,PAGES=spec.pages;
