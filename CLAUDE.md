@@ -542,7 +542,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   (teachers add resources through their accounts). Add any texts INOTE names. Also to Irish school librarians: the LAI's
   School Libraries Group (schoollibrariesgroup@libraryassociation.ie; SLARI was dissolved into it in 2021), asked to share
   it on its list, and Waterford Libraries' Schools Service at Carrickphierish (carrickphierishlibrary@waterfordcouncil.ie).
-  No central address found for the JCSP Demonstration Library Project's thirty school librarians; CILIP Ireland hides its
+  The JCSP Demonstration Library Project's thirty school librarians, through its Senior Project Librarian, Kathleen
+  Moran (info@jcsplibraries.ie, an address the owner gave), offering to show it to the group. CILIP Ireland hides its
   addresses (contact form only).
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
