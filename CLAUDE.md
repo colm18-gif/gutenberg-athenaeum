@@ -560,6 +560,10 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   and that the owner would like to build one, and ask which public-domain Canadian writers it should have: a Canadian
   room is now an open to-do (Montgomery, Leacock, Moodie, Traill, E. Pauline Johnson, Service, McCrae; build from any
   names that come back). No address for CCTELA, ATENS (Nova Scotia) or OSLA; BCTELA and ATEQ have forms only.
+  In South Africa, the first emails there, each at the African Reading Room by balloon and asking which public-domain South
+  African writers it lacks (add any named): the English Academy of Southern Africa (englishacademy@societies.wits.ac.za),
+  LIASA (liasa@liasa.org.za, for members who work with schools) and FunDza (info@fundza.co.za, from a 2012 article). No
+  address for the Shakespeare Society of Southern Africa or Nal'ibali (phone and WhatsApp only).
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
   AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
