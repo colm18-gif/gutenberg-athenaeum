@@ -545,6 +545,12 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   The JCSP Demonstration Library Project's thirty school librarians, through its Senior Project Librarian, Kathleen
   Moran (info@jcsplibraries.ie, an address the owner gave), offering to show it to the group. CILIP Ireland hides its
   addresses (contact form only).
+- Also 29 October, to English teachers' associations abroad, with the NATE piece: AATE (aate@aate.org.au; asked to pass
+  it to the state associations), ETA NSW (admin@englishteacher.com.au, from a 2020 journal) and VATE (council@vate.org.au),
+  all at the Australian Room through the globe; NZATE (secretary@nzate.org.nz) at the New Zealand Room; each asked which
+  public-domain writers of theirs the room lacks: add any they name. In the US, Carol Jago, who takes submissions for
+  CATE's California English (cjago@caroljago.com), at the Poe Room and Walden. No address found for NCTE (web form only),
+  CCTELA, or the New York, Michigan, Ohio and Wisconsin councils; BCTELA and ATEQ (Quebec) have contact forms only.
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
   AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
