@@ -533,6 +533,13 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   the Business Post, Irish Mirror, Irish Daily Mail, IrishCentral, Tuairisc.ie, Books Ireland, Totally Dublin, Hot Press,
   Metro, the Telegraph, the i, Prospect, the TLS, Eurogamer or Radio 4's Front Row and Open Book. Letters pages that could
   take a short letter: The Oldie (letters@theoldie.co.uk) and the Herald, Glasgow (letters@theherald.co.uk; Burns Night).
+- 29 October: NATE published the owner's blog post, "A library made for exploration"
+  (nate.org.uk/2026/10/29/a-library-made-for-exploration/). The same day, from colm18@gmail.com, to Irish English teachers
+  not written to before, each led by the Irish Room and Kells, with the Set Texts Room and the NATE piece: INOTE
+  (info@inote.ie; asked which public-domain texts and poets Irish teachers teach that the library lacks), ASTIR
+  (astir@asti.ie), TUI (tui@tui.ie, for TUI News) and the Waterford Teachers' Centre (info@wtc.ie; offered to show it to
+  teachers there). Already written to before: Oide, JCT, Poetry Ireland's Writers in Schools. Scoilnet has no address
+  (teachers add resources through their accounts). Add any texts INOTE names.
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
   AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
