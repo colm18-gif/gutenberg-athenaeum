@@ -554,7 +554,12 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   In the UK, three not written to before: LitDrive (litdriveuk@hotmail.com, the Charity Commission's address; the Set
   Texts Room), UKLA (admin@ukla.org; the globe, the Deep Wood, Clio) and the ASLS (office@asls.org.uk, to Duncan Jones; the
   Burns Room for its Schools Conference, asking for corrections and Scottish writers the shelves lack). No current
-  address for Teach Secondary's editor or the RSC's education team.
+  address for Teach Secondary's editor or the RSC's education team. In Canada: Canadian School Libraries
+  (info@canadianschoollibraries.ca; asked to pass it to the provincial associations) and the Manitoba Teachers' Society
+  (info@mbteach.org, for the Manitoba Association of Teachers of English). Both say the library has no Canadian room yet
+  and that the owner would like to build one, and ask which public-domain Canadian writers it should have: a Canadian
+  room is now an open to-do (Montgomery, Leacock, Moodie, Traill, E. Pauline Johnson, Service, McCrae; build from any
+  names that come back). No address for CCTELA, ATENS (Nova Scotia) or OSLA; BCTELA and ATEQ have forms only.
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
   AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
