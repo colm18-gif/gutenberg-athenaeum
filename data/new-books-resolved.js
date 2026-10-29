@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-10-26",
+ "updated": "2026-10-29",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -1578,6 +1578,118 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Tam O’Shanter": {
    "id": 25733,
    "words": 1721
+  },
+  "Emily of New Moon": {
+   "id": 61236,
+   "words": 116035
+  },
+  "The Blue Castle": {
+   "id": 67979,
+   "words": 69978
+  },
+  "Sunshine Sketches of a Little Town": {
+   "id": 3533,
+   "words": 60782
+  },
+  "The Imperialist": {
+   "id": 5301,
+   "words": 104957
+  },
+  "Maria Chapdelaine": {
+   "id": 4383,
+   "words": 46593
+  },
+  "The Golden Dog": {
+   "id": 2735,
+   "words": 230761
+  },
+  "The History of Emily Montague": {
+   "id": 16300,
+   "words": 113479
+  },
+  "Glengarry School Days": {
+   "id": 3243,
+   "words": 60439
+  },
+  "Beautiful Joe": {
+   "id": 2818,
+   "words": 90140
+  },
+  "Sowing Seeds in Danny": {
+   "id": 4376,
+   "words": 56773
+  },
+  "The Clockmaker": {
+   "id": 9196,
+   "words": 73670
+  },
+  "Roughing It in the Bush": {
+   "id": 4389,
+   "words": 181282
+  },
+  "The Backwoods of Canada": {
+   "id": 13559,
+   "words": 88106
+  },
+  "Sketches in Canada": {
+   "id": 35224,
+   "words": 118686
+  },
+  "A Journey to the Northern Ocean": {
+   "id": 38404,
+   "words": 166450
+  },
+  "Voyages from Montreal": {
+   "id": 35658,
+   "words": 79272
+  },
+  "Narrative of a Journey to the Shores of the Polar Sea": {
+   "id": 18979,
+   "words": 84684
+  },
+  "The Great Lone Land": {
+   "id": 15401,
+   "words": 128548
+  },
+  "The Arctic Prairies": {
+   "id": 6818,
+   "words": 65983
+  },
+  "The Kindred of the Wild": {
+   "id": 46040,
+   "words": 56820
+  },
+  "Legends of Vancouver": {
+   "id": 3478,
+   "words": 28779
+  },
+  "Flint and Feather": {
+   "id": 5625,
+   "words": 25919
+  },
+  "In Flanders Fields": {
+   "id": 353,
+   "words": 29033
+  },
+  "Ballads of a Cheechako": {
+   "id": 259,
+   "words": 19282
+  },
+  "Among the Millet": {
+   "id": 12413,
+   "words": 23934
+  },
+  "Low Tide on Grand Pré": {
+   "id": 56300,
+   "words": 7094
+  },
+  "Old Spookses’ Pass, Malcolm’s Katie, and Other Poems": {
+   "id": 6815,
+   "words": 40903
+  },
+  "The Spell of the Yukon": {
+   "id": 207,
+   "words": 13467
   },
   "Grimm’s Fairy Tales": {
    "id": 52521,
