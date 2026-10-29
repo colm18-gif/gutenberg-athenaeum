@@ -569,6 +569,11 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   (indiaeltai@gmail.com, cc eltai_india@yahoo.co.in) with the NATE piece. All three say the library has too few Indian
   writers and ask for public-domain suggestions: an Indian shelf (Tagore, Toru Dutt, Sarojini Naidu, the Panchatantra)
   is an open to-do; add any names that come back. Already written to before: StoryWeaver, Delhi's English department.
+  In Singapore, the first emails there: NIE's English Language and Literature department (head.ell@nie.edu.sg, to its
+  head, Csilla Weninger; from a 2024 job advertisement), ELIS, the Ministry of Education's academy for English teachers
+  (its principal, Phyllis Chua, phyllis_chua@moe.gov.sg, from the government directory; asked to share it with its
+  learning communities) and the Singapore Book Council (info@bookcouncil.sg). No address found for the Library
+  Association of Singapore or any English or Literature teachers' association there.
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
   AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
