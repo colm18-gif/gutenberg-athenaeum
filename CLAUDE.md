@@ -551,6 +551,10 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   public-domain writers of theirs the room lacks: add any they name. In the US, Carol Jago, who takes submissions for
   CATE's California English (cjago@caroljago.com), at the Poe Room and Walden. No address found for NCTE (web form only),
   CCTELA, or the New York, Michigan, Ohio and Wisconsin councils; BCTELA and ATEQ (Quebec) have contact forms only.
+  In the UK, three not written to before: LitDrive (litdriveuk@hotmail.com, the Charity Commission's address; the Set
+  Texts Room), UKLA (admin@ukla.org; the globe, the Deep Wood, Clio) and the ASLS (office@asls.org.uk, to Duncan Jones; the
+  Burns Room for its Schools Conference, asking for corrections and Scottish writers the shelves lack). No current
+  address for Teach Secondary's editor or the RSC's education team.
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
   AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
