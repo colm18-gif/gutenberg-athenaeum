@@ -539,7 +539,12 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   (info@inote.ie; asked which public-domain texts and poets Irish teachers teach that the library lacks), ASTIR
   (astir@asti.ie), TUI (tui@tui.ie, for TUI News) and the Waterford Teachers' Centre (info@wtc.ie; offered to show it to
   teachers there). Already written to before: Oide, JCT, Poetry Ireland's Writers in Schools. Scoilnet has no address
-  (teachers add resources through their accounts). Add any texts INOTE names.
+  (teachers add resources through their accounts). Add any texts INOTE names. Also to Irish school librarians: the LAI's
+  School Libraries Group (schoollibrariesgroup@libraryassociation.ie; SLARI was dissolved into it in 2021), asked to share
+  it on its list, and Waterford Libraries' Schools Service at Carrickphierish (carrickphierishlibrary@waterfordcouncil.ie).
+  The JCSP Demonstration Library Project's thirty school librarians, through its Senior Project Librarian, Kathleen
+  Moran (info@jcsplibraries.ie, an address the owner gave), offering to show it to the group. CILIP Ireland hides its
+  addresses (contact form only).
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
   AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
