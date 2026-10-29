@@ -97,15 +97,17 @@
     const end=text.search(/\*\*\* ?END OF (THE|THIS) (PROJECT GUTENBERG EBOOK|WIKISOURCE TEXT)/i);if(end>1000)text=text.slice(0,end);
     return text.replace(/\r/g,'').trim();
   }
+  // Books that are all poems keep every line as it is set, however long (Exposure's are too long for the test below).
+  const VERSE=new Set(['940001']);
   function render(text,lang){
-    const cjk=/^zh/.test(lang),frag=document.createDocumentFragment();
+    const cjk=/^zh/.test(lang),frag=document.createDocumentFragment(),verse=VERSE.has(String(id));
     for(const block of text.split(/\n\s*\n/)){
       const lines=block.split('\n').map(l=>l.trim()).filter(Boolean);if(!lines.length)continue;
       const p=document.createElement('p'),joined=lines.join(cjk?'':' ');
       // Short lines in capitals, or "CHAPTER …", read as headings.
       if(joined.length<80&&(/^(chapter|book|part|canto|act|scene|stave|letter|prologue|epilogue|capítulo|chapitre|livre|розділ|частина)\b/i.test(joined)||(joined===joined.toUpperCase()&&/[A-ZÀ-ÞА-Я]/.test(joined))))p.className='head';
       // Poetry, and lists such as a table of contents, keep their lines; prose (wrapped at about 70 characters) flows.
-      if(lines.length>1&&!cjk&&(lines.reduce((n,l)=>n+l.length,0)/lines.length<50||lines.filter(l=>/^(chapter|book|part|canto|act|letter|[ivxlc]+\.|\d+\.)\s/i.test(l)).length>=2)){lines.forEach((l,i)=>{if(i)p.append(document.createElement('br'));p.append(l)})}else p.textContent=joined;
+      if(lines.length>1&&!cjk&&(verse||lines.reduce((n,l)=>n+l.length,0)/lines.length<50||lines.filter(l=>/^(chapter|book|part|canto|act|letter|[ivxlc]+\.|\d+\.)\s/i.test(l)).length>=2)){lines.forEach((l,i)=>{if(i)p.append(document.createElement('br'));p.append(l)})}else p.textContent=joined;
       frag.append(p);
     }
     $('text').append(frag);
