@@ -13,7 +13,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Files the jobs rewrite without a new build are listed in `LIVE_DATA` there.
 - Rooms behind doors (`evening-room.js`, `learners-room.js`, `periodicals-room.js`, `international-wing.js`,
   `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`, `map-room.js`, `medicine-room.js`, `set-texts-room.js`,
-  `austen-room.js`, `burns-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`, `walden.js`)
+  `austen-room.js`, `burns-room.js`, `canada-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`, `walden.js`)
   are built only when the reader approaches and freed ~25 s after they leave. So are the Room of Chance (its portrait
   stays), the Lost Property Office (its hatch stays) and the high staircase, Rocket Hall, Moon and rocket cabin (`high-staircase.js`: only its door in the west wing
   is built at startup; a stair book carried away keeps it). The basement and the roof garden, built in `game.js` on a first visit, are
@@ -95,6 +95,16 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Devil's pipes (voice `pipes`) until "Weel done, Cutty-sark!", and Tam O'Shanter (shelf `burns-cutty`) is left on the
   sill, found for good (`athenaeum-burns-cutty-sark`; `?cuttysark`). The Grand Hall's walls are full, which is why the
   door is in the Irish Room. Built for Burns Night (25 January): Burns clubs plan their suppers in November and December.
+- The Canadian Room (`canada-room.js`, x 500, z −580) is through a barn-red door at the east end of the Burns Room's north
+  wall, past the hearth and the fiddle (so many Scots went to Canada, and Service grew up in Ayrshire; `?room=canada`,
+  `yukon`, `mcgee`): a log room with a box stove, a birchbark canoe hung from the beams, snowshoes, and a window on a
+  frozen lake under the northern lights (a painted view with a second, additive texture that drifts; no light). Shelves
+  `canada-stories` (after the library's own Anne, `OWN`), `canada-north` and `canada-poets` (left of the window) in
+  `data/new-books.js`; a window seat on a point blanket and two chairs at the table are seats; loons in `room-ambience.js`.
+  The secret is Sam McGee in the stove: opening it quotes him (`MCGEE`, checked against pg207 once bundled) and leaves The
+  Spell of the Yukon (`canada-sourdough`) on the woodbox, found for good (`athenaeum-canada-sam-mcgee`; `?mcgee`). From 1 to
+  11 November a wreath of poppies hangs inside the door with McCrae's lines (`?poppies` shows it). Service died in 1958:
+  public domain in the US and Canada, not yet in Britain or Ireland (as with other Gutenberg authors here).
 - Walden Pond (`walden.js`, centre x 900, z −100; walkable within 32 m) is out through a glazed green garden door at the east
   end of the Naturalist's Cabinet's south wall, past the window and the writing table (`?room=walden`, `thoreau`, `concord`):
   Thoreau's clearing on a summer night, with the house (ten feet by fifteen, door at the south end, brick fireplace
@@ -356,7 +366,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, boathouse,
-  daily-room, poe, irish, maps, medicine, naturalist, walden, austen, burns, forest, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
+  daily-room, poe, irish, maps, medicine, naturalist, walden, austen, burns, canada, forest, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.
@@ -557,9 +567,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   address for Teach Secondary's editor or the RSC's education team. In Canada: Canadian School Libraries
   (info@canadianschoollibraries.ca; asked to pass it to the provincial associations) and the Manitoba Teachers' Society
   (info@mbteach.org, for the Manitoba Association of Teachers of English). Both say the library has no Canadian room yet
-  and that the owner would like to build one, and ask which public-domain Canadian writers it should have: a Canadian
-  room is now an open to-do (Montgomery, Leacock, Moodie, Traill, E. Pauline Johnson, Service, McCrae; build from any
-  names that come back). No address for CCTELA, ATENS (Nova Scotia) or OSLA; BCTELA and ATEQ have forms only.
+  and that the owner would like to build one, and ask which public-domain Canadian writers it should have. The Canadian
+  Room was built on 29 October (through the Burns Room): add any names that come back to its shelves, and tell them it is open. No address for CCTELA, ATENS (Nova Scotia) or OSLA; BCTELA and ATEQ have forms only.
   In South Africa, the first emails there, each at the African Reading Room by balloon and asking which public-domain South
   African writers it lacks (add any named): the English Academy of Southern Africa (englishacademy@societies.wits.ac.za),
   LIASA (liasa@liasa.org.za, for members who work with schools) and FunDza (info@fundza.co.za, from a 2012 article). No
