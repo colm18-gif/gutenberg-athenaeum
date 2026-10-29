@@ -1,25 +1,44 @@
-# Walden: Thoreau, Concord and the Transcendentalists
-; Thoreau ; en
-Thoreau ; ; en
-; Emerson, Ralph ; en
-; Fuller, Margaret ; en
-; Alcott, A|Alcott, Amos ; en
-Transcendental ; ; en
-Fruitlands|Wild Oats ; ;
-; Channing, William Ellery ; en
-; Sanborn ; en
-Note-?Books|Notebooks ; Hawthorne ;
-Old Manse|Concord ; ; en
-Brook Farm|Blithedale ; ;
-; Ripley, George ; en
-; Peabody, Elizabeth ; en
-; Very, Jones ; en
-; Dickinson, Emily ; en
-; Whitman, Walt ; en
-; Higginson ; en
-; Salt, Henry ; en
-; Japp ; en
-Dial ; ; en
-Pond|Walden ; ; en
-Loon ; ; en
-= 205 4232 9846 1022 2944 2945 29433 6312 46209 8642 42500 1322
+# The Canadian Room: Montgomery, Leacock, Moodie, Traill, Johnson, Service, McCrae and the country round them
+; Montgomery, L ; en
+; Leacock ; en
+; Moodie ; en
+; Traill, Catharine ; en
+; Johnson, E\. Pauline|Johnson, Pauline|Tekahionwake ; en
+; Service, Robert ; en
+; McCrae ; en
+Flanders ; ;
+; Haliburton ; en
+; Roberts, Charles G ; en
+; Seton, Ernest|Thompson Seton ; en
+; Connor, Ralph|Gordon, Charles William ; en
+; Duncan, Sara ; en
+; Brooke, Frances ; en
+; Parker, Gilbert ; en
+; Kirby, William ; en
+; Lampman ; en
+; Scott, Duncan Campbell ; en
+; Carman, Bliss ; en
+; Saunders, Marshall|Saunders, Margaret Marshall ; en
+; McClung ; en
+; Crawford, Isabella ; en
+; Richardson, John ; en
+; Jameson, Anna|Jameson, Mrs ; en
+; Hearne, Samuel ; en
+; Mackenzie, Alexander ; en
+; Thompson, David ; en
+; Franklin, John ; en
+; Butler, William Francis ; en
+; Drummond, William Henry ; en
+; Heavysege|Sangster|Crémazie|Cremazie ; 
+; Gaspé|Gaspe|Hémon|Hemon ; 
+Maria Chapdelaine ; ; 
+Evangeline ; ; en
+Yukon|Klondike ; ; en
+Canad ; ; en
+Hudson'?s Bay ; ; en
+Voyageur|Coureur ; ; en
+Selkirk|Red River ; ; en
+Acadia|Nova Scotia|Pictou|Cape Breton ; ; en
+Prince Edward Island|Avonlea ; ; en
+Upper Canada|Lower Canada|Quebec|Montreal|Toronto ; ; en
+Labrador|Newfoundland ; ; en
