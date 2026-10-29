@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-28",
+ "updated": "2026-10-29",
  "days": {
-  "2026-10-15": {
-   "books": [
-    {
-     "id": 8164,
-     "title": "My Man Jeeves",
-     "author": "P. G. Wodehouse"
-    },
-    {
-     "id": 2042,
-     "title": "Something New",
-     "author": "P. G. Wodehouse"
-    },
-    {
-     "id": 6753,
-     "title": "Psmith in the City",
-     "author": "P. G. Wodehouse"
-    },
-    {
-     "id": 2005,
-     "title": "Piccadilly Jim",
-     "author": "P. G. Wodehouse"
-    },
-    {
-     "id": 2233,
-     "title": "A Damsel in Distress",
-     "author": "P. G. Wodehouse"
-    },
-    {
-     "id": 1998,
-     "title": "Thus Spake Zarathustra",
-     "author": "Friedrich Wilhelm Nietzsche"
-    },
-    {
-     "id": 4363,
-     "title": "Beyond Good and Evil",
-     "author": "Friedrich Wilhelm Nietzsche"
-    },
-    {
-     "id": 228,
-     "title": "The Aeneid",
-     "author": "Virgil"
-    },
-    {
-     "id": 230,
-     "title": "The Bucolics and Eclogues",
-     "author": "Virgil"
-    },
-    {
-     "id": 52881,
-     "title": "The Joyful Wisdom",
-     "author": "Friedrich Wilhelm Nietzsche"
-    }
-   ],
-   "missing": []
-  },
   "2026-10-16": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 170,
      "title": "The Haunted Hotel",
      "author": "Wilkie Collins"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-31": {
+   "books": [
+    {
+     "id": 23684,
+     "title": "Poems Published in 1820",
+     "author": "John Keats"
+    },
+    {
+     "id": 24280,
+     "title": "Endymion",
+     "author": "John Keats"
+    },
+    {
+     "id": 60433,
+     "title": "Letters of John Keats to Fanny Brawne",
+     "author": "John Keats"
+    },
+    {
+     "id": 6130,
+     "title": "The Iliad",
+     "author": "Homer"
+    },
+    {
+     "id": 1524,
+     "title": "Hamlet",
+     "author": "William Shakespeare"
+    },
+    {
+     "id": 10119,
+     "title": "Adonais",
+     "author": "Percy Bysshe Shelley"
+    },
+    {
+     "id": 41688,
+     "title": "Keats",
+     "author": "Sidney Colvin"
+    },
+    {
+     "id": 35698,
+     "title": "Letters of John Keats to His Family and Friends",
+     "author": "John Keats"
+    },
+    {
+     "id": 8209,
+     "title": "Poems 1817",
+     "author": "John Keats"
+    },
+    {
+     "id": 14244,
+     "title": "The Romance of Tristan and Iseult",
+     "author": "Joseph Bédier"
     }
    ],
    "missing": []
