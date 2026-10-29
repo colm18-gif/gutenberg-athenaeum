@@ -86,3 +86,12 @@ test('the poetry anthology is bound from Wikisource, every poem with its poet, a
   assert.match(tidy('one\ntwo',{stanzas:[3]}).error,/2 lines/);
   assert.equal(extract('EXPOSURE\nOur brains ache\nBut nothing happens.\nmore\nBut nothing happens.\nNotes',['Our brains ache'],'But nothing happens',{final:true}).split('\n').length,4,'to the refrain’s last return');
 });
+
+test('the Anthologies keep every line of every poem, even Exposure’s long ones, in the reader and in plain text',()=>{
+  const game=fs.readFileSync('game.js','utf8'),plain=fs.readFileSync('read.html','utf8');
+  assert.match(game,/books\.push\(\{id:940001,[^}]*verse:true/);assert.match(game,/book\.verse\?keepLines\(p\):verseLines\(p\)/);
+  assert.match(plain,/const VERSE=new Set\(\['940001'\]\)/);assert.match(plain,/\(verse\|\|lines\.reduce\(/);
+  // Exposure's first stanza is set line by line in the text itself; the reader must not run it together.
+  const text=require('node:zlib').gunzipSync(fs.readFileSync('texts/bundled-gzip/pg940001.txt.gz')).toString('utf8');
+  assert.match(text,/Our brains ache, in the merciless iced east winds that knife us\.\.\.\nWearied we keep awake/);
+});
