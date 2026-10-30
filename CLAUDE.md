@@ -614,6 +614,13 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   (news@wlrfm.com; a Waterford librarian, the Irish Room and Kells) and Silicon Republic (editorial@siliconrepublic.com;
   how it is built, with no mention of AI). Web Curios (matt@webcurios.co.uk) asks not to be sent AI-written emails about
   AI-built projects: the owner is to write to Matt Muir personally, if at all. Make any corrections that come back.
+- And five more that evening, to Irish organisations not written to before: Children's Books Ireland
+  (info@childrensbooksireland.ie; the well through the Earth, the Deep Wood, Clio), the Irish Writers Centre
+  (info@irishwriterscentre.ie; Books Within Books, the Irish Room), Libraries Ireland (info@librariesireland.ie, its
+  website address, asked to pass it on; no address found for the LGMA's Libraries Development), the Games Fleadh (Dr Liam
+  Noonan at TUS, Liam.Noonan@tus.ie; an exploration game, how it is built) and Waterford Writers' Weekend (through the
+  City Arts Officer, conornolan@waterfordcouncil.ie; offered a talk or walk-through). Dense Discovery takes reader
+  suggestions at new@densediscovery.com (drafted); Sidebar.io takes links only through its Submit a Link form.
 - The Ukrainian Book Institute (ubi@ubi.org.ua; Ioanna Denysiuk, Public Relations Specialist) wrote to
   libraryafterdark1@gmail.com on 13 October with two corrections (the Raim drawing's title; Haidamaky's line breaks, which
   led to verse keeping its lines in the reader) and asked about a Russian room. Both were made, and the owner answered on
