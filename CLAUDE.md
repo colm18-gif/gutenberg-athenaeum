@@ -603,6 +603,11 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Language Teaching Centre (Dr Mohd Faisal Farish, faisalfarish@eltc.edu.my, from a 2022 document; ELTC is being
   restructured, so it may bounce). Universiti Malaya's FLL was written to on 27 October. No current address for the
   Librarians Association of Malaysia.
+- The Ukrainian Book Institute (ubi@ubi.org.ua; Ioanna Denysiuk, Public Relations Specialist) wrote to
+  libraryafterdark1@gmail.com on 13 October with two corrections (the Raim drawing's title; Haidamaky's line breaks, which
+  led to verse keeping its lines in the reader) and asked about a Russian room. Both were made, and the owner answered on
+  28 October that there will never be one. On 30 October they replied that they will post about the library on their
+  social networks in separate posts through November, most likely towards the end of the month. Answer from that address.
 - Conference papers on the library, submitted 11 October 2026, double-blind (they never name the library or link it):
   LIDA 2027 (Šibenik, 19–21 May 2027; submission no. 46, "The library as a place to get lost: serendipity, play and an
   AI-built reading room"; decisions 1 December 2026, early-bird registration to 15 February 2027) and RLUK27 (Titanic
