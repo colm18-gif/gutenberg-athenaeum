@@ -1,44 +1,29 @@
-# The Canadian Room: Montgomery, Leacock, Moodie, Traill, Johnson, Service, McCrae and the country round them
-; Montgomery, L ; en
-; Leacock ; en
-; Moodie ; en
-; Traill, Catharine ; en
-; Johnson, E\. Pauline|Johnson, Pauline|Tekahionwake ; en
-; Service, Robert ; en
-; McCrae ; en
-Flanders ; ;
-; Haliburton ; en
-; Roberts, Charles G ; en
-; Seton, Ernest|Thompson Seton ; en
-; Connor, Ralph|Gordon, Charles William ; en
-; Duncan, Sara ; en
-; Brooke, Frances ; en
-; Parker, Gilbert ; en
-; Kirby, William ; en
-; Lampman ; en
-; Scott, Duncan Campbell ; en
-; Carman, Bliss ; en
-; Saunders, Marshall|Saunders, Margaret Marshall ; en
-; McClung ; en
-; Crawford, Isabella ; en
-; Richardson, John ; en
-; Jameson, Anna|Jameson, Mrs ; en
-; Hearne, Samuel ; en
-; Mackenzie, Alexander ; en
-; Thompson, David ; en
-; Franklin, John ; en
-; Butler, William Francis ; en
-; Drummond, William Henry ; en
-; Heavysege|Sangster|Crémazie|Cremazie ; 
-; Gaspé|Gaspe|Hémon|Hemon ; 
-Maria Chapdelaine ; ; 
-Evangeline ; ; en
-Yukon|Klondike ; ; en
-Canad ; ; en
-Hudson'?s Bay ; ; en
-Voyageur|Coureur ; ; en
-Selkirk|Red River ; ; en
-Acadia|Nova Scotia|Pictou|Cape Breton ; ; en
-Prince Edward Island|Avonlea ; ; en
-Upper Canada|Lower Canada|Quebec|Montreal|Toronto ; ; en
-Labrador|Newfoundland ; ; en
+# Captain Nemo's salon: books of the sea's depths, its naturalists, wrecks and Atlantis
+Water-Babies ; Kingsley ; en
+Glaucus ; Kingsley ;
+Toilers of the Sea|Travailleurs de la mer ; Hugo ;
+Little Mermaid ; ; en
+Maracot ; ;
+; Hodgson, William Hope ; en
+Sea Raiders|In the Abyss|Thirty Strange|Plattner|Short Stories ; Wells ; en
+Mysterious Island ; Verne ; en
+Physical Geography of the Sea ; ;
+^The Sea\b|La mer ; Michelet ;
+Depths of the Sea ; ;
+Challenger ; ; en
+; Gosse, Philip ; en
+; Beebe, William ; en
+Three Cruises|Blake ; Agassiz ;
+Coral ; ; en
+Ocean World|The Ocean ; ; en
+; Figuier ; en
+Atlantis ; ; en
+Critias|Timaeus ; Plato ; en
+Sunken|Buried Treasure|Treasure-Trove ; ; en
+Diving|Diver ; ; en
+Sea-Serpent|Sea Serpent|Kraken|Octopus|Devil-Fish ; ; en
+Sea-Shore|Seashore|Rock-Pool|Rock Pool|Marine ; ; en
+Undersea|Under the Sea|Under Sea|Beneath the Sea|Bottom of the Sea ; ; en
+Mermaid|Mermen|Merman ; ; en
+Sargasso ; ; en
+Lost Continent|Lemuria|Mu\b ; ; en
