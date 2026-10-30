@@ -608,6 +608,12 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Teachers' Society passed the library to MATE (mate@mts.net), who was written to, still saying the library had no
   Canadian room (it opened on 29 October): tell them it is open when they reply; Alastair Baldwin at Victoria
   University of Wellington was thanked.
+- Also 30 October, from colm18@gmail.com, to four not written to before, each pointed at one room: CBC Books
+  (cbcbooks@cbc.ca, its book-review address; the Canadian Room and the poppies), Chytomo (chytomo@gmail.com, from a 2024
+  media register; in Ukrainian and English, the Ukrainian Reading Room and the Eneida for 9 November), WLR FM
+  (news@wlrfm.com; a Waterford librarian, the Irish Room and Kells) and Silicon Republic (editorial@siliconrepublic.com;
+  how it is built, with no mention of AI). Web Curios (matt@webcurios.co.uk) asks not to be sent AI-written emails about
+  AI-built projects: the owner is to write to Matt Muir himself, if at all. Make any corrections that come back.
 - The Ukrainian Book Institute (ubi@ubi.org.ua; Ioanna Denysiuk, Public Relations Specialist) wrote to
   libraryafterdark1@gmail.com on 13 October with two corrections (the Raim drawing's title; Haidamaky's line breaks, which
   led to verse keeping its lines in the reader) and asked about a Russian room. Both were made, and the owner answered on
