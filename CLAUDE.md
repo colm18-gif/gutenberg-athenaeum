@@ -613,7 +613,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   media register; in Ukrainian and English, the Ukrainian Reading Room and the Eneida for 9 November), WLR FM
   (news@wlrfm.com; a Waterford librarian, the Irish Room and Kells) and Silicon Republic (editorial@siliconrepublic.com;
   how it is built, with no mention of AI). Web Curios (matt@webcurios.co.uk) asks not to be sent AI-written emails about
-  AI-built projects: the owner is to write to Matt Muir himself, if at all. Make any corrections that come back.
+  AI-built projects: the owner is to write to Matt Muir personally, if at all. Make any corrections that come back.
 - The Ukrainian Book Institute (ubi@ubi.org.ua; Ioanna Denysiuk, Public Relations Specialist) wrote to
   libraryafterdark1@gmail.com on 13 October with two corrections (the Raim drawing's title; Haidamaky's line breaks, which
   led to verse keeping its lines in the reader) and asked about a Russian room. Both were made, and the owner answered on
