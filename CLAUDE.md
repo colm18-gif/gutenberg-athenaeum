@@ -146,7 +146,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   found (`athenaeum-forest-found`). Every Grimm quotation is checked against pg2591. Trees are two InstancedMeshes,
   no lights: inside the wood the sky and fog are darkened and the library's ambient and moonlight turned down.
 - The Room of Books Within Books (`within-room.js`, x 500, z −440) is reached through the card catalogue against the Grand
-  Hall's west wall (x −18.45, z 7.3, between the wing door's open leaf and the gramophone; `?room=within`). The first drawer
+  Hall's west wall (x −18.45, z 7.3, between the wing door and the gramophone; `?room=within`). The first drawer
   pulled holds a card for a book that was never written; the next, the drawer marked with a dash between Li–Ly and Ma–Me,
   slides out further than the cabinet is deep, and the reader goes in (found for good: `athenaeum-within-found`; `?within`).
   West wall: the books that never were (`NEVER`: Holmes's monographs, Moriarty's, Dr Mortimer's, then Casaubon's Key,
@@ -289,8 +289,12 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   (z −600, 40 m apart), floors between y 0 and 3 (below 0 wakes the basement). One lamp, the module's own, moves to the
   passage in use. Rooms export `activate` so a passage can build the room before the reader steps in. New back ways:
   add them to `PASSAGES`, the journal's "Back ways" group and `room-ambience.js`.
-- The doors between the Grand Hall and each wing (x ±19) are bookcases that part and slide into the walls (`wingLeaf` in
-  `game.js`: one shared spine texture, instanced shelf boards).
+- The doors between the Grand Hall and each wing (x ±19) are a two-volume set of giant books (`wingVolume` in `game.js`):
+  THE WEST WING (or EAST WING), Volume the First and Volume the Second, spines at the jambs, gilt fore-edges meeting in the
+  middle. As the reader comes near, each block of pages gathers into its spine and each cover swings into the wing like a
+  leaf of a double door, its first leaves fanning after it (marbled endpapers inside). A cover is half the doorway wide
+  (3.68 m), so its swing clears the reading tables at x ±28 and the doors on the wings' walls: a single 7.8 m cover would
+  hit them (a test keeps the width). Covers, endpapers, page and edges are drawn once and shared; spine bands are instanced.
 - Plain text: `read.html?book=ID` shows any book as one readable page (linked from every book page and the reader). Reading
   cards (`reading-card.js`, `/card` on the visitors' book worker) carry bookmarks between devices by a four-word code.
 - Every chair, sofa and bench is one of the library's seats: build it with `chair()`/`sofa()`/`bench()` in game.js, or

@@ -394,32 +394,54 @@ function coverTexture(book){if(book.secretBindingTexture)return book.secretBindi
     // openings between wings; the eastern upper wall leaves a concealed portrait passage
     for(const side of [-1,1]){const x=side*19;addBox(.5,10,22,hallWall,x,5,-20);if(side<0)addBox(.5,10,22,hallWall,x,5,20);else{addBox(.5,10,4,hallWall,x,5,15);addBox(.5,10,8,hallWall,x,5,27)}trim(x,7.4,0,.7,.5,8);trim(x,3.7,-4,.7,7.4,.5);trim(x,3.7,4,.7,7.4,.5);addBox(.5,2,26,hallWall,x,8.9,0,false);addBox(.5,10,3,hallWall,x,5,11.5);for(const z of [-6.425,6.425])addBox(.5,7.4,5.15,hallWall,x,3.7,z);addBox(.5,1.2,8,hallWall,x,7.4,0,false)}
     wallFinish?.settle(wallFinish.pieces.map(piece=>piece.mesh));
-    // Closed wing doors conceal each wing from the entrance. They slide aside as the visitor approaches.
-    // The wing doors are bookcases: from the Grand Hall each end reads as a wall of books, which parts down the middle
-    // and slides into the walls as the reader comes near. Per leaf: a backing, one instanced set of shelf boards and a
-    // painted plane of spines on each face, the spines drawn once and shared by all four leaves.
-    function wingLeaf(side,direction){
-      const W=3.85,H=6.9,rows=6,rowH=(H-.5)/rows,g=new THREE.Group();
-      const spines=wingLeaf.spines||(wingLeaf.spines=[0,1].map(seed=>{const t=canvasTexture((c,w,h)=>{c.fillStyle='#0d0805';c.fillRect(0,0,w,h);
-        const cols=['#4a1c18','#1f2e44','#2a3a26','#4a3218','#33203a','#5a4524','#1c2630','#3b1712','#24403f','#4d3b26','#2d2a24','#5b2a20'];let k=seed*7919+11;const rnd=()=>(k=(k*9301+49297)%233280)/233280,rh=h/rows;
-        for(let r=0;r<rows;r++){let x=0;const base=(r+1)*rh-rh*.06;while(x<w){const bw=10+rnd()*20,bh=rh*(.62+rnd()*.28);if(rnd()<.05){x+=6+rnd()*14;continue}// now and then a gap
-          const col=cols[Math.floor(rnd()*cols.length)];c.fillStyle=col;c.fillRect(x,base-bh,bw-1.5,bh);
-          c.fillStyle='rgba(255,236,200,.06)';c.fillRect(x+1.5,base-bh,2,bh);c.fillStyle='rgba(0,0,0,.35)';c.fillRect(x+bw-4,base-bh,2.5,bh);
-          c.fillStyle=rnd()<.5?'#a8843c':'#8a6a30';for(const f of [.1,.15,.86])c.fillRect(x+2,base-bh+bh*f,bw-5,1.6);if(rnd()<.4)c.fillRect(x+3,base-bh+bh*(.3+rnd()*.15),bw-7,bh*.08);x+=bw}}},512,1024);return t}));
-      const faceMat=wingLeaf.faceMat||(wingLeaf.faceMat=spines.map(map=>new THREE.MeshStandardMaterial({map,roughness:.88})));
-      const back=new THREE.Mesh(wingLeaf.backGeo||(wingLeaf.backGeo=new THREE.BoxGeometry(.14,H,W)),MAT.darkWood);g.add(back);
-      const boards=[];for(const face of [1,-1]){for(let r=0;r<=rows;r++)boards.push([face*.155,-H/2+.25+r*rowH-(r===rows?.02:0),0,.17,.07,W]);for(const z of [W/2-.05,-W/2+.05])boards.push([face*.155,0,z,.17,H,.1])}
-      const shelf=new THREE.InstancedMesh(wingLeaf.unit||(wingLeaf.unit=new THREE.BoxGeometry(1,1,1)),MAT.wood2||MAT.darkWood,boards.length),m=new THREE.Matrix4(),q=new THREE.Quaternion(),v=new THREE.Vector3(),sc=new THREE.Vector3();
-      boards.forEach(([x,y,z,sx,sy,sz],i)=>shelf.setMatrixAt(i,m.compose(v.set(x,y,z),q,sc.set(sx,sy,sz))));g.add(shelf);
-      for(const face of [1,-1]){const plane=new THREE.Mesh(wingLeaf.faceGeo||(wingLeaf.faceGeo=new THREE.PlaneGeometry(W-.2,H-.5)),faceMat[(face>0)===(direction>0)?0:1]);plane.position.set(face*.075,-.0,0);plane.rotation.y=face*Math.PI/2;g.add(plane)}
-      return g}
+    // Closed wing doors conceal each wing from the entrance. They open as the visitor approaches.
+    // The wing doors are a two-volume set of giant books standing in each doorway, Volume the First and Volume the
+    // Second, their spines at the jambs and their gilt fore-edges meeting in the middle. As the reader comes near, each
+    // block of pages slides into the wall and each cover swings into the wing like a leaf of a double door, its first
+    // leaves fanning after it. A cover is half the doorway wide, so its swing clears the wings' tables and doors. The
+    // covers, endpapers, page and edges are drawn once and shared by all four volumes; no lights.
+    function wingVolume(side,direction){
+      const W=3.85,H=6.9,hall=-side,hingeZ=direction*3.72,CW=3.68,first=direction===-side,g=new THREE.Group();
+      const textures=wingVolume.textures||(wingVolume.textures={});
+      const leather=wingVolume.leather||(wingVolume.leather=new THREE.MeshStandardMaterial({color:0x5a1e18,roughness:.6}));
+      const gilt=wingVolume.gilt||(wingVolume.gilt=new THREE.MeshStandardMaterial({color:0xd0a850,metalness:.75,roughness:.35}));
+      const coverKey=`${side}:${first}`,coverMat=textures[coverKey]||(textures[coverKey]=new THREE.MeshStandardMaterial({roughness:.62,map:canvasTexture((c,w,h)=>{
+        c.fillStyle='#5a1e18';c.fillRect(0,0,w,h);let k=7+side*3+(first?1:2);const rnd=()=>(k=(k*9301+49297)%233280)/233280;for(let i=0;i<5000;i++){c.fillStyle=`rgba(0,0,0,${rnd()*.12})`;c.fillRect(rnd()*w,rnd()*h,2,2)}
+        c.strokeStyle='#c9a24a';c.lineWidth=6;c.strokeRect(24,24,w-48,h-48);c.lineWidth=2;c.strokeRect(38,38,w-76,h-76);for(const [x,y] of [[38,38],[w-38,38],[38,h-38],[w-38,h-38]]){c.beginPath();c.arc(x,y,14,0,7);c.stroke()}
+        c.fillStyle='#d8b45a';c.textAlign='center';c.font='bold 46px Georgia';c.fillText('THE',w/2,h*.3);c.fillText(side<0?'WEST WING':'EAST WING',w/2,h*.38);
+        c.font='italic 26px Georgia';c.fillText(first?'Volume the First':'Volume the Second',w/2,h*.47);c.beginPath();c.arc(w/2,h*.66,46,0,7);c.stroke();c.font='bold 48px Georgia';c.fillText(first?'I':'II',w/2,h*.68)},512,768)}));
+      // The inside of the board: marbled endpapers, seen from the wing when the cover is open.
+      const endpaper=wingVolume.endpaper||(wingVolume.endpaper=new THREE.MeshStandardMaterial({roughness:.8,map:canvasTexture((c,w,h)=>{c.fillStyle='#1f3346';c.fillRect(0,0,w,h);let k=5;const rnd=()=>(k=(k*9301+49297)%233280)/233280;
+        for(let i=0;i<260;i++){const x=rnd()*w,y=rnd()*h,r=6+rnd()*26;c.fillStyle=['#2d4a63','#8a6a3a','#c9b48a','#3e2a3a','#5a7a8a'][i%5];c.globalAlpha=.55;c.beginPath();c.ellipse(x,y,r*1.6,r,rnd()*3,0,7);c.fill()}c.globalAlpha=1},256,256)}));
+      const page=wingVolume.page||(wingVolume.page=new THREE.MeshStandardMaterial({roughness:.9,side:THREE.DoubleSide,map:canvasTexture((c,w,h)=>{c.fillStyle='#efe4cc';c.fillRect(0,0,w,h);
+        c.fillStyle='#7a2a1a';c.font='bold 90px Georgia';c.fillText('C',90,140);c.fillStyle='#3a2a1a';c.font='italic 30px Georgia';c.fillText('CHAPTER THE FIRST',220,120);
+        c.fillStyle='rgba(58,42,26,.5)';for(let y=170;y<h-80;y+=21){let k=y*7;for(let x=90;x<w-90;){const ww=18+((k=(k*9301+49297)%233280)%60);if(x+ww>w-90)break;c.fillRect(x,y,ww,5);x+=ww+8}}},512,1024)}));
+      const edge=wingVolume.edge||(wingVolume.edge=new THREE.MeshStandardMaterial({roughness:.9,map:canvasTexture((c,w,h)=>{c.fillStyle='#e9dcc0';c.fillRect(0,0,w,h);for(let x=0;x<w;x+=2){c.fillStyle=x%4?'#d8c8a6':'#efe4cc';c.fillRect(x,0,1,h)}},64,256)}));
+      // The spine at the jamb, with raised bands, standing proud of the doorway.
+      const spine=new THREE.Mesh(wingVolume.spineGeo||(wingVolume.spineGeo=new THREE.BoxGeometry(.7,H,.42)),leather);spine.position.set(side*19,H/2,hingeZ-direction*.1);g.add(spine);
+      const bands=new THREE.InstancedMesh(wingVolume.bandGeo||(wingVolume.bandGeo=new THREE.BoxGeometry(.76,.12,.46)),gilt,5),m=new THREE.Matrix4();for(let i=0;i<5;i++)bands.setMatrixAt(i,m.makeTranslation(side*19,(i+1)*H/6,hingeZ-direction*.1));g.add(bands);
+      // The block of pages, with its back board on the wing's side and a gilt fore-edge: it gathers into the spine as the
+      // book opens, so nothing has to slide into the walls.
+      const block=new THREE.Group();block.position.z=hingeZ;g.add(block);
+      const pages=new THREE.Mesh(wingVolume.blockGeo||(wingVolume.blockGeo=new THREE.BoxGeometry(.4,H-.15,W-.1)),edge);pages.position.set(side*18.95,H/2,-direction*(W/2-.13));block.add(pages);
+      const back=new THREE.Mesh(wingVolume.backGeo||(wingVolume.backGeo=new THREE.BoxGeometry(.08,H,W)),leather);back.position.set(side*19.19,H/2,-direction*(W/2-.13));block.add(back);
+      const fore=new THREE.Mesh(wingVolume.foreGeo||(wingVolume.foreGeo=new THREE.BoxGeometry(.4,H-.15,.04)),gilt);fore.position.set(side*18.95,H/2,-direction*(W-.2));block.add(fore);
+      // The cover, hinged at the spine on the hall's side: the title faces the hall, the endpaper the wing.
+      const cover=new THREE.Group();cover.position.set(side*19+hall*.3,0,hingeZ);g.add(cover);
+      const faces=[leather,leather,leather,leather,leather,leather];faces[hall>0?0:1]=coverMat;faces[hall>0?1:0]=endpaper;
+      const board=new THREE.Mesh(wingVolume.boardGeo||(wingVolume.boardGeo=new THREE.BoxGeometry(.12,H,CW)),faces);board.position.set(0,H/2,-direction*CW/2);cover.add(board);
+      // The first leaves, just inside the board, which follow it open.
+      const leaves=[];for(let i=0;i<3;i++){const leaf=new THREE.Group();leaf.position.set(side*19+hall*(.22-i*.04),0,hingeZ);const p=new THREE.Mesh(wingVolume.leafGeo||(wingVolume.leafGeo=new THREE.PlaneGeometry(CW-.12,H-.25)),page);p.rotation.y=Math.PI/2;p.position.set(0,H/2,-direction*CW/2);leaf.add(p);leaf.visible=false;g.add(leaf);leaves.push(leaf)}
+      const swing=-side*direction;
+      // opening runs 0 to 1: the pages gather into the spine in the first half, the cover swings from a fifth on.
+      g.userData.open=opening=>{block.scale.z=1-.94*Math.min(1,opening*2);
+        const t=Math.max(0,Math.min(1,(opening-.2)/.8)),e=t*t*(3-2*t);cover.rotation.y=swing*e*Math.PI*.55;
+        leaves.forEach((leaf,i)=>{const f=Math.max(0,e-.08*(i+1));leaf.visible=f>0;leaf.rotation.y=swing*f*Math.PI*(.5-i*.05)})};
+      g.userData.open(0);return g}
     const wingDoors=[];
     for(const side of [-1,1]){
       const panels=[];
-      for(const direction of [-1,1]){
-        const panel=wingLeaf(side,direction);
-        panel.position.set(side*19,3.45,direction*1.95);scene.add(panel);panels.push(panel);
-      }
+      for(const direction of [-1,1]){const volume=wingVolume(side,direction);scene.add(volume);panels.push(volume)}
       wingDoors.push({side,panels,opening:0});
     }
     function playWingDoorCreak(){
@@ -445,7 +467,7 @@ function coverTexture(book){if(book.secretBindingTexture)return book.secretBindi
         if(near&&!door.wasNear&&started)playWingDoorCreak();
         door.wasNear=near;
         door.opening=THREE.MathUtils.damp(door.opening,near?1:0,5,dt);
-        for(let i=0;i<2;i++)door.panels[i].position.z=(i===0?-1:1)*(1.95+door.opening*2.15);
+        for(const volume of door.panels)volume.userData.open(door.opening);
       }
     }
     // complete roofs and lintels close every seam while preserving intentional entrances

@@ -69,8 +69,14 @@ test('the Grand Hall side of every room behind a door is the library’s walnut,
     assert(fs.readFileSync(file,'utf8').includes(`readingRoom?.('${name}'`),file);
 });
 
-test('the doors to the wings are bookcases that slide apart, drawn cheaply',()=>{
-  const fn=game.slice(game.indexOf('function wingLeaf('),game.indexOf('const wingDoors=[]'));
-  assert.match(fn,/InstancedMesh/,'shelf boards in one instanced mesh per leaf');assert.match(fn,/wingLeaf\.spines\|\|/,'one spine texture, shared');
-  assert.doesNotMatch(fn,/PointLight|URLSearchParams/);assert.match(game,/const panel=wingLeaf\(side,direction\)/);
+test('the doors to the wings are a two-volume set of giant books, drawn cheaply',()=>{
+  const fn=game.slice(game.indexOf('function wingVolume('),game.indexOf('const wingDoors=[]'));
+  assert.match(fn,/InstancedMesh/,'the spine bands in one instanced mesh per volume');
+  for(const shared of ['textures','leather','gilt','endpaper','page','edge'])assert.match(fn,new RegExp(`wingVolume\\.${shared}\\|\\|`),`${shared}, drawn once and shared`);
+  assert.match(fn,/Volume the First/);assert.match(fn,/Volume the Second/);assert.match(fn,/WEST WING/);assert.match(fn,/EAST WING/);
+  assert.doesNotMatch(fn,/PointLight|URLSearchParams/);assert.match(game,/const volume=wingVolume\(side,direction\)/);
+  assert.match(game,/for\(const volume of door\.panels\)volume\.userData\.open\(door\.opening\)/);
+  // A cover is half the doorway wide, so its swing into the wing stays well clear of the reading tables (x ±25.5 and beyond).
+  const width=Number(fn.match(/CW=([\d.]+)/)[1]),hinge=Number(fn.match(/hingeZ=direction\*([\d.]+)/)[1]);
+  assert(width<=3.9&&19+width<25.5-1,'the covers clear the wing tables');assert(hinge-width>=0,'the two covers do not overlap when shut');
 });
