@@ -150,6 +150,8 @@
       // The Canadian Room: a log room on a winter night, the box stove roaring, wind round the eaves, and now and then
       // a loon out on the lake (in winter they have gone south, but the room keeps one).
       'canada-room':{beds:[['fire',.08],['wind',.04]],events:[['crackle',24,.08],['snap',5,.07],['creak',.6,.035],['loon',.25,.035]]},
+      // Captain Nemo's Salon: the engines' hum through the hull, bubbles at the panel, the boat's frames settling.
+      'nemo-room':{beds:[['rumble',.07],['air',.025]],events:[['bubble',8,.04],['creak',.5,.035]]},
       // Books Within Books: a still room, a clock, pages turning, and now and then a drawer in the catalogue.
       'within-room':{beds:[['air',.03]],ticks:[[1.2,'tock',.02]],events:[['rustle',1.2,.045],['creak',.4,.03]]},
       'austen-room':{beds:[['air',.025]],ticks:[[1,'tick',.016]],events:[['rustle',.8,.035],['creak',.3,.03]]},

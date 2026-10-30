@@ -13,7 +13,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Files the jobs rewrite without a new build are listed in `LIVE_DATA` there.
 - Rooms behind doors (`evening-room.js`, `learners-room.js`, `periodicals-room.js`, `international-wing.js`,
   `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`, `map-room.js`, `medicine-room.js`, `set-texts-room.js`,
-  `austen-room.js`, `burns-room.js`, `canada-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`, `walden.js`)
+  `austen-room.js`, `burns-room.js`, `canada-room.js`, `nemo-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`, `walden.js`)
   are built only when the reader approaches and freed ~25 s after they leave. So are the Room of Chance (its portrait
   stays), the Lost Property Office (its hatch stays) and the high staircase, Rocket Hall, Moon and rocket cabin (`high-staircase.js`: only its door in the west wing
   is built at startup; a stair book carried away keeps it). The basement and the roof garden, built in `game.js` on a first visit, are
@@ -105,6 +105,18 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Spell of the Yukon (`canada-sourdough`) on the woodbox, found for good (`athenaeum-canada-sam-mcgee`; `?mcgee`). From 1 to
   11 November a wreath of poppies hangs inside the door with McCrae's lines (`?poppies` shows it). Service died in 1958:
   public domain in the US and Canada, not yet in Britain or Ireland (as with other Gutenberg authors here).
+- Captain Nemo's Salon (`nemo-room.js`, x 1000, z 200) is the library and drawing-room of the Nautilus, under the sea. The
+  way in is the model Nautilus on its plinth in the Extraordinary Voyages (the theme room `verne`, x 220, z 70; its lit salon
+  windows, on both sides, are type `nemo-model`); the iron hatch leads back to just south of the model (`toVerne` builds the
+  theme room first). `?room=nemo` (`nautilus`, `captain-nemo`, `atlantis`). As Verne has it: black violet ebony inlaid with
+  brass, brown leather divans (two seats, facing the panel), four unpolished globes, the great table of old pamphlets, and in
+  the north wall the great panel: iron shutters that slide open a moment after the reader comes aboard (and on a click) on
+  two crystal plates and the sea, with light shafts and fish (painted textures, no light of their own). Shelves `nemo-tales`
+  (after the library's own 164 and 1268, `OWN`), `nemo-deep` and `nemo-lost` (south wall, west of the hatch) in
+  `data/new-books.js`. The secret is the organ by the hatch: it plays on the black keys alone (`pianoTone` voice `organ`), the
+  panels close and open on Atlantis with the word chalked on the basalt, and Plato's Critias (`nemo-atlantis`) is left on the
+  music desk, found for good (`athenaeum-nemo-atlantis`; `?atlantis`). Every word given to Verne (`VERNE`) is checked against
+  `texts/pg164.txt` by a test.
 - Walden Pond (`walden.js`, centre x 900, z −100; walkable within 32 m) is out through a glazed green garden door at the east
   end of the Naturalist's Cabinet's south wall, past the window and the writing table (`?room=walden`, `thoreau`, `concord`):
   Thoreau's clearing on a summer night, with the house (ten feet by fifteen, door at the south end, brick fireplace
@@ -366,7 +378,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, boathouse,
-  daily-room, poe, irish, maps, medicine, naturalist, walden, austen, burns, canada, forest, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
+  daily-room, poe, irish, maps, medicine, naturalist, walden, austen, burns, canada, nemo, forest, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.
