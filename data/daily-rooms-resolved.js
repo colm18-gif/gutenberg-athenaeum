@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-29",
+ "updated": "2026-10-30",
  "days": {
-  "2026-10-16": {
-   "books": [
-    {
-     "id": 902,
-     "title": "The Happy Prince, and Other Tales",
-     "author": "Oscar Wilde"
-    },
-    {
-     "id": 873,
-     "title": "A House of Pomegranates",
-     "author": "Oscar Wilde"
-    },
-    {
-     "id": 14522,
-     "title": "The Canterville Ghost",
-     "author": "Oscar Wilde"
-    },
-    {
-     "id": 773,
-     "title": "Lord Arthur Savile's Crime; The Portrait of Mr. W. H., and Other Stories",
-     "author": "Oscar Wilde"
-    },
-    {
-     "id": 844,
-     "title": "The Importance of Being Earnest",
-     "author": "Oscar Wilde"
-    },
-    {
-     "id": 301,
-     "title": "The Ballad of Reading Gaol",
-     "author": "Oscar Wilde"
-    },
-    {
-     "id": 921,
-     "title": "De Profundis",
-     "author": "Oscar Wilde"
-    },
-    {
-     "id": 887,
-     "title": "Intentions",
-     "author": "Oscar Wilde"
-    },
-    {
-     "id": 790,
-     "title": "Lady Windermere's Fan",
-     "author": "Oscar Wilde"
-    },
-    {
-     "id": 1017,
-     "title": "The Soul of Man under Socialism",
-     "author": "Oscar Wilde"
-    }
-   ],
-   "missing": []
-  },
   "2026-10-17": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 14244,
      "title": "The Romance of Tristan and Iseult",
      "author": "Joseph Bédier"
+    }
+   ],
+   "missing": []
+  },
+  "2026-11-01": {
+   "books": [
+    {
+     "id": 614,
+     "title": "Across the Plains, with Other Memories and Essays",
+     "author": "Robert Louis Stevenson"
+    },
+    {
+     "id": 3020,
+     "title": "Table-Talk",
+     "author": "William Hazlitt"
+    },
+    {
+     "id": 1022,
+     "title": "Walking",
+     "author": "Henry David Thoreau"
+    },
+    {
+     "id": 29220,
+     "title": "Monday or Tuesday",
+     "author": "Virginia Woolf"
+    },
+    {
+     "id": 7952,
+     "title": "The Pleasures of Life",
+     "author": "John Lubbock"
+    },
+    {
+     "id": 470,
+     "title": "Heretics",
+     "author": "G. K. Chesterton"
+    },
+    {
+     "id": 1293,
+     "title": "Sesame and Lilies",
+     "author": "John Ruskin"
+    },
+    {
+     "id": 443,
+     "title": "The Love Affairs of a Bibliomaniac",
+     "author": "Eugene Field"
+    },
+    {
+     "id": 386,
+     "title": "Virginibus Puerisque, and Other Papers",
+     "author": "Robert Louis Stevenson"
+    },
+    {
+     "id": 17508,
+     "title": "Certain Personal Matters",
+     "author": "H. G. Wells"
     }
    ],
    "missing": []
