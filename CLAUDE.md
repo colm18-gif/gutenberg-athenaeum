@@ -180,6 +180,13 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - The Room of Chance (`chance-room.js`, x 500, z 60, clear of the Moon at x 340, z 30) is behind a small crooked portrait
   on the east wing's east wall (x 36.6, z 2.05), between the Restricted Catalogue's gate and the Verne engraving
   (`?room=chance`): forty-two books shuffled afresh on each visit, a table, and a plaque, NO ORDER GOVERNS THESE SHELVES.
+- The Wandering Door (`wandering-door.js`, x 6, z −24.5, facing east) stands on its own, in no wall, at the north end of
+  the Grand Hall behind the long bookcase (`?room=wandering-door`, `elsewhere`): ELSEWHERE gilded on its glass. Opened
+  from the front, it shows the kit's lamplit passage and sends the reader into a room chosen at random through
+  `roomLink` (never the last one twice running, `athenaeum-wandering-door-last`; seven times in ten a room not yet in the
+  journal). Its list in game.js is rooms behind ordinary doors only (theme rooms, reading rooms, the International Wing):
+  not the rooms reached by carpet, balloon, boat, rocket, the globe, the model Nautilus or the window, nor the secret ones
+  (a test checks). The way back is the room's own door. From behind, or with a book in hand, it stays shut.
 - The Lost Property Office (`book-lift.js`, x 500, z 220) is reached by a book lift, not a door: a dumbwaiter hatch in the
   west wing's south wall (x −33.9, set in the wainscot between the hidden passage and the STAFF · SORTING door). Ring the
   bell and the shutter rolls up; the reader rides the car down a shaft (floors painted on its wall: WEST WING, BASEMENT,
