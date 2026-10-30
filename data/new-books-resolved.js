@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-10-29",
+ "updated": "2026-10-30",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -1690,6 +1690,78 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "The Spell of the Yukon": {
    "id": 207,
    "words": 13467
+  },
+  "The Water-Babies": {
+   "id": 1018,
+   "words": 69688
+  },
+  "Toilers of the Sea": {
+   "id": 32338,
+   "words": 146883
+  },
+  "The Boats of the Glen Carrig": {
+   "id": 10542,
+   "words": 60648
+  },
+  "The Plattner Story, and Others": {
+   "id": 42989,
+   "words": 79031
+  },
+  "Under the Waves": {
+   "id": 23493,
+   "words": 93322
+  },
+  "Tom Swift and His Submarine Boat": {
+   "id": 949,
+   "words": 43580
+  },
+  "The Sea": {
+   "id": 42845,
+   "words": 89019
+  },
+  "The Ocean World": {
+   "id": 47626,
+   "words": 212271
+  },
+  "Glaucus": {
+   "id": 695,
+   "words": 45609
+  },
+  "A Year at the Shore": {
+   "id": 49022,
+   "words": 79520
+  },
+  "The Octopus": {
+   "id": 72133,
+   "words": 39052
+  },
+  "The Great Sea-Serpent": {
+   "id": 78334,
+   "words": 235084
+  },
+  "Atlantis": {
+   "id": 4032,
+   "words": 140203
+  },
+  "The Lost Continent": {
+   "id": 285,
+   "words": 98068
+  },
+  "The Lost Atlantis": {
+   "id": 51881,
+   "words": 154344
+  },
+  "The Book of Buried Treasure": {
+   "id": 33318,
+   "words": 125205
+  },
+  "Timaeus": {
+   "id": 1572,
+   "words": 72905
+  },
+  "Critias": {
+   "id": 1571,
+   "words": 9870
   },
   "Grimm’s Fairy Tales": {
    "id": 52521,
