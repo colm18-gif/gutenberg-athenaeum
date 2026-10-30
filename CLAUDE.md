@@ -603,6 +603,11 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Language Teaching Centre (Dr Mohd Faisal Farish, faisalfarish@eltc.edu.my, from a 2022 document; ELTC is being
   restructured, so it may bounce). Universiti Malaya's FLL was written to on 27 October. No current address for the
   Librarians Association of Malaysia.
+- 30 October, from colm18@gmail.com: Carol Jago has handed California English to Heather Macias
+  (heather.macias@gmail.com), who was sent the pitch (the Poe Room, Walden) with a thank-you to Carol; the Manitoba
+  Teachers' Society passed the library to MATE (mate@mts.net), who was written to, still saying the library had no
+  Canadian room (it opened on 29 October): tell them it is open when they reply; Alastair Baldwin at Victoria
+  University of Wellington was thanked.
 - The Ukrainian Book Institute (ubi@ubi.org.ua; Ioanna Denysiuk, Public Relations Specialist) wrote to
   libraryafterdark1@gmail.com on 13 October with two corrections (the Raim drawing's title; Haidamaky's line breaks, which
   led to verse keeping its lines in the reader) and asked about a Russian room. Both were made, and the owner answered on
