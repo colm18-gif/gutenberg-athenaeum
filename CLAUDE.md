@@ -187,6 +187,16 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   journal). Its list in game.js is rooms behind ordinary doors only (theme rooms, reading rooms, the International Wing):
   not the rooms reached by carpet, balloon, boat, rocket, the globe, the model Nautilus or the window, nor the secret ones
   (a test checks). The way back is the room's own door. From behind, or with a book in hand, it stays shut.
+- The Station Subway (`station-subway.js`) is the plain way to the night trains: in the Grand Hall's east aisle between the
+  columns (x 12.6–15.4, z −21 to −14.5, clear of the Wandering Door's forecourt), steps go down through the floor under an
+  iron arch with two lamps, signed TO THE TRAINS. The well is really sunk: its tiles and steps are drawn first (`renderOrder`
+  −2), then a lid at floor level that writes depth only (−1), so the parquet is not drawn over the opening; nothing below
+  the floor is walkable (a collider covers it), GO DOWN takes the reader to the subway. That (x 1260, z −640 to −600, built
+  on entry, freed 25 s after, one lamp of its own) is white-tiled under a vault: a stair down from the way out, posters for
+  the line's stops and two of its books (The Railway Children, Mugby Junction; every card says only what is so), a
+  departure board, a ticket machine, and gates that use the railway's own entrance to the Library Platform. A WAY OUT arch
+  on the platform's south wall (hung in the platform's group once the railway is built) leads back. The long way beyond
+  the Repository stays. `?room=subway` (`station`, `trains`, `railway`, `night-train`).
 - The Lost Property Office (`book-lift.js`, x 500, z 220) is reached by a book lift, not a door: a dumbwaiter hatch in the
   west wing's south wall (x −33.9, set in the wainscot between the hidden passage and the STAFF · SORTING door). Ring the
   bell and the shutter rolls up; the reader rides the car down a shaft (floors painted on its wall: WEST WING, BASEMENT,
@@ -388,7 +398,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   For these rooms the text's own `Language:` line must match (a title alone lets translations through). Gutendex
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
-- `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, boathouse,
+- `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
   daily-room, poe, irish, maps, medicine, naturalist, walden, austen, burns, canada, nemo, forest, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
