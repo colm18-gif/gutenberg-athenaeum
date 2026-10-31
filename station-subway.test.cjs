@@ -34,7 +34,7 @@ test('the Station Subway loads at startup and is wired into the game like the ba
   assert(order.includes('station-subway.js'));assert(order.indexOf('station-subway.js')<order.indexOf('game.js'));
   assert.match(game,/const stationSubway=window\.createStationSubway\?\.\(\{[^]*?railway:nightRailway/);
   assert(game.indexOf('const nightRailway=')<game.indexOf('const stationSubway='),'the railway is made first');
-  assert.match(game,/stationSubway\.floorAt\(x,z\)\?\?preSubwayFloor/);assert.match(game,/stationSubway\.contains\(x,z\)\?stationSubway\.allowed\(x,z\)/);
+  assert.match(game,/stationSubway\.floorAt\(x,z\)\?\?preSubwayFloor/);assert.match(game,/stationSubway\.contains\(x,z\)\|\|stationSubway\.inWell\(x,z\)\?stationSubway\.allowed\(x,z\)/);
   assert.match(game,/stationSubway\?\.update\(t\)/);assert.match(game,/if\(stationSubway\?\.contains\(x,z\)\)return 'station-subway';/);
   assert.match(game,/'station-subway':stationSubway&&\(\(\)=>stationSubway\.enter\('hall'\)\)/,'?room=station-subway goes down the steps');
   for(const alias of ['subway','station','trains'])assert.match(game,new RegExp(`[{,]${alias}:'station-subway'`),`?room=${alias}`);
@@ -44,9 +44,11 @@ test('the Station Subway loads at startup and is wired into the game like the ba
 
 test('the stairwell is in the Grand Hall’s east aisle, clear of the columns, the Wandering Door and its forecourt',()=>{
   const {subway,colliders,interactables}=world(),{x0,x1,z0,z1}=subway.well;
-  const c=colliders.find(c=>c.name==='station-stairwell');assert(c,'readers cannot walk into the well');
-  const box={minX:c.x-c.w/2,maxX:c.x+c.w/2,minZ:c.z-c.d/2,maxZ:c.z+c.d/2};
-  assert(box.minX<x0&&box.maxX>x1&&box.minZ<z0&&box.maxZ>z1,'the collider covers the opening and its railings');
+  const rails=colliders.filter(c=>c.name==='station-stairwell');assert.equal(rails.length,3,'railings on three sides');
+  const boxes=rails.map(c=>({minX:c.x-c.w/2,maxX:c.x+c.w/2,minZ:c.z-c.d/2,maxZ:c.z+c.d/2}));
+  const box={minX:Math.min(...boxes.map(b=>b.minX)),maxX:Math.max(...boxes.map(b=>b.maxX)),minZ:Math.min(...boxes.map(b=>b.minZ)),maxZ:Math.max(...boxes.map(b=>b.maxZ))};
+  assert(box.minX<x0&&box.maxX>x1&&box.minZ<z0,'the railings close the well on the west, east and north');
+  assert(!boxes.some(b=>b.minX<x1-.5&&b.maxX>x0+.5&&b.maxZ>z1-1),'the open end is not blocked: readers walk down the steps');
   // The hall's columns stand at x ±11 and ±17, z −25, −5, 15 and 27.
   for(const x of [11,17])for(const z of [-25,-5])assert(!(x+.6>box.minX&&x-.6<box.maxX&&z+.6>box.minZ&&z-.6<box.maxZ),`clear of the column at ${x}, ${z}`);
   // The Wandering Door (x 6, z −24.5) opens towards readers standing at x 10.5.
@@ -85,6 +87,18 @@ test('going down builds the subway; walking it, the gates lead to the platform a
   // And the way out goes up into the hall, in front of the well.
   subway.enter('hall');subway.interact(find(interactables,'up'));
   assert.equal(player.pos.y,0);assert(player.pos.z>subway.well.z1+.6,'the reader comes up facing away from the well, outside its railings');
+});
+
+test('a reader walks down the first steps and is taken on into the subway',()=>{
+  const {subway,player,scene}=world(),{x0,x1,z1}=subway.well,cx=(x0+x1)/2;
+  assert(subway.inWell(cx,z1-.5));assert(!subway.inWell(cx,z1+.5),'the hall floor in front is not the well');
+  assert(subway.allowed(cx,z1-.5),'the top steps can be walked');assert(!subway.allowed(x0+.2,z1-.5),'not through the railings');
+  assert(subway.floorAt(cx,z1-.1)<0&&subway.floorAt(cx,z1-1.4)<subway.floorAt(cx,z1-.5),'the floor goes down with the steps');
+  assert(subway.floorAt(cx,z1-1.49)>-1,'never deep enough to wake the basement or leave the hall (y −1)');
+  player.pos.set(cx,0,z1-1);subway.update(1);assert(!subway.built,'not yet');
+  player.pos.set(cx,-.9,z1-1.6);subway.update(2);assert(subway.built,'taken on into the subway');
+  assert(subway.contains(player.pos.x,player.pos.z));assert.equal(player.pos.y,3,'at the head of the subway’s stair, which goes on down');
+  assert(scene.children.some(c=>c.name==='station-subway'));
 });
 
 test('a way out on the Library Platform leads back through the subway, once the railway is built',()=>{

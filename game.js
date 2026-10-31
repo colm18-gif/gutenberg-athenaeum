@@ -2308,7 +2308,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     });
     if(stationSubway){
       const preSubwayFloor=floorHeight;floorHeight=function(x,z){return stationSubway.floorAt(x,z)??preSubwayFloor(x,z)};
-      const preSubwayAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return stationSubway.contains(x,z)?stationSubway.allowed(x,z):preSubwayAllowed(x,z,y)};
+      const preSubwayAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return stationSubway.contains(x,z)||stationSubway.inWell(x,z)?stationSubway.allowed(x,z):preSubwayAllowed(x,z,y)};
       const preSubwayInteract=interact;interact=function(){if(focus&&!selected&&focus.userData?.type==='station-subway'&&stationSubway.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preSubwayInteract()};
     }
     // The International Wing (international-wing.js), behind a door on the Grand Hall's south wall beside the visitors'

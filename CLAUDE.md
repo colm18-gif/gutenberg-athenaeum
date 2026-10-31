@@ -190,8 +190,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - The Station Subway (`station-subway.js`) is the plain way to the night trains: in the Grand Hall's east aisle between the
   columns (x 12.6–15.4, z −21 to −14.5, clear of the Wandering Door's forecourt), steps go down through the floor under an
   iron arch with two lamps, signed TO THE TRAINS. The well is really sunk: its tiles and steps are drawn first (`renderOrder`
-  −2), then a lid at floor level that writes depth only (−1), so the parquet is not drawn over the opening; nothing below
-  the floor is walkable (a collider covers it), GO DOWN takes the reader to the subway. That (x 1260, z −640 to −600, built
+  −2), then a lid at floor level that writes depth only (−1), so the parquet is not drawn over the opening; railings on
+  three sides are colliders; readers walk down the first steps (to about −0.9 m, above the basement's reach) and are taken
+  on into the subway (GO DOWN does the same). That (x 1260, z −640 to −600, built
   on entry, freed 25 s after, one lamp of its own) is white-tiled under a vault: a stair down from the way out, posters for
   the line's stops and two of its books (The Railway Children, Mugby Junction; every card says only what is so), a
   departure board, a ticket machine, and gates that use the railway's own entrance to the Library Platform. A WAY OUT arch

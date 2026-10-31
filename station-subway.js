@@ -90,17 +90,26 @@
       add(new THREE.BoxGeometry(2.42,.9,.06),iron,cx,2.32,z1);
       // Where a reader steps down: the open end of the well.
       mark(add(new THREE.BoxGeometry(w,1.6,.9),new THREE.MeshBasicMaterial({visible:false}),cx,.8,z1-.6),signData);
-      collider?.(cx,cz-.1,w+.7,l+.55,'station-stairwell');
+      // The railings stop readers on three sides; the open end lets them walk down the steps.
+      collider?.(x0-.12,cz-.12,.3,l+.3,'station-stairwell');collider?.(x1+.12,cz-.12,.3,l+.3,'station-stairwell');collider?.(cx,z0-.12,w+.6,.3,'station-stairwell');
     }
     hallStairwell();
+
+    // The first few steps are walked: the floor follows the stair down, and a little way down (about 0.9 m below the
+    // hall's floor, still above the basement's reach) the reader is taken on into the subway.
+    const WELL_RUN=WELL.z1-WELL.z0-1.4,STEP_IN=2,HAND_OVER=1.5;
+    function inWell(x,z){return x>WELL.x0&&x<WELL.x1&&z<=WELL.z1&&z>WELL.z1-STEP_IN}
+    function wellFloor(z){return -WELL.depth*Math.max(0,WELL.z1-z)/WELL_RUN}
+    function wellAllowed(x,z){const r=player.radius||.42;return x-r>WELL.x0+.02&&x+r<WELL.x1-.02&&z-r>WELL.z1-STEP_IN}
 
     // ---------- the subway ----------
     const W=SUB.width,half=W/2;
     function floorY(z){if(z<SUB.landing)return SUB.top;if(z<SUB.foot)return SUB.top*(SUB.foot-z)/(SUB.foot-SUB.landing);return 0}
     function contains(x,z){return Math.abs(x-SUB.x)<half+.2&&z>SUB.north-.2&&z<SUB.south+.2}
-    function floorAt(x,z){return contains(x,z)?floorY(z):null}
+    function floorAt(x,z){return contains(x,z)?floorY(z):inWell(x,z)?wellFloor(z):null}
     const blockers=[{x:SUB.x+MACHINE.side*(half-.3),z:MACHINE.z,w:.62,d:.9}];
     function allowed(x,z){
+      if(inWell(x,z))return wellAllowed(x,z);
       if(!contains(x,z))return false;const r=player.radius||.42;
       if(Math.abs(x-SUB.x)+r>half-.08||z-r<SUB.north+.15||z+r>SUB.south-.15)return false;
       return !blockers.some(b=>Math.abs(x-b.x)<b.w/2+r&&Math.abs(z-b.z)<b.d/2+r);
@@ -273,6 +282,7 @@
     // Now and then a train passes somewhere beneath: a low rumble, and the lamp trembles.
     function update(t){
       time=t;hangPlatformExit();
+      if(inWell(player.pos.x,player.pos.z)&&player.pos.z<WELL.z1-HAND_OVER){enter('hall');return}
       const inside=contains(player.pos.x,player.pos.z);
       if(!built)return;
       if(inside)lastInside=t;else if(t-lastInside>KEEP){free();return}
@@ -280,7 +290,7 @@
         if(!heardRumble){heardRumble=true;showNotice('Somewhere beneath the subway, a train passes. The lamps tremble.',5)}}
       const lamp=built.lamp,k=t<rumbleUntil&&!isReduced()?1-.18*Math.abs(Math.sin(t*23)):1;lamp.intensity=7*k;
     }
-    return {contains,floorAt,allowed,interact,update,enter,free,build,well:WELL,subway:SUB,arrive:ARRIVE,posters:POSTERS,
+    return {contains,inWell,floorAt,allowed,interact,update,enter,free,build,well:WELL,subway:SUB,arrive:ARRIVE,posters:POSTERS,
       get built(){return !!built},get platformExit(){return platformExit},zoneAt:(x,z)=>contains(x,z)?'station-subway':null};
   };
 })();
