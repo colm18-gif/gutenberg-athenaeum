@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-30",
+ "updated": "2026-10-31",
  "days": {
-  "2026-10-17": {
-   "books": [
-    {
-     "id": 204,
-     "title": "The Innocence of Father Brown",
-     "author": "G. K. Chesterton"
-    },
-    {
-     "id": 1155,
-     "title": "The Secret Adversary",
-     "author": "Agatha Christie"
-    },
-    {
-     "id": 2568,
-     "title": "Trent's Last Case",
-     "author": "E. C. Bentley"
-    },
-    {
-     "id": 1872,
-     "title": "The Red House Mystery",
-     "author": "A. A. Milne"
-    },
-    {
-     "id": 1685,
-     "title": "The Mystery of the Yellow Room",
-     "author": "Gaston Leroux"
-    },
-    {
-     "id": 434,
-     "title": "The Circular Staircase",
-     "author": "Mary Roberts Rinehart"
-    },
-    {
-     "id": 10556,
-     "title": "The Old Man in the Corner",
-     "author": "Baroness Orczy"
-    },
-    {
-     "id": 558,
-     "title": "The Thirty-Nine Steps",
-     "author": "John Buchan"
-    },
-    {
-     "id": 4047,
-     "title": "The Leavenworth Case",
-     "author": "Anna Katharine Green"
-    },
-    {
-     "id": 28164,
-     "title": "The Big Bow Mystery",
-     "author": "Israel Zangwill"
-    }
-   ],
-   "missing": []
-  },
   "2026-10-18": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 17508,
      "title": "Certain Personal Matters",
      "author": "H. G. Wells"
+    }
+   ],
+   "missing": []
+  },
+  "2026-11-02": {
+   "books": [
+    {
+     "id": 3420,
+     "title": "A Vindication of the Rights of Woman",
+     "author": "Mary Wollstonecraft"
+    },
+    {
+     "id": 27083,
+     "title": "The Subjection of Women",
+     "author": "John Stuart Mill"
+    },
+    {
+     "id": 8642,
+     "title": "Woman in the Nineteenth Century",
+     "author": "Margaret Fuller"
+    },
+    {
+     "id": 32,
+     "title": "Herland",
+     "author": "Charlotte Perkins Gilman"
+    },
+    {
+     "id": 160,
+     "title": "The Awakening, and Selected Short Stories",
+     "author": "Kate Chopin"
+    },
+    {
+     "id": 57913,
+     "title": "Women and Economics",
+     "author": "Charlotte Perkins Gilman"
+    },
+    {
+     "id": 12352,
+     "title": "Iola Leroy",
+     "author": "Frances Ellen Watkins Harper"
+    },
+    {
+     "id": 11030,
+     "title": "Incidents in the Life of a Slave Girl",
+     "author": "Harriet Jacobs"
+    },
+    {
+     "id": 34856,
+     "title": "My Own Story",
+     "author": "Emmeline Pankhurst"
+    },
+    {
+     "id": 11982,
+     "title": "Eighty Years and More",
+     "author": "Elizabeth Cady Stanton"
     }
    ],
    "missing": []
