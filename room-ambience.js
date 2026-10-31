@@ -192,6 +192,7 @@
       'curious-conservatory':{beds:[['fountain',.12],['insects',.08]],events:[['cricket',14,.04],['owl',.6,.045],['drip',3,.035]]},
       'curious-parlour':{beds:[['fire',.12]],ticks:[[1.2,'tock',.035]],events:[['creak',.8,.05],['clink',.4,.035]]},
       'curious-attic':{beds:[['wind',.12]],events:[['creak',3,.07],['musicbox',.6,.04]]},
+      'station-subway':{beds:[['rumble',.07],['air',.04]],events:[['drip',2,.03],['thump',.4,.03]]},
       'railway-platform':{beds:[['wind',.06]],events:[['bell',.4,.05]]},
       'railway-carriage':{beds:[],events:[['rustle',1,.035]]},
       'railway-depot':{beds:[['air',.05]],events:[['telegraph',.8,.04],['clink',.6,.04],['thump',.6,.04]]},
