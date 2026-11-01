@@ -296,12 +296,17 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   reader comes close.
 - Clio, the library cat, is sometimes found asleep in the Irish Room, the Poe Room or a wing reading room (the same
   cat moved and curled up; `?clio` makes it every time). The librarian stays in the Grand Hall.
-- Back ways (`passages.js`): seven short passages join neighbouring rooms behind doors, so a reader can wander without
+- Back ways (`passages.js`): eight short passages join neighbouring rooms behind doors, so a reader can wander without
   going back to the Grand Hall: the Cellar Stair (Poe Room ↔ Irish Room, down), the Night Corridor (English Reading Room
   ↔ Poe Room), the Long Gallery (Medicine Room ↔ English Reading Room; the Map Room's walls are hung edge to edge, so it
   is reached through the Medicine Room), the Back Stair (Burns Room ↔ Austen Room, up), the Stacks Stair (Burns Room ↔
   Room of Books Within Books, up), the Servants' Passage (Evening Room ↔ Periodicals Room, with the Set Texts Room's door
-  halfway) and the Sorting Corridor (Room of Chance ↔ Lost Property Office). The rooms reached by air (the Nights, the
+  halfway), the Sorting Corridor (Room of Chance ↔ Lost Property Office) and the Portage (Walden ↔ Canadian Room: a trail,
+  `kind:'trail'`, its walls, floor and sky painted from Walden's summer through September's leaves to snow, as Thoreau went
+  to Canada in 1850; mileposts and his palm-leaf hat carry his words from A Yankee in Canada, pg70123, checked by a test;
+  footsteps are soft there). Walden has no walls, so its end is a door standing in the pines west of the clearing at
+  `SPOTS.trail` (an end with `spot:'trail'` takes its place from the room's `trail`); the Canadian end is at the east end
+  of that room's south wall. The rooms reached by air (the Nights, the
   African room), by boat (Crusoe's island) and by rocket (Moon, Mars) stay that way, at the owner's wish (a test checks).
   Each door is a wall and a distance along it (`ends`), measured clear of the rooms' shelves and pictures; a door is hung
   only while its room is built, and a passage is built when entered and freed 25 s after. Passages stand at x 1200

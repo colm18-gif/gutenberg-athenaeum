@@ -2289,13 +2289,15 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // can go from one to the next without coming back through the Grand Hall. Their doors appear only while a room is
     // built, and a passage is built only while someone is in it.
     const passages=window.createPassages?.({doorKit:getDoorKit(),THREE,scene,MAT,player,interactables,canvasTexture,showNotice,playSample,analytics:window.libraryAnalytics,
-      rooms:{poe:poeRoom,irish:irishRoom,learners:learnersRoom,medicine:medicineRoom,austen:austenRoom,burns:burnsRoom,within:withinRoom,evening:eveningRoom,setTexts:setTextsRoom,periodicals:periodicalsRoom,chance:chanceRoom,lostProperty:bookLift},
+      rooms:{poe:poeRoom,irish:irishRoom,learners:learnersRoom,medicine:medicineRoom,austen:austenRoom,burns:burnsRoom,within:withinRoom,evening:eveningRoom,setTexts:setTextsRoom,periodicals:periodicalsRoom,chance:chanceRoom,lostProperty:bookLift,canada:canadaRoom,walden},
       move:(x,z,yaw,y=0)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,y,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,y+1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
     });
     if(passages){
       const prePassageFloor=floorHeight;floorHeight=function(x,z){return passages.floorAt(x,z)??prePassageFloor(x,z)};
       const prePassageAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return passages.contains(x,z)?passages.allowed(x,z):prePassageAllowed(x,z,y)};
       const prePassageInteract=interact;interact=function(){if(focus&&!selected&&passages.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return prePassageInteract()};
+      // The Portage is a path through the woods and into the snow: soft footing, like sand.
+      const prePassageSurface=footstepSurface;footstepSurface=function(){return passages.zoneAt(player.pos.x,player.pos.z)==='portage'?'carpet':prePassageSurface()};
     }
     // The Station Subway (station-subway.js): steps down through the Grand Hall's floor in the east aisle, under an iron
     // arch signed TO THE TRAINS, to a tiled subway and the gates of the Library Platform; a way out at the platform's
@@ -2400,7 +2402,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     const PLACE_GROUPS=[
       {title:'The Grand Hall and its wings',places:[['main-library','The Grand Hall'],['upper-floor','The upper gallery'],['roof-garden','The roof garden'],['east-wing','The east wing'],['west-wing','The west wing'],['restricted-stacks','The restricted stacks'],['librarian-office','The librarian’s office'],['daily-room','The room of the day'],['learners-room','The English reading room'],['set-texts-room','The set texts room'],['chance-room','The Room of Chance'],['cinder-archive','The Cinder Archive'],['evening-room','The evening room'],['periodicals-room','The periodicals room'],['irish-room','The Irish room'],['map-room','The map room'],['medicine-room','The medicine room'],['naturalist-room','The naturalist’s cabinet'],['austen-room','The Austen room'],['burns-room','The Burns room'],['canada-room','The Canadian room'],['within-room','The room of books within books'],['international-wing','The International Wing']]},
       {title:'Hidden ways',secret:true,places:[['portrait-room','The hidden reading room'],['tunnel','The breathing tunnel'],['archive','The final archive'],['below-catalogue','Below the catalogue'],['rabbit-room','The rabbit room'],['poe-room','The Poe room'],['lost-property','The Lost Property Office'],['afterdark-sorting','Staff · Sorting'],['afterdark-departures','Departures']]},
-      {title:'Back ways',places:[['cellar-stair','The cellar stair'],['night-corridor','The night corridor'],['long-gallery','The long gallery'],['back-stair','The back stair'],['stacks-stair','The stacks stair'],['servants-passage','The servants’ passage'],['sorting-corridor','The sorting corridor']]},
+      {title:'Back ways',places:[['cellar-stair','The cellar stair'],['night-corridor','The night corridor'],['long-gallery','The long gallery'],['back-stair','The back stair'],['stacks-stair','The stacks stair'],['servants-passage','The servants’ passage'],['portage','The portage'],['sorting-corridor','The sorting corridor']]},
       {title:'Memory rooms',places:[['returning','Names in the Dust'],['quiet','The Longer Silence'],['unread','St—ll W—ting'],['repository','What Was Kept']]},
       {title:'Reading rooms',places:[...themeRoomDefs.map(def=>[def.key,titleCase(def.sign[0])]),['contested','The Unwelcome Spines']]},
       {title:'Curious rooms',secret:true,places:[['curious-parlour','The ghost-story parlour'],['curious-conservatory','The night conservatory'],['curious-horologist','The horologist’s study'],['curious-attic','The children’s attic']]},

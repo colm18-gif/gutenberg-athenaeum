@@ -7,7 +7,8 @@
 // The room's secret is Sam McGee's: open the stove and there he sits, cool and calm, in the heart of the fire, and asks
 // for the door to be closed; and on the woodbox lies The Spell of the Yukon. Once seen it stays found
 // (athenaeum-canada-sam-mcgee; ?mcgee shows it). From 1 to 11 November a wreath of poppies hangs inside the door, for
-// John McCrae (?poppies shows it). Like the other rooms behind doors, nothing is built until the reader walks up to it,
+// John McCrae (?poppies shows it). At the east end of the south wall, a planked door is the Portage (passages.js), a
+// back way through the woods to Walden Pond. Like the other rooms behind doors, nothing is built until the reader walks up to it,
 // and it is freed a little while after they leave.
 (function(){
   'use strict';
