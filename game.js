@@ -284,7 +284,7 @@
     }
     const singleCopyLibrary=createSingleCopyLibrary({objects:interactables,scene,held:()=>selected,priority:object=>{
       const data=object.userData;if(data.secret||data.secretId||data.underBoard||data.underStair)return 100;
-      if(data.customBinding)return 90;if(data.returnSlip)return 25;if(data.machineTray)return 80;if(data.halloween)return 60;if(data.expeditionCopy||data.subterraneanCopy)return 50;if(data.continueExtras)return data.book.secretBindingTexture?95:40;if(data.readingStand)return 30;
+      if(data.customBinding)return 90;if(data.returnSlip)return 25;if(data.machineTray)return 80;if(data.expeditionCopy||data.subterraneanCopy)return 50;if(data.continueExtras)return data.book.secretBindingTexture?95:40;if(data.readingStand)return 30;
       if(data.singleCopyPriority===undefined){object.getWorldPosition(tmpWorldPosition);data.singleCopyPriority=Math.abs(tmpWorldPosition.x)>20||Math.abs(tmpWorldPosition.z)>32?20:10}
       return data.singleCopyPriority;
     }});
@@ -1349,7 +1349,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       if(moonHop<=0){moonHop=0;if(moonJumpQueued){moonJumpQueued=false;moonVy=2.9}else if(stride>1.2&&!reducedMotion)moonVy=1.35+(touchSprint||keys.ShiftLeft||keys.ShiftRight?.5:0)}
       moonJumpHeld=jump;if(moonVy!==0||moonHop>0){moonVy-=MOON_GRAVITY*dt;moonHop+=moonVy*dt;if(moonHop<=0&&moonVy<0){const impact=-moonVy;moonHop=0;moonVy=0;if(impact>.8){spawnDustPuff(tmpVector.set(player.pos.x,player.pos.y+.05,player.pos.z));playSample('stoneStep'+Math.floor(Math.random()*3),.35+Math.min(.5,impact*.15),.78)}}}}
     function inFloorRug(x,z){const rugs=[[0,11,11,20],[0,-15,13,15],[-27,-2,14,15],[27,-2,14,15],[47,-2,13,11]];return rugs.some(([cx,cz,w,d])=>Math.abs(x-cx)<w/2&&Math.abs(z-cz)<d/2)||(Math.abs(x-23.5)<3&&Math.abs(z-20)<2.5&&player.pos.y>4)}
-    function footstepSurface(){const x=player.pos.x,z=player.pos.z,y=player.pos.y,rail=nightRailway?.zoneAt(x,z);if(rail)return'metal';if(stationSubway?.contains(x,z))return'stone';if(Math.hypot(x-340,z-30)<19)return'stone';if(Math.hypot(x-224,z-30)<4.2&&y>29)return'carpet';if(y<-.5||x<-52&&z>-7&&z<1||y>9)return'stone';if(inFloorRug(x,z))return'carpet';const room=memoryZoneAt(x,z);if(room&&room.key!=='repository'&&Math.abs(x-room.cx)<5&&Math.abs(z-room.cz)<5)return'carpet';return'wood'}
+    function footstepSurface(){const x=player.pos.x,z=player.pos.z,y=player.pos.y;if(Math.hypot(x-340,z-30)<19)return'stone';if(Math.hypot(x-224,z-30)<4.2&&y>29)return'carpet';if(y<-.5||x<-52&&z>-7&&z<1||y>9)return'stone';if(inFloorRug(x,z))return'carpet';const room=memoryZoneAt(x,z);if(room&&room.key!=='repository'&&Math.abs(x-room.cx)<5&&Math.abs(z-room.cz)<5)return'carpet';return'wood'}
     function stopFootsteps(){if(!wasWalking)return;wasWalking=false;soundscape?.stop(footstepNames);for(const name of footstepNames){const audio=samplePools.get(name)?.pool?.[0];if(audio&&!audio.paused){audio.pause();audio.currentTime=0}}}
     function updateFootsteps(dt){const speed=Math.hypot(player.vel.x,player.vel.z);if(!audioCtx||muted||!gameActive()||speed<.32||moonHop>0||highStaircase?.onMoon?.(player.pos.x,player.pos.z)){footstepClock=Math.min(footstepClock,.12);stopFootsteps();return}wasWalking=true;footstepClock+=dt;const cadence=clamp(.54-speed*.055,.27,.48);if(footstepClock<cadence)return;footstepClock%=cadence;const surface=footstepSurface(),prefix=surface==='stone'?'stoneStep':surface==='carpet'?'carpetStep':surface==='metal'?'metalStep':'woodStep';let variation=Math.floor(Math.random()*3);if(variation===lastFootstep)variation=(variation+1+Math.floor(Math.random()*2))%3;lastFootstep=variation;const effort=clamp(speed/5.3,.55,1);/* Carpet (and sand) takes the edge off a step: quieter, and a little lower. */const soft=surface==='carpet';playSample(prefix+variation,(.72+effort*.28)*(soft?.8:1),(.92+Math.random()*.12+effort*.04)*(soft?.9:1));if(surface==='wood'){const nearSecret=Math.hypot(player.pos.x+35,player.pos.z+3)<3.5||Math.hypot(player.pos.x-15,player.pos.z-7)<3.5;if(Math.random()<(nearSecret?.2:.035))playSample('floorboardCreak',nearSecret?1:.65,.88+Math.random()*.18)}}
     function trainZoneAtPlayer(){if(player.pos.y<0)return 'basement';return memoryZoneAt(player.pos.x,player.pos.z)?.key==='repository'?'repository':''}
@@ -2319,14 +2319,6 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       finishWalls:wallFinish&&(walls=>{for(const [mesh,w,h,d] of walls)wallFinish.finishBox(mesh,w,h,d);wallFinish.settle(walls.map(([mesh])=>mesh),{ceiling:true})}),
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
     });
-    // Halloween night (halloween.js): lanterns and a table of ghost stories in the Grand Hall, 24 October to 2 November.
-    const halloween=window.createHalloween?.({THREE,scene,MAT,interactables,canvasTexture,bookMaterial,findBook:id=>books.find(b=>b.id===id),showNotice,collider});
-    if(halloween?.active){
-      const preHalloweenInteract=interact;interact=function(){if(focus&&!selected&&halloween.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preHalloweenInteract()};
-      let greeted=false;const preHalloweenWorld=updateWorld;updateWorld=function(t,dt){preHalloweenWorld(t,dt);halloween.update(t);
-        // Once, a little after the reader steps in, so it does not talk over the first-visit tour's opening words.
-        if(started&&!greeted){greeted=true;setTimeout(()=>showNotice(halloween.greeting,9),tour.step>=0||!localStorage.getItem('athenaeum-tour-done')?20000:5000)}};
-    }
     // The Kipling bookcase (kipling-shelf.js): his books in the order he published them, in the Grand Hall's south-west corner.
     const kiplingShelf=window.createKiplingShelf?.({THREE,scene,MAT,interactables,canvasTexture,bookMaterial,books:newArrivals.list('kipling'),showNotice,collider});
     if(kiplingShelf){const preKiplingInteract=interact;interact=function(){if(focus&&!selected&&kiplingShelf.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preKiplingInteract()}}

@@ -197,7 +197,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   the line's stops and two of its books (The Railway Children, Mugby Junction; every card says only what is so), a
   departure board, a ticket machine, and gates that use the railway's own entrance to the Library Platform. A WAY OUT arch
   on the platform's south wall (hung in the platform's group once the railway is built) leads back. The long way beyond
-  the Repository stays. `?room=subway` (`station`, `trains`, `railway`, `night-train`).
+  the Repository stays. Footsteps in the subway, on the platforms and in the train are the library's ordinary ones
+  (`footstepSurface` gives them no surface of their own, at the owner's wish). `?room=subway` (`station`, `trains`, `railway`, `night-train`).
 - The Lost Property Office (`book-lift.js`, x 500, z 220) is reached by a book lift, not a door: a dumbwaiter hatch in the
   west wing's south wall (x −33.9, set in the wainscot between the hidden passage and the STAFF · SORTING door). Ring the
   bell and the shutter rolls up; the reader rides the car down a shaft (floors painted on its wall: WEST WING, BASEMENT,
@@ -408,10 +409,6 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Doyle, Verne, Wells and Haggard lists held 79, all recordings of books held as text; a test keeps them out). The
   Catalogue lookup line `= 8613 8614 …` prints each number's type and the texts with the same title. An anthology is
   bundled when its title matches and the author is named in its opening pages (its header names only the editor).
-- **Halloween night** (`halloween.js`): 24 October to 2 November by the reader's own date (`?halloween` previews it,
-  `?nohalloween` hides it). Carved lanterns (one InstancedMesh, glowing through emissive faces, no lights) by the south
-  doors and the rug, a turnip lantern, and the Oíche Shamhna table of ghost stories near the entrance with a card on
-  Samhain.
 - The Room of the Day runs nightly from `data/daily-rooms.js` (`scripts/daily-room.mjs`).
 
 ## Services
