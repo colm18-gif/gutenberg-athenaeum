@@ -130,6 +130,8 @@
       'stacks-stair':{beds:[['air',.03]],events:[['rustle',1.2,.04],['creak',.8,.04]]},
       'servants-passage':{beds:[['air',.03]],ticks:[[1,'tick',.015]],events:[['creak',.6,.035]]},
       'sorting-corridor':{beds:[['air',.03]],events:[['rustle',1.2,.04],['thump',.4,.03]]},
+      // The Portage: a night wind in the trees, leaves stirring, an owl, and a loon from the frozen lake ahead.
+      'portage':{beds:[['wind',.05],['air',.02]],events:[['rustle',1.3,.04],['owl',.3,.03],['loon',.15,.03]]},
       'chance-room':{beds:[['air',.03]],events:[['rustle',1.3,.05],['creak',.9,.04]]},
       'lost-property':{beds:[['air',.03]],events:[['creak',1.1,.05],['rustle',1.2,.04]]},
       // The Map Room: a quiet room, a clock, and big sheets of paper being turned over.

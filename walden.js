@@ -11,7 +11,8 @@
 // the trail of: the page on his desk says so. Somewhere in the clearing a reader may hear the hound, and the tramp of
 // the horse, and see the dove disappear behind a cloud; whoever has done all three finds the first volume of his
 // journal on the doorstep (room walden-journal). Found once, found for good (athenaeum-walden-journal; ?hound shows
-// it). Every word given to Thoreau is checked against texts/pg205.txt by a test. Nothing is built until the reader
+// it). Every word given to Thoreau is checked against texts/pg205.txt by a test. A path west through the pines leads to
+// a door standing on its own, the Portage (passages.js), a back way to the Canadian Room. Nothing is built until the reader
 // comes near the door, and it is freed a little while after they leave. The trees are two InstancedMeshes, and the
 // only light of its own is the lamp in the house: outside, the sky and fog are darkened and the library's ambient
 // and moonlight turned down, as in the Deep Wood.
@@ -28,10 +29,13 @@
   const SPOTS={
     gate:{x:-2,z:-31},arrival:{x:-2,z:-28.6},table:{x:4.8,z:-15.6},beans:{x:15,z:-17,w:9,d:15},
     woodpile:{x:-5.3,z:-21.6},boat:{x:-6.5,z:7.5},
-    hound:{x:20,z:-22},horse:{x:-19.5,z:-18.5},dove:{x:21,z:6}
+    hound:{x:20,z:-22},horse:{x:-19.5,z:-18.5},dove:{x:21,z:6},
+    // The door to the Portage (passages.js), standing on its own in the pines to the west, facing the clearing: the way
+    // Thoreau went to Canada in September 1850, and the back way to the Canadian Room.
+    trail:{x:-27,z:1}
   };
   // The footpath, the path round to the house, and the road to the village; as chains of points.
-  const PATHS=[[[-2,-29.6],[1.1,-24],[1.3,-15.2],[-2,-14.8]],[[-2,-14.8],[-3.4,-4],[-5.6,8]],[[-34,-6],[-19.5,-18.5],[-6,-33.5]],[[1.3,-15.2],[3.6,-15.1]]];
+  const PATHS=[[[-2,-29.6],[1.1,-24],[1.3,-15.2],[-2,-14.8]],[[-2,-14.8],[-3.4,-4],[-5.6,8]],[[-34,-6],[-19.5,-18.5],[-6,-33.5]],[[1.3,-15.2],[3.6,-15.1]],[[-3.4,-4],[-15,-1.6],[-25.4,1]]];
   // The three he lost, in the order the page names them.
   const LOST=['hound','horse','dove'];
   // Thoreau's own words, each checked against the bundled Walden (texts/pg205.txt).
@@ -110,6 +114,8 @@
     const own=thing=>{owned.push(thing);return thing};
     const std=params=>own(new THREE.MeshStandardMaterial(params));
     const W=(x,z)=>({x:CENTRE.x+x,z:CENTRE.z+z});
+    // Where the Portage's door stands, facing east into the clearing.
+    const TRAIL={...W(SPOTS.trail.x,SPOTS.trail.z),yaw:Math.PI/2};
     function add(geometry,material,x,y,z,parent){const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);parent.add(m);return m}
     const box=(w,h,d,material,x,y,z,parent)=>add(own(new THREE.BoxGeometry(w,h,d)),material,x,y,z,parent);
     const cyl=(rt,rb,h,seg,material,x,y,z,parent)=>add(own(new THREE.CylinderGeometry(rt,rb,h,seg)),material,x,y,z,parent);
@@ -358,6 +364,8 @@
       const gate=W(SPOTS.gate.x,SPOTS.gate.z),exit={type:'walden-exit',title:'The Naturalist’s Cabinet',author:CARDS.gate[1],action:'RETURN'};
       if(!doorKit?.hang(root,{data:exit,mark,x:gate.x,z:gate.z,yaw:0,label:'THE NATURALIST’S CABINET',own,...DOOR_LOOK}))mark(box(1.9,3.1,.16,std({color:DOOR_LOOK.color,roughness:.7}),gate.x,1.55,gate.z,root),exit);
       block(gate.x,gate.z-.2,2.4,.7);
+      // Behind the Portage's door (hung by passages.js while the clearing is built), so nobody walks round the back of it.
+      block(TRAIL.x-.2,TRAIL.z,.7,2.4);
       // A sign by the path, and the footpath's own card where it leaves the house.
       const s=sign('WALDEN POND','Concord, Massachusetts · 1845–1847',1.5,.25),post=W(1.9,-26.5);s.position.set(post.x,1.45,post.z);s.rotation.y=-.4;root.add(s);mark(s,card('woods'));
       mark(cyl(.04,.05,1.4,6,pine,post.x,.7,post.z-.03,root),card('woods'));block(post.x,post.z,.3,.3);
@@ -494,7 +502,7 @@
     buildDoor();
     return {contains,floorAt,allowed,interact,update,enter,leave,unload,activate,catalogue,inHouse,
       zoneAt:(x,z)=>contains(x,z)?(inHouse(x,z)?'walden-house':'walden'):null,
-      centre:CENTRE,walk:WALK,pond:POND,house:HOUSE,spots:SPOTS,lost:LOST,quotes:WALDEN,cards:CARDS,air:AIR,door:DOOR,arrival:ARRIVAL,groups:GROUPS,shoreZ:x=>CENTRE.z+shoreZ(x-CENTRE.x),
+      trail:TRAIL,centre:CENTRE,walk:WALK,pond:POND,house:HOUSE,spots:SPOTS,lost:LOST,quotes:WALDEN,cards:CARDS,air:AIR,door:DOOR,arrival:ARRIVAL,groups:GROUPS,shoreZ:x=>CENTRE.z+shoreZ(x-CENTRE.x),
       get built(){return !!root},get books(){return books.slice()},get trees(){return state?.trees||null},get trunks(){return trunks.slice()},get journalFound(){return !!state?.house?.shown}};
   };
 })();

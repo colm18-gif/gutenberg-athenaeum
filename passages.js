@@ -3,8 +3,9 @@
 // and a door into the next: the Cellar Stair (Poe Room to Irish Room), the Night Corridor (English Reading Room to Poe
 // Room), the Long Gallery (Medicine Room to English Reading Room), the Back Stair (Austen Room to Burns Room), the Stacks
 // Stair (Burns Room to the Room of Books Within Books), the Servants' Passage (Evening Room, Set Texts Room and
-// Periodicals Room) and the Sorting Corridor (Room of Chance to Lost Property Office). The rooms reached by air, by
-// boat and by rocket are left that way on purpose.
+// Periodicals Room), the Sorting Corridor (Room of Chance to Lost Property Office) and the Portage (Walden Pond to the
+// Canadian Room: Thoreau's own week in Canada, in September 1850, walked in a few steps from summer to snow). The rooms
+// reached by air, by boat and by rocket are left that way on purpose.
 // Nothing here is built at startup. A passage's door appears in a room only while that room is built, the passage
 // itself is built when the reader steps in and freed a little while after they leave, and one lamp, the module's own,
 // moves to whichever passage is in use, so no passage adds a light. Each stands far out to the east (x 1200), beyond
@@ -52,13 +53,26 @@
     {key:'sorting-corridor',name:'The Sorting Corridor',kind:'hall',length:14,width:2.4,walls:0x4a4238,pigeonholes:true,
       ends:[{room:'chance',label:'THE ROOM OF CHANCE',wall:'east',at:5.5},{room:'lostProperty',label:'LOST PROPERTY',wall:'east',at:-4.5}],
       look:{style:'iron'},
-      prints:[{motif:'tag',side:-1,at:7,title:'A luggage label',text:'A brown luggage label pinned to the wall: “Found between two shelves. Owner unknown.” It might belong to either room.'}]}
+      prints:[{motif:'tag',side:-1,at:7,title:'A luggage label',text:'A brown luggage label pinned to the wall: “Found between two shelves. Owner unknown.” It might belong to either room.'}]},
+    // A trail through the woods, not a hall: its walls and floor are painted with the seasons, from Walden's summer
+    // night through the turning leaves of the end of September, when Thoreau went to Canada, to the snow outside the
+    // Canadian Room. Walden is a clearing with no walls, so its end is a door standing on its own in the pines, at a
+    // place the clearing keeps for it (walden.js, `trail`). Every word given to Thoreau is in A Yankee in Canada
+    // (texts/bundled-gzip/pg70123.txt.gz), and a test checks it.
+    {key:'portage',name:'The Portage',kind:'trail',length:24,width:3.4,walls:0x1a2430,lamp:0xc8d6ff,
+      ends:[{room:'walden',label:'WALDEN POND',spot:'trail'},{room:'canada',label:'THE CANADIAN ROOM',wall:'south',at:5}],
+      look:{style:'painted',color:0x4a3a26,planked:true,fanColor:0xffd08a},
+      posts:[{side:1,at:4.6,head:'CONCORD',sub:'September 25th, 1850',title:'A milepost',text:'Thoreau set out for Canada from here, with his friend Ellery Channing: “I left Concord, Massachusetts, Wednesday morning, September 25th, 1850, for Quebec.”'},
+        {side:-1,at:9.2,head:'NORTH-WEST',sub:'up the country',title:'The trees',text:'“As we travel northwest up the country, sugar-maples, beeches, birches, hemlocks, spruce, butternuts, and ash trees prevail more and more.” It was the end of September, and the leaves were turning: “I was also struck by the bright yellow tints of the yellow-birch.”'},
+        {side:1,at:13.8,head:'',sub:'',hat:true,title:'A palm-leaf hat',text:'Hung on a post where the snow begins, and much too thin for it: “I had for all head-covering a thin palm-leaf hat without lining, that cost twenty-five cents.” He began his account: “I fear that I have not got much to say about Canada, not having seen much; what I got by going to Canada was a cold.”'},
+        {side:-1,at:18.3,head:'QUEBEC',sub:'510 miles from Boston',title:'A milepost',text:'“Fare, seven dollars there and back; distance from Boston, five hundred and ten miles.” And on his return: “The whole expense of this journey, including two guide-books and a map, which cost one dollar twelve and a half cents, was twelve dollars seventy-five cents.” The house by the pond had cost him $28.12½.'}]}
   ];
   const BASE={x:1200,z:-600,step:40},KEEP=25,DOOR={width:1.5,height:2.8,fanlight:false,pediment:false};
   // The inside face of each room's walls: most are 0.3 m thick, the Room of Chance's and the Lost Property Office's 0.4 m.
   const INSET={chance:.2,lostProperty:.2};
   const TITLES={poe:'The Poe Room',irish:'The Irish Room',learners:'The English Reading Room',medicine:'The Medicine Room',austen:'The Austen Room',burns:'The Burns Room',
-    within:'The Room of Books Within Books',evening:'The Evening Room',setTexts:'The Set Texts Room',periodicals:'The Periodicals Room',chance:'The Room of Chance',lostProperty:'The Lost Property Office'};
+    within:'The Room of Books Within Books',evening:'The Evening Room',setTexts:'The Set Texts Room',periodicals:'The Periodicals Room',chance:'The Room of Chance',lostProperty:'The Lost Property Office',
+    walden:'Walden Pond',canada:'The Canadian Room'};
 
   window.createPassages=function(options){
     const {THREE,scene,MAT,player,interactables,canvasTexture,showNotice,playSample,move,analytics,doorKit=null,rooms={},storage=window.localStorage}=options;
@@ -71,6 +85,9 @@
     const origin=index=>({x:BASE.x,z:BASE.z-index*BASE.step});
     // A door on a room's wall: its place, the way it faces (into the room) and where a reader steps out of it.
     function roomDoor(end){
+      // A door at a place the room keeps for it (Walden's clearing has no walls): its own position and facing.
+      const spot=end.spot&&rooms[end.room]?.[end.spot];
+      if(spot){const {x,z,yaw}=spot;return {x,z,yaw,out:{x:x+Math.sin(yaw)*1.6,z:z+Math.cos(yaw)*1.6,yaw:yaw+Math.PI}}}
       const room=rooms[end.room]?.room;if(!room)return null;const {cx,cz,w,d}=room,inset=INSET[end.room]??.15;
       const at={north:[cx+end.at,cz-d/2+inset,0],south:[cx+end.at,cz+d/2-inset,Math.PI],west:[cx-w/2+inset,cz+end.at,Math.PI/2],east:[cx+w/2-inset,cz+end.at,-Math.PI/2]}[end.wall];
       const [x,z,yaw]=at;return {x,z,yaw,out:{x:x+Math.sin(yaw)*1.6,z:z+Math.cos(yaw)*1.6,yaw:yaw+Math.PI}};
@@ -153,6 +170,47 @@
     function pigeonTexture(){return canvasTexture((c,w,h)=>{c.fillStyle='#2a1d12';c.fillRect(0,0,w,h);let s=11;const rnd=()=>{s=(s*16807)%2147483647;return s/2147483647};
       for(let r=0;r<6;r++)for(let k=0;k<8;k++){const x=k*w/8,y=r*h/6;c.fillStyle='#0f0a06';c.fillRect(x+5,y+5,w/8-10,h/6-10);if(rnd()<.55){c.fillStyle=rnd()<.5?'#d8c8a0':'#c8a878';c.fillRect(x+10+rnd()*10,y+h/6-24-rnd()*14,w/8-26,14+rnd()*10)}if(rnd()<.35){c.fillStyle='#e8dcc0';c.fillRect(x+w/16,y+8,10,7)}}},512,384)}
 
+    // The trail's paintings, one canvas the length of the passage: its first end (Walden) at the left of a wall and the top
+    // of the floor and sky, its last (the Canadian Room) at the right and the bottom. Summer pines and fireflies, then
+    // maples, butternuts and yellow birches turning, then spruce in the snow under the northern lights.
+    const season=u=>u<.36?0:u<.7?1:2;
+    function trailWallTexture(flip){return canvasTexture((c,w,h)=>{
+      let s=flip?17:5;const rnd=()=>{s=(s*16807)%2147483647;return s/2147483647};const X=u=>flip?(1-u)*w:u*w;
+      const sky=c.createLinearGradient(0,0,0,h);sky.addColorStop(0,'#070d1c');sky.addColorStop(1,'#1a2638');c.fillStyle=sky;c.fillRect(0,0,w,h);
+      c.fillStyle='#dfe6f2';for(let i=0;i<260;i++){c.globalAlpha=.3+rnd()*.6;c.fillRect(rnd()*w,rnd()*h*.45,1.4,1.4)}c.globalAlpha=1;
+      // The northern lights, over the snow.
+      for(let i=0;i<w;i+=3){const u=flip?1-i/w:i/w;if(u<.68)continue;const a=Math.min(1,(u-.68)/.15)*.45,y=h*(.12+.05*Math.sin(u*40)),g=c.createLinearGradient(0,y-h*.12,0,y+h*.04);
+        g.addColorStop(0,'rgba(80,255,160,0)');g.addColorStop(.8,`rgba(80,255,160,${a})`);g.addColorStop(1,'rgba(80,255,160,0)');c.fillStyle=g;c.fillRect(i,y-h*.12,3,h*.16)}
+      // The ground, by season.
+      const ground=h*.84;for(let i=0;i<w;i+=2){const u=flip?1-i/w:i/w;c.fillStyle=['#161c12','#2e2414','#c9d2dc'][season(u)];c.fillRect(i,ground,2,h-ground)}
+      // The trees, back to front.
+      for(let k=0;k<150;k++){const u=rnd(),x=X(u),kind=season(u),tall=h*(.38+rnd()*.38),base=ground+rnd()*h*.06;
+        if(kind===0){c.fillStyle=rnd()<.5?'#0c140e':'#101a12';c.fillRect(x-2,base-tall*.3,4,tall*.3);for(let t=0;t<4;t++){const y=base-tall*.25-t*tall*.18,r=tall*(.2-t*.035);c.beginPath();c.ellipse(x,y,r,r*.55,0,0,7);c.fill()}}
+        else if(kind===1){const birch=rnd()<.35;c.fillStyle=birch?'#b8b2a0':'#20180f';c.fillRect(x-2.5,base-tall*.55,5,tall*.55);if(birch){c.fillStyle='#2a241c';for(let m=0;m<5;m++)c.fillRect(x-2.5,base-tall*.55+rnd()*tall*.5,5,1.5)}
+          c.fillStyle=birch?'#a88a2a':['#7a3a18','#8a5a1a','#6a2a1a','#9a7a26'][Math.floor(rnd()*4)];for(let t=0;t<5;t++){c.beginPath();c.arc(x+(rnd()-.5)*tall*.3,base-tall*(.6+rnd()*.3),tall*(.1+rnd()*.08),0,7);c.fill()}}
+        else{c.fillStyle='#0a1210';c.beginPath();c.moveTo(x,base-tall);c.lineTo(x-tall*.13,base);c.lineTo(x+tall*.13,base);c.fill();c.strokeStyle='rgba(225,232,240,.55)';c.lineWidth=1.5;
+          for(let t=1;t<6;t++){const y=base-tall+t*tall/6,r=tall*.13*t/6;c.beginPath();c.moveTo(x-r,y);c.lineTo(x-r*.3,y-2);c.moveTo(x+r,y);c.lineTo(x+r*.3,y-2);c.stroke()}}}
+      // Fireflies low in the summer grass, and leaves coming down in the autumn.
+      for(let k=0;k<70;k++){const u=rnd()*.36;c.fillStyle='rgba(216,240,122,.8)';c.beginPath();c.arc(X(u),ground-rnd()*h*.25,1.6,0,7);c.fill()}
+      for(let k=0;k<90;k++){const u=.36+rnd()*.34;c.fillStyle=['#b8661e','#c8a030','#8a2a18'][k%3];c.fillRect(X(u),h*(.3+rnd()*.6),3,2)}
+    },1536,256)}
+    function trailFloorTexture(){return canvasTexture((c,w,h)=>{
+      let s=3;const rnd=()=>{s=(s*16807)%2147483647;return s/2147483647};
+      for(let y=0;y<h;y+=2){c.fillStyle=['#3a3122','#3a2a18','#d4dbe2'][season(y/h)];c.fillRect(0,y,w,2)}
+      for(let k=0;k<900;k++){const y=rnd()*h,x=rnd()*w,kind=season(y/h);
+        if(kind===0){c.strokeStyle='rgba(20,16,10,.7)';c.lineWidth=1;c.beginPath();c.moveTo(x,y);c.lineTo(x+(rnd()-.5)*8,y+(rnd()-.5)*8);c.stroke()}
+        else if(kind===1){c.fillStyle=['#a8561a','#c09028','#7a2416','#5a3a1a'][k%4];c.beginPath();c.ellipse(x,y,3+rnd()*2,2,rnd()*3,0,7);c.fill()}
+        else{c.fillStyle='rgba(255,255,255,.6)';c.fillRect(x,y,1.5,1.5)}}
+      // Somebody's boot-prints in the snow, coming from the woods.
+      c.fillStyle='rgba(120,134,150,.55)';for(let y=h*.72;y<h;y+=22){const x=w/2+((y/22)%2<1?-9:9);c.beginPath();c.ellipse(x,y,4,8,0,0,7);c.fill()}
+    },256,1024)}
+    function skyTexture(){return canvasTexture((c,w,h)=>{let s=9;const rnd=()=>{s=(s*16807)%2147483647;return s/2147483647};c.fillStyle='#060b18';c.fillRect(0,0,w,h);
+      c.fillStyle='#e6ecf6';for(let i=0;i<500;i++){c.globalAlpha=.25+rnd()*.7;c.fillRect(rnd()*w,rnd()*h,1.3,1.3)}c.globalAlpha=1;
+      const g=c.createLinearGradient(0,h*.7,0,h);g.addColorStop(0,'rgba(80,255,160,0)');g.addColorStop(1,'rgba(80,255,160,.35)');c.fillStyle=g;c.fillRect(0,h*.7,w,h*.3)},256,1024)}
+    function boardTexture(head,sub){return canvasTexture((c,w,h)=>{c.fillStyle='#5a4228';c.fillRect(0,0,w,h);c.fillStyle='rgba(30,20,10,.35)';for(let y=6;y<h;y+=9)c.fillRect(0,y,w,1);
+      c.fillStyle='#ecdcb4';c.textAlign='center';let size=46;c.font=`bold ${size}px Georgia`;while(c.measureText(head).width>w-24&&size>18){size-=2;c.font=`bold ${size}px Georgia`}c.fillText(head,w/2,h*.5);
+      c.font='italic 24px Georgia';c.fillStyle='#dcc896';c.fillText(sub,w/2,h*.82)},512,128)}
+
     // A texture repeated along a wall, so its pattern keeps its size however long the wall.
     function tiled(texture,x,y){texture.wrapS=texture.wrapT=THREE.RepeatWrapping;texture.repeat.set(x,y);texture.needsUpdate=true;return texture}
 
@@ -166,10 +224,11 @@
       const mark=(object,data)=>{object.userData=data;interactables.push(object);ours.push(object);return object};
       const {width:W,length:L}=p,top=Math.max(floorY(p,0),floorY(p,L)),H=4.1,ceiling=top+H;
       const wall=own(new THREE.MeshStandardMaterial({color:p.walls,roughness:.92,map:p.stone?MAT.stone?.map||null:null})),trim=MAT.darkWood,floorMat=p.iron?own(new THREE.MeshStandardMaterial({color:0x2c2f31,roughness:.5,metalness:.6})):MAT.wood;
+      const trail=p.kind==='trail';
       // Walls, ceiling and the far ends (the doors stand against them, and their portals paint the way through).
       box(.2,ceiling+.2,L,wall,-W/2-.1,ceiling/2,L/2);box(.2,ceiling+.2,L,wall,W/2+.1,ceiling/2,L/2);
       box(W+.4,ceiling+.2,.2,wall,0,ceiling/2,-.1);box(W+.4,ceiling+.2,.2,wall,0,ceiling/2,L+.1);
-      box(W+.4,.2,L+.4,MAT.darkWood,0,ceiling+.1,L/2);
+      box(W+.4,.2,L+.4,trail?wall:MAT.darkWood,0,ceiling+.1,L/2);
       // The floor: level, or two landings and a flight of steps between them.
       if(p.kind==='stair'){
         const y0=floorY(p,0),y1=floorY(p,L),run=L-2*LANDING,n=Math.max(2,Math.round(Math.abs(y1-y0)/.18)),tread=run/n;
@@ -183,6 +242,25 @@
         if(p.stacks){// Shelves of books on both walls, climbing with the stair.
           const tall=top+3.4,map=own(tiled(spinesTexture(),(L-1.2)/3,tall/2.6)),spines=own(new THREE.MeshStandardMaterial({map,roughness:.85}));
           for(const sx of [-1,1]){const shelf=add(own(new THREE.PlaneGeometry(L-1.2,tall)),spines,sx*(W/2-.01),tall/2,L/2);shelf.rotation.y=-sx*Math.PI/2}}
+      }else if(trail){
+        // The trail: the woods painted on both walls, the night sky overhead, and the path underfoot, all faintly lit
+        // from within as moonlight would; lanterns on posts down the way, mileposts, and something left on one of them.
+        box(W,.3,L,wall,0,-.15,L/2);
+        const lit=map=>own(new THREE.MeshStandardMaterial({map,emissive:0xffffff,emissiveMap:map,emissiveIntensity:.32,roughness:.95}));
+        const floor=add(own(new THREE.PlaneGeometry(W,L)),lit(own(trailFloorTexture())),0,.012,L/2);floor.rotation.x=-Math.PI/2;
+        const sky=add(own(new THREE.PlaneGeometry(W,L)),lit(own(skyTexture())),0,ceiling-.01,L/2);sky.rotation.x=Math.PI/2;
+        for(const sx of [-1,1]){const painted=add(own(new THREE.PlaneGeometry(L,ceiling)),lit(own(trailWallTexture(sx<0))),sx*(W/2-.01),ceiling/2,L/2);painted.rotation.y=-sx*Math.PI/2}
+        const post=(x,z,h)=>{box(.1,h,.1,trim,x,h/2,z);blockers.push({minX:x-.12,maxX:x+.12,minZ:z-.12,maxZ:z+.12})};
+        const flame=own(new THREE.MeshStandardMaterial({color:0xffe0a8,emissive:0xffb35c,emissiveIntensity:1.8})),flameGeo=own(new THREE.SphereGeometry(.06,8,6)),lantern=own(new THREE.BoxGeometry(.18,.24,.18));
+        const glass=own(new THREE.MeshStandardMaterial({color:0x3a2a14,emissive:0xffa040,emissiveIntensity:.5,transparent:true,opacity:.6}));
+        for(let z=2.5,i=0;z<L-1.5;z+=4.5,i++){const x=(i%2?1:-1)*(W/2-.3);post(x,z,1.7);add(lantern,glass,x,1.82,z);add(flameGeo,flame,x,1.82,z)}
+        const boardGeo=own(new THREE.PlaneGeometry(.92,.24));
+        for(const m of p.posts||[]){const x=m.side*(W/2-.32),inward=-m.side*Math.PI/2;post(x,m.at,m.hat?1.55:2.1);
+          if(m.hat){// The hat, on top of its post: a shallow crown and a wide brim, pale straw.
+            const straw=own(new THREE.MeshStandardMaterial({color:0xd8c48a,roughness:.9})),brim=box(.46,.02,.46,straw,x,1.58,m.at),crown=add(own(new THREE.SphereGeometry(.13,10,6,0,Math.PI*2,0,Math.PI/2)),straw,x,1.58,m.at);crown.scale.y=.8;
+            for(const part of [brim,crown])mark(part,{type:'passage-card',title:m.title,author:m.text,action:'LOOK'})}
+          else{const board=box(.05,.3,1,trim,x,1.9,m.at),face=add(boardGeo,own(new THREE.MeshStandardMaterial({map:own(boardTexture(m.head,m.sub)),roughness:.8})),x-m.side*.03,1.9,m.at);face.rotation.y=inward;
+            for(const part of [board,face])mark(part,{type:'passage-card',title:m.title,author:m.text,action:'READ'})}}
       }else{
         box(W,.3,L,floorMat,0,-.15,L/2);
         // A runner down the middle, a dado and a rail on both walls.
@@ -195,7 +273,7 @@
       }
       // Sconces down both walls: a brass plate and a glowing candle, no light of their own.
       const flame=own(new THREE.MeshStandardMaterial({color:0xffe0a8,emissive:0xffb35c,emissiveIntensity:1.8})),flameGeo=own(new THREE.SphereGeometry(.06,8,6)),plateGeo=own(new THREE.BoxGeometry(.04,.32,.18));
-      for(let z=2.5,i=0;z<L-1.5;z+=4.5,i++){const sx=i%2?1:-1,y=floorY(p,z)+2.25;add(plateGeo,MAT.brass,sx*(W/2-.02),y,z);add(flameGeo,flame,sx*(W/2-.16),y+.18,z)}
+      if(!trail)for(let z=2.5,i=0;z<L-1.5;z+=4.5,i++){const sx=i%2?1:-1,y=floorY(p,z)+2.25;add(plateGeo,MAT.brass,sx*(W/2-.02),y,z);add(flameGeo,flame,sx*(W/2-.16),y+.18,z)}
       // The pictures: prints in dark frames, and windows onto the night.
       const frameGeo=own(new THREE.BoxGeometry(.05,1.02,.84)),printGeo=own(new THREE.PlaneGeometry(.68,.86));
       for(const pr of p.prints||[]){const y=floorY(p,pr.at)+1.85,x=pr.side*(W/2-.03);add(frameGeo,MAT.darkWood,x,y,pr.at);
@@ -217,7 +295,7 @@
       const state={root,owned,ours,blockers,doors,last:time};built.set(p.key,state);return state;
     }
     // The module's one lamp goes to the passage the reader is in: hung in the middle, near the ceiling.
-    function hangLamp(p,state){if(!lamp)lamp=new THREE.PointLight(0xffd2a0,9,26,2);delete lamp.userData.freed;lamp.position.set(0,floorY(p,p.length/2)+3.2,p.length/2);state.root.add(lamp)}
+    function hangLamp(p,state){if(!lamp)lamp=new THREE.PointLight(0xffd2a0,9,26,2);lamp.color?.setHex?.(p.lamp||0xffd2a0);delete lamp.userData.freed;lamp.position.set(0,floorY(p,p.length/2)+3.2,p.length/2);state.root.add(lamp)}
     function free(p){
       const state=built.get(p.key);if(!state)return;built.delete(p.key);
       if(lamp?.parent===state.root)state.root.remove(lamp);

@@ -103,6 +103,11 @@ test('the clearing is built on approach: the house, two places of books, three c
     assert.equal(barred(a,at(...from),at(...to)),null,`the way from ${from} to ${to}`);
   assert(a.w.inHouse(C.x+H.x,C.z+H.z)&&a.w.zoneAt(C.x+H.x,C.z+H.z)==='walden-house'&&a.w.zoneAt(C.x,C.z-5)==='walden');
   assert(!a.w.allowed(C.x+H.x-H.w/2,C.z+H.z),'the house has walls');assert(!a.w.allowed(C.x,C.z+a.w.pond.z),'nobody walks on the water');
+  // The path west through the pines to the Portage's door (passages.js), which stands facing the clearing, its back blocked.
+  const T=a.w.trail;assert.equal(T.yaw,Math.PI/2);const out={x:T.x+1.6,z:T.z};
+  for(const [from,to] of [[at(-3.4,-4),at(-15,-1.6)],[at(-15,-1.6),out]])assert.equal(barred(a,from,to),null,'the way to the Portage');
+  assert(!a.w.allowed(T.x-.4,T.z),'nobody walks round behind its door');
+  for(const key of a.w.lost){const s=a.w.spots[key];assert(Math.hypot(s.x-(T.x-C.x),s.z-(T.z-C.z))>8,`clear of the ${key}’s place`)}
   // The three places of the lost can be reached.
   for(const key of a.w.lost){const s=a.w.spots[key];assert(a.w.allowed(C.x+s.x,C.z+s.z),`${key}’s place is open ground`)}
   const exit=find(a,'walden-exit');a.w.interact(exit);assert(!a.w.contains(a.player.pos.x,a.player.pos.z),'back to the cabinet');assert(Math.abs(a.player.pos.z-(a.w.door.z-1.6))<.01);
