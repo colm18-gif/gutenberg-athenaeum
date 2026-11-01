@@ -17,7 +17,7 @@ test('doors, moving paintings and rockets use distinct recorded effects',()=>{
 });
 
 test('movement audio is quiet, varied, surface-aware and stops with the visitor',()=>{
-  for(const surface of ['wood','concrete','carpet','metal'])for(let i=0;i<3;i++)assert(fs.statSync(`assets/audio/footsteps/${surface}-00${i}.ogg`).size>4000);
+  for(const surface of ['wood','concrete','carpet'])for(let i=0;i<3;i++)assert(fs.statSync(`assets/audio/footsteps/${surface}-00${i}.ogg`).size>4000);
   assert.match(game,/const footstepNames=\['woodStep0'/);
   assert.match(game,/function footstepSurface\(\)/);
   const surfaceFn=game.match(/function footstepSurface\(\)\{.*\}/)[0];

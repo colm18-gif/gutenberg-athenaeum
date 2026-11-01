@@ -27,7 +27,6 @@ The files in `footsteps/` are compact original Ogg files from Kenney's CC0
 | `wood-000.ogg`–`wood-002.ogg` | `footstep_wood_000.ogg`–`footstep_wood_002.ogg` |
 | `concrete-000.ogg`–`concrete-002.ogg` | `footstep_concrete_000.ogg`–`footstep_concrete_002.ogg` |
 | `carpet-000.ogg`–`carpet-002.ogg` | `footstep_carpet_000.ogg`–`footstep_carpet_002.ogg` |
-| `metal-000.ogg`–`metal-002.ogg` | `impactMetal_light_000.ogg`–`impactMetal_light_002.ogg` |
 | `floorboard-creak.ogg` | `impactPlank_medium_000.ogg` |
 
 They are used quietly and selected at runtime according to timber, stone,
