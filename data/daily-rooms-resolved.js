@@ -1,63 +1,8 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-10-31",
+ "updated": "2026-11-01",
  "days": {
-  "2026-10-18": {
-   "books": [
-    {
-     "id": 1228,
-     "title": "On the Origin of Species",
-     "author": "Charles Darwin"
-    },
-    {
-     "id": 46036,
-     "title": "The Sidereal Messenger",
-     "author": "Galileo Galilei"
-    },
-    {
-     "id": 33504,
-     "title": "Opticks",
-     "author": "Isaac Newton"
-    },
-    {
-     "id": 14474,
-     "title": "The Chemical History of a Candle",
-     "author": "Michael Faraday"
-    },
-    {
-     "id": 15491,
-     "title": "Micrographia",
-     "author": "Robert Hooke"
-    },
-    {
-     "id": 30155,
-     "title": "Relativity: The Special and General Theory",
-     "author": "Albert Einstein"
-    },
-    {
-     "id": 45515,
-     "title": "Experiments and Observations on Electricity",
-     "author": "Benjamin Franklin"
-    },
-    {
-     "id": 29414,
-     "title": "An Inquiry into the Causes and Effects of the Variolae Vaccinae",
-     "author": "Edward Jenner"
-    },
-    {
-     "id": 33224,
-     "title": "Principles of Geology",
-     "author": "Charles Lyell"
-    },
-    {
-     "id": 3300,
-     "title": "An Inquiry into the Nature and Causes of the Wealth of Nations",
-     "author": "Adam Smith"
-    }
-   ],
-   "missing": []
-  },
   "2026-10-19": {
    "books": [
     {
@@ -879,6 +824,61 @@ window.ATHENAEUM_DAILY_RESOLVED={
      "id": 11982,
      "title": "Eighty Years and More",
      "author": "Elizabeth Cady Stanton"
+    }
+   ],
+   "missing": []
+  },
+  "2026-11-03": {
+   "books": [
+    {
+     "id": 4229,
+     "title": "The South Pole",
+     "author": "Roald Amundsen"
+    },
+    {
+     "id": 14363,
+     "title": "The Worst Journey in the World",
+     "author": "Apsley Cherry-Garrard"
+    },
+    {
+     "id": 30197,
+     "title": "Farthest North",
+     "author": "Fridtjof Nansen"
+    },
+    {
+     "id": 18975,
+     "title": "The North Pole",
+     "author": "Robert E. Peary"
+    },
+    {
+     "id": 74976,
+     "title": "Travels in the Interior of Africa",
+     "author": "Mungo Park"
+    },
+    {
+     "id": 8419,
+     "title": "The Journals of Lewis and Clark",
+     "author": "Meriwether Lewis"
+    },
+    {
+     "id": 15777,
+     "title": "A Voyage Towards the South Pole and Round the World",
+     "author": "James Cook"
+    },
+    {
+     "id": 10339,
+     "title": "An Antarctic Mystery",
+     "author": "Jules Verne"
+    },
+    {
+     "id": 4658,
+     "title": "Personal Narrative of a Pilgrimage to Al-Madinah and Meccah",
+     "author": "Richard F. Burton"
+    },
+    {
+     "id": 215,
+     "title": "The Call of the Wild",
+     "author": "Jack London"
     }
    ],
    "missing": []
