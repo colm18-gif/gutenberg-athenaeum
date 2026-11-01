@@ -20,7 +20,8 @@ test('movement audio is quiet, varied, surface-aware and stops with the visitor'
   for(const surface of ['wood','concrete','carpet','metal'])for(let i=0;i<3;i++)assert(fs.statSync(`assets/audio/footsteps/${surface}-00${i}.ogg`).size>4000);
   assert.match(game,/const footstepNames=\['woodStep0'/);
   assert.match(game,/function footstepSurface\(\)/);
-  assert.match(game,/nightRailway\?\.zoneAt\(x,z\)/);
+  const surfaceFn=game.match(/function footstepSurface\(\)\{.*\}/)[0];
+  assert.doesNotMatch(surfaceFn,/nightRailway|stationSubway/,'the trains, platforms and subway use the library\'s ordinary footsteps');
   assert.match(game,/function stopFootsteps\(\)/);
   assert.match(game,/const cadence=clamp\(\.54-speed\*\.055,\.27,\.48\)/);
   assert.match(game,/if\(surface==='wood'\)/);
@@ -214,7 +215,7 @@ test('startup files download together, run in order, and are fetched only once',
   assert.match(html,/STARTUP\.forEach\(warm\);await loadFirst\(THREE_SOURCES\);await Promise\.all\(STARTUP\.map\(src=>loadScript\(src,30000\)\)\)/);
   const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(match=>match[1]);
   // 61 including telescope-view.js and data/new-books-wing.js, which is only listed for links that may lead into the International Wing.
-  assert.equal(order.length,86);assert.equal(order.at(-1),'game.js','game.js must run last, after everything it depends on');
+  assert.equal(order.length,85);assert.equal(order.at(-1),'game.js','game.js must run last, after everything it depends on');
   assert.equal(new Set(order).size,order.length);for(const file of order)assert(fs.existsSync(file),`${file} is listed for startup but missing`);
 });
 
