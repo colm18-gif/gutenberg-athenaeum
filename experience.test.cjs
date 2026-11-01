@@ -21,7 +21,8 @@ test('movement audio is quiet, varied, surface-aware and stops with the visitor'
   assert.match(game,/const footstepNames=\['woodStep0'/);
   assert.match(game,/function footstepSurface\(\)/);
   const surfaceFn=game.match(/function footstepSurface\(\)\{.*\}/)[0];
-  assert.doesNotMatch(surfaceFn,/nightRailway|stationSubway/,'the trains, platforms and subway use the library\'s ordinary footsteps');
+  assert.doesNotMatch(surfaceFn,/nightRailway/,'the trains and platforms use the library\'s ordinary footsteps');
+  assert.match(surfaceFn,/stationSubway\?\.contains\(x,z\)\)return'stone'/,'the subway keeps its stone footsteps');
   assert.match(game,/function stopFootsteps\(\)/);
   assert.match(game,/const cadence=clamp\(\.54-speed\*\.055,\.27,\.48\)/);
   assert.match(game,/if\(surface==='wood'\)/);
