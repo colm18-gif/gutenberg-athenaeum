@@ -5,7 +5,8 @@
 // and falling snow, and the summit standing above a sea of cloud, ringed by other peaks. The books are found, not
 // shelved: the valley's in the stone hut in the meadow, the climbers' at small cairns beside the path, each cairn
 // scratched with the year of its climb. A rope fixed at the summit lets the reader down the west face in one long
-// abseil to the meadow, where the painting's frame stands in the grass with the Grand Hall's lamplight in it.
+// abseil, through the cloud and out in front of the painting in the Grand Hall. The painting's frame also stands in
+// the meadow, with the Grand Hall's lamplight in it, for those who walk back down.
 // The summit's secret: look down at the cloud on the side away from the moon, and a giant figure stands on it with a
 // glory round its head, which is the reader's own shadow (the spectre of the Brocken); when it has been seen, the
 // library's Coleridge lies on the summit cairn, open at the poem about it. Every quotation is checked by a test.
@@ -27,11 +28,15 @@
   // The moon: low in the south. Its antipoint, where a shadow falls, is to the north and below the horizon.
   const MOON_DIR=(()=>{const az=.3,el=.44;return {x:Math.sin(az)*Math.cos(el),y:Math.sin(el),z:Math.cos(az)*Math.cos(el)}})();
   const CLOUD_Y=30;
+  // The abseil ends inside the cloud layer, where the mountain gives way to the Grand Hall.
+  const ROPE_END=R0-45*Math.pow((CLOUD_Y-2.5)/46,1/1.8);
   // How far either side of the path's middle a reader may walk: its whole drawn width.
   const PATH_HALF=1.5;
   // The painting on the Grand Hall's north wall, on the pier between the fireplace and the next window.
   const HALL_PAINTING={x:-7.78,y:4.45,z:-29.93,w:1.9,h:2.6};
   const HALL_SPOT={x:-7.8,z:-26.6,yaw:Math.PI};
+  // Where the rope sets the reader down: in the Grand Hall, in front of the painting and facing it.
+  const ROPE_LANDING={x:-7.8,z:-26.6,yaw:0};
   // The library's own copies left beside the path (book-pages.mjs reads this list).
   const OWN=[755,32540];
   // The cairns beside the path: how far up the path (0 at the meadow, 1 at the summit), the year scratched on the top
@@ -44,7 +49,7 @@
   ];
   const QUOTES={
     // Whymper's last words in Scrambles Amongst the Alps (book 41234), on the rope's anchor.
-    rope:'An iron stanchion leaded into the rock, and a rope fixed to it going down the west face into the cloud, all the way to the meadow. Someone has scratched on the iron: “Do nothing in haste, look well to each step, and from the beginning think what may be the end.” (Whymper, Scrambles Amongst the Alps)',
+    rope:'An iron stanchion leaded into the rock, and a rope fixed to it going down the west face into the cloud. From up here you cannot see where it ends. Someone has scratched on the iron: “Do nothing in haste, look well to each step, and from the beginning think what may be the end.” (Whymper, Scrambles Amongst the Alps)',
     // Muir in a Douglas spruce in a gale, The Mountains of California (book 10012), on the bent pine.
     pine:'A pine bent by the wind, its top still swaying. John Muir climbed one in a storm in the Sierra to hear the forest from above: “never before did I enjoy so noble an exhilaration of motion.” (The Mountains of California)',
     // Coleridge, Constancy to an Ideal Object (book 29090), when the shadow on the cloud has been seen.
@@ -111,7 +116,7 @@
       move,moveTo=null,analytics,toHall=null,registerSeat=null,isHolding=()=>false,isReducedMotion=()=>false,storage=window.localStorage}=options;
     const FOUND_KEY='athenaeum-mountain-found',SPECTRE_KEY='athenaeum-mountain-spectre',SUMMITS_KEY='athenaeum-mountain-summits';
     const W=(x,z)=>({x:CENTRE.x+x,z:CENTRE.z+z});
-    const HUT={x:-10.5,z:57.5,yaw:Math.PI*.42},ARRIVAL={...W(0,57.4),yaw:0},FRAME={...W(0,60.4)},ROPE_FOOT={...W(-53.5,0),yaw:-Math.PI/2};
+    const HUT={x:-10.5,z:57.5,yaw:Math.PI*.42},ARRIVAL={...W(0,57.4),yaw:0},FRAME={...W(0,60.4)};
     let root=null,time=0,lastNeeded=-1e9,state=null,hallPainting=null,foundCache=null,abseil=null,spectreSeen=false,watch=0,visitedSummit=false;
     const owned=[],ours=[],books=[],blockers=[],trunks=[];
     const own=thing=>{owned.push(thing);return thing};
@@ -308,9 +313,6 @@
         // The rope itself, down the face to the meadow.
         const line=[];for(let k=0;k<=60;k++){const r=R1+.1+(R0+3.5-R1)*k/60;line.push(new THREE.Vector3(CENTRE.x+Math.sin(ROPE_THETA)*r,baseHeight(r)+.35,CENTRE.z+Math.cos(ROPE_THETA)*r))}
         const ropeGeometry=own(new THREE.BufferGeometry());ropeGeometry.setFromPoints?.(line);root.add(new THREE.Line(ropeGeometry,own(new THREE.LineBasicMaterial({color:0xc06a3a}))));
-        // The foot of the rope in the meadow.
-        const foot=add(own(new THREE.TorusGeometry(.3,.05,6,18)),std({color:0xb2502c,roughness:.8}),ROPE_FOOT.x+.6,groundWorld(ROPE_FOOT.x,ROPE_FOOT.z)+.05,ROPE_FOOT.z,root);foot.rotation.x=Math.PI/2;
-        mark(foot,{type:'mountain-card',key:'rope-foot',title:'The end of the rope',author:'The fixed rope from the summit ends here, coiled in the grass. It only goes one way: down.',action:'LOOK'});
         // The rail on the north rim.
         const lx=Math.sin(LEDGE_THETA)*(R1-.5),lz=Math.cos(LEDGE_THETA)*(R1-.5),ly=groundWorld(CENTRE.x+lx,CENTRE.z+lz),rail=new THREE.Group();rail.position.set(CENTRE.x+lx,ly,CENTRE.z+lz);rail.rotation.y=LEDGE_THETA;root.add(rail);
         const railParts=[box(2.4,.05,.05,iron,0,.95,0,rail)];for(const x of [-1.1,1.1])railParts.push(cyl(.03,.03,.95,6,iron,x,.48,0,rail));for(const part of railParts)mark(part,card('cloud','A sea of cloud'));
@@ -452,18 +454,18 @@
     }
     function ordinal(n){const s=['th','st','nd','rd'],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0])}
     function startAbseil(){
-      if(abseil)return;activate();const reduced=isReducedMotion();abseil={t:0,duration:reduced?4:9};
+      if(abseil)return;activate();const reduced=isReducedMotion();abseil={t:0,duration:reduced?3:7};
       playSample?.('secretDoor',.3,1.3);showNotice('You clip on to the rope, lean back over the edge, and let it run.',5);
       analytics?.track('Room Explored',{room:'mountain-abseil'});
     }
     function updateAbseil(dt){
       const a=abseil;a.t+=dt;const p=clamp(a.t/a.duration,0,1),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
-      const r=R1+.4+(R0+3.2-R1-.4)*e,lx=Math.sin(ROPE_THETA)*r,lz=Math.cos(ROPE_THETA)*r,y=baseHeight(r)+1.5+Math.sin(p*Math.PI)*.8;
+      const r=R1+.4+(ROPE_END-R1-.4)*e,lx=Math.sin(ROPE_THETA)*r,lz=Math.cos(ROPE_THETA)*r,y=baseHeight(r)+1.5+Math.sin(p*Math.PI)*.8;
       player.pos.set(CENTRE.x+lx,y-1.72,CENTRE.z+lz);
       if(camera){const sway=isReducedMotion()?0:Math.sin(a.t*2.1)*.03;camera.position.set(CENTRE.x+lx,y,CENTRE.z+lz);camera.rotation.set(-.28,Math.atan2(-lx,-lz)+.35,sway,'YXZ');camera.updateMatrixWorld?.()}
       if(p>=1)land();
     }
-    function land(){if(!abseil)return;abseil=null;go(ROPE_FOOT.x,ROPE_FOOT.z,ROPE_FOOT.yaw);showNotice('Your boots touch grass. The rope hangs above you into the cloud, and the summit is a long way up. The frame home stands round the mountain’s foot to the south, past the hut.',8)}
+    function land(){if(!abseil)return;abseil=null;if(toHall)toHall(ROPE_LANDING);else move(ROPE_LANDING.x,ROPE_LANDING.z,ROPE_LANDING.yaw);player.pitch=.32;playSample?.('doorOpen',.4,.8);showNotice('The rope runs down through the cloud, and on, and the cloud is the colour of lamplight, and your boots touch floorboards. You are standing in the Grand Hall, in front of the painting, by the fire, with snow on your sleeves.',9)}
     function reset(){if(abseil)land()}
     function interact(object){
       const data=object?.userData;if(!data||typeof data.type!=='string'||!data.type.startsWith('mountain-'))return false;
@@ -510,7 +512,7 @@
     }
 
     return {contains,floorAt,allowed,interact,update,enter,leave,unload,reset,zoneAt,surfaceAt,noteFound,catalogue,hangHallPainting,seeSpectre,signRegister,
-      centre:CENTRE,path:PATH,stations:STATIONS,quotes:QUOTES,own:OWN,arrival:ARRIVAL,hallSpot:HALL_SPOT,hallPainting:HALL_PAINTING,ropeFoot:ROPE_FOOT,moonDir:MOON_DIR,
+      centre:CENTRE,path:PATH,stations:STATIONS,quotes:QUOTES,own:OWN,arrival:ARRIVAL,hallSpot:HALL_SPOT,hallPainting:HALL_PAINTING,ropeLanding:ROPE_LANDING,moonDir:MOON_DIR,
       groundAt:groundWorld,nearestPath:(x,z)=>nearestPath(x-CENTRE.x,z-CENTRE.z),
       get built(){return !!root},get travelling(){return !!abseil},get books(){return books.slice()},get counts(){return state?.counts||null},get spectreSeen(){return spectreSeen},get signs(){return state?.signs||null},hut:HUT,frame:FRAME,pathHalf:PATH_HALF};
   };

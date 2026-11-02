@@ -148,8 +148,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `mountain-path` plus the library's own Isabella Bird and Muir (`OWN`); the valley's books (`mountain-valley`: Heidi,
   Tartarin, A Tramp Abroad…) are on the shelf of a stone hut in the meadow, whose bench is a seat. At the top: the cairn
   and a summit register (signing it counts the reader's ascents, `athenaeum-mountain-summits`), a rail on the north rim
-  over the cloud, and on the west rim a fixed rope: ABSEIL DOWN carries the reader down the west face to the meadow
-  (`travelling` while it runs; R lands at once). The secret: look down at the cloud on the side away from the moon from
+  over the cloud, and on the west rim a fixed rope: ABSEIL DOWN carries the reader down the west face into the cloud
+  and sets them down in the Grand Hall in front of the painting, facing it (`ROPE_LANDING`; `travelling` while it runs;
+  R lands at once). The secret: look down at the cloud on the side away from the moon from
   the summit, and the reader's own shadow stands on it with a glory round its head (the Brocken spectre); Coleridge's
   Complete Poetical Works (`mountain-spectre`), with Constancy to an Ideal Object, is then on the cairn, found for good
   (`athenaeum-mountain-spectre`). No lights; the sky is a dome that goes with the reader, with the far ranges painted
