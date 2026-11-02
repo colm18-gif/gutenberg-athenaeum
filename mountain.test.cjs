@@ -117,7 +117,6 @@ test('the mountain stands far from everything, and every book on it can be walke
   for(const b of a.m.books)assert(near(b.position,2.2),`${b.userData.book.id} can be reached`);
   assert(reached.some(([px,pz])=>a.m.zoneAt(px,pz)==='mountain-summit'),'the summit can be reached');
   for(const type of ['mountain-rope','mountain-register','mountain-exit'])assert(near(world(find(a,type)),3),`${type} can be reached`);
-  assert(near(a.m.ropeFoot,1.5),'the rope lands the reader on open ground');
   // The hut can be walked into, as far as the shelf at its back.
   const hut={x:cx+a.m.hut.x,z:cz+a.m.hut.z};assert(near(hut,.5),'the reader can step inside the hut');
   for(const b of a.m.books.filter(b=>b.userData.shelf==='valley'))assert(near(b.position,1.3),`the hut’s book ${b.userData.book.id} is within reach from inside`);
@@ -152,13 +151,17 @@ test('in through the painting, up, round, down the rope, and out again',()=>{
   assert(a.m.books.some(b=>b.userData.book.id===29090),'Coleridge lies on the cairn');
   // Found for good: on the next visit Coleridge is there from the start.
   const b=mountain({stored:{'athenaeum-mountain-spectre':'1'}});b.m.enter();assert(b.m.books.some(m=>m.userData.book.id===29090));
-  // Down the rope: the reader is carried, not walking, and lands at the foot of the rope.
-  a.m.interact(find(a,'mountain-rope'));assert(a.m.travelling);for(let t=3;t<14;t+=.5)a.m.update(t,.5);
-  assert.equal(a.m.travelling,false);assert(Math.hypot(a.player.pos.x-a.m.ropeFoot.x,a.player.pos.z-a.m.ropeFoot.z)<.01);assert.match(a.notices.at(-1),/boots touch grass/);
+  // Down the rope: the reader is carried, not walking, down through the cloud, and set down in the Grand Hall in front of
+  // the painting, facing it.
+  a.m.interact(find(a,'mountain-rope'));assert(a.m.travelling);let lowest=1e9;for(let t=3;t<14&&a.m.travelling;t+=.5){a.m.update(t,.5);lowest=Math.min(lowest,a.camera.position.y)}
+  assert(lowest<30,'it goes down into the cloud');
+  assert.equal(a.m.travelling,false);assert.equal(a.hall.length,1);const landing=a.hall[0],frame=a.m.hallPainting;
+  assert(Math.abs(landing.x-frame.x)<.3&&landing.z>frame.z&&landing.z-frame.z<4,'in front of the painting');assert.equal(landing.yaw,0,'facing it');
+  assert.match(a.notices.at(-1),/in front of the painting/);a.m.enter();
   // And R mid-abseil lands at once.
   a.m.interact(find(a,'mountain-rope'));a.m.update(15,.1);a.m.reset();assert.equal(a.m.travelling,false);
   // Out through the frame, and freed a while after the reader has gone, with all its parts.
-  a.m.interact(find(a,'mountain-exit'));assert.equal(a.hall.length,1);assert(!a.m.contains(a.player.pos.x,a.player.pos.z),'back in the Grand Hall');
+  assert.equal(a.hall.length,2,'R mid-abseil lands in the hall too');const before=a.hall.length;a.m.interact(find(a,'mountain-exit'));assert.equal(a.hall.length,before+1);assert(!a.m.contains(a.player.pos.x,a.player.pos.z),'back in the Grand Hall');
   a.m.update(20,.016);assert(a.m.built);a.m.update(60,.016);assert.equal(a.m.built,false);
   assert(!a.interactables.some(o=>/^mountain-(card|exit|rope|register)$/.test(o.userData.type)),'its parts go with it');assert(find(a,'mountain-painting'),'but the painting stays');
 });
