@@ -272,8 +272,8 @@
           // The uphill side is the side towards the mountain's middle.
           let nx=-dz/l,nz=dx/l;if(nx*p.x+nz*p.z>0){nx=-nx;nz=-nz}
           const cx=p.x+nx*1.75,cz=p.z+nz*1.75,cy=p.y;
-          for(let k=0;k<5;k++){const s=.34-k*.05;stones.push({x:CENTRE.x+cx+(rand()-.5)*.1,y:cy+.12+k*.2,z:CENTRE.z+cz+(rand()-.5)*.1,s,sy:s*.6,ry:rand()*6})}
-          const cardStone=add(own(new THREE.BoxGeometry(.36,.06,.3)),std({map:label(String(station.year),160,64,'#8a8680','#2a2622'),roughness:1}),CENTRE.x+cx,cy+1.08,CENTRE.z+cz,root);cardStone.rotation.y=Math.atan2(-nx,-nz);
+          for(let k=0;k<5;k++){const s=.34-k*.05;stones.push({x:CENTRE.x+cx+(rand()-.5)*.1,y:cy+.1+k*.16,z:CENTRE.z+cz+(rand()-.5)*.1,s,sy:s*.6,ry:rand()*6})}
+          const cardStone=add(own(new THREE.BoxGeometry(.4,.05,.3)),std({map:label(String(station.year),160,64,'#8a8680','#2a2622'),roughness:1}),CENTRE.x+cx,cy+.8,CENTRE.z+cz,root);cardStone.rotation.y=Math.atan2(-nx,-nz);
           mark(cardStone,{type:'mountain-card',key:'cairn',title:'A cairn beside the path',author:`A cairn, with a red and white waymark painted on its foot. Scratched on the top stone: ${station.year}. Someone has left ${station.ids.length>1?'books':'a book'} against it.`,action:'LOOK'});
           const blaze=add(own(new THREE.PlaneGeometry(.3,.18)),std({map:label('',96,56,'#c8c4bc'),roughness:1}),0,0,0,root);blaze.position.set(CENTRE.x+cx-nx*.36,cy+.22,CENTRE.z+cz-nz*.36);blaze.rotation.y=Math.atan2(-nx,-nz);
           const red=add(own(new THREE.PlaneGeometry(.3,.05)),std({color:0xb02a24,roughness:1}),0,0,0,root);red.position.copy(blaze.position);red.position.y+=.045;red.rotation.y=blaze.rotation.y;
@@ -385,7 +385,7 @@
       const canvas=new THREE.Mesh(new THREE.PlaneGeometry(HALL_PAINTING.w,HALL_PAINTING.h),new THREE.MeshStandardMaterial({map,emissive:0xffffff,emissiveMap:map,emissiveIntensity:.32,roughness:.8}));canvas.position.z=.045;g.add(canvas);
       const gilt=new THREE.MeshStandardMaterial({color:0xa8823a,roughness:.4,metalness:.65}),w=HALL_PAINTING.w,h=HALL_PAINTING.h;
       for(const [fw,fh,x,y] of [[w+.36,.18,0,h/2+.09],[w+.36,.18,0,-h/2-.09],[.18,h,-w/2-.09,0],[.18,h,w/2+.09,0]]){const m=new THREE.Mesh(new THREE.BoxGeometry(fw,fh,.1),gilt);m.position.set(x,y,.05);g.add(m)}
-      const plate=new THREE.Mesh(new THREE.BoxGeometry(.6,.13,.02),new THREE.MeshStandardMaterial({map:canvasTexture((c,Wd,H)=>{c.fillStyle='#b8954a';c.fillRect(0,0,Wd,H);c.fillStyle='#2a1e0c';c.textAlign='center';c.font=`italic ${Math.round(H*.5)}px Georgia`;c.fillText('A Mountain by Moonlight',Wd/2,H*.66)},256,56),roughness:.5,metalness:.4}));plate.position.set(0,-h/2-.32,.05);g.add(plate);
+      const plate=new THREE.Mesh(new THREE.BoxGeometry(.7,.13,.02),new THREE.MeshStandardMaterial({map:canvasTexture((c,Wd,H)=>{c.fillStyle='#b8954a';c.fillRect(0,0,Wd,H);c.fillStyle='#2a1e0c';c.textAlign='center';c.font=`italic ${Math.round(H*.34)}px Georgia`;c.fillText('A Mountain by Moonlight',Wd/2,H*.62)},384,72),roughness:.5,metalness:.4}));plate.position.set(0,-h/2-.32,.05);g.add(plate);
       const data={type:'mountain-painting',title:'A mountain by moonlight',author:'Snow on the peak, a path going round it to the top, and cloud lying below the summit. The paint is cold to the touch, and there is a breath of wind from the canvas.',action:'STEP IN'};
       for(const part of [canvas,plate]){part.userData=data;interactables.push(part)}
       hallPainting={group:g,canvas};return hallPainting;
@@ -428,7 +428,7 @@
         :'A meadow at night at the foot of a mountain, its summit white under the moon. A path leaves the grass and climbs. Behind you, a picture frame stands in the grass with the Grand Hall’s lamplight in it.',11);
       analytics?.track('Room Explored',{room:'mountain'});
     }
-    function leave(){if(toHall)toHall(HALL_SPOT);else move(HALL_SPOT.x,HALL_SPOT.z,HALL_SPOT.yaw);playSample?.('doorOpen',.5,1.2);showNotice('Back through the frame into the Grand Hall, and the warmth of the fire. The painting shows the mountain as before, but there is a little snow on the hearth.',6)}
+    function leave(){abseil=null;if(toHall)toHall(HALL_SPOT);else move(HALL_SPOT.x,HALL_SPOT.z,HALL_SPOT.yaw);playSample?.('doorOpen',.5,1.2);showNotice('Back through the frame into the Grand Hall, and the warmth of the fire. The painting shows the mountain as before, but there is a little snow on the hearth.',6)}
     function noteFound(id){
       const all=found(),{valley,path,spectre}=catalogue(),here=new Set([...valley,...path,...spectre].map(b=>b.id)),total=valley.length+path.length;if(!here.has(id))return null;
       const first=!all.has(id);all.add(id);foundCache=all;write(FOUND_KEY,JSON.stringify([...all]));
