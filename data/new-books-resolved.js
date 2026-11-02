@@ -487,10 +487,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 2542,
    "words": 26839
   },
-  "Notes from the Underground": {
-   "id": 600,
-   "words": 44382
-  },
   "The Trial": {
    "id": 7849,
    "words": 84220
@@ -530,10 +526,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Hard Times": {
    "id": 786,
    "words": 104337
-  },
-  "The Idiot": {
-   "id": 2638,
-   "words": 244613
   },
   "The Great Gatsby": {
    "id": 64317,
@@ -1162,10 +1154,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Women in Love": {
    "id": 4240,
    "words": 182855
-  },
-  "The Kreutzer Sonata": {
-   "id": 689,
-   "words": 64398
   },
   "Areopagitica": {
    "id": 608,

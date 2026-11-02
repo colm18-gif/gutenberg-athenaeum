@@ -10,7 +10,7 @@
     // (x 340, z 30, radius 18) and the night railway, beyond the camera's reach from either.
     const ENTRANCE={x:36.6,z:2.05,yaw:-Math.PI/2};
     const ROOM={cx:500,cz:60,w:18,d:16,h:5.2};
-    const IDS=[1342,84,2701,11,1661,98,174,345,5200,1232,1952,1400,4300,1080,46,768,2554,219,16328,6130,19942,55,244,514,1260,2097,1727,5740,1064,145,35,5230,236,1524,10002,389,1695,1934,2005,10897,204,215];
+    const IDS=[1342,84,2701,11,1661,98,174,345,5200,1232,1952,1400,4300,1080,46,768,161,219,16328,6130,19942,55,244,514,1260,2097,1727,5740,1064,145,35,5230,236,1524,10002,389,1695,1934,2005,10897,204,215];
     // Like the other rooms behind doors, the room is built when the reader goes in and freed a while after they leave;
     // the portrait in the east wing stays.
     const KEEP=25;
