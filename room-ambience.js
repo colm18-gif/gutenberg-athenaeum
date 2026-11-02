@@ -155,6 +155,8 @@
       'mountain-heights':{beds:[['wind',.1],['air',.03]],events:[['creak',.2,.02]]},
       'mountain-summit':{beds:[['wind',.15],['air',.035]],events:[]},
       forest:{beds:[['wind',.07],['air',.03]],events:[['owl',.9,.05],['rustle',1.6,.05],['creak',.7,.04]]},
+      // The Forest Song: a spring night by a forest lake in Volyn, frogs in the reeds, birds in the dark, a breeze.
+      'forest-song':{beds:[['wind',.04],['air',.03]],events:[['frog',1.1,.035],['bird',.9,.03],['rustle',1,.035],['drip',.5,.02],['owl',.25,.025]]},
       'burns-room':{beds:[['fire',.09],['air',.025]],ticks:[[1.1,'tock',.018]],events:[['crackle',36,.11],['snap',7,.09],['creak',.5,.03]]},
       // The Canadian Room: a log room on a winter night, the box stove roaring, wind round the eaves, and now and then
       // a loon out on the lake (in winter they have gone south, but the room keeps one).

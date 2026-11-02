@@ -253,6 +253,23 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   the bare page round each plate), with drawn notes on the word оукраины on leaf 82 and on the presidents' oath. Commons
   has no other usable photographs of it. The Catalogue lookup also searches Ukrainian Wikisource (`ws <page>`, `ws? <words>`) and Commons
   (`commons? <words>`). A Wikisource page that only lists editions has too little text: give the edition's own page.
+- The Forest Song (`forest-song.js`, centre x 600, z 900; walkable within 32 m): the world of Lesia Ukrainka's Лісова пісня
+  (book 999793, in the wing's list), on a spring night. Two ways in: Lukash's reed pipe on two pegs across a linen towel in
+  the Ukrainian Reading Room's south-west corner, under a plaque (`intl-sopilka`; the wing is given `forestSong`), and a
+  button in the reader for that play alone (`?room=forest-song`, `lisova-pisnia`, `mavka`, `lesia-ukrainka`; a link
+  loads the wing's books first). As the prologue sets it: the glade with the weeping birch and the great oak, the forest
+  lake (not walkable) under duckweed and lilies, clear in the middle, the stream in and out, reeds, the old split willow
+  half-withered, the fallen tree where the Forest Elder smoked (a seat; the play lies on it) and the embers of a fire.
+  The trees start almost bare; the pipe against the oak plays Lukash's tune (the library's own, `TUNE`, on `pianoTone`'s
+  flute) and the forest unfolds in real time over about eight seconds (crowns, catkins, white lilies); then Mavka, a
+  sprite with a clear pane to pick her by, steps out by the willow, with a wreath of fireflies (`THREE.Points`), once a
+  visit (`athenaeum-forest-song-mavka`); played to again, she answers «Як солодко грає…». A blue door with a rushnyk
+  leads back to the room. No lights. Every «quotation» is checked against the bundled text by a test; the English after
+  each is the library's own plain rendering.
+- The Holodomor candle: in the Ukrainian Reading Room, from the Sunday before the fourth Saturday of November (the Day of
+  Remembrance of the Victims of the Holodomor) to the day itself, a candle in a glass with ears of wheat stands where the
+  didukh stands at Christmas; the reader lights it (`intl-holodomor`). On the day, the room's welcome names it.
+  `?holodomor` shows it on any day.
 - The Kipling bookcase (`kipling-shelf.js`) stands against the Grand Hall's west wall in the south-west corner (x −18.54,
   z 29.1, between the column at z 27 and the corner; `?room=kipling`): Rudyard Kipling's books face-out in the order he
   published them, four shelves of three, from the shelf `kipling` in `data/new-books.js`, under a brass plate whose card says where his other books are. Added after the Kipling Society wrote in.
@@ -430,7 +447,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
-  daily-room, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
+  daily-room, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.
