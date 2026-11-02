@@ -1,29 +1,44 @@
-# Captain Nemo's salon: books of the sea's depths, its naturalists, wrecks and Atlantis
-Water-Babies ; Kingsley ; en
-Glaucus ; Kingsley ;
-Toilers of the Sea|Travailleurs de la mer ; Hugo ;
-Little Mermaid ; ; en
-Maracot ; ;
-; Hodgson, William Hope ; en
-Sea Raiders|In the Abyss|Thirty Strange|Plattner|Short Stories ; Wells ; en
-Mysterious Island ; Verne ; en
-Physical Geography of the Sea ; ;
-^The Sea\b|La mer ; Michelet ;
-Depths of the Sea ; ;
-Challenger ; ; en
-; Gosse, Philip ; en
-; Beebe, William ; en
-Three Cruises|Blake ; Agassiz ;
-Coral ; ; en
-Ocean World|The Ocean ; ; en
-; Figuier ; en
-Atlantis ; ; en
-Critias|Timaeus ; Plato ; en
-Sunken|Buried Treasure|Treasure-Trove ; ; en
-Diving|Diver ; ; en
-Sea-Serpent|Sea Serpent|Kraken|Octopus|Devil-Fish ; ; en
-Sea-Shore|Seashore|Rock-Pool|Rock Pool|Marine ; ; en
-Undersea|Under the Sea|Under Sea|Beneath the Sea|Bottom of the Sea ; ; en
-Mermaid|Mermen|Merman ; ; en
-Sargasso ; ; en
-Lost Continent|Lemuria|Mu\b ; ; en
+# The Mountain: climbers' books, mountain fiction, and the Brocken spectre
+Scrambles Amongst|Great Andes|Ascent of the Matterhorn|Chamonix ; Whymper ;
+My Climbs ; Mummery ;
+Playground of Europe ; Stephen, Leslie ;
+Glaciers of the Alps|Hours of Exercise|Forms of Water ; Tyndall ;
+Lady's Life in the Rocky|Lady’s Life in the Rocky ; Bird, Isabella ;
+Mont Blanc ; ; en
+Wanderings Among the High Alps ; Wills ;
+Karakoram|Alps from End to End|Climbing and Exploration ; Conway ;
+Caucasus|Kangchenjunga ; Freshfield ;
+Mountaineering ; ; en
+Climbs|Climbing ; ; en
+Alpine|Alps ; ; en
+Himalaya ; ; en
+Matterhorn ; ; en
+Rocky Mountains|Canadian Rockies|Selkirk ; ; en
+Japanese Alps ; ; en
+Apex of America|Andes ; Peck ;
+Ice World|Himalaya ; Workman ;
+High Life|Mountain Adventure|Le Blond ; ; en
+; Le Blond ; en
+Rock-Climbing|Rock Climbing ; ; en
+Mountain Craft|On High Hills ; Young ;
+Mountain ; Muir ; en
+Yosemite|Steep Trails|Travels in Alaska ; Muir ;
+Heidi ; Spyri ; en
+Tartarin ; Daudet ; en
+Tramp Abroad ; Twain ;
+Path to Rome ; Belloc ;
+Alps and Sanctuaries ; Butler ;
+Modern Painters ; Ruskin ;
+Suspiria ; De Quincey ;
+Confessions of an English Opium ; De Quincey ;
+Petrarch ; ; en
+Harz|Pictures of Travel|Reisebilder ; Heine ; en
+Brocken ; ; en
+Manfred ; Byron ;
+Himalayan Journals ; Hooker ;
+Kilimanjaro|East African Glaciers ; ; en
+Great Stone Face|Great Carbuncle|White Mountains ; ; en
+Summit|Peak|Peaks ; ; en
+Snow-Line|Snowline|Glacier ; ; en
+Monte Rosa ; ; en
+New Zealand Alps|Highest Andes|Aconcagua ; ; en
