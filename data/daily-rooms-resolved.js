@@ -1,59 +1,59 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-11-01",
+ "updated": "2026-11-02",
  "days": {
-  "2026-10-19": {
+  "2026-09-25": {
    "books": [
     {
-     "id": 113,
-     "title": "The Secret Garden",
-     "author": "Frances Hodgson Burnett"
+     "id": 583,
+     "title": "The Woman in White",
+     "author": "Wilkie Collins"
     },
     {
-     "id": 1327,
-     "title": "Elizabeth and Her German Garden",
-     "author": "Elizabeth von Arnim"
+     "id": 8486,
+     "title": "Ghost Stories of an Antiquary",
+     "author": "M. R. James"
     },
     {
-     "id": 36279,
-     "title": "Wood and Garden",
-     "author": "Gertrude Jekyll"
+     "id": 2852,
+     "title": "The Hound of the Baskervilles",
+     "author": "Arthur Conan Doyle"
     },
     {
-     "id": 16389,
-     "title": "The Enchanted April",
-     "author": "Elizabeth von Arnim"
+     "id": 1023,
+     "title": "Bleak House",
+     "author": "Charles Dickens"
     },
     {
-     "id": 136,
-     "title": "A Child's Garden of Verses",
-     "author": "Robert Louis Stevenson"
+     "id": 121,
+     "title": "Northanger Abbey",
+     "author": "Jane Austen"
     },
     {
-     "id": 125,
-     "title": "A Girl of the Limberlost",
-     "author": "Gene Stratton-Porter"
+     "id": 932,
+     "title": "The Fall of the House of Usher",
+     "author": "Edgar Allan Poe"
     },
     {
-     "id": 1429,
-     "title": "The Garden Party",
-     "author": "Katherine Mansfield"
+     "id": 564,
+     "title": "The Mystery of Edwin Drood",
+     "author": "Charles Dickens"
     },
     {
-     "id": 47349,
-     "title": "The Wild Garden",
-     "author": "William Robinson"
+     "id": 14851,
+     "title": "Uncle Silas",
+     "author": "J. Sheridan Le Fanu"
     },
     {
-     "id": 3135,
-     "title": "My Summer in a Garden",
-     "author": "Charles Dudley Warner"
+     "id": 2014,
+     "title": "The Lodger",
+     "author": "Marie Belloc Lowndes"
     },
     {
-     "id": 512,
-     "title": "Mosses from an Old Manse",
-     "author": "Nathaniel Hawthorne"
+     "id": 974,
+     "title": "The Secret Agent",
+     "author": "Joseph Conrad"
     }
    ],
    "missing": []
