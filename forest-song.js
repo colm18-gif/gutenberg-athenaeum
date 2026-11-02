@@ -161,7 +161,9 @@
         const holes=own(canvasTexture((c,W,H)=>{c.fillStyle='#c9a76a';c.fillRect(0,0,W,H);c.fillStyle='#3a2a16';for(let i=0;i<6;i++){c.beginPath();c.arc(W/2,H*.3+i*H*.08,W*.18,0,7);c.fill()}c.fillStyle='#8a3a1e';c.fillRect(0,H*.08,W,H*.04)},16,128));
         pipe.material.map=holes;pipe.material.needsUpdate=true;
         const glint=add(own(new THREE.SphereGeometry(.05,8,6)),std({color:0xfff2c8,emissive:0xffe6a0,emissiveIntensity:1.2}),0,.68,.94,g);state.pipeGlint=glint;
-        mark(pipe,{type:'song-pipe',title:'Сопілка Лукашева',author:QUOTES.sopilka,action:'PLAY'});mark(glint,pipe.userData);}
+        mark(pipe,{type:'song-pipe',title:'Сопілка Лукашева',author:QUOTES.sopilka,action:'PLAY'});mark(glint,pipe.userData);
+        // The pipe is thin and low: a clear block round it, from the ground to eye height, catches the reader's eye-line.
+        const reach=add(own(new THREE.BoxGeometry(1.1,1.95,.6)),own(new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false})),0,.98,1.15,g);mark(reach,pipe.userData);state.pipeReach=reach;}
       // The weeping birch: a white trunk, and long branches hanging down.
       {const p=at('birch'),white=std({color:0xe2ded2,roughness:.85}),twig=std({color:0x3a3028,roughness:1});
         const trunk=cyl(.16,.24,7,10,white,p.x,3.5,p.z);mark(trunk,card('birch','Плакуча береза'));trunks.push({x:p.x,z:p.z,r:.35});
