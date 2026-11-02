@@ -27,6 +27,8 @@
   // The moon: low in the south. Its antipoint, where a shadow falls, is to the north and below the horizon.
   const MOON_DIR=(()=>{const az=.3,el=.44;return {x:Math.sin(az)*Math.cos(el),y:Math.sin(el),z:Math.cos(az)*Math.cos(el)}})();
   const CLOUD_Y=30;
+  // How far either side of the path's middle a reader may walk: its whole drawn width.
+  const PATH_HALF=1.5;
   // The painting on the Grand Hall's north wall, on the pier between the fireplace and the next window.
   const HALL_PAINTING={x:-7.78,y:4.45,z:-29.93,w:1.9,h:2.6};
   const HALL_SPOT={x:-7.8,z:-26.6,yaw:Math.PI};
@@ -99,8 +101,8 @@
     const r=Math.hypot(x,z),theta=Math.atan2(x,z),base=baseHeight(r)+ringHeight(r,theta);
     const rough=r>=MEADOW.inner&&r<=WALL?.35:(.5+4.6*smooth(4,40,baseHeight(r))+6*smooth(WALL,WALL+24,r))*smooth(R1+.5,R1+5,r);
     const wild=base+(crag(x,z)-.45)*rough;
-    const p=nearestPath(x,z);if(p.d>4.2)return wild;
-    const w=smooth(1.4,4.2,p.d);return p.y+(wild-p.y)*w;
+    const p=nearestPath(x,z);if(p.d>4.8)return wild;
+    const w=smooth(2,4.8,p.d);return p.y+(wild-p.y)*w;
   }
   const pointAt=f=>{const pts=PATH.pts,i=clamp(Math.round(f*(pts.length-1)),0,pts.length-1);return pts[i]};
 
@@ -109,7 +111,7 @@
       move,moveTo=null,analytics,toHall=null,registerSeat=null,isHolding=()=>false,isReducedMotion=()=>false,storage=window.localStorage}=options;
     const FOUND_KEY='athenaeum-mountain-found',SPECTRE_KEY='athenaeum-mountain-spectre',SUMMITS_KEY='athenaeum-mountain-summits';
     const W=(x,z)=>({x:CENTRE.x+x,z:CENTRE.z+z});
-    const ARRIVAL={...W(0,57.4),yaw:0},FRAME={...W(0,60.4)},ROPE_FOOT={...W(-53.5,0),yaw:-Math.PI/2};
+    const HUT={x:-10.5,z:57.5,yaw:Math.PI*.42},ARRIVAL={...W(0,57.4),yaw:0},FRAME={...W(0,60.4)},ROPE_FOOT={...W(-53.5,0),yaw:-Math.PI/2};
     let root=null,time=0,lastNeeded=-1e9,state=null,hallPainting=null,foundCache=null,abseil=null,spectreSeen=false,watch=0,visitedSummit=false;
     const owned=[],ours=[],books=[],blockers=[],trunks=[];
     const own=thing=>{owned.push(thing);return thing};
@@ -120,6 +122,8 @@
     function mark(object,data){object.userData=data;interactables.push(object);ours.push(object);return object}
     const card=(key,title,action='LOOK')=>({type:'mountain-card',key,title,author:QUOTES[key],action});
     function block(x,z,w,d){blockers.push({minX:x-w/2,maxX:x+w/2,minZ:z-d/2,maxZ:z+d/2})}
+    // A wall of a turned group, blocked as a row of small squares along it.
+    function wall(g,x1,z1,x2,z2){const n=Math.max(1,Math.ceil(Math.hypot(x2-x1,z2-z1)/.3));for(let k=0;k<=n;k++){const q=onGroup(g,x1+(x2-x1)*k/n,0,z1+(z2-z1)*k/n);block(q.x,q.z,.4,.4)}}
     const read=key=>{try{return storage?.getItem(key)}catch(e){return null}};
     const write=(key,value)=>{try{storage?.setItem(key,value)}catch(e){}};
     const found=()=>{try{return new Set(JSON.parse(read(FOUND_KEY)||'[]'))}catch(e){return new Set()}};
@@ -162,7 +166,7 @@
       const heights=new Float32Array((N+1)*(N+1));
       for(let j=0;j<=N;j++)for(let i=0;i<=N;i++){const x=-EDGE+i*step,z=-EDGE+j*step,r=Math.hypot(x,z);let y=r>EDGE+4?ringHeight(EDGE,Math.atan2(x,z)):groundAt(x,z);
         // Under the path's own strip the ground sits a little lower, so the strip is always seen.
-        if(r<R0+8){const p=nearestPath(x,z);if(p.d<1.3)y-=.14}
+        if(r<R0+8){const p=nearestPath(x,z);if(p.d<1.75)y-=.14}
         heights[j*(N+1)+i]=y}
       for(let j=0;j<=N;j++)for(let i=0;i<=N;i++){const k=j*(N+1)+i,x=-EDGE+i*step,z=-EDGE+j*step,y=heights[k];
         const hx=heights[j*(N+1)+Math.min(N,i+1)]-heights[j*(N+1)+Math.max(0,i-1)],hz=heights[Math.min(N,j+1)*(N+1)+i]-heights[Math.max(0,j-1)*(N+1)+i],slope=Math.hypot(hx,hz)/(2*step);
@@ -173,7 +177,7 @@
     }
     // The path's own strip: worn earth at the foot, scree in the middle, trodden snow at the top.
     function buildPath(){
-      const pts=PATH.pts,positions=[],colours=[],index=[],half=1.15;
+      const pts=PATH.pts,positions=[],colours=[],index=[],half=1.6;
       pts.forEach((p,i)=>{const q=pts[Math.min(pts.length-1,i+1)],o=pts[Math.max(0,i-1)],dx=q.x-o.x,dz=q.z-o.z,l=Math.hypot(dx,dz)||1,nx=-dz/l,nz=dx/l;
         const snowy=smooth(16,30,p.y),earthy=1-smooth(4,10,p.y),c=[.3*earthy+.32*(1-earthy),.24*earthy+.31*(1-earthy),.17*earthy+.3*(1-earthy)].map(v=>v*(1-snowy)+.72*snowy);
         for(const side of [-1,1]){positions.push(CENTRE.x+p.x+nx*half*side,p.y+.03,CENTRE.z+p.z+nz*half*side);colours.push(c[0]**2.2,c[1]**2.2,(c[2]+.04*snowy)**2.2)}
@@ -188,24 +192,24 @@
     // A crag: a sharp tooth of dark rock, its upper ledges white.
     function cragGeometry(){return joined([[new THREE.ConeGeometry(.5,1,5),0x2e2d31,placed(0,.5,0)],[new THREE.ConeGeometry(.32,.62,4),0x3a3a40,placed(.22,.3,.1,.2,.6,.15)],[new THREE.DodecahedronGeometry(.18,0),0xaab4c4,placed(-.18,.42,.12,0,0,0,1)]])}
     const nearRope=(x,z)=>{const t=Math.sin(ROPE_THETA)*x+Math.cos(ROPE_THETA)*z;return t>0&&Math.abs(Math.cos(ROPE_THETA)*x-Math.sin(ROPE_THETA)*z)<4.5};
-    const nearPlace=(x,z,pad)=>Math.hypot(x-0,z-58.8)<6+pad||Math.hypot(x+10.5,z-57.5)<5+pad;
+    const nearPlace=(x,z,pad)=>Math.hypot(x-0,z-58.8)<6+pad||Math.hypot(x+10.5,z-57.5)<6+pad;
     function buildLandscape(){
       const rand=mulberry(23),firs=[],rocks=[],crags=[];
       for(let tries=0;tries<20000&&firs.length<240;tries++){
         const a=rand()*Math.PI*2,r=34+rand()*60,x=Math.sin(a)*r,z=Math.cos(a)*r,y=groundAt(x,z);if(y>11-rand()*3||nearPlace(x,z,1)||nearRope(x,z))continue;
         if(r>MEADOW.inner-2&&r<WALL-1&&rand()<.82||Math.abs(x)<14&&z>28)continue;
-        const p=nearestPath(x,z);if(p.d<2.6)continue;if(firs.some(t=>Math.hypot(t.x-CENTRE.x-x,t.z-CENTRE.z-z)<2.4))continue;
+        const p=nearestPath(x,z);if(p.d<3)continue;if(firs.some(t=>Math.hypot(t.x-CENTRE.x-x,t.z-CENTRE.z-z)<2.4))continue;
         const s=(y>6?5:7)+rand()*6;firs.push({x:CENTRE.x+x,y:y-.1,z:CENTRE.z+z,s,sx:s*.9,sz:s*.9,ry:rand()*6,rx:(rand()-.5)*.06});
         if(Math.hypot(x,z)<MEADOW.outer+2)trunks.push({x:CENTRE.x+x,z:CENTRE.z+z,r:.04*s+.15});
       }
       for(let tries=0;tries<9000&&rocks.length<340;tries++){
         const a=rand()*Math.PI*2,r=8+rand()*104,x=Math.sin(a)*r,z=Math.cos(a)*r,y=groundAt(x,z);if(y<2&&rand()<.8||nearPlace(x,z,0)||nearRope(x,z))continue;
-        const p=nearestPath(x,z);if(p.d<2.4)continue;
+        const p=nearestPath(x,z);if(p.d<2.9)continue;
         const s=.3+rand()*(.6+2.2*smooth(6,40,y));rocks.push({x:CENTRE.x+x,y:y-s*.35,z:CENTRE.z+z,s,sy:s*(.55+rand()*.4),ry:rand()*6,rx:rand()*.6,rz:rand()*.6});
       }
       for(let tries=0;tries<9000&&crags.length<70;tries++){
         const a=rand()*Math.PI*2,r=11+rand()*29,x=Math.sin(a)*r,z=Math.cos(a)*r,y=groundAt(x,z);if(y<20||nearRope(x,z)||r<16&&Math.abs(Math.atan2(Math.sin(a-LEDGE_THETA),Math.cos(a-LEDGE_THETA)))<.9)continue;
-        const p=nearestPath(x,z);if(p.d<3.6)continue;
+        const p=nearestPath(x,z);if(p.d<4)continue;
         const s=1.4+rand()*2.6*smooth(20,44,y);crags.push({x:CENTRE.x+x,y:y-.8,z:CENTRE.z+z,s,sx:s*(1.1+rand()*.9),sy:Math.min(8,s*(1.1+rand()*1.9)),sz:s*(1+rand()*.9),ry:rand()*6,rx:(rand()-.5)*.5,rz:(rand()-.5)*.5});
       }
       instanced(firGeometry(),std({vertexColors:true,roughness:.95}),firs,'mountain-pines');
@@ -236,13 +240,16 @@
       }
       // The signpost where the path leaves the meadow.
       {const p=W(2.2,53.2),y=groundWorld(p.x,p.z),g=new THREE.Group();g.position.set(p.x,y,p.z);root.add(g);const post=box(.12,2.6,.12,wood,0,1.3,0,g);
-        for(const [text,yaw,h] of [['THE SUMMIT',0,2.35],['THE HUT',Math.PI*.75,2.05],['THE PAINTING',Math.PI,1.75]]){
-          const arm=add(own(new THREE.BoxGeometry(1.2,.22,.04)),std({map:label(text,340,62),roughness:.8}),Math.sin(yaw+Math.PI/2)*.6,h,Math.cos(yaw+Math.PI/2)*.6,g);arm.rotation.y=yaw+Math.PI/2;mark(arm,card('signpost','A signpost'))}
+        // Each arm points at where it says: up the path, to the hut, and back to the frame.
+        const up=pointAt(.03);state.signs=[];
+        for(const [text,to,h] of [['THE SUMMIT',W(up.x,up.z),2.35],['THE HUT',W(HUT.x,HUT.z),2.05],['THE PAINTING',FRAME,1.75]]){
+          const dx=to.x-p.x,dz=to.z-p.z,l=Math.hypot(dx,dz)||1,ux=dx/l,uz=dz/l;
+          const arm=add(own(new THREE.BoxGeometry(1.2,.22,.04)),std({map:label(text,340,62),roughness:.8}),ux*.62,h,uz*.62,g);arm.rotation.y=Math.atan2(-uz,ux);mark(arm,card('signpost','A signpost'));state.signs.push({text,x:ux,z:uz})}
         mark(post,card('signpost','A signpost'));block(p.x,p.z,.4,.4);
       }
       // The hut in the meadow: dry-stone walls, a slate roof, open on the side towards the path, with a shelf of the
       // valley's books inside and a bench by the door.
-      {const p=W(-10.5,57.5),y=groundWorld(p.x,p.z),g=new THREE.Group();g.position.set(p.x,y-.1,p.z);g.rotation.y=Math.PI*.42;root.add(g);
+      {const p=W(HUT.x,HUT.z),y=groundWorld(p.x,p.z),g=new THREE.Group();g.position.set(p.x,y-.1,p.z);g.rotation.y=HUT.yaw;root.add(g);
         const walls=std({map:own(canvasTexture((c,Wd,H)=>{c.fillStyle='#55524c';c.fillRect(0,0,Wd,H);const rand=mulberry(4);for(let row=0;row<12;row++)for(let x=-(row%2)*12;x<Wd;x+=18+rand()*14){c.fillStyle=['#6c6860','#4a4741','#5f5b53','#77736a'][Math.floor(rand()*4)];c.fillRect(x+1,row*H/12+1,16+rand()*10,H/12-2)}},256,256)),roughness:1});
         box(4.2,2.3,.4,walls,0,1.15,-1.6,g);for(const x of [-1.9,1.9])box(.4,2.3,3.6,walls,x,1.15,0,g);
         for(const side of [-1,1]){const half=box(4.8,.12,2.4,slate,0,2.75,side*.9,g);half.rotation.x=side*.6}
@@ -250,7 +257,8 @@
         const shelfBoard=box(3.2,.06,.42,wood,0,1.15,-1.2,g);box(3.2,.06,.42,wood,0,1.75,-1.2,g);
         const lanternGlass=add(own(new THREE.BoxGeometry(.22,.3,.22)),std({color:0x2a1a08,emissive:0xffb050,emissiveIntensity:1.4}),1.3,2.05,-1.15,g);
         for(const part of [shelfBoard,lanternGlass])mark(part,card('hut','A stone hut'));for(const child of g.children)if(!child.userData.type)mark(child,card('hut','A stone hut'));
-        block(p.x,p.z,4.8,4.8);
+        // Only the walls and the stubs either side of the doorway are solid: the reader can step in to the shelf.
+        for(const [x1,z1,x2,z2] of [[-2.1,-1.6,2.1,-1.6],[-1.9,-1.6,-1.9,1.8],[1.9,-1.6,1.9,1.8],[-1.9,1.6,-1.4,1.6],[1.4,1.6,1.9,1.6]])wall(g,x1,z1,x2,z2);
         valley.forEach((book,i)=>{const row=i<4?0:1,col=row?i-4:i,s=onGroup(g,-1.25+col*.62,(row?1.78:1.18)+.29,-1.2);standingBook(book,s.x,s.y,s.z,g.rotation.y,-.18,'valley')});
         // The bench outside, facing the meadow: one of the library's seats.
         const bg=new THREE.Group(),bp=onGroup(g,0,0,3.1);bg.position.set(bp.x,groundWorld(bp.x,bp.z),bp.z);bg.rotation.y=g.rotation.y;root.add(bg);
@@ -271,7 +279,7 @@
           const p=pointAt(station.f),q=pointAt(Math.min(1,station.f+.004)),dx=q.x-p.x,dz=q.z-p.z,l=Math.hypot(dx,dz)||1;
           // The uphill side is the side towards the mountain's middle.
           let nx=-dz/l,nz=dx/l;if(nx*p.x+nz*p.z>0){nx=-nx;nz=-nz}
-          const cx=p.x+nx*1.75,cz=p.z+nz*1.75,cy=p.y;
+          const cx=p.x+nx*2.15,cz=p.z+nz*2.15,cy=groundAt(p.x+nx*2.15,p.z+nz*2.15);
           for(let k=0;k<5;k++){const s=.34-k*.05;stones.push({x:CENTRE.x+cx+(rand()-.5)*.1,y:cy+.1+k*.16,z:CENTRE.z+cz+(rand()-.5)*.1,s,sy:s*.6,ry:rand()*6})}
           const cardStone=add(own(new THREE.BoxGeometry(.4,.05,.3)),std({map:label(String(station.year),160,64,'#8a8680','#2a2622'),roughness:1}),CENTRE.x+cx,cy+.8,CENTRE.z+cz,root);cardStone.rotation.y=Math.atan2(-nx,-nz);
           mark(cardStone,{type:'mountain-card',key:'cairn',title:'A cairn beside the path',author:`A cairn, with a red and white waymark painted on its foot. Scratched on the top stone: ${station.year}. Someone has left ${station.ids.length>1?'books':'a book'} against it.`,action:'LOOK'});
@@ -411,7 +419,7 @@
     // On the path, on the summit, or in the meadow round the mountain's foot; never off the edge.
     function allowed(x,z){
       if(!contains(x,z))return false;const p=local(x,z),r=Math.hypot(p.x,p.z),rad=player.radius||.42;
-      const open=(r>=MEADOW.inner&&r<=MEADOW.outer)||r<R1-.35||nearestPath(p.x,p.z).d<1.05;if(!open)return false;
+      const open=(r>=MEADOW.inner&&r<=MEADOW.outer)||r<R1-.35||nearestPath(p.x,p.z).d<PATH_HALF;if(!open)return false;
       if(blockers.some(b=>x+rad>b.minX&&x-rad<b.maxX&&z+rad>b.minZ&&z-rad<b.maxZ))return false;
       return !trunks.some(t=>Math.abs(t.x-x)<2&&Math.abs(t.z-z)<2&&Math.hypot(t.x-x,t.z-z)<t.r+rad);
     }
@@ -504,6 +512,6 @@
     return {contains,floorAt,allowed,interact,update,enter,leave,unload,reset,zoneAt,surfaceAt,noteFound,catalogue,hangHallPainting,seeSpectre,signRegister,
       centre:CENTRE,path:PATH,stations:STATIONS,quotes:QUOTES,own:OWN,arrival:ARRIVAL,hallSpot:HALL_SPOT,hallPainting:HALL_PAINTING,ropeFoot:ROPE_FOOT,moonDir:MOON_DIR,
       groundAt:groundWorld,nearestPath:(x,z)=>nearestPath(x-CENTRE.x,z-CENTRE.z),
-      get built(){return !!root},get travelling(){return !!abseil},get books(){return books.slice()},get counts(){return state?.counts||null},get spectreSeen(){return spectreSeen}};
+      get built(){return !!root},get travelling(){return !!abseil},get books(){return books.slice()},get counts(){return state?.counts||null},get spectreSeen(){return spectreSeen},get signs(){return state?.signs||null},hut:HUT,frame:FRAME,pathHalf:PATH_HALF};
   };
 })();
