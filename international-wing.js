@@ -25,8 +25,10 @@
   // The Ukrainian room's shelf of the Executed Renaissance, and the little book in Shevchenko's boot: these stand apart
   // from its main shelves (data/new-books-wing.js gives them, with the room's other books).
   const MEMORIAL=['Місто','Я (Романтика)','Камена','Мина Мазайло','На Золотих Богів','Дні','Проростень','Подорож ученого доктора Леонардо'];
-  // 9 November, the Day of Ukrainian Writing and Language, on the feast of Nestor the Chronicler.
-  const writingDay=(date=new Date())=>date.getMonth()===10&&date.getDate()===9;
+  // 27 October, the Day of Ukrainian Writing and Language, on the feast of Nestor the Chronicler (9 November until
+  // the church calendar changed in 2023). The Eneida stays on the lectern from that day to 9 November, the old date.
+  const writingDay=(date=new Date())=>date.getMonth()===9&&date.getDate()===27;
+  const eneidaDays=(date=new Date())=>date.getMonth()===9&&date.getDate()>=27||date.getMonth()===10&&date.getDate()<=9;
   const ROOMS={
     spanish:{cx:-410,cz:100,w:24,d:15,h:6,language:'es',sign:'SALA DE LECTURA EN ESPAÑOL',sub:'The Spanish Reading Room · El ala internacional',
       card:['Sala de lectura en español','Clásicos de España, de América y de Filipinas, cada uno con una nota de la bibliotecaria. El libro de la noche está en el atril. (The Spanish Reading Room: classics from Spain, the Americas and the Philippines.)'],
@@ -367,8 +369,8 @@
     // One book is out on each lectern each night, a different one tomorrow.
     const apart=(def,book)=>!!def&&((def.memorial||[]).includes(book.title)||book.title===def.boot);
     function featured(key='spanish',list=shelf(key)){list=list.filter(book=>!apart(ROOMS[key],book));
-      // On the Day of Ukrainian Writing and Language, Kotliarevsky's Eneida, the first book in the modern literary language.
-      if(key==='ukrainian'&&writingDay(today())){const eneida=list.find(book=>book.title==='Енеїда');if(eneida)return eneida}
+      // From the Day of Ukrainian Writing and Language to 9 November, Kotliarevsky's Eneida, the first book in the modern literary language.
+      if(key==='ukrainian'&&eneidaDays(today())){const eneida=list.find(book=>book.title==='Енеїда');if(eneida)return eneida}
       return list.length?list[((dayNumber()%list.length)+list.length)%list.length]:null}
 
     // ---------- the door, beside the visitors' book ----------

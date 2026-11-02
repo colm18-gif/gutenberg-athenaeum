@@ -251,7 +251,7 @@ const SHELVES_PT={Romance:'Amor',Satire:'Sátira',Society:'Romance e sociedade',
 const SHELVES_FR={Society:'Roman et société',Romance:'Amour',Adventure:'Aventure',Poetry:'Poésie',Drama:'Théâtre',Philosophy:'Idées',Satire:'Satire et conte philosophique',Strange:'L’étrange',Mystery:'Mystère',Wonder:'Contes',History:'Histoire',Journey:'Voyages',Essays:'Essais'};
 const SHELVES_LA={Epic:'Epic',Poetry:'Poetry',History:'History',Oratory:'Oratory',Philosophy:'Philosophy and faith',Drama:'Drama',Science:'Science',Food:'The kitchen',Learners:'For learners'};
 const SHELVES_IT={Poetry:'Poesia',Epic:'Poemi',Society:'Romanzo e società',Romance:'Amore',Drama:'Teatro',Stories:'Novelle',Adventure:'Avventura',History:'Storia',Philosophy:'Idee',Wonder:'Per i più giovani',Legend:'Fiabe',Strange:'Il fantastico',Journey:'Viaggi',Satire:'Satira'};
-const SHELVES_UK={Poetry:'Поезія',Epic:'Поеми',Drama:'Драма',Society:'Повісті й романи',Romance:'Про кохання',Legend:'Легенди й казки',Satire:'Сміх і сатира',History:'Історія',Philosophy:'Думки',Stories:'Новели й оповідання',Fables:'Байки'};
+const SHELVES_UK={Poetry:'Поезія',Epic:'Поеми',Drama:'Драма',Society:'Повісті й романи',Romance:'Про кохання',Legend:'Легенди й казки',Satire:'Сміх і сатира',History:'Історія',Philosophy:'Думки',Stories:'Новели й оповідання',Story:'Новели й оповідання',Novel:'Повісті й романи',Fables:'Байки'};
 const SHELVES_ZH={Society:'世情小說',Epic:'歷史演義',Legend:'神魔與奇想',Satire:'諷刺小說',Ghosts:'志怪',Essays:'散文與筆記',Modern:'魯迅',Philosophy:'諸子與經典',Poetry:'詩詞',History:'史書',Drama:'戲曲',Adventure:'俠義',Wonder:'蒙學'};
 // Ukrainian numbers choose their noun: 1 твір, 2–4 твори, 5–20 творів (21 твір, 24 твори…).
 const ukWorks=n=>n%10===1&&n%100!==11?'твір':n%10>=2&&n%10<=4&&(n%100<12||n%100>14)?'твори':'творів';
