@@ -141,8 +141,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   higher, snowier and craggier as it goes: the flanks steepen towards the top, so the turns close in; the ground is one
   mesh coloured by height and slope (grass, scree, rock, snow); pines, boulders and crags are three InstancedMeshes
   (bigger and more of them higher up); snow falls above the trees (`THREE.Points`); the reader walks through a layer of
-  cloud at y 30 and comes out above a sea of it, ringed by other peaks. Walking is allowed only on the path, the meadow
-  ring and the summit; the floor is the path's own height. Books are found at small cairns beside the path, each
+  cloud at y 30 and comes out above a sea of it, ringed by other peaks. Walking is allowed only on the path (its whole drawn
+  width, `PATH_HALF`), the meadow ring and the summit; the floor is the path's own height. The hut can be walked into
+  (only its walls are solid), and the signpost's arms point at the path, the hut and the frame (a test checks both). Books are found at small cairns beside the path, each
   scratched with the year of its climb (`STATIONS`, in order of the climbs, Whymper's last by the rope), shelf
   `mountain-path` plus the library's own Isabella Bird and Muir (`OWN`); the valley's books (`mountain-valley`: Heidi,
   Tartarin, A Tramp Abroad…) are on the shelf of a stone hut in the meadow, whose bench is a seat. At the top: the cairn
