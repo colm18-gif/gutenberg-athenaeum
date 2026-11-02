@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-10-30",
+ "updated": "2026-11-02",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -2342,6 +2342,94 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Men, Women, and Books": {
    "id": 64985,
    "words": 31628
+  },
+  "Heidi": {
+   "id": 1448,
+   "words": 92228
+  },
+  "Tartarin on the Alps": {
+   "id": 25768,
+   "words": 50550
+  },
+  "A Tramp Abroad": {
+   "id": 119,
+   "words": 159409
+  },
+  "The Path to Rome": {
+   "id": 7373,
+   "words": 97349
+  },
+  "Alps and Sanctuaries": {
+   "id": 2576,
+   "words": 85798
+  },
+  "The Great Stone Face": {
+   "id": 1916,
+   "words": 19575
+  },
+  "Petrarch, the First Modern Scholar and Man of Letters": {
+   "id": 48776,
+   "words": 114420
+  },
+  "Narrative of a Journey to the Summit of Mont Blanc": {
+   "id": 32823,
+   "words": 9386
+  },
+  "The Mountains of California": {
+   "id": 10012,
+   "words": 92120
+  },
+  "Mountaineering in the Sierra Nevada": {
+   "id": 54046,
+   "words": 95116
+  },
+  "The Glaciers of the Alps": {
+   "id": 34192,
+   "words": 144331
+  },
+  "Hours of Exercise in the Alps": {
+   "id": 47209,
+   "words": 108865
+  },
+  "Himalayan Journals": {
+   "id": 6478,
+   "words": 272478
+  },
+  "Climbing on the Himalaya and Other Mountain Ranges": {
+   "id": 45747,
+   "words": 69912
+  },
+  "Climbing in the British Isles": {
+   "id": 37993,
+   "words": 41622
+  },
+  "Rock-climbing in the English Lake District": {
+   "id": 56043,
+   "words": 115802
+  },
+  "True Tales of Mountain Adventures": {
+   "id": 42758,
+   "words": 66157
+  },
+  "Above the Snow Line": {
+   "id": 35434,
+   "words": 83936
+  },
+  "With Axe and Rope in the New Zealand Alps": {
+   "id": 60919,
+   "words": 37808
+  },
+  "Modern Painters, Volume 4": {
+   "id": 31623,
+   "words": 148496
+  },
+  "Scrambles Amongst the Alps": {
+   "id": 41234,
+   "words": 96701
+  },
+  "The Complete Poetical Works of Samuel Taylor Coleridge": {
+   "id": 29090,
+   "words": 385291
   },
   "Don Quijote [es]": {
    "id": 2000,

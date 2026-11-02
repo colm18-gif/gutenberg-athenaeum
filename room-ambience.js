@@ -74,6 +74,8 @@
       bubble:()=>buffer(.12,(d,n)=>{let phase=0;for(let i=0;i<n;i++){const t=i/sr,f=320+900*t/.12;phase+=2*Math.PI*f/sr;d[i]=Math.sin(phase)*decay(t,30)*.6}}),
       whisper:()=>buffer(1.4,(d,n)=>{let a=0,b=0;for(let i=0;i<n;i++){const t=i/sr,w=Math.random()*2-1;a+=(w-a)*.18;b+=(a-b)*.18;const env=Math.pow(Math.sin(Math.PI*t/1.4),2)*(.5+.5*Math.sin(t*2*Math.PI*(3.2+Math.sin(t*2))));d[i]=(a-b)*env*1.6}}),
       scratch:()=>buffer(.9,(d,n)=>{for(let i=0;i<n;i++){const t=i/sr,stroke=Math.max(0,Math.sin(t*2*Math.PI*3.6));d[i]=(Math.random()*2-1)*stroke*stroke*.18}}),
+      // A cowbell somewhere below, out of sight: a hollow clank, two or three times as the animal moves.
+      cowbell:()=>buffer(1.6,(d,n)=>{for(let i=0;i<n;i++){const t=i/sr;let s=0;for(const at of [0,.32,.71]){const u=t-at;if(u>=0)s+=[[1,1,9],[1.48,.7,12],[2.31,.45,16],[3.6,.2,22]].reduce((sum,[r,amp,k])=>sum+Math.sin(u*2*Math.PI*410*r)*amp*decay(u,k),0)*(at?.6:1)}d[i]=s*.22}}),
       bell:()=>buffer(2.4,(d,n)=>{for(let i=0;i<n;i++){const t=i/sr;let s=0;for(const at of [0,.55,1.1]){const u=t-at;if(u>=0)s+=[[1,1,1.6],[2.4,.4,2.6],[4.1,.18,4]].reduce((sum,[r,amp,k])=>sum+Math.sin(u*2*Math.PI*740*r)*amp*decay(u,k),0)}d[i]=s*.28}}),
       hoot:()=>buffer(1.8,(d,n)=>{for(let i=0;i<n;i++){const t=i/sr,env=Math.min(1,t/.3)*Math.min(1,(1.8-t)/.6);d[i]=(Math.sin(t*2*Math.PI*440)+Math.sin(t*2*Math.PI*554)*.8+Math.sin(t*2*Math.PI*659)*.6)*env*.18}}),
       thump:()=>buffer(.5,(d,n)=>{let lp=0;for(let i=0;i<n;i++){const t=i/sr,w=Math.random()*2-1;lp+=(w-lp)*.04;d[i]=(lp*3+Math.sin(t*2*Math.PI*55))*decay(t,9)*.5}})
@@ -147,6 +149,11 @@
       walden:{beds:[['insects',.05],['wind',.035]],events:[['cricket',7,.03],['frog',1.1,.05],['whippoorwill',.5,.04],['owl',.12,.025]]},
       'walden-house':{beds:[['insects',.025],['air',.03]],events:[['cricket',4,.018],['frog',.6,.025],['whippoorwill',.3,.022],['creak',.3,.025]]},
       // The Deep Wood: wind high in the firs, owls, and things moving in the leaves; nothing that howls.
+      // The mountain in the painting: a breeze and a cowbell in the meadow, the wind rising as the path climbs, and at
+      // the summit nothing but wind.
+      mountain:{beds:[['wind',.04],['air',.02]],events:[['cowbell',.5,.035],['owl',.15,.025]]},
+      'mountain-heights':{beds:[['wind',.1],['air',.03]],events:[['creak',.2,.02]]},
+      'mountain-summit':{beds:[['wind',.15],['air',.035]],events:[]},
       forest:{beds:[['wind',.07],['air',.03]],events:[['owl',.9,.05],['rustle',1.6,.05],['creak',.7,.04]]},
       'burns-room':{beds:[['fire',.09],['air',.025]],ticks:[[1.1,'tock',.018]],events:[['crackle',36,.11],['snap',7,.09],['creak',.5,.03]]},
       // The Canadian Room: a log room on a winter night, the box stove roaring, wind round the eaves, and now and then
