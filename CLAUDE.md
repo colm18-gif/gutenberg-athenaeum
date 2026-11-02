@@ -457,6 +457,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - The English Reading Room keeps only one darker book (Jekyll and Hyde, with a note).
 - The library will never have a Russian reading room (the owner's answer to the Ukrainian Book Institute, 28 October
   2026): the Ukrainian Reading Room was made out of admiration for the Ukrainian people and to support them.
+- No Russian literature on the shelves, in any language (the owner's wish, 2 November 2026, after the Embassy of
+  Ukraine to the UK asked; Russia uses culture as a tool of propaganda). Tolstoy and Dostoyevsky were taken off then.
 - Traces of other readers are invented, not real data.
 - The point of the library is exploration: in outreach and replies to readers, never offer a list of books or a direct
   plain-text link as a way round the rooms. Send people to a room and help them find their way in it.
