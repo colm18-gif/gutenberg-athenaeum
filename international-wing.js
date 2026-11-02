@@ -29,6 +29,12 @@
   // the church calendar changed in 2023). The Eneida stays on the lectern from that day to 9 November, the old date.
   const writingDay=(date=new Date())=>date.getMonth()===9&&date.getDate()===27;
   const eneidaDays=(date=new Date())=>date.getMonth()===9&&date.getDate()>=27||date.getMonth()===10&&date.getDate()<=9;
+  // The Day of Remembrance of the Victims of the Holodomor: the fourth Saturday of November. The candle stands in the
+  // room for the week up to it (?holodomor shows it on any day).
+  const holodomorDay=year=>{const first=new Date(year,10,1),saturday=1+(6-first.getDay()+7)%7;return new Date(year,10,saturday+21)};
+  const holodomorWeek=(date=new Date())=>{const day=holodomorDay(date.getFullYear()),d=new Date(date.getFullYear(),date.getMonth(),date.getDate()),start=new Date(day);start.setDate(day.getDate()-6);return d>=start&&d<=day};
+  const isHolodomorDay=(date=new Date())=>{const day=holodomorDay(date.getFullYear());return date.getMonth()===10&&date.getDate()===day.getDate()};
+  const askedFor=word=>typeof location!=='undefined'&&new RegExp(`(?:^|[?&])${word}(?:[=&]|$)`).test(location.search||'');
   const ROOMS={
     spanish:{cx:-410,cz:100,w:24,d:15,h:6,language:'es',sign:'SALA DE LECTURA EN ESPAÑOL',sub:'The Spanish Reading Room · El ala internacional',
       card:['Sala de lectura en español','Clásicos de España, de América y de Filipinas, cada uno con una nota de la bibliotecaria. El libro de la noche está en el atril. (The Spanish Reading Room: classics from Spain, the Americas and the Philippines.)'],
@@ -66,13 +72,13 @@
     ukrainian:{cx:-530,cz:100,w:24,d:15,h:6,language:'uk',sign:'УКРАЇНСЬКА ЧИТАЛЬНЯ',sub:'The Ukrainian Reading Room · Міжнародне крило',
       card:['Українська читальня','Класика українською мовою, від Котляревського й Шевченка до Лесі Українки, Франка й Коцюбинського, кожна книжка з приміткою бібліотекарки. Тексти з Вікіджерел, суспільне надбання. (The Ukrainian Reading Room.)'],
       lectern:'КНИЖКА ВЕЧОРА',shade:0x2b5aa8,tiles:'vyshyvanka',memorial:MEMORIAL,boot:'Княжна',
-      welcome:pick=>`Українська читальня. Ласкаво просимо: класика українською мовою, кожна книжка з приміткою бібліотекарки.${writingDay()?' Сьогодні День української писемності та мови.':''}${pick?` На пюпітрі сьогодні: ${pick.title}.`:''} (The International Wing: the Ukrainian Reading Room.)`,
+      welcome:pick=>`Українська читальня. Ласкаво просимо: класика українською мовою, кожна книжка з приміткою бібліотекарки.${writingDay()?' Сьогодні День української писемності та мови.':''}${isHolodomorDay()?' Сьогодні День пам’яті жертв голодоморів.':''}${pick?` На пюпітрі сьогодні: ${pick.title}.`:''} (The International Wing: the Ukrainian Reading Room.)`,
       note:'Примітка бібліотекарки',seat:['Стілець біля столу','Сідайте й читайте книжку з цієї читальні. (Sit and read a book from this room.)']}
   };
 
   window.createInternationalWing=function(options){
     const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),
-      wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null,tone=null,gospel=null,storage=window.localStorage}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
+      wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null,tone=null,gospel=null,forestSong=null,storage=window.localStorage}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
     const DOOR={x:8.6,z:30.45,yaw:Math.PI};
     // The doors in the Spanish room's east and south walls, to the other rooms, and a second door to the Italian in the
     // Latin room's east wall (room: the room a door opens on, when it is not its key; from: the room a door is in, when
@@ -329,6 +335,20 @@
       const banduraCard={type:'intl-bandura',title:'Бандура',author:'Бандура, інструмент кобзарів. Торкніться струн, і вона заграє «Щедрик» Миколи Леонтовича: його вперше заспівав хор Київського університету 1916 року, 1922 року хор Олександра Кошиця заспівав його в нью-йоркському Карнегі-холі, а 1936 року Пітер Вільговський написав до нього англійські слова, і світ почув «Carol of the Bells». (A bandura: it plays Leontovych’s Shchedryk, the carol the world knows as Carol of the Bells.)',action:'PLAY'};
       for(const part of [body,face,neck])mark(part,banduraCard);block(ux,uz,.9,.6);
 
+      // Lukash's reed pipe, laid on two pegs across a linen towel in the south-west corner, under a plaque: play it, and
+      // the reader is in the forest of Lesia Ukrainka's Forest Song (forest-song.js).
+      if(forestSong){const px=cx-w/2+1.75,pz=S-.17;
+        const towel=own(canvasTexture((c,W,H)=>{c.fillStyle='#efe6d2';c.fillRect(0,0,W,H);for(let y=24;y<H-20;y+=64){c.fillStyle='#2f6d2a';for(let i=0;i<5;i++)c.fillRect(W/2-6-i*6,y+i*6,12+i*12,5);c.fillStyle='#b3202a';c.fillRect(W*.18,y+36,W*.64,5)}
+          c.strokeStyle='#e6dcc3';c.lineWidth=2;for(let x=2;x<W;x+=5){c.beginPath();c.moveTo(x,H-14);c.lineTo(x,H);c.stroke()}},64,320));
+        const linen=add(own(new THREE.PlaneGeometry(.5,2.2)),own(new THREE.MeshStandardMaterial({map:towel,roughness:.9})),px,2.75,pz,root);linen.rotation.y=Math.PI;
+        for(const dx of [-.32,.32]){const peg=add(own(new THREE.CylinderGeometry(.018,.018,.12,6)),MAT.darkWood,px+dx,2.3,pz-.06,root);peg.rotation.x=Math.PI/2}
+        const reed=own(new THREE.MeshStandardMaterial({color:0xc9a76a,roughness:.55}));
+        const pipe=add(own(new THREE.CylinderGeometry(.02,.024,.84,10)),reed,px,2.34,pz-.1,root);pipe.rotation.z=Math.PI/2;
+        for(let i=0;i<6;i++)add(own(new THREE.CircleGeometry(.009,8)),MAT.darkWood,px-.16+i*.07,2.36,pz-.122,root).rotation.y=Math.PI;
+        const sign=add(own(new THREE.PlaneGeometry(1.3,.32)),own(new THREE.MeshStandardMaterial({map:own(plaque('ЛІСОВА ПІСНЯ','Леся Українка · The Forest Song',520,128,'#1f3a22')),roughness:.8,emissive:0x2a3a18,emissiveIntensity:.3})),px,1.5,pz,root);sign.rotation.y=Math.PI;
+        const data={type:'intl-sopilka',title:'Сопілка',author:'Сопілка Лукаша з «Лісової пісні» Лесі Українки (1911). Заграйте на ній, і почнеться весна в старому лісі на Волині. (Lukash’s reed pipe from Lesia Ukrainka’s Forest Song. Play it, and spring begins in an old forest in Volyn.)',action:'PLAY'};
+        for(const part of [pipe,linen,sign])mark(part,data)}
+
       // The Peresopnytsia Gospel under glass in the middle of the west side (peresopnytsia-book.js): a plinth, the
       // facsimile open in a cradle at Mark's portrait and the first page of his Gospel, which face each other in the book.
       if(gospel){const gx=cx-6,gz=cz-.5,g=new THREE.Group();g.position.set(gx,0,gz);root.add(g);
@@ -362,6 +382,22 @@
         root.add(stalks,ears);const tie=add(own(new THREE.TorusGeometry(.075,.018,6,16)),own(new THREE.MeshStandardMaterial({color:0xb3202a,roughness:.6})),dx,.62,dz,root);tie.rotation.x=Math.PI/2;
         const didukh={type:'intl-card',title:'Дідух',author:'Сніп із колосків, який на Святвечір ставлять на покуті, на почесному місці в хаті. За давнім звичаєм, у ньому на свята гостюють духи предків. (A didukh, the sheaf of wheat set in the place of honour on Christmas Eve.)',action:'READ'};
         for(const thing of [stalks,ears,tie])mark(thing,didukh);block(dx,dz,.6,.6)}
+
+      // For the Day of Remembrance of the Victims of the Holodomor: a candle in a glass with ears of wheat, on a small
+      // stand where the didukh stands at Christmas (the two are never out together). The reader lights it.
+      if(holodomorWeek(now)||askedFor('holodomor')){const hx=EX-.45,hz=cz-3.05;
+        const stand=box(.5,.9,.5,MAT.darkWood,hx,.45,hz);box(.56,.04,.56,MAT.darkWood,hx,.92,hz);
+        const glass=add(own(new THREE.CylinderGeometry(.075,.07,.2,14,1,true)),own(new THREE.MeshStandardMaterial({color:0xe8f0f0,transparent:true,opacity:.25,roughness:.1,side:THREE.DoubleSide})),hx,1.04,hz,root);
+        const candle=add(own(new THREE.CylinderGeometry(.05,.05,.16,12)),own(new THREE.MeshStandardMaterial({color:0xf2ead6,roughness:.6})),hx,1.02,hz,root);
+        const flame=add(own(new THREE.ConeGeometry(.024,.08,10)),own(new THREE.MeshStandardMaterial({color:0xffc060,emissive:0xff9a30,emissiveIntensity:2.2,transparent:true,opacity:.92})),hx,1.15,hz,root);flame.visible=false;
+        const wheat=own(new THREE.MeshStandardMaterial({color:0xd8b24a,roughness:.8}));
+        for(let i=0;i<7;i++){const a=(i-3)*.16,len=.5,stalk=add(own(new THREE.CylinderGeometry(.005,.006,len,4)),wheat,hx+.13+Math.sin(a)*len/2,.94+Math.cos(a)*len/2,hz+(i%2?.04:-.04),root);stalk.rotation.z=-a;
+          const ear=add(own(new THREE.SphereGeometry(.018,6,5)),wheat,hx+.13+Math.sin(a)*len,.94+Math.cos(a)*len+.03,hz+(i%2?.04:-.04),root);ear.scale.set(1,3,1);ear.rotation.z=-a}
+        const words='У четверту суботу листопада Україна вшановує пам’ять жертв голодоморів, насамперед Голодомору 1932–1933 років, коли радянська влада штучним голодом убила мільйони українців. О 16:00 в Україні й по всьому світу запалюють у вікнах свічки. (On the fourth Saturday of November Ukraine remembers the victims of the Holodomor of 1932–1933, the famine by which the Soviet regime killed millions of Ukrainians. At four in the afternoon, candles are lit in windows in Ukraine and around the world.)';
+        const unlit={type:'intl-holodomor',title:'Запали свічку',author:words,action:'LIGHT A CANDLE'},lit={type:'intl-card',title:'Свічка пам’яті',author:words,action:'READ'};
+        const parts=[stand,glass,candle];for(const part of parts)mark(part,unlit);block(hx,hz,.6,.6);
+        room.lightCandle=()=>{flame.visible=true;for(const part of parts)part.userData=lit};
+        room.ticks.push(t=>{if(!flame.visible)return;const k=1+Math.sin(t*8.3)*.08+Math.sin(t*21.1)*.05;flame.scale.set(1/k,k,1/k)})}
     }
 
     // ---------- the books ----------
@@ -529,6 +565,8 @@
         showNotice('За халявою — маленька саморобна книжечка, списана дрібним почерком. На засланні Шевченкові заборонили писати й малювати, і він ховав вірші в чоботі. (Tucked in the boot: a tiny handmade notebook of poems, as Shevchenko hid his in exile. It lies on the trunk now.)',10);
         playSample?.('pageTurn',.7,.9);analytics?.track('Secret Found',{secret:'shevchenko-boot'});return true}
       if(data.type==='intl-gospel'){if(gospel)gospel.open();return true}
+      if(data.type==='intl-sopilka'){if(forestSong){if(tone)for(const [i,f] of [587.33,659.25,698.46,880].entries())tone(f,i*.3,.5,.05,'flute');setTimeout(()=>forestSong(),1100)}return true}
+      if(data.type==='intl-holodomor'){built.ukrainian?.lightCandle?.();playSample?.('pageTurn',.4,.7);showNotice(`Свічка горить. ${data.author}`,16);return true}
       if(data.type==='intl-bandura'){showNotice(`${data.title}: ${data.author}`,12);if(tone&&time>=shchedrykUntil)shchedrykUntil=time+playShchedryk();return true}
       return false;
     }
