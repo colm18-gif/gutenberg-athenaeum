@@ -336,5 +336,6 @@ test('the Ukrainian room keeps a shelf for the Executed Renaissance, Shevchenkoâ
   // The pictures come from Commons through the map fetcher, into a folder of their own.
   const fetcher=fs.readFileSync('scripts/fetch-maps.mjs','utf8');for(const key of ['shevchenko-kateryna','shevchenko-1848','pymonenko-night'])assert.ok(fetcher.includes(`key: '${key}'`),key);
   // The Day of Ukrainian Writing and Language puts the Eneida on the lectern.
-  assert.match(src,/const writingDay=\(date=new Date\(\)\)=>date\.getMonth\(\)===10&&date\.getDate\(\)===9/);
+  assert.match(src,/const writingDay=\(date=new Date\(\)\)=>date\.getMonth\(\)===9&&date\.getDate\(\)===27/,'27 October since 2023');
+  assert.match(src,/key==='ukrainian'&&eneidaDays\(today\(\)\)/,'the Eneida stays out until 9 November');
 });

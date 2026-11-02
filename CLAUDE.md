@@ -246,7 +246,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   the trunk beside it, found for good (`athenaeum-shevchenko-boot`). Its pictures (Kateryna, «Укріплення Раїм. Вид з верфі на Сир-Дар'ї», 1848, not a self-portrait as Commons has it,
   Pymonenko's Ukrainian Night) are fetched by `scripts/fetch-maps.mjs` (`PICTURES`, into `assets/pictures`). The bandura
   plays Leontovych's Shchedryk on the synthesiser's plucked `bandura` voice (`tone`, game.js's `pianoTone`); a didukh
-  stands from 24 December to 19 January; on 9 November (the Day of Ukrainian Writing and Language) the Eneida is on the
+  stands from 24 December to 19 January; from 27 October (the Day of Ukrainian Writing and Language since 2023) to 9 November (its old date) the Eneida is on the
   lectern. In the middle of its west side, under glass, the Peresopnytsia Gospel (`peresopnytsia-book.js`, handed to the
   wing as `gospel`) lies open at Mark's portrait facing leaf 129, the first page of his Gospel: three colour photographs
   from Commons and seven plates of Gruzinsky's printed facsimile of 1911 (pages of its PDF on Commons, `trimScan` cuts away
