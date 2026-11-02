@@ -133,6 +133,28 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `?hound` shows it). Every word given to Thoreau is checked against `texts/pg205.txt` by a test (`WALDEN`, and every
   quotation on a card). Trees are two InstancedMeshes; inside the clearing the sky and fog are darkened and the library's
   ambient and moonlight turned down, as in the Deep Wood.
+- The mountain in the painting (`mountain.js`, centre x 1100, z 700; `?room=mountain`, `peak`, `painting`, `climb`,
+  `summit`, `brocken`): A Mountain by Moonlight hangs on the Grand Hall's north wall on the pier between the fireplace and
+  the next window (x −7.78, z −29.93; `hangHallPainting`, built at startup and kept). Stepping in, the reader stands in a
+  meadow at the foot of an imagined peak, by the frame they came through (the way back). One path (`PATH`, traced once at
+  a steady 21% grade) climbs from the meadow round the mountain about two and a quarter times to the summit (y 46),
+  higher, snowier and craggier as it goes: the flanks steepen towards the top, so the turns close in; the ground is one
+  mesh coloured by height and slope (grass, scree, rock, snow); pines, boulders and crags are three InstancedMeshes
+  (bigger and more of them higher up); snow falls above the trees (`THREE.Points`); the reader walks through a layer of
+  cloud at y 30 and comes out above a sea of it, ringed by other peaks. Walking is allowed only on the path, the meadow
+  ring and the summit; the floor is the path's own height. Books are found at small cairns beside the path, each
+  scratched with the year of its climb (`STATIONS`, in order of the climbs, Whymper's last by the rope), shelf
+  `mountain-path` plus the library's own Isabella Bird and Muir (`OWN`); the valley's books (`mountain-valley`: Heidi,
+  Tartarin, A Tramp Abroad…) are on the shelf of a stone hut in the meadow, whose bench is a seat. At the top: the cairn
+  and a summit register (signing it counts the reader's ascents, `athenaeum-mountain-summits`), a rail on the north rim
+  over the cloud, and on the west rim a fixed rope: ABSEIL DOWN carries the reader down the west face to the meadow
+  (`travelling` while it runs; R lands at once). The secret: look down at the cloud on the side away from the moon from
+  the summit, and the reader's own shadow stands on it with a glory round its head (the Brocken spectre); Coleridge's
+  Complete Poetical Works (`mountain-spectre`), with Constancy to an Ideal Object, is then on the cairn, found for good
+  (`athenaeum-mountain-spectre`). No lights; the sky is a dome that goes with the reader, with the far ranges painted
+  on it. Its three places (`mountain`, `mountain-heights`, `mountain-summit`) each have an ambience in
+  `room-ambience.js` (a cowbell in the meadow, the wind rising with height). Every quotation (Whymper, Muir, Coleridge)
+  is checked against the bundled texts by a test.
 - The Deep Wood (`forest.js`, centre x 800, z 400; walkable within 40 m) is a forest at night, eerie, not frightening (no
   howling, nothing jumps out). Two ways in: the window hung on the Garden Room's west wall (the theme room at x 145, z 46;
   `hangGardenWindow` is called whenever that room is built), and a button, Step into the woodcut, that the reader shows
@@ -406,7 +428,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
-  daily-room, poe, irish, maps, medicine, naturalist, walden, austen, burns, canada, nemo, forest, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
+  daily-room, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.
