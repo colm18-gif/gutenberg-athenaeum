@@ -79,6 +79,7 @@ test('the pipe makes the forest unfold, Mavka steps out, and the door leads home
   const a=forest();assert.equal(a.f.built,false);a.f.enter('sopilka');assert.match(a.notices.at(-1),/Лісова пісня/);
   assert.deepEqual(JSON.stringify(a.tracked.at(-1)),JSON.stringify(['Room Explored',{room:'forest-song'}]));
   run(a,0,2);assert(a.f.bloom<.2,'bare, as in the prologue');assert(!a.f.mavkaHere);
+  assert(a.interactables.filter(o=>o.userData.type==='song-pipe').length>=3,'the pipe, its glint and a wider target round them all answer');
   a.f.interact(find(a,'song-pipe'));assert(a.notes.length>=20,'the pipe plays its tune');assert.match(a.notices.at(-1),/лілеї білі/);
   run(a,2.1,12);assert.equal(a.f.bloom,1,'spring');assert(a.f.mavkaHere,'Mavka is here');assert.match(a.notices.at(-1),/Ох, як я довго спала!/);
   assert.equal(a.store.get('athenaeum-forest-song-mavka'),'1');assert(a.tracked.some(([n,p])=>n==='Secret Found'&&p.secret==='forest-song-mavka'));
