@@ -28,6 +28,17 @@
   const CHILDREN=['Рукавичка','Пан Коцький','Котигорошко','Кирило Кожум\'яка','Українські народні казки','Коли ще звірі говорили','Лис Микита','Байки'];
   // The letter hunt: six wooden letter blocks hidden about the Ukrainian room spell КАЛИНА, each with a word for children.
   const LETTERS=[['К','кіт','a cat'],['А','аїст','a stork'],['Л','лисичка','a little fox'],['И','индик','a turkey'],['Н','небо','the sky'],['А','абетка','the alphabet']];
+  // «Рукавичка», told by paper cut-outs round a mitten on a snowy rug: each press brings the next animal in the tale's own
+  // words (the library's text, book 952693, from the 1918 children's collection Баю-баю; checked by a test).
+  const MITTEN=[
+    ['mouse','Мишка-шкряботушка','«Був собі дід, ішов лісом та загубив рукавичку. От біжить мишка, улізла в ту рукавичку та й каже: „Тут я буду жити.“» (A grandfather walking in the forest dropped his mitten. A mouse ran up, crept in and said: “I shall live here.”)'],
+    ['frog','Жабка-скрекотушка','«— А хто, хто в цій рукавичці? — Мишка шкряботушка. А ти хто? — Жабка скрекотушка. Пусти й мене!» (“Who, who lives in this mitten?” “The scratchy mouse. And who are you?” “The croaky frog. Let me in too!”)'],
+    ['hare','Зайчик-побігайчик','«— А я зайчик-побігайчик. Пустіть і мене!» (“I am the runaway hare. Let me in too!”)'],
+    ['fox','Лисичка-сестричка','«— А я лисичка-сестричка. Пустіть і мене!» (“I am the little sister fox. Let me in too!”)'],
+    ['wolf','Вовчик-братік','«— Та я вовчик-братік. Пустіть і мене!» (“I am the little brother wolf. Let me in too!”)'],
+    ['boar','Кабан-іклан','«— Хро-хро-хро! А я кабан-іклан. Пустіть і мене!» (“Oink, oink, oink! I am the tusky boar. Let me in too!”)'],
+    ['bear','Ведмідь-набрідь','«— Гу-гу-гу! Якого вас багато! А я ведмідь-набрідь. Пустіть і мене!» … «семеро стало, та так же тісно, що рукавичка ось-ось розірветься.» (“Grr! How many of you there are! I am the wandering bear. Let me in too!” Now there were seven, and so squashed that the mitten was about to burst.)'],
+    ['dog','Собачка','«Собачка тоді: „Гав-гав-гав!“ Вони як злякаються, як вирвуться з рукавички, — та усі й порозбігалися лісом. Прийшов дід та й забрав рукавичку.» (Then the little dog: “Woof, woof, woof!” They were so frightened they burst out of the mitten and ran off into the forest. And the grandfather came and took his mitten.)']];
   const MEMORIAL=['Місто','Я (Романтика)','Камена','Мина Мазайло','На Золотих Богів','Дні','Проростень','Подорож ученого доктора Леонардо'];
   // 27 October, the Day of Ukrainian Writing and Language, on the feast of Nestor the Chronicler (9 November until
   // the church calendar changed in 2023). The Eneida stays on the lectern from that day to 9 November, the old date.
@@ -367,6 +378,43 @@
             else cube.visible=!found.has(i)})};
         room.showLetters()}
 
+      // «Рукавичка»: a red woollen mitten on a round snowy rug in front of the children's shelf, and the tale's animals as
+      // painted paper cut-outs, which come one press at a time and crowd round it; the dog's bark scatters them all.
+      {const mx=EX-3.2,mz=cz,snow=own(canvasTexture((c,W,H)=>{c.fillStyle='#eef2f6';c.fillRect(0,0,W,H);for(let i=0;i<400;i++){c.fillStyle=i%3?'#ffffff':'#d8e2ec';c.fillRect(Math.random()*W,Math.random()*H,2,2)}},128,128));
+        const rug=add(own(new THREE.CircleGeometry(.95,32)),own(new THREE.MeshStandardMaterial({map:snow,roughness:.95})),mx,.012,mz,root);rug.rotation.x=-Math.PI/2;
+        const wool=own(canvasTexture((c,W,H)=>{c.fillStyle='#b3202a';c.fillRect(0,0,W,H);c.fillStyle='#f3ead6';for(let y=8;y<H;y+=26)for(let x=(y/26%2)*10;x<W;x+=20){c.beginPath();c.moveTo(x,y);c.lineTo(x+6,y+8);c.lineTo(x,y+16);c.lineTo(x-6,y+8);c.fill()}},128,128));
+        const woolMat=own(new THREE.MeshStandardMaterial({map:wool,roughness:.95})),mitten=new THREE.Group();mitten.position.set(mx,0,mz);mitten.rotation.y=-Math.PI/2;root.add(mitten);
+        const palm=add(own(new THREE.SphereGeometry(.3,18,12)),woolMat,0,.14,0,mitten);palm.scale.set(1,.45,1.35);
+        const thumb=add(own(new THREE.SphereGeometry(.12,12,8)),woolMat,.26,.12,.12,mitten);thumb.scale.set(1.3,.6,.8);
+        const cuff=add(own(new THREE.CylinderGeometry(.22,.24,.18,16,1,true)),own(new THREE.MeshStandardMaterial({color:0xf3ead6,roughness:.95,side:THREE.DoubleSide})),0,.14,-.42,mitten);cuff.rotation.x=Math.PI/2;
+        const draw=kind=>own(canvasTexture((c,W,H)=>{c.clearRect(0,0,W,H);const col={mouse:'#8a8a8a',frog:'#4f9a3a',hare:'#c8b8a0',fox:'#d9702a',wolf:'#6e6e78',boar:'#6a4a32',bear:'#7a4e2a',dog:'#c9a24a'}[kind];
+          const ell=(x,y,rx,ry,f)=>{c.fillStyle=f;c.beginPath();c.ellipse(x*W,y*H,rx*W,ry*H,0,0,7);c.fill()},tri=(a,b,d,f)=>{c.fillStyle=f;c.beginPath();c.moveTo(a[0]*W,a[1]*H);c.lineTo(b[0]*W,b[1]*H);c.lineTo(d[0]*W,d[1]*H);c.fill()};
+          c.lineWidth=6;c.strokeStyle='#2a1c12';
+          if(kind==='frog'){ell(.5,.66,.36,.24,col);ell(.33,.38,.12,.12,col);ell(.67,.38,.12,.12,col);ell(.33,.38,.06,.06,'#fff');ell(.67,.38,.06,.06,'#fff');ell(.33,.39,.03,.03,'#111');ell(.67,.39,.03,.03,'#111');c.beginPath();c.arc(.5*W,.62*H,.16*W,.15,Math.PI-.15);c.stroke();return}
+          ell(.5,.7,.3,.22,col);// body
+          if(kind==='hare'){ell(.4,.12,.05,.18,col);ell(.56,.12,.05,.18,col)}
+          if(kind==='mouse'||kind==='bear'){ell(.36,.24,.09,.09,col);ell(.64,.24,.09,.09,col)}
+          if(kind==='fox'||kind==='wolf'||kind==='dog'){tri([.3,.36],[.34,.12],[.46,.3],col);tri([.7,.36],[.66,.12],[.54,.3],col)}
+          if(kind==='boar'){tri([.34,.3],[.3,.18],[.44,.26],col);tri([.66,.3],[.7,.18],[.56,.26],col)}
+          ell(.5,.4,.2,.17,col);// head
+          if(kind==='fox'){ell(.82,.78,.14,.08,col);ell(.92,.8,.05,.05,'#fff');ell(.5,.48,.08,.06,'#fff')}
+          if(kind==='boar'){ell(.5,.48,.08,.06,'#c98a7a');tri([.42,.5],[.39,.38],[.45,.48],'#fff');tri([.58,.5],[.61,.38],[.55,.48],'#fff')}
+          if(kind==='dog'){ell(.32,.36,.06,.12,'#8a6a2a');ell(.68,.36,.06,.12,'#8a6a2a')}
+          if(kind==='mouse'){c.beginPath();c.moveTo(.78*W,.78*H);c.quadraticCurveTo(.98*W,.7*H,.92*W,.5*H);c.stroke()}
+          ell(.43,.37,.03,.03,'#111');ell(.57,.37,.03,.03,'#111');ell(.5,.45,.035,.025,'#111')},128,128));
+        const sizes={mouse:.3,frog:.32,hare:.5,fox:.55,wolf:.62,boar:.66,bear:.85,dog:.5},places=[[.1,.05],[-.25,.3],[.3,.42],[-.45,-.15],[.5,-.3],[-.2,-.55],[.62,.12],[-.75,.5]];
+        const figures=MITTEN.map(([kind,name],i)=>{const size=sizes[kind],fig=add(own(new THREE.PlaneGeometry(size,size)),own(new THREE.MeshStandardMaterial({map:draw(kind),transparent:true,alphaTest:.3,side:THREE.DoubleSide,roughness:.9})),mx-.25-places[i][1]*.4,size/2,mz+places[i][0],root);
+          fig.rotation.y=-Math.PI/2;fig.visible=false;return fig});
+        const mittenCard=step=>({type:'intl-mitten',title:'Рукавичка',author:step===0?'Червона вовняна рукавичка лежить на снігу. Хтось її загубив. Може, в ній хтось захоче жити? (A red woollen mitten lies in the snow. Someone has dropped it. Perhaps someone will want to live in it?)':'Хто ще прийде до рукавички? (Who will come to the mitten next?)',action:step===0?'LOOK':'WHO COMES NEXT?'});
+        let step=0;const fill=()=>{const swell=1+Math.min(step,7)*.06;palm.scale.set(swell,.45*swell,1.35*swell);for(const part of [palm,thumb,cuff,rug])part.userData=mittenCard(step)};
+        for(const part of [palm,thumb,cuff,rug])mark(part,mittenCard(0));block(mx,mz,.8,.9);
+        const shown=new Set();
+        room.mittenNext=()=>{if(step===0)for(const f of figures)f.visible=false;const [kind,name,words]=MITTEN[step];const fig=figures[step];fig.visible=true;
+          if(!shown.has(step)){shown.add(step);mark(fig,{type:'intl-card',title:name,author:words,action:'READ'})}
+          if(kind==='dog'){setTimeout(()=>{for(const f of figures.slice(0,7))f.visible=false;step=0;fill()},2600)}else step++;
+          fill();return {kind,name,words}};
+        room.mittenReset=()=>{for(const f of figures)f.visible=false;step=0;fill()}}
+
       // The bandura, leaning on the south wall under Pymonenko's picture.
       const ux=cx-7.2,uz=S-.45,bandura=new THREE.Group();bandura.position.set(ux,0,uz);bandura.rotation.set(-.16,Math.PI,0);root.add(bandura);
       const woodBody=own(new THREE.MeshStandardMaterial({color:0x8a5426,roughness:.45}));
@@ -603,6 +651,10 @@
       }
       if(data.type==='intl-exit'){through(data,()=>{move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again, beside the visitors’ book.',3)});return true}
       if(data.type==='intl-card'){showNotice(`${data.title}: ${data.author}`,9);return true}
+      if(data.type==='intl-mitten'){const room=built.ukrainian;if(!room?.mittenNext)return true;const {kind,words}=room.mittenNext();
+        if(tone){if(kind==='dog')for(const [i,f] of [196,196,174.6].entries())tone(f,i*.22,.18,.08,'piano');else tone(880+Math.random()*220,0,.12,.03,'bandura')}
+        showNotice(words,kind==='dog'||kind==='bear'?14:9);
+        if(kind==='dog'){let first=true;try{first=storage?.getItem('athenaeum-rukavychka')!=='1';storage?.setItem('athenaeum-rukavychka','1')}catch(e){}if(first)analytics?.track('Secret Found',{secret:'rukavychka'})}return true}
       if(data.type==='intl-letter'){const found=lettersFound();found.add(data.index);try{storage?.setItem(LETTERS_KEY,JSON.stringify([...found]))}catch(e){}
         built.ukrainian?.showLetters?.();playSample?.('pageTurn',.5,1.4);const all=found.size===LETTERS.length;
         showNotice(all?`${data.author}. Усі шість! К-А-Л-И-Н-А: КАЛИНА. Літери чекають на дитячій полиці. (All six! They spell КАЛИНА, kalyna, the guelder rose, and wait for you on the children’s shelf.)`:`${data.author}. Знайдено ${found.size} з ${LETTERS.length}. (Found ${found.size} of ${LETTERS.length}.)`,all?12:6);

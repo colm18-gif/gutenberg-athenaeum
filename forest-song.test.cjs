@@ -101,6 +101,25 @@ test('behind a crooked book in the Ukrainian room, «Слава Україні!�
   assert.match(wing,/if\(first\)analytics\?\.track\('Secret Found',\{secret:'slava-ukraini'\}\)/,'counted once');
 });
 
+test('for Ukrainian children: a shelf of tales, the mitten told in the tale’s own words, a letter hunt and a lullaby',()=>{
+  const ctx={window:{},URLSearchParams,location:{search:''}};
+  const shelf=wing.match(/const CHILDREN=\[[^\]]+\]/)[0],list=fs.readFileSync('data/new-books-wing.js','utf8');
+  for(const [,title] of shelf.matchAll(/'((?:[^'\\]|\\.)+)'/g))assert(list.includes(`'${title}'`)||list.includes(`'${title.replace(/'/g,"\\'")}'`),`${title} is in the wing’s list`);
+  assert.match(wing,/\(def\.children\|\|\[\]\)\.includes\(book\.title\)/,'kept apart from the main racks');
+  // Every word given to the mitten's animals is in the library's own Рукавичка (book 952693).
+  const text=zlib.gunzipSync(fs.readFileSync('texts/bundled-gzip/pg952693.txt.gz')).toString('utf8'),letters=s=>s.toLowerCase().replace(/[^а-яіїєґ]/g,'');const tale=letters(text);
+  const mitten=wing.slice(wing.indexOf('const MITTEN=['),wing.indexOf('const MEMORIAL=['));let checked=0;
+  for(const [,quote] of mitten.matchAll(/«([^»]+)»/g)){assert(tale.includes(letters(quote)),`«${quote}»`);checked++}
+  assert(checked>=9,'the tale is quoted');assert.equal((mitten.match(/^\s+\['[a-z]+','/gm)||[]).length,8,'seven animals and the dog');
+  // КАЛИНА, letter by letter.
+  const letterList=wing.match(/const LETTERS=\[(.+)\];/)[1];assert.equal([...letterList.matchAll(/\['(.)'/g)].map(m=>m[1]).join(''),'КАЛИНА');
+  assert.match(wing,/LETTERS_KEY='athenaeum-kalyna-letters'/);assert.match(wing,/if\(all\)analytics\?\.track\('Secret Found',\{secret:'kalyna-letters'\}\)/);
+  // The lullaby, bar by bar, four beats each, from the score on Commons.
+  const kotyku=game.slice(game.indexOf('function playKotyku()'),game.indexOf('return at}',game.indexOf('function playKotyku()')));
+  for(const name of ['one','three','nine','last']){const bar=kotyku.match(new RegExp(`${name}=\\[((?:\\[[^\\]]+\\],?)+)\\]`))[1];const beats=[...bar.matchAll(/,([.\d]+)\]/g)].reduce((a,m)=>a+Number(m[1]),0);assert.equal(beats,4,`${name}: four beats`)}
+  assert.match(game,/if\(away\.key==='ukrainian'\)\{showNotice\([^)]*Котику сіренький/);assert(fs.existsSync('assets/pictures/kotyku-score.jpg'),'the score it was read from');
+});
+
 test('the Holodomor candle stands for the week up to the fourth Saturday of November, and is lit by the reader',()=>{
   const lines=wing.match(/const holodomorDay=.*\n.*const holodomorWeek=.*\n.*const isHolodomorDay=.*\n/)[0];
   const c={Date};vm.runInNewContext(lines+'this.h={holodomorDay,holodomorWeek,isHolodomorDay}',c);const {holodomorDay,holodomorWeek,isHolodomorDay}=c.h;

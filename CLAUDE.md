@@ -270,6 +270,20 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   a thin blue volume stands pushed in crooked (`intl-slava`). Pulled, it tips out, and carved into the back of the shelf
   behind it, in gilded letters, is «Слава Україні!»; the card gives the answer, «Героям слава!». Found once, kept
   (`athenaeum-slava-ukraini`): a reader who has found it sees the book tipped out on every visit.
+- For Ukrainian children (the room's east side): a low green bookcase under the Petrykivka painting holds the
+  children's shelf (`CHILDREN`, kept apart from the main racks): the folk tales «Рукавичка» and «Пан Коцький» (from the 1918
+  children's collection Баю-баю), «Котигорошко», «Кирило Кожум'яка», the 1920 «Українські народні казки» (ten tales),
+  Franko's «Коли ще звірі говорили» (19 of its 20 tales: «Війна між Псом і Котом» is not on Wikisource) and «Лис Микита»,
+  and Hlibov's fables. Folk tales link to no author's page, so `scripts/wikisource.mjs` takes a book shelved as
+  "Українська народна казка" when Wikisource files it as folk work, or when it is one of `FOLK_PAGES` (checked by hand);
+  `COLLECTIONS` names, in the book's own order, the tales of a collection whose front page is only a preface or a contents.
+  In front of the shelf, «Рукавичка» as paper cut-outs round a red mitten on a snowy rug (`MITTEN`, `intl-mitten`): each
+  press brings the next animal in the tale's own words (checked against book 952693 by a test), the mitten swells, and
+  the dog's bark scatters them (`athenaeum-rukavychka`). Six wooden letter blocks hidden about the room (`LETTERS`,
+  `intl-letter`), each with a word for children, spell КАЛИНА and then stand on the shelf (`athenaeum-kalyna-letters`).
+  When Clio sleeps on the reading table, the bandura softly plays «Котику сіренький» (`playKotyku` in game.js),
+  transcribed bar by bar from the public-domain score on Commons (`kotyku-score` in `scripts/fetch-maps.mjs`, which takes
+  a GIF when an entry says `gif: true`).
 - The Holodomor candle: in the Ukrainian Reading Room, from the Sunday before the fourth Saturday of November (the Day of
   Remembrance of the Victims of the Holodomor) to the day itself, a candle in a glass with ears of wheat stands where the
   didukh stands at Christmas; the reader lights it (`intl-holodomor`). On the day, the room's welcome names it.
