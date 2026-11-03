@@ -28,6 +28,8 @@
   const CHILDREN=['Рукавичка','Пан Коцький','Котигорошко','Кирило Кожум\'яка','Українські народні казки','Коли ще звірі говорили','Лис Микита','Байки'];
   // The letter hunt: six wooden letter blocks hidden about the Ukrainian room spell КАЛИНА, each with a word for children.
   const LETTERS=[['К','кіт','a cat'],['А','аїст','a stork'],['Л','лисичка','a little fox'],['И','индик','a turkey'],['Н','небо','the sky'],['А','абетка','the alphabet']];
+  // What the window shows, in Shevchenko's words (the library's Kobzar, where the poem is called «Вечір»; checked by a test).
+  const WINDOW='За вікном українське село весняної ночі: біла хата під стріхою, у вікні світло, вишневий садок у цвіту, тин із глечиками, лелека на гнізді, тополі й Дніпро під місяцем. «Садок вишневий коло хати, хрущі над вишнями гудуть» (Тарас Шевченко). (Through the window, a Ukrainian village on a spring night: a whitewashed cottage under thatch with a lamp in the window, the cherry orchard in blossom, a wattle fence hung with clay jugs, a stork on its nest, poplars, and the Dnipro under the moon. “A cherry orchard by the cottage, cockchafers humming over the cherries.”)';
   // «Рукавичка», told by paper cut-outs round a mitten on a snowy rug: each press brings the next animal in the tale's own
   // words (the library's text, book 952693, from the 1918 children's collection Баю-баю; checked by a test).
   const MITTEN=[
@@ -39,8 +41,6 @@
     ['boar','Кабан-іклан','«— Хро-хро-хро! А я кабан-іклан. Пустіть і мене!» (“Oink, oink, oink! I am the tusky boar. Let me in too!”)'],
     ['bear','Ведмідь-набрідь','«— Гу-гу-гу! Якого вас багато! А я ведмідь-набрідь. Пустіть і мене!» … «семеро стало, та так же тісно, що рукавичка ось-ось розірветься.» (“Grr! How many of you there are! I am the wandering bear. Let me in too!” Now there were seven, and so squashed that the mitten was about to burst.)'],
     ['dog','Собачка','«Собачка тоді: „Гав-гав-гав!“ Вони як злякаються, як вирвуться з рукавички, — та усі й порозбігалися лісом. Прийшов дід та й забрав рукавичку.» (Then the little dog: “Woof, woof, woof!” They were so frightened they burst out of the mitten and ran off into the forest. And the grandfather came and took his mitten.)']];
-  // What the window shows, in Shevchenko's words (the library's Kobzar, where the poem is called «Вечір»; checked by a test).
-  const WINDOW='За вікном українське село весняної ночі: біла хата під стріхою, у вікні світло, вишневий садок у цвіту, тин із глечиками, лелека на гнізді, тополі й Дніпро під місяцем. «Садок вишневий коло хати, хрущі над вишнями гудуть» (Тарас Шевченко). (Through the window, a Ukrainian village on a spring night: a whitewashed cottage under thatch with a lamp in the window, the cherry orchard in blossom, a wattle fence hung with clay jugs, a stork on its nest, poplars, and the Dnipro under the moon. “A cherry orchard by the cottage, cockchafers humming over the cherries.”)';
   const MEMORIAL=['Місто','Я (Романтика)','Камена','Мина Мазайло','На Золотих Богів','Дні','Проростень','Подорож ученого доктора Леонардо'];
   // 27 October, the Day of Ukrainian Writing and Language, on the feast of Nestor the Chronicler (9 November until
   // the church calendar changed in 2023). The Eneida stays on the lectern from that day to 9 November, the old date.
