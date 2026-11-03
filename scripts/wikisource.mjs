@@ -81,11 +81,15 @@ export function byAuthor(links,categories,author,lang){
   return named.some(name=>name===want||name.split(' ').includes(last)||name.endsWith(' '+last)||name===last)||categories.some(c=>norm(c.replace(/_/g,' ')).includes(last));
 }
 
+// Folk tales whose pages link neither to an author nor to a folk-work page, checked by hand (the Catalogue lookup of
+// 3 November 2026): the children's collection Баю-баю's own Рукавичка and Пан Коцький, and Котигорошко.
+export const FOLK_PAGES=new Set(['Баю-баю/Рукавичка','Баю-баю/Пан Коцький','Котигорошко']);
+
 // The whole book: the page, and its chapters when the page is only a table of contents.
 export async function fetchWikisource(page,author,lang='uk',say=()=>{}){
   const root=await parse(page,lang);if(!root){say(`  ${page}: not found on Wikisource`);return null}
   const first=htmlToText(root.html);
-  if(!byAuthor(first.links,root.categories,author,lang)){say(`  ${root.title}: does not name ${author} as its author`);return null}
+  if(!(FOLK_PAGES.has(page)&&/^українська народна/i.test(author.trim()))&&!byAuthor(first.links,root.categories,author,lang)){say(`  ${root.title}: does not name ${author} as its author`);return null}
   async function read(title,got){
     const parts=[],seen=new Set([title]);
     // A page's own subpages, wherever it links them (a table of contents, or the header's "next"); `direct` keeps

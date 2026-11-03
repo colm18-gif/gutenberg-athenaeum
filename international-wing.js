@@ -24,6 +24,10 @@
 
   // The Ukrainian room's shelf of the Executed Renaissance, and the little book in Shevchenko's boot: these stand apart
   // from its main shelves (data/new-books-wing.js gives them, with the room's other books).
+  // The children's shelf: tales and verse for the youngest readers, on a low bookcase under the Petrykivka painting.
+  const CHILDREN=['Рукавичка','Пан Коцький','Котигорошко','Кирило Кожум\'яка','Українські народні казки','Коли ще звірі говорили','Лис Микита','Байки'];
+  // The letter hunt: six wooden letter blocks hidden about the Ukrainian room spell КАЛИНА, each with a word for children.
+  const LETTERS=[['К','кіт','a cat'],['А','аїст','a stork'],['Л','лисичка','a little fox'],['И','индик','a turkey'],['Н','небо','the sky'],['А','абетка','the alphabet']];
   const MEMORIAL=['Місто','Я (Романтика)','Камена','Мина Мазайло','На Золотих Богів','Дні','Проростень','Подорож ученого доктора Леонардо'];
   // 27 October, the Day of Ukrainian Writing and Language, on the feast of Nestor the Chronicler (9 November until
   // the church calendar changed in 2023). The Eneida stays on the lectern from that day to 9 November, the old date.
@@ -71,7 +75,7 @@
       note:'La nota della bibliotecaria',seat:['Una sedia accanto al tavolo','Si sieda e legga un libro di questa sala. (Sit and read a book from this room.)']},
     ukrainian:{cx:-530,cz:100,w:24,d:15,h:6,language:'uk',sign:'УКРАЇНСЬКА ЧИТАЛЬНЯ',sub:'The Ukrainian Reading Room · Міжнародне крило',
       card:['Українська читальня','Класика українською мовою, від Котляревського й Шевченка до Лесі Українки, Франка й Коцюбинського, кожна книжка з приміткою бібліотекарки. Тексти з Вікіджерел, суспільне надбання. (The Ukrainian Reading Room.)'],
-      lectern:'КНИЖКА ВЕЧОРА',shade:0x2b5aa8,tiles:'vyshyvanka',memorial:MEMORIAL,boot:'Княжна',
+      lectern:'КНИЖКА ВЕЧОРА',shade:0x2b5aa8,tiles:'vyshyvanka',memorial:MEMORIAL,boot:'Княжна',children:CHILDREN,
       welcome:pick=>`Українська читальня. Ласкаво просимо: класика українською мовою, кожна книжка з приміткою бібліотекарки.${writingDay()?' Сьогодні День української писемності та мови.':''}${isHolodomorDay()?' Сьогодні День пам’яті жертв голодоморів.':''}${pick?` На пюпітрі сьогодні: ${pick.title}.`:''} (The International Wing: the Ukrainian Reading Room.)`,
       note:'Примітка бібліотекарки',seat:['Стілець біля столу','Сідайте й читайте книжку з цієї читальні. (Sit and read a book from this room.)']}
   };
@@ -285,7 +289,8 @@
     // plays Leontovych's Shchedryk; and, from Christmas Eve to Vodokhreshche, a didukh. No lights of their own.
     const BOOT_KEY='athenaeum-shevchenko-boot';
     const bootFound=()=>{try{return storage?.getItem(BOOT_KEY)==='1'}catch(e){return false}};
-    const SLAVA_KEY='athenaeum-slava-ukraini';
+    const SLAVA_KEY='athenaeum-slava-ukraini',LETTERS_KEY='athenaeum-kalyna-letters';
+    const lettersFound=()=>{try{return new Set(JSON.parse(storage?.getItem(LETTERS_KEY)||'[]'))}catch(e){return new Set()}};
     const slavaFound=()=>{try{return storage?.getItem(SLAVA_KEY)==='1'}catch(e){return false}};
     let shchedrykUntil=0;
     function furnishUkrainian({cx,cz,w,d,box,own,mark,root,block,placeBook,list,room,def}){
@@ -340,6 +345,27 @@
         const found={type:'intl-card',title:'Слава Україні!',author:'Хтось вирізав на задній стінці полиці: «Слава Україні!» Відповідь знає кожен: «Героям слава!» (Someone has carved into the back of the shelf: “Glory to Ukraine!” Everyone knows the answer: “Glory to the heroes!”)',action:'READ'};
         volume.rotation.set(0,0,-.06);words.visible=false;mark(volume,crooked);mark(words,found);
         room.revealSlava=()=>{tilted();volume.userData=found};if(slavaFound())room.revealSlava()}
+
+      // The children's shelf: a low bookcase against the east wall under the Petrykivka painting, at a child's height,
+      // its books face-out on two tiers, under a little plaque.
+      {const kx=EX-.22,kz=cz,held=(def.children||[]).map(byTitle).filter(Boolean),paint=own(new THREE.MeshStandardMaterial({color:0x3f7a33,roughness:.7}));
+        box(.42,.95,3,paint,kx,.475,kz);for(const y of [.08,.5,.93])box(.44,.04,3.02,MAT.darkWood,kx-.01,y,kz);
+        held.slice(0,10).forEach((book,i)=>{const mesh=placeBook(book,{x:kx-.2,y:.33+Math.floor(i/5)*.42,z:kz-1.1+(i%5)*.55,yaw:-Math.PI/2});mesh.scale.set(.42,.38,1)});
+        const sign=add(own(new THREE.PlaneGeometry(1.1,.22)),own(new THREE.MeshStandardMaterial({map:own(plaque('ДЛЯ НАЙМЕНШИХ','Казки й байки · For children',440,90,'#2f5d2a')),roughness:.8,emissive:0x2a3a18,emissiveIntensity:.3})),EX-.05,1.5,kz,root);sign.rotation.y=-Math.PI/2;
+        mark(sign,{type:'intl-card',title:'Для найменших',author:'Казки й байки для найменших читачів: «Рукавичка», «Котигорошко», «Пан Коцький», Франкові казки про звірів, байки Глібова. А ще в цій кімнаті сховалося шість дерев’яних літер. Знайдеш їх усі? (Tales and fables for the youngest readers. Six wooden letters are hidden in this room too. Can you find them all?)',action:'READ'});
+        block(kx,kz,.6,3.1);room.childrenShelf={x:kx,z:kz}}
+
+      // The letter hunt: six wooden blocks, each a letter of КАЛИНА, tucked about the room; each found one tells its word,
+      // and once all six are found they stand in a row on top of the children's shelf.
+      {const spots=[[cx-6.6,.08,S-.35],[cx+3.35,.9,cz+1.35],[cx-3.6,.08,cz+d/2-2.3],[cx-5.1,.08,cz+.65],[EX-.95,.08,cz+2.95],[cx-w/2+1.35,.08,S-.55]];
+        const colours=['#c62a1f','#1f4f9a','#e8a21a','#2f6d2a','#c62a1f','#1f4f9a'];room.letters=[];
+        LETTERS.forEach(([letter,word,english],i)=>{const face=own(canvasTexture((c,W,H)=>{c.fillStyle='#e9d6b0';c.fillRect(0,0,W,H);c.fillStyle=colours[i];c.fillRect(6,6,W-12,H-12);c.fillStyle='#fff8e8';c.textAlign='center';c.textBaseline='middle';c.font=`bold ${Math.round(H*.7)}px Georgia`;c.fillText(letter,W/2,H/2+4)},96,96));
+          const cube=add(own(new THREE.BoxGeometry(.16,.16,.16)),own(new THREE.MeshStandardMaterial({map:face,roughness:.6})),spots[i][0],spots[i][1],spots[i][2],root);cube.rotation.y=i*.7;
+          room.letters.push(cube);mark(cube,{type:'intl-letter',index:i,title:`Літера ${letter}`,author:`${letter} — ${word} (${english})`,action:'PICK UP'})});
+        room.showLetters=()=>{const found=lettersFound(),all=found.size===LETTERS.length,k=room.childrenShelf;
+          room.letters.forEach((cube,i)=>{if(all&&k){cube.position.set(k.x-.05,1.04,k.z-.45+i*.18);cube.rotation.set(0,-Math.PI/2,0);cube.visible=true;cube.userData={type:'intl-card',title:'КАЛИНА',author:'Калина: червоні ягоди біля кожної української хати, у піснях і на рушниках. (Kalyna, the guelder rose: its red berries grow by Ukrainian homes and in their songs and embroidery.)',action:'READ'}}
+            else cube.visible=!found.has(i)})};
+        room.showLetters()}
 
       // The bandura, leaning on the south wall under Pymonenko's picture.
       const ux=cx-7.2,uz=S-.45,bandura=new THREE.Group();bandura.position.set(ux,0,uz);bandura.rotation.set(-.16,Math.PI,0);root.add(bandura);
@@ -420,7 +446,7 @@
     // ---------- the books ----------
     function shelf(key){return [...new Set(arrivals(key))].map(id=>findBook(id)).filter(Boolean)}
     // One book is out on each lectern each night, a different one tomorrow.
-    const apart=(def,book)=>!!def&&((def.memorial||[]).includes(book.title)||book.title===def.boot);
+    const apart=(def,book)=>!!def&&((def.memorial||[]).includes(book.title)||(def.children||[]).includes(book.title)||book.title===def.boot);
     function featured(key='spanish',list=shelf(key)){list=list.filter(book=>!apart(ROOMS[key],book));
       // From the Day of Ukrainian Writing and Language to 9 November, Kotliarevsky's Eneida, the first book in the modern literary language.
       if(key==='ukrainian'&&eneidaDays(today())){const eneida=list.find(book=>book.title==='Енеїда');if(eneida)return eneida}
@@ -577,6 +603,10 @@
       }
       if(data.type==='intl-exit'){through(data,()=>{move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again, beside the visitors’ book.',3)});return true}
       if(data.type==='intl-card'){showNotice(`${data.title}: ${data.author}`,9);return true}
+      if(data.type==='intl-letter'){const found=lettersFound();found.add(data.index);try{storage?.setItem(LETTERS_KEY,JSON.stringify([...found]))}catch(e){}
+        built.ukrainian?.showLetters?.();playSample?.('pageTurn',.5,1.4);const all=found.size===LETTERS.length;
+        showNotice(all?`${data.author}. Усі шість! К-А-Л-И-Н-А: КАЛИНА. Літери чекають на дитячій полиці. (All six! They spell КАЛИНА, kalyna, the guelder rose, and wait for you on the children’s shelf.)`:`${data.author}. Знайдено ${found.size} з ${LETTERS.length}. (Found ${found.size} of ${LETTERS.length}.)`,all?12:6);
+        if(all)analytics?.track('Secret Found',{secret:'kalyna-letters'});return true}
       if(data.type==='intl-slava'){const first=!slavaFound();try{storage?.setItem(SLAVA_KEY,'1')}catch(e){}built.ukrainian?.revealSlava?.();playSample?.('pageTurn',.6,.8);
         showNotice('Книжка подається, і за нею на задній стінці полиці вирізано: «Слава Україні!» — «Героям слава!» (The book tips out, and carved into the back of the shelf behind it: “Glory to Ukraine!” “Glory to the heroes!”)',12);
         if(first)analytics?.track('Secret Found',{secret:'slava-ukraini'});return true}
