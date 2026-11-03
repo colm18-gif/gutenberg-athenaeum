@@ -1,7 +1,7 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-11-02",
+ "updated": "2026-11-03",
  "days": {
   "2026-09-25": {
    "books": [
@@ -58,57 +58,57 @@ window.ATHENAEUM_DAILY_RESOLVED={
    ],
    "missing": []
   },
-  "2026-10-20": {
+  "2026-09-26": {
    "books": [
     {
-     "id": 213,
-     "title": "The Man from Snowy River",
-     "author": "A. B. Paterson"
+     "id": 103,
+     "title": "Around the World in Eighty Days",
+     "author": "Jules Verne"
     },
     {
-     "id": 41234,
-     "title": "Scrambles Amongst the Alps in the Years 1860-69",
-     "author": "Edward Whymper"
+     "id": 46597,
+     "title": "In Search of the Castaways",
+     "author": "Jules Verne"
     },
     {
-     "id": 119,
-     "title": "A Tramp Abroad",
+     "id": 2895,
+     "title": "Following the Equator",
      "author": "Mark Twain"
     },
     {
-     "id": 1448,
-     "title": "Heidi",
-     "author": "Johanna Spyri"
+     "id": 3176,
+     "title": "The Innocents Abroad",
+     "author": "Mark Twain"
     },
     {
-     "id": 10012,
-     "title": "The Mountains of California",
-     "author": "John Muir"
+     "id": 944,
+     "title": "The Voyage of the Beagle",
+     "author": "Charles Darwin"
     },
     {
-     "id": 32540,
-     "title": "My First Summer in the Sierra",
-     "author": "John Muir"
+     "id": 6317,
+     "title": "Sailing Alone Around the World",
+     "author": "Joshua Slocum"
     },
     {
-     "id": 755,
-     "title": "A Lady's Life in the Rocky Mountains",
-     "author": "Isabella L. Bird"
+     "id": 282,
+     "title": "Eothen",
+     "author": "A. W. Kinglake"
     },
     {
-     "id": 2226,
-     "title": "Kim",
-     "author": "Rudyard Kipling"
+     "id": 535,
+     "title": "Travels with a Donkey in the Cevennes",
+     "author": "Robert Louis Stevenson"
     },
     {
-     "id": 61083,
-     "title": "The Assault on Mount Everest, 1922",
-     "author": "C. G. Bruce"
+     "id": 10636,
+     "title": "The Travels of Marco Polo",
+     "author": "Marco Polo"
     },
     {
-     "id": 47209,
-     "title": "Hours of Exercise in the Alps",
-     "author": "John Tyndall"
+     "id": 829,
+     "title": "Gulliver's Travels",
+     "author": "Jonathan Swift"
     }
    ],
    "missing": []
