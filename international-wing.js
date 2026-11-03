@@ -285,6 +285,8 @@
     // plays Leontovych's Shchedryk; and, from Christmas Eve to Vodokhreshche, a didukh. No lights of their own.
     const BOOT_KEY='athenaeum-shevchenko-boot';
     const bootFound=()=>{try{return storage?.getItem(BOOT_KEY)==='1'}catch(e){return false}};
+    const SLAVA_KEY='athenaeum-slava-ukraini';
+    const slavaFound=()=>{try{return storage?.getItem(SLAVA_KEY)==='1'}catch(e){return false}};
     let shchedrykUntil=0;
     function furnishUkrainian({cx,cz,w,d,box,own,mark,root,block,placeBook,list,room,def}){
       const S=cz+d/2,EX=cx+w/2-.19,byTitle=title=>list.find(book=>book.title===title);
@@ -323,6 +325,21 @@
       const showBook=()=>{const book=byTitle(def.boot);if(!book||room.bootBook)return;const mesh=placeBook(book,{x:bx,y:.5,z:cz+3.55,yaw:-Math.PI/2});mesh.scale.set(.42,.42,1);mesh.rotation.x=-Math.PI/2;mesh.userData.home.quaternion.copy(mesh.quaternion);room.bootBook=mesh};
       room.bootParts=[shaft,foot,heel];room.showBootBook=showBook;room.bootCard=bootCard;
       if(bootFound())showBook();
+
+      // At the east end of the north racks' middle tier, past the last book, one thin volume stands pushed in crooked.
+      // Pulled, it tips out, and carved into the back of the shelf behind it is «Слава Україні!». Found once, kept.
+      {const vx=cx+w/2-1.17,vz=cz-d/2+.4,vy=2.56;
+        const spineMap=own(canvasTexture((c,W,H)=>{c.fillStyle='#1f3a6b';c.fillRect(0,0,W,H);c.fillStyle='#d9b048';for(const y of [H*.08,H*.13,H*.87,H*.92])c.fillRect(0,y,W,H*.018);
+          c.fillStyle='#e8c860';c.fillRect(W*.2,H*.45,W*.6,H*.1)},32,256));
+        const volume=add(own(new THREE.BoxGeometry(.05,.62,.34)),own(new THREE.MeshStandardMaterial({map:spineMap,roughness:.7})),vx,vy,vz,root);
+        const carving=own(canvasTexture((c,W,H)=>{c.fillStyle='#120b06';c.fillRect(0,0,W,H);c.textAlign='center';c.textBaseline='middle';c.font=`bold ${Math.round(H*.56)}px Georgia`;
+          c.fillStyle='rgba(0,0,0,.6)';c.fillText('Слава Україні!',W/2+2,H/2+2);c.fillStyle='#e2bf5c';c.fillText('Слава Україні!',W/2,H/2)},512,96));
+        const words=add(own(new THREE.PlaneGeometry(.5,.11)),own(new THREE.MeshStandardMaterial({map:carving,roughness:.8,emissive:0xffffff,emissiveMap:carving,emissiveIntensity:.45})),vx-.12,vy+.08,cz-d/2+.24,root);
+        const tilted=()=>{volume.rotation.set(0,0,-.34);volume.position.set(vx+.08,vy-.02,vz+.16);words.visible=true};
+        const crooked={type:'intl-slava',title:'Книжка, поставлена криво',author:'Тонкий томик у синій оправі стоїть трохи криво, наче його поспіхом засунули назад. (A thin blue volume pushed in crooked, as if put back in a hurry.)',action:'PULL'};
+        const found={type:'intl-card',title:'Слава Україні!',author:'Хтось вирізав на задній стінці полиці: «Слава Україні!» Відповідь знає кожен: «Героям слава!» (Someone has carved into the back of the shelf: “Glory to Ukraine!” Everyone knows the answer: “Glory to the heroes!”)',action:'READ'};
+        volume.rotation.set(0,0,-.06);words.visible=false;mark(volume,crooked);mark(words,found);
+        room.revealSlava=()=>{tilted();volume.userData=found};if(slavaFound())room.revealSlava()}
 
       // The bandura, leaning on the south wall under Pymonenko's picture.
       const ux=cx-7.2,uz=S-.45,bandura=new THREE.Group();bandura.position.set(ux,0,uz);bandura.rotation.set(-.16,Math.PI,0);root.add(bandura);
@@ -560,6 +577,9 @@
       }
       if(data.type==='intl-exit'){through(data,()=>{move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again, beside the visitors’ book.',3)});return true}
       if(data.type==='intl-card'){showNotice(`${data.title}: ${data.author}`,9);return true}
+      if(data.type==='intl-slava'){const first=!slavaFound();try{storage?.setItem(SLAVA_KEY,'1')}catch(e){}built.ukrainian?.revealSlava?.();playSample?.('pageTurn',.6,.8);
+        showNotice('Книжка подається, і за нею на задній стінці полиці вирізано: «Слава Україні!» — «Героям слава!» (The book tips out, and carved into the back of the shelf behind it: “Glory to Ukraine!” “Glory to the heroes!”)',12);
+        if(first)analytics?.track('Secret Found',{secret:'slava-ukraini'});return true}
       if(data.type==='intl-boot'){const room=built.ukrainian;try{storage?.setItem(BOOT_KEY,'1')}catch(e){}
         if(room){const card=room.bootCard();for(const part of room.bootParts)part.userData=card;room.showBootBook()}
         showNotice('За халявою — маленька саморобна книжечка, списана дрібним почерком. На засланні Шевченкові заборонили писати й малювати, і він ховав вірші в чоботі. (Tucked in the boot: a tiny handmade notebook of poems, as Shevchenko hid his in exile. It lies on the trunk now.)',10);

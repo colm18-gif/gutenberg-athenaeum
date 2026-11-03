@@ -266,6 +266,10 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   visit (`athenaeum-forest-song-mavka`); played to again, she answers «Як солодко грає…». A blue door with a rushnyk
   leads back to the room. No lights. Every «quotation» is checked against the bundled text by a test; the English after
   each is the library's own plain rendering.
+- «Слава Україні!»: at the east end of the Ukrainian Reading Room's north racks, on the middle tier past the last book,
+  a thin blue volume stands pushed in crooked (`intl-slava`). Pulled, it tips out, and carved into the back of the shelf
+  behind it, in gilded letters, is «Слава Україні!»; the card gives the answer, «Героям слава!». Found once, kept
+  (`athenaeum-slava-ukraini`): a reader who has found it sees the book tipped out on every visit.
 - The Holodomor candle: in the Ukrainian Reading Room, from the Sunday before the fourth Saturday of November (the Day of
   Remembrance of the Victims of the Holodomor) to the day itself, a candle in a glass with ears of wheat stands where the
   didukh stands at Christmas; the reader lights it (`intl-holodomor`). On the day, the room's welcome names it.
