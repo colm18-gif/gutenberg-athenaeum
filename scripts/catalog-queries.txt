@@ -1,17 +1,15 @@
-# The Mountain, second look: poets of the heights, and two climbers not found under their titles
-Prelude ; Wordsworth ;
-; Wordsworth, William ; en
-; Coleridge, Samuel Taylor ; en
-; Mummery ;
-; Stephen, Leslie ; en
-Manfred|Childe Harold ; Byron ; en
-Mont Blanc|Poetical Works|Complete Poetical ; Shelley ; en
-Ascent of Mont|Ventoux ; ;
-Excelsior|Ballads|Voices of the Night ; Longfellow ; en
-Glory|Spectre|Brocken ; ; en
-Snowdon ; ; en
-; Whymper ; en
-; Workman, Fanny ; en
-; Peck, Annie ; en
-; Weston, Walter ; en
-; Mummery ; en
+# Ukrainian children's tales on Ukrainian Wikisource, for the Ukrainian Reading Room's children's shelf.
+ws? Рукавичка казка
+ws Рукавичка
+ws? Колобок казка
+ws? Котигорошко
+ws? Кирило Кожум'яка
+ws? Пан Коцький
+ws Лис Микита
+ws? Коли ще звірі говорили
+ws Автор:Іван Франко
+ws Автор:Леонід Глібов
+ws Автор:Леся Українка
+ws? Котику сіренький
+ws? Українські народні казки
+ws Українські народні казки
