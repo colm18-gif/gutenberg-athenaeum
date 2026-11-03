@@ -2193,7 +2193,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const preSongFloor=floorHeight;floorHeight=function(x,z){return forestSong.floorAt(x,z)??preSongFloor(x,z)};
       const preSongAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return forestSong.contains(x,z)?forestSong.allowed(x,z):preSongAllowed(x,z,y)};
       const preSongInteract=interact;interact=function(){if(focus&&!selected&&forestSong.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preSongInteract()};
-      const preSongSelect=selectBook;selectBook=function(bm){const result=preSongSelect(bm);const d=bm?.userData;if(d?.forestSong){const note=librarianNotes[d.book.id]||window.ATHENAEUM_EXTRA_NOTES?.[d.book.id];if(note)showNotice(`Примітка бібліотекарки: «${note}»`,12)}return result};
+      const preSongSelect=selectBook;selectBook=function(bm){const result=preSongSelect(bm);const d=bm?.userData;if(d?.forestSong){const note=librarianNotes[d.book.id]||window.ATHENAEUM_EXTRA_NOTES?.[d.book.id];if(note){const english=window.ATHENAEUM_NOTES_EN?.[d.book.title];showNotice(`Примітка бібліотекарки: «${note}»${english?` The librarian’s note: “${english}”`:''}`,english?18:12)}}return result};
       const preSongWorld=updateWorld;updateWorld=function(t,dt){preSongWorld(t,dt);forestSong.update(t,dt)};
       const preSongSpace=acousticSpace;acousticSpace=function(){return forestSong.contains(player.pos.x,player.pos.z)?'outdoor':preSongSpace()};
       // In the reader, the Forest Song alone offers a way into its forest.
