@@ -73,6 +73,9 @@ export async function parse(page,lang){const j=await api({action:'parse',page,pr
 const norm=s=>s.normalize('NFC').toLowerCase().replace(/[’'ʼ`]/g,'').replace(/\s+/g,' ').trim();
 // The author as shelved ("Тарас Шевченко", "Григорій Квітка-Основ'яненко"): their page must be linked from the book.
 export function byAuthor(links,categories,author,lang){
+  // A folk tale has no author's page: shelved as "Українська народна казка" (or another folk form), it is taken when the
+  // page is filed as folk work, or links to Wikisource's page for Ukrainian folk work.
+  if(/^українська народна/i.test(author.trim()))return categories.some(c=>/народн|фольклор/i.test(c))||links.some(l=>/народна творчість|народні казки/i.test(l.title));
   const want=norm(author.replace(/\s*\(.*\)\s*$/,'')),last=want.split(' ').pop(),prefix=norm(WIKISOURCE_LANGUAGES[lang].author+':');
   const named=links.map(l=>norm(l.title)).filter(t=>t.startsWith(prefix)).map(t=>t.slice(prefix.length));
   return named.some(name=>name===want||name.split(' ').includes(last)||name.endsWith(' '+last)||name===last)||categories.some(c=>norm(c.replace(/_/g,' ')).includes(last));
