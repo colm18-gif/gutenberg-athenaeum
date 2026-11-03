@@ -270,6 +270,15 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   a thin blue volume stands pushed in crooked (`intl-slava`). Pulled, it tips out, and carved into the back of the shelf
   behind it, in gilded letters, is «Слава Україні!»; the card gives the answer, «Героям слава!». Found once, kept
   (`athenaeum-slava-ukraini`): a reader who has found it sees the book tipped out on every visit.
+- The Ukrainian Reading Room's west wall is a window, not a bookcase (`window:true` on its def skips the west racks): a
+  painted night over a village by the Dnipro (moon, poplars, a whitewashed хата, the cherry orchard, a stork), framed with
+  a rushnyk; its card (`WINDOW`) quotes «Садок вишневий коло хати…» from the room's own Kobzar (book 962510, Кобзарь 1876,
+  in place of «В казематі»), checked by a test. Keep `WINDOW` above `MITTEN`: the mitten's test reads every «quotation»
+  between `MITTEN` and `MEMORIAL` against Рукавичка.
+- English for English speakers: every Ukrainian book has an English rendering of its librarian's note in
+  `ATHENAEUM_NOTES_EN` (end of `data/new-books-wing.js`, keyed by title; a test wants one for each book, three sentences
+  or more), shown after the Ukrainian when a book is picked and on its book page (`noteEn`). The welcome, the lectern
+  (`lecternSub`) and the cards carry English after the Ukrainian. A new Ukrainian book needs its English note too.
 - For Ukrainian children (the room's east side): a low green bookcase under the Petrykivka painting holds the
   children's shelf (`CHILDREN`, kept apart from the main racks): the folk tales «Рукавичка» and «Пан Коцький» (from the 1918
   children's collection Баю-баю), «Котигорошко», «Кирило Кожум'яка», the 1920 «Українські народні казки» (ten tales),

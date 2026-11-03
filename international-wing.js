@@ -28,6 +28,8 @@
   const CHILDREN=['Рукавичка','Пан Коцький','Котигорошко','Кирило Кожум\'яка','Українські народні казки','Коли ще звірі говорили','Лис Микита','Байки'];
   // The letter hunt: six wooden letter blocks hidden about the Ukrainian room spell КАЛИНА, each with a word for children.
   const LETTERS=[['К','кіт','a cat'],['А','аїст','a stork'],['Л','лисичка','a little fox'],['И','индик','a turkey'],['Н','небо','the sky'],['А','абетка','the alphabet']];
+  // What the window shows, in Shevchenko's words (the library's Kobzar, where the poem is called «Вечір»; checked by a test).
+  const WINDOW='За вікном українське село весняної ночі: біла хата під стріхою, у вікні світло, вишневий садок у цвіту, тин із глечиками, лелека на гнізді, тополі й Дніпро під місяцем. «Садок вишневий коло хати, хрущі над вишнями гудуть» (Тарас Шевченко). (Through the window, a Ukrainian village on a spring night: a whitewashed cottage under thatch with a lamp in the window, the cherry orchard in blossom, a wattle fence hung with clay jugs, a stork on its nest, poplars, and the Dnipro under the moon. “A cherry orchard by the cottage, cockchafers humming over the cherries.”)';
   // «Рукавичка», told by paper cut-outs round a mitten on a snowy rug: each press brings the next animal in the tale's own
   // words (the library's text, book 952693, from the 1918 children's collection Баю-баю; checked by a test).
   const MITTEN=[
@@ -86,8 +88,8 @@
       note:'La nota della bibliotecaria',seat:['Una sedia accanto al tavolo','Si sieda e legga un libro di questa sala. (Sit and read a book from this room.)']},
     ukrainian:{cx:-530,cz:100,w:24,d:15,h:6,language:'uk',sign:'УКРАЇНСЬКА ЧИТАЛЬНЯ',sub:'The Ukrainian Reading Room · Міжнародне крило',
       card:['Українська читальня','Класика українською мовою, від Котляревського й Шевченка до Лесі Українки, Франка й Коцюбинського, кожна книжка з приміткою бібліотекарки. Тексти з Вікіджерел, суспільне надбання. (The Ukrainian Reading Room.)'],
-      lectern:'КНИЖКА ВЕЧОРА',shade:0x2b5aa8,tiles:'vyshyvanka',memorial:MEMORIAL,boot:'Княжна',children:CHILDREN,
-      welcome:pick=>`Українська читальня. Ласкаво просимо: класика українською мовою, кожна книжка з приміткою бібліотекарки.${writingDay()?' Сьогодні День української писемності та мови.':''}${isHolodomorDay()?' Сьогодні День пам’яті жертв голодоморів.':''}${pick?` На пюпітрі сьогодні: ${pick.title}.`:''} (The International Wing: the Ukrainian Reading Room.)`,
+      lectern:'КНИЖКА ВЕЧОРА',lecternSub:'Tonight’s book',shade:0x2b5aa8,tiles:'vyshyvanka',memorial:MEMORIAL,boot:'Княжна',children:CHILDREN,window:true,
+      welcome:pick=>`Українська читальня. Ласкаво просимо: класика українською мовою, кожна книжка з приміткою бібліотекарки.${writingDay()?' Сьогодні День української писемності та мови.':''}${isHolodomorDay()?' Сьогодні День пам’яті жертв голодоморів.':''}${pick?` На пюпітрі сьогодні: ${pick.title}.`:''} (The Ukrainian Reading Room: Ukrainian classics, each with a librarian’s note in Ukrainian and English.${writingDay()?' Today is the Day of Ukrainian Writing and Language.':''}${isHolodomorDay()?' Today is the Day of Remembrance of the Victims of the Holodomor.':''}${pick?' Tonight’s book is on the lectern.':''})`,
       note:'Примітка бібліотекарки',seat:['Стілець біля столу','Сідайте й читайте книжку з цієї читальні. (Sit and read a book from this room.)']}
   };
 
@@ -253,6 +255,56 @@
       const linen=own(new THREE.MeshStandardMaterial({map:band,roughness:.9,side:THREE.DoubleSide})),hang=own(new THREE.MeshStandardMaterial({map:tail,roughness:.9,side:THREE.DoubleSide}));
       const top=add(own(new THREE.PlaneGeometry(4.1,.32)),linen,EX-.05,4.12,cz,root);top.rotation.y=-Math.PI/2;
       for(const s of [-1,1]){const t=add(own(new THREE.PlaneGeometry(.32,1.5)),hang,EX-.06,3.28,cz+s*1.95,root);t.rotation.y=-Math.PI/2}
+      // The window in the west wall, where a bookcase stood: a Ukrainian village on a spring night, painted on one texture
+      // that glows a little (no light of its own): a whitewashed хата under thatch with a lamp in its window, the cherry
+      // orchard in blossom, a wattle fence hung with clay jugs, a stork on its nest, poplars, and the Dnipro under the moon.
+      {const WX=cx-w/2+.16,wy=2.85,ww=6,wh=3;
+        const view=own(canvasTexture((c,W,H)=>{const rand=(()=>{let k=7;return()=>{k=(k*16807)%2147483647;return k/2147483647}})();
+          const sky=c.createLinearGradient(0,0,0,H*.62);sky.addColorStop(0,'#0a1330');sky.addColorStop(.7,'#1c2d58');sky.addColorStop(1,'#3b4c70');c.fillStyle=sky;c.fillRect(0,0,W,H);
+          for(let i=0;i<340;i++){c.fillStyle=`rgba(255,250,235,${.3+rand()*.7})`;const r=rand()<.1?2.2:1.2;c.beginPath();c.arc(rand()*W,rand()*H*.5,r,0,7);c.fill()}
+          const mx=W*.79,my=H*.17,halo=c.createRadialGradient(mx,my,0,mx,my,W*.16);halo.addColorStop(0,'rgba(240,232,200,.55)');halo.addColorStop(1,'rgba(240,232,200,0)');c.fillStyle=halo;c.fillRect(0,0,W,H*.6);
+          c.fillStyle='#f6eed2';c.beginPath();c.arc(mx,my,W*.04,0,7);c.fill();
+          // The far bank, the river with the moon's path on it, and a little mist.
+          c.fillStyle='#16242e';c.beginPath();c.moveTo(0,H*.6);for(let x=0;x<=W;x+=32)c.lineTo(x,H*(.585+.018*Math.sin(x/170)+.01*Math.sin(x/53)));c.lineTo(W,H*.64);c.lineTo(0,H*.64);c.fill();
+          c.fillStyle='#22344e';c.fillRect(0,H*.625,W,H*.06);
+          for(let i=0;i<70;i++){const y=H*(.63+rand()*.05),half=W*(.006+rand()*.03)*(1-(y-H*.63)/(H*.06)*.3);c.fillStyle=`rgba(236,228,196,${.35+rand()*.45})`;c.fillRect(mx-half+(rand()-.5)*W*.03,y,half*2,2)}
+          const mist=c.createLinearGradient(0,H*.6,0,H*.72);mist.addColorStop(0,'rgba(180,195,215,0)');mist.addColorStop(.5,'rgba(180,195,215,.18)');mist.addColorStop(1,'rgba(180,195,215,0)');c.fillStyle=mist;c.fillRect(0,H*.6,W,H*.12);
+          // The meadow on this side.
+          const field=c.createLinearGradient(0,H*.68,0,H);field.addColorStop(0,'#182a1c');field.addColorStop(1,'#0c160e');c.fillStyle=field;c.fillRect(0,H*.68,W,H*.32);
+          // Poplars along the left.
+          for(const [x,top] of [[.05,.16],[.1,.12],[.145,.2],[.9,.3],[.95,.26]]){c.fillStyle='#0c1a12';c.beginPath();c.ellipse(W*x,H*(.68+top)/2+H*.02,W*.022,H*(.68-top)/2,0,0,7);c.fill()}
+          // The хата: white walls in the moonlight, a hipped roof of thatch, the lamp in its window, the door.
+          const hx=W*.27,hw=W*.25,ground=H*.84,wallTop=H*.7;
+          c.fillStyle='#d9dde2';c.fillRect(hx,wallTop,hw,ground-wallTop);c.fillStyle='#b9bec6';c.fillRect(hx+hw*.78,wallTop,hw*.22,ground-wallTop);
+          c.fillStyle='#7a5c2c';c.beginPath();c.moveTo(hx-W*.025,wallTop+4);c.lineTo(hx+hw*.18,H*.585);c.lineTo(hx+hw*.82,H*.585);c.lineTo(hx+hw+W*.025,wallTop+4);c.fill();
+          c.strokeStyle='rgba(40,28,12,.5)';c.lineWidth=2;for(let i=0;i<46;i++){const x=hx-W*.02+i*(hw+W*.04)/46;c.beginPath();c.moveTo(x,wallTop+2);c.lineTo(x+(hx+hw/2-x)*.25,H*.59);c.stroke()}
+          const glow=c.createRadialGradient(hx+hw*.3,H*.765,0,hx+hw*.3,H*.765,W*.05);glow.addColorStop(0,'rgba(255,210,120,.55)');glow.addColorStop(1,'rgba(255,210,120,0)');c.fillStyle=glow;c.fillRect(hx,wallTop,hw*.6,ground-wallTop);
+          c.fillStyle='#ffcf6a';c.fillRect(hx+hw*.24,H*.735,hw*.12,H*.06);c.fillStyle='#5a3a1a';c.fillRect(hx+hw*.295,H*.735,3,H*.06);c.fillRect(hx+hw*.24,H*.762,hw*.12,3);
+          c.fillStyle='#3a2a1a';c.fillRect(hx+hw*.58,H*.74,hw*.1,ground-H*.74);
+          // The cherry orchard beside it, in blossom.
+          for(const [x,y,r] of [[.56,.66,.045],[.63,.64,.05],[.7,.665,.042],[.6,.71,.04],[.67,.705,.046],[.75,.69,.04]]){c.fillStyle='#1d2b1c';c.fillRect(W*x-4,H*y,8,H*.84-H*y);c.fillStyle='#22341f';c.beginPath();c.arc(W*x,H*y,W*r,0,7);c.fill();
+            for(let i=0;i<90;i++){const a=rand()*7,d=Math.sqrt(rand())*W*r;c.fillStyle=`rgba(250,240,245,${.5+rand()*.5})`;c.fillRect(W*x+Math.cos(a)*d,H*y+Math.sin(a)*d*.9,3,3)}}
+          // A stork on its nest, high on a pole by the orchard.
+          const sx=W*.81,sy=H*.5;c.fillStyle='#1a1410';c.fillRect(sx-3,sy,6,H*.84-sy);c.fillStyle='#4a3a26';c.beginPath();c.ellipse(sx,sy,W*.022,H*.014,0,0,7);c.fill();
+          c.fillStyle='#e8e6e0';c.beginPath();c.ellipse(sx,sy-H*.03,W*.009,H*.024,.2,0,7);c.fill();c.fillStyle='#111';c.beginPath();c.ellipse(sx+W*.004,sy-H*.02,W*.006,H*.012,.3,0,7);c.fill();
+          c.strokeStyle='#e8e6e0';c.lineWidth=4;c.beginPath();c.moveTo(sx,sy-H*.05);c.lineTo(sx+W*.004,sy-H*.07);c.stroke();c.strokeStyle='#d0542a';c.beginPath();c.moveTo(sx+W*.004,sy-H*.07);c.lineTo(sx+W*.016,sy-H*.064);c.stroke();
+          // The wattle fence in front, with clay jugs upside down on its stakes.
+          c.strokeStyle='#4a3420';c.lineWidth=3;for(let row=0;row<4;row++){c.beginPath();for(let x=W*.18;x<=W*.64;x+=12)c.lineTo(x,H*(.855+row*.012)+Math.sin(x/9+row)*2);c.stroke()}
+          for(let x=W*.18;x<=W*.64;x+=W*.046){c.fillStyle='#3a2816';c.fillRect(x-3,H*.83,6,H*.08);if(Math.round(x/W/.046)%2===0){c.fillStyle='#8a3e22';c.beginPath();c.ellipse(x,H*.825,W*.009,H*.016,0,0,7);c.fill()}}
+          // Long grass at the very front.
+          c.strokeStyle='#0a140c';c.lineWidth=2;for(let i=0;i<260;i++){const x=rand()*W,h=H*(.03+rand()*.06);c.beginPath();c.moveTo(x,H);c.quadraticCurveTo(x+(rand()-.5)*20,H-h*.6,x+(rand()-.5)*30,H-h);c.stroke()}
+        },2048,1024));
+        const pane=add(own(new THREE.PlaneGeometry(ww,wh)),own(new THREE.MeshStandardMaterial({map:view,emissive:0xffffff,emissiveMap:view,emissiveIntensity:.55,roughness:.25})),WX,wy,cz,root);pane.rotation.y=Math.PI/2;
+        const frame=own(new THREE.MeshStandardMaterial({color:0xece4d2,roughness:.6}));
+        for(const [fw,fh,y,z] of [[ww+.36,.18,wy+wh/2+.09,cz],[ww+.36,.12,wy-wh/2-.06,cz],[.18,wh,wy,cz-ww/2-.09],[.18,wh,wy,cz+ww/2+.09],[.08,wh,wy,cz-ww/6],[.08,wh,wy,cz+ww/6],[ww,.07,wy+wh/6,cz]]){const b=box(.12,fh,fw,frame,WX+.06,y,z)}
+        box(.4,.08,ww+.5,frame,WX+.2,wy-wh/2-.12,cz);
+        // An embroidered рушник laid along the top of the window and falling at both ends, as over a window at home.
+        const band=own(canvasTexture((c,W,H)=>stitchMotif(c,W,H),512,64));band.wrapS=THREE.RepeatWrapping;band.repeat.set(5,1);
+        const linen=own(new THREE.MeshStandardMaterial({map:band,roughness:.9,side:THREE.DoubleSide}));
+        const top=add(own(new THREE.PlaneGeometry(ww+.7,.3)),linen,WX+.15,wy+wh/2+.22,cz,root);top.rotation.y=Math.PI/2;
+        for(const sgn of [-1,1]){const t=add(own(new THREE.PlaneGeometry(.3,1.6)),linen,WX+.16,wy+wh/2-.62,cz+sgn*(ww/2+.42),root);t.rotation.y=Math.PI/2}
+        mark(pane,{type:'intl-card',title:'Вікно',author:WINDOW,action:'LOOK'})}
+
       // Sunflowers in a clay jug, and pysanky in a bowl, on the reading table.
       const tx=cx+1.5,tz=cz+1.2,ty=.82,dummy=new THREE.Object3D();
       const jug=add(own(new THREE.LatheGeometry([[.001,0],[.1,0],[.14,.08],[.13,.2],[.07,.3],[.08,.36]].map(([x,y])=>new THREE.Vector2(x,y)),14)),own(new THREE.MeshStandardMaterial({color:0x9a4a26,roughness:.7})),tx+1.55,ty,tz-.1,root);
@@ -360,7 +412,7 @@
       // The children's shelf: a low bookcase against the east wall under the Petrykivka painting, at a child's height,
       // its books face-out on two tiers, under a little plaque.
       {const kx=EX-.22,kz=cz,held=(def.children||[]).map(byTitle).filter(Boolean),paint=own(new THREE.MeshStandardMaterial({color:0x3f7a33,roughness:.7}));
-        box(.42,.95,3,paint,kx,.475,kz);for(const y of [.08,.5,.93])box(.44,.04,3.02,MAT.darkWood,kx-.01,y,kz);
+        box(.42,.95,3,paint,kx,.475,kz);for(const y of [.08,.5,.97])box(.44,.04,3.02,MAT.darkWood,kx-.01,y,kz);// the top board sits on the body, not level with it (level, their faces flickered)
         held.slice(0,10).forEach((book,i)=>{const mesh=placeBook(book,{x:kx-.2,y:.33+Math.floor(i/5)*.42,z:kz-1.1+(i%5)*.55,yaw:-Math.PI/2});mesh.scale.set(.42,.38,1)});
         const sign=add(own(new THREE.PlaneGeometry(1.1,.22)),own(new THREE.MeshStandardMaterial({map:own(plaque('ДЛЯ НАЙМЕНШИХ','Казки й байки · For children',440,90,'#2f5d2a')),roughness:.8,emissive:0x2a3a18,emissiveIntensity:.3})),EX-.05,1.5,kz,root);sign.rotation.y=-Math.PI/2;
         mark(sign,{type:'intl-card',title:'Для найменших',author:'Казки й байки для найменших читачів: «Рукавичка», «Котигорошко», «Пан Коцький», Франкові казки про звірів, байки Глібова. А ще в цій кімнаті сховалося шість дерев’яних літер. Знайдеш їх усі? (Tales and fables for the youngest readers. Six wooden letters are hidden in this room too. Can you find them all?)',action:'READ'});
@@ -374,7 +426,7 @@
           const cube=add(own(new THREE.BoxGeometry(.16,.16,.16)),own(new THREE.MeshStandardMaterial({map:face,roughness:.6})),spots[i][0],spots[i][1],spots[i][2],root);cube.rotation.y=i*.7;
           room.letters.push(cube);mark(cube,{type:'intl-letter',index:i,title:`Літера ${letter}`,author:`${letter} — ${word} (${english})`,action:'PICK UP'})});
         room.showLetters=()=>{const found=lettersFound(),all=found.size===LETTERS.length,k=room.childrenShelf;
-          room.letters.forEach((cube,i)=>{if(all&&k){cube.position.set(k.x-.05,1.04,k.z-.45+i*.18);cube.rotation.set(0,-Math.PI/2,0);cube.visible=true;cube.userData={type:'intl-card',title:'КАЛИНА',author:'Калина: червоні ягоди біля кожної української хати, у піснях і на рушниках. (Kalyna, the guelder rose: its red berries grow by Ukrainian homes and in their songs and embroidery.)',action:'READ'}}
+          room.letters.forEach((cube,i)=>{if(all&&k){cube.position.set(k.x-.05,1.07,k.z-.45+i*.18);cube.rotation.set(0,-Math.PI/2,0);cube.visible=true;cube.userData={type:'intl-card',title:'КАЛИНА',author:'Калина: червоні ягоди біля кожної української хати, у піснях і на рушниках. (Kalyna, the guelder rose: its red berries grow by Ukrainian homes and in their songs and embroidery.)',action:'READ'}}
             else cube.visible=!found.has(i)})};
         room.showLetters()}
 
@@ -533,13 +585,17 @@
       // Books face-out on sloping racks: three tiers along the north wall, three along the west wall.
       const spots=[];
       for(let row=0;row<3;row++)for(let i=0;i<10;i++)spots.push({x:cx-9.9+i*2.2,z:cz-d/2+.42,y:1.62+row*1.12,yaw:0});
-      for(let row=0;row<3;row++)for(let i=0;i<6;i++)spots.push({x:cx-w/2+.42,z:cz-5.5+i*2.05,y:1.62+row*1.12,yaw:Math.PI/2});
+      // A room with a window in its west wall (def.window) has racks on the north wall only.
+      if(!def.window)for(let row=0;row<3;row++)for(let i=0;i<6;i++)spots.push({x:cx-w/2+.42,z:cz-5.5+i*2.05,y:1.62+row*1.12,yaw:Math.PI/2});
       // Dark wooden bookcases behind the racks, with uprights between the columns and a cornice along the top.
-      box(22.6,3.45,.06,MAT.darkWood,cx,2.84,cz-d/2+.2);box(.06,3.45,12.8,MAT.darkWood,cx-w/2+.2,2.84,cz);
-      box(22.8,.14,.46,MAT.darkWood,cx,4.6,cz-d/2+.36);box(.46,.14,13,MAT.darkWood,cx-w/2+.36,4.6,cz);
-      for(let i=0;i<=10;i++)box(.07,3.45,.4,MAT.darkWood,cx-11+i*2.2,2.84,cz-d/2+.38);for(let i=0;i<=6;i++)box(.4,3.45,.07,MAT.darkWood,cx-w/2+.38,2.84,cz-6.52+i*2.05);
-      for(let row=0;row<3;row++){const y=1.1+row*1.12;box(22.4,.05,.36,MAT.darkWood,cx,y,cz-d/2+.36);box(.36,.05,12.6,MAT.darkWood,cx-w/2+.36,y,cz)}
-      block(cx,cz-d/2+.4,w,.8);block(cx-w/2+.4,cz,.8,d);
+      box(22.6,3.45,.06,MAT.darkWood,cx,2.84,cz-d/2+.2);box(22.8,.14,.46,MAT.darkWood,cx,4.6,cz-d/2+.36);
+      for(let i=0;i<=10;i++)box(.07,3.45,.4,MAT.darkWood,cx-11+i*2.2,2.84,cz-d/2+.38);
+      for(let row=0;row<3;row++)box(22.4,.05,.36,MAT.darkWood,cx,1.1+row*1.12,cz-d/2+.36);
+      block(cx,cz-d/2+.4,w,.8);
+      if(!def.window){box(.06,3.45,12.8,MAT.darkWood,cx-w/2+.2,2.84,cz);box(.46,.14,13,MAT.darkWood,cx-w/2+.36,4.6,cz);
+        for(let i=0;i<=6;i++)box(.4,3.45,.07,MAT.darkWood,cx-w/2+.38,2.84,cz-6.52+i*2.05);
+        for(let row=0;row<3;row++)box(.36,.05,12.6,MAT.darkWood,cx-w/2+.36,1.1+row*1.12,cz);
+        block(cx-w/2+.4,cz,.8,d)}else block(cx-w/2+.25,cz,.5,d);
       const list=shelf(key),geometry=own(new THREE.BoxGeometry(.78,1.04,.05));
       const placeBook=(book,spot)=>{const mesh=add(geometry,own(bookMaterial(book)),spot.x,spot.y,spot.z,root);mesh.rotation.order='YXZ';mesh.rotation.y=spot.yaw;mesh.rotation.x=-.1;
         mesh.userData={type:'book',book,loaded:false,international:true,wingRoom:key,home:{position:mesh.position.clone(),quaternion:mesh.quaternion.clone(),parent:root}};
@@ -592,7 +648,7 @@
       box(.1,.5,.1,MAT.brass,cx+1.5,1.07,cz+1.2);add(own(new THREE.CylinderGeometry(.16,.3,.24,14,1,true)),own(new THREE.MeshStandardMaterial({color:def.shade,emissive:def.shade,emissiveIntensity:.7,roughness:.5,side:THREE.DoubleSide})),cx+1.5,1.38,cz+1.2,root);
       const pick=featured(key,list);
       if(pick){const lx=cx-4,lz=cz+d/2-2.6;box(.5,1.05,.4,MAT.darkWood,lx,.52,lz);const top=box(.8,.05,.6,MAT.darkWood,lx,1.1,lz);top.rotation.x=.3;block(lx,lz,.8,.7);
-        const card=own(plaque(def.lectern,'',420,70,'#1d2a3d',def.font));const label=add(own(new THREE.PlaneGeometry(.8,.14)),own(new THREE.MeshStandardMaterial({map:card,roughness:.8,emissive:0xffffff,emissiveMap:card,emissiveIntensity:.3})),lx,1.34,lz-.2,root);label.rotation.x=-.2;
+        const card=own(plaque(def.lectern,def.lecternSub||'',420,def.lecternSub?96:70,'#1d2a3d',def.font));const label=add(own(new THREE.PlaneGeometry(.8,def.lecternSub?.18:.14)),own(new THREE.MeshStandardMaterial({map:card,roughness:.8,emissive:0xffffff,emissiveMap:card,emissiveIntensity:.3})),lx,1.34,lz-.2,root);label.rotation.x=-.2;
         const mesh=placeBook(pick,{x:lx,y:1.42,z:lz-.02,yaw:0});mesh.rotation.x=-1.05;mesh.userData.home.quaternion.copy(mesh.quaternion);mesh.userData.featured=true}
       // The way out: to the Grand Hall from the Spanish room, back to the Spanish room from the others (the Italian, back
       // to whichever room the reader came in from: see italianExit).

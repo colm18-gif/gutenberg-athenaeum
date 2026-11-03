@@ -42,7 +42,7 @@ export function loadCatalogue(){
   for(const [key,author,category] of [['ATHENAEUM_VERNE_BOOKS','Jules Verne','Extraordinary Voyages'],['ATHENAEUM_DOYLE_BOOKS','Arthur Conan Doyle','The Consulting Room'],['ATHENAEUM_WELLS_BOOKS','H. G. Wells','The Time Laboratory'],['ATHENAEUM_HAGGARD_BOOKS','H. Rider Haggard','The Lost Kingdoms']])
     for(const [id,title] of w[key]||[])add({id,title,author,category,source:'Project Gutenberg'});
   const resolved=w.ATHENAEUM_NEW_BOOKS_RESOLVED?.books||{},arrivalNotes={},arrivalRooms={},words={};
-  for(const [,title,author,category,room,note] of [...w.ATHENAEUM_NEW_BOOKS||[],...w.ATHENAEUM_NEW_BOOKS_WING||[]]){const found=resolved[resolvedKey(title,room)];if(!found?.id)continue;const added=add({id:found.id,title,author,category,...(found.source==='wikisource'?{source:'Вікіджерела (Wikisource)',sourceKey:'wikisource',sourceUrl:found.page,licence:'суспільне надбання (public domain)'}:{source:'Project Gutenberg'})});if(ROOM_LANGUAGES[room])added.language=ROOM_LANGUAGES[room];if(note&&!arrivalNotes[found.id])arrivalNotes[found.id]=note;(arrivalRooms[found.id]||(arrivalRooms[found.id]=[])).push(room);if(found.words)words[found.id]=found.words}
+  for(const [,title,author,category,room,note] of [...w.ATHENAEUM_NEW_BOOKS||[],...w.ATHENAEUM_NEW_BOOKS_WING||[]]){const found=resolved[resolvedKey(title,room)];if(!found?.id)continue;const added=add({id:found.id,title,author,category,...(found.source==='wikisource'?{source:'Вікіджерела (Wikisource)',sourceKey:'wikisource',sourceUrl:found.page,licence:'суспільне надбання (public domain)'}:{source:'Project Gutenberg'})});if(ROOM_LANGUAGES[room])added.language=ROOM_LANGUAGES[room];if(room==='ukrainian'&&w.ATHENAEUM_NOTES_EN?.[title])added.noteEn=w.ATHENAEUM_NOTES_EN[title];if(note&&!arrivalNotes[found.id])arrivalNotes[found.id]=note;(arrivalRooms[found.id]||(arrivalRooms[found.id]=[])).push(room);if(found.words)words[found.id]=found.words}
   // The Verne descent's companion books carry notes of their own in game.js.
   const subterranean=vm.runInNewContext(arrayLiteral(game,game.indexOf('const subterraneanBooks=')));
   const notes={...w.ATHENAEUM_EXTRA_NOTES};for(const [id,,,,note] of subterranean)if(!notes[id])notes[id]=note;
@@ -210,7 +210,7 @@ ${coverHtml(book)}
 <p class="shelf">${escape(T.shelf(book.category||''))}</p>
 <h1>${escape(book.title)}${edition?`<small>${escape(edition.trim())}</small>`:''}</h1>
 <p class="author">${T.by} <a href="/book/authors.html#${slug(book.author)}">${escape(book.author)}</a></p>
-${note?`<blockquote><p>${escape(note)}</p><cite>${T.librarian}</cite></blockquote>`:''}
+${note?`<blockquote><p>${escape(note)}</p><cite>${T.librarian}</cite></blockquote>`:''}${note&&book.noteEn?`<blockquote lang="en"><p>${escape(book.noteEn)}</p><cite>The librarian’s note, in English</cite></blockquote>`:''}
 <a class="read" href="/?book=${book.id}">${T.read}</a> <a class="plain" href="/read.html?book=${book.id}&amp;from=${encodeURIComponent(pageName(book))}">${T.plain}</a>
 <dl>
 ${time?`<dt>${T.time}</dt><dd>${T.about} ${time}</dd>`:''}

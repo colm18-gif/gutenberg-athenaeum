@@ -2193,7 +2193,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const preSongFloor=floorHeight;floorHeight=function(x,z){return forestSong.floorAt(x,z)??preSongFloor(x,z)};
       const preSongAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return forestSong.contains(x,z)?forestSong.allowed(x,z):preSongAllowed(x,z,y)};
       const preSongInteract=interact;interact=function(){if(focus&&!selected&&forestSong.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preSongInteract()};
-      const preSongSelect=selectBook;selectBook=function(bm){const result=preSongSelect(bm);const d=bm?.userData;if(d?.forestSong){const note=librarianNotes[d.book.id]||window.ATHENAEUM_EXTRA_NOTES?.[d.book.id];if(note)showNotice(`Примітка бібліотекарки: «${note}»`,12)}return result};
+      const preSongSelect=selectBook;selectBook=function(bm){const result=preSongSelect(bm);const d=bm?.userData;if(d?.forestSong){const note=librarianNotes[d.book.id]||window.ATHENAEUM_EXTRA_NOTES?.[d.book.id];if(note){const english=window.ATHENAEUM_NOTES_EN?.[d.book.title];showNotice(`Примітка бібліотекарки: «${note}»${english?` The librarian’s note: “${english}”`:''}`,english?18:12)}}return result};
       const preSongWorld=updateWorld;updateWorld=function(t,dt){preSongWorld(t,dt);forestSong.update(t,dt)};
       const preSongSpace=acousticSpace;acousticSpace=function(){return forestSong.contains(player.pos.x,player.pos.z)?'outdoor':preSongSpace()};
       // In the reader, the Forest Song alone offers a way into its forest.
@@ -2378,7 +2378,10 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const preWingSelect=selectBook;selectBook=function(bm){const result=preWingSelect(bm);
         // A book from the racks, or one opened by sitting in one of the wing's chairs: its note in the room's language.
         const wingRoom=bm?.userData?.international?bm.userData.wingRoom:bm?.userData?.seatCopy?seated?.seat?.wingRoom:null;
-        if(wingRoom){const note=librarianNotes[bm.userData.book.id]||window.ATHENAEUM_EXTRA_NOTES?.[bm.userData.book.id];if(note){const label=internationalWing.rooms[wingRoom]?.note||'La nota de la bibliotecaria';showNotice(wingRoom==='chinese'?`${label}：「${note}」`:`${label}: “${note}”`,12)}}return result};
+        if(wingRoom){const note=librarianNotes[bm.userData.book.id]||window.ATHENAEUM_EXTRA_NOTES?.[bm.userData.book.id];if(note){const label=internationalWing.rooms[wingRoom]?.note||'La nota de la bibliotecaria';
+          // The Ukrainian room's notes have an English rendering too (ATHENAEUM_NOTES_EN in data/new-books-wing.js), shown after.
+          const english=wingRoom==='ukrainian'&&window.ATHENAEUM_NOTES_EN?.[bm.userData.book.title];
+          showNotice(wingRoom==='chinese'?`${label}：「${note}」`:english?`${label}: “${note}” The librarian’s note: “${english}”`:`${label}: “${note}”`,english?18:12)}}return result};
     }
     // Traces of other readers (other-readers.js): invented, but the same for everyone on a given day.
     const correspondenceDesk=window.createCorrespondenceDesk?.({THREE,MAT,desk:correspondenceFurniture,interactables,canvasTexture,

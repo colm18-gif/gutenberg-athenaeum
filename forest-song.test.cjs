@@ -120,6 +120,22 @@ test('for Ukrainian children: a shelf of tales, the mitten told in the tale’s 
   assert.match(game,/if\(away\.key==='ukrainian'\)\{showNotice\([^)]*Котику сіренький/);assert(fs.existsSync('assets/pictures/kotyku-score.jpg'),'the score it was read from');
 });
 
+test('the Ukrainian room speaks English too: every note has an English rendering, and the window quotes the Kobzar',()=>{
+  const c={window:{}};vm.runInNewContext(fs.readFileSync('data/new-books-wing.js','utf8'),c);
+  const ukrainian=c.window.ATHENAEUM_NEW_BOOKS_WING.filter(e=>e[4]==='ukrainian'),en=c.window.ATHENAEUM_NOTES_EN;
+  for(const [,title] of ukrainian)assert(en[title]&&/^[A-Z0-9“]/.test(en[title])&&en[title].split(/(?<=[a-z0-9”’)][.!?][”’]?)\s+(?=[A-Z“0-9])/).length>=3,`${title} has an English note`);
+  assert.equal(Object.keys(en).length,ukrainian.length,'and no note for a book that is not there');
+  assert.match(game,/const english=wingRoom==='ukrainian'&&window\.ATHENAEUM_NOTES_EN\?\.\[bm\.userData\.book\.title\]/,'shown after the Ukrainian');
+  assert.match(fs.readFileSync('scripts/book-pages.mjs','utf8'),/The librarian’s note, in English/,'and on the book pages');
+  assert.match(wing,/lecternSub:'Tonight’s book'/);assert.match(wing,/\(The Ukrainian Reading Room: Ukrainian classics, each with a librarian’s note in Ukrainian and English\./);
+  // The window's words are Shevchenko's, in the library's own Kobzar.
+  const resolved=(()=>{const r={window:{}};vm.runInNewContext(fs.readFileSync('data/new-books-resolved.js','utf8'),r);return r.window.ATHENAEUM_NEW_BOOKS_RESOLVED.books})();
+  const kobzar=resolved['Кобзар [uk]'];assert(kobzar,'the Kobzar is bundled');
+  const text=zlib.gunzipSync(fs.readFileSync(`texts/bundled-gzip/pg${kobzar.id}.txt.gz`)).toString('utf8'),letters=s=>s.toLowerCase().replace(/[^а-яіїєґ]/g,'');
+  const quote=wing.match(/const WINDOW='[^']*«([^»]+)»/)[1];assert(letters(text).includes(letters(quote)),`«${quote}» is in the Kobzar (it has: ${text.slice(Math.max(0,text.search(/Садок/i)-20),text.search(/Садок/i)+120)})`);
+  assert.match(wing,/if\(!def\.window\)for\(let row=0;row<3;row\+\+\)for\(let i=0;i<6;i\+\+\)spots\.push/,'the west wall holds a window, not a bookcase');
+});
+
 test('the Holodomor candle stands for the week up to the fourth Saturday of November, and is lit by the reader',()=>{
   const lines=wing.match(/const holodomorDay=.*\n.*const holodomorWeek=.*\n.*const isHolodomorDay=.*\n/)[0];
   const c={Date};vm.runInNewContext(lines+'this.h={holodomorDay,holodomorWeek,isHolodomorDay}',c);const {holodomorDay,holodomorWeek,isHolodomorDay}=c.h;
