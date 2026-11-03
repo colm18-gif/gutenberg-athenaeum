@@ -95,6 +95,12 @@ test('without the wing’s books, the forest still stands, with no book and no s
   const a=forest({book:false});a.f.enter();assert.equal(a.f.books.length,0);assert.equal(a.seats.length,0);assert(a.interactables.some(o=>o.userData.key==='log'),'the fallen tree is still there');
 });
 
+test('behind a crooked book in the Ukrainian room, «Слава Україні!» is carved into the shelf, found once and kept',()=>{
+  assert.match(wing,/type:'intl-slava'/);assert.match(wing,/action:'PULL'/);assert.match(wing,/'Слава Україні!'/);assert.match(wing,/«Героям слава!»/);
+  assert.match(wing,/const SLAVA_KEY='athenaeum-slava-ukraini'/);assert.match(wing,/if\(slavaFound\(\)\)room\.revealSlava\(\)/,'a reader who has found it sees it pulled out on every visit');
+  assert.match(wing,/if\(first\)analytics\?\.track\('Secret Found',\{secret:'slava-ukraini'\}\)/,'counted once');
+});
+
 test('the Holodomor candle stands for the week up to the fourth Saturday of November, and is lit by the reader',()=>{
   const lines=wing.match(/const holodomorDay=.*\n.*const holodomorWeek=.*\n.*const isHolodomorDay=.*\n/)[0];
   const c={Date};vm.runInNewContext(lines+'this.h={holodomorDay,holodomorWeek,isHolodomorDay}',c);const {holodomorDay,holodomorWeek,isHolodomorDay}=c.h;
