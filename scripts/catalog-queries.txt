@@ -1,19 +1,6 @@
-# Ukrainian children's tales on Ukrainian Wikisource, for the Ukrainian Reading Room's children's shelf.
-ws? Рукавичка казка
-ws Рукавичка
-ws? Колобок казка
-ws? Котигорошко
-ws? Кирило Кожум'яка
-ws? Пан Коцький
-ws Лис Микита
-ws? Коли ще звірі говорили
-ws Автор:Іван Франко
-ws Автор:Леонід Глібов
-ws Автор:Леся Українка
-ws? Котику сіренький
-ws? Українські народні казки
-ws Українські народні казки
-commons? Котику сіренький
-commons? Kotyku sirenkyi
-commons? Ukrainian lullaby score
-commons? колискова ноти
+# What the folk-tale pages link to (their compiler or folk-work pages), and the 1918 collection's own page.
+ws Баю-баю/Рукавичка
+ws Баю-баю/Пан Коцький
+ws Котигорошко
+ws? Баю-баю 1918
+ws Баю-баю (1918)
