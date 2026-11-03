@@ -2378,7 +2378,10 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const preWingSelect=selectBook;selectBook=function(bm){const result=preWingSelect(bm);
         // A book from the racks, or one opened by sitting in one of the wing's chairs: its note in the room's language.
         const wingRoom=bm?.userData?.international?bm.userData.wingRoom:bm?.userData?.seatCopy?seated?.seat?.wingRoom:null;
-        if(wingRoom){const note=librarianNotes[bm.userData.book.id]||window.ATHENAEUM_EXTRA_NOTES?.[bm.userData.book.id];if(note){const label=internationalWing.rooms[wingRoom]?.note||'La nota de la bibliotecaria';showNotice(wingRoom==='chinese'?`${label}：「${note}」`:`${label}: “${note}”`,12)}}return result};
+        if(wingRoom){const note=librarianNotes[bm.userData.book.id]||window.ATHENAEUM_EXTRA_NOTES?.[bm.userData.book.id];if(note){const label=internationalWing.rooms[wingRoom]?.note||'La nota de la bibliotecaria';
+          // The Ukrainian room's notes have an English rendering too (ATHENAEUM_NOTES_EN in data/new-books-wing.js), shown after.
+          const english=wingRoom==='ukrainian'&&window.ATHENAEUM_NOTES_EN?.[bm.userData.book.title];
+          showNotice(wingRoom==='chinese'?`${label}：「${note}」`:english?`${label}: “${note}” The librarian’s note: “${english}”`:`${label}: “${note}”`,english?18:12)}}return result};
     }
     // Traces of other readers (other-readers.js): invented, but the same for everyone on a given day.
     const correspondenceDesk=window.createCorrespondenceDesk?.({THREE,MAT,desk:correspondenceFurniture,interactables,canvasTexture,
