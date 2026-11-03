@@ -2536,6 +2536,15 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       flickerLights.forEach((light,i)=>{const d=light.userData,factor=flame(i+1);if(d.flickerApplied!==undefined&&light.intensity!==d.flickerApplied)d.flickerBase=light.intensity/(d.flickerFactor||1);if(d.flickerBase===undefined)d.flickerBase=light.intensity;light.intensity=d.flickerBase*factor;d.flickerApplied=light.intensity;d.flickerFactor=factor})
     }
     {const preLampWorld=updateWorld;updateWorld=function(t,dt){preLampWorld(t,dt);if(nightRailway?.zoneAt(player.pos.x,player.pos.z))ensureSample('trainWhistle');updateLamplight(t);crusoeIsland?.update(t,dt);marsWorld?.update(t);otherReaders?.update(dt);learnersRoom?.update(t,dt);setTextsRoom?.update(t);eveningRoom?.update(t,dt,reducedMotion);poeRoom?.update(t,dt,reducedMotion);irishRoom?.update(t,dt,reducedMotion);mapRoom?.update(t);medicineRoom?.update(t);naturalistRoom?.update(t,dt);walden?.update(t,dt);austenRoom?.update(t);burnsRoom?.update(t);canadaRoom?.update(t);nemoRoom?.update(t);forest?.update(t,dt);withinRoom?.update(t);periodicalsRoom?.update(t);passages?.update(t);stationSubway?.update(t);(wingBooks.ready?internationalWing?.update(t):wingBooks.near())}}
+    // «Котику сіренький», from the score on Wikimedia Commons (File:Котику сіренький.GIF, public domain; fetched into
+    // assets/pictures/kotyku-score.jpg): 4/4, A minor, Помірно. Each bar is [note, beats]; bars 1-8 twice over, then the
+    // last line, «Ой на кота воркота…», and the closing «а-а-а-а».
+    function playKotyku(){
+      const E4=329.63,A4=440,B4=493.88,C5=523.25,D5=587.33,E5=659.25,beat=.6;
+      const one=[[E4,.5],[A4,.5],[B4,.5],[D5,.25],[C5,.25],[B4,1],[A4,1]],three=[[D5,.5],[D5,.5],[D5,.5],[C5,.5],[B4,1],[A4,1]];
+      const nine=[[E4,.5],[A4,.5],[B4,.5],[D5,.25],[C5,.25],[B4,.25],[A4,.25],[B4,.5],[A4,1]],last=[[C5,.25],[A4,.75],[C5,.25],[A4,.75],[C5,.25],[A4,.75],[E5,.5],[0,.5]];
+      let at=.4;for(const bar of [one,one,three,three,one,one,three,three,nine,nine,last])for(const [freq,beats] of bar){if(freq)pianoTone(freq,at,beats*beat+.35,.045,'bandura');at+=beats*beat}
+      return at}
     // Clio's haunts: now and then the library cat is found asleep in one of the rooms behind doors (by the Irish
     // Room's turf fire, beside Poe's desk, on a reading table in the International Wing). The same cat, moved and
     // curled up; nothing new is built, and it goes back to its rounds of the Grand Hall when the reader does.
@@ -2556,7 +2565,10 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
         if(away){petTime=Math.max(0,petTime-dt);head.rotation.z=petTime>0?Math.sin(petTime*5)*.13:0;
           if(where!==away.where){// back to the hall, or on to another room: Clio goes home
             cat.position.copy(home);cat.rotation.set(0,0,0);curl(false);away=null}
-          else if(!greeted&&Math.hypot(player.pos.x-cat.position.x,player.pos.z-cat.position.z)<3.2){greeted=true;showNotice(away.line,7)}}
+          else if(!greeted&&Math.hypot(player.pos.x-cat.position.x,player.pos.z-cat.position.z)<3.2){greeted=true;
+            // In the Ukrainian room, the bandura plays the lullaby «Котику сіренький» softly while she sleeps, once a visit.
+            if(away.key==='ukrainian'){showNotice('Clio is asleep on the reading table, and softly the bandura plays «Котику сіренький», the lullaby Ukrainian children are sung to sleep with: «Котику сіренький, котику біленький, котку волохатий, не ходи по хаті». Кіт спить. (The cat is asleep.)',12);playKotyku()}
+            else showNotice(away.line,7)}}
         // On arriving in a room, Clio is there half the time on a first visit and one in three after (never while leading the reader somewhere).
         if(where&&where!==lastZone&&!away&&!catGuideTarget){const s=spot(zone);if(s&&(alwaysClio||Math.random()<(haunts[where]===undefined?.5:.33))){clioCorner.cancel?.();home=cat.position.clone();cat.position.set(s.x,s.y,s.z);cat.rotation.set(0,s.yaw,0);curl(true);away={...s,where};greeted=false}haunts[where]=true}
         lastZone=where}}

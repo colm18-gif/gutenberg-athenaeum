@@ -43,7 +43,9 @@ export const MAPS = [
 export const PICTURES = [
   { key: 'shevchenko-kateryna', files: ['Шевченко Т. Г. Катерина. 1842.jpg', 'Image-Shevchenko Kateryna Olia 1842 large.jpg', 'Kateryna (Taras Shevchenko).jpg'], search: 'Shevchenko Kateryna 1842 painting' },
   { key: 'shevchenko-1848', file: '1848 - 201 - Self-portrait at the Syr Darya bank. Rayim, June 1848, Taras Shevchenko.jpg', search: 'Shevchenko self-portrait 1848' },
-  { key: 'pymonenko-night', file: 'Mykola Pymonenko-Ukrayinska nich.jpg', search: 'Pymonenko Ukrainian night 1905' }
+  { key: 'pymonenko-night', file: 'Mykola Pymonenko-Ukrayinska nich.jpg', search: 'Pymonenko Ukrainian night 1905' },
+  // The score of the lullaby «Котику сіренький», read to give the bandura its tune when Clio sleeps in the room (not hung).
+  { key: 'kotyku-score', file: 'Котику сіренький.GIF', search: 'Котику сіренький', gif: true }
 ];
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
@@ -69,7 +71,7 @@ async function api(params) {
 const INFO = { prop: 'imageinfo', iiprop: 'url|size|mime|extmetadata', iiurlwidth: String(FULL) };
 const usable = (page, map = {}) => {
   const info = page?.imageinfo?.[0];
-  return info && !page.missing && /jpeg|png|tiff/.test(info.mime) && Math.max(info.width, info.height) >= (map.minSize || 1000) && !map.exclude?.test(page.title) && isPublicDomain(info.extmetadata);
+  return info && !page.missing && (map.gif ? /jpeg|png|tiff|gif/ : /jpeg|png|tiff/).test(info.mime) && Math.max(info.width, info.height) >= (map.minSize || 1000) && !map.exclude?.test(page.title) && isPublicDomain(info.extmetadata);
 };
 async function choose(map) {
   // The files named, in order of preference; the first that is there and usable is taken.

@@ -73,16 +73,29 @@ export async function parse(page,lang){const j=await api({action:'parse',page,pr
 const norm=s=>s.normalize('NFC').toLowerCase().replace(/[’'ʼ`]/g,'').replace(/\s+/g,' ').trim();
 // The author as shelved ("Тарас Шевченко", "Григорій Квітка-Основ'яненко"): their page must be linked from the book.
 export function byAuthor(links,categories,author,lang){
+  // A folk tale has no author's page: shelved as "Українська народна казка" (or another folk form), it is taken when the
+  // page is filed as folk work, or links to Wikisource's page for Ukrainian folk work.
+  if(/^українська народна/i.test(author.trim()))return categories.some(c=>/народн|фольклор/i.test(c))||links.some(l=>/народна творчість|народні казки/i.test(l.title));
   const want=norm(author.replace(/\s*\(.*\)\s*$/,'')),last=want.split(' ').pop(),prefix=norm(WIKISOURCE_LANGUAGES[lang].author+':');
   const named=links.map(l=>norm(l.title)).filter(t=>t.startsWith(prefix)).map(t=>t.slice(prefix.length));
   return named.some(name=>name===want||name.split(' ').includes(last)||name.endsWith(' '+last)||name===last)||categories.some(c=>norm(c.replace(/_/g,' ')).includes(last));
 }
 
+// Folk tales whose pages link neither to an author nor to a folk-work page, checked by hand (the Catalogue lookup of
+// 3 November 2026): the children's collection Баю-баю's own Рукавичка and Пан Коцький, and Котигорошко.
+// Collections whose front page holds only a preface or a contents, with their tales in the book's own order (Franko's
+// numbered preface; the 1920 collection's ЗМІСТ). A tale missing from Wikisource is left out and said so in the log.
+export const COLLECTIONS={
+  'Коли ще звірі говорили':{base:'Твори (Франко, 1956–1962)/7/',tales:['Осел і Лев','Старе добро забувається','Лисичка і Журавель','Лисичка і Рак','Лис і Дрозд','Заяць і Їжак','Королик і Ведмідь','Вовк війтом','Заяць і Ведмідь','Ворона і Гадюка','Три міхи хитрощів','Вовк, Лисиця і Осел','Лисичка-черничка','Мурко й Бурко','Лисичка кума','Війна між Псом і Котом','Фарбований Лис','Ворони і Сови','Як звірі правувалися з людьми','Байка про байку']},
+  'Українські народні казки (1920)':{base:'Українські народні казки (1920)/',tales:['Рись-мати','Брат і сестра в лісі','Попович Ясат','Летючий корабель','Царівна-жаба','Про царенка Йвана та чортову дочку','Убогий та багатий і дівка-чорнявка','Безщасний Данило й розумна жінка','Правда та Неправда','Гордий царь']}
+};
+export const FOLK_PAGES=new Set(['Баю-баю/Рукавичка','Баю-баю/Пан Коцький','Котигорошко']);
+
 // The whole book: the page, and its chapters when the page is only a table of contents.
 export async function fetchWikisource(page,author,lang='uk',say=()=>{}){
   const root=await parse(page,lang);if(!root){say(`  ${page}: not found on Wikisource`);return null}
   const first=htmlToText(root.html);
-  if(!byAuthor(first.links,root.categories,author,lang)){say(`  ${root.title}: does not name ${author} as its author`);return null}
+  if(!(FOLK_PAGES.has(page)&&/^українська народна/i.test(author.trim()))&&!byAuthor(first.links,root.categories,author,lang)){say(`  ${root.title}: does not name ${author} as its author`);return null}
   async function read(title,got){
     const parts=[],seen=new Set([title]);
     // A page's own subpages, wherever it links them (a table of contents, or the header's "next"); `direct` keeps
@@ -114,6 +127,11 @@ export async function fetchWikisource(page,author,lang='uk',say=()=>{}){
     const editions=[...new Set(first.links.filter(l=>!l.header&&!/^[^/]*:/.test(l.title)&&l.title!==root.title&&base(l.title)===want).map(l=>l.title))].slice(0,5);
     for(const edition of editions){const p=await parse(edition,lang);if(!p)continue;const text=await read(p.title,htmlToText(p.html));if(text.length>=1500){book=p.title;body=text;say(`  ${root.title}: read from the edition ${p.title}`);break}}
   }
+  // A collection whose tales are filed beside or under its front page but not reached from it: read each in order.
+  const gathered=COLLECTIONS[page];
+  if(gathered){let got=0;for(const tale of gathered.tales){const p=await parse(gathered.base+tale,lang);if(!p){say(`  ${page}: no page ${gathered.base+tale}`);continue}
+    const text=(await read(p.title,htmlToText(p.html))).trim();if(text){body+=`\n\n\n${tale}\n\n${text}`;got++}}
+    say(`  ${page}: ${got} of ${gathered.tales.length} tales read`)}
   if(body.length<1500){say(`  ${root.title}: only ${body.length} characters of text`);return null}
   return {page:book,url:wikisourceUrl(book,lang),body};
 }
