@@ -1,6 +1,4 @@
-# What the folk-tale pages link to (their compiler or folk-work pages), and the 1918 collection's own page.
-ws Баю-баю/Рукавичка
-ws Баю-баю/Пан Коцький
-ws Котигорошко
-ws? Баю-баю 1918
-ws Баю-баю (1918)
+# The poems of Shevchenko's cycle В казематі in the 1876 Kobzar, and the poem Садок вишневий коло хати.
+ws Кобзарь (1876)/Том 1
+ws? Садок вишневий коло хати
+ws В казематі
