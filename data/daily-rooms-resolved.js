@@ -1,7 +1,7 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-11-03",
+ "updated": "2026-11-04",
  "days": {
   "2026-09-25": {
    "books": [
@@ -113,57 +113,57 @@ window.ATHENAEUM_DAILY_RESOLVED={
    ],
    "missing": []
   },
-  "2026-10-21": {
+  "2026-09-27": {
    "books": [
     {
-     "id": 31591,
-     "title": "Language of Flowers",
-     "author": "Kate Greenaway"
+     "id": 1342,
+     "title": "Pride and Prejudice",
+     "author": "Jane Austen"
     },
     {
-     "id": 1934,
-     "title": "Songs of Innocence and of Experience",
-     "author": "William Blake"
+     "id": 14314,
+     "title": "Etiquette",
+     "author": "Emily Post"
     },
     {
-     "id": 71779,
-     "title": "The Language and Poetry of Flowers",
+     "id": 208,
+     "title": "Daisy Miller: A Study",
+     "author": "Henry James"
+    },
+    {
+     "id": 8399,
+     "title": "Manners and Social Usages",
+     "author": "Mrs. John Sherwood"
+    },
+    {
+     "id": 2641,
+     "title": "A Room with a View",
+     "author": "E. M. Forster"
+    },
+    {
+     "id": 67799,
+     "title": "The Book of the Courtier",
+     "author": "Baldassare Castiglione"
+    },
+    {
+     "id": 10766,
+     "title": "Enquire Within Upon Everything",
      "author": "Anonymous"
     },
     {
-     "id": 29042,
-     "title": "A Tangled Tale",
-     "author": "Lewis Carroll"
+     "id": 35123,
+     "title": "The Ladies' Book of Etiquette, and Manual of Politeness",
+     "author": "Florence Hartley"
     },
     {
-     "id": 108,
-     "title": "The Return of Sherlock Holmes",
-     "author": "Arthur Conan Doyle"
+     "id": 39293,
+     "title": "The Gentlemen's Book of Etiquette and Manual of Politeness",
+     "author": "Cecil B. Hartley"
     },
     {
-     "id": 2002,
-     "title": "Sonnets from the Portuguese",
-     "author": "Elizabeth Barrett Browning"
-    },
-    {
-     "id": 10118,
-     "title": "The Folk-Lore of Plants",
-     "author": "T. F. Thiselton-Dyer"
-    },
-    {
-     "id": 44638,
-     "title": "Plant Lore, Legends, and Lyrics",
-     "author": "Richard Folkard"
-    },
-    {
-     "id": 12,
-     "title": "Through the Looking-Glass",
-     "author": "Lewis Carroll"
-    },
-    {
-     "id": 163,
-     "title": "Flower Fables",
-     "author": "Louisa May Alcott"
+     "id": 17609,
+     "title": "Our Deportment",
+     "author": "John H. Young"
     }
    ],
    "missing": []
