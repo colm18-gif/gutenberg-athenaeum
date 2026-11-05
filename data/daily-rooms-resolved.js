@@ -1,7 +1,7 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-11-04",
+ "updated": "2026-11-05",
  "days": {
   "2026-09-25": {
    "books": [
@@ -168,57 +168,57 @@ window.ATHENAEUM_DAILY_RESOLVED={
    ],
    "missing": []
   },
-  "2026-10-22": {
+  "2026-09-28": {
    "books": [
     {
-     "id": 3623,
-     "title": "The Golden Bough",
-     "author": "James George Frazer"
+     "id": 107,
+     "title": "Far from the Madding Crowd",
+     "author": "Thomas Hardy"
     },
     {
-     "id": 51568,
-     "title": "Some Haunted Houses of England & Wales",
-     "author": "Elliott O'Donnell"
+     "id": 507,
+     "title": "Adam Bede",
+     "author": "George Eliot"
     },
     {
-     "id": 7885,
-     "title": "Celtic Fairy Tales",
-     "author": "Joseph Jacobs"
+     "id": 1408,
+     "title": "The Natural History of Selborne",
+     "author": "Gilbert White"
     },
     {
-     "id": 34853,
-     "title": "The Fairy-Faith in Celtic Countries",
-     "author": "W. Y. Evans-Wentz"
+     "id": 34238,
+     "title": "Rural Rides",
+     "author": "William Cobbett"
     },
     {
-     "id": 33887,
-     "title": "Fairy and Folk Tales of the Irish Peasantry",
-     "author": "W. B. Yeats"
+     "id": 232,
+     "title": "The Georgics",
+     "author": "Virgil"
     },
     {
-     "id": 10897,
-     "title": "The Wendigo",
-     "author": "Algernon Blackwood"
+     "id": 9092,
+     "title": "The Farmer's Boy",
+     "author": "Robert Bloomfield"
     },
     {
-     "id": 58894,
-     "title": "Witchcraft & Second Sight in the Highlands & Islands of Scotland",
-     "author": "John Gregorson Campbell"
+     "id": 110,
+     "title": "Tess of the d'Urbervilles",
+     "author": "Thomas Hardy"
     },
     {
-     "id": 1279,
-     "title": "Poems and Songs of Robert Burns",
-     "author": "Robert Burns"
+     "id": 482,
+     "title": "The Woodlanders",
+     "author": "Thomas Hardy"
     },
     {
-     "id": 14461,
-     "title": "Letters on Demonology and Witchcraft",
-     "author": "Walter Scott"
+     "id": 349,
+     "title": "The Harvester",
+     "author": "Gene Stratton-Porter"
     },
     {
-     "id": 7439,
-     "title": "English Fairy Tales",
-     "author": "Joseph Jacobs"
+     "id": 242,
+     "title": "My Antonia",
+     "author": "Willa Cather"
     }
    ],
    "missing": []
