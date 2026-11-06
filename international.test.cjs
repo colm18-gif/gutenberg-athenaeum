@@ -60,18 +60,18 @@ test('the International Wing is a room behind its own door, built only when need
   // Each room is built on approach and freed on its own; the wing's two lamps follow the reader instead of multiplying.
   assert.match(wing,/if\(key!==here&&t-lastNeeded\[key\]>KEEP&&!isHolding\(\)/);assert.match(wing,/function placeLamps\(key\)\{\s*if\(!lamps\)/);
   assert.doesNotMatch(wing.slice(wing.indexOf('function buildRoom'),wing.indexOf('function placeLamps')),/PointLight/,'rooms borrow the wing’s lamps');
-  assert.match(wing,/type:'intl-go',room:'portuguese'/);assert.match(wing,/中文閱覽室/);
+  assert.match(wing,/data=\{type:'intl-go',room:key,door:key,title,author,action:'ENTER'\}/,'a door for each room in the lobby');assert.match(wing,/portuguese:\['SALA DE LEITURA EM PORTUGUÊS'/);assert.match(wing,/中文閱覽室/);
   assert.match(game,/const internationalWing=window\.createInternationalWing\?\.\(/);
   assert.match(game,/arrivals:room=>newArrivals\.list\(room\)/);
   assert.match(game,/if\(internationalWing\?\.contains\(x,z\)\)return 'international-wing';/);
   assert.match(game,/\['international-wing','The International Wing'\]/);
   assert.match(game,/internationalWing\?\.update\(t\)/);
-  assert.match(game,/'international-wing':internationalWing&&\(\(\)=>enterWing\('spanish'\)\),'portuguese-room':internationalWing&&\(\(\)=>enterWing\('portuguese'\)\)/);
+  assert.match(game,/'international-wing':internationalWing&&\(\(\)=>enterWing\('hub'\)\),'spanish-room':internationalWing&&\(\(\)=>enterWing\('spanish'\)\),'portuguese-room':internationalWing&&\(\(\)=>enterWing\('portuguese'\)\)/);
   assert.match(game,/pt:'portuguese-room',portuguese:'portuguese-room'/);
-  assert.match(game,/spanish:'international-wing',espanol:'international-wing',es:'international-wing'/);
+  assert.match(game,/international:'international-wing',wing:'international-wing',lobby:'international-wing',spanish:'spanish-room',espanol:'spanish-room',es:'spanish-room'/);
   assert.match(fs.readFileSync('room-ambience.js','utf8'),/'international-wing':\{beds:/);
   // A link into the wing is greeted in Spanish on the entry screen.
-  assert.match(html,/rooms:\['es','spanish','espanol','español','international-wing','international'\]/);assert.match(html,/rooms:\['pt','portuguese','portugues','português','portuguese-room'\]/);
+  assert.match(html,/rooms:\['es','spanish','espanol','español','spanish-room'\]/);assert.match(html,/rooms:\['pt','portuguese','portugues','português','portuguese-room'\]/);
   assert.match(html,/enter:'Entrar en la biblioteca'/);assert.match(html,/enter:'Entrar na biblioteca'/);
 });
 
@@ -82,7 +82,7 @@ test('Spanish books are known to be Spanish: word help steps aside, and their pa
   const out=fs.mkdtempSync(path.join(os.tmpdir(),'intl-pages-'));
   execFileSync(process.execPath,['scripts/book-pages.mjs'],{env:{...process.env,OUT:out}});
   const landing=fs.readFileSync(path.join(out,'es/index.html'),'utf8');
-  assert.match(landing,/<html lang="es">/);assert.match(landing,/<h1>Libros en español<\/h1>/);assert.match(landing,/href="\/\?room=international-wing"/);
+  assert.match(landing,/<html lang="es">/);assert.match(landing,/<h1>Libros en español<\/h1>/);assert.match(landing,/href="\/\?room=spanish-room"/);
   assert.match(fs.readFileSync(path.join(out,'sitemap.xml'),'utf8'),/<loc>https:\/\/libraryafterdark\.space\/es\/<\/loc>/);
   assert.equal(fs.readFileSync('es/index.html','utf8'),landing,'run: node scripts/book-pages.mjs');
   const pt=fs.readFileSync(path.join(out,'pt/index.html'),'utf8');
@@ -93,7 +93,7 @@ test('Spanish books are known to be Spanish: word help steps aside, and their pa
   if(found){
     const page=fs.readdirSync(path.join(out,'book')).find(f=>f.startsWith(`${found.id}-`)),text=fs.readFileSync(path.join(out,'book',page),'utf8');
     assert.match(text,/<html lang="es">/);assert.match(text,/<cite>La bibliotecaria<\/cite>/);assert.match(text,/"inLanguage":"es"/);
-    assert.match(text,/<a href="\/\?room=international-wing">El ala internacional: Sala de lectura en español<\/a>/);assert.doesNotMatch(text,/<p class="shelf">(Society|Comedy|Poetry|History)<\/p>/);
+    assert.match(text,/<a href="\/\?room=spanish-room">El ala internacional: Sala de lectura en español<\/a>/);assert.doesNotMatch(text,/<p class="shelf">(Society|Comedy|Poetry|History)<\/p>/);
   }
 });
 
@@ -115,7 +115,7 @@ test('the Chinese Reading Room: classics in Chinese behind the red door, matched
   assert.ok(!textMatches(head('紅樓夢','Guanzhong Luo','Chinese'),'紅樓夢','曹雪芹 (Cao Xueqin)','zh'));
   assert.equal(countWords('*** START OF THE PROJECT GUTENBERG EBOOK X ***\n滿紙荒唐言，一把辛酸淚。\n*** END OF THE PROJECT GUTENBERG EBOOK X ***'),10,'Chinese is counted by the character');
   // The red door in the Spanish room opens now, onto a room of its own.
-  assert.match(wing,/chinese:\{cx:-470,cz:100,w:24,d:15,h:6,language:'zh'/);assert.match(wing,/type:'intl-go',room:'chinese'/);assert.doesNotMatch(wing,/intl-coming/);
+  assert.match(wing,/chinese:\{cx:-470,cz:100,w:24,d:15,h:6,language:'zh'/);assert.match(wing,/chinese:\['中文閱覽室'/);assert.doesNotMatch(wing,/intl-coming/);
   assert.match(game,/ROOM_LANGUAGES=\{spanish:'es',portuguese:'pt',chinese:'zh'[,}]/);
   assert.match(game,/zh:'chinese-room',chinese:'chinese-room'/);assert.match(game,/'chinese-room':internationalWing&&\(\(\)=>enterWing\('chinese'\)\)/);
   // The reader breaks Chinese lines between characters, since there are no spaces to break at.
@@ -154,8 +154,8 @@ test('the French Reading Room: classics in French behind the blue door, kept apa
   const {textMatches}=await import('./scripts/daily-room.mjs'),head=lang=>`Title: Madame Bovary\nAuthor: Gustave Flaubert\nLanguage: ${lang}\n`;
   assert.ok(textMatches(head('French'),'Madame Bovary','Gustave Flaubert','fr'));assert.ok(!textMatches(head('English'),'Madame Bovary','Gustave Flaubert','fr'));
   // The blue door stands between the green and the red in the Spanish room's east wall.
-  assert.match(wing,/french:\{cx:-470,cz:132,w:24,d:15,h:6,language:'fr'/);assert.match(wing,/type:'intl-go',room:'french'/);
-  assert.match(wing,/ROOM_DOORS=\{portuguese:\{x:EAST,z:ROOM\.cz-4\.7,yaw:-Math\.PI\/2\},french:\{x:EAST,z:ROOM\.cz,yaw:-Math\.PI\/2\},\s*chinese:\{x:EAST,z:ROOM\.cz\+4\.7,yaw:-Math\.PI\/2\}/);
+  assert.match(wing,/french:\{cx:-470,cz:132,w:24,d:15,h:6,language:'fr'/);assert.match(wing,/french:\['SALLE DE LECTURE EN FRANÇAIS'/);
+  assert.match(wing,/french:\{x:HUB\.cx\+7,z:NORTH,yaw:Math\.PI,wall:'north'\}/);assert.match(wing,/chinese:\{x:EAST,z:HUB\.cz-3\.6,yaw:-Math\.PI\/2,wall:'east'\}/);
   assert.match(game,/fr:'french-room',french:'french-room',francais:'french-room'/);assert.match(game,/'french-room':internationalWing&&\(\(\)=>enterWing\('french'\)\)/);
   assert.match(html,/rooms:\['fr','french','francais','français','french-room'\]/);assert.match(html,/enter:'Entrer dans la bibliothèque'/);
   const out=fs.mkdtempSync(path.join(os.tmpdir(),'fr-pages-'));
@@ -169,7 +169,7 @@ test('the French Reading Room: classics in French behind the blue door, kept apa
 
 test('the wing’s rooms stand clear of every other place, Crusoe’s island included',()=>{
   const rooms=[...wing.matchAll(/(\w+):\{cx:(-?\d+),cz:(-?\d+),w:(\d+),d:(\d+)/g)].map(m=>({key:m[1],cx:+m[2],cz:+m[3],w:+m[4],d:+m[5]}));
-  assert.equal(rooms.length,7);
+  assert.equal(rooms.length,8,'the lobby and seven reading rooms');
   const isle=fs.readFileSync('crusoe-island.js','utf8'),[,ix,iz]=isle.match(/ISLE=\{x:(-?\d+),z:(-?\d+)/),[,rx,rz]=isle.match(/SAND=\{rx:(\d+),rz:(\d+)\}/);
   for(const a of rooms){
     // The nearest point of the room to the island's centre must lie outside its sand.
@@ -183,7 +183,7 @@ test('the wing’s rooms stand clear of every other place, Crusoe’s island inc
   assert.match(game,/bm\?\.userData\?\.seatCopy\?seated\?\.seat\?\.wingRoom/);
 });
 
-test('the Latin Reading Room: Latin texts behind a stone door in the south wall, with notes and pages in English',async()=>{
+test('the Latin Reading Room: Latin texts behind a stone door off the lobby, with notes and pages in English',async()=>{
   const latin=shelves.filter(entry=>entry[4]==='latin');
   const {ROOMS,ROOM_LANGUAGES}=await import('./scripts/new-books.mjs');assert.ok(ROOMS.includes('latin'));assert.equal(ROOM_LANGUAGES.latin,'la');
   assert.ok(latin.length>=30&&latin.length<=48,`${latin.length} Latin books`);
@@ -191,7 +191,7 @@ test('the Latin Reading Room: Latin texts behind a stone door in the south wall,
   for(const [id,title] of latin)assert.ok(Number.isInteger(id),`${title}: give its number from Gutenberg's catalogue`);
   const {textMatches}=await import('./scripts/daily-room.mjs'),head=lang=>`Title: Aeneidos\nAuthor: Virgil\nLanguage: ${lang}\n`;
   assert.ok(textMatches(head('Latin'),'Aeneidos','Virgil','la'));assert.ok(!textMatches(head('English'),'Aeneidos','Virgil','la'),'a translation is not the text');
-  assert.match(wing,/latin:\{cx:-470,cz:164,w:24,d:15,h:6,language:'la'/);assert.match(wing,/latin:\{x:ROOM\.cx\+7,z:SOUTH,yaw:0\}/);assert.match(wing,/room:'latin'/);
+  assert.match(wing,/latin:\{cx:-470,cz:164,w:24,d:15,h:6,language:'la'/);assert.match(wing,/latin:\{x:WEST,z:HUB\.cz\+3\.6,yaw:Math\.PI\/2,wall:'west'\}/);assert.match(wing,/latin:\['CONCLAVE LATINVM'/);
   assert.match(game,/la:'latin-room',latin:'latin-room',latina:'latin-room'/);assert.match(game,/'latin-room':internationalWing&&\(\(\)=>enterWing\('latin'\)\)/);
   const out=fs.mkdtempSync(path.join(os.tmpdir(),'la-pages-'));
   execFileSync(process.execPath,['scripts/book-pages.mjs'],{env:{...process.env,OUT:out}});
@@ -207,7 +207,7 @@ test('the wing’s books load only on the way there, or on a link that may lead 
   assert.ok(main.every(entry=>!WING.has(entry[4])),'the wing’s books belong in data/new-books-wing.js');
   assert.ok(wingList.length>150&&wingList.every(entry=>WING.has(entry[4])),'only the wing’s books in data/new-books-wing.js');
   // Not among the files every visitor downloads: only for a ?book= or a ?room= in the wing.
-  assert.match(html,/if\(q\.has\('book'\)\|\|\/\^\(international\|international-wing\|es\|[^)]*latin-room\|[^)]*zh[^)]*\)\$\/\.test\(room\)\)startupScript\('data\/new-books-wing\.js'\)/);
+  assert.match(html,/if\(q\.has\('book'\)\|\|\/\^\(international\|international-wing\|wing\|lobby\|spanish-room\|es\|[^)]*latin-room\|[^)]*zh[^)]*\)\$\/\.test\(room\)\)startupScript\('data\/new-books-wing\.js'\)/);
   assert.match(html,/window\.libraryVersionedSource=src=>versionedSource\(src\)/);
   // In the library: fetched within 9 m of the door (the reader starts 10.7 m away), at one of the wing's doors, or before a link enters a room.
   assert.match(game,/add\(window\.ATHENAEUM_NEW_BOOKS\);add\(window\.ATHENAEUM_NEW_BOOKS_WING\);/);
@@ -261,7 +261,7 @@ test('the Ukrainian Reading Room: classics from Wikisource behind a blue door wi
   const {countWords}=await import('./scripts/new-books.mjs');assert.equal(countWords(kept),1,'the credit line is not counted');
   // The room: at the far end of the wing, reached through the Spanish room's south wall, and signed in Ukrainian.
   assert.match(wing,/ukrainian:\{cx:-530,cz:100,w:24,d:15,h:6,language:'uk',sign:'УКРАЇНСЬКА ЧИТАЛЬНЯ'/);
-  assert.match(wing,/ukrainian:\{x:ROOM\.cx-7,z:SOUTH,yaw:0\}/);assert.match(wing,/type:'intl-go',room:'ukrainian'/);
+  assert.match(wing,/ukrainian:\{x:HUB\.cx,z:NORTH,yaw:Math\.PI,wall:'north'\}/,'straight ahead of the way into the lobby');assert.match(wing,/ukrainian:\['УКРАЇНСЬКА ЧИТАЛЬНЯ'/);
   assert.match(wing,/if\(key==='ukrainian'\)\{\/\/ A rushnyk/);assert.match(wing,/if\(kind==='vyshyvanka'\)/);
   assert.match(game,/uk:'ukrainian-room'/);assert.match(game,/'ukrainian-room':internationalWing&&\(\(\)=>enterWing\('ukrainian'\)\)/);
   assert.match(html,/\|uk\|ua\|ukrainian\|ukrainska\|українська\|ukrainian-room\|forest-song\|lisova-pisnia\|лісова-пісня\|mavka\|lesia-ukrainka\)\$\/\.test\(room\)\)startupScript/);
@@ -287,7 +287,7 @@ test('the Ukrainian room has its flags, a Petrykivka painting under a rushnyk, s
   assert.doesNotMatch(body,/Light\(/);
 });
 
-test('the Italian Reading Room: Italian texts behind green doors in the Spanish and Latin rooms, under a della Robbia roundel',async()=>{
+test('the Italian Reading Room: Italian texts behind green doors in the lobby and the Latin room, under a della Robbia roundel',async()=>{
   const italian=shelves.filter(entry=>entry[4]==='italian');
   const {ROOMS,ROOM_LANGUAGES,validate}=await import('./scripts/new-books.mjs');assert.ok(ROOMS.includes('italian'));assert.equal(ROOM_LANGUAGES.italian,'it');
   assert.ok(italian.length>=24&&italian.length<=48,`${italian.length} Italian books`);assert.deepEqual(validate(italian),[]);
@@ -297,8 +297,8 @@ test('the Italian Reading Room: Italian texts behind green doors in the Spanish 
   assert.ok(textMatches(head('Italian'),'I promessi sposi','Alessandro Manzoni','it'));assert.ok(!textMatches(head('English'),'I promessi sposi','Alessandro Manzoni','it'),'a translation is not the text');
   // From Virgil to Dante: the door is in the Latin room's east wall, and the way back leads there.
   assert.match(wing,/italian:\{cx:-530,cz:132,w:24,d:15,h:6,language:'it',sign:'SALA DI LETTURA IN ITALIANO'/);
-  assert.match(wing,/italian:\{x:ROOM\.cx\+3\.5,z:SOUTH,yaw:0\},'italian-latin':\{room:'italian',from:'latin',x:ROOMS\.latin\.cx\+ROOMS\.latin\.w\/2-\.2,z:ROOMS\.latin\.cz,yaw:-Math\.PI\/2\}/);
-  assert.match(wing,/const d=ROOM_DOORS\.italian,data=\{type:'intl-go',room:'italian',door:'italian'/,'its own door from the lobby');
+  assert.match(wing,/italian:\{x:EAST,z:HUB\.cz\+3\.6,yaw:-Math\.PI\/2,wall:'east'\},\s*'italian-latin':\{room:'italian',from:'latin',x:ROOMS\.latin\.cx\+ROOMS\.latin\.w\/2-\.2,z:ROOMS\.latin\.cz,yaw:-Math\.PI\/2\}/);
+  assert.match(wing,/italian:\['SALA DI LETTURA IN ITALIANO'/,'its own door from the lobby');
   assert.match(wing,/if\(key==='latin'\)eastDoor\(ROOM_DOORS\['italian-latin'\]\.z,'italian',\{type:'intl-go',room:'italian',door:'italian-latin'/);
   assert.match(wing,/key==='italian'\?italianExit\(/);assert.match(wing,/const door=via\.italian==='italian-latin'\?'italian-latin':'italian'/);assert.match(wing,/into=outOf\(data\.back\);activate\(into\)/);
   assert.match(wing,/if\(here===outOf\(key\)&&Math\.hypot\(x-door\.x,z-door\.z\)<PRELOAD\)activate\(opensOn\(key\)\)/);assert.match(wing,/if\(key==='italian'\)\{\/\/ A glazed terracotta roundel/);assert.match(wing,/if\(kind==='maiolica'\)/);

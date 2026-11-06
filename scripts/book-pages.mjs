@@ -65,7 +65,7 @@ const ROOM_NAMES={secret:'The secret bookcase in the west wing','evening-quick':
 const CURIOUS={horologist:'The Horologist’s Study',conservatory:'The Night Conservatory',parlour:'The Ghost-Story Parlour',attic:'The attic behind the curious doors',
   repository:'The Repository',unread:'The Unread Room',returning:'The Room of Returning Names',quiet:'The Quiet Stacks',sorting:'The Sorting Room',departures:'Departures'};
 // Places with a link straight into them (/?room=…, handled in game.js).
-const ROOM_LINKS={'The International Wing':'international-wing','The Portuguese Reading Room':'portuguese-room','The Chinese Reading Room':'chinese-room','The French Reading Room':'french-room','The Latin Reading Room':'latin-room','The Italian Reading Room':'italian-room','The Ukrainian Reading Room':'ukrainian-room','The Evening Room':'evening-room','The English Reading Room':'learners-room','The Periodicals Room':'periodicals-room','The Reading Room of Helium, on Mars':'mars',
+const ROOM_LINKS={'The International Wing':'spanish-room','The Portuguese Reading Room':'portuguese-room','The Chinese Reading Room':'chinese-room','The French Reading Room':'french-room','The Latin Reading Room':'latin-room','The Italian Reading Room':'italian-room','The Ukrainian Reading Room':'ukrainian-room','The Evening Room':'evening-room','The English Reading Room':'learners-room','The Periodicals Room':'periodicals-room','The Reading Room of Helium, on Mars':'mars',
   'The Selenite Reading Outpost, on the Moon':'moon','The Consulting Room':'consulting-room','The Time Laboratory':'time-laboratory','The Lost Kingdoms':'lost-kingdoms','The Verne rooms':'verne-rooms',
   'The Antipodes, through the Earth from the Grand Hall':'antipodes','The Australian Room, at the Antipodes':'australia','The New Zealand Room, at the Antipodes':'new-zealand','The African Reading Room':'africa','The Restricted Catalogue':'voynich','The Map Room':'maps','The Medicine Room':'medicine','The Naturalist’s Cabinet':'naturalist','Walden Pond':'walden','The Mountain in the Painting':'mountain','The Austen Room':'austen','The Burns Room':'burns','The Canadian Room':'canada','Captain Nemo’s Salon':'nemo','The Deep Wood':'forest','The Room of Books Within Books':'within','The Set Texts Room':'set-texts','The Lost Property Office, down the book lift in the west wing':'lost-property'};
 const CATEGORY_ROOMS={'Extraordinary Voyages':'The Verne rooms','The Consulting Room':'The Consulting Room','The Time Laboratory':'The Time Laboratory','The Lost Kingdoms':'The Lost Kingdoms'};
@@ -119,8 +119,8 @@ const WORDS={
   es:{lang:'es',by:'de',read:'Léelo en la Library After Dark',plain:'O léelo en texto sencillo',time:'Tiempo de lectura',about:'Unos',where:'Dónde encontrarlo',onShelves:()=>'En el ala internacional',edition:'Edición',
     pd:'De dominio público en los Estados Unidos.',licence:'Licencia',librarian:'La bibliotecaria',moreBy:author=>`Más de ${author}`,also:()=>'Más libros en español',
     shelf:shelf=>SHELVES_ES[shelf]||shelf,place:place=>({'The International Wing':'El ala internacional: Sala de lectura en español'})[place]||place,
-    nav:'<a href="/es/">Libros en español</a><a href="/book/">Catalogue</a><a class="enter" href="/?room=international-wing">Entrar en la biblioteca</a>',
-    footer:'The Library After Dark es una biblioteca en 3D que se recorre desde el navegador, con libros de dominio público para leer. <a href="/?room=international-wing">Entrar</a>.'},
+    nav:'<a href="/es/">Libros en español</a><a href="/book/">Catalogue</a><a class="enter" href="/?room=spanish-room">Entrar en la biblioteca</a>',
+    footer:'The Library After Dark es una biblioteca en 3D que se recorre desde el navegador, con libros de dominio público para leer. <a href="/?room=spanish-room">Entrar</a>.'},
   pt:{lang:'pt',by:'de',read:'Leia na Library After Dark',plain:'Ou leia em texto simples',time:'Tempo de leitura',about:'Cerca de',where:'Onde encontrá-lo',onShelves:()=>'Na ala internacional',edition:'Edição',
     pd:'Em domínio público nos Estados Unidos.',licence:'Licença',librarian:'A bibliotecária',moreBy:author=>`Mais de ${author}`,also:()=>'Mais livros em português',
     shelf:shelf=>SHELVES_PT[shelf]||shelf,place:place=>({'The Portuguese Reading Room':'A ala internacional: Sala de leitura em português','The Lost Kingdoms':'Os Reinos Perdidos (em inglês)'})[place]||place,
@@ -256,7 +256,7 @@ const SHELVES_ZH={Society:'世情小說',Epic:'歷史演義',Legend:'神魔與�
 // Ukrainian numbers choose their noun: 1 твір, 2–4 твори, 5–20 творів (21 твір, 24 твори…).
 const ukWorks=n=>n%10===1&&n%100!==11?'твір':n%10>=2&&n%10<=4&&(n%100<12||n%100>14)?'твори':'творів';
 const LANDINGS={
-  es:{path:'es',shelves:SHELVES_ES,other:'Otros',h1:'Libros en español',room:'international-wing',button:'Entrar en la Sala de lectura en español',
+  es:{path:'es',shelves:SHELVES_ES,other:'Otros',h1:'Libros en español',room:'spanish-room',button:'Entrar en la Sala de lectura en español',
     intro:n=>`${n} clásicos de España, de América y de Filipinas, de Cervantes a Rubén Darío, para leer gratis en una biblioteca en 3D que se recorre desde el navegador, también desde el móvil. Están en la Sala de lectura en español, en el ala internacional, cada uno con una nota de la bibliotecaria. Sin descargas, sin registro y sin anuncios.`,
     title:'Libros en español · The Library After Dark',description:n=>`${n} clásicos en español para leer gratis en una biblioteca en 3D, cada uno con una nota de la bibliotecaria: Cervantes, Galdós, Bécquer, Rubén Darío, Rizal y muchos más.`},
   pt:{path:'pt',shelves:SHELVES_PT,other:'Outros',h1:'Livros em português',room:'portuguese-room',button:'Entrar na Sala de leitura em português',
