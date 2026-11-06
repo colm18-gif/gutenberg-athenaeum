@@ -146,3 +146,13 @@ test('the Holodomor candle stands for the week up to the fourth Saturday of Nove
   assert.match(wing,/if\(holodomorWeek\(now\)\|\|askedFor\('holodomor'\)\)/);assert.match(wing,/action:'LIGHT A CANDLE'/);assert.match(wing,/room\.lightCandle=/);
   assert.match(wing,/Сьогодні День пам’яті жертв голодоморів/);assert.match(wing,/Голодомору 1932–1933 років/);
 });
+
+test('the Ukrainian Reading Room is easy to find: a sign and sunflowers in the Grand Hall, sunflowers at its door, and the librarian knows the way',()=>{
+  const door=wing.slice(wing.indexOf('function buildDoor(){'),wing.indexOf('// ---------- a room ----------'));
+  assert.match(door,/type:'intl-ukraine'/,'a sign beside the wing door');assert.match(door,/УКРАЇНСЬКА/);assert.match(door,/The Ukrainian Reading Room/);
+  assert.match(door,/sunflowerJar\(g,/,'sunflowers in the hall');
+  assert.match(wing,/if\(data\.type==='intl-ukraine'\)\{through\(doorData,\(\)=>enter\('ukrainian'\)\)/,'the sign goes straight to the room');
+  assert.match(wing,/sunflowerJar\(root,door\.x\+side\*1\.75/,'sunflowers either side of its door in the lobby');assert.match(wing,/title:'Прапор України'/,'and the flag');
+  assert.match(game,/\['Where is the Ukrainian Reading Room\?'/,'the librarian answers');
+  assert.match(game,/the sunflowers mark the way to the Ukrainian Reading Room/,'and the first-visit tour points the way');
+});

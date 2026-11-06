@@ -53,6 +53,13 @@
   const isHolodomorDay=(date=new Date())=>{const day=holodomorDay(date.getFullYear());return date.getMonth()===10&&date.getDate()===day.getDate()};
   const askedFor=word=>typeof location!=='undefined'&&new RegExp(`(?:^|[?&])${word}(?:[=&]|$)`).test(location.search||'');
   const ROOMS={
+    // The wing's own lobby, through the Grand Hall's door: no shelves, but a great globe with the seven languages marked,
+    // an atlas, pennants in every room's colours, and a door to each reading room. The Ukrainian door faces the way in.
+    hub:{cx:-470,cz:66,w:24,d:18,h:7,hub:true,sign:'THE INTERNATIONAL WING',sub:'Bienvenidos · Bem-vindos · Bienvenue · 歡迎 · Salvete · Benvenuti · Ласкаво просимо',font:`Georgia,${CJK}`,
+      card:['The International Wing','Seven reading rooms, seven languages, a door to each: Spanish and French on the north wall either side of the Ukrainian, Portuguese and Latin to the west, Chinese and Italian to the east. Every book in them has a note from the librarian in its own language.'],
+      shade:0x6a4a2a,tiles:'roman',
+      welcome:()=>'The International Wing. Seven doors, seven languages: the Ukrainian Reading Room straight ahead between the sunflowers, the Spanish and French either side of it, the Portuguese and Latin to your left, the Chinese and Italian to your right.',
+      note:'The librarian’s note',seat:['A chair','Sit a while.']},
     spanish:{cx:-410,cz:100,w:24,d:15,h:6,language:'es',sign:'SALA DE LECTURA EN ESPAÑOL',sub:'The Spanish Reading Room · El ala internacional',
       card:['Sala de lectura en español','Clásicos de España, de América y de Filipinas, cada uno con una nota de la bibliotecaria. El libro de la noche está en el atril. (The Spanish Reading Room: classics from Spain, the Americas and the Philippines.)'],
       lectern:'EL LIBRO DE LA NOCHE',shade:0x2c5592,tiles:'andalusian',
@@ -97,13 +104,15 @@
     const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),
       wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null,tone=null,gospel=null,forestSong=null,storage=window.localStorage}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
     const DOOR={x:8.6,z:30.45,yaw:Math.PI};
-    // The doors in the Spanish room's east and south walls, to the other rooms, and a second door to the Italian in the
-    // Latin room's east wall (room: the room a door opens on, when it is not its key; from: the room a door is in, when
-    // it is not the Spanish room). yaw: which way the reader faces when they come back out through it.
-    const ROOM=ROOMS.spanish,EAST=ROOM.cx+ROOM.w/2-.2,SOUTH=ROOM.cz+ROOM.d/2-.2,ROOM_DOORS={portuguese:{x:EAST,z:ROOM.cz-4.7,yaw:-Math.PI/2},french:{x:EAST,z:ROOM.cz,yaw:-Math.PI/2},
-      chinese:{x:EAST,z:ROOM.cz+4.7,yaw:-Math.PI/2},latin:{x:ROOM.cx+7,z:SOUTH,yaw:0},ukrainian:{x:ROOM.cx-7,z:SOUTH,yaw:0},
-      italian:{x:ROOM.cx+3.5,z:SOUTH,yaw:0},'italian-latin':{room:'italian',from:'latin',x:ROOMS.latin.cx+ROOMS.latin.w/2-.2,z:ROOMS.latin.cz,yaw:-Math.PI/2}};
-    const outOf=door=>ROOM_DOORS[door]?.from||'spanish',opensOn=door=>ROOM_DOORS[door]?.room||door;
+    // The doors in the lobby's walls, one to each reading room, and a second door to the Italian in the Latin room's east
+    // wall (room: the room a door opens on, when it is not its key; from: the room a door is in, when it is not the lobby).
+    const ROOM=ROOMS.hub,HUB=ROOMS.hub,NORTH=HUB.cz-HUB.d/2+.2,WEST=HUB.cx-HUB.w/2+.2,EAST=HUB.cx+HUB.w/2-.2,
+      // A door's `yaw` is the way a reader faces coming back out of it; `wall` says which wall of the lobby it is hung in.
+      ROOM_DOORS={ukrainian:{x:HUB.cx,z:NORTH,yaw:Math.PI,wall:'north'},spanish:{x:HUB.cx-7,z:NORTH,yaw:Math.PI,wall:'north'},french:{x:HUB.cx+7,z:NORTH,yaw:Math.PI,wall:'north'},
+        portuguese:{x:WEST,z:HUB.cz-3.6,yaw:Math.PI/2,wall:'west'},latin:{x:WEST,z:HUB.cz+3.6,yaw:Math.PI/2,wall:'west'},
+        chinese:{x:EAST,z:HUB.cz-3.6,yaw:-Math.PI/2,wall:'east'},italian:{x:EAST,z:HUB.cz+3.6,yaw:-Math.PI/2,wall:'east'},
+        'italian-latin':{room:'italian',from:'latin',x:ROOMS.latin.cx+ROOMS.latin.w/2-.2,z:ROOMS.latin.cz,yaw:-Math.PI/2}};
+    const outOf=door=>ROOM_DOORS[door]?.from||'hub',opensOn=door=>ROOM_DOORS[door]?.room||door;
     // The door each room was last entered by, so its way out leads back the way the reader came (the Italian has two).
     const via={};
     const PRELOAD=7,KEEP=25;
@@ -111,6 +120,23 @@
     const built={},lastNeeded=Object.fromEntries(Object.keys(ROOMS).map(key=>[key,-1e9]));
     const doorData={type:'intl-door',title:'The International Wing',author:'Clásicos en español · Clássicos em português · Classiques en français · 中文經典 · Libri Latini · Classici italiani · Українська класика. Each book with a note from the librarian in its own language.',action:'ENTER'};
     function add(geometry,material,x,y,z,parent){const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);parent.add(m);return m}
+    // Sunflowers in a tall blue-glazed jar, standing on the floor: by the Grand Hall's door to the wing and either side of the
+    // Ukrainian room's door, so the way there can be seen from across the hall. Materials and geometry are shared and kept.
+    let flowerKit=null;
+    function sunflowerJar(parent,x,z,seed=0){
+      if(!flowerKit){const map=canvasTexture((c,W,H)=>{c.clearRect(0,0,W,H);c.fillStyle='#f2b81c';for(let k=0;k<22;k++){c.save();c.translate(W/2,H/2);c.rotate(k/22*Math.PI*2);c.beginPath();c.ellipse(0,-W*.33,W*.06,W*.16,0,0,Math.PI*2);c.fill();c.restore()}
+          c.fillStyle='#4a2c12';c.beginPath();c.arc(W/2,H/2,W*.2,0,Math.PI*2);c.fill();c.fillStyle='#6b4420';for(let k=0;k<60;k++){const a=k*2.4,r=Math.sqrt(k/60)*W*.18;c.fillRect(W/2+Math.cos(a)*r-2,H/2+Math.sin(a)*r-2,4,4)}},128,128);
+        flowerKit={head:new THREE.CircleGeometry(.16,16),stem:new THREE.CylinderGeometry(.01,.013,1,5),
+          jar:new THREE.LatheGeometry([[.001,0],[.13,0],[.2,.12],[.21,.34],[.15,.52],[.11,.58],[.13,.62]].map(([px,py])=>new THREE.Vector2(px,py)),18),
+          headMat:new THREE.MeshStandardMaterial({map,transparent:true,alphaTest:.4,roughness:.8,side:THREE.DoubleSide,emissive:0x5a3a00,emissiveMap:map,emissiveIntensity:.35}),
+          stemMat:new THREE.MeshStandardMaterial({color:0x3f6a2a,roughness:.9}),jarMat:new THREE.MeshStandardMaterial({color:0x1f4f9a,roughness:.35,metalness:.05})}}
+      const k=flowerKit,group=new THREE.Group(),dummy=new THREE.Object3D(),n=5;group.position.set(x,0,z);parent.add(group);
+      const jar=add(k.jar,k.jarMat,0,0,0,group),heads=new THREE.InstancedMesh(k.head,k.headMat,n),stems=new THREE.InstancedMesh(k.stem,k.stemMat,n);
+      [[0,1.32,0,.12],[.12,1.16,1,.3],[-.12,1.1,-1,.28],[.06,.98,2.3,.4],[-.06,1.24,-2.4,.2]].forEach(([dx,hgt,yaw,tilt],i)=>{yaw+=seed;
+        const hx=dx+Math.sin(yaw)*tilt*.35,hz=Math.cos(yaw)*tilt*.35,y0=.6;
+        dummy.position.set(hx/2,(y0+hgt)/2,hz/2);dummy.lookAt(hx,hgt,hz);dummy.rotateX(Math.PI/2);dummy.scale.set(1,Math.hypot(hx,hgt-y0,hz),1);dummy.updateMatrix();stems.setMatrixAt(i,dummy.matrix);
+        dummy.scale.set(1,1,1);dummy.position.set(hx,hgt,hz);dummy.rotation.set(-tilt*.6,yaw,0,'YXZ');dummy.updateMatrix();heads.setMatrixAt(i,dummy.matrix)});
+      group.add(stems,heads);return {group,jar,heads}}
     // ---------- the doors ----------
     // Every door in the wing is hung in the library's own kit (library-doors.js), and looks the same from both sides:
     // navy to the Spanish room, green with Lisbon tiles to the Portuguese, blue with an iron grille to the French,
@@ -118,8 +144,8 @@
     // Florentine green under a della Robbia roundel to the Italian.
     const DOOR_LOOKS={spanish:{color:0x1f3350,glazed:true,fanColor:0xd9923a},portuguese:{color:0x1f4a33,glazed:true,fanColor:0xffc978},
       french:{color:0x1f3160,glazed:true,fanColor:0xffd48a},chinese:{color:0x5a1c1a,plain:true,fanlight:false,cornice:false},latin:{color:()=>stone('leaf',0x8c8272),fanlight:false,cornice:false},
-      ukrainian:{color:0x1f4f9a,glazed:true,fanColor:0xffc93a},italian:{color:0x2b4a2c,fanlight:false}};
-    const EXIT_LABELS={spanish:'THE GRAND HALL',portuguese:'SALA ESPANHOLA',french:'SALLE ESPAGNOLE',chinese:'西班牙文閱覽室',latin:'EXITVS',italian:'USCITA',ukrainian:'ІСПАНСЬКА ЧИТАЛЬНЯ'};
+      ukrainian:{color:0x1f4f9a,glazed:true,fanColor:0xffc93a},italian:{color:0x2b4a2c,fanlight:false},hub:{color:0x3b2616,glazed:true,fanColor:0xd9923a}};
+    const EXIT_LABELS={hub:'THE GRAND HALL',spanish:'EL ALA INTERNACIONAL',portuguese:'A ALA INTERNACIONAL',french:'L’AILE INTERNATIONALE',chinese:'國際館',latin:'EXITVS',italian:'USCITA',ukrainian:'МІЖНАРОДНЕ КРИЛО'};
     let lacquer=null;const stones={},stone=(key,color)=>stones[key]||(stones[key]=new THREE.MeshStandardMaterial({color,roughness:.9}));
     const FRAMES={chinese:()=>lacquer||(lacquer=new THREE.MeshStandardMaterial({color:0x2a0d0a,roughness:.45})),latin:()=>stone('dressed',0xa89b84)};
     const through=(data,go)=>doorKit&&data.kit?doorKit.pass(data.kit,data,go):go();
@@ -222,6 +248,79 @@
     // Two blue-and-yellow flags either side of the sign, a Petrykivka painting on the east wall with a rushnyk over it,
     // sunflowers in a clay jug and a bowl of pysanky on the reading table. Canvas textures and a few instanced parts;
     // the wing's own two lamps light them.
+    // ---------- the lobby ----------
+    // Where each language is spoken, marked on the lobby's globe in the colour of its room's door: [label, lon, lat, colour].
+    const SPOKEN=[['Español',-3.7,40.4,'#c8102e'],['Español',-99,19.4,'#c8102e'],['Español',-58.4,-34.6,'#c8102e'],['Español',-74,4.7,'#c8102e'],['Español',121,14.6,'#c8102e'],
+      ['Português',-9.1,38.7,'#2f8f4e'],['Português',-47,-15.8,'#2f8f4e'],['Português',32.6,-25.9,'#2f8f4e'],['Français',2.35,48.85,'#2a5bd7'],['Français',-71.2,46.8,'#2a5bd7'],['Français',-17.4,14.7,'#2a5bd7'],
+      ['中文',112,33,'#c0392b'],['Latina',12.5,41.9,'#8a6a2a'],['Italiano',11.25,44.5,'#2b8a3e'],['Українська',30.5,50.45,'#1f4f9a']];
+    // Each door off the lobby: its sign (text, sub-line, font) and its card.
+    const HUB_DOORS={
+      ukrainian:['УКРАЇНСЬКА ЧИТАЛЬНЯ','Заходьте · The Ukrainian Reading Room','Georgia','Українська читальня','Класика українською мовою, кожна книжка з приміткою бібліотекарки українською й англійською. (The Ukrainian Reading Room: every note in Ukrainian and English.)'],
+      spanish:['SALA DE LECTURA EN ESPAÑOL','Pasen · The Spanish Reading Room','Georgia','Sala de lectura en español','Clásicos en español, cada uno con una nota de la bibliotecaria. (The Spanish Reading Room.)'],
+      french:['SALLE DE LECTURE EN FRANÇAIS','Entrez · The French Reading Room','Georgia','Salle de lecture en français','Des classiques en français, chacun avec une note de la bibliothécaire. (The French Reading Room.)'],
+      portuguese:['SALA DE LEITURA EM PORTUGUÊS','Entre · The Portuguese Reading Room','Georgia','Sala de leitura em português','Clássicos em português, cada um com uma nota da bibliotecária. (The Portuguese Reading Room.)'],
+      latin:['CONCLAVE LATINVM','Intrate · The Latin Reading Room','Georgia','Conclave Latinum','The Latin Reading Room: the Romans in their own words. (Intrate.)'],
+      chinese:['中文閱覽室','請進 · The Chinese Reading Room',CJK,'中文閱覽室','中文經典，每一本都附有館員的短評。(The Chinese Reading Room.)'],
+      italian:['SALA DI LETTURA IN ITALIANO','Entrate · The Italian Reading Room','Georgia','Sala di lettura in italiano','Classici in italiano, ciascuno con una nota della bibliotecaria. (The Italian Reading Room.)']};
+    function buildHub({cx,cz,w,d,h,box,own,mark,root,block,room}){
+      const FACING={north:0,west:Math.PI/2,east:-Math.PI/2},INTO={north:[0,1],west:[1,0],east:[-1,0]};
+      for(const [key,[text,sub,font,title,author]] of Object.entries(HUB_DOORS)){
+        const door=ROOM_DOORS[key],yaw=FACING[door.wall],[ix,iz]=INTO[door.wall],data={type:'intl-go',room:key,door:key,title,author,action:'ENTER'};
+        if(!hangWing(root,key,{data,mark,x:door.x,z:door.z,yaw,own})){const slab=box(1.9,3.1,.16,own(new THREE.MeshStandardMaterial({color:typeof DOOR_LOOKS[key].color==='number'?DOOR_LOOKS[key].color:0x8c8272,roughness:.7})),door.x,1.55,door.z);slab.rotation.y=yaw;mark(slab,data)}
+        const board=add(own(new THREE.PlaneGeometry(2.6,.5)),own(new THREE.MeshStandardMaterial({map:own(plaque(text,sub,780,150,'#23170e',font)),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.25})),door.x+ix*.14,4.95,door.z+iz*.14,root);board.rotation.y=yaw;mark(board,data);
+        block(door.x+ix*.3,door.z+iz*.3,iz?2.4:.6,iz?.6:2.4)}
+      // The Ukrainian door, straight ahead of the way in: sunflowers either side, and the flag above each jar.
+      {const door=ROOM_DOORS.ukrainian,data={type:'intl-go',room:'ukrainian',door:'ukrainian',title:HUB_DOORS.ukrainian[3],author:HUB_DOORS.ukrainian[4],action:'ENTER'};
+        const flagMap=own(canvasTexture((c,W,H)=>{c.fillStyle='#0057b7';c.fillRect(0,0,W,H/2);c.fillStyle='#ffd700';c.fillRect(0,H/2,W,H/2)},64,64));
+        const flagMat=own(new THREE.MeshStandardMaterial({map:flagMap,roughness:.8,emissive:0xffffff,emissiveMap:flagMap,emissiveIntensity:.18,side:THREE.DoubleSide}));
+        const flagCard={type:'intl-card',title:'Прапор України',author:'Синє небо над жовтим полем пшениці. (The flag of Ukraine: a blue sky over a yellow field of wheat.)',action:'LOOK'};
+        for(const side of [-1,1]){const f=sunflowerJar(root,door.x+side*1.75,door.z+.5,side);f.group.scale.setScalar(1.15);mark(f.jar,data);mark(f.heads,data);block(door.x+side*1.75,door.z+.5,.55,.55);
+          box(.04,1.5,.04,MAT.brass,door.x+side*1.75,3.1,door.z+.08);mark(add(own(new THREE.PlaneGeometry(.95,.64)),flagMat,door.x+side*1.75+side*.5,3.45,door.z+.1,root),flagCard)}}
+      // The great globe, to the left of the way in (so nothing stands between the reader and the Ukrainian door), on a
+      // wooden stand under a brass meridian, turning slowly, the seven languages marked.
+      const gx=cx-5,gz=cz+1.4,R=1.05,land=window.ATHENAEUM_LAND||[];
+      const globeMap=own(canvasTexture((c,W,H)=>{const sea=c.createLinearGradient(0,0,0,H);sea.addColorStop(0,'#4e6670');sea.addColorStop(.5,'#5f7a80');sea.addColorStop(1,'#4b6068');c.fillStyle=sea;c.fillRect(0,0,W,H);
+        const at=([lon,lat])=>[(lon+180)/360*W,(90-lat)/180*H];
+        c.strokeStyle='rgba(235,220,180,.2)';c.lineWidth=2;for(let lon=-180;lon<=180;lon+=30){c.beginPath();c.moveTo(...at([lon,90]));c.lineTo(...at([lon,-90]));c.stroke()}for(let lat=-60;lat<=60;lat+=30){c.beginPath();c.moveTo(...at([-180,lat]));c.lineTo(...at([180,lat]));c.stroke()}
+        for(const shape of land){c.beginPath();shape.forEach((pt,i)=>i?c.lineTo(...at(pt)):c.moveTo(...at(pt)));c.closePath();c.fillStyle='#dccb9e';c.fill();c.strokeStyle='#7a6440';c.lineWidth=2.5;c.stroke()}
+        c.textAlign='center';c.textBaseline='bottom';
+        for(const [label,lon,lat,colour] of SPOKEN){const [x,y]=at([lon,lat]),big=label==='Українська';
+          c.fillStyle=colour;c.beginPath();c.arc(x,y,big?13:9,0,Math.PI*2);c.fill();if(big){c.fillStyle='#ffd700';c.beginPath();c.arc(x,y,13,0,Math.PI);c.fill()}
+          c.strokeStyle='#2a1c10';c.lineWidth=2;c.beginPath();c.arc(x,y,big?13:9,0,Math.PI*2);c.stroke();
+          c.font=`bold ${big?34:26}px Georgia, ${CJK}`;c.lineWidth=6;c.strokeStyle='rgba(245,236,210,.9)';const dy=label==='Latina'?34:-14;c.strokeText(label,x,y+dy);c.fillStyle='#2a1c10';c.fillText(label,x,y+dy)}
+      },2048,1024));
+      box(.5,.12,.5,MAT.darkWood,gx,.06,gz);add(own(new THREE.CylinderGeometry(.07,.12,.82,10)),MAT.darkWood,gx,.53,gz,root);
+      add(own(new THREE.CylinderGeometry(1.25,1.25,.06,36,1,true)),MAT.brass,gx,1.9,gz,root);
+      const tilt=new THREE.Group();tilt.position.set(gx,1.9,gz);tilt.rotation.z=.41;root.add(tilt);
+      const globeCard={type:'intl-card',title:'The globe',author:'The seven languages of the wing, marked where they are spoken: Español, Português, Français, 中文, Latina, Italiano, Українська. A door for each of them stands round this room.',action:'LOOK'};
+      mark(add(own(new THREE.TorusGeometry(R+.07,.03,6,40)),MAT.brass,0,0,0,tilt),globeCard);
+      const spin=new THREE.Group();tilt.add(spin);spin.rotation.y=-1.1;
+      mark(add(own(new THREE.SphereGeometry(R,40,24)),own(new THREE.MeshStandardMaterial({map:globeMap,roughness:.5,metalness:.05})),0,0,0,spin),globeCard);
+      room.ticks.push(t=>{spin.rotation.y=-1.1+t*.06});block(gx,gz,2.6,2.6);
+      // A compass rose inlaid in the floor round the globe.
+      const rose=own(canvasTexture((c,W,H)=>{c.clearRect(0,0,W,H);c.translate(W/2,H/2);c.strokeStyle='#c9a45a';c.lineWidth=6;c.beginPath();c.arc(0,0,W*.46,0,Math.PI*2);c.stroke();c.lineWidth=2;c.beginPath();c.arc(0,0,W*.42,0,Math.PI*2);c.stroke();
+        for(let k=0;k<16;k++){c.save();c.rotate(k*Math.PI/8);const long=k%4===0,mid=k%2===0;c.beginPath();c.moveTo(0,-W*(long?.44:mid?.32:.24));c.lineTo(W*.035,0);c.lineTo(-W*.035,0);c.closePath();c.fillStyle=k%4===0?'#c9a45a':'#8a6a3a';c.fill();c.restore()}
+        c.fillStyle='#e8d6a6';c.font='bold 46px Georgia';c.textAlign='center';c.textBaseline='middle';c.fillText('N',0,-W*.38+0);c.fillText('S',0,W*.38);c.fillText('E',W*.38,0);c.fillText('W',-W*.38,0)},512,512));
+      const roseMesh=add(own(new THREE.PlaneGeometry(5,5)),own(new THREE.MeshStandardMaterial({map:rose,transparent:true,roughness:.6,depthWrite:false})),gx,.012,gz,root);roseMesh.rotation.x=-Math.PI/2;
+      // An atlas open on a stand by the way in, at the world and at a page of welcomes.
+      const ax=cx+5,az=cz+3.2,atlas=new THREE.Group();atlas.position.set(ax,0,az);atlas.rotation.y=Math.PI*.82;root.add(atlas);
+      box(.5,1.0,.4,MAT.darkWood,0,.5,0,atlas);const top=box(1.3,.05,.8,MAT.darkWood,0,1.05,0,atlas);top.rotation.x=-.28;
+      const welcome=own(canvasTexture((c,W,H)=>{c.fillStyle='#efe4c8';c.fillRect(0,0,W,H);c.fillStyle='#3a2a18';c.textAlign='center';c.font='bold 30px Georgia';c.fillText('THE INTERNATIONAL WING',W/2,60);
+        c.font=`28px Georgia, ${CJK}`;['Bienvenidos','Bem-vindos','Bienvenue','歡迎','Salvete','Benvenuti','Ласкаво просимо'].forEach((word,i)=>c.fillText(word,W/2,130+i*52));c.font='italic 22px Georgia';c.fillText('seven doors, seven languages',W/2,H-36)},512,560));
+      const atlasCard={type:'intl-card',title:'An atlas',author:'Open at the world, and at a page that says welcome in each of the wing’s languages: Bienvenidos, Bem-vindos, Bienvenue, 歡迎, Salvete, Benvenuti, Ласкаво просимо.',action:'READ'};
+      const page=(map,x)=>{const m=add(own(new THREE.PlaneGeometry(.58,.66)),own(new THREE.MeshStandardMaterial({map,roughness:.85,side:THREE.DoubleSide})),x,1.085,.02,atlas);m.rotation.x=-Math.PI/2-.28;mark(m,atlasCard)};
+      page(globeMap,-.3);page(welcome,.3);block(ax,az,1.2,1.2);
+      // Pennants strung across the lobby in the colours of the seven rooms' doors.
+      const tri=own(new THREE.BufferGeometry());tri.setAttribute('position',new THREE.Float32BufferAttribute([-.17,0,0,.17,0,0,0,-.42,0],3));tri.computeVertexNormals();
+      const colours=['#c8102e','#ffc400','#2f8f4e','#2a5bd7','#c0392b','#8a6a2a','#2b8a3e','#0057b7','#ffd700'],per=22,lines=[cz+1,cz+5.5];
+      const pennants=own(new THREE.InstancedMesh(tri,own(new THREE.MeshStandardMaterial({roughness:.8,side:THREE.DoubleSide})),per*lines.length)),dummy=new THREE.Object3D(),colour=new THREE.Color();
+      lines.forEach((lz,line)=>{for(let i=0;i<per;i++){const f=(i+.5)/per,x=cx-w/2+.4+f*(w-.8),y=h-.5-Math.sin(f*Math.PI)*.7;dummy.position.set(x,y,lz);dummy.rotation.set(0,0,0);dummy.updateMatrix();pennants.setMatrixAt(line*per+i,dummy.matrix);pennants.setColorAt(line*per+i,colour.set(colours[(i+line*4)%colours.length]))}});
+      root.add(pennants);
+      // The way back to the Grand Hall, in the south wall behind the way in.
+      const exit={type:'intl-exit',title:'Back to the Grand Hall',author:'The visitors’ book is just outside.',action:'RETURN'};
+      if(!hangWing(root,'hub',{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,label:EXIT_LABELS.hub,own})){const slab=box(1.9,3.1,.16,own(new THREE.MeshStandardMaterial({color:DOOR_LOOKS.hub.color,roughness:.7})),cx,1.55,cz+d/2-.2);mark(slab,exit)}
+      room.exit=exit;
+    }
     function dressUkrainian({cx,cz,w,d,box,own,mark,root,block,placeBook,list,room,def}){
       furnishUkrainian({cx,cz,w,d,box,own,mark,root,block,placeBook,list,room,def});
       const Z=cz-d/2+.26,EX=cx+w/2-.19;
@@ -562,6 +661,17 @@
         add(new THREE.BoxGeometry(3.5,.66,.34),MAT.stone,0,4.6,.12,g);add(new THREE.BoxGeometry(3.8,.12,.44),MAT.stone,0,4.99,.14,g);
         mark(add(new THREE.PlaneGeometry(3.3,.46),new THREE.MeshStandardMaterial({map:carved('LIBROS · LIVROS · LIVRES · 書 · LIBRI · КНИЖКИ',1024,144,`Georgia,${CJK}`),roughness:.9}),0,4.6,.295,g),doorData)}
       else mark(add(new THREE.BoxGeometry(1.9,3.1,.14),new THREE.MeshStandardMaterial({color:DOOR_LOOKS.spanish.color,roughness:.75}),0,1.55,.08,g),doorData);
+      // The way to the Ukrainian Reading Room, beside the wing's door: a blue board with a sunflower, and sunflowers in a jar.
+      // Either one takes the reader through the wing and straight into the room.
+      const ukrainianSign=canvasTexture((c,W,H)=>{c.fillStyle='#1f4f9a';c.fillRect(0,0,W,H*.62);c.fillStyle='#f2c230';c.fillRect(0,H*.62,W,H*.38);
+        c.strokeStyle='#d7ae60';c.lineWidth=12;c.strokeRect(6,6,W-12,H-12);c.textAlign='center';c.textBaseline='middle';
+        c.fillStyle='#ffd54a';c.font='bold 58px Georgia';c.fillText('УКРАЇНСЬКА',W/2,H*.17);c.fillText('ЧИТАЛЬНЯ',W/2,H*.32);
+        c.fillStyle='#ffffff';c.font='italic 38px Georgia';c.fillText('The Ukrainian Reading Room',W/2,H*.49);
+        c.fillStyle='#1f2a44';c.font='34px Georgia';c.fillText('Заходьте · Come in →',W/2,H*.8)},640,420);
+      const signData={type:'intl-ukraine',title:'Українська читальня',author:'Класика українською мовою, від Котляревського й Шевченка до Лесі Українки, Франка й Коцюбинського. Заходьте! (The Ukrainian Reading Room, through the International Wing: Ukrainian classics, each with a librarian’s note in Ukrainian and English. Come in!)',action:'ENTER'};
+      add(new THREE.BoxGeometry(1.58,1.08,.04),MAT.darkWood||MAT.stone,2.6,1.95,.1,g);
+      mark(add(new THREE.PlaneGeometry(1.48,.98),new THREE.MeshStandardMaterial({map:ukrainianSign,emissive:0xffffff,emissiveMap:ukrainianSign,emissiveIntensity:.6,roughness:.8}),2.6,1.95,.125,g),signData);
+      const flowers=sunflowerJar(g,2.6,.45,.4);flowers.group.scale.setScalar(1.25);mark(flowers.jar,signData);mark(flowers.heads,signData);
       const l=new THREE.PointLight(0xffc27a,1.1,5,2);l.position.set(0,3.9,1.1);g.add(l);
     }
 
@@ -580,8 +690,9 @@
       // The tiled dado, 1.1 m high all round, capped with a wooden rail.
       for(const [x,z,sw,sd,len] of [[cx,cz-d/2+.17,w-.4,.05,w],[cx,cz+d/2-.17,w-.4,.05,w],[cx-w/2+.17,cz,.05,d-.4,d],[cx+w/2-.17,cz,.05,d-.4,d]]){
         const t=own(tiles.clone());t.repeat.set(Math.round(len/.55),2);box(sw,1.1,sd,own(new THREE.MeshStandardMaterial({map:t,roughness:.45})),x,.55,z);box(sw,.07,sd+.06,MAT.darkWood,x,1.13,z)}
-      const sign=add(own(new THREE.PlaneGeometry(6,.86)),own(new THREE.MeshStandardMaterial({map:own(plaque(def.sign,def.sub,1100,158,'#1d2a3d',def.font)),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.3})),cx,5.28,cz-d/2+.24,root);
+      const sign=add(own(new THREE.PlaneGeometry(def.hub?9.5:6,def.hub?1.1:.86)),own(new THREE.MeshStandardMaterial({map:own(plaque(def.sign,def.sub,def.hub?1500:1100,def.hub?174:158,'#1d2a3d',def.font)),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.3})),cx,def.hub?h-.8:5.28,cz-d/2+.24,root);
       mark(sign,{type:'intl-card',title:def.card[0],author:def.card[1],action:'READ'});
+      if(def.hub){buildHub({cx,cz,w,d,h,box,own,mark,root,block,room});scene.add(root);return}
       // Books face-out on sloping racks: three tiers along the north wall, three along the west wall.
       const spots=[];
       for(let row=0;row<3;row++)for(let i=0;i<10;i++)spots.push({x:cx-9.9+i*2.2,z:cz-d/2+.42,y:1.62+row*1.12,yaw:0});
@@ -614,28 +725,12 @@
           const mesh=add(own(new THREE.PlaneGeometry(.5,.5)),own(new THREE.MeshStandardMaterial({map:flag,roughness:.7})),ex-.18,4.15,cz-2.1,root);mesh.rotation.y=-Math.PI/2}}
       if(key==='ukrainian')dressUkrainian({cx,cz,w,d,box,own,mark,root,block,placeBook,list,room,def});
       if(key==='italian')dressItalian({cx,cz,w,d,own,mark,block,root});
-      // The doors in the east wall of the Spanish room: green to the Portuguese room, blue to the French, red to the Chinese.
+      // Door signs, and the Latin room's door in its east wall to the Italian.
       const doorSign=(signText,signSub,font,x,z,yaw,data)=>{const board=add(own(new THREE.PlaneGeometry(2.6,.5)),own(new THREE.MeshStandardMaterial({map:own(plaque(signText,signSub,780,150,'#23170e',font)),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.25})),x,4.95,z,root);board.rotation.y=yaw;mark(board,data)};
       const plainDoor=(x,z,yaw,color,data)=>{const slab=box(1.9,3.1,.16,own(new THREE.MeshStandardMaterial({color,roughness:.7})),x,1.55,z);slab.rotation.y=yaw;mark(slab,data)};
-      // The doors in the east wall of the Spanish room face west, into it.
       const eastDoor=(z,wing,data,signText,signSub,font='Georgia')=>{const x=cx+w/2-.2;
         if(!hangWing(root,wing,{data,mark,x,z,yaw:-Math.PI/2,own}))plainDoor(x,z,Math.PI/2,DOOR_LOOKS[wing].color,data);
         doorSign(signText,signSub,font,x-.14,z,-Math.PI/2,data);block(x-.3,z,.6,2.4)};
-      if(key==='spanish'){
-        eastDoor(ROOM_DOORS.portuguese.z,'portuguese',{type:'intl-go',room:'portuguese',title:'Sala de leitura em português',author:'Clássicos em português, cada um com uma nota da bibliotecária. (The Portuguese Reading Room.)',action:'ENTER'},'SALA DE LEITURA EM PORTUGUÊS','Entre · The Portuguese Reading Room');
-        eastDoor(ROOM_DOORS.french.z,'french',{type:'intl-go',room:'french',title:'Salle de lecture en français',author:'Des classiques en français, chacun avec une note de la bibliothécaire. (The French Reading Room.)',action:'ENTER'},'SALLE DE LECTURE EN FRANÇAIS','Entrez · The French Reading Room');
-        {const d=ROOM_DOORS.latin,data={type:'intl-go',room:'latin',title:'Conclave Latinum',author:'The Latin Reading Room: the Romans in their own words. (Intrate.)',action:'ENTER'};
-          if(!hangWing(root,'latin',{data,mark,x:d.x,z:d.z,yaw:Math.PI,own}))plainDoor(d.x,d.z,0,DOOR_LOOKS.latin.color,data);
-          doorSign('CONCLAVE LATINVM','Intrate · The Latin Reading Room','Georgia',d.x,d.z-.14,Math.PI,data);block(d.x,d.z-.3,2.4,.6)}
-        {const d=ROOM_DOORS.ukrainian,data={type:'intl-go',room:'ukrainian',title:'Українська читальня',author:'Класика українською мовою, кожна книжка з приміткою бібліотекарки. (The Ukrainian Reading Room.)',action:'ENTER'};
-          if(!hangWing(root,'ukrainian',{data,mark,x:d.x,z:d.z,yaw:Math.PI,own}))plainDoor(d.x,d.z,0,DOOR_LOOKS.ukrainian.color,data);
-          doorSign('УКРАЇНСЬКА ЧИТАЛЬНЯ','Заходьте · The Ukrainian Reading Room','Georgia',d.x,d.z-.14,Math.PI,data);block(d.x,d.z-.3,2.4,.6)}
-        // The Italian room's own door from the lobby, between the way out and the Latin room's door.
-        {const d=ROOM_DOORS.italian,data={type:'intl-go',room:'italian',door:'italian',title:'Sala di lettura in italiano',author:'Classici in italiano, ciascuno con una nota della bibliotecaria. (The Italian Reading Room.)',action:'ENTER'};
-          if(!hangWing(root,'italian',{data,mark,x:d.x,z:d.z,yaw:Math.PI,own}))plainDoor(d.x,d.z,0,DOOR_LOOKS.italian.color,data);
-          doorSign('SALA DI LETTURA IN ITALIANO','Entrate · The Italian Reading Room','Georgia',d.x,d.z-.14,Math.PI,data);block(d.x,d.z-.3,2.4,.6)}
-        eastDoor(ROOM_DOORS.chinese.z,'chinese',{type:'intl-go',room:'chinese',title:'中文閱覽室',author:'中文經典，每一本都附有館員的短評。(The Chinese Reading Room.)',action:'ENTER'},'中文閱覽室','請進 · The Chinese Reading Room',CJK);
-      }
       // From Virgil to Dante: the Latin room's east wall opens on the Italian.
       if(key==='latin')eastDoor(ROOM_DOORS['italian-latin'].z,'italian',{type:'intl-go',room:'italian',door:'italian-latin',title:'Sala di lettura in italiano',author:'Classici in italiano, ciascuno con una nota della bibliotecaria. (The Italian Reading Room.)',action:'ENTER'},'SALA DI LETTURA IN ITALIANO','Entrate · The Italian Reading Room');
       // The reading table, with a lamp, and the lectern by the door with tonight's book.
@@ -650,11 +745,9 @@
       if(pick){const lx=cx-4,lz=cz+d/2-2.6;box(.5,1.05,.4,MAT.darkWood,lx,.52,lz);const top=box(.8,.05,.6,MAT.darkWood,lx,1.1,lz);top.rotation.x=.3;block(lx,lz,.8,.7);
         const card=own(plaque(def.lectern,def.lecternSub||'',420,def.lecternSub?96:70,'#1d2a3d',def.font));const label=add(own(new THREE.PlaneGeometry(.8,def.lecternSub?.18:.14)),own(new THREE.MeshStandardMaterial({map:card,roughness:.8,emissive:0xffffff,emissiveMap:card,emissiveIntensity:.3})),lx,1.34,lz-.2,root);label.rotation.x=-.2;
         const mesh=placeBook(pick,{x:lx,y:1.42,z:lz-.02,yaw:0});mesh.rotation.x=-1.05;mesh.userData.home.quaternion.copy(mesh.quaternion);mesh.userData.featured=true}
-      // The way out: to the Grand Hall from the Spanish room, back to the Spanish room from the others (the Italian, back
-      // to whichever room the reader came in from: see italianExit).
-      const exit=key==='spanish'?{type:'intl-exit',title:'Back to the Grand Hall',author:'The visitors’ book is just outside.',action:'RETURN'}
-        :key==='italian'?italianExit({type:'intl-go',action:'RETURN'})
-        :{type:'intl-go',room:'spanish',back:key,title:'Sala de lectura en español',author:({chinese:'回到西班牙文閱覽室。',french:'Retour à la salle espagnole. ',latin:'Redi. ',ukrainian:'Назад до іспанської читальні. '}[key]||'')+'Back to the Spanish Reading Room.',action:'RETURN'};
+      // The way out, back to the lobby (the Italian, back to whichever room the reader came in from: see italianExit).
+      const exit=key==='italian'?italianExit({type:'intl-go',action:'RETURN'})
+        :{type:'intl-go',room:'hub',back:key,title:'The International Wing',author:({spanish:'Volver al ala internacional. ',portuguese:'Voltar à ala internacional. ',chinese:'回到國際館。',french:'Retour à l’aile internationale. ',latin:'Redi. ',ukrainian:'Назад до Міжнародного крила. '}[key]||'')+'Back to the International Wing.',action:'RETURN'};
       if(!hangWing(root,key,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,label:EXIT_LABELS[key],own}))plainDoor(cx,cz+d/2-.2,0,DOOR_LOOKS[key].color,exit);
       room.exit=exit;scene.add(root);
     }
@@ -663,7 +756,7 @@
       const door=via.italian==='italian-latin'?'italian-latin':'italian';
       return Object.assign(exit,{room:outOf(door),back:door},door==='italian-latin'
         ?{title:'Conclave Latinum',author:'Torna alla sala latina. Back to the Latin Reading Room.'}
-        :{title:'Sala de lectura en español',author:'Torna alla sala spagnola. Back to the Spanish Reading Room.'})}
+        :{title:'The International Wing',author:'Torna all’ala internazionale. Back to the International Wing.'})}
 
     // The wing's two lamps, moved to the room the reader is in: one overhead, one on the reading table.
     function placeLamps(key){
@@ -683,12 +776,12 @@
     }
 
     // ---------- doing things ----------
-    function enter(key='spanish',door=key){
-      const def=ROOMS[key]||ROOMS.spanish;key=ROOMS[key]?key:'spanish';
+    function enter(key='hub',door=key){
+      const def=ROOMS[key]||ROOMS.hub;key=ROOMS[key]?key:'hub';
       via[key]=ROOM_DOORS[door]&&opensOn(door)===key?door:key;if(key==='italian'&&built.italian)italianExit(built.italian.exit);
       activate(key);placeLamps(key);move(def.cx,def.cz+def.d/2-1.4,0);playSample?.('doorOpen',.8,.96);
       showNotice(def.welcome(featured(key)),9);
-      analytics?.track('Room Explored',{room:key==='spanish'?'international-wing':`international-wing-${key}`});
+      analytics?.track('Room Explored',{room:key==='hub'?'international-wing':`international-wing-${key}`});
     }
     // Leontovych's Shchedryk on the bandura: its four-note figure (B flat, A, B flat, G) in bars of three, eight times,
     // with the bass stepping down from G to D in the second four bars.
@@ -698,9 +791,10 @@
       return at+1}
     function interact(object){
       const data=object?.userData;if(!data||typeof data.type!=='string'||!data.type.startsWith('intl-'))return false;
-      if(data.type==='intl-door'){through(data,()=>enter('spanish'));return true}
+      if(data.type==='intl-door'){through(data,()=>enter('hub'));return true}
+      if(data.type==='intl-ukraine'){through(doorData,()=>enter('ukrainian'));return true}
       if(data.type==='intl-go'){
-        // Back from another room: out through its door, into the room it opens from (the Spanish room, or the Latin).
+        // Back from another room: out through its door, into the room it opens from (the lobby, or the Latin room).
         through(data,()=>{if(data.back){const from=ROOM_DOORS[data.back]||ROOM_DOORS.portuguese,into=outOf(data.back);activate(into);placeLamps(into);move(from.x-Math.sin(-from.yaw)*1.8,from.z-Math.cos(from.yaw)*1.8,from.yaw);playSample?.('doorOpen',.8,1);showNotice(`${ROOMS[into].card[0]}.`,3)}
         else enter(data.room,data.door)});
         return true;
@@ -740,13 +834,13 @@
     function update(t){
       time=t;const {x,z}=player.pos,here=roomAt(x,z);
       if(here){activate(here);placeLamps(here);for(const tick of built[here].ticks)tick(t)}
-      if(Math.hypot(x-DOOR.x,z-DOOR.z)<PRELOAD)activate('spanish');
+      if(Math.hypot(x-DOOR.x,z-DOOR.z)<PRELOAD)activate('hub');
       for(const [key,door] of Object.entries(ROOM_DOORS))if(here===outOf(key)&&Math.hypot(x-door.x,z-door.z)<PRELOAD)activate(opensOn(key));
       for(const key of Object.keys(built)){const room=built[key];
         if(key!==here&&t-lastNeeded[key]>KEEP&&!isHolding()&&!room.books.some(b=>b.parent!==room.root))unload(key)}
     }
     buildDoor();
     return {contains,floorAt,allowed,interact,update,enter,unload:()=>{for(const key of Object.keys(built))unload(key)},featured,roomAt,door:DOOR,room:ROOM,rooms:ROOMS,
-      get built(){return !!built.spanish},isBuilt:key=>!!built[key],get books(){return Object.values(built).flatMap(room=>room.books)},zoneAt:(x,z)=>contains(x,z)?'international-wing':null};
+      get built(){return !!built.hub},isBuilt:key=>!!built[key],get books(){return Object.values(built).flatMap(room=>room.books)},zoneAt:(x,z)=>contains(x,z)?'international-wing':null};
   };
 })();
