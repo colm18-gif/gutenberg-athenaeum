@@ -1,7 +1,7 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-11-05",
+ "updated": "2026-11-06",
  "days": {
   "2026-09-25": {
    "books": [
@@ -223,57 +223,57 @@ window.ATHENAEUM_DAILY_RESOLVED={
    ],
    "missing": []
   },
-  "2026-10-23": {
+  "2026-09-29": {
    "books": [
     {
-     "id": 608,
-     "title": "Areopagitica",
-     "author": "John Milton"
+     "id": 394,
+     "title": "Cranford",
+     "author": "Elizabeth Cleghorn Gaskell"
     },
     {
-     "id": 3207,
-     "title": "Leviathan",
-     "author": "Thomas Hobbes"
+     "id": 4276,
+     "title": "North and South",
+     "author": "Elizabeth Cleghorn Gaskell"
     },
     {
-     "id": 26,
-     "title": "Paradise Lost",
-     "author": "John Milton"
+     "id": 2153,
+     "title": "Mary Barton",
+     "author": "Elizabeth Cleghorn Gaskell"
     },
     {
-     "id": 17460,
-     "title": "Lorna Doone",
-     "author": "R. D. Blackmore"
+     "id": 4274,
+     "title": "Wives and Daughters",
+     "author": "Elizabeth Cleghorn Gaskell"
     },
     {
-     "id": 1232,
-     "title": "The Prince",
-     "author": "Niccolò Machiavelli"
+     "id": 4275,
+     "title": "Ruth",
+     "author": "Elizabeth Cleghorn Gaskell"
     },
     {
-     "id": 32188,
-     "title": "Eikon Basilike",
-     "author": "Charles I"
+     "id": 4268,
+     "title": "Cousin Phillis",
+     "author": "Elizabeth Cleghorn Gaskell"
     },
     {
-     "id": 36462,
-     "title": "King Arthur and the Knights of the Round Table",
-     "author": "Sir Thomas Malory"
+     "id": 4537,
+     "title": "Sylvia's Lovers",
+     "author": "Elizabeth Cleghorn Gaskell"
     },
     {
-     "id": 703,
-     "title": "Lucasta",
-     "author": "Richard Lovelace"
+     "id": 996,
+     "title": "Don Quixote",
+     "author": "Miguel de Cervantes Saavedra"
     },
     {
-     "id": 9785,
-     "title": "Woodstock",
-     "author": "Walter Scott"
+     "id": 14420,
+     "title": "Exemplary Novels",
+     "author": "Miguel de Cervantes Saavedra"
     },
     {
-     "id": 21558,
-     "title": "The Children of the New Forest",
-     "author": "Frederick Marryat"
+     "id": 61561,
+     "title": "The Wanderings of Persiles and Sigismunda",
+     "author": "Miguel de Cervantes Saavedra"
     }
    ],
    "missing": []
