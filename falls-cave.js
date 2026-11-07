@@ -50,10 +50,10 @@
       add(own(new THREE.CircleGeometry(9,40)),wet,cx,0,cz).rotation.x=-Math.PI/2;
       const dome=add(own(new THREE.SphereGeometry(8.6,28,14,0,Math.PI*2,0,Math.PI/2)),std({map:rockTex,color:0x6a7078,roughness:1,side:THREE.BackSide,emissive:0x040507}),cx,-.4,cz);dome.scale.set(1,.72,.86);
       const geo=own(new THREE.DodecahedronGeometry(1,1));
-      for(let i=0;i<26;i++){const a=i/26*Math.PI*2;if(Math.abs(Math.atan2(Math.sin(a),Math.cos(a)))<.42)continue;const R=7+r()*.8,x=cx+Math.sin(a)*R,z=cz+Math.cos(a)*R*.86,s=1.4+r()*1.6,b=add(geo,rock,x,s*.5,z);b.scale.set(s,s*(1+r()*.8),s);b.rotation.set(r()*3,r()*3,r()*3)}
+      for(let i=0;i<30;i++){const a=i/30*Math.PI*2;if(Math.abs(Math.atan2(Math.sin(a),Math.cos(a)))<.42||Math.abs(Math.cos(a))<.42)continue;const R=7.6+r()*.6,x=cx+Math.sin(a)*R,z=cz+Math.cos(a)*R*.86,s=1+r()*1.1,b=add(geo,rock,x,s*.5,z);b.scale.set(s,s*(1+r()*.8),s);b.rotation.set(r()*3,r()*3,r()*3)}
       for(let i=0;i<9;i++){const x=cx+(r()-.5)*9,z=cz-5+(r()-.5)*4,b=add(geo,rock,x,h-.6+r()*.6,z);b.scale.set(1+r(),.5+r()*.6,1+r())}// hanging from the roof
       // The mouth, to the south: the falls a curtain across it, lit by the moon behind, and spray rising off the floor.
-      const waterTex=own(canvasTexture((c,W,H)=>{c.fillStyle='rgba(150,180,205,.55)';c.fillRect(0,0,W,H);const r2=seeded(9);for(let i=0;i<300;i++){const x=r2()*W,len=20+r2()*100,y=r2()*H,a=.2+r2()*.7,g=c.createLinearGradient(0,y,0,y+len);g.addColorStop(0,'rgba(240,248,255,0)');g.addColorStop(.5,`rgba(240,248,255,${a})`);g.addColorStop(1,'rgba(240,248,255,0)');c.fillStyle=g;c.fillRect(x,y,1+r2()*3,len)}},128,256));
+      const waterTex=own(canvasTexture((c,W,H)=>{c.fillStyle='rgba(150,180,205,.55)';c.fillRect(0,0,W,H);const r2=seeded(9);for(let i=0;i<300;i++){const x=r2()*W,len=20+r2()*100,y=r2()*H,a=.2+r2()*.7,wd=1+r2()*3;for(const yy of [y,y-H]){const g=c.createLinearGradient(0,yy,0,yy+len);g.addColorStop(0,'rgba(240,248,255,0)');g.addColorStop(.5,`rgba(240,248,255,${a})`);g.addColorStop(1,'rgba(240,248,255,0)');c.fillStyle=g;c.fillRect(x,yy,wd,len)}}},128,256));
       waterTex.wrapS=waterTex.wrapT=THREE.RepeatWrapping;waterTex.repeat?.set?.(1.5,2);
       const curtain=add(own(new THREE.PlaneGeometry(5.6,5.2)),own(new THREE.MeshBasicMaterial({map:waterTex,color:0xcfe2f0,transparent:true,opacity:.92,side:THREE.DoubleSide,depthWrite:false})),cx,2.5,cz+d/2+.15);curtain.rotation.y=Math.PI;
       mark(curtain,{...card('curtain'),type:'falls-cave-out',action:'GO OUT'});
@@ -63,7 +63,7 @@
       const top=add(geo,rock,cx,5.4,cz+d/2-.2);top.scale.set(4,1.2,1.4);
       const N=50,pos=new Float32Array(N*3);for(let i=0;i<N;i++){pos[i*3]=cx+(r()-.5)*5;pos[i*3+1]=r()*2.5;pos[i*3+2]=cz+d/2-.4-r()*1.5}
       const sprayGeo=own(new THREE.BufferGeometry()),sprayAttr=new THREE.Float32BufferAttribute(pos,3);sprayGeo.setAttribute('position',sprayAttr);
-      const spray=new THREE.Points(sprayGeo,own(new THREE.PointsMaterial({color:0xdde8f2,size:.25,transparent:true,opacity:.3,depthWrite:false})));spray.raycast=()=>{};root.add(spray);
+      const spray=new THREE.Points(sprayGeo,own(new THREE.PointsMaterial({color:0xdde8f2,size:.1,map:own(canvasTexture((c,w,h)=>{const g2=c.createRadialGradient(w/2,h/2,0,w/2,h/2,w/2);g2.addColorStop(0,'rgba(255,255,255,1)');g2.addColorStop(1,'rgba(255,255,255,0)');c.fillStyle=g2;c.fillRect(0,0,w,h)},32,32)),transparent:true,opacity:.4,depthWrite:false})));spray.raycast=()=>{};root.add(spray);
       // A pool inside the mouth, where the spray runs back, and a stone with words cut in it beside it.
       const pool=add(own(new THREE.CircleGeometry(1.6,24)),std({color:0x0b1820,roughness:.08,metalness:.35,emissive:0x04090d}),cx+2.6,.02,cz+3.1);pool.rotation.x=-Math.PI/2;pool.scale.set(1.3,1,1);block(cx+2.6,cz+3.1,4.2,3.2);
       const stoneTex=own(canvasTexture((c,W,H)=>{c.fillStyle='#4a4e55';c.fillRect(0,0,W,H);c.fillStyle='#1e2024';c.font='italic 21px Georgia';c.textAlign='center';const words=QUOTES.reichenbach.split(' ');let line='',y=40;for(const wd of words){if(c.measureText(line+' '+wd).width>W-40){c.fillText(line,W/2,y);y+=28;line=wd}else line=line?line+' '+wd:wd}c.fillText(line,W/2,y)},512,256));
@@ -91,7 +91,7 @@
     // ---------- walking ----------
     function contains(x,z){return Math.abs(x-CAVE.cx)<CAVE.w/2+1&&Math.abs(z-CAVE.cz)<CAVE.d/2+1}
     function floorAt(x,z){return contains(x,z)?0:null}
-    function allowed(x,z){if(!root||!contains(x,z))return false;const rad=player.radius||.42,dx=(x-CAVE.cx)/5.9,dz=(z-CAVE.cz)/(CAVE.d/2-.2);
+    function allowed(x,z){if(!root||!contains(x,z))return false;const rad=player.radius||.42,dx=(x-CAVE.cx)/5.6,dz=(z-CAVE.cz)/(CAVE.d/2-.2);
       if(dx*dx+dz*dz>1)return false;return !blockers.some(b=>x+rad>b.minX&&x-rad<b.maxX&&z+rad>b.minZ&&z-rad<b.maxZ)}
 
     // ---------- coming and going ----------
