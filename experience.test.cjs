@@ -247,7 +247,7 @@ test('hidden doors preserve the configured arrival yaw',()=>{
 });
 
 test('themed-room exits face clear south walls and return beside their discoveries',()=>{
-  assert.match(game,/function memoryDoor\([^\n]+rot=0,themeExit=false\)[^\n]+group\.rotation\.y=rot/);
+  assert.match(game,/function memoryDoor\([^\n]+rot=0,themeExit=false,look=null\)[^\n]+group\.rotation\.y=rot/);
   const exits=[
     ['gothic',95,22,0,-27],['inquiry',120,22,14,-27],['chart',145,22,-33,9],
     ['drawing',95,54,-33,-8],['study',120,54,30,-10.5],['garden',145,54,33,-9],

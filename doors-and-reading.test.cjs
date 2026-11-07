@@ -42,7 +42,7 @@ test('rooms behind doors dress their doors from the kit: painted, glazed, boarde
 
 test('memory doors and after-dark entrances use the kit and wait for the swing before moving the reader',()=>{
   const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(m=>m[1]);assert.ok(order.indexOf('library-doors.js')>-1&&order.indexOf('library-doors.js')<order.indexOf('game.js'));
-  assert.match(game,/dressMemoryDoor\(group,door,destination,industrial,forbidden,themeExit\);return door/);
+  assert.match(game,/dressMemoryDoor\(group,door,destination,industrial,forbidden,themeExit,look\);return door/);
   assert.match(game,/getDoorKit\(\)\.open\(d\.kit,\(\)=>\{d\.opening=false;passMemoryDoor\(d\)\}\)/);
   assert.match(game,/getDoorKit\(\)\?\.update\(dt\)/);
   const afterDark=fs.readFileSync('after-dark-expansion.js','utf8');

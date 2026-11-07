@@ -197,7 +197,7 @@
       wells:{beds:[['hum',.05]],events:[['telegraph',.6,.04]]},
       haggard:{beds:[['wind',.08],['insects',.07]],events:[['thump',.6,.045]]},
       doyle:{beds:[['fire',.06]],ticks:[[1,'tock',.04]],events:[['clop',.8,.045],['rustle',1,.035]]},
-      contested:{beds:[['air',.06]],events:[['whisper',2.2,.035],['scratch',.8,.035]]},
+      contested:{beds:[['fire',.05],['air',.05]],events:[['crackle',20,.07],['snap',3,.05],['whisper',2.2,.03],['scratch',.8,.035]]},
       // No ticking: it pulled attention from the page. The clocks only chime, softly and rarely.
       'curious-horologist':{beds:[['air',.04]],events:[['chime',.35,.05]]},
       'curious-conservatory':{beds:[['fountain',.12],['insects',.08]],events:[['cricket',14,.04],['owl',.6,.045],['drip',3,.035]]},

@@ -231,10 +231,16 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   are out at random on each visit, in pigeonholes, each with an invented tag saying where it was found (`FOUND`); the
   bell on the counter clears them and brings out a lot that was not just there. A book carried to the car is put back.
   Keep the stock at thirty or more so two lots never overlap.
-- The Unwelcome Spines (`buildContestedRoom` in `game.js`, x 170, z 14) is behind the door bound in banned pages beyond
+- The Unwelcome Spines (`buildContestedRoom` in `game.js`, x 170, z 14) is behind the door bound in banned books beyond
   the Restricted Catalogue: books once banned, burned, prosecuted or suppressed, from the shelf `contested` in
-  `data/new-books.js` (category `Contested`, which the room's chair and the east-side recommendations draw on),, in
-  three cases of ten.
+  `data/new-books.js` (category `Contested`, which the room's chair and the east-side recommendations draw on), in
+  three cases of ten. Both sides of its door are the kit's `banned` style (`library-doors.js`): the leaf pasted over with
+  torn, censored pages, a leather spine of raised bands, iron straps, a chain hanging from an open padlock, and a frame
+  of the books themselves (stacked up the jambs, upright along the lintel, `BANNED` titles gilt on one spine atlas, merged
+  into one mesh). `dressContestedRoom` dresses the room: a brazier of embers with sparks and smoke (the room's one lamp
+  flickers as firelight; no new light), the Index's title page, Milton's Areopagitica (`CONTESTED_MILTON`, checked
+  against pg608) and Heine's Almansor on the walls, the censor's desk, pages pegged on lines and trodden into the floor
+  (InstancedMeshes). Claims on its cards come from the shelf's own notes.
 - The four memory rooms below the catalogue (`buildMemoryRooms` in `game.js`, x 72–167, z −20, through the basement:
   Names in the Dust, The Longer Silence, St—ll W—ting and What Was Kept) are stocked from the shelves `returning`,
   `quiet`, `unread` and `repository` in `data/new-books.js`. The Repository's
