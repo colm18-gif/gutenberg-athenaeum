@@ -138,6 +138,8 @@
       'lost-property':{beds:[['air',.03]],events:[['creak',1.1,.05],['rustle',1.2,.04]]},
       // The Map Room: a quiet room, a clock, and big sheets of paper being turned over.
       'map-room':{beds:[['air',.035]],ticks:[[1.6,'tock',.025]],events:[['rustle',1.4,.04]]},
+      // The explorers' anteroom: a store room with the wind outside it, and the timbers of a ship's locker creaking.
+      'explorers-anteroom':{beds:[['wind',.035],['air',.04]],events:[['creak',.7,.03]]},
       // The Medicine Room: a still room, a clock, and the heavy leaves of the Fabrica being turned.
       'medicine-room':{beds:[['air',.03]],ticks:[[1.2,'tock',.022]],events:[['rustle',1,.04],['creak',.4,.03]]},
       // The Naturalist's Cabinet: a study at dusk, a clock, a page turned, and now and then a bird beyond the window.
@@ -238,8 +240,8 @@
 
     // ---------- Rooms: built on entry, crossfaded, torn down once silent ----------
     const rooms=new Map();let current=null,duck=1;
-    function buildRoom(id){const recipe=RECIPES[id];if(!recipe)return null;const out=ctx.createGain();out.gain.value=0;out.connect(bus);const room={id,recipe,out,beds:recipe.beds.map(([kind,level,options])=>makeBed(kind,level,options,out)),next:new Map(),silentSince:0};rooms.set(id,room);return room}
-    function teardown(room){for(const bed of room.beds)for(const node of bed.nodes){try{node.stop?.()}catch(ignore){}try{node.disconnect()}catch(ignore){}}try{room.out.disconnect()}catch(ignore){}rooms.delete(room.id)}
+    function buildRoom(id){const recipe=RECIPES[id];if(!recipe)return null;const out=ctx.createGain(),muffle=ctx.createBiquadFilter();out.gain.value=0;muffle.type='lowpass';muffle.frequency.value=18000;out.connect(muffle).connect(bus);const room={id,recipe,out,muffle,beds:recipe.beds.map(([kind,level,options])=>makeBed(kind,level,options,out)),next:new Map(),silentSince:0};rooms.set(id,room);return room}
+    function teardown(room){for(const bed of room.beds)for(const node of bed.nodes){try{node.stop?.()}catch(ignore){}try{node.disconnect()}catch(ignore){}}try{room.out.disconnect();room.muffle.disconnect()}catch(ignore){}rooms.delete(room.id)}
     function playEvent(room,type,gain,when){
       if(type==='chimes'){for(let i=0;i<5;i++)playEvent(room,'clink',gain*rand(.4,.9),when+i*rand(.08,.25));return}
       const src=ctx.createBufferSource(),amp=ctx.createGain();src.buffer=eventBuffer(type);src.playbackRate.value=type==='musicbox'?pick([1,1.122,1.26,1.498,1.682]):type==='clink'?rand(.8,1.5):rand(.9,1.1);amp.gain.value=gain;
@@ -252,16 +254,18 @@
       for(const [type,perMinute,gain] of room.recipe.events||[]){const key='event'+type;let at=room.next.get(key);if(at===undefined){at=now+rand(.5,60/perMinute);room.next.set(key,at)}if(at<horizon){playEvent(room,type,gain*rand(.6,1.1),Math.max(at,now));room.next.set(key,at+(60/perMinute)*rand(.4,1.6))}}
     }
 
-    // state: {place, covered, reading, height}
+    // state: {place, covered, reading, height, leak}. A leak is a room not yet found, heard through its closed door:
+    // {place, level}, played quietly and muffled by a low-pass filter, as through wood (exploration.js).
     function update(state){
       if(ctx.state!=='running')return;
       const now=ctx.currentTime,id=RECIPES[state.place]?state.place:null;
-      if(id&&!rooms.has(id))buildRoom(id);current=id;
+      if(id&&!rooms.has(id))buildRoom(id);current=id;const leak=state.leak&&RECIPES[state.leak.place]&&state.leak.place!==id?state.leak:null;if(leak&&!rooms.has(leak.place))buildRoom(leak.place);
       // Menus soften the room; a book keeps it, a little quieter, as company while reading.
       const target=state.covered?.25:state.listening?.5:state.reading?.7:1;/* Quieter still while a book is being read aloud. */if(target!==duck){duck=target;bus.gain.setTargetAtTime(duck,now,.4)}
       for(const room of [...rooms.values()]){
-        const on=room.id===current;room.out.gain.setTargetAtTime(on?1:0,now,on?.9:.6);
-        if(on){room.silentSince=0;schedule(room);for(const bed of room.beds)if(bed.rises)bed.gain.gain.setTargetAtTime(bed.level*(1+clamp(state.height/30,0,1)*2.5),now,.8)}
+        const on=room.id===current,heard=!on&&!!leak&&room.id===leak.place;room.out.gain.setTargetAtTime(on?1:heard?leak.level:0,now,on?.9:.6);room.muffle.frequency.setTargetAtTime(heard?700:18000,now,.25);
+        if(heard){room.silentSince=0;schedule(room)}
+        else if(on){room.silentSince=0;schedule(room);for(const bed of room.beds)if(bed.rises)bed.gain.gain.setTargetAtTime(bed.level*(1+clamp(state.height/30,0,1)*2.5),now,.8)}
         else{room.silentSince||=now;if(now-room.silentSince>6)teardown(room)}
       }
     }

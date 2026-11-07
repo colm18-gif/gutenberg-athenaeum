@@ -392,6 +392,24 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   (z −600, 40 m apart), floors between y 0 and 3 (below 0 wakes the basement). One lamp, the module's own, moves to the
   passage in use. Rooms export `activate` so a passage can build the room before the reader steps in. New back ways:
   add them to `PASSAGES`, the journal's "Back ways" group and `room-ambience.js`.
+- Exploration (`exploration.js`, loaded just before `passages.js`; wired at the end of game.js as `exploration`): small
+  things that make wandering worth it, none with a light of its own. A room not yet found is heard through its closed door
+  (`DOORS`, room-ambience.js `leak`: muffled, quieter, one at a time). Now and then the night porter's lantern (no light,
+  no figure) appears ahead in the hall and goes towards a door not yet opened, waiting if the reader falls behind. The
+  journal's plan keeps the reader's route (`athenaeum-hall-route`), a compass, and "here be dragons" while it has blanks.
+  Dust drifts towards a mystery not yet recorded (`DRAUGHTS`). Footprints: the reader's own in the basement, memory rooms
+  and tunnel, and an earlier reader's from the hatch to the narrow door behind the pipes. A brass despatch tube on the hall's
+  column at x −11, z −5 drops a capsule every few minutes with a slip saying how to find a room (`HINTS`; a room behind
+  another only once that one is found). A book picked up may have a pencilled note pointing to its room (`MARGINS`). Closing
+  time (`dimFor`): from 22:30 the west wing's lamps dim, from 23:30 the east wing's, from 00:30 the hall's (to 55%, back by
+  06:00), and the reader carries a lantern (seen in hand) there and in the dusty places. The moonlight follows the real
+  moon (`moonPhase`; the time label names it), and the Antipodes skylight turns with the sky over Sydney. Three stopped
+  clocks on the hall's columns (`CLOCKS`: Havisham's twenty to nine, the Hatter's six o'clock, Poe's ebony clock at
+  midnight; quotations checked against the texts) are found for good (`athenaeum-stopped-clocks`). The explorers'
+  anteroom (x 1320, z 320, freed like the basement; `?room=explorers`) is through the kit locker in the Map Room's
+  north-west corner: kit on its pegs, a sledge, a chart left blank (Conrad, checked against pg219), the map-voyages shelf,
+  a camp chair, and a ledger of departures the reader can sign (`DEPARTURES`, `athenaeum-departures`). A book trolley stands
+  somewhere new on each visit with three books from rooms not yet found, each with a return slip.
 - The doors between the Grand Hall and each wing (x ±19) are a two-volume set of giant books (`wingVolume` in `game.js`):
   THE WEST WING (or EAST WING), Volume the First and Volume the Second, spines at the jambs, gilt fore-edges meeting in the
   middle. As the reader comes near, each block of pages gathers into its spine and each cover swings into the wing like a

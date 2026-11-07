@@ -14,7 +14,7 @@ test('room ambience loads before the game and runs on its own timer, so clocks k
   const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(match=>match[1]);
   assert.ok(order.indexOf('room-ambience.js')>-1&&order.indexOf('room-ambience.js')<order.indexOf('game.js'));
   assert.match(game,/roomAmbience=window\.createRoomAmbience\?\.\(\{audioCtx,master\}\)/);
-  assert.match(game,/roomAmbience\.update\(\{place:analyticsRoom\(\),covered:worldIsCovered\(\)&&!reading,reading,listening:!!audiobooks\?\.playing,height:player\.pos\.y\}\)\},250\)/);
+  assert.match(game,/roomAmbience\.update\(\{place:analyticsRoom\(\),covered:worldIsCovered\(\)&&!reading,reading,listening:!!audiobooks\?\.playing,height:player\.pos\.y,leak:reading\?null:exploration\?\.doorLeak\(\)\}\)\},250\)/);
   assert.doesNotMatch(source,/fetch\(|new Audio\(|\.ogg|\.mp3/,'every sound is generated, so nothing is downloaded');
 });
 

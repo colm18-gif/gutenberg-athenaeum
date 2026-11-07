@@ -169,6 +169,11 @@ body.in-flight #exploreNudge,body.in-flight #hint{opacity:0!important}
 .hall-plan .area.here{fill:#f8e6b8;stroke:#6e2224;stroke-width:.8}
 .hall-plan text{font:3.1px Georgia,serif;fill:#3f2d1b;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
 .hall-plan text.small{font-size:2.4px;fill:#6c5639;font-style:italic}
+.hall-plan .route{fill:none;stroke:#6e2224;stroke-width:.35;stroke-dasharray:.9 .7;stroke-linecap:round;stroke-linejoin:round;opacity:.75}
+.hall-plan .compass circle{fill:#f3ead4;stroke:#7a5d38;stroke-width:.25}
+.hall-plan .compass path{fill:#7a5d38}
+.hall-plan .compass text{font-size:2.2px;font-weight:bold}
+.hall-plan text.dragons{font-size:2.6px;font-style:italic;fill:#7a5d38;opacity:.8}
 .hall-plan .you{fill:#6e2224;stroke:#f7eed8;stroke-width:.4}
 .atlas{display:grid;gap:14px}
 .atlas-group h4{margin:0 0 7px;font:12px Georgia,serif;letter-spacing:.14em;text-transform:uppercase;color:#795c37}
