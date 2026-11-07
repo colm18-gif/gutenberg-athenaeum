@@ -55,16 +55,18 @@
     walden:['Out through the garden door of the Naturalist’s Cabinet.','naturalist-room'],
     'burns-room':['Through the Irish Room, past the harp.','irish-room'],
     'canada-room':['Through the Burns Room, past the fiddle.','burns-room'],
+    lilliput:['The narrow door in the corner of the Irish Room, past the writers’ shelves.','irish-room'],
+    brobdingnag:['Through Lilliput: the door at the far end of the Emperor’s library.','lilliput'],
     'set-texts-room':['The blue door in the English Reading Room’s east wall.','learners-room'],
     'crusoe-island':['Through the Boathouse, and out to sea.','boathouse'],
     'explorers-anteroom':['The kit locker in the Map Room’s north-west corner. Push past the oilskins.','map-room']
   };
   // A book’s shelf (its `room` in data/new-books.js), and the room it stands in.
-  const SHELF_PLACES=[[/^irish-/,'irish-room'],[/^burns-(works|lives|scotland)$/,'burns-room'],[/^canada-(stories|north|poets)$/,'canada-room'],[/^austen-(writings|lives|read|novels)$/,'austen-room'],
+  const SHELF_PLACES=[[/^irish-/,'irish-room'],[/^burns-(works|lives|scotland)$/,'burns-room'],[/^canada-(stories|north|poets)$/,'canada-room'],[/^lilliput-(swift|small)$/,'lilliput'],[/^brob-/,'brobdingnag'],[/^austen-(writings|lives|read|novels)$/,'austen-room'],
     [/^nature-(origin|collectors|observers)$/,'naturalist-room'],[/^medicine-/,'medicine-room'],[/^map-/,'map-room'],[/^walden-(thoreau|concord)$/,'walden'],[/^nights-(tales|poets|echoes)$/,'nights-courtyard'],
     [/^african-/,'african-courtyard'],[/^within-/,'within-room'],[/^contested$/,'contested'],[/^set-texts$/,'set-texts-room'],[/^lost-property$/,'lost-property'],[/^(antipodes|australian|new-zealand)$/,'antipodes'],[/^mountain-valley$/,'mountain']];
   // The shelves the book trolley takes from: books on their way back to their rooms.
-  const TROLLEY_SHELVES=['irish-myth','irish-revival','irish-writers','burns-works','burns-lives','burns-scotland','canada-stories','canada-north','canada-poets','austen-writings','austen-lives','austen-read',
+  const TROLLEY_SHELVES=['irish-myth','irish-revival','irish-writers','burns-works','burns-lives','burns-scotland','canada-stories','canada-north','canada-poets','lilliput-swift','lilliput-small','brob-giants','brob-seeing','brob-swift','austen-writings','austen-lives','austen-read',
     'nature-collectors','nature-observers','medicine-physic','medicine-discovery','medicine-healers','map-voyages','map-makers','map-lands','walden-thoreau','walden-concord','nights-tales','nights-poets','nights-echoes',
     'african-ancient','african-voices','african-tales','within-read','contested','mountain-valley'];
   // Pencilled notes: a book by one of these, picked up anywhere, may point to the room kept for them.
@@ -72,7 +74,7 @@
     [/Thoreau/,'walden','The pond is real. Out through the Naturalist’s garden door.'],[/Charles Darwin|Russel Wallace/,'naturalist-room','His study is kept, beetles and all. Through the Medicine Room.'],
     [/Jules Verne/,'nemo-room','Look into the lit windows of the model Nautilus.'],[/Edgar Allan Poe/,'poe-room','Listen for a heart under the floor. The Gothic Parlour, under the raven.'],
     [/Daniel Defoe/,'crusoe-island','He is still on his island. Through the Boathouse door.'],[/Shakespeare/,'set-texts-room','The Folio is under glass. Blue door, English Reading Room.'],
-    [/W\. ?B\. Yeats|Lady Gregory|J\. ?M\. Synge|James Joyce/,'irish-room','Green door, south wall. There is a turf fire.'],[/Montgomery|Robert W\. Service|John McCrae/,'canada-room','Snow on the window. Through the Burns Room.'],
+    [/W\. ?B\. Yeats|Lady Gregory|J\. ?M\. Synge|James Joyce/,'irish-room','Green door, south wall. There is a turf fire.'],[/Montgomery|Robert W\. Service|John McCrae/,'canada-room','Snow on the window. Through the Burns Room.'],[/Jonathan Swift/,'lilliput','Mind where you step. The narrow door in the Irish Room.'],
     [/Lewis Carroll/,'antipodes','Turn the globe and fall, as she did.'],[/Coleridge|Whymper|John Muir/,'mountain','Climb the painting on the north wall.'],
     [/Arabian Nights|Thousand and One Nights/,'nights-courtyard','The carpet by the fire flies.'],[/Hakluyt|Pigafetta|Lewis and Clark|Matthew Henson/,'explorers-anteroom','Their kit is in the locker in the Map Room’s corner.']];
   // Where a mystery is: dust drifts towards the ones not yet recorded (positions as Clio leads to them).

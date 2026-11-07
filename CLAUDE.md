@@ -13,7 +13,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Files the jobs rewrite without a new build are listed in `LIVE_DATA` there.
 - Rooms behind doors (`evening-room.js`, `learners-room.js`, `periodicals-room.js`, `international-wing.js`,
   `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`, `map-room.js`, `medicine-room.js`, `set-texts-room.js`,
-  `austen-room.js`, `burns-room.js`, `canada-room.js`, `nemo-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`, `walden.js`)
+  `austen-room.js`, `burns-room.js`, `canada-room.js`, `gulliver-room.js`, `nemo-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`, `walden.js`)
   are built only when the reader approaches and freed ~25 s after they leave. So are the Room of Chance (its portrait
   stays), the Lost Property Office (its hatch stays) and the high staircase, Rocket Hall, Moon and rocket cabin (`high-staircase.js`: only its door in the west wing
   is built at startup; a stair book carried away keeps it). The basement and the roof garden, built in `game.js` on a first visit, are
@@ -105,6 +105,23 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Spell of the Yukon (`canada-sourdough`) on the woodbox, found for good (`athenaeum-canada-sam-mcgee`; `?mcgee`). From 1 to
   11 November a wreath of poppies hangs inside the door with McCrae's lines (`?poppies` shows it). Service died in 1958:
   public domain in the US and Canada, not yet in Britain or Ireland (as with other Gutenberg authors here).
+- Lilliput and Brobdingnag (`gulliver-room.js`; Lilliput x −760, z 700; Brobdingnag x −760, z 880) are through a narrow
+  door at the east end of the Irish Room's north wall, between the writers' shelves and the corner (Swift was Dean of St
+  Patrick's; `?room=lilliput`, `gulliver`, `swift`, `brobdingnag`). Lilliput is a country at night at a twelfth of the
+  reader's size: Mildendo in its wall "two feet and a half high" (the reader walks only its two streets and the palace
+  court, `cityAllows`), houses and towers instanced, the royal park's seven-foot trees, the Blefuscu fleet (fifty ships,
+  instanced, cables to the shore), the pegs and threads where Gulliver lay, his hat, and along the north wall the
+  Emperor's library of very small books (shelves `lilliput-swift`, Swift and the Scriblerians, and `lilliput-small`, after
+  the library's own Water-Babies, `OWN`) under signs written aslant. The secret: the Emperor's egg on its little table.
+  The small end does nothing; the big end opens the locked press and lets out A Tale of a Tub (`lilliput-bigend`), found
+  for good (`athenaeum-gulliver-big-end`; `?bigend`). Lilliput's north door leads to Brobdingnag, Glumdalclitch's room at
+  twelve times size; its way back is a mouse-hole in the wainscot. The queen's joiner's reading machine is built as Swift
+  measured it (25 ft high, steps 50 ft long, ten feet from the wall: `STEPS`, `STEP_RISE`, `MACHINE_GAP`), walkable a step
+  at a time (`allowed` refuses a change of floor of more than one step), before a book leaning open on the wall with
+  Swift's own words on its pages. Gulliver's chamber (sixteen feet square, twelve high, ceiling lifted off) holds the
+  shelves `brob-giants`, `brob-seeing` and `brob-swift` (after the library's own Rabelais, Jacobs, Wilde, Micrographia,
+  Candide, Erewhon, Utopia and Gulliver), and his chair is a seat. One lamp in each room. Every quotation (`SWIFT`) is
+  checked against pg829 by a test.
 - Captain Nemo's Salon (`nemo-room.js`, x 1000, z 200) is the library and drawing-room of the Nautilus, under the sea. The
   way in is the model Nautilus on its plinth in the Extraordinary Voyages (the theme room `verne`, x 220, z 70; its lit salon
   windows, on both sides, are type `nemo-model`); the iron hatch leads back to just south of the model (`toVerne` builds the

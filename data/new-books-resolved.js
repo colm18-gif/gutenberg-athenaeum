@@ -1679,6 +1679,94 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 207,
    "words": 13467
   },
+  "The Battle of the Books": {
+   "id": 623,
+   "words": 40501
+  },
+  "The Bickerstaff-Partridge Papers": {
+   "id": 1090,
+   "words": 13217
+  },
+  "Polite Conversation in Three Dialogues": {
+   "id": 60186,
+   "words": 36192
+  },
+  "The Poems of Jonathan Swift, Volume 1": {
+   "id": 14353,
+   "words": 94330
+  },
+  "The Rape of the Lock, and Other Poems": {
+   "id": 9800,
+   "words": 55131
+  },
+  "The History of John Bull": {
+   "id": 2643,
+   "words": 37621
+  },
+  "The Beggar’s Opera": {
+   "id": 2421,
+   "words": 17517
+  },
+  "Three Hours after Marriage": {
+   "id": 37667,
+   "words": 27697
+  },
+  "Lilliput Lyrics": {
+   "id": 53030,
+   "words": 24602
+  },
+  "Mopsa the Fairy": {
+   "id": 32867,
+   "words": 41571
+  },
+  "The Brownies: Their Book": {
+   "id": 32210,
+   "words": 16582
+  },
+  "A Tale of a Tub": {
+   "id": 4737,
+   "words": 46285
+  },
+  "Micromegas": {
+   "id": 30123,
+   "words": 7640
+  },
+  "Lucian’s True History": {
+   "id": 45858,
+   "words": 19866
+  },
+  "The Surprising Adventures of Baron Munchausen": {
+   "id": 3154,
+   "words": 52657
+  },
+  "Common Objects of the Microscope": {
+   "id": 55146,
+   "words": 48465
+  },
+  "Marvels of Pond-life": {
+   "id": 36903,
+   "words": 39798
+  },
+  "Flatland: A Romance of Many Dimensions": {
+   "id": 97,
+   "words": 34108
+  },
+  "The Journal to Stella": {
+   "id": 4208,
+   "words": 238333
+  },
+  "Ireland in the Days of Dean Swift": {
+   "id": 37156,
+   "words": 60758
+  },
+  "Henry Esmond; The English Humourists; The Four Georges": {
+   "id": 29363,
+   "words": 333295
+  },
+  "The Life and Adventures of Peter Wilkins": {
+   "id": 51967,
+   "words": 149264
+  },
   "The Water-Babies": {
    "id": 1018,
    "words": 69688
@@ -3724,6 +3812,7 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Benito Cereno",
   "History of the Expedition under the Command of Captains Lewis and Clark, Vol. 1.",
   "The Necessity of Atheism",
+  "The Drapier’s Letters",
   "María [es]",
   "Poesías [es]"
  ]

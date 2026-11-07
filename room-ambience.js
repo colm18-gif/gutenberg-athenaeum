@@ -166,6 +166,10 @@
       // The Canadian Room: a log room on a winter night, the box stove roaring, wind round the eaves, and now and then
       // a loon out on the lake (in winter they have gone south, but the room keeps one).
       'canada-room':{beds:[['fire',.08],['wind',.04]],events:[['crackle',24,.08],['snap',5,.07],['creak',.6,.035],['loon',.25,.035]]},
+      // Lilliput: a summer night by the sea, waves small on the shore, crickets, a bird in the royal park. Brobdingnag: a
+      // great still room, a clock that ticks once in two seconds, and its timbers settling a long way off.
+      lilliput:{beds:[['waves',.03],['insects',.03],['air',.02]],events:[['cricket',3,.02],['bird',.3,.02]]},
+      brobdingnag:{beds:[['rumble',.03],['air',.04]],ticks:[[2.2,'tock',.05]],events:[['creak',.25,.045]]},
       // Captain Nemo's Salon: the engines' hum through the hull, bubbles at the panel, the boat's frames settling.
       'nemo-room':{beds:[['rumble',.07],['air',.025]],events:[['bubble',8,.04],['creak',.5,.035]]},
       // Books Within Books: a still room, a clock, pages turning, and now and then a drawer in the catalogue.
