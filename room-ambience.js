@@ -156,6 +156,9 @@
       mountain:{beds:[['wind',.04],['air',.02]],events:[['cowbell',.5,.035],['owl',.15,.025]]},
       'mountain-heights':{beds:[['wind',.1],['air',.03]],events:[['creak',.2,.02]]},
       'mountain-summit':{beds:[['wind',.15],['air',.035]],events:[]},
+      // The falls at the meadow's edge, and the cave behind them: the water loud outside, a roar through rock within, and drips.
+      'mountain-falls':{beds:[['fountain',.17],['waves',.05],['wind',.03]],events:[['owl',.1,.02]]},
+      'falls-cave':{beds:[['fountain',.07],['rumble',.05],['air',.03]],events:[['drip',5,.045]]},
       forest:{beds:[['wind',.07],['air',.03]],events:[['owl',.9,.05],['rustle',1.6,.05],['creak',.7,.04]]},
       // The Forest Song: a spring night by a forest lake in Volyn, frogs in the reeds, birds in the dark, a breeze.
       'forest-song':{beds:[['wind',.04],['air',.03]],events:[['frog',1.1,.035],['bird',.9,.03],['rustle',1,.035],['drip',.5,.02],['owl',.25,.025]]},
