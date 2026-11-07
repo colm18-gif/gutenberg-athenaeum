@@ -6,6 +6,9 @@
 //   painted   - the lighter doors back from the themed rooms
 //   iron      - riveted fire doors in the service spaces and repository
 //   forbidden - studded, strapped and chained, for the restricted collections
+//   banned    - bound in banned books: the leaf pasted over with their torn, censored pages, edged in leather with a
+//               spine of raised bands, the frame built of the books themselves (stacked flat up the jambs, upright
+//               along the lintel, their titles gilt on the spines), strapped in iron, its chain hanging from an open padlock
 // Rooms behind doors dress their own doors from the kit too: `color` paints the leaf (or is its material), `frame` and `trim` change the
 // surround and the fittings, `fanColor` tints the fanlight, `glazed` puts glass in the upper panels and `planked`
 // swaps the panels for boards, and `gilt` ({title,sub}) glazes the upper half with the room's name in gold leaf. Geometry and materials are shared between doors, so a room rebuilt on every visit
@@ -28,6 +31,46 @@
       fan:new THREE.MeshStandardMaterial({color:0xffd9a0,emissive:0xffb35c,emissiveIntensity:1.25,roughness:.3,transparent:true,opacity:.92}),
       beyond:new THREE.MeshBasicMaterial({color:0x2a1608})
     };
+    // A seeded generator, so every bound door is pasted and stacked the same way on every visit.
+    const seeded=seed=>()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+    // The banned books the door is bound in: the Unwelcome Spines' own, and a few more whose bans are well known.
+    const BANNED=[['AREOPAGITICA','MILTON'],['RIGHTS OF MAN','PAINE'],['THE AGE OF REASON','PAINE'],['THE DECAMERON','BOCCACCIO'],['GARGANTUA','RABELAIS'],['NANA','ZOLA'],['SALOME','WILDE'],['GHOSTS','IBSEN'],['JURGEN','CABELL'],['SISTER CARRIE','DREISER'],['THE RAINBOW','LAWRENCE'],['LES FLEURS DU MAL','BAUDELAIRE'],['ÉMILE','ROUSSEAU'],['ULYSSES','JOYCE'],['CANDIDE','VOLTAIRE'],['MADAME BOVARY','FLAUBERT']];
+    const LEATHERS=['#5a1a16','#2c2a1c','#3d1f12','#1c2a24','#4a3418','#261a2e','#6a2a14','#202733'];
+    // One atlas of sixteen spines, each 64 pixels wide: leather, raised bands and a gilt title running up the spine.
+    let spineAtlas=null;
+    function spineMap(){return spineAtlas||(spineAtlas=canvasTexture((c,w,h)=>{const sw=w/BANNED.length;BANNED.forEach(([title,author],i)=>{const x=i*sw;c.fillStyle=LEATHERS[i%LEATHERS.length];c.fillRect(x,0,sw,h);const round=c.createLinearGradient(x,0,x+sw,0);round.addColorStop(0,'rgba(0,0,0,.55)');round.addColorStop(.35,'rgba(255,240,210,.12)');round.addColorStop(.6,'rgba(0,0,0,0)');round.addColorStop(1,'rgba(0,0,0,.6)');c.fillStyle=round;c.fillRect(x,0,sw,h);
+      c.fillStyle='rgba(0,0,0,.08)';for(let k=0;k<40;k++)c.fillRect(x+((k*37+i*11)%sw),(k*53+i*29)%h,2,3);
+      const gold=c.createLinearGradient(0,0,0,h);gold.addColorStop(0,'#f3d58c');gold.addColorStop(.5,'#b8862f');gold.addColorStop(1,'#efcd7c');c.fillStyle=gold;
+      for(const y of [14,h-18])c.fillRect(x+4,y,sw-8,4);for(const y of [46,h-58]){c.fillStyle='rgba(0,0,0,.45)';c.fillRect(x,y+5,sw,4);c.fillStyle=gold;c.fillRect(x+2,y,sw-4,6)}
+      c.save();c.translate(x+sw/2,h/2-10);c.rotate(-Math.PI/2);c.textAlign='center';c.textBaseline='middle';let size=26;do{c.font=`bold ${size}px Georgia`;size-=1}while(c.measureText(title).width>h-150&&size>12);c.fillStyle=gold;c.fillText(title,0,-6);c.font='italic 13px Georgia';c.fillText(author,0,17);c.restore();
+      if(i%3===1){c.fillStyle='rgba(20,8,4,.55)';c.beginPath();c.ellipse(x+sw*.6,h*.82,sw*.5,40,0,0,7);c.fill()}// scorched
+    })},1024,512))}
+    // The pages pasted over the leaf: torn, yellowed, struck through with the censor's black bars and stamped.
+    let pagesMaterial=null;
+    function pagesMap(){if(pagesMaterial)return pagesMaterial;const tex=canvasTexture((c,w,h)=>{const r=seeded(1559);c.fillStyle='#4a3826';c.fillRect(0,0,w,h);
+      const stamps=['BANNED','SUPPRESSED','SEIZED','CONDEMNED','PROHIBITED','WITHDRAWN','OBSCENE','SEDITIOUS'];
+      for(let n=0;n<34;n++){const pw=150+r()*120,ph=200+r()*150,x=r()*w,y=n<6?n*h/6:r()*h,a=(r()-.5)*.5,[title]=BANNED[n%BANNED.length];c.save();c.translate(x,y);c.rotate(a);
+        const tone=200+r()*30|0;c.fillStyle=`rgb(${tone},${tone-14|0},${tone-52|0})`;c.beginPath();c.moveTo(-pw/2,-ph/2);for(let k=0;k<=10;k++)c.lineTo(-pw/2+pw*k/10,-ph/2+(r()-.5)*7);for(let k=0;k<=12;k++)c.lineTo(pw/2+(r()-.5)*7,-ph/2+ph*k/12);for(let k=10;k>=0;k--)c.lineTo(-pw/2+pw*k/10,ph/2+(r()-.5)*7);for(let k=12;k>=0;k--)c.lineTo(-pw/2+(r()-.5)*7,-ph/2+ph*k/12);c.closePath();c.fill();
+        c.fillStyle='#2a1d12';c.textAlign='center';c.font='bold 13px Georgia';c.fillText(n%4===0?title:n%4===1?'CHAPTER '+['I','II','III','IV','V','IX','XII'][n%7]:'',0,-ph/2+24);
+        for(let y2=-ph/2+40;y2<ph/2-14;y2+=9){let x2=-pw/2+14;while(x2<pw/2-18){const ww=6+r()*22;c.fillStyle='rgba(42,30,20,.62)';c.fillRect(x2,y2,Math.min(ww,pw/2-14-x2),2.4);x2+=ww+4}}
+        c.fillStyle='#0b0806';for(let b=0;b<1+r()*4;b++)c.fillRect(-pw/2+12,-ph/2+44+r()*(ph-70),pw*(.3+r()*.55),7);
+        const scorch=c.createRadialGradient(pw*(r()-.5),ph/2,4,pw*(r()-.5),ph/2,pw*.6);scorch.addColorStop(0,'rgba(15,6,2,.85)');scorch.addColorStop(.5,'rgba(80,36,10,.35)');scorch.addColorStop(1,'rgba(80,36,10,0)');if(r()<.45){c.fillStyle=scorch;c.fillRect(-pw/2,-ph/2,pw,ph)}
+        if(r()<.42){c.save();c.rotate((r()-.5)*.8);c.strokeStyle='rgba(150,22,18,.8)';c.fillStyle='rgba(150,22,18,.8)';c.lineWidth=3;c.font='bold 22px Georgia';const word=stamps[n%stamps.length],sw2=c.measureText(word).width+18;c.strokeRect(-sw2/2,-16,sw2,32);c.fillText(word,0,8);c.restore()}
+        c.restore()}
+      const shade=c.createRadialGradient(w/2,h/2,w*.2,w/2,h/2,w*.9);shade.addColorStop(0,'rgba(0,0,0,0)');shade.addColorStop(1,'rgba(20,10,4,.45)');c.fillStyle=shade;c.fillRect(0,0,w,h)},512,1024);
+      return pagesMaterial=new THREE.MeshStandardMaterial({map:tex,roughness:.92,metalness:0})}
+    // Gathers boxes into one geometry, so a frame of a hundred books is a single draw.
+    function mergeBoxes(parts){let count=0,indexCount=0;for(const g of parts){count+=g.attributes.position.count;indexCount+=g.index.count}const pos=new Float32Array(count*3),nor=new Float32Array(count*3),uv=new Float32Array(count*2),index=new Uint32Array(indexCount);let v=0,k=0;for(const g of parts){pos.set(g.attributes.position.array,v*3);nor.set(g.attributes.normal.array,v*3);uv.set(g.attributes.uv.array,v*2);for(let i=0;i<g.index.count;i++)index[k++]=g.index.array[i]+v;v+=g.attributes.position.count;g.dispose()}const out=new THREE.BufferGeometry();out.setAttribute('position',new THREE.BufferAttribute(pos,3));out.setAttribute('normal',new THREE.BufferAttribute(nor,3));out.setAttribute('uv',new THREE.BufferAttribute(uv,2));out.setIndex(new THREE.BufferAttribute(index,1));out.computeBoundingSphere();return out}
+    // One book as a box: its spine (the +z face) shows spine `i` of the atlas, lying flat or standing; every other face takes
+    // a plain strip of the same leather, so the books read as solid.
+    function bookBox(w,h,d,i,flat,x,y,z,ry=0){const g=new THREE.BoxGeometry(w,h,d),uv=g.attributes.uv,n=BANNED.length,u0=i/n+.004,u1=(i+1)/n-.004;for(let f=0;f<6;f++)for(let q=0;q<4;q++){const j=f*4+q,a=uv.getX(j),b=uv.getY(j);if(f===4){if(flat)uv.setXY(j,u0+b*(u1-u0),.06+a*.88);else uv.setXY(j,u0+a*(u1-u0),.06+b*.88)}else uv.setXY(j,u0+.35/n+a*.3/n,.93+b*.01)}if(ry)g.rotateY(ry);g.translate(x,y,z);return g}
+    function bannedFrame(group,width,height){const key='bannedFrame'+width.toFixed(3)+','+height.toFixed(3),geometry=keep(key,()=>{const r=seeded(1644+Math.round(width*100)),parts=[];let book=0,top=height;
+        for(const side of [-1,1]){let y=0;while(y<height+.02){const t=.09+r()*.075,len=.36+r()*.12,depth=.3+r()*.08;parts.push(bookBox(len,t,depth,book++%BANNED.length,true,side*(width/2+.27)+(r()-.5)*.04,y+t/2,.05+(r()-.5)*.03,(r()-.5)*.05));y+=t}top=Math.max(top,y)}
+        const span=width/2+.5;let x=-span;while(x<span-.08){const t=Math.min(.09+r()*.07,span-x),hh=.42+r()*.2,depth=.3+r()*.06;parts.push(bookBox(t,hh,depth,book++%BANNED.length,false,x+t/2,top+hh/2,.05,(r()-.5)*.05));x+=t+.004}
+        // One lies across the top of the row, as if put back in a hurry.
+        parts.push(bookBox(.7,.1,.32,book%BANNED.length,true,width*.18,top+.72,.04,.12));
+        return mergeBoxes(parts)}),frameMaterial=keep('bannedSpines',()=>new THREE.MeshStandardMaterial({map:spineMap(),roughness:.7,metalness:.08}));
+      const m=new THREE.Mesh(geometry,frameMaterial);group.add(m);return m}
     const add=(parent,geometry,material,x,y,z)=>{const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);parent.add(m);return m};
     const shared=new Map(),keep=(key,make)=>{if(!shared.has(key))shared.set(key,make());return shared.get(key)};
     const box=(parent,w,h,d,material,x,y,z)=>add(parent,keep(`box${w.toFixed(3)},${h.toFixed(3)},${d.toFixed(3)}`,()=>new THREE.BoxGeometry(w,h,d)),material,x,y,z);
@@ -68,15 +111,15 @@
 
     // Builds a door facing +z with its threshold at y=0. Returns handles for animation.
     function build(parent,{style='walnut',width=2.2,height=3.6,label='',glow=true,fanlight:hasFan=true,color=null,frame=null,trim:trimOption=null,fanColor=null,glazed=false,planked=false,plain=false,cornice=true,pediment=null,gilt=null}={}){
-      const group=new THREE.Group();parent.add(group);const fanlight=hasFan;
-      const leafMaterial=color?.isMaterial?color:color!=null?paint(color):gilt?mat.readingWalnut:mat[style]||mat.walnut,trim=trimOption||(style==='forbidden'?mat.iron2:mat.brass),frameMat=frame||(style==='iron'?mat.iron2:mat.frame);
+      const group=new THREE.Group();parent.add(group);const banned=style==='banned',fanlight=hasFan&&!banned;
+      const leafMaterial=banned?pagesMap():color?.isMaterial?color:color!=null?paint(color):gilt?mat.readingWalnut:mat[style]||mat.walnut,trim=trimOption||(style==='forbidden'||banned?mat.iron2:mat.brass),frameMat=frame||(style==='iron'?mat.iron2:mat.frame);
       const hasPediment=cornice&&(pediment??(style==='walnut'||style==='painted')),glass=fanColor!=null?fanGlass(fanColor):mat.fan,paneMaterial=fanColor!=null?paneGlass(fanColor):mat.fan;
       // What lies beyond: a warm, dim opening revealed as the leaf swings.
       const portalGeometry=keep(`portal${width.toFixed(3)},${height.toFixed(3)}`,()=>new THREE.PlaneGeometry(width-.02,height-.02).translate(0,height/2,0));const portal=makePortal(group,portalGeometry,.11);
       // Architrave with plinth blocks, cornice and (for walnut) a small pediment.
-      for(const side of [-1,1]){box(group,.22,height+.1,.16,frameMat,side*(width/2+.11),height/2+.05,.04);box(group,.3,.46,.2,frameMat,side*(width/2+.11),.23,.06);box(group,.07,height-.3,.04,frameMat,side*(width/2+.03),height/2+.1,.13)}
+      if(banned)bannedFrame(group,width,height);else for(const side of [-1,1]){box(group,.22,height+.1,.16,frameMat,side*(width/2+.11),height/2+.05,.04);box(group,.3,.46,.2,frameMat,side*(width/2+.11),.23,.06);box(group,.07,height-.3,.04,frameMat,side*(width/2+.03),height/2+.1,.13)}
       const topY=height+(fanlight?width*.36:0);
-      if(cornice){box(group,width+.62,.18,.26,frameMat,0,topY+.12,.08);box(group,width+.8,.08,.34,frameMat,0,topY+.25,.1)}
+      if(cornice&&!banned){box(group,width+.62,.18,.26,frameMat,0,topY+.12,.08);box(group,width+.8,.08,.34,frameMat,0,topY+.25,.1)}
       if(hasPediment){const ped=new THREE.Shape();ped.moveTo(-width/2-.4,0);ped.lineTo(0,.42);ped.lineTo(width/2+.4,0);ped.lineTo(-width/2-.4,0);const p=add(group,keep('pediment'+width.toFixed(3),()=>new THREE.ExtrudeGeometry(ped,{depth:.14,bevelEnabled:false})),frameMat,0,topY+.29,.03);const orn=add(group,keep('TorusGeometry(.12,.03,6,16)',()=>new THREE.TorusGeometry(.12,.03,6,16)),trim,0,topY+.46,.2)}
       // Semicircular fanlight with radiating glazing bars, lit from the room beyond.
       let fan=null;if(fanlight){fan=add(group,keep('fan'+width.toFixed(3),()=>new THREE.CircleGeometry(width/2-.05,32,0,Math.PI)),glass.clone(),0,height,.02);fan.scale.y=.72;for(let i=1;i<6;i++){const a=i/6*Math.PI,bar=box(group,.035,(width/2)*.72,.03,frameMat,Math.cos(a)*width*.18,height+Math.sin(a)*width*.13,.05);bar.rotation.z=a-Math.PI/2}box(group,width,.08,.08,frameMat,0,height+.02,.06)}
@@ -85,6 +128,15 @@
       const slab=box(leaf,width-.04,height-.04,.1,leafMaterial,0,height/2,0);const hits=[slab],panes=[];
       if(style==='iron'){for(const y of [.5,height-.5])box(leaf,width-.1,.12,.05,mat.iron2,0,y,.07);for(let i=0;i<14;i++){const y=.25+(i%7)*(height-.5)/6,x=i<7?-width/2+.14:width/2-.14;add(leaf,keep('SphereGeometry(.035,6,4)',()=>new THREE.SphereGeometry(.035,6,4)),trim,x,y,.07)}const port=add(leaf,keep('CircleGeometry(.22,20)',()=>new THREE.CircleGeometry(.22,20)),mat.fan,0,height*.68,.06);add(leaf,keep('TorusGeometry(.23,.035,6,20)',()=>new THREE.TorusGeometry(.23,.035,6,20)),trim,0,height*.68,.07);const bar=box(leaf,.5,.07,.08,trim,width/2-.45,height*.45,.1);box(leaf,.8,.26,.02,new THREE.MeshStandardMaterial({color:0x9a2a1e,roughness:.6}),0,height*.3,.06)}
       else if(style==='forbidden'){for(let i=0;i<6;i++)box(leaf,.02,height-.1,.105,MAT.black||mat.iron2,-width/2+(i+.5)*width/6,height/2,.01);for(const y of [.55,height/2,height-.55]){box(leaf,width-.08,.14,.05,mat.iron2,0,y,.07);for(let i=0;i<7;i++)add(leaf,keep('SphereGeometry(.04,6,4)',()=>new THREE.SphereGeometry(.04,6,4)),mat.iron2,-width/2+.2+i*(width-.4)/6,y,.1)}const ring=add(leaf,keep('TorusGeometry(.13,.025,6,16)',()=>new THREE.TorusGeometry(.13,.025,6,16)),mat.iron2,width/2-.38,height*.47,.12);for(let i=0;i<5;i++){const link=add(leaf,keep('TorusGeometry(.05,.012,5,10)',()=>new THREE.TorusGeometry(.05,.012,5,10)),mat.iron2,width/2-.38+i*.06,height*.47-.18-i*.07,.13);link.rotation.y=i%2?Math.PI/2:0}}
+      else if(banned){// Edged in leather like a binding, a spine of raised bands down the hinge side, brass corners, iron straps.
+        const leather=keep('bannedLeather',()=>new THREE.MeshStandardMaterial({color:0x4a1a12,roughness:.62,metalness:.04,map:MAT.darkWood.map||null}));
+        for(const z of [-.06,.06]){box(leaf,width-.04,.12,.02,leather,0,height-.08,z);box(leaf,width-.04,.12,.02,leather,0,.08,z);box(leaf,.12,height-.04,.02,leather,width/2-.08,height/2,z);for(const [cx,cy] of [[width/2-.14,height-.14],[width/2-.14,.14],[-width/2+.34,height-.14],[-width/2+.34,.14]])box(leaf,.17,.17,.02,trim===mat.iron2?MAT.brass:trim,cx,cy,z+Math.sign(z)*.008)}
+        box(leaf,.26,height-.04,.16,leather,-width/2+.15,height/2,0);for(let i=0;i<6;i++)box(leaf,.28,.06,.19,leather,-width/2+.15,.3+i*(height-.6)/5,0);
+        for(const y of [.85,height-.85]){box(leaf,width-.42,.11,.04,mat.iron2,.12,y,.075);for(let i=0;i<6;i++)add(leaf,keep('SphereGeometry(.04,6,4)',()=>new THREE.SphereGeometry(.04,6,4)),mat.iron2,-width/2+.45+i*(width-.7)/5,y,.1)}
+        // The chain hangs loose from its staple to an open padlock: these books can be read now.
+        add(leaf,keep('TorusGeometry(.13,.025,6,16)',()=>new THREE.TorusGeometry(.13,.025,6,16)),mat.iron2,width/2-.38,height*.47,.12);
+        for(let i=0;i<7;i++){const link=add(leaf,keep('TorusGeometry(.05,.012,5,10)',()=>new THREE.TorusGeometry(.05,.012,5,10)),mat.iron2,width/2-.38-i*.012,height*.47-.16-i*.075,.13);link.rotation.y=i%2?Math.PI/2:0}
+        const lockY=height*.47-.75;box(leaf,.17,.15,.06,MAT.brass,width/2-.47,lockY,.15).rotation.z=.18;const shackle=add(leaf,keep('TorusGeometry(.055,.014,6,12,PI)',()=>new THREE.TorusGeometry(.055,.014,6,12,Math.PI)),MAT.brass,width/2-.43,lockY+.12,.15);shackle.rotation.z=.75}
       else if(plain){}
       else if(planked){// Boards, grooved on both faces, with a ledge across top and bottom.
         const boards=7,bw=(width-.04)/boards;for(let i=1;i<boards;i++)for(const z of [-.051,.051])box(leaf,.025,height-.1,.012,MAT.black||mat.iron2,-width/2+.02+i*bw,height/2,z);
