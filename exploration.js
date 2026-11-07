@@ -327,7 +327,7 @@
       add(g,new THREE.CylinderGeometry(.02,.02,.7,6),brass,-.78,1.0,0).rotation.x=Math.PI/2;for(const sz of [-.32,.32])add(g,new THREE.BoxGeometry(.14,.04,.03),brass,-.72,1.0,sz);
       const slipMat=new THREE.MeshStandardMaterial({color:0xf0e8d0,roughness:.9}),geometry=new THREE.BoxGeometry(1.05,1.2,.16);
       const AS_ROOM={'nights-courtyard':'nights-room','african-courtyard':'african-room'};
-      chosen.forEach(({book,place},i)=>{const slip=`return to ${placeLabel(AS_ROOM[place]||place)}. ${HINTS[place]?.[0]||''}`.trim();
+      chosen.forEach(({book,place},i)=>{const slip=`Return to ${placeLabel(AS_ROOM[place]||place).replace(/^The /,'the ')}. ${HINTS[place]?.[0]||''}`.trim();
         const bm=add(g,geometry,bookMaterial(book),-.45+i*.45,.884,(i-1)*.04);bm.scale.setScalar(.42);bm.rotation.set(-Math.PI/2,0,(i-1)*.14);
         bm.userData={type:'book',book,loaded:false,trolleySlip:slip,home:{position:bm.position.clone(),quaternion:bm.quaternion.clone(),parent:g}};interactables.push(bm);
         const tab=add(g,new THREE.BoxGeometry(.09,.006,.16),slipMat,-.45+i*.45+.1,.9,(i-1)*.04-.28);tab.rotation.y=(i-1)*.14});
