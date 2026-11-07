@@ -124,8 +124,8 @@ test('the mountain stands far from everything, and every book on it can be walke
   const pts=a.m.path.pts;for(let i=20;i<pts.length-20;i+=25){const p=pts[i],q=pts[i+1],l=Math.hypot(q.x-p.x,q.z-p.z),nx=-(q.z-p.z)/l,nz=(q.x-p.x)/l;
     for(const side of [-1.3,1.3])assert(a.m.allowed(cx+p.x+nx*side,cz+p.z+nz*side),`1.3 m off the middle of the path at ${p.s.toFixed(0)} m`)}
   // The signpost's arms point where they say.
-  const post={x:cx+2.2,z:cz+53.2},to={'THE SUMMIT':{x:cx+pts[Math.round(.03*(pts.length-1))].x,z:cz+pts[Math.round(.03*(pts.length-1))].z},'THE HUT':hut,'THE PAINTING':a.m.frame};
-  assert.equal(a.m.signs.length,3);
+  const post={x:cx+2.2,z:cz+53.2},to={'THE SUMMIT':{x:cx+pts[Math.round(.03*(pts.length-1))].x,z:cz+pts[Math.round(.03*(pts.length-1))].z},'THE HUT':hut,'THE PAINTING':a.m.frame,'THE FALLS':a.m.fallsAt(56)};
+  assert.equal(a.m.signs.length,4);
   for(const sign of a.m.signs){const t=to[sign.text],dx=t.x-post.x,dz=t.z-post.z,l=Math.hypot(dx,dz);assert(sign.x*dx/l+sign.z*dz/l>.98,`${sign.text} points the right way`)}
   assert.equal(a.seats.length,1);assert(near(world(find(a,'seat')),2),'the bench by the hut is a seat, and can be sat on');
 });

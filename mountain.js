@@ -57,7 +57,7 @@
     pine:'A pine bent by the wind, its top still swaying. John Muir climbed one in a storm in the Sierra to hear the forest from above: “never before did I enjoy so noble an exhilaration of motion.” (The Mountains of California)',
     // Coleridge, Constancy to an Ideal Object (book 29090), when the shadow on the cloud has been seen.
     spectre:'“An image with a glory round its head; / The enamoured rustic worships its fair hues, / Nor knows he makes the shadow he pursues!” (Coleridge, Constancy to an Ideal Object)',
-    signpost:'A yellow signpost, as in the Alps. Its arms say THE SUMMIT, pointing up the path; THE HUT; and, pointing back the way you came, THE PAINTING.',
+    signpost:'A yellow signpost, as in the Alps. Its arms say THE SUMMIT, pointing up the path; THE HUT; THE FALLS, pointing east along the meadow, where you can hear water; and, pointing back the way you came, THE PAINTING.',
     hut:'A stone hut for anyone caught on the mountain: a slate roof, a lantern, a bench, and a shelf of books about the valleys, left for the next comer. Somewhere below, out of sight, a cowbell clanks.',
     frame:'The frame you stepped through, standing on its own in the grass. Through it, the Grand Hall: lamplight, the fire, the shelves.',
     summit:'The summit: a cairn, an old tin box with a register in it, and nothing higher in sight but the other peaks and the moon.',
@@ -255,9 +255,9 @@
       }
       // The signpost where the path leaves the meadow.
       {const p=W(2.2,53.2),y=groundWorld(p.x,p.z),g=new THREE.Group();g.position.set(p.x,y,p.z);root.add(g);const post=box(.12,2.6,.12,wood,0,1.3,0,g);
-        // Each arm points at where it says: up the path, to the hut, and back to the frame.
+        // Each arm points at where it says: up the path, to the hut, back to the frame, and along the meadow to the falls.
         const up=pointAt(.03);state.signs=[];
-        for(const [text,to,h] of [['THE SUMMIT',W(up.x,up.z),2.35],['THE HUT',W(HUT.x,HUT.z),2.05],['THE PAINTING',FRAME,1.75]]){
+        for(const [text,to,h] of [['THE SUMMIT',W(up.x,up.z),2.35],['THE HUT',W(HUT.x,HUT.z),2.05],['THE PAINTING',FRAME,1.75],['THE FALLS',(()=>{const f=fallsAt(56);return W(f.x,f.z)})(),1.45]]){
           const dx=to.x-p.x,dz=to.z-p.z,l=Math.hypot(dx,dz)||1,ux=dx/l,uz=dz/l;
           const arm=add(own(new THREE.BoxGeometry(1.2,.22,.04)),std({map:label(text,340,62),roughness:.8}),ux*.62,h,uz*.62,g);arm.rotation.y=Math.atan2(-uz,ux);mark(arm,card('signpost','A signpost'));state.signs.push({text,x:ux,z:uz})}
         mark(post,card('signpost','A signpost'));block(p.x,p.z,.4,.4);
@@ -479,8 +479,8 @@
     const go=(x,z,yaw)=>{if(moveTo)moveTo(x,groundWorld(x,z),z,yaw);else move(x,z,yaw)};
     function enter(from='link'){
       activate();go(ARRIVAL.x,ARRIVAL.z,ARRIVAL.yaw);
-      showNotice(from==='painting'?'You step up into the frame, and through it. Cold air, the smell of snow and pine: a meadow at night, and the mountain going up in front of you, its summit white under the moon. A path leaves the grass and climbs.'
-        :'A meadow at night at the foot of a mountain, its summit white under the moon. A path leaves the grass and climbs. Behind you, a picture frame stands in the grass with the Grand Hall’s lamplight in it.',11);
+      showNotice(from==='painting'?'You step up into the frame, and through it. Cold air, the smell of snow and pine: a meadow at night, and the mountain going up in front of you, its summit white under the moon. A path leaves the grass and climbs. Off to the right, along the meadow, water is falling.'
+        :'A meadow at night at the foot of a mountain, its summit white under the moon. A path leaves the grass and climbs. Behind you, a picture frame stands in the grass with the Grand Hall’s lamplight in it. Off to the right, along the meadow, water is falling.',11);
       analytics?.track('Room Explored',{room:'mountain'});
     }
     // Into the cave behind the falls (falls-cave.js), and back out onto the ledge behind the water.
