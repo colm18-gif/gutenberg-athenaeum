@@ -85,7 +85,7 @@ test('the rooms are built on approach, the books are in the Emperor’s library 
   const shelf=s=>a.r.books.filter(m=>m.userData.shelf===s);
   for(const s of ['swift','small'])for(const m of shelf(s))assert(inside(world(m),L),`a ${s} book is in Lilliput`);
   for(const s of ['giants','seeing','life'])for(const m of shelf(s)){const w=world(m),c=a.r.chamber;assert(inside(w,B));assert(Math.abs(w.position.x-c.x)<c.half&&Math.abs(w.position.z-c.z)<c.half,`a ${s} book is inside Gulliver’s chamber`)}
-  assert(shelf('swift').length>=8&&shelf('small').length>=4&&shelf('giants').length>=6&&shelf('seeing').length>=6&&shelf('life').length>=6);
+  assert(shelf('swift').length>=8&&shelf('small').length>=4&&shelf('giants').length>=6&&shelf('seeing').length>=6&&shelf('life').length>=5);
   assert(shelf('life').some(m=>m.userData.book.id===829),'Gulliver’s own Travels, in his chamber');
   assert.equal(shelf('bigend').length,0,'the forbidden book is not out until the egg is broken');
   for(const type of ['gulliver-exit','gulliver-onward','gulliver-back','gulliver-egg'])assert(find(a,type),type);

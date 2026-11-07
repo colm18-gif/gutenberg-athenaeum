@@ -252,7 +252,7 @@
       for(const {group,from,to} of cases){
         const len=to-from,mid=(from+to)/2,z=northZ+.45;
         box(len,.3,.5,stone,mid,.15,z,g);box(len,.08,.5,stone,mid,1.22,z,g);box(len,1.2,.05,wood,mid,.7,northZ+.22,g);
-        for(let i=0;i<=Math.round(len/.45);i++)add(own(new THREE.CylinderGeometry(.03,.035,.9,8)),stone,from+i*len/Math.round(len/.45),.75,z+.22,g);
+        const bays=Math.max(2,Math.round(len/1.1)),column=own(new THREE.CylinderGeometry(.018,.022,.9,8));for(let i=0;i<=bays;i++)add(column,stone,from+i*len/bays,.75,z+.24,g);
         for(const y of TIERS)box(len-.1,.02,.32,wood,mid,y-.11,z,g);
         const per=Math.ceil(group.books.length/TIERS.length)||1,step=Math.min(.32,(len-.4)/per);
         group.books.forEach((book,i)=>{const row=Math.floor(i/per),col=i%per,n=Math.min(per,group.books.length-row*per);placeBook(book,{x:mid+(col-(n-1)/2)*step,y:TIERS[row],z:z-.02,yaw:0},geometry,group.key,g)});
