@@ -1,17 +1,22 @@
-# The Mountain, second look: poets of the heights, and two climbers not found under their titles
-Prelude ; Wordsworth ;
-; Wordsworth, William ; en
-; Coleridge, Samuel Taylor ; en
-; Mummery ;
-; Stephen, Leslie ; en
-Manfred|Childe Harold ; Byron ; en
-Mont Blanc|Poetical Works|Complete Poetical ; Shelley ; en
-Ascent of Mont|Ventoux ; ;
-Excelsior|Ballads|Voices of the Night ; Longfellow ; en
-Glory|Spectre|Brocken ; ; en
-Snowdon ; ; en
-; Whymper ; en
-; Workman, Fanny ; en
-; Peck, Annie ; en
-; Weston, Walter ; en
-; Mummery ; en
+# Lilliput and Brobdingnag (gulliver-room.js): Swift, his circle, small folk, giants and the view from above
+; Swift, Jonathan ; en
+; Pope, Alexander ; en
+; Arbuthnot ; en
+; Gay, John ; en
+Tom Thumb|Tragedy of Tragedies ; Fielding ; en
+Fairyland|Fairies|Poems ; Allingham ; en
+Mopsa ; Ingelow ; en
+Brownies ; Cox, Palmer ; en
+Lilliput ; ; en
+Micromegas|Micromégas|Romances ; Voltaire ; en
+True History|Lucian ; Lucian ; en
+Munchausen|Münchausen ; ; en
+English Fairy Tales|Jack the Giant ; Jacobs ; en
+Happy Prince ; Wilde ; en
+Flatland ; Abbott ; en
+Peter Wilkins ; Paltock ; en
+Lives of the.*Poets|Lives of the English Poets ; Johnson, Samuel ; en
+English Humourists ; Thackeray ; en
+Giant|Giants ; ; en
+Microscop ; ; en
+Gulliver ; ; en
