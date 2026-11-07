@@ -91,3 +91,21 @@ test('the trolley takes books from real shelves, each belonging to a room',()=>{
   // Secrets are never on the trolley.
   for(const secret of ['burns-cutty','canada-sourdough','nemo-atlantis','nights-lamp','austen-horrid','nature-sealed','walden-journal','mountain-spectre'])assert.ok(!X.TROLLEY_SHELVES.includes(secret));
 });
+
+test('the porter’s lantern goes round bookcases, not through them',()=>{
+  // A 30 by 20 floor with a bookcase across it, open only at its east end.
+  const nx=30,nz=20,open=new Uint8Array(nx*nz).fill(1);for(let i=0;i<26;i++)for(const j of [9,10])open[j*nx+i]=0;
+  const from=2*nx+3,to=17*nx+3,cells=X.gridPath(open,nx,nz,from,to);
+  assert.ok(cells,'there is a way');assert.equal(cells[0],from);assert.equal(cells.at(-1),to);
+  for(const k of cells)assert.equal(open[k],1,'every step is on open floor');
+  assert.ok(cells.some(k=>k%nx>=26&&[9,10].includes((k/nx)|0)),'it goes round by the gap');
+  // Pulled straight only where the line stays on open floor.
+  const pt=k=>[k%nx,(k/nx)|0],clear=(a,b)=>{const n=Math.ceil(Math.hypot(b[0]-a[0],b[1]-a[1])/.2);for(let s=1;s<n;s++){const x=Math.round(a[0]+(b[0]-a[0])*s/n),z=Math.round(a[1]+(b[1]-a[1])*s/n);if(!open[z*nx+x])return false}return true};
+  const way=X.smoothPath(cells.map(pt),clear);assert.ok(way.length>=3&&way.length<cells.length,'fewer turns, but it still turns');
+  for(let i=1;i<way.length;i++)assert.ok(clear(way[i-1],way[i]),'no straightened leg crosses the bookcase');
+  // A shut-in door has no way to it.
+  const shut=new Uint8Array(open);for(let i=0;i<nx;i++)for(const j of [9,10])shut[j*nx+i]=0;assert.equal(X.gridPath(shut,nx,nz,from,to),null);
+  // In the library the lantern walks the cells a reader could stand in, and follows the route it was given.
+  const src=fs.readFileSync('exploration.js','utf8');
+  assert.match(src,/survey\.cells\[survey\.k\]=allowedAt\(x,z\)\?1:0/);assert.match(src,/const target=walk\.path\[walk\.seg\+1\]/);
+});

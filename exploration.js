@@ -111,6 +111,18 @@
   function dimFor(x,z,date=new Date()){const h=date.getHours()+date.getMinutes()/60,H=h<12?h+24:h,s=x<-19?START.west:x>19?START.east:START.hall;return 1-.45*clamp(H-s,0,1)*clamp(30-H,0,1)}
   const synodic=29.530588853,moonPhase=(ms=Date.now())=>{const days=ms/86400000-10962.76;return ((days%synodic)+synodic)%synodic/synodic};
     const moonLight=(ms)=>(1-Math.cos(2*Math.PI*moonPhase(ms)))/2;
+  // The porter's way: A* over a grid of cells a reader could stand in (8 neighbours, no cutting corners), then pulled
+  // straight wherever the line between two points stays on open floor. `open` is a Uint8Array of nx by nz cells.
+  function gridPath(open,nx,nz,from,to){
+    const n=nx*nz,g=new Float32Array(n).fill(Infinity),came=new Int32Array(n).fill(-1),closed=new Uint8Array(n),heap=[],h=k=>Math.hypot(k%nx-to%nx,((k/nx)|0)-((to/nx)|0));
+    const push=(k,f)=>{heap.push([f,k]);let i=heap.length-1;while(i>0){const up=(i-1)>>1;if(heap[up][0]<=heap[i][0])break;[heap[up],heap[i]]=[heap[i],heap[up]];i=up}};
+    const pop=()=>{const top=heap[0],last=heap.pop();if(heap.length){heap[0]=last;let i=0;for(;;){const l=2*i+1,r=l+1;let m=i;if(l<heap.length&&heap[l][0]<heap[m][0])m=l;if(r<heap.length&&heap[r][0]<heap[m][0])m=r;if(m===i)break;[heap[m],heap[i]]=[heap[i],heap[m]];i=m}}return top[1]};
+    if(!open[from]||!open[to])return null;g[from]=0;push(from,h(from));
+    while(heap.length){const k=pop();if(closed[k])continue;if(k===to){const out=[];for(let c=k;c>=0;c=came[c])out.push(c);return out.reverse()}closed[k]=1;const i=k%nx,j=(k/nx)|0;
+      for(let dj=-1;dj<=1;dj++)for(let di=-1;di<=1;di++){if(!di&&!dj)continue;const a=i+di,b=j+dj;if(a<0||b<0||a>=nx||b>=nz)continue;const q=b*nx+a;if(!open[q]||closed[q])continue;
+        if(di&&dj&&(!open[j*nx+a]||!open[b*nx+i]))continue;const cost=g[k]+(di&&dj?Math.SQRT2:1);if(cost<g[q]){g[q]=cost;came[q]=k;push(q,cost+h(q))}}}
+    return null}
+  function smoothPath(points,clear){if(points.length<3)return points.slice();const out=[points[0]];let i=0;while(i<points.length-1){let j=points.length-1;while(j>i+1&&!clear(points[i],points[j]))j--;out.push(points[j]);i=j}return out}
   window.createExploration=function(o){
     const {THREE,scene,camera,MAT,player,interactables,canvasTexture,softTexture,showNotice,sound,playSample=()=>false,collider,allowedAt,floorAt,
       placeKnown,placeLabel=id=>id,currentPlace,isDiscovered,books,bookMaterial,audio=()=>null,moon,ambient,readerLantern,lampShade,flickerLights=[],isHolding=()=>false,isReading=()=>false,
@@ -138,21 +150,34 @@
     const pool=new THREE.Mesh(new THREE.CircleGeometry(1.5,20),new THREE.MeshBasicMaterial({map:softTexture(),color:0xff9a40,transparent:true,opacity:.3,depthWrite:false,blending:THREE.AdditiveBlending}));pool.rotation.x=-Math.PI/2;scene.add(pool);pool.visible=false;pool.raycast=()=>{};porter.traverse(m=>{m.raycast=()=>{}});
     const walk={mode:'off',next:75,path:[],seg:0,alpha:0,seen:false,at:new THREE.Vector3(),hallTime:0};
     function setPorterAlpha(a){walk.alpha=a;glassMat.opacity=a;frameMat.opacity=a;halo.material.opacity=.75*a;pool.material.opacity=.3*a;porter.visible=pool.visible=a>.01}
+    // The floor the porter can walk: the hall, the wings and the Restricted Catalogue, surveyed a slice a frame (the
+    // same test that stops the reader at a bookcase, so the lantern keeps a reader's width from every shelf).
+    const GRID={x0:-37,z0:-31,x1:57,z1:31,step:.5},NX=Math.round((GRID.x1-GRID.x0)/GRID.step)+1,NZ=Math.round((GRID.z1-GRID.z0)/GRID.step)+1;
+    let floorGrid=null,survey=null,surveyedAt=-1e9;
+    const cellOf=(x,z)=>{const i=Math.round((x-GRID.x0)/GRID.step),j=Math.round((z-GRID.z0)/GRID.step);return i<0||j<0||i>=NX||j>=NZ?-1:j*NX+i},cellPoint=k=>[GRID.x0+(k%NX)*GRID.step,GRID.z0+((k/NX)|0)*GRID.step];
+    function surveyFloor(t){if(!survey){if(floorGrid&&t-surveyedAt<600)return;survey={k:0,cells:new Uint8Array(NX*NZ)}}
+      const end=Math.min(NX*NZ,survey.k+1200);for(;survey.k<end;survey.k++){const [x,z]=cellPoint(survey.k);survey.cells[survey.k]=allowedAt(x,z)?1:0}
+      if(survey.k>=NX*NZ){floorGrid=survey.cells;survey=null;surveyedAt=t}}
+    function nearestOpen(x,z){const k=cellOf(x,z);if(k<0)return -1;if(floorGrid[k])return k;const i0=k%NX,j0=(k/NX)|0;for(let r=1;r<=6;r++)for(let dj=-r;dj<=r;dj++)for(let di=-r;di<=r;di++){if(Math.max(Math.abs(di),Math.abs(dj))!==r)continue;const i=i0+di,j=j0+dj;if(i>=0&&j>=0&&i<NX&&j<NZ&&floorGrid[j*NX+i])return j*NX+i}return -1}
+    const clearLine=(a,b)=>{const d=Math.hypot(b[0]-a[0],b[1]-a[1]),n=Math.ceil(d/.2);for(let s=1;s<n;s++){const k=cellOf(a[0]+(b[0]-a[0])*s/n,a[1]+(b[1]-a[1])*s/n);if(k<0||!floorGrid[k])return false}return true};
     function startPorter(t){
-      const yaw=player.yaw,ahead={x:-Math.sin(yaw),z:-Math.cos(yaw)};let pick=null,score=-Infinity;
-      for(const [place,,,ax,az] of DOORS){if(placeKnown(place))continue;const dx=ax-p.x,dz=az-p.z,d=Math.hypot(dx,dz);if(d<9||d>42)continue;const facing=(dx*ahead.x+dz*ahead.z)/d,s=facing*2-d/30;if(s>score){score=s;pick=[ax,az]}}
-      if(!pick)return false;
-      // It appears some way ahead, between the reader and the door, and somewhere a person could stand.
-      let start=null;for(const f of [.55,.45,.65,.35]){const x=p.x+(pick[0]-p.x)*f,z=p.z+(pick[1]-p.z)*f;if(Math.hypot(x-p.x,z-p.z)>6.5&&allowedAt(x,z)){start=[x,z];break}}
-      if(!start)return false;walk.path=[new THREE.Vector3(start[0],0,start[1]),new THREE.Vector3(pick[0],0,pick[1])];walk.seg=0;walk.at.copy(walk.path[0]);walk.mode='walk';setPorterAlpha(.01);
-      if(!walk.seen){walk.seen=true;setTimeout(()=>showNotice('Far off, a lantern moves between the shelves. Whoever carries it keeps just out of the light.',7),400)}
-      return true}
+      if(!floorGrid)return false;const yaw=player.yaw,ahead={x:-Math.sin(yaw),z:-Math.cos(yaw)},from=nearestOpen(p.x,p.z);if(from<0)return false;
+      const choices=[];for(const [place,,,ax,az] of DOORS){if(placeKnown(place))continue;const dx=ax-p.x,dz=az-p.z,d=Math.hypot(dx,dz);if(d<9||d>42)continue;choices.push([(dx*ahead.x+dz*ahead.z)/d*2-d/30,ax,az])}
+      choices.sort((a,b)=>b[0]-a[0]);
+      for(const [,ax,az] of choices.slice(0,3)){const to=nearestOpen(ax,az);if(to<0)continue;const cells=gridPath(floorGrid,NX,NZ,from,to);if(!cells)continue;
+        // It appears a little way along the route, round whatever is in between, and goes on from there.
+        const pts=cells.map(cellPoint);let run=0,s=0;const total=pts.reduce((sum,q,i)=>i?sum+Math.hypot(q[0]-pts[i-1][0],q[1]-pts[i-1][1]):0,0);if(total<10)continue;const startAt=Math.min(11,total*.45);
+        while(s<pts.length-1&&run+Math.hypot(pts[s+1][0]-pts[s][0],pts[s+1][1]-pts[s][1])<startAt){run+=Math.hypot(pts[s+1][0]-pts[s][0],pts[s+1][1]-pts[s][1]);s++}
+        const way=smoothPath(pts.slice(s),clearLine);walk.path=way.map(([x,z])=>new THREE.Vector3(x,0,z));walk.seg=0;walk.at.copy(walk.path[0]);walk.mode='walk';setPorterAlpha(.01);
+        if(!walk.seen){walk.seen=true;setTimeout(()=>showNotice('Far off, a lantern moves between the shelves. Whoever carries it keeps just out of the light.',7),400)}
+        return true}
+      return false}
     function updatePorter(t,dt){
-      const watching=inHall()&&!isReading();walk.hallTime=watching?walk.hallTime+dt:0;
+      const watching=inHall()&&!isReading();walk.hallTime=watching?walk.hallTime+dt:0;if(watching&&walk.mode==='off')surveyFloor(t);
       if(walk.mode==='off'){if(watching&&walk.hallTime>20&&t>walk.next&&!startPorter(t))walk.next=t+30;return}
       if(walk.mode==='fade'||!watching){setPorterAlpha(Math.max(0,walk.alpha-dt*(watching?.8:2)));if(walk.alpha<=0){walk.mode='off';walk.next=t+240+Math.random()*150}}
-      else{setPorterAlpha(Math.min(1,walk.alpha+dt*.6));const target=walk.path[1],r=Math.hypot(walk.at.x-p.x,walk.at.z-p.z),speed=r>18?0:r<5?2.6:1.15,to=target.clone().sub(walk.at);to.y=0;const d=to.length();
-        if(d<.15){walk.mode='fade';playSample('doorOpen',.18,.82)||sound(120,.4,'triangle',.02)}else walk.at.addScaledVector(to.normalize(),Math.min(d,speed*dt))}
+      else{setPorterAlpha(Math.min(1,walk.alpha+dt*.6));const target=walk.path[walk.seg+1],r=Math.hypot(walk.at.x-p.x,walk.at.z-p.z),speed=r>18?0:r<5?2.6:1.15,to=target?target.clone().sub(walk.at):null;
+        if(!to||to.length()<.12){if(target&&walk.seg<walk.path.length-2)walk.seg++;else{walk.mode='fade';playSample('doorOpen',.18,.82)||sound(120,.4,'triangle',.02)}}else{to.y=0;const d=to.length();walk.at.addScaledVector(to.normalize(),Math.min(d,speed*dt))}}
       porter.position.set(walk.at.x,1.12+Math.sin(t*3.6)*.035,walk.at.z);porter.rotation.z=Math.sin(t*1.8)*.08;pool.position.set(walk.at.x,.02,walk.at.z)}
 
     // ---------- 3. The plan: the reader's route, a compass, and dragons ----------
@@ -349,7 +374,7 @@
     const timeTitle=()=>`Tonight, ${moonName()}.`;
     return {update,interact,onSelect,doorLeak,planOverlay,blocks,timeTitle,dimFor,moonPhase,moonName,
       anteroom:{contains:anteContains,allowed:anteAllowed,floorAt:(x,z)=>anteContains(x,z)?0:null,enter:enterAnteroom,leave:leaveAnteroom,room:ANTE,locker:LOCKER,get built(){return !!ante}},
-      doors:DOORS,hints:HINTS,margins:MARGINS,clocks:CLOCKS,departures:DEPARTURES,draughts:DRAUGHTS,tube:TUBE,get route(){return route.slice()},get porter(){return {...walk,group:porter}},capsule,buildTrolley,openCapsule,mapLocker};
+      doors:DOORS,hints:HINTS,margins:MARGINS,clocks:CLOCKS,departures:DEPARTURES,draughts:DRAUGHTS,tube:TUBE,get route(){return route.slice()},get porter(){return {...walk,group:porter}},get floorGrid(){return floorGrid},grid:GRID,startPorter:()=>startPorter(0),capsule,buildTrolley,openCapsule,mapLocker};
   };
-  Object.assign(window.createExploration,{TROLLEY_SHELVES,SHELF_PLACES,CLOCKS,CONRAD,DOORS,HINTS,MARGINS,DEPARTURES,DRAUGHTS,dimFor,moonPhase});
+  Object.assign(window.createExploration,{gridPath,smoothPath,TROLLEY_SHELVES,SHELF_PLACES,CLOCKS,CONRAD,DOORS,HINTS,MARGINS,DEPARTURES,DRAUGHTS,dimFor,moonPhase});
 })();
