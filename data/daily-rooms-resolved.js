@@ -1,7 +1,7 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-11-06",
+ "updated": "2026-11-07",
  "days": {
   "2026-09-25": {
    "books": [
@@ -278,57 +278,57 @@ window.ATHENAEUM_DAILY_RESOLVED={
    ],
    "missing": []
   },
-  "2026-10-24": {
+  "2026-09-30": {
    "books": [
     {
-     "id": 1026,
-     "title": "The Diary of a Nobody",
-     "author": "George Grossmith and Weedon Grossmith"
+     "id": 1952,
+     "title": "The Yellow Wallpaper",
+     "author": "Charlotte Perkins Gilman"
     },
     {
-     "id": 13650,
-     "title": "Nonsense Books",
-     "author": "Edward Lear"
+     "id": 11231,
+     "title": "Bartleby, the Scrivener",
+     "author": "Herman Melville"
     },
     {
-     "id": 6340,
-     "title": "Literary Lapses",
-     "author": "Stephen Leacock"
+     "id": 5200,
+     "title": "Metamorphosis",
+     "author": "Franz Kafka"
     },
     {
-     "id": 651,
-     "title": "Phantasmagoria and Other Poems",
-     "author": "Lewis Carroll"
+     "id": 7256,
+     "title": "The Gift of the Magi",
+     "author": "O. Henry"
     },
     {
-     "id": 4682,
-     "title": "Nonsense Novels",
-     "author": "Stephen Leacock"
+     "id": 1080,
+     "title": "A Modest Proposal",
+     "author": "Jonathan Swift"
     },
     {
-     "id": 22537,
-     "title": "Mr. Dooley in Peace and in War",
-     "author": "Finley Peter Dunne"
+     "id": 11757,
+     "title": "The Velveteen Rabbit",
+     "author": "Margery Williams"
     },
     {
-     "id": 849,
-     "title": "The Idle Thoughts of an Idle Fellow",
-     "author": "Jerome K. Jerome"
+     "id": 12122,
+     "title": "The Monkey's Paw",
+     "author": "W. W. Jacobs"
     },
     {
-     "id": 972,
-     "title": "The Devil's Dictionary",
+     "id": 375,
+     "title": "An Occurrence at Owl Creek Bridge",
      "author": "Ambrose Bierce"
     },
     {
-     "id": 3250,
-     "title": "How to Tell a Story and Other Essays",
-     "author": "Mark Twain"
+     "id": 60976,
+     "title": "Rip Van Winkle",
+     "author": "Washington Irving"
     },
     {
-     "id": 13,
-     "title": "The Hunting of the Snark",
-     "author": "Lewis Carroll"
+     "id": 6373,
+     "title": "The Luck of Roaring Camp",
+     "author": "Bret Harte"
     }
    ],
    "missing": []
