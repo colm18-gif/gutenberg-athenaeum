@@ -129,7 +129,9 @@
     add(porter,new THREE.BoxGeometry(.13,.17,.13),glassMat,0,0,0);for(const [sx,sz] of [[-1,-1],[1,-1],[-1,1],[1,1]])add(porter,new THREE.BoxGeometry(.018,.2,.018),frameMat,sx*.07,0,sz*.07);
     add(porter,new THREE.ConeGeometry(.1,.08,4),frameMat,0,.13,0).rotation.y=Math.PI/4;add(porter,new THREE.BoxGeometry(.16,.02,.16),frameMat,0,-.1,0);add(porter,new THREE.TorusGeometry(.05,.008,5,12),frameMat,0,.2,0);
     const halo=new THREE.Sprite(new THREE.SpriteMaterial({map:softTexture(),color:0xffb050,transparent:true,opacity:.75,depthWrite:false,blending:THREE.AdditiveBlending}));halo.scale.set(1.3,1.3,1);porter.add(halo);
-    const pool=new THREE.Mesh(new THREE.CircleGeometry(1.5,20),new THREE.MeshBasicMaterial({map:softTexture(),color:0xff9a40,transparent:true,opacity:.3,depthWrite:false,blending:THREE.AdditiveBlending}));pool.rotation.x=-Math.PI/2;scene.add(pool);pool.visible=false;
+    // Nothing of the porter's can be looked at or stood against: the library raycasts the scene for walls, and a sprite cannot be raycast without a camera.
+    halo.raycast=()=>{};
+    const pool=new THREE.Mesh(new THREE.CircleGeometry(1.5,20),new THREE.MeshBasicMaterial({map:softTexture(),color:0xff9a40,transparent:true,opacity:.3,depthWrite:false,blending:THREE.AdditiveBlending}));pool.rotation.x=-Math.PI/2;scene.add(pool);pool.visible=false;pool.raycast=()=>{};porter.traverse(m=>{m.raycast=()=>{}});
     const walk={mode:'off',next:75,path:[],seg:0,alpha:0,seen:false,at:new THREE.Vector3(),hallTime:0};
     function setPorterAlpha(a){walk.alpha=a;glassMat.opacity=a;frameMat.opacity=a;halo.material.opacity=.75*a;pool.material.opacity=.3*a;porter.visible=pool.visible=a>.01}
     function startPorter(t){
@@ -164,7 +166,7 @@
     // ---------- 4. Draughts towards the mysteries ----------
     const DRAUGHT_N=28,draughtPos=new Float32Array(DRAUGHT_N*3),draughtStart=new Float32Array(DRAUGHT_N*3),draughtLife=new Float32Array(DRAUGHT_N);
     const draughtGeo=new THREE.BufferGeometry();draughtGeo.setAttribute('position',new THREE.BufferAttribute(draughtPos,3));
-    const draught=new THREE.Points(draughtGeo,new THREE.PointsMaterial({color:0xe8dcc0,size:.06,map:softTexture(),transparent:true,opacity:.5,depthWrite:false}));draught.visible=false;draught.frustumCulled=false;scene.add(draught);
+    const draught=new THREE.Points(draughtGeo,new THREE.PointsMaterial({color:0xe8dcc0,size:.06,map:softTexture(),transparent:true,opacity:.5,depthWrite:false}));draught.visible=false;draught.frustumCulled=false;draught.raycast=()=>{};scene.add(draught);
     let draughtSpot=null,draughtCheck=0;
     function seedDraught(i,spot){const a=Math.random()*Math.PI*2,r=1.4+Math.random()*1.2;draughtStart[i*3]=spot[0]+Math.cos(a)*r;draughtStart[i*3+1]=spot[1]+(Math.random()-.3)*1.1;draughtStart[i*3+2]=spot[2]+Math.sin(a)*r;draughtLife[i]=Math.random()}
     function updateDraught(t,dt){
@@ -178,7 +180,7 @@
     // ---------- 5. Footprints in the dust ----------
     const printTex=canvasTexture((c,w,h)=>{c.clearRect(0,0,w,h);c.fillStyle='rgba(30,22,14,.75)';c.beginPath();c.ellipse(w/2,h*.3,w*.36,h*.24,0,0,7);c.fill();c.beginPath();c.ellipse(w/2,h*.78,w*.3,h*.16,0,0,7);c.fill()},32,96);
     const printMat=new THREE.MeshBasicMaterial({map:printTex,transparent:true,opacity:.55,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2}),printGeo=new THREE.PlaneGeometry(.12,.29).rotateX(-Math.PI/2);
-    const OWN_PRINTS=180,ownPrints=new THREE.InstancedMesh(printGeo,printMat,OWN_PRINTS);ownPrints.count=0;ownPrints.frustumCulled=false;scene.add(ownPrints);
+    const OWN_PRINTS=180,ownPrints=new THREE.InstancedMesh(printGeo,printMat,OWN_PRINTS);ownPrints.count=0;ownPrints.frustumCulled=false;ownPrints.raycast=()=>{};scene.add(ownPrints);
     const dummy=new THREE.Object3D();let printNext=0,printSide=1,printWalked=0,lastPrint=null;
     const dusty=()=>(p.y<-3&&Math.abs(p.x)<17.8&&p.z>-67.8&&p.z<-40.2)||(ground()&&p.x>63&&p.x<167&&p.z>-29&&p.z<-9)||(ground()&&p.x<-52&&p.x>-72&&p.z>-8&&p.z<2);
     function stamp(mesh,i,x,z,yaw,side){const y=floorAt(x,z)+.012;dummy.position.set(x+Math.cos(yaw)*.1*side,y,z-Math.sin(yaw)*.1*side);dummy.rotation.set(0,yaw,0);dummy.updateMatrix();mesh.setMatrixAt(i,dummy.matrix)}
@@ -186,7 +188,7 @@
       const yaw=Math.atan2(-dx,-dz);stamp(ownPrints,printNext,p.x,p.z,yaw,printSide);printSide=-printSide;printNext=(printNext+1)%OWN_PRINTS;ownPrints.count=Math.min(OWN_PRINTS,ownPrints.count+1);ownPrints.instanceMatrix.needsUpdate=true;lastPrint={x:p.x,z:p.z}}
     // Someone came down the hatch before the reader, and went straight to the narrow door behind the pipes.
     const trail=[];for(let f=0;f<=1.0001;f+=1/26){const x=.6+f*15.8,z=-44.2-Math.sin(f*Math.PI*.5)*3.9+Math.sin(f*9)*.25;trail.push([x,z])}
-    const earlier=new THREE.InstancedMesh(printGeo,printMat,trail.length);earlier.frustumCulled=false;trail.forEach(([x,z],i)=>{const n=trail[Math.min(i+1,trail.length-1)],q=trail[Math.max(i-1,0)],yaw=Math.atan2(-(n[0]-q[0]),-(n[1]-q[1]));dummy.position.set(x+Math.cos(yaw)*.1*(i%2?1:-1),-5.988,z-Math.sin(yaw)*.1*(i%2?1:-1));dummy.rotation.set(0,yaw,0);dummy.updateMatrix();earlier.setMatrixAt(i,dummy.matrix)});scene.add(earlier);
+    const earlier=new THREE.InstancedMesh(printGeo,printMat,trail.length);earlier.frustumCulled=false;earlier.raycast=()=>{};trail.forEach(([x,z],i)=>{const n=trail[Math.min(i+1,trail.length-1)],q=trail[Math.max(i-1,0)],yaw=Math.atan2(-(n[0]-q[0]),-(n[1]-q[1]));dummy.position.set(x+Math.cos(yaw)*.1*(i%2?1:-1),-5.988,z-Math.sin(yaw)*.1*(i%2?1:-1));dummy.rotation.set(0,yaw,0);dummy.updateMatrix();earlier.setMatrixAt(i,dummy.matrix)});scene.add(earlier);
 
     // ---------- 6. The despatch tube ----------
     const TUBE={x:-10.53,z:-5};const tube=new THREE.Group();tube.position.set(TUBE.x,0,TUBE.z);scene.add(tube);
@@ -210,7 +212,7 @@
     // ---------- 7. Marginalia, and the trolley's return slips ----------
     const noted=new Set();let lastNote=-1e9;
     function onSelect(bm){const d=bm?.userData,book=d?.book;if(!book)return;
-      if(d.returnSlip){setTimeout(()=>showNotice(`A return slip, in the librarian’s hand: ${d.returnSlip}`,8),900);return}
+      if(d.trolleySlip){setTimeout(()=>showNotice(`A return slip, in the librarian’s hand: ${d.trolleySlip}`,8),900);return}
       const now=performance.now()/1000;if(now-lastNote<120||Math.random()>.45)return;const who=`${book.title} ${book.author}`,rule=MARGINS.find(([re,place])=>re.test(who)&&!placeKnown(place)&&!noted.has(place)&&currentPlace()!==place);if(!rule)return;
       noted.add(rule[1]);lastNote=now;setTimeout(()=>showNotice(`Pencilled on the flyleaf: “${rule[2]}”`,8),1200)}
 
@@ -321,7 +323,7 @@
       const AS_ROOM={'nights-courtyard':'nights-room','african-courtyard':'african-room'};
       chosen.forEach((book,i)=>{const place=placeFor(book),slip=`return to ${placeLabel(AS_ROOM[place]||place)}. ${HINTS[place]?.[0]||''}`.trim();
         const bm=add(g,geometry,bookMaterial(book),-.45+i*.45,.884,(i-1)*.04);bm.scale.setScalar(.42);bm.rotation.set(-Math.PI/2,0,(i-1)*.14);
-        bm.userData={type:'book',book,loaded:false,returnSlip:slip,home:{position:bm.position.clone(),quaternion:bm.quaternion.clone(),parent:g}};interactables.push(bm);
+        bm.userData={type:'book',book,loaded:false,trolleySlip:slip,home:{position:bm.position.clone(),quaternion:bm.quaternion.clone(),parent:g}};interactables.push(bm);
         const tab=add(g,new THREE.BoxGeometry(.09,.006,.16),slipMat,-.45+i*.45+.1,.9,(i-1)*.04-.28);tab.rotation.y=(i-1)*.14});
       const plaqueInfo={type:'object',title:'A book trolley',author:'Three books on their way back to their rooms, each with a return slip. The trolley is never in the same place twice.',action:'LOOK'};
       for(const m of g.children.slice(0,2))mark(m,plaqueInfo);
