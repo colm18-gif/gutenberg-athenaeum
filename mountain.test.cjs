@@ -38,15 +38,15 @@ function mountain({stored={}}={}){
   const store=new Map(Object.entries(stored)),storage={getItem:k=>store.get(k)??null,setItem:(k,v)=>store.set(k,v)};
   const context={window:{},Math,JSON,Set,Map,Float32Array,Object,String,parseInt,location:{search:''}};vm.runInNewContext(source,context);
   const scene=new O();scene.background=colour;scene.fog={color:colour,density:0};
-  const interactables=[],notices=[],player={pos:new V(),radius:.42,yaw:0},tracked=[],hall=[],seats=[];
+  const interactables=[],notices=[],player={pos:new V(),radius:.42,yaw:0},tracked=[],hall=[],seats=[],caves=[];
   const look=new V(0,0,-1),camera={position:new V(),rotation:rotation(),updateMatrixWorld(){},getWorldDirection:v=>v.copy(look)};
   const findBook=id=>({id,title:'Book '+id,author:'A'});
   const m=context.window.createMountain({THREE,scene,MAT:{},player,camera,interactables,canvasTexture:()=>texture(),bookMaterial:()=>new M({}),findBook,
     arrivals:{valley:byRoom('mountain-valley'),path:byRoom('mountain-path'),spectre:byRoom('mountain-spectre')},storage,
     showNotice:t=>notices.push(t),playSample:()=>{},sound:()=>{},analytics:{track:(n,p)=>tracked.push([n,p])},
     move:(x,z,yaw)=>{player.pos.set(x,0,z);player.yaw=yaw},moveTo:(x,y,z,yaw)=>{player.pos.set(x,y,z);player.yaw=yaw;camera.position.set(x,y+1.72,z)},
-    toHall:spot=>{hall.push(spot);player.pos.set(spot.x,0,spot.z)},registerSeat:(parts,group,eye,yaw,info)=>{const data={type:'seat',...info};seats.push(data);for(const p of parts){p.userData=data;interactables.push(p)}return data}});
-  return {m,scene,interactables,notices,player,tracked,store,hall,camera,look,seats};
+    toHall:spot=>{hall.push(spot);player.pos.set(spot.x,0,spot.z)},intoCave:()=>caves.push(player.pos.x),registerSeat:(parts,group,eye,yaw,info)=>{const data={type:'seat',...info};seats.push(data);for(const p of parts){p.userData=data;interactables.push(p)}return data}});
+  return {m,scene,interactables,notices,player,tracked,store,hall,camera,look,seats,caves,THREE,O,V,M,texture};
 }
 // A part's place in the world (the groups here are never turned far enough for it to matter at this scale).
 const world=o=>{const p={x:0,z:0};for(let q=o;q;q=q.parent){p.x+=q.position.x;p.z+=q.position.z}return p};
@@ -164,4 +164,51 @@ test('in through the painting, up, round, down the rope, and out again',()=>{
   assert.equal(a.hall.length,2,'R mid-abseil lands in the hall too');const before=a.hall.length;a.m.interact(find(a,'mountain-exit'));assert.equal(a.hall.length,before+1);assert(!a.m.contains(a.player.pos.x,a.player.pos.z),'back in the Grand Hall');
   a.m.update(20,.016);assert(a.m.built);a.m.update(60,.016);assert.equal(a.m.built,false);
   assert(!a.interactables.some(o=>/^mountain-(card|exit|rope|register)$/.test(o.userData.type)),'its parts go with it');assert(find(a,'mountain-painting'),'but the painting stays');
+});
+
+// ---------- the falls, and the cave behind them ----------
+test('the falls: a pool you walk round, a ledge behind the water, and the cave mouth at the back of it',()=>{
+  const a=mountain(),{m,player}=a;m.enter();m.update(1,.1);
+  const F=m.falls,pool=m.fallsAt(F.pool.r),behind=m.fallsAt(F.cliff-1.4),mouth=m.fallsAt(F.cliff-.7);
+  assert.ok(m.inPool(pool.x,pool.z)&&!m.allowed(pool.x,pool.z),'the pool is water, not ground');
+  assert.ok(m.allowed(behind.x,behind.z),'the ledge behind the falls can be stood on');
+  assert.equal(m.zoneAt(pool.x+2,pool.z+2),'mountain-falls');
+  // From the meadow in front of the falls, round the pool and in behind the water, on ground a reader may walk.
+  m.toFalls();const start={x:player.pos.x,z:player.pos.z};assert.ok(m.allowed(start.x,start.z),'the link sets the reader down on open ground');
+  const step=.4,key=(x,z)=>Math.round(x/step)+','+Math.round(z/step),seen=new Set([key(start.x,start.z)]),queue=[start];let reached=false;
+  while(queue.length&&!reached){const q=queue.shift();for(const [dx,dz] of [[step,0],[-step,0],[0,step],[0,-step]]){const x=q.x+dx,z=q.z+dz,k=key(x,z);if(seen.has(k)||Math.hypot(x-pool.x,z-pool.z)>16||!m.allowed(x,z))continue;seen.add(k);if(Math.hypot(x-mouth.x,z-mouth.z)<.8){reached=true;break}queue.push({x,z})}}
+  assert.ok(reached,'the cave mouth can be walked to from the meadow');
+  // Walking into the mouth goes in; coming back out sets the reader on the ledge, clear of the mouth, facing the meadow.
+  player.pos.set(mouth.x,0,mouth.z);m.update(10,.1);assert.equal(a.caves.length,1,'into the cave');
+  m.behindFalls();assert.ok(m.allowed(player.pos.x,player.pos.z));assert.ok(Math.hypot(player.pos.x-mouth.x,player.pos.z-mouth.z)>.8,'not straight back in');
+  m.update(11,.1);m.update(16,.1);assert.equal(a.caves.length,1);
+  assert.ok(a.interactables.some(o=>o.userData.type==='mountain-falls-cave'),'the mouth can be looked at and gone into');
+});
+
+test('the cave behind the falls: in, its books and bench, and back out through the water',()=>{
+  const {THREE,O,V,M,texture}=mountain();const cave=fs.readFileSync('falls-cave.js','utf8'),context={window:{},Math,JSON,Set,Map,Float32Array,Object,String};vm.runInNewContext(cave,context);
+  const interactables=[],notices=[],player={pos:new V(),radius:.42,yaw:0},seats=[];let outs=0;
+  const c=context.window.createFallsCave({THREE:{...THREE,PointLight:class extends O{constructor(c,i){super();this.isLight=true;this.intensity=i}}},scene:new O(),MAT:{},player,interactables,canvasTexture:()=>texture(),bookMaterial:()=>new M({}),findBook:id=>({id,title:'Book '+id}),arrivals:[940,1497],
+    showNotice:t=>notices.push(t),playSample:()=>{},sound:()=>{},analytics:{track(){}},move:(x,z,yaw)=>{player.pos.set(x,0,z);player.yaw=yaw},out:()=>outs++,
+    registerSeat:(parts,g,eye,yaw,info)=>{seats.push(info);return info}});
+  c.enter();c.update(1,.1);assert.ok(c.allowed(player.pos.x,player.pos.z),'set down on the cave floor');
+  const ids=c.books.map(b=>b.userData.book.id);for(const id of [834,19,940,1497])assert.ok(ids.includes(id),`book ${id} is in a niche`);
+  assert.equal(seats.length,1);assert.ok(interactables.some(o=>o.userData.type==='falls-cave-out'));
+  // Out through the curtain, once.
+  const R=c.room;player.pos.set(R.cx,0,R.cz+R.d/2-.6);c.update(5,.1);assert.equal(outs,1);c.update(5.5,.1);assert.equal(outs,1);
+  // Freed a while after the reader has gone.
+  player.pos.set(0,0,0);c.update(40,.1);assert.ok(!c.built);assert.ok(!interactables.some(o=>o.userData.type==='falls-cave-out'));
+  // Its words are in their books.
+  const text=id=>require('zlib').gunzipSync(fs.readFileSync(`texts/bundled-gzip/pg${id}.txt.gz`)).toString('utf8').replace(/\s+/g,' ');
+  assert.ok(text(834).includes(c.quotes.reichenbach),'Watson at the Reichenbach');
+  for(const k of ['named','curtain'])assert.ok(text(19).includes(c.quotes[k].replace(/\n/g,' ')),`Hiawatha: ${k}`);
+});
+
+test('the falls and the cave are places, with sounds, links and a shelf of their own',()=>{
+  assert.match(game,/\['mountain-falls','The falls'\],\['falls-cave','The cave behind the falls'\]/);
+  const ambience=fs.readFileSync('room-ambience.js','utf8');for(const k of ['mountain-falls','falls-cave'])assert.match(ambience,new RegExp(`'${k}':\\{beds`));
+  assert.match(game,/waterfall:'mountain-falls'/);assert.match(game,/'falls-cave':fallsCave&&\(\(\)=>fallsCave\.enter\(\)\)/);
+  assert.match(game,/intoCave:\(\)=>fallsCave\?\.enter\(\)/);assert.match(game,/out:\(\)=>mountain\?\.behindFalls\(\)/);
+  const list=fs.readFileSync('data/new-books.js','utf8');assert.ok((list.match(/,'falls-cave','/g)||[]).length>=3);assert.match(fs.readFileSync('scripts/new-books.mjs','utf8'),/'falls-cave'/);
+  const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(m=>m[1]);assert.ok(order.indexOf('falls-cave.js')>order.indexOf('mountain.js')&&order.indexOf('falls-cave.js')<order.indexOf('game.js'));
 });

@@ -156,7 +156,14 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   (`athenaeum-mountain-spectre`). No lights; the sky is a dome that goes with the reader, with the far ranges painted
   on it. Its three places (`mountain`, `mountain-heights`, `mountain-summit`) each have an ambience in
   `room-ambience.js` (a cowbell in the meadow, the wind rising with height). Every quotation (Whymper, Muir, Coleridge)
-  is checked against the bundled texts by a test.
+  is checked against the bundled texts by a test. The falls (`FALLS` in mountain.js; `?room=falls`, `waterfall`): at the
+  meadow's south-east edge a stream comes over a cliff into a pool (water, not ground: `inPool`); a ledge runs behind the
+  falling water to a cave mouth, and walking into it goes into the cave behind the falls (`falls-cave.js`, x 1500, z 1000,
+  built on entry and freed after; `?room=falls-cave`): a chamber with the falls a curtain across its mouth (walk into it to
+  come out on the ledge, `behindFalls`), one lantern, a stone bench, and books in two niches: the library's own (`OWN`:
+  the Memoirs for the Reichenbach, Hiawatha, Tom Sawyer, The Mysterious Island, Journey to the Centre of the Earth, King
+  Solomon's Mines) and the shelf `falls-cave` (The Last of the Mohicans, Lorna Doone, Plato's Republic). Watson's
+  Reichenbach and Longfellow's lines are checked against pg834 and pg19 by a test.
 - The Deep Wood (`forest.js`, centre x 800, z 400; walkable within 40 m) is a forest at night, eerie, not frightening (no
   howling, nothing jumps out). Two ways in: the window hung on the Garden Room's west wall (the theme room at x 145, z 46;
   `hangGardenWindow` is called whenever that room is built), and a button, Step into the woodcut, that the reader shows

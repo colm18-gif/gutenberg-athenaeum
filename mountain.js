@@ -25,6 +25,9 @@
   // The path starts at the south, in the meadow, and goes round anticlockwise seen from above; it reaches the summit
   // on its east side. The rope goes down the west face; the cloud is watched from the north rim, away from the moon.
   const ROPE_THETA=Math.PI*1.5,LEDGE_THETA=Math.PI;
+  // The falls: at the south-east edge of the meadow, where the ring of other peaks begins, a stream comes over a cliff
+  // into a pool. Behind the falling water a ledge runs along the rock to the mouth of a cave (falls-cave.js).
+  const FALLS={theta:.75,cliff:66.7,sheet:64.6,pool:{r:60.8,radius:4,stretch:1.3},half:.055,height:13.5};
   // The moon: low in the south. Its antipoint, where a shadow falls, is to the north and below the horizon.
   const MOON_DIR=(()=>{const az=.3,el=.44;return {x:Math.sin(az)*Math.cos(el),y:Math.sin(el),z:Math.cos(az)*Math.cos(el)}})();
   const CLOUD_Y=30;
@@ -59,7 +62,9 @@
     frame:'The frame you stepped through, standing on its own in the grass. Through it, the Grand Hall: lamplight, the fire, the shelves.',
     summit:'The summit: a cairn, an old tin box with a register in it, and nothing higher in sight but the other peaks and the moon.',
     cloud:'A sea of cloud, lying in the valleys and lit by the moon, with the peaks standing out of it like islands. The moon is behind you. Look down at the cloud on the side away from it.',
-    snow:'Snow lying on the path, trodden by somebody who came up before you.'
+    snow:'Snow lying on the path, trodden by somebody who came up before you.',
+    falls:'A stream comes over the rock above and falls into a pool, white all the way down. Along the cliff behind the water, a dark gap in the rock: there is room to walk behind the falls.',
+    cave:'The mouth of a cave behind the falling water. It goes back into the mountain further than you can see.'
   };
   const mulberry=seed=>()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296};
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),smooth=(a,b,v)=>{const t=clamp((v-a)/(b-a),0,1);return t*t*(3-2*t)};
@@ -109,15 +114,20 @@
     const p=nearestPath(x,z);if(p.d>4.8)return wild;
     const w=smooth(2,4.8,p.d);return p.y+(wild-p.y)*w;
   }
+  // Where the falls are, in the mountain's own frame: a point at radius r, a little either way of the falls' middle.
+  const fallsAt=(r,d=0)=>({x:Math.sin(FALLS.theta+d)*r,z:Math.cos(FALLS.theta+d)*r});
+  function nearFalls(x,z,pad=0){const c=fallsAt(63);return Math.hypot(x-c.x,z-c.z)<9+pad}
+  // The pool, an ellipse drawn out along the cliff: inside it is water, not ground.
+  function inPool(x,z){const c=fallsAt(FALLS.pool.r),tx=Math.cos(FALLS.theta),tz=-Math.sin(FALLS.theta),rx=Math.sin(FALLS.theta),rz=Math.cos(FALLS.theta),dx=x-c.x,dz=z-c.z,a=(dx*tx+dz*tz)/(FALLS.pool.radius*FALLS.pool.stretch),b=(dx*rx+dz*rz)/FALLS.pool.radius;return a*a+b*b<1}
   const pointAt=f=>{const pts=PATH.pts,i=clamp(Math.round(f*(pts.length-1)),0,pts.length-1);return pts[i]};
 
   window.createMountain=function(options){
     const {THREE,scene,MAT,player,camera=null,ambient=null,moon:moonlight=null,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,sound,
-      move,moveTo=null,analytics,toHall=null,registerSeat=null,isHolding=()=>false,isReducedMotion=()=>false,storage=window.localStorage}=options;
+      move,moveTo=null,analytics,toHall=null,intoCave=null,registerSeat=null,isHolding=()=>false,isReducedMotion=()=>false,storage=window.localStorage}=options;
     const FOUND_KEY='athenaeum-mountain-found',SPECTRE_KEY='athenaeum-mountain-spectre',SUMMITS_KEY='athenaeum-mountain-summits';
     const W=(x,z)=>({x:CENTRE.x+x,z:CENTRE.z+z});
     const HUT={x:-10.5,z:57.5,yaw:Math.PI*.42},ARRIVAL={...W(0,57.4),yaw:0},FRAME={...W(0,60.4)};
-    let root=null,time=0,lastNeeded=-1e9,state=null,hallPainting=null,foundCache=null,abseil=null,spectreSeen=false,watch=0,visitedSummit=false;
+    let caveCooldown=0,root=null,time=0,lastNeeded=-1e9,state=null,hallPainting=null,foundCache=null,abseil=null,spectreSeen=false,watch=0,visitedSummit=false;
     const owned=[],ours=[],books=[],blockers=[],trunks=[];
     const own=thing=>{owned.push(thing);return thing};
     const std=params=>own(new THREE.MeshStandardMaterial(params));
@@ -197,7 +207,7 @@
     // A crag: a sharp tooth of dark rock, its upper ledges white.
     function cragGeometry(){return joined([[new THREE.ConeGeometry(.5,1,5),0x2e2d31,placed(0,.5,0)],[new THREE.ConeGeometry(.32,.62,4),0x3a3a40,placed(.22,.3,.1,.2,.6,.15)],[new THREE.DodecahedronGeometry(.18,0),0xaab4c4,placed(-.18,.42,.12,0,0,0,1)]])}
     const nearRope=(x,z)=>{const t=Math.sin(ROPE_THETA)*x+Math.cos(ROPE_THETA)*z;return t>0&&Math.abs(Math.cos(ROPE_THETA)*x-Math.sin(ROPE_THETA)*z)<4.5};
-    const nearPlace=(x,z,pad)=>Math.hypot(x-0,z-58.8)<6+pad||Math.hypot(x+10.5,z-57.5)<6+pad;
+    const nearPlace=(x,z,pad)=>Math.hypot(x-0,z-58.8)<6+pad||Math.hypot(x+10.5,z-57.5)<6+pad||nearFalls(x,z,pad);
     function buildLandscape(){
       const rand=mulberry(23),firs=[],rocks=[],crags=[];
       for(let tries=0;tries<20000&&firs.length<240;tries++){
@@ -402,10 +412,45 @@
     }
     hangHallPainting();
 
+    // ---------- the falls ----------
+    function buildFalls(){
+      const {theta,cliff,sheet,half,height}=FALLS,c=fallsAt(63),y0=groundAt(c.x,c.z),g=new THREE.Group();g.position.set(CENTRE.x,y0,CENTRE.z);root.add(g);
+      const rockTex=own(canvasTexture((ctx,w,h)=>{const r=mulberry(77);ctx.fillStyle='#3d4046';ctx.fillRect(0,0,w,h);for(let i=0;i<900;i++){const v=40+r()*60|0;ctx.fillStyle=`rgba(${v},${v+4},${v+10},.5)`;ctx.fillRect(r()*w,r()*h,2+r()*14,1+r()*6)}ctx.strokeStyle='rgba(15,16,20,.6)';for(let i=0;i<40;i++){ctx.lineWidth=1+r()*2;ctx.beginPath();let x=r()*w,y=r()*h;ctx.moveTo(x,y);for(let k=0;k<5;k++){x+=(r()-.5)*40;y+=r()*30;ctx.lineTo(x,y)}ctx.stroke()}},256,256));
+      rockTex.wrapS=rockTex.wrapT=THREE.RepeatWrapping;rockTex.repeat?.set?.(5,3);
+      const rock=std({map:rockTex,color:0x9aa0aa,roughness:1,side:THREE.DoubleSide,emissive:0x07080b});
+      // The cliff, a curve of rock along the meadow's edge, with boulders along its top and at its ends.
+      const face=add(own(new THREE.CylinderGeometry(cliff,cliff,height+4,24,1,true,theta-.16,.32)),rock,0,(height+4)/2-1.2,0,g);
+      mark(face,card('falls','The falls'));
+      const boulders=[];const r=mulberry(91);for(let i=0;i<14;i++){const d=-.17+i*.34/13,q=fallsAt(cliff+.6,d);boulders.push([q.x,height+1.6+r()*1.4,q.z,2.2+r()*1.6])}
+      for(const d of [-.17,.17])for(let k=0;k<4;k++){const q=fallsAt(cliff-.4+r()*.6,d+(d<0?-1:1)*r()*.02);boulders.push([q.x,k*3.6+1,q.z,2.4+r()*1.2])}
+      const rockGeo=own(new THREE.DodecahedronGeometry(1,0)),flat=std({map:rockTex,color:0x8f959e,roughness:1,flatShading:true,emissive:0x07080b});
+      for(const [x,y,z,sz] of boulders){const b=add(rockGeo,flat,x,y,z,g);b.scale.set(sz,sz*.8,sz);b.rotation.set(r()*3,r()*3,r()*3)}
+      // The water: a sheet of streaks that runs down, foam where it lands, and spray drifting off it.
+      const waterTex=own(canvasTexture((ctx,w,h)=>{ctx.clearRect(0,0,w,h);const r2=mulberry(5);for(let i=0;i<260;i++){const x=r2()*w,len=20+r2()*90,y=r2()*h,a=.25+r2()*.6;const gr=ctx.createLinearGradient(0,y,0,y+len);gr.addColorStop(0,`rgba(235,245,255,0)`);gr.addColorStop(.5,`rgba(235,245,255,${a})`);gr.addColorStop(1,`rgba(235,245,255,0)`);ctx.fillStyle=gr;ctx.fillRect(x,y,1+r2()*3,len)}
+        ctx.fillStyle='rgba(200,225,240,.22)';ctx.fillRect(0,0,w,h)},128,256));
+      waterTex.wrapS=waterTex.wrapT=THREE.RepeatWrapping;waterTex.repeat?.set?.(2,3);
+      const water=add(own(new THREE.CylinderGeometry(sheet,sheet,height,10,1,true,theta-half,half*2)),own(new THREE.MeshBasicMaterial({map:waterTex,color:0xdcecf6,transparent:true,opacity:.82,side:THREE.DoubleSide,depthWrite:false,fog:true})),0,height/2,0,g);
+      water.raycast=()=>{};
+      const lip=fallsAt(sheet+.6);add(own(new THREE.BoxGeometry(half*2*sheet+1.4,.5,1.4)),flat,lip.x,height+.1,lip.z,g).rotation.y=theta;
+      // The pool, its rim of stones, and the foam.
+      const pc=fallsAt(FALLS.pool.r),pool=add(own(new THREE.CircleGeometry(FALLS.pool.radius,40)),std({color:0x0d1d28,roughness:.12,metalness:.3,emissive:0x050c12}),pc.x,.05,pc.z,g);
+      pool.rotation.x=-Math.PI/2;pool.rotation.z=theta;pool.scale.set(FALLS.pool.stretch,1,1);mark(pool,card('falls','The pool below the falls'));
+      for(let i=0;i<16;i++){const a=i/16*Math.PI*2;if(Math.abs(Math.sin(a))>.85&&Math.cos(a)>-.2)continue;const tx=Math.cos(a)*FALLS.pool.radius*FALLS.pool.stretch*1.04,rx=Math.sin(a)*FALLS.pool.radius*1.04,x=pc.x+tx*Math.cos(theta)+rx*Math.sin(theta),z=pc.z-tx*Math.sin(theta)+rx*Math.cos(theta),b=add(rockGeo,flat,x,.1,z,g);b.scale.set(.6+r()*.5,.35+r()*.3,.6+r()*.5);b.rotation.y=r()*3}
+      const foamTex=own(canvasTexture((ctx,w,h)=>{const gr=ctx.createRadialGradient(w/2,h/2,4,w/2,h/2,w/2);gr.addColorStop(0,'rgba(245,250,255,.9)');gr.addColorStop(.6,'rgba(230,240,250,.45)');gr.addColorStop(1,'rgba(230,240,250,0)');ctx.fillStyle=gr;ctx.fillRect(0,0,w,h)},128,128));
+      const fp=fallsAt(sheet-.4),foam=add(own(new THREE.PlaneGeometry(half*2*sheet+2.5,2.6)),own(new THREE.MeshBasicMaterial({map:foamTex,transparent:true,depthWrite:false})),fp.x,.09,fp.z,g);foam.rotation.set(-Math.PI/2,0,theta);foam.raycast=()=>{};
+      const N=70,pos=new Float32Array(N*3),seed=[];for(let i=0;i<N;i++){seed.push(Math.random());const q=fallsAt(sheet-.2,(Math.random()-.5)*half*2);pos[i*3]=q.x;pos[i*3+1]=Math.random()*3;pos[i*3+2]=q.z}
+      const sprayGeo=own(new THREE.BufferGeometry()),sprayAttr=new THREE.Float32BufferAttribute(pos,3);sprayGeo.setAttribute('position',sprayAttr);
+      const spray=new THREE.Points(sprayGeo,own(new THREE.PointsMaterial({color:0xe6f0f8,size:.5,transparent:true,opacity:.28,depthWrite:false})));spray.raycast=()=>{};g.add(spray);
+      // The cave's mouth in the rock behind the water.
+      const mouthTex=own(canvasTexture((ctx,w,h)=>{ctx.clearRect(0,0,w,h);ctx.beginPath();ctx.moveTo(w*.12,h);ctx.lineTo(w*.1,h*.45);ctx.quadraticCurveTo(w*.18,h*.04,w*.5,h*.03);ctx.quadraticCurveTo(w*.84,h*.06,w*.9,h*.48);ctx.lineTo(w*.88,h);ctx.closePath();const gr=ctx.createRadialGradient(w/2,h*.75,4,w/2,h*.6,w*.6);gr.addColorStop(0,'rgba(2,3,5,1)');gr.addColorStop(.8,'rgba(8,10,14,.97)');gr.addColorStop(1,'rgba(20,22,28,.85)');ctx.fillStyle=gr;ctx.fill()},128,192));
+      const mp=fallsAt(cliff-.08),mouth=add(own(new THREE.PlaneGeometry(2.6,3.4)),own(new THREE.MeshBasicMaterial({map:mouthTex,transparent:true,depthWrite:false})),mp.x,1.6,mp.z,g);mouth.rotation.y=theta+Math.PI;
+      mark(mouth,{type:'mountain-falls-cave',title:'The cave behind the falls',author:QUOTES.cave,action:'GO IN'});
+      state.falls={tex:waterTex,spray,pos:sprayAttr.array,seed,y0};
+    }
     // ---------- building and freeing ----------
     function build(){
       if(root)return;root=new THREE.Group();root.name='mountain';state={};
-      buildGround();buildPath();buildLandscape();buildPlaces();buildAir();scene.add(root);
+      buildGround();buildPath();buildLandscape();buildPlaces();buildFalls();buildAir();scene.add(root);
     }
     function unload(){
       if(!root)return;root.removeFromParent();root=null;state=null;
@@ -421,12 +466,12 @@
     // On the path, on the summit, or in the meadow round the mountain's foot; never off the edge.
     function allowed(x,z){
       if(!contains(x,z))return false;const p=local(x,z),r=Math.hypot(p.x,p.z),rad=player.radius||.42;
-      const open=(r>=MEADOW.inner&&r<=MEADOW.outer)||r<R1-.35||nearestPath(p.x,p.z).d<PATH_HALF;if(!open)return false;
+      const open=(r>=MEADOW.inner&&r<=MEADOW.outer)||r<R1-.35||nearestPath(p.x,p.z).d<PATH_HALF;if(!open||inPool(p.x,p.z))return false;
       if(blockers.some(b=>x+rad>b.minX&&x-rad<b.maxX&&z+rad>b.minZ&&z-rad<b.maxZ))return false;
       return !trunks.some(t=>Math.abs(t.x-x)<2&&Math.abs(t.z-z)<2&&Math.hypot(t.x-x,t.z-z)<t.r+rad);
     }
     // Where on the mountain: the meadow, the path, or the summit.
-    function zoneAt(x,z){if(!contains(x,z))return null;const p=local(x,z),r=Math.hypot(p.x,p.z);return r<R1+1.2?'mountain-summit':r>=MEADOW.inner?'mountain':'mountain-heights'}
+    function zoneAt(x,z){if(!contains(x,z))return null;const p=local(x,z),r=Math.hypot(p.x,p.z);return r<R1+1.2?'mountain-summit':r>=MEADOW.inner?(nearFalls(p.x,p.z,5)?'mountain-falls':'mountain'):'mountain-heights'}
     // Underfoot: snow high up and grass in the meadow are soft; the scree and rock of the middle are stone.
     function surfaceAt(x,z){const y=groundWorld(x,z);return y>20||y<4?'carpet':'stone'}
 
@@ -438,6 +483,12 @@
         :'A meadow at night at the foot of a mountain, its summit white under the moon. A path leaves the grass and climbs. Behind you, a picture frame stands in the grass with the Grand Hall’s lamplight in it.',11);
       analytics?.track('Room Explored',{room:'mountain'});
     }
+    // Into the cave behind the falls (falls-cave.js), and back out onto the ledge behind the water.
+    function goIntoCave(){if(!intoCave)return;caveCooldown=time+3;playSample?.('doorOpen',.25,.6);intoCave()}
+    function behindFalls(){activate();caveCooldown=time+3;const b=fallsAt(FALLS.cliff-1.4,.035),q=W(b.x,b.z);go(q.x,q.z,FALLS.theta);
+      showNotice('Out of the cave and onto the ledge behind the falls. The water comes down in front of you, white in the moonlight; the meadow is on the other side of it.',8)}
+    function toFalls(){activate();const q=W(fallsAt(54).x,fallsAt(54).z);go(q.x,q.z,FALLS.theta+Math.PI);
+      showNotice('The falls at the edge of the meadow, coming down the rock into a pool. There is room to walk behind them.',8);analytics?.track('Room Explored',{room:'mountain-falls'})}
     function leave(){abseil=null;if(toHall)toHall(HALL_SPOT);else move(HALL_SPOT.x,HALL_SPOT.z,HALL_SPOT.yaw);playSample?.('doorOpen',.5,1.2);showNotice('Back through the frame into the Grand Hall, and the warmth of the fire. The painting shows the mountain as before, but there is a little snow on the hearth.',6)}
     function noteFound(id){
       const all=found(),{valley,path,spectre}=catalogue(),here=new Set([...valley,...path,...spectre].map(b=>b.id)),total=valley.length+path.length;if(!here.has(id))return null;
@@ -472,6 +523,7 @@
       if(data.type==='mountain-painting'){playSample?.('doorOpen',.4,.7);enter('painting');return true}
       if(data.type==='mountain-exit'){leave();return true}
       if(data.type==='mountain-rope'){startAbseil();return true}
+      if(data.type==='mountain-falls-cave'){goIntoCave();return true}
       if(data.type==='mountain-register'){showNotice(signRegister(),8);return true}
       if(data.type==='mountain-card'){showNotice(`${data.title}: ${data.author}`,data.author.length>160?13:9);return true}
       return false;
@@ -503,6 +555,9 @@
       if(state.snow){const s=state.snow,amount=smooth(14,36,height);s.material.opacity=amount*.85;s.visible=amount>.01;
         if(s.visible){s.position.set(eye.x,eye.y-8,eye.z);const p=s.geometry.attributes.position;if(p?.array){const arr=p.array,fall=dt*(reduced?.3:.9);for(let i=0;i<arr.length;i+=3){arr[i+1]-=fall*(.6+(i%7)/10);arr[i]+=Math.sin(t*.5+i)*dt*.12;if(arr[i+1]<0)arr[i+1]+=16}p.needsUpdate=true}}}
       if(state.pine&&!reduced)state.pine.rotation.z=-.18+Math.sin(t*.9)*.02;
+      // The falls run, and walking into the cave's mouth behind them goes in.
+      const f=state.falls,fl=local(x,z);if(f&&Math.hypot(fl.x-fallsAt(63).x,fl.z-fallsAt(63).z)<40){f.tex.offset?.set?.(0,(t*(reduced?.15:.9))%1);const arr=f.pos;for(let i=0;i<arr.length/3;i++){arr[i*3+1]+=dt*(.5+f.seed[i]);if(arr[i*3+1]>3.2){arr[i*3+1]=0;const q=fallsAt(FALLS.sheet-.2-f.seed[i]*.8,(Math.random()-.5)*FALLS.half*2);arr[i*3]=q.x;arr[i*3+2]=q.z}}f.spray.geometry.attributes.position.needsUpdate=true}
+      if(f&&!abseil&&t>caveCooldown){const m=fallsAt(FALLS.cliff-.7);if(Math.hypot(fl.x-m.x,fl.z-m.z)<.8)goIntoCave()}
       // The shadow on the cloud: where the moon's light, passing the reader's head, meets the top of the cloud.
       const s=state.spectre,l=local(x,z),onTop=Math.hypot(l.x,l.z)<R1+.8&&height>CLOUD_Y+8;
       if(s){if(onTop){const d=(height-CLOUD_Y-.4)/MOON_DIR.y;s.position.set(eye.x-MOON_DIR.x*d,eye.y-MOON_DIR.y*d+3.5,eye.z-MOON_DIR.z*d);s.visible=true;s.material.opacity=Math.min(.95,(s.material.opacity||0)+dt*.6)}
@@ -511,7 +566,7 @@
       if(onTop&&!spectreSeen&&camera?.getWorldDirection){camera.getWorldDirection(forward);const dot=-(forward.x*MOON_DIR.x+forward.y*MOON_DIR.y+forward.z*MOON_DIR.z);watch=dot>.93?watch+dt:0;if(watch>1.2)seeSpectre()}
     }
 
-    return {contains,floorAt,allowed,interact,update,enter,leave,unload,reset,zoneAt,surfaceAt,noteFound,catalogue,hangHallPainting,seeSpectre,signRegister,
+    return {contains,floorAt,allowed,interact,update,enter,leave,unload,reset,zoneAt,surfaceAt,noteFound,catalogue,hangHallPainting,seeSpectre,signRegister,behindFalls,toFalls,falls:FALLS,inPool:(x,z)=>inPool(x-CENTRE.x,z-CENTRE.z),fallsAt:(r,d)=>{const q=fallsAt(r,d);return W(q.x,q.z)},
       centre:CENTRE,path:PATH,stations:STATIONS,quotes:QUOTES,own:OWN,arrival:ARRIVAL,hallSpot:HALL_SPOT,hallPainting:HALL_PAINTING,ropeLanding:ROPE_LANDING,moonDir:MOON_DIR,
       groundAt:groundWorld,nearestPath:(x,z)=>nearestPath(x-CENTRE.x,z-CENTRE.z),
       get built(){return !!root},get travelling(){return !!abseil},get books(){return books.slice()},get counts(){return state?.counts||null},get spectreSeen(){return spectreSeen},get signs(){return state?.signs||null},hut:HUT,frame:FRAME,pathHalf:PATH_HALF};
