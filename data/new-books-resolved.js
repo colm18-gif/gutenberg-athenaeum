@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-11-03",
+ "updated": "2026-11-07",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -2418,6 +2418,18 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "The Complete Poetical Works of Samuel Taylor Coleridge": {
    "id": 29090,
    "words": 385291
+  },
+  "The Last of the Mohicans": {
+   "id": 940,
+   "words": 148989
+  },
+  "Lorna Doone": {
+   "id": 17460,
+   "words": 277747
+  },
+  "The Republic": {
+   "id": 1497,
+   "words": 217257
   },
   "Don Quijote [es]": {
    "id": 2000,
