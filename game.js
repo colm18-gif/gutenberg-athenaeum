@@ -2846,7 +2846,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       allowedAt:(x,z)=>allowed(x,z),floorAt:(x,z)=>floorHeight(x,z),placeKnown,placeLabel,currentPlace:()=>analyticsRoom(),isDiscovered:id=>discovered.has(id),books,bookMaterial,
       audio:()=>audioCtx?{ctx:audioCtx,master}:null,moon,ambient,readerLantern,lampShade:lampShadeMaterial,flickerLights,isHolding:()=>!!selected,isReading:()=>worldIsCovered(),
       freeable:(name,isNeeded,build,reset)=>{if(!performanceZones[name])preparePerformanceZone(name,()=>false,isNeeded);const existing=new Set(scene.children),freeMark=beginFreeable(name);build();registerPerformanceZoneObjects(name,existing);endFreeable(freeMark,reset)},
-      curatedShelf,chair,arrivalIds,enterMapRoom:()=>mapRoom?.enter(),analytics:window.libraryAnalytics,
+      curatedShelf,chair,arrivalIds,findBook:id=>books.find(b=>b.id===id),enterMapRoom:()=>mapRoom?.enter(),analytics:window.libraryAnalytics,
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}})||null;
     if(exploration){
       const preExploreFloor=floorHeight;floorHeight=function(x,z){return exploration.anteroom.floorAt(x,z)??preExploreFloor(x,z)};

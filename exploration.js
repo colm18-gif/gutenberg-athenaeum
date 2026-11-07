@@ -63,6 +63,10 @@
   const SHELF_PLACES=[[/^irish-/,'irish-room'],[/^burns-(works|lives|scotland)$/,'burns-room'],[/^canada-(stories|north|poets)$/,'canada-room'],[/^austen-(writings|lives|read|novels)$/,'austen-room'],
     [/^nature-(origin|collectors|observers)$/,'naturalist-room'],[/^medicine-/,'medicine-room'],[/^map-/,'map-room'],[/^walden-(thoreau|concord)$/,'walden'],[/^nights-(tales|poets|echoes)$/,'nights-courtyard'],
     [/^african-/,'african-courtyard'],[/^within-/,'within-room'],[/^contested$/,'contested'],[/^set-texts$/,'set-texts-room'],[/^lost-property$/,'lost-property'],[/^(antipodes|australian|new-zealand)$/,'antipodes'],[/^mountain-valley$/,'mountain']];
+  // The shelves the book trolley takes from: books on their way back to their rooms.
+  const TROLLEY_SHELVES=['irish-myth','irish-revival','irish-writers','burns-works','burns-lives','burns-scotland','canada-stories','canada-north','canada-poets','austen-writings','austen-lives','austen-read',
+    'nature-collectors','nature-observers','medicine-physic','medicine-discovery','medicine-healers','map-voyages','map-makers','map-lands','walden-thoreau','walden-concord','nights-tales','nights-poets','nights-echoes',
+    'african-ancient','african-voices','african-tales','within-read','contested','mountain-valley'];
   // Pencilled notes: a book by one of these, picked up anywhere, may point to the room kept for them.
   const MARGINS=[[/Jane Austen/,'austen-room','There is a whole room of her. West wall of the Grand Hall.'],[/Robert Burns/,'burns-room','Burns has a cottage. Through the Irish Room, past the harp.'],
     [/Thoreau/,'walden','The pond is real. Out through the Naturalist’s garden door.'],[/Charles Darwin|Russel Wallace/,'naturalist-room','His study is kept, beetles and all. Through the Medicine Room.'],
@@ -110,7 +114,7 @@
   window.createExploration=function(o){
     const {THREE,scene,camera,MAT,player,interactables,canvasTexture,softTexture,showNotice,sound,playSample=()=>false,collider,allowedAt,floorAt,
       placeKnown,placeLabel=id=>id,currentPlace,isDiscovered,books,bookMaterial,audio=()=>null,moon,ambient,readerLantern,lampShade,flickerLights=[],isHolding=()=>false,isReading=()=>false,
-      freeable,curatedShelf,chair,arrivalIds=()=>[],enterMapRoom,move,analytics,storage=window.localStorage}=o;
+      freeable,curatedShelf,chair,arrivalIds=()=>[],findBook=()=>null,enterMapRoom,move,analytics,storage=window.localStorage}=o;
     const load=(key,fallback)=>{try{const v=JSON.parse(storage?.getItem(key)||'null');return v??fallback}catch(e){return fallback}};
     const save=(key,value)=>{try{storage?.setItem(key,JSON.stringify(value))}catch(e){}};
     const mark=(object,data)=>{object.userData=data;interactables.push(object);return object};
@@ -314,14 +318,16 @@
     function buildTrolley(){if(trolleyBuilt)return;trolleyBuilt=true;
       const spots=[[-13.5,20.5,0],[13.5,-1,Math.PI/2],[-28,-6,0],[30,-6,0],[-4,-14.4,0],[6,12,Math.PI/2],[-14,-1,Math.PI/2]].filter(([x,z,yaw])=>{const hw=Math.abs(Math.cos(yaw))*.75+Math.abs(Math.sin(yaw))*.45,hd=Math.abs(Math.sin(yaw))*.75+Math.abs(Math.cos(yaw))*.45;return [[x-hw,z-hd],[x+hw,z-hd],[x-hw,z+hd],[x+hw,z+hd],[x,z]].every(([a,b])=>allowedAt(a,b))});
       if(!spots.length)return;const [x,z,yaw]=spots[Math.floor(Math.random()*spots.length)];
-      const pool=books.filter(b=>b.room&&placeFor(b)),unknown=pool.filter(b=>!placeKnown(placeFor(b))),from=(unknown.length>=3?unknown:pool).sort(()=>Math.random()-.5),chosen=[];
-      for(const b of from){if(chosen.length>=3)break;if(!chosen.some(c=>placeFor(c)===placeFor(b)))chosen.push(b)}
+      // The books come from the rooms' own shelves (their arrivals in data/new-books.js), one per room.
+      const pool=[];for(const shelf of TROLLEY_SHELVES){const place=placeFor({room:shelf});for(const id of arrivalIds(shelf)){const book=findBook(id);if(book)pool.push({book,place})}}
+      const unknown=pool.filter(e=>!placeKnown(e.place)),from=(new Set(unknown.map(e=>e.place)).size>=3?unknown:pool).sort(()=>Math.random()-.5),chosen=[];
+      for(const e of from){if(chosen.length>=3)break;if(!chosen.some(c=>c.place===e.place))chosen.push(e)}
       const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=yaw;scene.add(g);const wood=new THREE.MeshStandardMaterial({color:0x6a4a2c,roughness:.7,map:MAT.darkWood.map||null});
       for(const y of [.35,.82])add(g,new THREE.BoxGeometry(1.4,.04,.7),wood,0,y,0);for(const [sx,sz] of [[-1,-1],[1,-1],[-1,1],[1,1]]){add(g,new THREE.BoxGeometry(.05,.95,.05),wood,sx*.67,.5,sz*.32);add(g,new THREE.CylinderGeometry(.06,.06,.04,10),MAT.black||dark,sx*.6,.06,sz*.32).rotation.x=Math.PI/2}
       add(g,new THREE.CylinderGeometry(.02,.02,.7,6),brass,-.78,1.0,0).rotation.x=Math.PI/2;for(const sz of [-.32,.32])add(g,new THREE.BoxGeometry(.14,.04,.03),brass,-.72,1.0,sz);
       const slipMat=new THREE.MeshStandardMaterial({color:0xf0e8d0,roughness:.9}),geometry=new THREE.BoxGeometry(1.05,1.2,.16);
       const AS_ROOM={'nights-courtyard':'nights-room','african-courtyard':'african-room'};
-      chosen.forEach((book,i)=>{const place=placeFor(book),slip=`return to ${placeLabel(AS_ROOM[place]||place)}. ${HINTS[place]?.[0]||''}`.trim();
+      chosen.forEach(({book,place},i)=>{slip=`return to ${placeLabel(AS_ROOM[place]||place)}. ${HINTS[place]?.[0]||''}`.trim();
         const bm=add(g,geometry,bookMaterial(book),-.45+i*.45,.884,(i-1)*.04);bm.scale.setScalar(.42);bm.rotation.set(-Math.PI/2,0,(i-1)*.14);
         bm.userData={type:'book',book,loaded:false,trolleySlip:slip,home:{position:bm.position.clone(),quaternion:bm.quaternion.clone(),parent:g}};interactables.push(bm);
         const tab=add(g,new THREE.BoxGeometry(.09,.006,.16),slipMat,-.45+i*.45+.1,.9,(i-1)*.04-.28);tab.rotation.y=(i-1)*.14});
@@ -345,5 +351,5 @@
       anteroom:{contains:anteContains,allowed:anteAllowed,floorAt:(x,z)=>anteContains(x,z)?0:null,enter:enterAnteroom,leave:leaveAnteroom,room:ANTE,locker:LOCKER,get built(){return !!ante}},
       doors:DOORS,hints:HINTS,margins:MARGINS,clocks:CLOCKS,departures:DEPARTURES,draughts:DRAUGHTS,tube:TUBE,get route(){return route.slice()},get porter(){return {...walk,group:porter}},capsule,buildTrolley,openCapsule,mapLocker};
   };
-  Object.assign(window.createExploration,{CLOCKS,CONRAD,DOORS,HINTS,MARGINS,DEPARTURES,DRAUGHTS,dimFor,moonPhase});
+  Object.assign(window.createExploration,{TROLLEY_SHELVES,SHELF_PLACES,CLOCKS,CONRAD,DOORS,HINTS,MARGINS,DEPARTURES,DRAUGHTS,dimFor,moonPhase});
 })();

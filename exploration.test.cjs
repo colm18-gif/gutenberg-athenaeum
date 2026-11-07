@@ -81,3 +81,13 @@ test('the ledger’s departures are dated, and the trolley and capsules only poi
   for(const [,,ax,az] of X.DOORS.map(d=>[d[0],0,d[3],d[4]]))assert.ok(Number.isFinite(ax)&&Number.isFinite(az));
   for(const id of Object.keys(X.DRAUGHTS))assert.match(game,new RegExp(`\\['${id}','`),`${id} is one of the mysteries`);
 });
+
+test('the trolley takes books from real shelves, each belonging to a room',()=>{
+  const list=fs.readFileSync('data/new-books.js','utf8');
+  for(const shelf of X.TROLLEY_SHELVES){
+    assert.ok(new RegExp(`,'${shelf}','`).test(list),`${shelf} is a shelf in data/new-books.js`);
+    const rule=X.SHELF_PLACES.find(([re])=>re.test(shelf));assert.ok(rule&&places.has(rule[1]),`${shelf} belongs to a room`);
+  }
+  // Secrets are never on the trolley.
+  for(const secret of ['burns-cutty','canada-sourdough','nemo-atlantis','nights-lamp','austen-horrid','nature-sealed','walden-journal','mountain-spectre'])assert.ok(!X.TROLLEY_SHELVES.includes(secret));
+});
