@@ -395,7 +395,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - Exploration (`exploration.js`, loaded just before `passages.js`; wired at the end of game.js as `exploration`): small
   things that make wandering worth it, none with a light of its own. A room not yet found is heard through its closed door
   (`DOORS`, room-ambience.js `leak`: muffled, quieter, one at a time). Now and then the night porter's lantern (no light,
-  no figure) appears ahead in the hall and goes towards a door not yet opened, waiting if the reader falls behind. The
+  no figure) appears ahead in the hall and goes towards a door not yet opened, waiting if the reader falls behind; it goes round the shelves
+  (`gridPath`, A* over a grid of floor a reader could stand on, surveyed a slice a frame; then `smoothPath`). The
   journal's plan keeps the reader's route (`athenaeum-hall-route`), a compass, and "here be dragons" while it has blanks.
   Dust drifts towards a mystery not yet recorded (`DRAUGHTS`). Footprints: the reader's own in the basement, memory rooms
   and tunnel, and an earlier reader's from the hatch to the narrow door behind the pipes. A brass despatch tube on the hall's
