@@ -342,7 +342,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Буші was kept off it, for a hero nicknamed for killing Jews and a mass death at its end; so were Franko's Малий Мирон,
   which ends foretelling the boy's ruin, and Marko Vovchok's Галя, which ends with her in the Dnipro: a new book is read
   before it is shelved there),
-  the mitten, the КАЛИНА blocks, a cushioned bench (two seats), a slide in the south-west quarter (`SLIDE`: its steps and
+  the mitten, the КАЛИНА blocks, picture covers on its own copies (`coverArt`, a scene drawn for each title, no files;
+  `userData.pictureCover` keeps game.js's real-cover swap off them), a cushioned bench (two seats), a slide in the south-west quarter (`SLIDE`: its steps and
   chute are the floor there, `slideHeight`; `allowed` takes the steps one at a time; at the top `intl-slide` carries the
   reader down the chute), the grey kitten from the lullaby «Котику сіренький» (`intl-kitten`), who pads between a few spots
   and every fifth stop curls up asleep in her basket by the south wall for 45 s, and a small yellow door to the lobby, whose own small

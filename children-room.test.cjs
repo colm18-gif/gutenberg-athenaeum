@@ -176,3 +176,10 @@ test('the grey kitten from the lullaby pads about the children’s room and, now
   assert(slept,'and falls asleep');a.w.interact(part());assert.match(a.notices.at(-1),/Котик спить/);
   for(let t=600;t<660;t+=.1)a.w.update(t);assert(!/спить/.test(part().userData.title),'and wakes again');
 });
+
+test('the children’s books have painted picture covers, which the game’s real-cover swap leaves alone',()=>{
+  const a=wing();a.w.enter('ukrainian');const kids=a.w.books.filter(m=>m.userData.childrenRoom);
+  assert(kids.length>=10);for(const m of kids)assert.equal(m.userData.pictureCover,true,`${m.userData.book.title} has a picture cover`);
+  for(const t of ['Рукавичка','Котигорошко','Біда навчить','Ялинка','Байки'])assert(source.includes(`case '${t}':`),`a picture for ${t}`);
+  assert.match(game,/object\.userData\.cinderBinding\|\|object\.userData\.pictureCover\|\|/,'applyBookCover skips them');
+});

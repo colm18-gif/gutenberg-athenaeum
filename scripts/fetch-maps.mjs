@@ -44,6 +44,12 @@ export const PICTURES = [
   { key: 'shevchenko-kateryna', files: ['Шевченко Т. Г. Катерина. 1842.jpg', 'Image-Shevchenko Kateryna Olia 1842 large.jpg', 'Kateryna (Taras Shevchenko).jpg'], search: 'Shevchenko Kateryna 1842 painting' },
   { key: 'shevchenko-1848', file: '1848 - 201 - Self-portrait at the Syr Darya bank. Rayim, June 1848, Taras Shevchenko.jpg', search: 'Shevchenko self-portrait 1848' },
   { key: 'pymonenko-night', file: 'Mykola Pymonenko-Ukrayinska nich.jpg', search: 'Pymonenko Ukrainian night 1905' },
+  // For the Ukrainian children's room: the 1922 Yiddish edition of Ukrainian folk tales (Ukraynishe Folkmayses), its
+  // picture for «Пан Коцький», and three letters of Heorhiy Narbut's Ukrainian alphabet (1917–19; Narbut died in 1920).
+  { key: 'kids-pan-kotsky-1922', file: 'Ukraynishe Folkmayses 11.jpg' },
+  { key: 'kids-narbut-a', file: 'Нарбут Г.І. Літера А 1919 р.jpg' },
+  { key: 'kids-narbut-z', file: 'Г.Нарбут літера З Українська абетка.jpg' },
+  { key: 'kids-narbut-y', file: 'Azbuka Narbuta - И.jpg' },
   // The score of the lullaby «Котику сіренький», read to give the bandura its tune when Clio sleeps in the room (not hung).
   { key: 'kotyku-score', file: 'Котику сіренький.GIF', search: 'Котику сіренький', gif: true }
 ];
