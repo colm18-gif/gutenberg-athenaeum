@@ -28,12 +28,12 @@ function wing({search='',stored=[],date=new Date(2026,10,8)}={}){
   const store=new Map(stored.map(k=>[k,'1'])),storage={getItem:k=>store.get(k)??null,setItem:(k,v)=>store.set(k,v)};
   const context={window:{},Math,Date,JSON,Set,Map,Object,Array,Number,String,location:{search},setTimeout:()=>0};
   vm.runInNewContext(source,context);
-  const interactables=[],notices=[],player={pos:new V(),radius:.42},seats=[],tracked=[];
+  const interactables=[],notices=[],player={pos:new V(),radius:.42},seats=[],tracked=[],purrs=[];
   const w=context.window.createInternationalWing({THREE,scene:thing(),MAT:any,player,interactables,canvasTexture:()=>thing(),bookMaterial:()=>thing(),
     findBook:id=>ukrainian.find(b=>b.id===id),arrivals:key=>key==='ukrainian'?ukrainian.map(b=>b.id):[],showNotice:t=>notices.push(t),playSample:()=>{},
     move:(x,z)=>player.pos.set(x,0,z),analytics:{track:(n,p)=>tracked.push([n,p])},today:()=>date,storage,
-    registerSeat:(parts,group,at,yaw,data)=>{seats.push(data);return data}});
-  return {w,interactables,notices,player,seats,store,tracked};
+    registerSeat:(parts,group,at,yaw,data)=>{seats.push(data);return data},purr:(d,v)=>purrs.push([d,v])});
+  return {w,interactables,notices,player,seats,store,tracked,purrs};
 }
 const ROOM=/const CHILDREN_ROOM=\{w:(\d+),d:(\d+),h:(\d+),cx:(-?\d+),cz:(-?\d+)\}/.exec(source).slice(1).map(Number),[KW_,KD,,KCX,KCZ]=ROOM;
 const K={w:KW_,d:KD,cx:KCX,cz:KCZ},inK=(x,z)=>Math.abs(x-K.cx)<K.w/2&&Math.abs(z-K.cz)<K.d/2;
@@ -195,4 +195,18 @@ test('pictures from old public-domain editions: Lissitzky’s Pan Kotsky in the 
   assert.match(source,/picture\('kids-narbut-z',/);assert.match(source,/picture\('kids-narbut-y',/);assert.doesNotMatch(source,/picture\('kids-narbut-a',/,'Narbut’s А was left out');
   assert.match(game,/button\.textContent='Малюнки · Pictures'/);assert.match(game,/list=pictures\(\)\[book\?\.title\]\|\|\[\];button\.classList\.toggle\('hidden',!list\.length\)/);
   assert.match(fs.readFileSync('index.html','utf8'),/<div id="pictureCard" class="hidden" role="dialog"/);
+});
+
+test('the kitten purrs when stroked, comes running for treats (three in five minutes) and scratches at her post',()=>{
+  const a=wing();a.w.enter('ukrainian');const cat=()=>a.interactables.find(o=>o.userData?.type==='intl-kitten'),at=()=>world(cat().parent?.parent?.parent?cat().parent:cat());
+  a.w.update(1);a.w.interact(cat());assert.equal(a.purrs.length,1,'she purrs');assert.match(a.notices.at(-1),/муркоче/);
+  const post=a.interactables.find(o=>/Кігтеточка/.test(o.userData?.title||''));assert(post,'a scratching post');assert(inK(world(post).x,world(post).z));
+  const tin=a.interactables.find(o=>o.userData?.type==='intl-treats');assert(tin,'a tin of treats');const tp=world(tin);
+  a.w.interact(tin);assert.match(a.notices.at(-1),/біжить/);let t=1;for(;t<40;t+=.1){a.w.update(t);const p=at();if(Math.hypot(p.x-(tp.x-.4),p.z-tp.z)<.1)break}
+  assert(t<40,'she runs to the treats');const before=a.purrs.length;for(let k=0;k<5;k++)a.w.update(t+=.1);assert(a.purrs.length>before,'and purrs over them');
+  a.w.interact(tin);a.w.interact(tin);a.w.interact(tin);assert.match(a.notices.at(-1),/наївся/,'three in five minutes, then she has had enough');
+  // On her rounds she comes to the post.
+  const b=wing();b.w.enter('ukrainian');const pp=world(b.interactables.find(o=>/Кігтеточка/.test(o.userData?.title||'')));let near=false;
+  const kit=()=>b.interactables.find(o=>o.userData?.type==='intl-kitten');for(let t2=1;t2<400&&!near;t2+=.1){b.w.update(t2);const p=world(kit().parent?.parent?.parent?kit().parent:kit());if(Math.hypot(p.x-pp.x,p.z-pp.z)<.6)near=true}
+  assert(near,'she visits her post');
 });

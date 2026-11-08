@@ -140,7 +140,7 @@
 
   window.createInternationalWing=Object.assign(function(options){
     const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),
-      wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null,tone=null,gospel=null,forestSong=null,openLink=null,storage=window.localStorage}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
+      wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null,tone=null,gospel=null,forestSong=null,openLink=null,purr=null,storage=window.localStorage}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
     const DOOR={x:8.6,z:30.45,yaw:Math.PI};
     // The doors in the lobby's walls, one to each reading room, and a second door to the Italian in the Latin room's east
     // wall (room: the room a door opens on, when it is not its key; from: the room a door is in, when it is not the lobby).
@@ -717,18 +717,40 @@
         const awake={type:'intl-kitten',title:'Котик сіренький · The little grey kitten',author:`Котик із колискової, яку співають українським дітям: ${KITTEN}. (The kitten from the lullaby Ukrainian children are sung to sleep with.)`,action:'STROKE'};
         const asleep={type:'intl-kitten',title:'Котик спить · The kitten is asleep',author:`Котик спить у кошику. Тихенько! ${KITTEN}. (The kitten is asleep in her basket. Shh!)`,action:'LOOK'};
         const catParts=[body,chest,...head.children,...legs,tail];for(const part of catParts)mark(part,awake);
-        const spots=[[K.cx-1,K.cz-4.5],[K.cx+4.5,K.cz-3.6],[K.cx+4,K.cz+.4],[K.cx-.5,K.cz+2.6],[K.cx-5.6,K.cz-1.8],[K.cx+1.6,K.cz-1.2]];
+        // Her scratching post in the north-west corner, a rope-wound post on a base with a little platform, and a tin of
+        // treats on a stool by her basket: shaken, it brings her at a run, three times in five minutes (as Clio's does).
+        const post={x:KW+1.3,z:K.cz-5},rope=own(new THREE.MeshStandardMaterial({color:0xc9a66a,roughness:1})),carpet=own(new THREE.MeshStandardMaterial({color:0x1f4f9a,roughness:1}));
+        const postParts=[box(.5,.06,.5,carpet,post.x,.03,post.z),add(own(new THREE.CylinderGeometry(.07,.07,.75,12)),rope,post.x,.43,post.z,root),box(.36,.05,.36,carpet,post.x,.83,post.z)];
+        const postCard={type:'intl-card',title:'Кігтеточка · A scratching post',author:'Тут котик точить кігтики, щоб не дерти лавку з подушками. (The kitten sharpens her claws here, so as not to scratch the cushioned bench.)',action:'LOOK'};
+        for(const part of postParts)mark(part,postCard);block(post.x,post.z,.6,.6);
+        const tin={x:basket.x-.9,z:basket.z+.2};box(.34,.36,.34,own(new THREE.MeshStandardMaterial({color:0x6b4a2a,roughness:.7})),tin.x,.18,tin.z);
+        const tinBody=add(own(new THREE.CylinderGeometry(.07,.07,.12,16)),own(new THREE.MeshStandardMaterial({color:0xc62a1f,roughness:.35,metalness:.4})),tin.x,.42,tin.z,root);
+        add(own(new THREE.CylinderGeometry(.072,.072,.02,16)),MAT.brass,tin.x,.49,tin.z,root);block(tin.x,tin.z,.45,.45);
+        mark(tinBody,{type:'intl-treats',title:'Ласощі для котика · Treats for the kitten',author:'Бляшанка з ласощами. Потруси — і котик прибіжить. (A tin of treats. Give it a shake and the kitten will come running.)',action:'SHAKE'});
+        const spots=[[K.cx-1,K.cz-4.5],[post.x+.42,post.z],[K.cx+4.5,K.cz-3.6],[K.cx+4,K.cz+.4],[K.cx-.5,K.cz+2.6],[K.cx-5.6,K.cz-1.8],[K.cx+1.6,K.cz-1.2]],POST=1;
         const kitten={x:K.cx+1.6,z:K.cz-1.2,yaw:0,goal:0,wait:2,sleep:0,since:0};cat.position.set(kitten.x,0,kitten.z);
         const setCard=card=>{for(const part of catParts)part.userData=card};
-        room.kitten={get asleep(){return kitten.sleep>0},get x(){return kitten.x},get z(){return kitten.z},basket,nap:()=>{kitten.goal=-1;kitten.wait=0},stroke:()=>{if(kitten.sleep>0)return false;kitten.wait=Math.max(kitten.wait,3);return true}};
-        let last=null;room.ticks.push(t=>{const dt=last==null?0:Math.min(.1,t-last);last=t;
+        // Stroked, she purrs (game.js's own purr, made from pulsed noise; softly in her sleep).
+        let now=0,scratching=0;const treats=[];
+        room.kitten={get asleep(){return kitten.sleep>0},get x(){return kitten.x},get z(){return kitten.z},basket,post,tin,nap:()=>{kitten.goal=-1;kitten.wait=0},
+          stroke:()=>{if(kitten.sleep>0){purr?.(2.5,.12);return false}kitten.wait=Math.max(kitten.wait,3);purr?.(3.2,.26);return true},
+          shake:()=>{tone?.(1320,0,.04,.03,'piano');tone?.(1180,.07,.04,.03,'piano');tone?.(1320,.14,.04,.03,'piano');
+            while(treats.length&&now-treats[0]>300)treats.shift();if(treats.length>=3)return false;treats.push(now);
+            if(kitten.sleep>0){kitten.sleep=0;body.scale.set(1,.85,1.5);head.position.set(0,.25,.2);head.rotation.set(0,0,0);tail.rotation.set(-.9,0,0);for(const l of legs)l.visible=true;setCard(awake)}
+            kitten.goal=-2;kitten.wait=0;return true}};
+        let last=null;room.ticks.push(t=>{const dt=last==null?0:Math.min(.1,t-last);last=t;now=t;
           if(kitten.sleep>0){kitten.sleep-=dt;body.scale.set(1.25,.6+.03*Math.sin(t*1.6),1.25);head.position.set(.14,.12,.12);head.rotation.set(.5,0,0);tail.rotation.set(-1.5,0,.9);for(const l of legs)l.visible=false;
             if(kitten.sleep<=0){body.scale.set(1,.85,1.5);head.position.set(0,.25,.2);head.rotation.set(0,0,0);tail.rotation.set(-.9,0,0);for(const l of legs)l.visible=true;setCard(awake);kitten.goal=0;kitten.wait=1.5}return}
-          if(kitten.wait>0){kitten.wait-=dt;tail.rotation.z=Math.sin(t*2.2)*.35;return}
-          const target=kitten.goal<0?basket:{x:spots[kitten.goal][0],z:spots[kitten.goal][1]};const dx=target.x-kitten.x,dz=target.z-kitten.z,dist=Math.hypot(dx,dz);
-          if(dist<.06){if(kitten.goal<0){kitten.sleep=45;kitten.x=basket.x;kitten.z=basket.z;cat.position.set(basket.x,.04,basket.z);setCard(asleep);return}
+          if(kitten.wait>0){kitten.wait-=dt;tail.rotation.z=Math.sin(t*2.2)*.35;
+            // At the post she stretches up and scratches; at the treats she eats, head down.
+            if(scratching>0){scratching-=dt;cat.rotation.x=-.9;body.position.y=.22;head.position.set(0,.34+Math.abs(Math.sin(t*10))*.03,.24);legs[0].rotation.x=legs[1].rotation.x=-1.2+Math.sin(t*14)*.4;if(scratching<=0){cat.rotation.x=0;body.position.y=.14;head.position.set(0,.25,.2)}}
+            return}
+          const target=kitten.goal===-1?basket:kitten.goal===-2?{x:tin.x-.4,z:tin.z}:{x:spots[kitten.goal][0],z:spots[kitten.goal][1]};const dx=target.x-kitten.x,dz=target.z-kitten.z,dist=Math.hypot(dx,dz);
+          if(dist<.06){if(kitten.goal===-1){kitten.sleep=45;kitten.x=basket.x;kitten.z=basket.z;cat.position.set(basket.x,.04,basket.z);setCard(asleep);return}
+            if(kitten.goal===-2){kitten.wait=4;cat.rotation.y=Math.PI/2;head.rotation.set(.6,0,0);setTimeout?.(()=>head.rotation.set(0,0,0),4000);purr?.(3,.22);kitten.goal=0;return}
+            if(kitten.goal===POST){scratching=3;cat.rotation.y=-Math.PI/2}
             kitten.since++;kitten.goal=kitten.since%5===0?-1:(kitten.goal+1)%spots.length;kitten.wait=2+((kitten.since*7)%5);return}
-          const step=Math.min(dist,.45*dt);kitten.x+=dx/dist*step;kitten.z+=dz/dist*step;kitten.yaw=Math.atan2(dx,dz);
+          const step=Math.min(dist,(kitten.goal===-2?1.6:.45)*dt);kitten.x+=dx/dist*step;kitten.z+=dz/dist*step;kitten.yaw=Math.atan2(dx,dz);
           cat.position.set(kitten.x,Math.abs(Math.sin(t*9))*.012,kitten.z);cat.rotation.y=kitten.yaw;legs.forEach((l,i)=>{l.rotation.x=Math.sin(t*9+(i%3?Math.PI:0))*.5});tail.rotation.z=Math.sin(t*4)*.2})}
 
       // Picture covers for the children's room's own copies: each a painted scene from its book under the title, drawn
@@ -1127,6 +1149,7 @@
       if(data.type==='intl-children-out'){through(data,()=>{const kx=ROOM_DOORS.ukrainian.x+4.2;activate('hub');placeLamps('hub');move(kx,ROOM_DOORS.ukrainian.z+1.6,Math.PI);playSample?.('doorOpen',.8,1.1);showNotice('Міжнародне крило. (The International Wing.)',4)});return true}
       if(data.type==='intl-slide'){built.ukrainian?.slide?.();return true}
       if(data.type==='intl-kitten'){const k=built.ukrainian?.kitten;if(k?.stroke())showNotice(`Котик муркоче. (The kitten purrs.) ${data.author}`,8);else showNotice(`${data.title}: ${data.author}`,8);return true}
+      if(data.type==='intl-treats'){const k=built.ukrainian?.kitten;showNotice(k?.shake()?'Шурх-шурх! Котик біжить по ласощі. (Shake, shake! The kitten comes running for a treat.)':'Котик уже наївся ласощів. Спробуй згодом. (The kitten has had enough treats for now. Try again later.)',6);return true}
       if(data.type==='intl-pea'){const room=built.ukrainian;if(!room?.showMace)return true;
         try{storage?.setItem(PEA_KEY,'1')}catch(e){}room.showMace();
         showNotice(`Горошина! ${KOTYHOROSHKO.pea} А в кутку тепер стоїть його булава. (And in the corner now stands his mace.)`,16);
