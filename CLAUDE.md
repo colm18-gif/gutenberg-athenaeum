@@ -342,7 +342,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   the mitten, the КАЛИНА blocks, a cushioned bench (two seats), and a small yellow door to the lobby, whose own small
   yellow door beside the Ukrainian door goes straight in (`intl-children`). Seasons: St Nicholas's pillow 1–19 December
   (`?mykolai`), bunting on 1 June (`?bunting`), and the painted window over the bench: a snowy evening of sledging,
-  a snowman and a dropped red mitten from December to February, a summer evening of sunflowers, a stork and a kite the
+  a snowman and a dropped red mitten from November to February, a summer evening of sunflowers, a stork and a kite the
   rest of the year (`?winter`, `?summer`; no light). The secret: a pea rolls along the south skirting; picked up, Kotyhoroshko's
   mace and his tale are in the south-east corner, found for good (`athenaeum-kotyhoroshko-pea`; `?pea`); its words
   (`KOTYHOROSHKO`) are checked against the library's Котигорошко. `children-room.test.cjs` builds the wing for real.
