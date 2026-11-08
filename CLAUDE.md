@@ -338,7 +338,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   sign, ДИТЯЧА КІМНАТА, with four of the mitten's animals as cut-outs on their way in. `roomAt` counts it as the
   Ukrainian room (one room for lamps, building and freeing; `allowed` lets the reader across the shared wall only at the
   arch). It adds no light: `placeLamps` sends the wing's second lamp there. Inside: the Petrykivka painting over two low
-  shelves, for the youngest (`CHILDREN` less `OLDER`) and for older readers (`OLDER`, which also stand on the main racks),
+  shelves, for the youngest (`CHILDREN` less `OLDER`) and for older readers (`OLDER`, which also stand on the main racks; every book on both was read for a child's shelf, and Облога
+  Буші was kept off it, for a hero nicknamed for killing Jews and a mass death at its end),
   the mitten, the КАЛИНА blocks, a cushioned bench (two seats), and a small yellow door to the lobby, whose own small
   yellow door beside the Ukrainian door goes straight in (`intl-children`). Seasons: St Nicholas's pillow 1–19 December
   (`?mykolai`), bunting on 1 June (`?bunting`), and the painted window over the bench: a snowy evening of sledging,

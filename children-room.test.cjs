@@ -73,7 +73,10 @@ test('its shelves: the youngest readers’ tales and, for older readers, stories
   for(const t of [...children,...older])if(ukrainian.some(b=>b.title===t))assert(titles.includes(t),`${t} is on a low shelf`);
   for(const t of older)assert(ukrainian.some(b=>b.title===t),`${t} is in the room’s own list`);
   const main=books.filter(m=>!m.userData.childrenRoom).map(m=>m.userData.book.title);
-  for(const t of ['Олеся','Захар Беркут','Облога Буші'])assert(main.includes(t),`${t} stays on the main racks too`);
+  for(const t of ['Олеся','Захар Беркут'])assert(main.includes(t),`${t} stays on the main racks too`);
+  // Read for a child's shelf: Облога Буші is kept for adults (a hero nicknamed for killing Jews; an ending of mass death).
+  assert(!titles.includes('Облога Буші')&&main.includes('Облога Буші'),'Облога Буші is on the main racks only');
+  assert.match(source,/У «Лисі Микиті» один рядок, у словах Рися, повторює давнє упередження проти євреїв/,'the shelf’s card is honest about Fox Mykyta');
   for(const t of ['Рукавичка','Пан Коцький','Котигорошко'])assert(!main.includes(t),`${t} is kept for the children`);
   assert(a.seats.some(s=>/Лавка з подушками/.test(s.title)),'the bench is one of the library’s seats');
   const bench=a.seats.find(s=>/Лавка/.test(s.title));assert(bench.bookIds.length>=8,'and opens one of the children’s books');
