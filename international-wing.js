@@ -108,7 +108,7 @@
 
   window.createInternationalWing=function(options){
     const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),
-      wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null,tone=null,gospel=null,forestSong=null,storage=window.localStorage}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
+      wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null,tone=null,gospel=null,forestSong=null,openLink=null,storage=window.localStorage}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
     const DOOR={x:8.6,z:30.45,yaw:Math.PI};
     // The doors in the lobby's walls, one to each reading room, and a second door to the Italian in the Latin room's east
     // wall (room: the room a door opens on, when it is not its key; from: the room a door is in, when it is not the lobby).
@@ -489,10 +489,15 @@
       // The Unwritten: on the case's east end, past the candle, a row of books with blank spines, and over them a small plaque
       // whose card opens Chytomo's report on the memorial project in a new tab.
       {const n=15,spine=own(new THREE.BoxGeometry(.065,1,.24)),spines=new THREE.InstancedMesh(spine,own(new THREE.MeshStandardMaterial({color:0xffffff,roughness:.85})),n),m=new THREE.Matrix4(),tint=new THREE.Color();
-        for(let i=0;i<n;i++){const h=.27+((i*7)%5)*.022;m.makeScale(1,h,1);m.setPosition(mx+2.25+i*.075,3.62+h/2,S-.38);spines.setMatrixAt(i,m);spines.setColorAt?.(i,tint.setHex([0x5a4e42,0x6a5b4c,0x4d443b,0x625446,0x564a3f][(i*3)%5]))}
-        root.add(spines);own(spines);mark(spines,{type:'intl-card',title:UNWRITTEN.title,author:`${UNWRITTEN.spines} ${UNWRITTEN.card}`,action:'READ'});
+        // The mesh stands where the spines do (its instances are placed from there): the game looks for things to pick by
+        // each object's own position, and one left at the origin would never be found.
+        spines.position.set(mx+2.8,3.62,S-.38);
+        for(let i=0;i<n;i++){const h=.27+((i*7)%5)*.022;m.makeScale(1,h,1);m.setPosition(-.525+i*.075,h/2,0);spines.setMatrixAt(i,m);spines.setColorAt?.(i,tint.setHex([0x5a4e42,0x6a5b4c,0x4d443b,0x625446,0x564a3f][(i*3)%5]))}
+        root.add(spines);own(spines);
         const tag=add(own(new THREE.PlaneGeometry(1.3,.5)),own(new THREE.MeshStandardMaterial({map:own(plaque('НЕДОПИСАНІ','The Unwritten · since 2014',520,200,'#151515')),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.2})),mx+2.8,4.42,S-.18,root);
-        tag.rotation.y=Math.PI;mark(tag,{type:'intl-link',title:UNWRITTEN.title,author:UNWRITTEN.card,url:UNWRITTEN.url,action:'READ MORE ON CHYTOMO'})}
+        // The spines and the plaque are one memorial: either opens its card, with the link to the report.
+        const link={type:'intl-link',title:UNWRITTEN.title,author:`${UNWRITTEN.spines} ${UNWRITTEN.card}`,url:UNWRITTEN.url,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:'Read Chytomo’s report',action:'READ'};
+        tag.rotation.y=Math.PI;mark(tag,link);mark(spines,{...link})}
 
       // Shevchenko's boot under his drawing of Raim, beside a small trunk; the little book on the trunk once it is found.
       const bx=EX-.55,bz=cz+4.5,leather=own(new THREE.MeshStandardMaterial({color:0x1d1611,roughness:.55}));
@@ -815,7 +820,7 @@
       if(data.type==='intl-exit'){through(data,()=>{move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again, beside the visitors’ book.',3)});return true}
       if(data.type==='intl-card'){showNotice(`${data.title}: ${data.author}`,9);return true}
       // A card that opens a page elsewhere: in a new tab, leaving the library where it was.
-      if(data.type==='intl-link'){if(typeof document!=='undefined')document.exitPointerLock?.();window.open?.(data.url,'_blank','noopener');showNotice(`${data.title}: opened in a new tab.`,5);return true}
+      if(data.type==='intl-link'){if(openLink)openLink({kicker:data.kicker||'',title:data.title,text:data.author,url:data.url,label:data.label||'Read more'});else showNotice(`${data.title}: ${data.author}`,12);return true}
       if(data.type==='intl-mitten'){const room=built.ukrainian;if(!room?.mittenNext)return true;const {kind,words}=room.mittenNext();
         if(tone){if(kind==='dog')for(const [i,f] of [196,196,174.6].entries())tone(f,i*.22,.18,.08,'piano');else tone(880+Math.random()*220,0,.12,.03,'bandura')}
         showNotice(words,kind==='dog'||kind==='bear'?14:9);

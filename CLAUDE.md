@@ -274,7 +274,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   plaque and a candle whose flame flickers in `room.ticks`, no light; on the case's east end, past the candle, The Unwritten,
   `UNWRITTEN`: fifteen blank spines, one InstancedMesh, for the books Ukraine's writers killed by Russia since 2014 did not
   live to write, under a plaque whose card (from Chytomo's report of 6 November 2026; "more than three hundred", so it
-  does not date) opens that report in a new tab, `intl-link`; keep `UNWRITTEN` below `MEMORIAL`) and the book in Shevchenko's boot (`boot:'Княжна'`):
+  does not date) opens that report, `intl-link`: the spines and the plaque both open the card in a dialog with a real link,
+  `openLinkCard` in game.js, since a tab opened from the game loop is often blocked; keep `UNWRITTEN` below `MEMORIAL`.
+  An InstancedMesh must stand where its instances are: focus is found by each object's own position) and the book in Shevchenko's boot (`boot:'Княжна'`):
   a soldier's boot under his 1848 drawing of Raim on the Syr Darya; looking in finds the little book he hid there in exile, which then lies on
   the trunk beside it, found for good (`athenaeum-shevchenko-boot`). Its pictures (Kateryna, «Укріплення Раїм. Вид з верфі на Сир-Дар'ї», 1848, not a self-portrait as Commons has it,
   Pymonenko's Ukrainian Night) are fetched by `scripts/fetch-maps.mjs` (`PICTURES`, into `assets/pictures`). The bandura
