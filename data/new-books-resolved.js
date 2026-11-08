@@ -599,6 +599,30 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 556,
    "words": 74281
   },
+  "The Kobzar of the Ukraine": {
+   "id": 68486,
+   "words": 15945
+  },
+  "Taras Shevchenko": {
+   "id": 78316,
+   "words": 62556
+  },
+  "Cossack Fairy Tales and Folk Tales": {
+   "id": 29672,
+   "words": 62288
+  },
+  "Songs of Ukraina": {
+   "id": 72903,
+   "words": 22653
+  },
+  "Ukrainian Folk Songs": {
+   "id": 78295,
+   "words": 13461
+  },
+  "Ukrainian Literature": {
+   "id": 77771,
+   "words": 50818
+  },
   "The Gift of the Magi": {
    "id": 7256,
    "words": 2079
