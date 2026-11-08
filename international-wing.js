@@ -592,6 +592,63 @@
         if(!doorKit?.hang(root,{data:out,mark,x:K.cx+3,z:KS-.2,yaw:Math.PI,own,...CHILD_DOOR,label:'МІЖНАРОДНЕ КРИЛО'}))mark(box(1.05,2.1,.14,own(new THREE.MeshStandardMaterial({color:CHILD_DOOR.color,roughness:.7})),K.cx+3,1.05,KS-.2),out);
         block(K.cx+3,KS-.4,1.6,.6)}
 
+      // A window in the children's room's east wall, over the bench: one painted view that glows a little (no light of its
+      // own), and follows the season. December to February, a snowy evening: children sledging, a snowman by a lit хата,
+      // and a red mitten dropped at the edge of the wood. The rest of the year, a summer evening: sunflowers, a stork on its
+      // nest, a cherry tree, and children flying a kite. (?winter or ?summer shows either.)
+      {const month=today().getMonth(),winter=askedFor('winter')||!askedFor('summer')&&(month===11||month<=1);
+        const ww=3.6,wh=2,wy=2.75,wz=K.cz+.6,WX=KE-.16;
+        const view=own(canvasTexture((c,W,H)=>{const rand=(()=>{let k=11;return()=>{k=(k*16807)%2147483647;return k/2147483647}})();
+          const kid=(x,y,s,coat,hat)=>{c.fillStyle=coat;c.beginPath();c.moveTo(x-s*.35,y);c.lineTo(x+s*.35,y);c.lineTo(x+s*.22,y-s*.9);c.lineTo(x-s*.22,y-s*.9);c.fill();
+            c.fillStyle='#f1d3b3';c.beginPath();c.arc(x,y-s*1.12,s*.24,0,7);c.fill();c.fillStyle=hat;c.beginPath();c.arc(x,y-s*1.2,s*.25,Math.PI,0);c.fill();
+            c.fillStyle='#2a1c12';c.fillRect(x-s*.28,y,s*.16,s*.3);c.fillRect(x+s*.12,y,s*.16,s*.3)};
+          const hata=(x,y,w,h,roof,lamp)=>{c.fillStyle='#f4f1ea';c.fillRect(x,y-h,w,h);c.fillStyle=roof;c.beginPath();c.moveTo(x-w*.12,y-h+4);c.lineTo(x+w*.2,y-h*1.75);c.lineTo(x+w*.8,y-h*1.75);c.lineTo(x+w*1.12,y-h+4);c.fill();
+            c.fillStyle=lamp;c.fillRect(x+w*.18,y-h*.68,w*.2,h*.32);c.fillRect(x+w*.62,y-h*.68,w*.2,h*.32);c.fillStyle='#5a3a1a';c.fillRect(x+w*.27,y-h*.68,3,h*.32);c.fillRect(x+w*.71,y-h*.68,3,h*.32);c.fillStyle='#7a4a24';c.fillRect(x+w*.43,y-h*.6,w*.14,h*.6)};
+          if(winter){
+            const sky=c.createLinearGradient(0,0,0,H*.7);sky.addColorStop(0,'#1b2c5c');sky.addColorStop(1,'#5a6fa8');c.fillStyle=sky;c.fillRect(0,0,W,H);
+            for(let i=0;i<160;i++){c.fillStyle=`rgba(255,255,240,${.4+rand()*.6})`;c.fillRect(rand()*W,rand()*H*.45,2,2)}
+            c.fillStyle='#fff6d8';c.beginPath();c.arc(W*.82,H*.16,W*.045,0,7);c.fill();
+            // The far wood, the hill, the snowfield.
+            c.fillStyle='#1d3a2c';for(let x=0;x<W;x+=W*.03){const h=H*(.1+rand()*.08);c.beginPath();c.moveTo(x,H*.56);c.lineTo(x+W*.018,H*.56-h);c.lineTo(x+W*.036,H*.56);c.fill()}
+            c.fillStyle='#f5f8ff';c.beginPath();c.moveTo(0,H*.6);c.quadraticCurveTo(W*.25,H*.3,W*.55,H*.62);c.lineTo(W,H*.58);c.lineTo(W,H);c.lineTo(0,H);c.fill();
+            c.fillStyle='#e2e9f6';c.beginPath();c.moveTo(0,H*.8);c.quadraticCurveTo(W*.5,H*.7,W,H*.82);c.lineTo(W,H);c.lineTo(0,H);c.fill();
+            hata(W*.62,H*.66,W*.16,H*.12,'#e8eef8','#ffcf6a');
+            // A snowman, with a carrot nose and a bucket hat.
+            const sx=W*.86,sy=H*.78;c.fillStyle='#ffffff';c.strokeStyle='#9fb3d6';c.lineWidth=4;for(const [r,dy] of [[.045,0],[.033,-.065],[.024,-.115]]){c.beginPath();c.arc(sx,sy+dy*H*1.6,W*r,0,7);c.stroke();c.fill()}
+            c.fillStyle='#e8762a';c.beginPath();c.moveTo(sx,sy-H*.184);c.lineTo(sx+W*.03,sy-H*.18);c.lineTo(sx,sy-H*.176);c.fill();c.fillStyle='#3a5a9a';c.fillRect(sx-W*.016,sy-H*.24,W*.032,H*.03);
+            c.fillStyle='#111';for(const dx of [-.008,.008]){c.beginPath();c.arc(sx+W*dx,sy-H*.195,3,0,7);c.fill()}
+            // Children sledging down the hill, and two more at the top.
+            c.save();c.translate(W*.36,H*.5);c.rotate(.32);c.fillStyle='#8a4a22';c.fillRect(-W*.04,0,W*.08,H*.012);kid(-W*.012,0,H*.07,'#c62a1f','#f2c230');kid(W*.022,0,H*.06,'#1f4f9a','#c62a1f');c.restore();
+            kid(W*.2,H*.38,H*.07,'#2f6d2a','#c62a1f');kid(W*.24,H*.385,H*.06,'#f2c230','#1f4f9a');
+            // The red mitten, dropped in the snow at the edge of the wood.
+            c.fillStyle='#b3202a';c.beginPath();c.ellipse(W*.1,H*.63,W*.02,H*.022,.3,0,7);c.fill();c.beginPath();c.ellipse(W*.118,H*.62,W*.007,H*.012,.9,0,7);c.fill();
+            for(let i=0;i<220;i++){c.fillStyle='rgba(255,255,255,.85)';c.beginPath();c.arc(rand()*W,rand()*H,1+rand()*2.2,0,7);c.fill()}
+          }else{
+            const sky=c.createLinearGradient(0,0,0,H*.65);sky.addColorStop(0,'#4f7fc8');sky.addColorStop(.6,'#f2b77a');sky.addColorStop(1,'#f7d590');c.fillStyle=sky;c.fillRect(0,0,W,H);
+            c.fillStyle='#ffe9a8';c.beginPath();c.arc(W*.2,H*.5,W*.06,0,7);c.fill();
+            for(const [x,y] of [[.6,.12],[.75,.2],[.4,.08]]){c.fillStyle='rgba(255,255,255,.75)';c.beginPath();c.ellipse(W*x,H*y,W*.07,H*.03,0,0,7);c.fill()}
+            c.fillStyle='#4f7a3a';c.beginPath();c.moveTo(0,H*.58);c.quadraticCurveTo(W*.5,H*.5,W,H*.6);c.lineTo(W,H);c.lineTo(0,H);c.fill();
+            // The sunflower field, row behind row.
+            for(let row=0;row<4;row++){const y=H*(.62+row*.09),r=W*(.008+row*.006);for(let x=r;x<W*.58;x+=r*3.2){c.strokeStyle='#3f6a2a';c.lineWidth=2;c.beginPath();c.moveTo(x,y);c.lineTo(x,y+r*2);c.stroke();
+              c.fillStyle='#f2b81c';c.beginPath();c.arc(x,y,r,0,7);c.fill();c.fillStyle='#5a3a12';c.beginPath();c.arc(x,y,r*.45,0,7);c.fill()}}
+            hata(W*.66,H*.66,W*.17,H*.13,'#9a7a3a','#ffd88a');
+            // A cherry tree by the house, and a stork on its nest on a pole.
+            c.fillStyle='#4a3020';c.fillRect(W*.88,H*.56,6,H*.12);c.fillStyle='#3f7a33';c.beginPath();c.arc(W*.885,H*.53,W*.05,0,7);c.fill();c.fillStyle='#c0141c';for(let i=0;i<24;i++){c.beginPath();c.arc(W*.885+(rand()-.5)*W*.08,H*.53+(rand()-.5)*H*.08,3,0,7);c.fill()}
+            const kx=W*.6;c.fillStyle='#3a2a1a';c.fillRect(kx-3,H*.3,6,H*.3);c.fillStyle='#6a4a2a';c.beginPath();c.ellipse(kx,H*.3,W*.025,H*.014,0,0,7);c.fill();
+            c.fillStyle='#f4f4f0';c.beginPath();c.ellipse(kx,H*.27,W*.01,H*.025,.2,0,7);c.fill();c.fillStyle='#111';c.beginPath();c.ellipse(kx+W*.005,H*.28,W*.006,H*.012,.3,0,7);c.fill();c.strokeStyle='#d0542a';c.lineWidth=3;c.beginPath();c.moveTo(kx+W*.004,H*.248);c.lineTo(kx+W*.02,H*.254);c.stroke();
+            // Children flying a kite from the meadow.
+            kid(W*.74,H*.86,H*.08,'#1f4f9a','#f2c230');kid(W*.79,H*.87,H*.07,'#c62a1f','#3f7a33');
+            const ktx=W*.9,kty=H*.18;c.strokeStyle='rgba(60,40,20,.7)';c.lineWidth=1.5;c.beginPath();c.moveTo(W*.745,H*.76);c.quadraticCurveTo(W*.86,H*.5,ktx,kty+H*.05);c.stroke();
+            c.fillStyle='#f2c230';c.beginPath();c.moveTo(ktx,kty-H*.05);c.lineTo(ktx+W*.025,kty);c.lineTo(ktx,kty+H*.05);c.lineTo(ktx-W*.025,kty);c.fill();c.fillStyle='#1f4f9a';c.beginPath();c.moveTo(ktx,kty-H*.05);c.lineTo(ktx+W*.025,kty);c.lineTo(ktx,kty);c.fill();c.beginPath();c.moveTo(ktx,kty+H*.05);c.lineTo(ktx-W*.025,kty);c.lineTo(ktx,kty);c.fill();
+          }},1536,854));
+        const pane=add(own(new THREE.PlaneGeometry(ww,wh)),own(new THREE.MeshStandardMaterial({map:view,emissive:0xffffff,emissiveMap:view,emissiveIntensity:.45,roughness:.3})),WX,wy,wz,root);pane.rotation.y=-Math.PI/2;
+        const frame=own(new THREE.MeshStandardMaterial({color:0xf6f2e6,roughness:.6}));
+        for(const [fh,fw,y,z] of [[.14,ww+.3,wy+wh/2+.07,wz],[.1,ww+.3,wy-wh/2-.05,wz],[wh,.14,wy,wz-ww/2-.07],[wh,.14,wy,wz+ww/2+.07],[wh,.06,wy,wz],[.06,ww,wy+wh/6,wz]])box(.1,fh,fw,frame,WX-.04,y,z);
+        box(.34,.07,ww+.5,frame,WX-.17,wy-wh/2-.12,wz);
+        mark(pane,{type:'intl-card',title:'Вікно · A window',author:winter
+          ?'За вікном зимовий вечір: діти катаються на санчатах з горба, біля хати стоїть сніговик, а на узліссі хтось загубив червону рукавичку. (Outside, a winter evening: children sledging down the hill, a snowman by the house, and at the edge of the wood someone has dropped a red mitten.)'
+          :'За вікном літній вечір: соняшники в полі, лелека на гнізді, вишня біля хати, а діти пускають повітряного змія. (Outside, a summer evening: sunflowers in the field, a stork on its nest, a cherry tree by the house, and children flying a kite.)',action:'LOOK',season:winter?'winter':'summer'})}
+
       // The two low shelves on the children's room's north wall, under the Petrykivka painting: the youngest readers'
       // tales to the west, the older readers' stories to the east, face-out on two tiers at a child's height.
       const lowShelf=(x,books,shelfName,sub,card,colour)=>{const z=KN+.36,paint=own(new THREE.MeshStandardMaterial({color:colour,roughness:.7}));
