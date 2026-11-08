@@ -1,14 +1,13 @@
-# Public-domain illustrations for the Ukrainian children's books (the children's room)
-commons? Нарбут Українська абетка
-commons? Narbut alphabet 1917
-commons? Рукавичка казка ілюстрація
-commons? Котигорошко
-commons? Лис Микита ілюстрації
-commons? Lys Mykyta Franko illustration
-commons? Коли ще звірі говорили
-commons? Глібов байки ілюстрація
-commons? Ukrainian fairy tales illustration 1900s
-commons? Пан Коцький
-commons? Кирило Кожум'яка
-commons? Коцюбинський Ялинка
-commons? Олеся Грінченко
+# English translations of the Ukrainian Reading Room's writers, for English readers
+; Shevchenko ; en
+; Franko, Ivan ; en
+; Ukrainka ; en
+; Kotsiubynsky|Kotsyubynsky|Kotzubinsky|Kociubynskyj ; en
+; Vovchok|Markovych|Markovich ; en
+; Kvitka ; en
+; Kobylianska|Kobylyanska ; en
+; Stefanyk ; en
+; Nechui|Levytsky ; en
+; Kotliarevsky|Kotlyarevsky ; en
+Cossack Fairy|Ukrain|Ruthenian|Little Russian ; ; en
+ws? Shevchenko translated English
