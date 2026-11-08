@@ -25,7 +25,7 @@
   // The Ukrainian room's shelf of the Executed Renaissance, and the little book in Shevchenko's boot: these stand apart
   // from its main shelves (data/new-books-wing.js gives them, with the room's other books).
   // The children's shelf: tales and verse for the youngest readers, on a low bookcase under the Petrykivka painting.
-  const CHILDREN=['Рукавичка','Пан Коцький','Котигорошко','Кирило Кожум\'яка','Українські народні казки','Коли ще звірі говорили','Лис Микита','Байки'];
+  const CHILDREN=['Рукавичка','Пан Коцький','Котигорошко','Кирило Кожум\'яка','Українські народні казки','Коли ще звірі говорили','Лис Микита','Байки','Біда навчить','Харитя','Ялинка','Малий Мирон','Грицева шкільна наука','Дев’ять братів і десята сестриця Галя'];
   // The letter hunt: six wooden letter blocks hidden about the Ukrainian room spell КАЛИНА, each with a word for children.
   const LETTERS=[['К','кіт','a cat'],['А','аїст','a stork'],['Л','лисичка','a little fox'],['И','индик','a turkey'],['Н','небо','the sky'],['А','абетка','the alphabet']];
   // What the window shows, in Shevchenko's words (the library's Kobzar, where the poem is called «Вечір»; checked by a test).
@@ -54,7 +54,7 @@
   // list (OLDER, which also stand on the main racks). A small yellow door in the lobby leads straight in.
   // Every book on both shelves was read for a child's shelf (8 November 2026). Starytsky's Облога Буші stays on the main
   // racks only: one of its heroes is nicknamed for killing Jews, and it ends in a mass death by gunpowder.
-  const OLDER=['Коли ще звірі говорили','Лис Микита','Олеся','Захар Беркут'];
+  const OLDER=['Коли ще звірі говорили','Лис Микита','Олеся','Захар Беркут','Харитя','Ялинка','Малий Мирон','Грицева шкільна наука','Дев’ять братів і десята сестриця Галя'];
   const CHILDREN_ROOM={w:18,d:15,h:5,cx:-509,cz:100},ARCH={half:1.8,h:3.4};
   // A slide in the children's room's south-west quarter, along x: six steps up from the west, a platform, and a chute
   // down to the east. Its heights are the floor there, so the steps are climbed one at a time (allowed) and the chute
@@ -718,7 +718,7 @@
       // tales to the west, the older readers' stories to the east, face-out on two tiers at a child's height.
       const lowShelf=(x,books,shelfName,sub,card,colour)=>{const z=KN+.36,paint=own(new THREE.MeshStandardMaterial({color:colour,roughness:.7}));
         box(4.2,.95,.42,paint,x,.475,z);for(const y of [.08,.5,.97])box(4.22,.04,.44,MAT.darkWood,x,y,z+.01);// the top board sits on the body, not level with it (level, their faces flickered)
-        books.slice(0,8).forEach((book,i)=>{const mesh=placeBook(book,{x:x-1.35+(i%4)*.9,y:.33+Math.floor(i/4)*.42,z:z+.2,yaw:0});mesh.scale.set(.42,.38,1);mesh.userData.childrenRoom=true});
+        books.slice(0,10).forEach((book,i)=>{const mesh=placeBook(book,{x:x-1.6+(i%5)*.8,y:.33+Math.floor(i/5)*.42,z:z+.2,yaw:0});mesh.scale.set(.42,.38,1);mesh.userData.childrenRoom=true});
         const sign=add(own(new THREE.PlaneGeometry(1.5,.3)),own(new THREE.MeshStandardMaterial({map:own(plaque(shelfName,sub,520,104,colour===0x3f7a33?'#2f5d2a':'#1f4f9a')),roughness:.8,emissive:0x2a3a18,emissiveIntensity:.3})),x,1.45,KN+.17,root);
         mark(sign,{type:'intl-card',title:card[0],author:card[1],action:'READ'});block(x,z,4.3,.6);return {x,z}};
       const young=(def.children||[]).filter(title=>!(def.older||[]).includes(title)).map(byTitle).filter(Boolean),older=(def.older||[]).map(byTitle).filter(Boolean);
