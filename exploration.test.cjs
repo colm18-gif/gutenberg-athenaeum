@@ -35,6 +35,16 @@ test('every door a room is heard through has a sound of its own, and a way to fi
   for(const [,place] of X.MARGINS)assert.ok(places.has(place),`${place} is a place`);
 });
 
+test('the Book of Kells is pointed out by the stacks and the margins until it is opened',()=>{
+  const kells=X.TREASURES.kells;assert.ok(places.has(kells.room),'the Kells is in a place in the journal');
+  assert.match(kells.slip,/Irish Room/);assert.match(kells.margin[1],/Irish Room/);
+  for(const who of ['Celtic Fairy Tales Joseph Jacobs','The Celtic Twilight W. B. Yeats','Confessio Patricii Saint Patrick'])assert.match(who,kells.margin[0],`${who} carries the note`);
+  assert.doesNotMatch('Pride and Prejudice Jane Austen',kells.margin[0]);
+  // game.js marks the book seen when it is first opened, by the key the slips look for.
+  assert.match(game,new RegExp(`kellsBook\\.open=\\(\\.\\.\\.a\\)=>\\{try\\{localStorage\\.setItem\\('${kells.seen}','1'\\)`));
+  assert.match(source,/treasures\.length&&\(!options\.length\|\|Math\.random\(\)<\.5\)/,'a slip about the Kells comes as often as a room’s');
+});
+
 test('the stopped clocks are stopped where their books say, and the Conrad is Conrad',()=>{
   for(const clock of X.CLOCKS){
     assert.ok(text(clock.source).includes(plain(clock.quote)),`${clock.key}: the quotation is in ${clock.source}`);
