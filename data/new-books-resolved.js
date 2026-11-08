@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-11-07",
+ "updated": "2026-11-08",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -3758,6 +3758,42 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "words": 24299,
    "source": "wikisource",
    "page": "https://uk.wikisource.org/wiki/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B3%D0%B0_%D0%91%D1%83%D1%88%D1%96"
+  },
+  "Харитя [uk]": {
+   "id": 995885,
+   "words": 1943,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%A2%D0%B2%D0%BE%D1%80%D0%B8_(%D0%9A%D0%BE%D1%86%D1%8E%D0%B1%D0%B8%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D0%B9%2C_1955)/1/%D0%A5%D0%B0%D1%80%D0%B8%D1%82%D1%8F"
+  },
+  "Ялинка [uk]": {
+   "id": 986672,
+   "words": 2135,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%A2%D0%B2%D0%BE%D1%80%D0%B8_(%D0%9A%D0%BE%D1%86%D1%8E%D0%B1%D0%B8%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D0%B9%2C_1955)/1/%D0%AF%D0%BB%D0%B8%D0%BD%D0%BA%D0%B0"
+  },
+  "Малий Мирон [uk]": {
+   "id": 981665,
+   "words": 2074,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9C%D0%B0%D0%BB%D0%B8%D0%B9_%D0%9C%D0%B8%D1%80%D0%BE%D0%BD_%D1%96_%D0%B8%D0%BD%D1%8C%D1%88%D1%96_%D0%BE%D0%BF%D0%BE%D0%B2%D1%96%D0%B4%D0%B0%D0%BD%D1%8F/%D0%9C%D0%B0%D0%BB%D0%B8%D0%B9_%D0%9C%D0%B8%D1%80%D0%BE%D0%BD"
+  },
+  "Грицева шкільна наука [uk]": {
+   "id": 994230,
+   "words": 2063,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9C%D0%B0%D0%BB%D0%B8%D0%B9_%D0%9C%D0%B8%D1%80%D0%BE%D0%BD_%D1%96_%D0%B8%D0%BD%D1%8C%D1%88%D1%96_%D0%BE%D0%BF%D0%BE%D0%B2%D1%96%D0%B4%D0%B0%D0%BD%D1%8F/%D0%93%D1%80%D0%B8%D1%86%D0%B5%D0%B2%D0%B0_%D1%88%D0%BA%D1%96%D0%BB%D1%8C%D0%BD%D0%B0_%D0%BD%D0%B0%D1%83%D0%BA%D0%B0"
+  },
+  "Дев’ять братів і десята сестриця Галя [uk]": {
+   "id": 953987,
+   "words": 13677,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%94%D0%B5%D0%B2%D1%8F%D1%82%D1%8C_%D0%B1%D1%80%D0%B0%D1%82%D1%96%D0%B2_%D1%96_%D0%B4%D0%B5%D1%81%D1%8F%D1%82%D0%B0_%D1%81%D0%B5%D1%81%D1%82%D1%80%D0%B8%D1%86%D1%8F_%D0%93%D0%B0%D0%BB%D1%8F"
+  },
+  "Біда навчить [uk]": {
+   "id": 995828,
+   "words": 1417,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%94%D0%BE_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D0%B4%D0%B8%D1%82%D0%B8%D0%BD%D0%B8/%D0%91%D1%96%D0%B4%D0%B0_%D0%BD%D0%B0%D0%B2%D1%87%D0%B8%D1%82%D1%8C"
   },
   "Олеся [uk]": {
    "id": 962966,
