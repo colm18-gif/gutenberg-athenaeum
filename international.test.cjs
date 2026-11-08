@@ -339,3 +339,16 @@ test('the Ukrainian room keeps a shelf for the Executed Renaissance, Shevchenko�
   assert.match(src,/const writingDay=\(date=new Date\(\)\)=>date\.getMonth\(\)===9&&date\.getDate\(\)===27/,'27 October since 2023');
   assert.match(src,/key==='ukrainian'&&eneidaDays\(today\(\)\)/,'the Eneida stays out until 9 November');
 });
+
+test('the Unwritten: blank spines beside the Executed Renaissance, a card true to Chytomo’s report, and a plaque that opens it',()=>{
+  const src=fs.readFileSync('international-wing.js','utf8'),from=src.indexOf('const UNWRITTEN='),def=src.slice(from,src.indexOf('};',from)+2);
+  assert.ok(from>src.indexOf('const MEMORIAL='),'below MEMORIAL, out of the mitten’s quotations');
+  const U=vm.runInNewContext(`(()=>{${def};return UNWRITTEN})()`);
+  assert.match(U.card,/more than three hundred/,'not a count that goes out of date');assert.doesNotMatch(U.card,/\b30\d\b/);
+  for(const words of ['Victoria Amelina','Maksym Kryvtsov','Olena Herasymiuk','Yevhen Lir','in 2014','Недописані','did not end in 1937'])assert.ok(U.card.includes(words),words);
+  assert.match(U.url,/^https:\/\/chytomo\.com\/en\/ukraine-s-unwritten-memorial-project/);
+  const i=src.indexOf('function furnishUkrainian('),body=src.slice(i,src.indexOf('\n    }\n',i));
+  assert.match(body,/new THREE\.InstancedMesh\(spine,/,'the blank spines are one mesh');assert.match(body,/type:'intl-link',title:UNWRITTEN\.title,author:UNWRITTEN\.card,url:UNWRITTEN\.url/);
+  assert.ok(body.indexOf("'НЕДОПИСАНІ'")>body.indexOf("'РОЗСТРІЛЯНЕ ВІДРОДЖЕННЯ'"),'beside the Executed Renaissance');assert.doesNotMatch(body,/Light\(/);
+  assert.match(src,/if\(data\.type==='intl-link'\)\{if\(typeof document!=='undefined'\)document\.exitPointerLock\?\.\(\);window\.open\?\.\(data\.url,'_blank','noopener'\)/,'in a new tab, nothing handed to it');
+});
