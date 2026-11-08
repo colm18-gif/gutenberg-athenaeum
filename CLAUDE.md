@@ -319,7 +319,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `ATHENAEUM_NOTES_EN` (end of `data/new-books-wing.js`, keyed by title; a test wants one for each book, three sentences
   or more), shown after the Ukrainian when a book is picked and on its book page (`noteEn`). The welcome, the lectern
   (`lecternSub`) and the cards carry English after the Ukrainian. A new Ukrainian book needs its English note too.
-- For Ukrainian children (the room's east side): a low green bookcase under the Petrykivka painting holds the
+- For Ukrainian children (now in the children's room, above): a low green bookcase under the Petrykivka painting holds the
   children's shelf (`CHILDREN`, kept apart from the main racks): the folk tales «Рукавичка» and «Пан Коцький» (from the 1918
   children's collection Баю-баю), «Котигорошко», «Кирило Кожум'яка», the 1920 «Українські народні казки» (ten tales),
   Franko's «Коли ще звірі говорили» (19 of its 20 tales: «Війна між Псом і Котом» is not on Wikisource) and «Лис Микита»,
@@ -333,6 +333,17 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   When Clio sleeps on the reading table, the bandura softly plays «Котику сіренький» (`playKotyku` in game.js),
   transcribed bar by bar from the public-domain score on Commons (`kotyku-score` in `scripts/fetch-maps.mjs`, which takes
   a GIF when an entry says `gif: true`).
+- The children's room, Дитяча кімната (in `international-wing.js`: `CHILDREN_ROOM`, x −509, z 100, the Ukrainian room's
+  `annex`), shares the Ukrainian Reading Room's east wall and opens from it by a wide arch (`ARCH`) under the rushnyk and a
+  sign, ДИТЯЧА КІМНАТА, with four of the mitten's animals as cut-outs on their way in. `roomAt` counts it as the
+  Ukrainian room (one room for lamps, building and freeing; `allowed` lets the reader across the shared wall only at the
+  arch). It adds no light: `placeLamps` sends the wing's second lamp there. Inside: the Petrykivka painting over two low
+  shelves, for the youngest (`CHILDREN` less `OLDER`) and for older readers (`OLDER`, which also stand on the main racks),
+  the mitten, the КАЛИНА blocks, a cushioned bench (two seats), and a small yellow door to the lobby, whose own small
+  yellow door beside the Ukrainian door goes straight in (`intl-children`). Seasons: St Nicholas's pillow 1–19 December
+  (`?mykolai`), bunting on 1 June (`?bunting`). The secret: a pea rolls along the south skirting; picked up, Kotyhoroshko's
+  mace and his tale are in the south-east corner, found for good (`athenaeum-kotyhoroshko-pea`; `?pea`); its words
+  (`KOTYHOROSHKO`) are checked against the library's Котигорошко. `children-room.test.cjs` builds the wing for real.
 - The Holodomor candle: in the Ukrainian Reading Room, from the Sunday before the fourth Saturday of November (the Day of
   Remembrance of the Victims of the Holodomor) to the day itself, a candle in a glass with ears of wheat stands where the
   didukh stands at Christmas; the reader lights it (`intl-holodomor`). On the day, the room's welcome names it.
