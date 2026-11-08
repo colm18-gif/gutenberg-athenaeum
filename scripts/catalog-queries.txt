@@ -1,15 +1,14 @@
-# Ukrainian children's room, older readers: what Ukrainian Wikisource holds for these writers
-ws Автор:Михайло Коцюбинський
-ws Автор:Іван Франко
-ws Автор:Степан Васильченко
-ws Автор:Борис Грінченко
-ws Автор:Марко Вовчок
-ws Автор:Леся Українка
-ws Автор:Олена Пчілка
-ws Автор:Панас Мирний
-ws? Харитя Коцюбинський
-ws? Ялинка Коцюбинський
-ws? Малий Мирон Франко
-ws? Грицева шкільна наука
-ws? Олівець Франко
-ws? Дев'ять братів і десята сестриця Галя
+# Public-domain illustrations for the Ukrainian children's books (the children's room)
+commons? Нарбут Українська абетка
+commons? Narbut alphabet 1917
+commons? Рукавичка казка ілюстрація
+commons? Котигорошко
+commons? Лис Микита ілюстрації
+commons? Lys Mykyta Franko illustration
+commons? Коли ще звірі говорили
+commons? Глібов байки ілюстрація
+commons? Ukrainian fairy tales illustration 1900s
+commons? Пан Коцький
+commons? Кирило Кожум'яка
+commons? Коцюбинський Ялинка
+commons? Олеся Грінченко
