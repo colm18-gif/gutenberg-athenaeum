@@ -348,7 +348,12 @@ test('the Unwritten: blank spines beside the Executed Renaissance, a card true t
   for(const words of ['Victoria Amelina','Maksym Kryvtsov','Olena Herasymiuk','Yevhen Lir','in 2014','Недописані','did not end in 1937'])assert.ok(U.card.includes(words),words);
   assert.match(U.url,/^https:\/\/chytomo\.com\/en\/ukraine-s-unwritten-memorial-project/);
   const i=src.indexOf('function furnishUkrainian('),body=src.slice(i,src.indexOf('\n    }\n',i));
-  assert.match(body,/new THREE\.InstancedMesh\(spine,/,'the blank spines are one mesh');assert.match(body,/type:'intl-link',title:UNWRITTEN\.title,author:UNWRITTEN\.card,url:UNWRITTEN\.url/);
+  assert.match(body,/new THREE\.InstancedMesh\(spine,/,'the blank spines are one mesh');assert.match(body,/const link=\{type:'intl-link',title:UNWRITTEN\.title,author:`\$\{UNWRITTEN\.spines\} \$\{UNWRITTEN\.card\}`,url:UNWRITTEN\.url/);assert.match(body,/mark\(tag,link\);mark\(spines,\{\.\.\.link\}\)/,'either opens it');
+  // The game finds things to pick by each object's own position: the spines' mesh must stand where they do, not at the origin.
+  assert.match(body,/spines\.position\.set\(mx\+2\.8,3\.62,S-\.38\)/);
   assert.ok(body.indexOf("'НЕДОПИСАНІ'")>body.indexOf("'РОЗСТРІЛЯНЕ ВІДРОДЖЕННЯ'"),'beside the Executed Renaissance');assert.doesNotMatch(body,/Light\(/);
-  assert.match(src,/if\(data\.type==='intl-link'\)\{if\(typeof document!=='undefined'\)document\.exitPointerLock\?\.\(\);window\.open\?\.\(data\.url,'_blank','noopener'\)/,'in a new tab, nothing handed to it');
+  // The link is a real one the reader clicks in a dialog: a tab opened from the game loop is often blocked.
+  assert.match(src,/if\(data\.type==='intl-link'\)\{if\(openLink\)openLink\(\{/);assert.doesNotMatch(src,/window\.open/);
+  assert.match(game,/showNotice,openLink:openLinkCard,playSample/);assert.match(game,/function openLinkCard\(/);
+  assert.match(html,/<a class="primary" id="linkCardGo" href="#" target="_blank" rel="noopener noreferrer">/);
 });
