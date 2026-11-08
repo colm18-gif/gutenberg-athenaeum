@@ -57,8 +57,9 @@ async function main(){
     const entry={key,errors};
     try{
       await page.goto(`${base}?room=${key}&debug&noktx2`,{waitUntil:'load',timeout:90000});
-      await page.waitForSelector('#enter',{state:'visible',timeout:90000});await page.waitForFunction(()=>window.__athenaeum?.player,null,{timeout:90000});await page.waitForTimeout(1000);
-      const start=await page.evaluate(()=>{const p=window.__athenaeum.player.pos;return [p.x,p.z]});await page.click('#enter');
+      await page.waitForSelector('#enter',{state:'visible',timeout:90000});await page.waitForTimeout(1500);await page.click('#enter');
+      // window.__athenaeum appears once the library has started; readers start under the entrance clock (0, 24).
+      await page.waitForFunction(()=>window.__athenaeum?.player,null,{timeout:90000});const start=[0,24];
       // The reader is sent on 0.6 s after entering; journeys (falls, wing rooms, carpets) can take longer to arrive.
       // Arrival is a move of more than three metres: some rooms (the Kipling case, the Wandering Door) are in the hall.
       entry.arrived=await page.waitForFunction(([x,z])=>{const p=window.__athenaeum.player.pos;return Math.hypot(p.x-x,p.z-z)>3},start,{timeout:25000}).then(()=>true,()=>false);
