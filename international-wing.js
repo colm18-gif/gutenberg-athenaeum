@@ -71,6 +71,12 @@
   const KOTYHOROSHKO={
     pea:'«От одного разу пішла жінка на річку прати, коли ж котиться горошина по дорозі. Жінка взяла горошину та й з\'їла. Згодом народився в неї син. Назвали його Котигорошком.» (One day a woman went down to the river to do the washing, and a pea came rolling along the road. She picked it up and ate it, and soon afterwards she had a son, and they called him Kotyhoroshko, Roll-the-Pea.)',
     mace:'«Як почав коваль кувати, то скував таку булаву, що насилу з кузні винесли.» (The smith set to forging, and forged a mace so big they could hardly carry it out of the smithy.)'};
+  // Pictures from old public-domain editions for the children's books, shown from the reader (game.js) by title. Each is
+  // fetched from Wikimedia Commons by scripts/fetch-maps.mjs into assets/pictures, and was looked at before it was used.
+  const BOOK_PICTURES={
+    'Пан Коцький':[{src:'assets/pictures/kids-pan-kotsky-1922.jpg',kicker:'«Пан Коцький» · Pan Kotsky',title:'Пан Коцький за столом',
+      caption:'Кіт Коцький і Лисичка за столом, а звірі ховаються в кущах і на дереві. (Pan Kotsky the cat at table with the Fox, while the other animals hide in the bushes and up the tree.)',
+      credit:'El Lissitzky, 1922, for Ukraynishe Folkmayses, Ukrainian folk tales in Yiddish. Public domain, from Wikimedia Commons.'}]};
   // The room's seasons: St Nicholas's pillow in December, and bunting on Children's Day.
   const mykolaiDays=(date=new Date())=>date.getMonth()===11&&date.getDate()<=19;
   const childrensDay=(date=new Date())=>date.getMonth()===5&&date.getDate()===1;
@@ -132,7 +138,7 @@
       note:'Примітка бібліотекарки',seat:['Стілець біля столу','Сідайте й читайте книжку з цієї читальні. (Sit and read a book from this room.)']}
   };
 
-  window.createInternationalWing=function(options){
+  window.createInternationalWing=Object.assign(function(options){
     const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),
       wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null,tone=null,gospel=null,forestSong=null,openLink=null,storage=window.localStorage}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
     const DOOR={x:8.6,z:30.45,yaw:Math.PI};
@@ -567,7 +573,10 @@
       {const yellow=own(new THREE.MeshStandardMaterial({color:0xf3e2ab,roughness:.95}));
         box(K.w,.3,K.d,MAT.wood,K.cx,-.15,K.cz);box(K.w,.2,K.d,own(new THREE.MeshStandardMaterial({color:0xf8eed2,roughness:1})),K.cx,K.h+.1,K.cz);
         box(K.w,K.h,.3,yellow,K.cx,K.h/2,KN);box(K.w,K.h,.3,yellow,K.cx,K.h/2,KS);box(.3,K.h,K.d,yellow,KE,K.h/2,K.cz);
-        // Its west wall is this room's east wall, arch and all; above the reading room's lower ceiling it is closed off.
+        // Its west wall is this room's east wall, arch and all: painted yellow on the children's side either side of the
+        // arch and over it, as the room's other walls are.
+        {const L=K.d/2-ARCH.half;for(const sg of [-1,1]){const p=add(own(new THREE.PlaneGeometry(L,K.h)),yellow,KX+.16,K.h/2,K.cz+sg*(ARCH.half+L/2),root);p.rotation.y=Math.PI/2}
+          const top=add(own(new THREE.PlaneGeometry(ARCH.half*2,K.h-ARCH.h)),yellow,KX+.16,ARCH.h+(K.h-ARCH.h)/2,K.cz,root);top.rotation.y=Math.PI/2}
         const band=own(canvasTexture((c,W,H)=>{c.fillStyle='#1f4f9a';c.fillRect(0,0,W,H);c.fillStyle='#f2c230';c.fillRect(0,H*.78,W,H*.22);
           for(let x=16;x<W;x+=64){c.fillStyle='#f2c230';c.beginPath();c.arc(x,H*.42,11,0,7);c.fill();c.fillStyle='#c62a1f';c.beginPath();c.arc(x+32,H*.42,8,0,7);c.fill();c.fillStyle='#3f7a33';c.beginPath();c.ellipse(x+16,H*.42,10,4,.6,0,7);c.fill()}},256,64));
         band.wrapS=THREE.RepeatWrapping;
@@ -603,6 +612,12 @@
         const out={type:'intl-children-out',title:'The International Wing',author:'Назад до Міжнародного крила. (Back to the International Wing.)',action:'RETURN'};
         if(!doorKit?.hang(root,{data:out,mark,x:K.cx+3,z:KS-.2,yaw:Math.PI,own,...CHILD_DOOR,label:'МІЖНАРОДНЕ КРИЛО'}))mark(box(1.05,2.1,.14,own(new THREE.MeshStandardMaterial({color:CHILD_DOOR.color,roughness:.7})),K.cx+3,1.05,KS-.2),out);
         block(K.cx+3,KS-.4,1.6,.6)}
+
+      // Two letters of Heorhiy Narbut's Ukrainian alphabet, framed either side of the arch on the children's room's side:
+      // «З» (Зіма, зірки, заєць: winter, stars, a hare) and «И» (Ива, іграшки: a willow, toys). Narbut's «А» was looked at
+      // and left out (its figure is a caricature).
+      picture('kids-narbut-z',KW+.2,2.55,K.cz-4,Math.PI/2,1.03,1.5,['Георгій Нарбут. «Українська абетка», літера З, 1919','«Зіма, зірки, заєць»: зимова ніч, сніг на старому дереві, зорі над дерев’яною церквою й заєць на снігу. Нарбут малював свою абетку в Києві. (Heorhiy Narbut’s Ukrainian Alphabet, the letter З, 1919: winter, stars and a hare.)']);
+      picture('kids-narbut-y',KW+.2,2.55,K.cz+4,Math.PI/2,1.03,1.46,['Георгій Нарбут. «Українська абетка», літера И','«Ива, іграшки»: купа іграшок під вербами — ляльки, ведмедик, коник, м’ячик. (Heorhiy Narbut’s Ukrainian Alphabet, the letter И: a willow, and toys.)']);
 
       // A window in the children's room's east wall, over the bench: one painted view that glows a little (no light of its
       // own), and follows the season. November to February, a snowy evening: children sledging, a snowman by a lit хата,
@@ -716,11 +731,57 @@
           const step=Math.min(dist,.45*dt);kitten.x+=dx/dist*step;kitten.z+=dz/dist*step;kitten.yaw=Math.atan2(dx,dz);
           cat.position.set(kitten.x,Math.abs(Math.sin(t*9))*.012,kitten.z);cat.rotation.y=kitten.yaw;legs.forEach((l,i)=>{l.rotation.x=Math.sin(t*9+(i%3?Math.PI:0))*.5});tail.rotation.z=Math.sin(t*4)*.2})}
 
+      // Picture covers for the children's room's own copies: each a painted scene from its book under the title, drawn
+      // here (no image files). The game's real-cover swap leaves them be (userData.pictureCover).
+      const coverArt=(c,W,H,title)=>{const ell=(x,y,rx,ry,f,a=0)=>{c.fillStyle=f;c.beginPath();c.ellipse(x*W,y*H,rx*W,ry*H,a,0,7);c.fill()};
+        const poly=(pts,f)=>{c.fillStyle=f;c.beginPath();pts.forEach(([x,y],i)=>i?c.lineTo(x*W,y*H):c.moveTo(x*W,y*H));c.fill()};
+        const snow=()=>{c.fillStyle='rgba(255,255,255,.85)';for(let i=0;i<40;i++){c.beginPath();c.arc((i*53%97)/97*W,(i*31%89)/89*H*.9,2,0,7);c.fill()}};
+        const sky=(a,b)=>{const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,a);g.addColorStop(1,b);c.fillStyle=g;c.fillRect(0,0,W,H)};
+        const fox=(x,y,s,col='#d9702a')=>{poly([[x-.16*s,y-.05*s],[x-.12*s,y-.24*s],[x-.03*s,y-.09*s]],col);poly([[x+.16*s,y-.05*s],[x+.12*s,y-.24*s],[x+.03*s,y-.09*s]],col);
+          poly([[x-.2*s,y-.08*s],[x+.2*s,y-.08*s],[x,y+.18*s]],col);poly([[x-.06*s,y+.07*s],[x+.06*s,y+.07*s],[x,y+.18*s]],'#fff4e4');ell(x,y+.17*s,.025*s,.02*s,'#222');ell(x-.07*s,y-.02*s,.02*s,.025*s,'#222');ell(x+.07*s,y-.02*s,.02*s,.025*s,'#222')};
+        switch(title){
+          case 'Рукавичка':sky('#2c4a7a','#dfe9f5');ell(.5,.95,.8,.2,'#f4f8ff');ell(.5,.66,.26,.2,'#b3202a');ell(.71,.6,.08,.12,'#b3202a',.5);c.fillStyle='#f3ead6';c.fillRect(.33*W,.78*H,.34*W,.06*H);
+            for(let i=0;i<6;i++)poly([[.36+i*.05,.62],[.385+i*.05,.58],[.41+i*.05,.62],[.385+i*.05,.66]],'#f3ead6');snow();break;
+          case 'Пан Коцький':sky('#f6e2b0','#e8b86a');ell(.5,.62,.3,.28,'#8a8a92');poly([[.24,.5],[.28,.22],[.42,.4]],'#8a8a92');poly([[.76,.5],[.72,.22],[.58,.4]],'#8a8a92');
+            ell(.4,.56,.05,.07,'#f2d65c');ell(.6,.56,.05,.07,'#f2d65c');ell(.4,.56,.015,.05,'#111');ell(.6,.56,.015,.05,'#111');poly([[.47,.68],[.53,.68],[.5,.72]],'#e8a0a8');
+            c.strokeStyle='#222';c.lineWidth=2;for(const [a,b] of [[-1,-.02],[-1,.02],[1,-.02],[1,.02]]){c.beginPath();c.moveTo((.5+a*.06)*W,.7*H);c.lineTo((.5+a*.28)*W,(.68+b*3)*H);c.stroke()}
+            ell(.5,.25,.08,.04,'#c62a1f');break;
+          case 'Котигорошко':sky('#cfe8b8','#7fb35a');poly([[.18,.62],[.5,.42],[.84,.56],[.52,.74]],'#4f9a3a');for(let i=0;i<5;i++)ell(.3+i*.11,.58-i*.006,.05,.05,'#9ad35a');
+            c.fillStyle='#555';c.fillRect(.66*W,.18*H,.03*W,.3*H);ell(.675,.17,.07,.06,'#3a3a3e');break;
+          case 'Кирило Кожум\'яка':sky('#f0d9a8','#c98a4a');ell(.62,.6,.26,.12,'#3f7a33');poly([[.4,.56],[.2,.4],[.26,.6]],'#3f7a33');for(let i=0;i<5;i++)poly([[.46+i*.08,.5],[.5+i*.08,.38],[.54+i*.08,.5]],'#2a5a27');
+            ell(.22,.43,.06,.05,'#3f7a33');ell(.2,.41,.012,.012,'#f2c230');poly([[.86,.62],[.98,.52],[.94,.68]],'#3f7a33');break;
+          case 'Українські народні казки':sky('#16244a','#4a5f90');ell(.78,.18,.07,.07,'#fff3c8');for(let i=0;i<20;i++)ell((i*37%97)/97,(i*23%41)/100,.006,.006,'#fff');
+            c.fillStyle='#f4f1ea';c.fillRect(.25*W,.58*H,.5*W,.24*H);poly([[.2,.6],[.5,.38],[.8,.6]],'#9a7a3a');c.fillStyle='#ffcf6a';c.fillRect(.32*W,.64*H,.1*W,.08*H);c.fillRect(.58*W,.64*H,.1*W,.08*H);
+            ell(.5,.92,.7,.1,'#2f5d2a');break;
+          case 'Байки':// «Жаба і Віл»: the frog puffs herself up beside the ox.
+            sky('#e9f0d0','#9fc06a');ell(.5,.92,.7,.12,'#6a9a4a');ell(.62,.52,.3,.16,'#8a5a32');ell(.36,.44,.11,.1,'#8a5a32');poly([[.3,.36],[.24,.28],[.33,.34]],'#e9dcc6');poly([[.42,.36],[.48,.28],[.39,.34]],'#e9dcc6');
+            for(const x of [.42,.52,.72,.82])c.fillRect(x*W,.62*H,.04*W,.18*H);ell(.32,.44,.015,.015,'#111');
+            ell(.2,.8,.12,.1,'#4f9a3a');ell(.16,.74,.025,.025,'#fff');ell(.24,.74,.025,.025,'#fff');ell(.16,.74,.012,.012,'#111');ell(.24,.74,.012,.012,'#111');break;
+          case 'Біда навчить':sky('#bfe0f5','#f5e7c0');c.strokeStyle='#6a4a2a';c.lineWidth=6;c.beginPath();c.moveTo(.05*W,.72*H);c.lineTo(.95*W,.66*H);c.stroke();
+            ell(.5,.55,.17,.12,'#8a6a42');ell(.38,.46,.09,.08,'#8a6a42');ell(.36,.44,.015,.015,'#111');poly([[.29,.47],[.24,.49],[.29,.5]],'#3a2a1a');ell(.53,.58,.1,.07,'#e9dcc6');poly([[.65,.5],[.82,.42],[.78,.56]],'#6a4a2a');break;
+          case 'Коли ще звірі говорили':sky('#f5e7c0','#a8c97a');fox(.32,.48,1);ell(.7,.6,.12,.14,'#c8b8a0');ell(.66,.36,.035,.13,'#c8b8a0');ell(.75,.36,.035,.13,'#c8b8a0');ell(.68,.58,.015,.015,'#111');ell(.74,.58,.015,.015,'#111');break;
+          case 'Лис Микита':sky('#7a1a12','#c62a1f');fox(.5,.56,1.6,'#e07a2a');poly([[.38,.24],[.42,.14],[.46,.22],[.5,.12],[.54,.22],[.58,.14],[.62,.24]],'#f2c230');break;
+          case 'Олеся':sky('#f2c27a','#7a9a6a');for(let i=0;i<14;i++){c.strokeStyle='#3f6a2a';c.lineWidth=3;c.beginPath();c.moveTo((.05+i*.07)*W,.95*H);c.lineTo((.07+i*.07)*W,(.62+(i%3)*.05)*H);c.stroke()}
+            ell(.5,.36,.07,.08,'#f1d3b3');poly([[.38,.82],[.62,.82],[.56,.44],[.44,.44]],'#c62a1f');c.fillStyle='#8a5a22';c.fillRect(.55*W,.38*H,.03*W,.3*H);ell(.5,.28,.08,.04,'#f2c230');break;
+          case 'Захар Беркут':sky('#9fc0e8','#e8eef5');poly([[0,.8],[.3,.32],[.55,.7],[.75,.4],[1,.8]],'#4a6a5a');poly([[.22,.45],[.3,.32],[.38,.45]],'#fff');poly([[.69,.5],[.75,.4],[.81,.5]],'#fff');ell(.5,.92,.7,.12,'#3f6a2a');ell(.82,.18,.06,.06,'#f2c230');break;
+          case 'Харитя':sky('#f7d58a','#e8b04a');for(let i=0;i<9;i++){c.strokeStyle='#c99a2a';c.lineWidth=5;c.beginPath();c.moveTo(.5*W,.85*H);c.lineTo((.3+i*.05)*W,.3*H);c.stroke();ell(.3+i*.05,.3,.02,.05,'#e8c040')}
+            c.fillStyle='#b3202a';c.fillRect(.4*W,.6*H,.2*W,.05*H);c.strokeStyle='#666';c.lineWidth=5;c.beginPath();c.arc(.75*W,.7*H,.1*W,Math.PI*1.1,Math.PI*1.9);c.stroke();break;
+          case 'Ялинка':sky('#1b2c5c','#5a6fa8');ell(.5,.95,.8,.2,'#f5f8ff');for(let k=0;k<3;k++)poly([[.5,.2+k*.16],[.26-k*.03,.5+k*.15],[.74+k*.03,.5+k*.15]],'#2f6d3a');c.fillStyle='#5a3a1a';c.fillRect(.47*W,.8*H,.06*W,.08*H);ell(.5,.18,.03,.03,'#f2c230');snow();break;
+          case 'Грицева шкільна наука':sky('#cfe8b8','#8fb86a');ell(.5,.62,.24,.15,'#fbfbf6');ell(.36,.38,.06,.06,'#fbfbf6');c.fillStyle='#fbfbf6';c.fillRect(.33*W,.4*H,.06*W,.22*H);poly([[.3,.37],[.2,.4],[.3,.42]],'#e8762a');ell(.34,.36,.012,.012,'#111');
+            c.fillStyle='#3a2a1a';c.fillRect(.62*W,.2*H,.26*W,.16*H);c.fillStyle='#fff';c.font=`${Math.round(H*.05)}px Georgia`;c.fillText('а б в',.64*W,.3*H);break;
+          default:sky('#1f4f9a','#f2c230')}};
+      const coverCache=new Map(),pictureCover=book=>{if(!coverCache.has(book.title))coverCache.set(book.title,own(canvasTexture((c,W,H)=>{
+          c.fillStyle='#1f4f9a';c.fillRect(0,0,W,H);c.save();c.beginPath();c.rect(12,12,W-24,H*.66);c.clip();c.translate(12,12);coverArt(c,W-24,H*.66,book.title);c.restore();
+          c.strokeStyle='#f2c230';c.lineWidth=4;c.strokeRect(12,12,W-24,H*.66);c.fillStyle='#fff8e8';c.textAlign='center';
+          const words=book.title.split(' '),lines=[];let line='';c.font=`bold ${Math.round(H*.065)}px Georgia`;for(const word of words){const t=line?line+' '+word:word;if(c.measureText(t).width>W-28&&line){lines.push(line);line=word}else line=t}lines.push(line);
+          lines.slice(0,3).forEach((l,i)=>c.fillText(l,W/2,H*.76+i*H*.07));c.font=`italic ${Math.round(H*.045)}px Georgia`;c.fillStyle='#f2c230';c.fillText(book.author.replace('Українська народна казка','Народна казка'),W/2,H*.95)},256,352)));return coverCache.get(book.title)};
+      const withPicture=mesh=>{const map=pictureCover(mesh.userData.book);mesh.material=own(new THREE.MeshStandardMaterial({map,roughness:.7}));mesh.userData.pictureCover=true;return mesh};
+
       // The two low shelves on the children's room's north wall, under the Petrykivka painting: the youngest readers'
       // tales to the west, the older readers' stories to the east, face-out on two tiers at a child's height.
       const lowShelf=(x,books,shelfName,sub,card,colour)=>{const z=KN+.36,paint=own(new THREE.MeshStandardMaterial({color:colour,roughness:.7}));
         box(4.2,.95,.42,paint,x,.475,z);for(const y of [.08,.5,.97])box(4.22,.04,.44,MAT.darkWood,x,y,z+.01);// the top board sits on the body, not level with it (level, their faces flickered)
-        books.slice(0,10).forEach((book,i)=>{const mesh=placeBook(book,{x:x-1.6+(i%5)*.8,y:.33+Math.floor(i/5)*.42,z:z+.2,yaw:0});mesh.scale.set(.42,.38,1);mesh.userData.childrenRoom=true});
+        books.slice(0,10).forEach((book,i)=>{const mesh=withPicture(placeBook(book,{x:x-1.6+(i%5)*.8,y:.33+Math.floor(i/5)*.42,z:z+.2,yaw:0}));mesh.scale.set(.42,.38,1);mesh.userData.childrenRoom=true});
         const sign=add(own(new THREE.PlaneGeometry(1.5,.3)),own(new THREE.MeshStandardMaterial({map:own(plaque(shelfName,sub,520,104,colour===0x3f7a33?'#2f5d2a':'#1f4f9a')),roughness:.8,emissive:0x2a3a18,emissiveIntensity:.3})),x,1.45,KN+.17,root);
         mark(sign,{type:'intl-card',title:card[0],author:card[1],action:'READ'});block(x,z,4.3,.6);return {x,z}};
       const young=(def.children||[]).filter(title=>!(def.older||[]).includes(title)).map(byTitle).filter(Boolean),older=(def.older||[]).map(byTitle).filter(Boolean);
@@ -765,7 +826,7 @@
         mark(hit,{type:'intl-pea',title:'Горошина',author:'Маленька зелена горошина котиться попід стіною. (A little green pea, rolling along by the wall.)',action:'PICK UP'});
         let shown=false;room.peaFound=peaFound;
         room.showMace=()=>{if(shown)return;shown=true;pea.visible=false;mace.visible=true;for(const part of [handle,head])mark(part,maceCard);block(KE-.7,KS-.7,.7,.7);
-          const tale=byTitle('Котигорошко');if(tale){const mesh=placeBook(tale,{x:KE-1.35,y:.03,z:KS-.75,yaw:0});mesh.scale.set(.42,.42,1);mesh.rotation.x=-Math.PI/2;mesh.userData.home.quaternion.copy(mesh.quaternion);mesh.userData.childrenRoom=true}};
+          const tale=byTitle('Котигорошко');if(tale){const mesh=withPicture(placeBook(tale,{x:KE-1.35,y:.03,z:KS-.75,yaw:0}));mesh.scale.set(.42,.42,1);mesh.rotation.x=-Math.PI/2;mesh.userData.home.quaternion.copy(mesh.quaternion);mesh.userData.childrenRoom=true}};
         room.ticks.push(t=>{if(shown)return;const a=Math.sin(t*.11);pea.position.x=K.cx+a*6.4;pea.rotation.z=-a*6.4/.035});
         if(peaFound())room.showMace()}
 
@@ -1113,5 +1174,5 @@
     buildDoor();
     return {contains,floorAt,allowed,interact,update,enter,unload:()=>{for(const key of Object.keys(built))unload(key)},featured,roomAt,door:DOOR,room:ROOM,rooms:ROOMS,
       get built(){return !!built.hub},isBuilt:key=>!!built[key],get books(){return Object.values(built).flatMap(room=>room.books)},zoneAt:(x,z)=>contains(x,z)?'international-wing':null};
-  };
+  },{BOOK_PICTURES});
 })();

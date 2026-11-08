@@ -44,6 +44,12 @@ export const PICTURES = [
   { key: 'shevchenko-kateryna', files: ['Шевченко Т. Г. Катерина. 1842.jpg', 'Image-Shevchenko Kateryna Olia 1842 large.jpg', 'Kateryna (Taras Shevchenko).jpg'], search: 'Shevchenko Kateryna 1842 painting' },
   { key: 'shevchenko-1848', file: '1848 - 201 - Self-portrait at the Syr Darya bank. Rayim, June 1848, Taras Shevchenko.jpg', search: 'Shevchenko self-portrait 1848' },
   { key: 'pymonenko-night', file: 'Mykola Pymonenko-Ukrayinska nich.jpg', search: 'Pymonenko Ukrainian night 1905' },
+  // For the Ukrainian children's room: the 1922 Yiddish edition of Ukrainian folk tales (Ukraynishe Folkmayses), its
+  // picture for «Пан Коцький», and three letters of Heorhiy Narbut's Ukrainian alphabet (1917–19; Narbut died in 1920).
+  { key: 'kids-pan-kotsky-1922', file: 'Ukraynishe Folkmayses 11.jpg', minSize: 500 },
+  { key: 'kids-narbut-a', file: 'Нарбут Г.І. Літера А 1919 р.jpg', minSize: 450 },
+  { key: 'kids-narbut-z', file: 'Г.Нарбут літера З Українська абетка.jpg', minSize: 450 },
+  { key: 'kids-narbut-y', file: 'Azbuka Narbuta - И.jpg', minSize: 450 },
   // The score of the lullaby «Котику сіренький», read to give the bandura its tune when Clio sleeps in the room (not hung).
   { key: 'kotyku-score', file: 'Котику сіренький.GIF', search: 'Котику сіренький', gif: true }
 ];
@@ -81,6 +87,8 @@ async function choose(map) {
     if (usable(page, map)) return page;
     console.log(`  ${map.key}: File:${file} ${page?.missing ? 'is not on Commons' : `is not usable (${page?.imageinfo?.[0]?.width}x${page?.imageinfo?.[0]?.height}, ${strip(page?.imageinfo?.[0]?.extmetadata?.LicenseShortName?.value)})`}`);
   }
+  // With nothing to search for, give up: an empty search would take whatever Commons offers first.
+  if (!map.search) { console.log(`  ${map.key}: nothing usable, and no search to try instead`); return null }
   if (map.file || map.files) console.log(`  ${map.key}: searching instead`);
   const data = await api({ ...INFO, generator: 'search', gsrsearch: map.search, gsrnamespace: '6', gsrlimit: '15' });
   const pages = (data.query?.pages || []).sort((a, b) => a.index - b.index);

@@ -29,6 +29,46 @@
   "licence": "Public domain",
   "description": ""
  },
+ "kids-pan-kotsky-1922": {
+  "file": "Ukraynishe Folkmayses 11.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Ukraynishe_Folkmayses_11.jpg",
+  "width": 591,
+  "height": 859,
+  "artist": "El Lissitzky",
+  "date": "1922",
+  "licence": "Public domain",
+  "description": "Ukraynishe Folkmayses"
+ },
+ "kids-narbut-a": {
+  "file": "Нарбут Г.І. Літера А 1919 р.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:%D0%9D%D0%B0%D1%80%D0%B1%D1%83%D1%82_%D0%93.%D0%86._%D0%9B%D1%96%D1%82%D0%B5%D1%80%D0%B0_%D0%90_1919_%D1%80.jpg",
+  "width": 525,
+  "height": 716,
+  "artist": "Heorhii Narbut",
+  "date": "1919",
+  "licence": "Public domain",
+  "description": "Українська абетка, літера А, Київ, 1919"
+ },
+ "kids-narbut-z": {
+  "file": "Г.Нарбут літера З Українська абетка.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:%D0%93.%D0%9D%D0%B0%D1%80%D0%B1%D1%83%D1%82_%D0%BB%D1%96%D1%82%D0%B5%D1%80%D0%B0_%D0%97_%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%B0_%D0%B0%D0%B1%D0%B5%D1%82%D0%BA%D0%B0.jpg",
+  "width": 500,
+  "height": 730,
+  "artist": "Heorhii Narbut",
+  "date": "1919",
+  "licence": "Public domain",
+  "description": "Українська абетка, літера З, Київ, 1919"
+ },
+ "kids-narbut-y": {
+  "file": "Azbuka Narbuta - И.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Azbuka_Narbuta_-_%D0%98.jpg",
+  "width": 495,
+  "height": 700,
+  "artist": "Heorhii Narbut",
+  "date": "1920",
+  "licence": "Public domain",
+  "description": "H. I. Narbut. An illustration \"Ukrainian alphabet\""
+ },
  "kotyku-score": {
   "file": "Котику сіренький.GIF",
   "page": "https://commons.wikimedia.org/wiki/File:%D0%9A%D0%BE%D1%82%D0%B8%D0%BA%D1%83_%D1%81%D1%96%D1%80%D0%B5%D0%BD%D1%8C%D0%BA%D0%B8%D0%B9.GIF",
