@@ -460,7 +460,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Dust drifts towards a mystery not yet recorded (`DRAUGHTS`). Footprints: the reader's own in the basement, memory rooms
   and tunnel, and an earlier reader's from the hatch to the narrow door behind the pipes. A brass despatch tube on the hall's
   column at x −11, z −5 drops a capsule every few minutes with a slip saying how to find a room (`HINTS`; a room behind
-  another only once that one is found). A book picked up may have a pencilled note pointing to its room (`MARGINS`). Closing
+  another only once that one is found). A book picked up may have a pencilled note pointing to its room (`MARGINS`). Until the Book of Kells has been opened
+  (`athenaeum-kells-seen`, set in game.js), the tube sometimes sends a slip to its case and a Celtic or Irish book picked up
+  outside the Irish Room may carry a note pointing to it (`TREASURES`). Closing
   time (`dimFor`): from 22:30 the west wing's lamps dim, from 23:30 the east wing's, from 00:30 the hall's (to 55%, back by
   06:00), and the reader carries a lantern (seen in hand) there and in the dusty places. The moonlight follows the real
   moon (`moonPhase`; the time label names it), and the Antipodes skylight turns with the sky over Sydney. Three stopped

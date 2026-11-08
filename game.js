@@ -2032,6 +2032,8 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       onClose:()=>{document.body.classList.remove('fine-book-open');requestLookLock()}};
     const kellsBook=window.createKellsBook?.(fineBookOptions),durrowBook=window.createDurrowBook?.(fineBookOptions),kelmscottBook=window.createKelmscottBook?.(fineBookOptions),vesaliusBook=window.createVesaliusBook?.(fineBookOptions),voynichBook=window.createVoynichBook?.(fineBookOptions),peresopnytsiaBook=window.createPeresopnytsiaBook?.(fineBookOptions);
     folioBook=window.createFolioBook?.(fineBookOptions)||null;
+    // The Book of Kells is pointed out by the despatch tube and the margins (exploration.js) until it is first opened.
+    if(kellsBook){const openKells=kellsBook.open;kellsBook.open=(...a)=>{try{localStorage.setItem('athenaeum-kells-seen','1')}catch(e){}return openKells(...a)}}
     const fineBookOpen=()=>!!(kellsBook?.isOpen||durrowBook?.isOpen||kelmscottBook?.isOpen||vesaliusBook?.isOpen||voynichBook?.isOpen||peresopnytsiaBook?.isOpen||folioBook?.isOpen);
     // The Voynich Manuscript (voynich-book.js) lies open on the Restricted Catalogue's lectern at the pansy of folio 9v and
     // the plant facing it, chained to the lectern as the books of old libraries were, its padlock open: the one book here

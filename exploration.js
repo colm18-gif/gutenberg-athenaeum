@@ -8,6 +8,7 @@
 //   Footprints               the reader's own in the dusty places below, and an earlier reader's in the basement
 //   The despatch tube        a brass tube on a column of the Grand Hall drops capsules with slips from the stacks
 //   Marginalia               a book picked up may have a pencilled note on its flyleaf pointing to its room
+//   Treasures                the Book of Kells is pointed out by a slip and a pencilled note until it has been opened
 //   Closing time             from half past ten at night the wings and then the hall dim, and the reader's lantern shows
 //   The real sky             the moonlight follows tonight's moon; the Antipodes skylight turns with the southern sky
 //   Stopped clocks           three clocks on the hall's columns stopped at the hours books stopped them
@@ -77,6 +78,10 @@
     [/W\. ?B\. Yeats|Lady Gregory|J\. ?M\. Synge|James Joyce/,'irish-room','Green door, south wall. There is a turf fire.'],[/Montgomery|Robert W\. Service|John McCrae/,'canada-room','Snow on the window. Through the Burns Room.'],[/Jonathan Swift/,'lilliput','Mind where you step. The narrow door in the Irish Room.'],
     [/Lewis Carroll/,'antipodes','Turn the globe and fall, as she did.'],[/Coleridge|Whymper|John Muir/,'mountain','Climb the painting on the north wall.'],
     [/Arabian Nights|Thousand and One Nights/,'nights-courtyard','The carpet by the fire flies.'],[/Hakluyt|Pigafetta|Lewis and Clark|Matthew Henson/,'explorers-anteroom','Their kit is in the locker in the Map Room’s corner.']];
+  // Treasures a reader may walk past: the stacks send a slip, and a book about them carries a pencilled note, until the
+  // reader has looked into the case (game.js sets `seen` when the book is first opened).
+  const TREASURES={kells:{seen:'athenaeum-kells-seen',room:'irish-room',slip:'The Book of Kells lies open under glass in the middle of the Irish Room, at Christ enthroned. The green door in the Grand Hall’s south wall.',
+    margin:[/Kells|Durrow|Colum ?Cille|Columba|Celtic|Patricii|Saint Patrick|W\. ?B\. Yeats|Lady Gregory|J\. ?M\. Synge/i,'The Book of Kells is open under glass in the Irish Room. Green door, south wall.']}};
   // Where a mystery is: dust drifts towards the ones not yet recorded (positions as Clio leads to them).
   const DRAUGHTS={'folded-note':[5.2,.95,3.6],'book-under-table':[7,.44,6.4],'book-mantel':[-13,5.6,-27.25],'book-balcony':[15,5.5,25],'roof-book':[-13.2,10.44,41.15],
     'west-shelf':[-36.3,1.6,-3],'tunnel':[-51.8,1.5,-3],'below-catalogue':[-7,.1,-25.8]};
@@ -236,15 +241,19 @@
     function hiss(){const a=audio();if(!a?.ctx||a.ctx.state!=='running'){sound(900,.5,'sawtooth',.01);return}const {ctx,master}=a,n=Math.floor(ctx.sampleRate*.9),b=ctx.createBuffer(1,n,ctx.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.sin(Math.PI*i/n);
       const src=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain(),near=clamp(1-Math.hypot(p.x-TUBE.x,p.z-TUBE.z)/26,0,1);src.buffer=b;f.type='bandpass';f.frequency.value=2600;f.Q.value=.7;g.gain.value=.12*near;src.connect(f).connect(g).connect(master);src.start();src.onended=()=>{src.disconnect();f.disconnect();g.disconnect()}}
     function updateDespatch(t){if(despatch.waiting||t<despatch.next||!inHall()||isReading())return;despatch.waiting=true;hiss();setTimeout(()=>{capsule.visible=true;sound(70,.22,'square',.07);if(Math.hypot(p.x-TUBE.x,p.z-TUBE.z)<16)showNotice('Something rattles down the brass tube on the column and drops into the wire basket.',5)},900)}
-    function openCapsule(){const options=Object.keys(HINTS).filter(k=>reachable(k)&&!despatch.given.has(k)),key=options[Math.floor(Math.random()*options.length)];
+    const unseen=key=>{try{return storage?.getItem(TREASURES[key].seen)!=='1'}catch(e){return false}};
+    function openCapsule(){const options=Object.keys(HINTS).filter(k=>reachable(k)&&!despatch.given.has(k)),treasures=Object.keys(TREASURES).filter(k=>unseen(k)&&!despatch.given.has('treasure:'+k));
       capsule.visible=false;despatch.waiting=false;despatch.next=nowT+200+Math.random()*140;sound(520,.08,'triangle',.05);
+      if(treasures.length&&(!options.length||Math.random()<.5)){const t=treasures[Math.floor(Math.random()*treasures.length)];despatch.given.add('treasure:'+t);showNotice(`A slip from the stacks: “${TREASURES[t].slip}”`,9);return}
+      const key=options[Math.floor(Math.random()*options.length)];
       if(!key){showNotice('A slip from the stacks: “All is in order here. — The Stacks”',6);return}despatch.given.add(key);showNotice(`A slip from the stacks: “${HINTS[key][0]}”`,9)}
 
     // ---------- 7. Marginalia, and the trolley's return slips ----------
     const noted=new Set();let lastNote=-1e9;
     function onSelect(bm){const d=bm?.userData,book=d?.book;if(!book)return;
       if(d.trolleySlip){setTimeout(()=>showNotice(`A return slip, in the librarian’s hand: ${d.trolleySlip}`,8),900);return}
-      const now=performance.now()/1000;if(now-lastNote<120||Math.random()>.45)return;const who=`${book.title} ${book.author}`,rule=MARGINS.find(([re,place])=>re.test(who)&&!placeKnown(place)&&!noted.has(place)&&currentPlace()!==place);if(!rule)return;
+      const now=performance.now()/1000;if(now-lastNote<120||Math.random()>.45)return;const who=`${book.title} ${book.author}`,rule=MARGINS.find(([re,place])=>re.test(who)&&!placeKnown(place)&&!noted.has(place)&&currentPlace()!==place)
+        ||Object.keys(TREASURES).filter(k=>TREASURES[k].margin[0].test(who)&&unseen(k)&&currentPlace()!==TREASURES[k].room&&!noted.has('treasure:'+k)).map(k=>[,'treasure:'+k,TREASURES[k].margin[1]])[0];if(!rule)return;
       noted.add(rule[1]);lastNote=now;setTimeout(()=>showNotice(`Pencilled on the flyleaf: “${rule[2]}”`,8),1200)}
 
     // ---------- 8 and 9. Closing time, the reader's lantern, and the real sky ----------
@@ -378,5 +387,5 @@
       anteroom:{contains:anteContains,allowed:anteAllowed,floorAt:(x,z)=>anteContains(x,z)?0:null,enter:enterAnteroom,leave:leaveAnteroom,room:ANTE,locker:LOCKER,get built(){return !!ante}},
       doors:DOORS,hints:HINTS,margins:MARGINS,clocks:CLOCKS,departures:DEPARTURES,draughts:DRAUGHTS,tube:TUBE,get route(){return route.slice()},get porter(){return {...walk,group:porter}},get floorGrid(){return floorGrid},grid:GRID,startPorter:()=>startPorter(0),capsule,buildTrolley,openCapsule,mapLocker};
   };
-  Object.assign(window.createExploration,{gridPath,smoothPath,TROLLEY_SHELVES,SHELF_PLACES,CLOCKS,CONRAD,DOORS,HINTS,MARGINS,DEPARTURES,DRAUGHTS,dimFor,moonPhase});
+  Object.assign(window.createExploration,{gridPath,smoothPath,TROLLEY_SHELVES,SHELF_PLACES,CLOCKS,CONRAD,DOORS,HINTS,MARGINS,TREASURES,DEPARTURES,DRAUGHTS,dimFor,moonPhase});
 })();
