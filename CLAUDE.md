@@ -500,6 +500,11 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - To check things visually, serve the repo (`python3 -m http.server 8765`) and drive it with Playwright using
   `/opt/pw-browsers` Chromium with `--use-angle=swiftshader`; `index.html?debug&noktx2` exposes `window.__athenaeum`
   (teleport, placeAt, rooms, books…). Three.js loads from a CDN, so route it to a local copy.
+- The room walkthrough (`scripts/room-walkthrough.mjs`, Room walkthrough workflow: by hand, and weekly) visits every room
+  `roomLink` knows (its list is read from game.js), photographs each and writes a contact sheet (`walkthrough/index.html`,
+  kept as the run's artifact). It fails a room that throws, is never reached, stands the reader where `allowed` refuses,
+  or draws a blank picture; very dark rooms are only flagged. Locally: `--three <unpacked three@0.160.1>` stands in for
+  the CDN, `--only key,key` walks a few (about 90 s a room under swiftshader).
 - Gutenberg and most external sites are blocked from the cloud sessions; GitHub Actions has the network. Anything that
   needs to fetch texts runs as a workflow. To find books' numbers, add lines to `scripts/catalog-queries.txt` (`title ; author ;
   language`, patterns are regexes) and push to a `claude/` branch: the Catalogue lookup workflow prints the matches from
