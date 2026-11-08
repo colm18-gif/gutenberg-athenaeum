@@ -25,7 +25,7 @@
   // The Ukrainian room's shelf of the Executed Renaissance, and the little book in Shevchenko's boot: these stand apart
   // from its main shelves (data/new-books-wing.js gives them, with the room's other books).
   // The children's shelf: tales and verse for the youngest readers, on a low bookcase under the Petrykivka painting.
-  const CHILDREN=['Рукавичка','Пан Коцький','Котигорошко','Кирило Кожум\'яка','Українські народні казки','Коли ще звірі говорили','Лис Микита','Байки'];
+  const CHILDREN=['Рукавичка','Пан Коцький','Котигорошко','Кирило Кожум\'яка','Українські народні казки','Коли ще звірі говорили','Лис Микита','Байки','Біда навчить','Харитя','Ялинка','Грицева шкільна наука'];
   // The letter hunt: six wooden letter blocks hidden about the Ukrainian room spell КАЛИНА, each with a word for children.
   const LETTERS=[['К','кіт','a cat'],['А','аїст','a stork'],['Л','лисичка','a little fox'],['И','индик','a turkey'],['Н','небо','the sky'],['А','абетка','the alphabet']];
   // What the window shows, in Shevchenko's words (the library's Kobzar, where the poem is called «Вечір»; checked by a test).
@@ -54,8 +54,18 @@
   // list (OLDER, which also stand on the main racks). A small yellow door in the lobby leads straight in.
   // Every book on both shelves was read for a child's shelf (8 November 2026). Starytsky's Облога Буші stays on the main
   // racks only: one of its heroes is nicknamed for killing Jews, and it ends in a mass death by gunpowder.
-  const OLDER=['Коли ще звірі говорили','Лис Микита','Олеся','Захар Беркут'];
+  // Franko's Малий Мирон (it ends foretelling the boy's ruin) and Marko Vovchok's Дев'ять братів і десята сестриця Галя
+  // (Halia ends in the Dnipro) were read too, and stand on the main racks only.
+  const OLDER=['Коли ще звірі говорили','Лис Микита','Олеся','Захар Беркут','Харитя','Ялинка','Грицева шкільна наука'];
   const CHILDREN_ROOM={w:18,d:15,h:5,cx:-509,cz:100},ARCH={half:1.8,h:3.4};
+  // A slide in the children's room's south-west quarter, along x: six steps up from the west, a platform, and a chute
+  // down to the east. Its heights are the floor there, so the steps are climbed one at a time (allowed) and the chute
+  // carries the reader down when they slide.
+  const SLIDE={z:104.8,half:.42,x0:-516.3,step:.27,rise:.27,steps:6,deck:.8,chute:3.2};
+  SLIDE.top=SLIDE.steps*SLIDE.rise;SLIDE.xDeck=SLIDE.x0+SLIDE.steps*SLIDE.step;SLIDE.xChute=SLIDE.xDeck+SLIDE.deck;SLIDE.xEnd=SLIDE.xChute+SLIDE.chute;
+  const slideHeight=(x,z)=>{if(Math.abs(z-SLIDE.z)>SLIDE.half||x<SLIDE.x0||x>SLIDE.xEnd)return null;
+    if(x<SLIDE.xDeck)return (Math.floor((x-SLIDE.x0)/SLIDE.step)+1)*SLIDE.rise;if(x<SLIDE.xChute)return SLIDE.top;return SLIDE.top*(1-(x-SLIDE.xChute)/SLIDE.chute)};
+  const KITTEN='«Котику сіренький, котику біленький, котку волохатий, не ходи по хаті»';
   // Its secret: a pea rolls along the skirting. Picked up, it brings Kotyhoroshko's mace, and his tale, into the corner
   // (athenaeum-kotyhoroshko-pea; ?pea shows it). The words are the tale's own, from the library's Котигорошко (959103).
   const KOTYHOROSHKO={
@@ -651,16 +661,71 @@
           ?'За вікном зимовий вечір: діти катаються на санчатах з горба, біля хати стоїть сніговик, а на узліссі хтось загубив червону рукавичку. (Outside, a winter evening: children sledging down the hill, a snowman by the house, and at the edge of the wood someone has dropped a red mitten.)'
           :'За вікном літній вечір: соняшники в полі, лелека на гнізді, вишня біля хати, а діти пускають повітряного змія. (Outside, a summer evening: sunflowers in the field, a stork on its nest, a cherry tree by the house, and children flying a kite.)',action:'LOOK',season:winter?'winter':'summer'})}
 
+      // The slide: red steps up from the west between yellow rails, a little blue platform, and a yellow chute down to the
+      // east. Climb the steps; at the top, the slide (or anything on it) sends the reader down the chute.
+      {const red=own(new THREE.MeshStandardMaterial({color:0xc62a1f,roughness:.6})),yellow=own(new THREE.MeshStandardMaterial({color:0xf2c230,roughness:.35,metalness:.1})),blue=own(new THREE.MeshStandardMaterial({color:0x1f4f9a,roughness:.6}));
+        const card={type:'intl-slide',title:'Гірка · The slide',author:'Нагору сходами, а вниз — з гірки! (Up the steps, and down the slide!)',action:'SLIDE DOWN'};
+        const parts=[];
+        for(let i=0;i<SLIDE.steps;i++){const top=(i+1)*SLIDE.rise;parts.push(box(SLIDE.step,.06,SLIDE.half*2,red,SLIDE.x0+(i+.5)*SLIDE.step,top-.03,SLIDE.z))}
+        parts.push(box(SLIDE.deck,.1,SLIDE.half*2+.1,blue,SLIDE.xDeck+SLIDE.deck/2,SLIDE.top-.05,SLIDE.z));
+        for(const sz of [-1,1]){const z=SLIDE.z+sz*(SLIDE.half+.05);
+          const rail=box(Math.hypot(SLIDE.xDeck-SLIDE.x0,SLIDE.top),.06,.06,yellow,(SLIDE.x0+SLIDE.xDeck)/2,SLIDE.top/2+.6,z);rail.rotation.z=Math.atan2(SLIDE.top,SLIDE.xDeck-SLIDE.x0);
+          for(const x of [SLIDE.x0+.05,SLIDE.xDeck,SLIDE.xChute])box(.08,x===SLIDE.x0+.05?.7:SLIDE.top+.7,.08,blue,x,(x===SLIDE.x0+.05?.7:SLIDE.top+.7)/2,z);
+          box(SLIDE.deck,.06,.06,yellow,SLIDE.xDeck+SLIDE.deck/2,SLIDE.top+.65,z);
+          const side=box(Math.hypot(SLIDE.chute,SLIDE.top),.22,.05,red,(SLIDE.xChute+SLIDE.xEnd)/2,SLIDE.top/2+.08,z);side.rotation.z=-Math.atan2(SLIDE.top,SLIDE.chute);parts.push(side)}
+        const chute=box(Math.hypot(SLIDE.chute,SLIDE.top),.06,SLIDE.half*2,yellow,(SLIDE.xChute+SLIDE.xEnd)/2,SLIDE.top/2,SLIDE.z);chute.rotation.z=-Math.atan2(SLIDE.top,SLIDE.chute);parts.push(chute);
+        for(const part of parts)mark(part,card);
+        // A ride down the chute: the reader is carried from the platform to the bottom in a little over a second.
+        let ride=null;room.slide=()=>{const {x,z}=player.pos;if(ride)return true;
+          if((slideHeight(x,z)??0)<SLIDE.top-.05){showNotice('Спершу нагору сходами! (Up the steps first!)',4);return false}
+          ride={t:0};tone?.(784,0,.18,.05,'piano');tone?.(659,.12,.18,.05,'piano');tone?.(523,.24,.3,.05,'piano');return true};
+        let last=null;room.ticks.push(t=>{const dt=last==null?0:Math.min(.1,t-last);last=t;if(!ride)return;ride.t+=dt;const k=Math.min(1,ride.t/1.2);
+          player.pos.x=SLIDE.xChute-.05+(SLIDE.xEnd+.6-SLIDE.xChute)*k*k;player.pos.z=SLIDE.z;if(k>=1)ride=null})}
+
+      // The kitten from the lullaby, «Котику сіренький»: a little grey cat who pads from place to place about the children's
+      // room and, every so often, curls up asleep in her basket by the south wall. No light; a few meshes in one group.
+      {const grey=own(new THREE.MeshStandardMaterial({color:0x8d8d93,roughness:.9})),pale=own(new THREE.MeshStandardMaterial({color:0xe9e6e0,roughness:.9})),pink=own(new THREE.MeshStandardMaterial({color:0xe8a0a8,roughness:.8})),dark=own(new THREE.MeshStandardMaterial({color:0x111111,roughness:.4}));
+        const basket={x:K.cx+6,z:KS-2.1};
+        const wicker=own(new THREE.MeshStandardMaterial({color:0xb08850,roughness:.95}));
+        add(own(new THREE.CylinderGeometry(.36,.3,.18,18,1,true)),wicker,basket.x,.09,basket.z,root).material.side=THREE.DoubleSide;add(own(new THREE.CircleGeometry(.3,18)),own(new THREE.MeshStandardMaterial({color:0xc62a1f,roughness:.95})),basket.x,.03,basket.z,root).rotation.x=-Math.PI/2;
+        block(basket.x,basket.z,.75,.75);
+        const cat=new THREE.Group();root.add(cat);
+        const body=add(own(new THREE.SphereGeometry(.13,14,10)),grey,0,.14,0,cat);body.scale.set(1,.85,1.5);
+        const chest=add(own(new THREE.SphereGeometry(.07,10,8)),pale,0,.13,.15,cat);
+        const head=new THREE.Group();head.position.set(0,.25,.2);cat.add(head);
+        add(own(new THREE.SphereGeometry(.09,14,10)),grey,0,0,0,head);
+        for(const sx of [-1,1]){const ear=add(own(new THREE.ConeGeometry(.035,.07,6)),grey,sx*.05,.08,-.01,head);ear.rotation.z=-sx*.25;add(own(new THREE.ConeGeometry(.02,.04,6)),pink,sx*.05,.075,.005,head).rotation.z=-sx*.25;
+          add(own(new THREE.SphereGeometry(.014,8,6)),dark,sx*.035,.015,.08,head)}
+        add(own(new THREE.SphereGeometry(.012,6,5)),pink,0,-.015,.09,head);
+        const legs=[];for(const [lx,lz] of [[-.06,.12],[.06,.12],[-.06,-.12],[.06,-.12]])legs.push(add(own(new THREE.CylinderGeometry(.025,.025,.1,6)),grey,lx,.05,lz,cat));
+        const tail=add(own(new THREE.CylinderGeometry(.018,.012,.28,6)),grey,0,.22,-.26,cat);tail.rotation.x=-.9;
+        const awake={type:'intl-kitten',title:'Котик сіренький · The little grey kitten',author:`Котик із колискової, яку співають українським дітям: ${KITTEN}. (The kitten from the lullaby Ukrainian children are sung to sleep with.)`,action:'STROKE'};
+        const asleep={type:'intl-kitten',title:'Котик спить · The kitten is asleep',author:`Котик спить у кошику. Тихенько! ${KITTEN}. (The kitten is asleep in her basket. Shh!)`,action:'LOOK'};
+        const catParts=[body,chest,...head.children,...legs,tail];for(const part of catParts)mark(part,awake);
+        const spots=[[K.cx-1,K.cz-4.5],[K.cx+4.5,K.cz-3.6],[K.cx+4,K.cz+.4],[K.cx-.5,K.cz+2.6],[K.cx-5.6,K.cz-1.8],[K.cx+1.6,K.cz-1.2]];
+        const kitten={x:K.cx+1.6,z:K.cz-1.2,yaw:0,goal:0,wait:2,sleep:0,since:0};cat.position.set(kitten.x,0,kitten.z);
+        const setCard=card=>{for(const part of catParts)part.userData=card};
+        room.kitten={get asleep(){return kitten.sleep>0},get x(){return kitten.x},get z(){return kitten.z},basket,nap:()=>{kitten.goal=-1;kitten.wait=0},stroke:()=>{if(kitten.sleep>0)return false;kitten.wait=Math.max(kitten.wait,3);return true}};
+        let last=null;room.ticks.push(t=>{const dt=last==null?0:Math.min(.1,t-last);last=t;
+          if(kitten.sleep>0){kitten.sleep-=dt;body.scale.set(1.25,.6+.03*Math.sin(t*1.6),1.25);head.position.set(.14,.12,.12);head.rotation.set(.5,0,0);tail.rotation.set(-1.5,0,.9);for(const l of legs)l.visible=false;
+            if(kitten.sleep<=0){body.scale.set(1,.85,1.5);head.position.set(0,.25,.2);head.rotation.set(0,0,0);tail.rotation.set(-.9,0,0);for(const l of legs)l.visible=true;setCard(awake);kitten.goal=0;kitten.wait=1.5}return}
+          if(kitten.wait>0){kitten.wait-=dt;tail.rotation.z=Math.sin(t*2.2)*.35;return}
+          const target=kitten.goal<0?basket:{x:spots[kitten.goal][0],z:spots[kitten.goal][1]};const dx=target.x-kitten.x,dz=target.z-kitten.z,dist=Math.hypot(dx,dz);
+          if(dist<.06){if(kitten.goal<0){kitten.sleep=45;kitten.x=basket.x;kitten.z=basket.z;cat.position.set(basket.x,.04,basket.z);setCard(asleep);return}
+            kitten.since++;kitten.goal=kitten.since%5===0?-1:(kitten.goal+1)%spots.length;kitten.wait=2+((kitten.since*7)%5);return}
+          const step=Math.min(dist,.45*dt);kitten.x+=dx/dist*step;kitten.z+=dz/dist*step;kitten.yaw=Math.atan2(dx,dz);
+          cat.position.set(kitten.x,Math.abs(Math.sin(t*9))*.012,kitten.z);cat.rotation.y=kitten.yaw;legs.forEach((l,i)=>{l.rotation.x=Math.sin(t*9+(i%3?Math.PI:0))*.5});tail.rotation.z=Math.sin(t*4)*.2})}
+
       // The two low shelves on the children's room's north wall, under the Petrykivka painting: the youngest readers'
       // tales to the west, the older readers' stories to the east, face-out on two tiers at a child's height.
       const lowShelf=(x,books,shelfName,sub,card,colour)=>{const z=KN+.36,paint=own(new THREE.MeshStandardMaterial({color:colour,roughness:.7}));
         box(4.2,.95,.42,paint,x,.475,z);for(const y of [.08,.5,.97])box(4.22,.04,.44,MAT.darkWood,x,y,z+.01);// the top board sits on the body, not level with it (level, their faces flickered)
-        books.slice(0,8).forEach((book,i)=>{const mesh=placeBook(book,{x:x-1.35+(i%4)*.9,y:.33+Math.floor(i/4)*.42,z:z+.2,yaw:0});mesh.scale.set(.42,.38,1);mesh.userData.childrenRoom=true});
+        books.slice(0,10).forEach((book,i)=>{const mesh=placeBook(book,{x:x-1.6+(i%5)*.8,y:.33+Math.floor(i/5)*.42,z:z+.2,yaw:0});mesh.scale.set(.42,.38,1);mesh.userData.childrenRoom=true});
         const sign=add(own(new THREE.PlaneGeometry(1.5,.3)),own(new THREE.MeshStandardMaterial({map:own(plaque(shelfName,sub,520,104,colour===0x3f7a33?'#2f5d2a':'#1f4f9a')),roughness:.8,emissive:0x2a3a18,emissiveIntensity:.3})),x,1.45,KN+.17,root);
         mark(sign,{type:'intl-card',title:card[0],author:card[1],action:'READ'});block(x,z,4.3,.6);return {x,z}};
       const young=(def.children||[]).filter(title=>!(def.older||[]).includes(title)).map(byTitle).filter(Boolean),older=(def.older||[]).map(byTitle).filter(Boolean);
       room.childrenShelf=lowShelf(K.cx-3.3,young,'ДЛЯ НАЙМЕНШИХ','Казки й байки · For the youngest',['Для найменших','Казки й байки для найменших читачів: «Рукавичка», «Котигорошко», «Пан Коцький», «Кирило Кожум’яка», байки Глібова. А ще в цій кімнаті сховалося шість дерев’яних літер. Знайдеш їх усі? (Tales and fables for the youngest readers. Six wooden letters are hidden in this room too. Can you find them all?)'],0x3f7a33);
-      lowShelf(K.cx+3.3,older,'ДЛЯ СТАРШИХ','Повісті й казки · For older readers',['Для старших','Для старших читачів: Франкові казки про звірів і його «Лис Микита», «Олеся» Бориса Грінченка й «Захар Беркут» Івана Франка. У «Лисі Микиті» один рядок, у словах Рися, повторює давнє упередження проти євреїв: варто поговорити про це з дітьми. (For older readers: Franko’s animal tales and his Fox Mykyta, Hrinchenko’s Olesia and Franko’s Zakhar Berkut. In Fox Mykyta one line, in the Lynx’s speech, repeats an old prejudice against Jews: worth talking over with children.)'],0x1f4f9a);
+      lowShelf(K.cx+3.3,older,'ДЛЯ СТАРШИХ','Повісті й казки · For older readers',['Для старших','Для старших читачів: Франкові казки про звірів, його «Лис Микита» й «Грицева шкільна наука», «Олеся» Бориса Грінченка, «Захар Беркут» Івана Франка, «Харитя» і «Ялинка» Михайла Коцюбинського. (For older readers: Franko’s animal tales, his Fox Mykyta and Hryts’s Schooling, Hrinchenko’s Olesia, Franko’s Zakhar Berkut, and Kotsiubynsky’s Kharytia and The Fir Tree.)'],0x1f4f9a);
 
       // The letter hunt: six wooden blocks, each a letter of КАЛИНА, tucked about the children's room; each found one
       // tells its word, and once all six are found they stand in a row on top of the youngest readers' shelf.
@@ -957,12 +1022,14 @@
     const inRoom=(def,x,z)=>inBox(def,x,z)||!!def.annex&&inBox(def.annex,x,z);
     const roomAt=(x,z)=>Object.keys(ROOMS).find(key=>inRoom(ROOMS[key],x,z))||null;
     function contains(x,z){return !!roomAt(x,z)}
-    function floorAt(x,z){return contains(x,z)?0:null}
+    function floorAt(x,z){return contains(x,z)?slideHeight(x,z)??0:null}
     function allowed(x,z){
       const key=roomAt(x,z);if(!key)return false;const def=ROOMS[key],r=player.radius||.42;
       // In the room or its annex: the walls are the walls of whichever the reader is in, but not across the arch.
       const b=def.annex&&inBox(def.annex,x,z)?def.annex:def,arch=!!def.annex&&Math.abs(z-def.cz)<ARCH.half-r;
       if(x-r<b.cx-b.w/2+.45&&!(arch&&b===def.annex)||x+r>b.cx+b.w/2-.45&&!(arch&&b===def)||z-r<b.cz-b.d/2+.45||z+r>b.cz+b.d/2-.45)return false;
+      // On the slide a change of floor is one step at a time: no climbing on from the side, no stepping off the top.
+      if(b===def.annex){const here=floorAt(player.pos.x,player.pos.z)??0,there=slideHeight(x,z)??0;if(Math.abs(there-here)>.45)return false;if(there>0)return true}
       return !(built[key]?.blockers||[]).some(b=>x+r>b.minX&&x-r<b.maxX&&z+r>b.minZ&&z-r<b.maxZ);
     }
 
@@ -997,6 +1064,8 @@
       if(data.type==='intl-card'){showNotice(`${data.title}: ${data.author}`,9);return true}
       if(data.type==='intl-children'){through(data,()=>enterChildren());return true}
       if(data.type==='intl-children-out'){through(data,()=>{const kx=ROOM_DOORS.ukrainian.x+4.2;activate('hub');placeLamps('hub');move(kx,ROOM_DOORS.ukrainian.z+1.6,Math.PI);playSample?.('doorOpen',.8,1.1);showNotice('Міжнародне крило. (The International Wing.)',4)});return true}
+      if(data.type==='intl-slide'){built.ukrainian?.slide?.();return true}
+      if(data.type==='intl-kitten'){const k=built.ukrainian?.kitten;if(k?.stroke())showNotice(`Котик муркоче. (The kitten purrs.) ${data.author}`,8);else showNotice(`${data.title}: ${data.author}`,8);return true}
       if(data.type==='intl-pea'){const room=built.ukrainian;if(!room?.showMace)return true;
         try{storage?.setItem(PEA_KEY,'1')}catch(e){}room.showMace();
         showNotice(`Горошина! ${KOTYHOROSHKO.pea} А в кутку тепер стоїть його булава. (And in the corner now stands his mace.)`,16);
