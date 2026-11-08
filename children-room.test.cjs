@@ -127,10 +127,12 @@ test('it borrows the wing’s second lamp, adds no light of its own, and is wire
   assert.match(source,/older:OLDER,annex:CHILDREN_ROOM/);assert.match(source,/PEA_KEY='athenaeum-kotyhoroshko-pea'/);
 });
 
-test('a window over the bench looks out on the season: a snowy evening of sledging from December to February, summer the rest of the year',()=>{
+test('a window over the bench looks out on the season: a snowy evening of sledging from November to February, summer the rest of the year',()=>{
   const view=a=>a.interactables.find(o=>o.userData?.title==='Вікно · A window');
   const jan=wing({date:new Date(2027,0,10)});jan.w.enter('ukrainian');const w=view(jan);assert(w,'the window');assert.equal(w.userData.season,'winter');assert.match(w.userData.author,/санчатах/);
   const p=world(w);assert(inK(p.x,p.z)&&p.x>K.cx+K.w/2-.5,'in the children’s room’s east wall');assert(w.position.y>1.5,'above the bench');
+  for(const [y,m] of [[2026,10],[2026,11],[2027,1]]){const a=wing({date:new Date(y,m,8)});a.w.enter('ukrainian');assert.equal(view(a).userData.season,'winter',`snow in month ${m+1}`)}
+  for(const m of [2,9]){const a=wing({date:new Date(2027,m,8)});a.w.enter('ukrainian');assert.equal(view(a).userData.season,'summer',`summer in month ${m+1}`)}
   const jul=wing({date:new Date(2027,6,10)});jul.w.enter('ukrainian');assert.equal(view(jul).userData.season,'summer');assert.match(view(jul).userData.author,/соняшники/);
   const asked=wing({date:new Date(2027,6,10),search:'?winter'});asked.w.enter('ukrainian');assert.equal(view(asked).userData.season,'winter','?winter shows the snow');
 });

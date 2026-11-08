@@ -593,10 +593,10 @@
         block(K.cx+3,KS-.4,1.6,.6)}
 
       // A window in the children's room's east wall, over the bench: one painted view that glows a little (no light of its
-      // own), and follows the season. December to February, a snowy evening: children sledging, a snowman by a lit хата,
+      // own), and follows the season. November to February, a snowy evening: children sledging, a snowman by a lit хата,
       // and a red mitten dropped at the edge of the wood. The rest of the year, a summer evening: sunflowers, a stork on its
       // nest, a cherry tree, and children flying a kite. (?winter or ?summer shows either.)
-      {const month=today().getMonth(),winter=askedFor('winter')||!askedFor('summer')&&(month===11||month<=1);
+      {const month=today().getMonth(),winter=askedFor('winter')||!askedFor('summer')&&(month>=10||month<=1);
         const ww=3.6,wh=2,wy=2.75,wz=K.cz+.6,WX=KE-.16;
         const view=own(canvasTexture((c,W,H)=>{const rand=(()=>{let k=11;return()=>{k=(k*16807)%2147483647;return k/2147483647}})();
           const kid=(x,y,s,coat,hat)=>{c.fillStyle=coat;c.beginPath();c.moveTo(x-s*.35,y);c.lineTo(x+s*.35,y);c.lineTo(x+s*.22,y-s*.9);c.lineTo(x-s*.22,y-s*.9);c.fill();
