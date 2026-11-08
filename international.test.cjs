@@ -237,7 +237,7 @@ test('the Ukrainian Reading Room: classics from Wikisource behind a blue door wi
   const wingList=load('data/new-books-wing.js','ATHENAEUM_NEW_BOOKS_WING'),ukrainian=wingList.filter(entry=>entry[4]==='ukrainian');
   const {ROOMS,ROOM_LANGUAGES,validate}=await import('./scripts/new-books.mjs'),ws=await import('./scripts/wikisource.mjs');
   assert.ok(ROOMS.includes('ukrainian'));assert.equal(ROOM_LANGUAGES.ukrainian,'uk');
-  assert.ok(ukrainian.length>=20&&ukrainian.length<=48,`${ukrainian.length} Ukrainian books`);
+  assert.ok(ukrainian.length>=20&&ukrainian.length<=64,`${ukrainian.length} Ukrainian books`);// the children's room holds some of them
   for(const [id,title,author,,,note] of ukrainian){
     assert.ok(ws.isWikisource(id),`${title}: from Wikisource, as Gutenberg has no Ukrainian texts`);
     assert.ok(/[а-щьюяєіїґ]/i.test(title)||/^[A-Z]/.test(title),`${title}: in the spelling of its edition`);

@@ -138,3 +138,38 @@ test('a window over the bench looks out on the season: a snowy evening of sledgi
   const jul=wing({date:new Date(2027,6,10)});jul.w.enter('ukrainian');assert.equal(view(jul).userData.season,'summer');assert.match(view(jul).userData.author,/соняшники/);
   const asked=wing({date:new Date(2027,6,10),search:'?winter'});asked.w.enter('ukrainian');assert.equal(view(asked).userData.season,'winter','?winter shows the snow');
 });
+
+const SLIDE=(()=>{const m=source.match(/const SLIDE=\{z:([\d.-]+),half:([\d.]+),x0:([\d.-]+),step:([\d.]+),rise:([\d.]+),steps:(\d+),deck:([\d.]+),chute:([\d.]+)\}/).slice(1).map(Number);
+  const [z,half,x0,step,rise,steps,deck,chute]=m,xDeck=x0+steps*step;return {z,half,x0,step,rise,steps,deck,chute,top:steps*rise,xDeck,xChute:xDeck+deck,xEnd:xDeck+deck+chute}})();
+// Walk standing at each spot in turn, as the slide's steps are taken from where the reader is.
+function climb(a,from,to,reach=.25){
+  const seen=new Set(),queue=[[from.x,from.z]],key=(x,z)=>`${x.toFixed(1)},${z.toFixed(1)}`;
+  while(queue.length){const [x,z]=queue.shift();if(Math.hypot(x-to.x,z-to.z)<reach)return true;
+    for(const [dx,dz] of [[.1,0],[-.1,0],[0,.1],[0,-.1]]){const nx=x+dx,nz=z+dz,k=key(nx,nz);if(seen.has(k))continue;a.player.pos.set(x,0,z);if(!a.w.allowed(nx,nz))continue;seen.add(k);queue.push([nx,nz])}}
+  return false;
+}
+
+test('the slide: up the steps one at a time, never on from the side or off the top, and down the chute in a whoosh',()=>{
+  const a=wing();a.w.enter('ukrainian');
+  assert(inK(SLIDE.x0,SLIDE.z)&&inK(SLIDE.xEnd,SLIDE.z),'in the children’s room');
+  assert.equal(a.w.floorAt(SLIDE.xDeck+SLIDE.deck/2,SLIDE.z),SLIDE.top,'the platform');assert.equal(a.w.floorAt(SLIDE.xEnd-.01,SLIDE.z)<.05,true,'the chute comes down to the floor');
+  // Standing at the foot of the steps, a reader can climb to the platform.
+  const deck={x:SLIDE.xDeck+SLIDE.deck/2,z:SLIDE.z};assert(climb(a,{x:SLIDE.x0-.6,z:SLIDE.z},deck),'up the steps to the platform');
+  a.player.pos.set(SLIDE.xDeck+.2,0,SLIDE.z-1);assert.equal(a.w.allowed(SLIDE.xDeck+.2,SLIDE.z),false,'not onto the platform from the side');
+  a.player.pos.set(deck.x,0,deck.z);assert.equal(a.w.allowed(deck.x,SLIDE.z+SLIDE.half+.3),false,'not off the top');
+  // From the platform, the slide carries the reader down to the bottom.
+  const part=find(a,'intl-slide');assert(part);a.w.interact(part);for(let t=1;t<4;t+=.05)a.w.update(t);
+  assert(a.player.pos.x>SLIDE.xEnd&&a.w.floorAt(a.player.pos.x,a.player.pos.z)===0,'at the bottom, on the floor');assert(a.w.allowed(a.player.pos.x,a.player.pos.z));
+  // From the floor, it says to climb first.
+  a.player.pos.set(SLIDE.x0-1,0,SLIDE.z);a.w.interact(part);assert.match(a.notices.at(-1),/Up the steps first/);
+});
+
+test('the grey kitten from the lullaby pads about the children’s room and, now and then, curls up asleep in her basket',()=>{
+  const a=wing();a.w.enter('ukrainian');const part=()=>a.interactables.find(o=>o.userData?.type==='intl-kitten');
+  assert(part(),'the kitten');assert.match(part().userData.author,/«Котику сіренький, котику біленький, котку волохатий, не ходи по хаті»/);
+  const at=()=>world(part().parent?.parent?.parent?part().parent:part()),start=JSON.stringify(at());
+  const seen=[];let slept=false;for(let t=1;t<600&&!slept;t+=.1){a.w.update(t);seen.push(at());if(/спить/.test(part().userData.title))slept=true}
+  assert(new Set(seen.map(p=>`${p.x.toFixed(1)},${p.z.toFixed(1)}`)).size>20,'she walks about');for(const p of seen)assert(inK(p.x,p.z),'always in the children’s room');
+  assert(slept,'and falls asleep');a.w.interact(part());assert.match(a.notices.at(-1),/Котик спить/);
+  for(let t=600;t<660;t+=.1)a.w.update(t);assert(!/спить/.test(part().userData.title),'and wakes again');
+});
