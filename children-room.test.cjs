@@ -76,6 +76,9 @@ test('its shelves: the youngest readers’ tales and, for older readers, stories
   for(const t of ['Олеся','Захар Беркут'])assert(main.includes(t),`${t} stays on the main racks too`);
   // Read for a child's shelf: Облога Буші is kept for adults (a hero nicknamed for killing Jews; an ending of mass death).
   assert(!titles.includes('Облога Буші')&&main.includes('Облога Буші'),'Облога Буші is on the main racks only');
+  // Read for the children's room too: Малий Мирон (it foretells the boy's ruin) and Галя (she ends in the Dnipro) are for adults.
+  for(const t of ['Малий Мирон','Дев’ять братів і десята сестриця Галя'])assert(!titles.includes(t)&&main.includes(t),`${t} is on the main racks only`);
+  for(const t of ['Біда навчить','Харитя','Ялинка','Грицева шкільна наука'])assert(titles.includes(t),`${t} is in the children’s room`);
   for(const t of ['Рукавичка','Пан Коцький','Котигорошко'])assert(!main.includes(t),`${t} is kept for the children`);
   assert(a.seats.some(s=>/Лавка з подушками/.test(s.title)),'the bench is one of the library’s seats');
   const bench=a.seats.find(s=>/Лавка/.test(s.title));assert(bench.bookIds.length>=8,'and opens one of the children’s books');

@@ -339,7 +339,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Ukrainian room (one room for lamps, building and freeing; `allowed` lets the reader across the shared wall only at the
   arch). It adds no light: `placeLamps` sends the wing's second lamp there. Inside: the Petrykivka painting over two low
   shelves, for the youngest (`CHILDREN` less `OLDER`) and for older readers (`OLDER`, which also stand on the main racks; every book on both was read for a child's shelf, and Облога
-  Буші was kept off it, for a hero nicknamed for killing Jews and a mass death at its end),
+  Буші was kept off it, for a hero nicknamed for killing Jews and a mass death at its end; so were Franko's Малий Мирон,
+  which ends foretelling the boy's ruin, and Marko Vovchok's Галя, which ends with her in the Dnipro: a new book is read
+  before it is shelved there),
   the mitten, the КАЛИНА blocks, a cushioned bench (two seats), a slide in the south-west quarter (`SLIDE`: its steps and
   chute are the floor there, `slideHeight`; `allowed` takes the steps one at a time; at the top `intl-slide` carries the
   reader down the chute), the grey kitten from the lullaby «Котику сіренький» (`intl-kitten`), who pads between a few spots

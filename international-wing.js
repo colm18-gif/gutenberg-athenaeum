@@ -25,7 +25,7 @@
   // The Ukrainian room's shelf of the Executed Renaissance, and the little book in Shevchenko's boot: these stand apart
   // from its main shelves (data/new-books-wing.js gives them, with the room's other books).
   // The children's shelf: tales and verse for the youngest readers, on a low bookcase under the Petrykivka painting.
-  const CHILDREN=['Рукавичка','Пан Коцький','Котигорошко','Кирило Кожум\'яка','Українські народні казки','Коли ще звірі говорили','Лис Микита','Байки','Біда навчить','Харитя','Ялинка','Малий Мирон','Грицева шкільна наука','Дев’ять братів і десята сестриця Галя'];
+  const CHILDREN=['Рукавичка','Пан Коцький','Котигорошко','Кирило Кожум\'яка','Українські народні казки','Коли ще звірі говорили','Лис Микита','Байки','Біда навчить','Харитя','Ялинка','Грицева шкільна наука'];
   // The letter hunt: six wooden letter blocks hidden about the Ukrainian room spell КАЛИНА, each with a word for children.
   const LETTERS=[['К','кіт','a cat'],['А','аїст','a stork'],['Л','лисичка','a little fox'],['И','индик','a turkey'],['Н','небо','the sky'],['А','абетка','the alphabet']];
   // What the window shows, in Shevchenko's words (the library's Kobzar, where the poem is called «Вечір»; checked by a test).
@@ -54,7 +54,9 @@
   // list (OLDER, which also stand on the main racks). A small yellow door in the lobby leads straight in.
   // Every book on both shelves was read for a child's shelf (8 November 2026). Starytsky's Облога Буші stays on the main
   // racks only: one of its heroes is nicknamed for killing Jews, and it ends in a mass death by gunpowder.
-  const OLDER=['Коли ще звірі говорили','Лис Микита','Олеся','Захар Беркут','Харитя','Ялинка','Малий Мирон','Грицева шкільна наука','Дев’ять братів і десята сестриця Галя'];
+  // Franko's Малий Мирон (it ends foretelling the boy's ruin) and Marko Vovchok's Дев'ять братів і десята сестриця Галя
+  // (Halia ends in the Dnipro) were read too, and stand on the main racks only.
+  const OLDER=['Коли ще звірі говорили','Лис Микита','Олеся','Захар Беркут','Харитя','Ялинка','Грицева шкільна наука'];
   const CHILDREN_ROOM={w:18,d:15,h:5,cx:-509,cz:100},ARCH={half:1.8,h:3.4};
   // A slide in the children's room's south-west quarter, along x: six steps up from the west, a platform, and a chute
   // down to the east. Its heights are the floor there, so the steps are climbed one at a time (allowed) and the chute
@@ -723,7 +725,7 @@
         mark(sign,{type:'intl-card',title:card[0],author:card[1],action:'READ'});block(x,z,4.3,.6);return {x,z}};
       const young=(def.children||[]).filter(title=>!(def.older||[]).includes(title)).map(byTitle).filter(Boolean),older=(def.older||[]).map(byTitle).filter(Boolean);
       room.childrenShelf=lowShelf(K.cx-3.3,young,'ДЛЯ НАЙМЕНШИХ','Казки й байки · For the youngest',['Для найменших','Казки й байки для найменших читачів: «Рукавичка», «Котигорошко», «Пан Коцький», «Кирило Кожум’яка», байки Глібова. А ще в цій кімнаті сховалося шість дерев’яних літер. Знайдеш їх усі? (Tales and fables for the youngest readers. Six wooden letters are hidden in this room too. Can you find them all?)'],0x3f7a33);
-      lowShelf(K.cx+3.3,older,'ДЛЯ СТАРШИХ','Повісті й казки · For older readers',['Для старших','Для старших читачів: Франкові казки про звірів і його «Лис Микита», «Олеся» Бориса Грінченка й «Захар Беркут» Івана Франка. (For older readers: Franko’s animal tales and his Fox Mykyta, Hrinchenko’s Olesia and Franko’s Zakhar Berkut.)'],0x1f4f9a);
+      lowShelf(K.cx+3.3,older,'ДЛЯ СТАРШИХ','Повісті й казки · For older readers',['Для старших','Для старших читачів: Франкові казки про звірів, його «Лис Микита» й «Грицева шкільна наука», «Олеся» Бориса Грінченка, «Захар Беркут» Івана Франка, «Харитя» і «Ялинка» Михайла Коцюбинського. (For older readers: Franko’s animal tales, his Fox Mykyta and Hryts’s Schooling, Hrinchenko’s Olesia, Franko’s Zakhar Berkut, and Kotsiubynsky’s Kharytia and The Fir Tree.)'],0x1f4f9a);
 
       // The letter hunt: six wooden blocks, each a letter of КАЛИНА, tucked about the children's room; each found one
       // tells its word, and once all six are found they stand in a row on top of the youngest readers' shelf.
