@@ -42,6 +42,12 @@
     ['bear','Ведмідь-набрідь','«— Гу-гу-гу! Якого вас багато! А я ведмідь-набрідь. Пустіть і мене!» … «семеро стало, та так же тісно, що рукавичка ось-ось розірветься.» (“Grr! How many of you there are! I am the wandering bear. Let me in too!” Now there were seven, and so squashed that the mitten was about to burst.)'],
     ['dog','Собачка','«Собачка тоді: „Гав-гав-гав!“ Вони як злякаються, як вирвуться з рукавички, — та усі й порозбігалися лісом. Прийшов дід та й забрав рукавичку.» (Then the little dog: “Woof, woof, woof!” They were so frightened they burst out of the mitten and ran off into the forest. And the grandfather came and took his mitten.)']];
   const MEMORIAL=['Місто','Я (Романтика)','Камена','Мина Мазайло','На Золотих Богів','Дні','Проростень','Подорож ученого доктора Леонардо'];
+  // The Unwritten (Недописані): beside the Executed Renaissance, blank spines for the books that Ukraine's writers killed by
+  // Russia since 2014 did not live to write. Every claim is from Chytomo's report of 6 November 2026, which the plaque opens.
+  const UNWRITTEN={title:'Недописані · The Unwritten',
+    card:'«Розстріляне відродження» не закінчилося в 1937 році. (The Executed Renaissance did not end in 1937.) Since Russia began its war against Ukraine in 2014, the Unwritten Project, Недописані, has recorded more than three hundred members of Ukraine’s literary community killed by Russia: poets, prose writers, translators, editors. Among them are Victoria Amelina and Maksym Kryvtsov. Its volunteers, under its founders, the poet and paramedic Olena Herasymiuk and the soldier and writer Yevhen Lir, look for manuscripts, piece together lives, and keep the work that was left unfinished.',
+    spines:'Книжки, яких уже ніхто не допише. (Books that no one will now finish writing.)',
+    url:'https://chytomo.com/en/ukraine-s-unwritten-memorial-project-adds-20-names-to-list-of-literary-figures-killed-by-russia/'};
   // 27 October, the Day of Ukrainian Writing and Language, on the feast of Nestor the Chronicler (9 November until
   // the church calendar changed in 2023). The Eneida stays on the lectern from that day to 9 November, the old date.
   const writingDay=(date=new Date())=>date.getMonth()===9&&date.getDate()===27;
@@ -480,6 +486,13 @@
       const candle=add(own(new THREE.CylinderGeometry(.045,.05,.26,12)),own(new THREE.MeshStandardMaterial({color:0xefe4c8,roughness:.6})),mx,3.75,S-.42,root);mark(candle,memorialCard);
       const flame=add(own(new THREE.ConeGeometry(.028,.09,10)),own(new THREE.MeshStandardMaterial({color:0xffc060,emissive:0xff9a30,emissiveIntensity:2.2,transparent:true,opacity:.92})),mx,3.93,S-.42,root);
       room.ticks.push(t=>{const k=1+Math.sin(t*9.1)*.08+Math.sin(t*23.7)*.05;flame.scale.set(1/k,k,1/k);flame.position.x=mx+Math.sin(t*5.3)*.004});
+      // The Unwritten: on the case's east end, past the candle, a row of books with blank spines, and over them a small plaque
+      // whose card opens Chytomo's report on the memorial project in a new tab.
+      {const n=15,spine=own(new THREE.BoxGeometry(.065,1,.24)),spines=new THREE.InstancedMesh(spine,own(new THREE.MeshStandardMaterial({color:0xffffff,roughness:.85})),n),m=new THREE.Matrix4(),tint=new THREE.Color();
+        for(let i=0;i<n;i++){const h=.27+((i*7)%5)*.022;m.makeScale(1,h,1);m.setPosition(mx+2.25+i*.075,3.62+h/2,S-.38);spines.setMatrixAt(i,m);spines.setColorAt?.(i,tint.setHex([0x5a4e42,0x6a5b4c,0x4d443b,0x625446,0x564a3f][(i*3)%5]))}
+        root.add(spines);own(spines);mark(spines,{type:'intl-card',title:UNWRITTEN.title,author:`${UNWRITTEN.spines} ${UNWRITTEN.card}`,action:'READ'});
+        const tag=add(own(new THREE.PlaneGeometry(1.3,.5)),own(new THREE.MeshStandardMaterial({map:own(plaque('НЕДОПИСАНІ','The Unwritten · since 2014',520,200,'#151515')),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.2})),mx+2.8,4.42,S-.18,root);
+        tag.rotation.y=Math.PI;mark(tag,{type:'intl-link',title:UNWRITTEN.title,author:UNWRITTEN.card,url:UNWRITTEN.url,action:'READ MORE ON CHYTOMO'})}
 
       // Shevchenko's boot under his drawing of Raim, beside a small trunk; the little book on the trunk once it is found.
       const bx=EX-.55,bz=cz+4.5,leather=own(new THREE.MeshStandardMaterial({color:0x1d1611,roughness:.55}));
@@ -801,6 +814,8 @@
       }
       if(data.type==='intl-exit'){through(data,()=>{move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again, beside the visitors’ book.',3)});return true}
       if(data.type==='intl-card'){showNotice(`${data.title}: ${data.author}`,9);return true}
+      // A card that opens a page elsewhere: in a new tab, leaving the library where it was.
+      if(data.type==='intl-link'){if(typeof document!=='undefined')document.exitPointerLock?.();window.open?.(data.url,'_blank','noopener');showNotice(`${data.title}: opened in a new tab.`,5);return true}
       if(data.type==='intl-mitten'){const room=built.ukrainian;if(!room?.mittenNext)return true;const {kind,words}=room.mittenNext();
         if(tone){if(kind==='dog')for(const [i,f] of [196,196,174.6].entries())tone(f,i*.22,.18,.08,'piano');else tone(880+Math.random()*220,0,.12,.03,'bandura')}
         showNotice(words,kind==='dog'||kind==='bear'?14:9);
