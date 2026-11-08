@@ -1,0 +1,43 @@
+name: Room walkthrough
+
+# Visits every room a ?room= link reaches in a real browser, photographs it, and flags rooms that throw errors, never
+# arrive, stand the reader where walking is refused, or draw a blank (scripts/room-walkthrough.mjs). The contact sheet
+# and photographs are kept as the run's artifact: open index.html in it. Run it by hand before a large release, or
+# with `only` for a few rooms (comma-separated keys, as in roomLink in game.js).
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: Rooms to visit (comma-separated keys); empty for all
+        required: false
+        default: ''
+  schedule:
+    - cron: '17 4 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  walkthrough:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Playwright and Chromium
+        run: |
+          npm install --no-save playwright@1.48.2
+          npx playwright install --with-deps chromium
+      - name: Walk every room
+        env:
+          ONLY: ${{ inputs.only }}
+        run: node scripts/room-walkthrough.mjs --out walkthrough --strict ${ONLY:+--only "$ONLY"}
+      - name: Keep the contact sheet
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: room-walkthrough
+          path: walkthrough
+          retention-days: 30
