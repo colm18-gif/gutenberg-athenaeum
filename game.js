@@ -2481,10 +2481,21 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const preWingSelect=selectBook;selectBook=function(bm){const result=preWingSelect(bm);
         // A book from the racks, or one opened by sitting in one of the wing's chairs: its note in the room's language.
         const wingRoom=bm?.userData?.international?bm.userData.wingRoom:bm?.userData?.seatCopy?seated?.seat?.wingRoom:null;
-        if(wingRoom){const note=librarianNotes[bm.userData.book.id]||window.ATHENAEUM_EXTRA_NOTES?.[bm.userData.book.id];if(note){const label=internationalWing.rooms[wingRoom]?.note||'La nota de la bibliotecaria';
+        if(wingRoom){const note=librarianNotes[bm.userData.book.id]||window.ATHENAEUM_EXTRA_NOTES?.[bm.userData.book.id];if(note){const label=wingRoom==='ukrainian-english'?'The librarian’s note':internationalWing.rooms[wingRoom]?.note||'La nota de la bibliotecaria';
           // The Ukrainian room's notes have an English rendering too (ATHENAEUM_NOTES_EN in data/new-books-wing.js), shown after.
           const english=wingRoom==='ukrainian'&&window.ATHENAEUM_NOTES_EN?.[bm.userData.book.title];
           showNotice(wingRoom==='chinese'?`${label}：「${note}」`:english?`${label}: “${note}” The librarian’s note: “${english}”`:`${label}: “${note}”`,english?18:12)}}return result};
+      // A Ukrainian book and its English translation (TRANSLATIONS in international-wing.js): a button in the reader goes
+      // from one to the other, fetching the wing's books first if they are not here yet.
+      {const links=()=>window.createInternationalWing?.TRANSLATIONS||{};let shown=[];
+        const open=link=>{closeReader();returnSelected();
+          wingBooks.load().then(()=>{const book=books.find(b=>b.id===link.id);if(!book)return showNotice('That book is not on the shelves just now.',4);if(selected)return;
+            if(link.at)book.pendingPassage=link.at;const bm=singleCopyLibrary.find(book)||looseBook(book,player.pos.x,1,player.pos.z-1.4);selectBook(bm);openReader()})};
+        const buttons=[0,1].map(i=>{const button=document.createElement('button');button.id=i?'bookTranslation2':'bookTranslation';button.type='button';button.className='ghost book-translation hidden';
+          button.addEventListener('click',()=>{if(shown[i])open(shown[i])});return button});
+        $('#listenBook')?.after(...buttons);
+        const preTranslationRender=renderReader;renderReader=function(book){shown=links()[book?.id]||[];
+          buttons.forEach((button,i)=>{button.classList.toggle('hidden',!shown[i]);if(shown[i])button.textContent=shown[i].label});return preTranslationRender(book)}}
     }
     // Traces of other readers (other-readers.js): invented, but the same for everyone on a given day.
     const correspondenceDesk=window.createCorrespondenceDesk?.({THREE,MAT,desk:correspondenceFurniture,interactables,canvasTexture,

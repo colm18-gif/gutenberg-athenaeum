@@ -73,6 +73,19 @@
     mace:'«Як почав коваль кувати, то скував таку булаву, що насилу з кузні винесли.» (The smith set to forging, and forged a mace so big they could hardly carry it out of the smithy.)'};
   // Pictures from old public-domain editions for the children's books, shown from the reader (game.js) by title. Each is
   // fetched from Wikimedia Commons by scripts/fetch-maps.mjs into assets/pictures, and was looked at before it was used.
+  // The case of Ukrainian books in English (Україна англійською), on the Ukrainian room's south wall: its card, and the
+  // reader's links between a book and its translation, by id both ways (a Ukrainian book's id is its stable Wikisource
+  // number). The reader shows a button for each (game.js); a link's label says which way it goes.
+  const ENGLISH_SHELF='Українські книжки англійською: переклади, які читали перші англомовні читачі Шевченка й української пісні, і книжки про наших письменників. Відкрийте книжку, і кнопка в читалці поведе до українського оригіналу на полицях цієї кімнати, а з оригіналу назад. (Ukrainian books in English: the translations through which English readers first met Shevchenko and Ukrainian song, and books about its writers. Open one, and a button in the reader takes you to the Ukrainian original on the racks of this room, and back again.)';
+  const TRANSLATIONS={
+    // The Kobzar (1876, volume 1) and Shevchenko in English: Hunter's verse of 1922 and Manning's selection of 1945.
+    962510:[{id:68486,label:'In English (Hunter, 1922) · Англійською'},{id:78316,label:'In English (Manning, 1945) · Англійською'}],
+    68486:[{id:962510,label:'Українською · In Ukrainian: Кобзар'}],
+    78316:[{id:962510,label:'Українською · In Ukrainian: Кобзар'}],
+    // Пан Коцький is Bain's The Fox and the Cat: the link opens his book at the tale.
+    960736:[{id:29672,label:'In English (Bain) · Англійською',at:'In a certain forest there once lived a fox, and near to the fox lived'}],
+    29672:[{id:960736,label:'Українською · In Ukrainian: Пан Коцький'}]
+  };
   const BOOK_PICTURES={
     'Пан Коцький':[{src:'assets/pictures/kids-pan-kotsky-1922.jpg',kicker:'«Пан Коцький» · Pan Kotsky',title:'Пан Коцький за столом',
       caption:'Кіт Коцький і Лисичка за столом, а звірі ховаються в кущах і на дереві. (Pan Kotsky the cat at table with the Fox, while the other animals hide in the bushes and up the tree.)',
@@ -539,6 +552,18 @@
         // The spines and the plaque are one memorial: either opens its card, with the link to the report.
         const link={type:'intl-link',title:UNWRITTEN.title,author:`${UNWRITTEN.spines} ${UNWRITTEN.card}`,url:UNWRITTEN.url,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:'Read Chytomo’s report',action:'READ'};
         tag.rotation.y=Math.PI;mark(tag,link);mark(spines,{...link})}
+
+      // Україна англійською (Ukraine in English): a small case on the south wall, west of the door, of Ukrainian books in
+      // English translation and English books about them (the shelf ukrainian-english in data/new-books.js). Each one
+      // in the reader links to its Ukrainian original on the racks, and the original back to it (TRANSLATIONS).
+      {const ex=cx-3.6,held=shelf('ukrainian-english').slice(0,6);
+        box(3.5,2.3,.06,MAT.darkWood,ex,2.2,S-.2);box(3.7,.14,.46,MAT.darkWood,ex,3.35,S-.36);
+        for(let i=0;i<=3;i++)box(.07,2.3,.4,MAT.darkWood,ex-1.7+i*1.133,2.2,S-.38);
+        for(let row=0;row<2;row++)box(3.4,.05,.36,MAT.darkWood,ex,1.1+row*1.12,S-.36);block(ex,S-.4,3.7,.8);
+        held.forEach((book,i)=>{const mesh=placeBook(book,{x:ex-1.133+(i%3)*1.133,y:1.62+Math.floor(i/3)*1.12,z:S-.42,yaw:Math.PI});mesh.userData.wingRoom='ukrainian-english'});
+        const card={type:'intl-card',title:'Україна англійською',author:ENGLISH_SHELF,action:'READ'};
+        const sign=add(own(new THREE.PlaneGeometry(3.1,.5)),own(new THREE.MeshStandardMaterial({map:own(plaque('УКРАЇНА АНГЛІЙСЬКОЮ','Ukraine in English',900,145,'#1f3a6b')),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.2})),ex,3.75,S-.18,root);
+        sign.rotation.y=Math.PI;mark(sign,card)}
 
       // Shevchenko's boot under his drawing of Raim, beside a small trunk; the little book on the trunk once it is found.
       const bx=EX-.55,bz=cz+4.5,leather=own(new THREE.MeshStandardMaterial({color:0x1d1611,roughness:.55}));
@@ -1197,5 +1222,5 @@
     buildDoor();
     return {contains,floorAt,allowed,interact,update,enter,unload:()=>{for(const key of Object.keys(built))unload(key)},featured,roomAt,door:DOOR,room:ROOM,rooms:ROOMS,
       get built(){return !!built.hub},isBuilt:key=>!!built[key],get books(){return Object.values(built).flatMap(room=>room.books)},zoneAt:(x,z)=>contains(x,z)?'international-wing':null};
-  },{BOOK_PICTURES});
+  },{BOOK_PICTURES,TRANSLATIONS});
 })();

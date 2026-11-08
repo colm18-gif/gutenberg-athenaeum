@@ -210,3 +210,39 @@ test('the kitten purrs when stroked, comes running for treats (three in five min
   const kit=()=>b.interactables.find(o=>o.userData?.type==='intl-kitten');for(let t2=1;t2<400&&!near;t2+=.1){b.w.update(t2);const p=world(kit().parent?.parent?.parent?kit().parent:kit());if(Math.hypot(p.x-pp.x,p.z-pp.z)<.6)near=true}
   assert(near,'she visits her post');
 });
+
+// Україна англійською: the case of Ukrainian books in English on the Ukrainian room's south wall, west of the door, and
+// the reader's links between a book and its translation.
+const englishShelf=load('data/new-books.js','ATHENAEUM_NEW_BOOKS')||[];
+test('the case of Ukrainian books in English stands on the south wall between the door and Pymonenko, and holds its shelf',()=>{
+  const list=(Array.isArray(englishShelf)?englishShelf:[]).filter(e=>e[4]==='ukrainian-english');
+  assert(list.length>=4,'the shelf has its books');
+  const english=list.map(e=>({id:e[0]??resolved[e[1]]?.id,title:e[1],author:e[2]})).filter(b=>b.id&&resolved[b.title]);
+  const store=new Map(),context={window:{},Math,Date,JSON,Set,Map,Object,Array,Number,String,location:{search:''},setTimeout:()=>0};
+  vm.runInNewContext(source,context);const interactables=[];
+  const w=context.window.createInternationalWing({THREE,scene:thing(),MAT:any,player:{pos:new V(),radius:.42},interactables,canvasTexture:()=>thing(),bookMaterial:()=>thing(),
+    findBook:id=>ukrainian.find(b=>b.id===id)||english.find(b=>b.id===id),arrivals:key=>key==='ukrainian'?ukrainian.map(b=>b.id):key==='ukrainian-english'?english.map(b=>b.id):[],
+    showNotice:()=>{},playSample:()=>{},move:()=>{},analytics:{track:()=>{}},today:()=>new Date(2026,10,8),storage:{getItem:k=>store.get(k)??null,setItem:(k,v)=>store.set(k,v)},registerSeat:(p,g,a,y,d)=>d});
+  w.enter('ukrainian');const U=w.rooms.ukrainian,S=U.cz+U.d/2;
+  const books=interactables.filter(o=>o.userData?.wingRoom==='ukrainian-english');
+  assert.equal(books.length,Math.min(6,english.length),'every book of the shelf is out, up to six');
+  for(const b of books){const {x,z}=world(b);assert(x>U.cx-5.3&&x<U.cx-1.9,'west of the door, east of the picture and the bandura');assert(Math.abs(z-(S-.42))<.01,'against the south wall')}
+  const sign=interactables.find(o=>o.userData?.title==='Україна англійською');assert(sign,'the plaque has its card');
+  assert.match(sign.userData.author,/[А-Яа-яІіЇїЄє].*\(.*Ukrainian books in English.*\)/,'in Ukrainian, then English');
+});
+
+test('a Ukrainian book and its English translation link to each other, both ways, and the reader shows the link',()=>{
+  const context={window:{},Math,Date,JSON,Set,Map,Object,Array,Number,String,location:{search:''},setTimeout:()=>0};vm.runInNewContext(source,context);
+  const links=context.window.createInternationalWing.TRANSLATIONS,ids=new Set(Object.values(resolved).map(r=>r.id));
+  assert(Object.keys(links).length>=2);
+  for(const [from,list] of Object.entries(links))for(const to of list){
+    assert(ids.has(Number(from))&&ids.has(to.id),`${from} and ${to.id} are both in the library`);
+    assert(links[to.id]?.some(back=>back.id===Number(from)),`${to.id} links back to ${from}`);
+    assert.match(to.label,/In English|In Ukrainian/)}
+  // Пан Коцький opens Bain's book at The Fox and the Cat, which is the same tale.
+  const bain=zlib.gunzipSync(fs.readFileSync('texts/bundled-gzip/pg29672.txt.gz')).toString(),flat=t=>t.replace(/\s+/g,' ');
+  for(const list of Object.values(links))for(const to of list)if(to.at)assert(flat(fs.existsSync(`texts/bundled-gzip/pg${to.id}.txt.gz`)?zlib.gunzipSync(fs.readFileSync(`texts/bundled-gzip/pg${to.id}.txt.gz`)).toString():'').includes(to.at),`${to.at} is in ${to.id}`);
+  assert.match(flat(bain),/THE FOX AND THE CAT In a certain forest there once lived a fox/);
+  assert.match(game,/button.id=i\?'bookTranslation2':'bookTranslation'/);assert.match(game,/createInternationalWing\?\.TRANSLATIONS/);
+  assert.match(game,/wingBooks\.load\(\)\.then\(\(\)=>\{const book=books\.find\(b=>b\.id===link\.id\)/,'the wing’s books are fetched before a Ukrainian original is opened');
+});

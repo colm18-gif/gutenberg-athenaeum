@@ -319,6 +319,13 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `ATHENAEUM_NOTES_EN` (end of `data/new-books-wing.js`, keyed by title; a test wants one for each book, three sentences
   or more), shown after the Ukrainian when a book is picked and on its book page (`noteEn`). The welcome, the lectern
   (`lecternSub`) and the cards carry English after the Ukrainian. A new Ukrainian book needs its English note too.
+- Україна англійською (Ukraine in English): a case of two tiers of three on the Ukrainian Reading Room's south wall,
+  west of the door, between it and Pymonenko's picture (x cx−3.6): Ukrainian books in English translation and English
+  books about Ukrainian writers, the shelf `ukrainian-english` in `data/new-books.js` (English texts, so not on the
+  `ukrainian` list, which checks each text is in Ukrainian; their notes are in English). `TRANSLATIONS` in
+  `international-wing.js` links a book and its translation by id, both ways (a test wants each link returned); the reader
+  shows a button, In English · Англійською or Українською · In Ukrainian, that opens the other (fetching the wing's
+  books first). Gutenberg's English Ukrainian books are few: check the Catalogue lookup before promising one.
 - For Ukrainian children (now in the children's room, above): a low green bookcase under the Petrykivka painting holds the
   children's shelf (`CHILDREN`, kept apart from the main racks): the folk tales «Рукавичка» and «Пан Коцький» (from the 1918
   children's collection Баю-баю), «Котигорошко», «Кирило Кожум'яка», the 1920 «Українські народні казки» (ten tales),
