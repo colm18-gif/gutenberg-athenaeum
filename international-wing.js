@@ -52,7 +52,9 @@
   // sharing that wall, so the room beyond, lit warmly, is seen from anywhere in the reading room. Its two low shelves:
   // the youngest readers' tales (CHILDREN, kept off the main racks) and, for older readers, stories from the room's own
   // list (OLDER, which also stand on the main racks). A small yellow door in the lobby leads straight in.
-  const OLDER=['Коли ще звірі говорили','Лис Микита','Олеся','Захар Беркут','Облога Буші'];
+  // Every book on both shelves was read for a child's shelf (8 November 2026). Starytsky's Облога Буші stays on the main
+  // racks only: one of its heroes is nicknamed for killing Jews, and it ends in a mass death by gunpowder.
+  const OLDER=['Коли ще звірі говорили','Лис Микита','Олеся','Захар Беркут'];
   const CHILDREN_ROOM={w:18,d:15,h:5,cx:-509,cz:100},ARCH={half:1.8,h:3.4};
   // Its secret: a pea rolls along the skirting. Picked up, it brings Kotyhoroshko's mace, and his tale, into the corner
   // (athenaeum-kotyhoroshko-pea; ?pea shows it). The words are the tale's own, from the library's Котигорошко (959103).
@@ -658,7 +660,7 @@
         mark(sign,{type:'intl-card',title:card[0],author:card[1],action:'READ'});block(x,z,4.3,.6);return {x,z}};
       const young=(def.children||[]).filter(title=>!(def.older||[]).includes(title)).map(byTitle).filter(Boolean),older=(def.older||[]).map(byTitle).filter(Boolean);
       room.childrenShelf=lowShelf(K.cx-3.3,young,'ДЛЯ НАЙМЕНШИХ','Казки й байки · For the youngest',['Для найменших','Казки й байки для найменших читачів: «Рукавичка», «Котигорошко», «Пан Коцький», «Кирило Кожум’яка», байки Глібова. А ще в цій кімнаті сховалося шість дерев’яних літер. Знайдеш їх усі? (Tales and fables for the youngest readers. Six wooden letters are hidden in this room too. Can you find them all?)'],0x3f7a33);
-      lowShelf(K.cx+3.3,older,'ДЛЯ СТАРШИХ','Повісті й казки · For older readers',['Для старших','Для старших читачів: Франкові казки про звірів і його «Лис Микита», «Олеся» Бориса Грінченка, «Захар Беркут» Івана Франка, «Облога Буші» Михайла Старицького. (For older readers: Franko’s animal tales and his Fox Mykyta, Hrinchenko’s Olesia, Franko’s Zakhar Berkut and Starytsky’s The Siege of Busha.)'],0x1f4f9a);
+      lowShelf(K.cx+3.3,older,'ДЛЯ СТАРШИХ','Повісті й казки · For older readers',['Для старших','Для старших читачів: Франкові казки про звірів і його «Лис Микита», «Олеся» Бориса Грінченка й «Захар Беркут» Івана Франка. У «Лисі Микиті» один рядок, у словах Рися, повторює давнє упередження проти євреїв: варто поговорити про це з дітьми. (For older readers: Franko’s animal tales and his Fox Mykyta, Hrinchenko’s Olesia and Franko’s Zakhar Berkut. In Fox Mykyta one line, in the Lynx’s speech, repeats an old prejudice against Jews: worth talking over with children.)'],0x1f4f9a);
 
       // The letter hunt: six wooden blocks, each a letter of КАЛИНА, tucked about the children's room; each found one
       // tells its word, and once all six are found they stand in a row on top of the youngest readers' shelf.
