@@ -2236,6 +2236,19 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const preForestTheme=buildThemeRooms;buildThemeRooms=function(destination){preForestTheme(destination);if(destination==='garden')forest.hangGardenWindow()};
       if(themeRoomsBuilt.has('garden'))forest.hangGardenWindow();
       // In the reader, the Grimm alone offers a way into its woodcut.
+      // Pictures from old public-domain editions, for books that have them (the children's room's): a button in the reader
+      // opens each with its caption and credit. Listed in international-wing.js (BOOK_PICTURES), by title.
+      {const pictures=()=>window.createInternationalWing?.BOOK_PICTURES||{};let list=[],at=0,open=false;
+        const show=()=>{const p=list[at];$('#pictureCardKicker').textContent=p.kicker||'';$('#pictureCardTitle').textContent=p.title;const img=$('#pictureCardImg');img.src=p.src;img.alt=p.title;
+          $('#pictureCardCaption').textContent=p.caption;$('#pictureCardCredit').textContent=p.credit;$('#pictureCardNext').classList.toggle('hidden',list.length<2)};
+        const close=()=>{open=false;$('#pictureCard').classList.add('hidden')};
+        const button=document.createElement('button');button.id='bookPictures';button.type='button';button.className='ghost book-pictures hidden';button.textContent='Малюнки · Pictures';
+        button.addEventListener('click',()=>{if(!list.length)return;at=0;open=true;show();$('#pictureCard').classList.remove('hidden');$('#closePictureCard').focus()});
+        $('#pictureCardNext').addEventListener('click',()=>{at=(at+1)%list.length;show()});$('#closePictureCard').addEventListener('click',close);
+        // Escape puts the picture away and leaves the book open.
+        document.addEventListener('keydown',e=>{if(open&&e.code==='Escape'){e.preventDefault();e.stopImmediatePropagation();close()}},true);
+        $('#listenBook')?.after(button);
+        const prePicturesRender=renderReader;renderReader=function(book){list=pictures()[book?.title]||[];button.classList.toggle('hidden',!list.length);if(!list.length)close();return prePicturesRender(book)}}
       const intoWood=document.createElement('button');intoWood.id='intoWood';intoWood.type='button';intoWood.className='ghost into-wood hidden';intoWood.textContent='Step into the woodcut';
       $('#listenBook')?.after(intoWood);
       const preForestRender=renderReader;renderReader=function(book){intoWood.classList.toggle('hidden',book?.id!==2591);return preForestRender(book)};

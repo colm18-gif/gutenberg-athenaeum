@@ -183,3 +183,16 @@ test('the children’s books have painted picture covers, which the game’s rea
   for(const t of ['Рукавичка','Котигорошко','Біда навчить','Ялинка','Байки'])assert(source.includes(`case '${t}':`),`a picture for ${t}`);
   assert.match(game,/object\.userData\.cinderBinding\|\|object\.userData\.pictureCover\|\|/,'applyBookCover skips them');
 });
+
+test('pictures from old public-domain editions: Lissitzky’s Pan Kotsky in the reader, and two of Narbut’s letters on the walls',()=>{
+  const c={window:{},Math,Date,JSON,Set,Map,Object,Array,Number,String,location:{search:''},setTimeout:()=>0};vm.runInNewContext(source,c);
+  const P=c.window.createInternationalWing.BOOK_PICTURES;assert(P['Пан Коцький']?.length,'Pan Kotsky has a picture');
+  for(const [title,list] of Object.entries(P)){assert(ukrainian.some(b=>b.title===title),`${title} is a book of the room`);
+    for(const p of list){assert(fs.existsSync(p.src),p.src);assert.match(p.credit,/Public domain/);assert(p.caption&&/\(.+\)/.test(p.caption),'Ukrainian, with English after it')}}
+  const shown=JSON.parse(fs.readFileSync('assets/pictures/pictures.json','utf8'));
+  for(const key of ['kids-pan-kotsky-1922','kids-narbut-z','kids-narbut-y'])assert.equal(shown[key]?.licence,'Public domain',key);
+  assert.equal(shown['kids-pan-kotsky-1922'].artist,'El Lissitzky');assert.equal(shown['kids-narbut-z'].artist,'Heorhii Narbut');
+  assert.match(source,/picture\('kids-narbut-z',/);assert.match(source,/picture\('kids-narbut-y',/);assert.doesNotMatch(source,/picture\('kids-narbut-a',/,'Narbut’s А was left out');
+  assert.match(game,/button\.textContent='Малюнки · Pictures'/);assert.match(game,/list=pictures\(\)\[book\?\.title\]\|\|\[\];button\.classList\.toggle\('hidden',!list\.length\)/);
+  assert.match(fs.readFileSync('index.html','utf8'),/<div id="pictureCard" class="hidden" role="dialog"/);
+});

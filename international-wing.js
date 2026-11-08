@@ -71,6 +71,12 @@
   const KOTYHOROSHKO={
     pea:'«От одного разу пішла жінка на річку прати, коли ж котиться горошина по дорозі. Жінка взяла горошину та й з\'їла. Згодом народився в неї син. Назвали його Котигорошком.» (One day a woman went down to the river to do the washing, and a pea came rolling along the road. She picked it up and ate it, and soon afterwards she had a son, and they called him Kotyhoroshko, Roll-the-Pea.)',
     mace:'«Як почав коваль кувати, то скував таку булаву, що насилу з кузні винесли.» (The smith set to forging, and forged a mace so big they could hardly carry it out of the smithy.)'};
+  // Pictures from old public-domain editions for the children's books, shown from the reader (game.js) by title. Each is
+  // fetched from Wikimedia Commons by scripts/fetch-maps.mjs into assets/pictures, and was looked at before it was used.
+  const BOOK_PICTURES={
+    'Пан Коцький':[{src:'assets/pictures/kids-pan-kotsky-1922.jpg',kicker:'«Пан Коцький» · Pan Kotsky',title:'Пан Коцький за столом',
+      caption:'Кіт Коцький і Лисичка за столом, а звірі ховаються в кущах і на дереві. (Pan Kotsky the cat at table with the Fox, while the other animals hide in the bushes and up the tree.)',
+      credit:'El Lissitzky, 1922, for Ukraynishe Folkmayses, Ukrainian folk tales in Yiddish. Public domain, from Wikimedia Commons.'}]};
   // The room's seasons: St Nicholas's pillow in December, and bunting on Children's Day.
   const mykolaiDays=(date=new Date())=>date.getMonth()===11&&date.getDate()<=19;
   const childrensDay=(date=new Date())=>date.getMonth()===5&&date.getDate()===1;
@@ -132,7 +138,7 @@
       note:'Примітка бібліотекарки',seat:['Стілець біля столу','Сідайте й читайте книжку з цієї читальні. (Sit and read a book from this room.)']}
   };
 
-  window.createInternationalWing=function(options){
+  window.createInternationalWing=Object.assign(function(options){
     const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),
       wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null,tone=null,gospel=null,forestSong=null,openLink=null,storage=window.localStorage}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
     const DOOR={x:8.6,z:30.45,yaw:Math.PI};
@@ -567,7 +573,10 @@
       {const yellow=own(new THREE.MeshStandardMaterial({color:0xf3e2ab,roughness:.95}));
         box(K.w,.3,K.d,MAT.wood,K.cx,-.15,K.cz);box(K.w,.2,K.d,own(new THREE.MeshStandardMaterial({color:0xf8eed2,roughness:1})),K.cx,K.h+.1,K.cz);
         box(K.w,K.h,.3,yellow,K.cx,K.h/2,KN);box(K.w,K.h,.3,yellow,K.cx,K.h/2,KS);box(.3,K.h,K.d,yellow,KE,K.h/2,K.cz);
-        // Its west wall is this room's east wall, arch and all; above the reading room's lower ceiling it is closed off.
+        // Its west wall is this room's east wall, arch and all: painted yellow on the children's side either side of the
+        // arch and over it, as the room's other walls are.
+        {const L=K.d/2-ARCH.half;for(const sg of [-1,1]){const p=add(own(new THREE.PlaneGeometry(L,K.h)),yellow,KX+.16,K.h/2,K.cz+sg*(ARCH.half+L/2),root);p.rotation.y=Math.PI/2}
+          const top=add(own(new THREE.PlaneGeometry(ARCH.half*2,K.h-ARCH.h)),yellow,KX+.16,ARCH.h+(K.h-ARCH.h)/2,K.cz,root);top.rotation.y=Math.PI/2}
         const band=own(canvasTexture((c,W,H)=>{c.fillStyle='#1f4f9a';c.fillRect(0,0,W,H);c.fillStyle='#f2c230';c.fillRect(0,H*.78,W,H*.22);
           for(let x=16;x<W;x+=64){c.fillStyle='#f2c230';c.beginPath();c.arc(x,H*.42,11,0,7);c.fill();c.fillStyle='#c62a1f';c.beginPath();c.arc(x+32,H*.42,8,0,7);c.fill();c.fillStyle='#3f7a33';c.beginPath();c.ellipse(x+16,H*.42,10,4,.6,0,7);c.fill()}},256,64));
         band.wrapS=THREE.RepeatWrapping;
@@ -603,6 +612,12 @@
         const out={type:'intl-children-out',title:'The International Wing',author:'Назад до Міжнародного крила. (Back to the International Wing.)',action:'RETURN'};
         if(!doorKit?.hang(root,{data:out,mark,x:K.cx+3,z:KS-.2,yaw:Math.PI,own,...CHILD_DOOR,label:'МІЖНАРОДНЕ КРИЛО'}))mark(box(1.05,2.1,.14,own(new THREE.MeshStandardMaterial({color:CHILD_DOOR.color,roughness:.7})),K.cx+3,1.05,KS-.2),out);
         block(K.cx+3,KS-.4,1.6,.6)}
+
+      // Two letters of Heorhiy Narbut's Ukrainian alphabet, framed either side of the arch on the children's room's side:
+      // «З» (Зіма, зірки, заєць: winter, stars, a hare) and «И» (Ива, іграшки: a willow, toys). Narbut's «А» was looked at
+      // and left out (its figure is a caricature).
+      picture('kids-narbut-z',KW+.2,2.55,K.cz-4,Math.PI/2,1.03,1.5,['Георгій Нарбут. «Українська абетка», літера З, 1919','«Зіма, зірки, заєць»: зимова ніч, сніг на старому дереві, зорі над дерев’яною церквою й заєць на снігу. Нарбут малював свою абетку в Києві. (Heorhiy Narbut’s Ukrainian Alphabet, the letter З, 1919: winter, stars and a hare.)']);
+      picture('kids-narbut-y',KW+.2,2.55,K.cz+4,Math.PI/2,1.03,1.46,['Георгій Нарбут. «Українська абетка», літера И','«Ива, іграшки»: купа іграшок під вербами — ляльки, ведмедик, коник, м’ячик. (Heorhiy Narbut’s Ukrainian Alphabet, the letter И: a willow, and toys.)']);
 
       // A window in the children's room's east wall, over the bench: one painted view that glows a little (no light of its
       // own), and follows the season. November to February, a snowy evening: children sledging, a snowman by a lit хата,
@@ -1159,5 +1174,5 @@
     buildDoor();
     return {contains,floorAt,allowed,interact,update,enter,unload:()=>{for(const key of Object.keys(built))unload(key)},featured,roomAt,door:DOOR,room:ROOM,rooms:ROOMS,
       get built(){return !!built.hub},isBuilt:key=>!!built[key],get books(){return Object.values(built).flatMap(room=>room.books)},zoneAt:(x,z)=>contains(x,z)?'international-wing':null};
-  };
+  },{BOOK_PICTURES});
 })();
