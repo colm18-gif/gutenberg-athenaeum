@@ -364,6 +364,6 @@
     }
 
     clockDoor(rooms.horologist);glassDoor(rooms.conservatory);bookcaseDoor(rooms.parlour);nurseryDoor(rooms.attic);
-    return {contains,floorAt,allowed,interact,update,zoneAt,rooms,doors,activate,slide:SLIDE,slideHeight};
+    return {contains,floorAt,allowed,interact,update,zoneAt,rooms,doors,activate,slide:SLIDE,slideHeight,enter:key=>rooms[key]&&enter(rooms[key])};
   };
 })();

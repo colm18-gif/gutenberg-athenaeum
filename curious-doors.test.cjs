@@ -107,6 +107,14 @@ test('the attic slide is climbed a step at a time and ridden down to the floor',
   f.notices.length=0;f.doors.interact({userData:{type:'curious-slide',room:'attic'}});assert.match(f.notices.join(' '),/Up the steps first/);
 });
 
+test('?room=attic (or nursery) goes straight into the Children’s Attic',()=>{
+  assert.match(game,/attic:'curious-attic',nursery:'curious-attic'/);
+  assert.match(game,/'curious-attic':\(\)=>curiousDoors\?\.enter\('attic'\)/);
+  const f=fixture();f.doors.enter('attic');
+  assert.equal(f.doors.zoneAt(f.player.pos.x,f.player.pos.z)?.key,'attic');
+  assert.ok(f.doors.allowed(f.player.pos.x,f.player.pos.z),'the reader arrives somewhere walkable');
+});
+
 test('reading from a chair releases the mouse so the reader controls are usable',()=>{
   assert.match(game,/ui\.reader\.classList\.remove\('hidden'\);document\.exitPointerLock\?\.\(\);/);
 });
