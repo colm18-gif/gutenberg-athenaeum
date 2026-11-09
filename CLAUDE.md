@@ -250,6 +250,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   every fifth stop (purring softly when a reader comes near), runs to the tin of treats (`attic-treats`, three in five
   minutes), chases the ball of yarn (`attic-yarn`) and purrs when stroked (game.js's `purr`, passed in). `?debug` exposes
   `__athenaeum.curiousDoors`.
+  Its toys (`attic-toy`, `attic.play`), each in open floor clear of the kitten's `SPOTS`, the yarn and the way in (a test
+  checks): a teddy bear on the window seat (it growls), a jack-in-the-box, a humming top, a drum, ninepins with a ball
+  (they go down and stand up again) and a Noah's ark, beside the rocking horse, blocks, doll's house, train and slide.
 - The Station Subway (`station-subway.js`) is the plain way to the night trains: in the Grand Hall's east aisle between the
   columns (x 12.6–15.4, z −21 to −14.5, clear of the Wandering Door's forecourt), steps go down through the floor under an
   iron arch with two lamps, signed TO THE TRAINS. The well is really sunk: its tiles and steps are drawn first (`renderOrder`

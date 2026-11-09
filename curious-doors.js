@@ -384,6 +384,70 @@
               kitten.since++;kitten.wait=2+((kitten.since*7)%5);kitten.goal=kitten.since%5===0?-1:(kitten.goal+1)%SPOTS.length;return}
             const step=Math.min(dist,(kitten.goal===-2||kitten.goal===-3?1.4:.45)*dt);kitten.x+=dx/dist*step;kitten.z+=dz/dist*step;kitten.yaw=Math.atan2(dx,dz);
             cat.position.set(kitten.x,Math.abs(Math.sin(t*9))*.012,kitten.z);cat.rotation.y=kitten.yaw;legs.forEach((l,i)=>{l.rotation.x=Math.sin(t*9+(i%3?Math.PI:0))*.5});tail.rotation.z=Math.sin(t*4)*.2}}}
+      // Toys about the floor, each in open floor clear of the kitten's rounds, and each does something when touched: a teddy
+      // bear on the window seat, a jack-in-the-box, a spinning top, a drum, ninepins and a Noah's ark. No lights.
+      {const paint=c=>std(c,{roughness:.6}),red=paint(0xc0392b),yellow=paint(0xe9b934),blue=paint(0x2e6fa7),greenP=paint(0x3a8a4f),cream=paint(0xf1e6cc),wood=paint(0xb07a48),brown=std(0x8a5a32,{roughness:1}),darkB=MAT.black;
+        const toy=(key,title,author,action)=>({type:'attic-toy',toy:key,title,author,action});const state={};const at=(x,z)=>[cx+x,cz+z];
+        // The teddy bear, sitting on the window seat.
+        {const [x,z]=at(-2.6,-5.55),g=new THREE.Group();g.position.set(x,.73,z);r.add(g);const fur=std(0xa8743f,{roughness:1}),muzzle=std(0xe0c090,{roughness:1});
+          const parts=[sphere(.17,fur,0,.18,0,g,12),sphere(.12,fur,0,.42,.02,g,12),sphere(.05,muzzle,0,.4,.12,g,8),sphere(.045,fur,-.09,.52,0,g,8),sphere(.045,std(0x8a5a2a,{roughness:1}),.09,.52,0,g,8),
+            sphere(.07,fur,-.17,.2,.06,g,8),sphere(.07,fur,.17,.2,.06,g,8),sphere(.08,fur,-.09,.04,.14,g,8),sphere(.08,fur,.09,.04,.14,g,8),sphere(.016,darkB,-.04,.46,.11,g,6),sphere(.016,darkB,.04,.46,.11,g,6),sphere(.018,darkB,0,.41,.17,g,6)];
+          parts[0].scale.set(1,1.15,.9);const bow=box(.14,.05,.03,red,0,.32,.11,g);parts.push(bow);
+          for(const part of parts)mark(part,toy('teddy','A teddy bear','Worn bald on the tummy from being hugged. One ear has been sewn back on, in a slightly different brown.','HUG'));state.teddy={g}}
+        // The jack-in-the-box: wind the crank, it plays, and up he pops.
+        {const [x,z]=at(4.4,-5.6),g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=-.4;r.add(g);const parts=[box(.42,.42,.42,red,0,.21,0,g)];
+          for(const sx of [-1,1])parts.push(box(.02,.3,.3,yellow,sx*.215,.21,0,g));const crank=new THREE.Group();crank.position.set(.24,.24,0);g.add(crank);parts.push(box(.03,.03,.14,MAT.brass,0,0,.06,crank),box(.03,.1,.03,MAT.brass,0,.05,.13,crank));
+          const lid=new THREE.Group();lid.position.set(0,.42,-.21);g.add(lid);parts.push(box(.44,.03,.44,blue,0,.015,.22,lid));
+          const jack=new THREE.Group();jack.position.set(0,.2,0);g.add(jack);jack.scale.set(1,.01,1);const spring=cyl(.06,.06,.36,8,MAT.brass,0,.18,0,jack);const head=sphere(.1,cream,0,.42,0,jack,12);const hat=add(new THREE.ConeGeometry(.08,.18,10),red,0,.58,0,jack);const nose=sphere(.025,red,0,.42,.1,jack,6);
+          parts.push(spring,head,hat,nose);for(const part of parts)mark(part,toy('jack','A jack-in-the-box','A painted box with a brass crank. Everyone knows what is inside, and it is still a surprise.','TURN THE CRANK'));
+          block(room,x,z,.6,.6);state.jack={lid,jack,crank,t:-1}}
+        // The spinning top.
+        {const [x,z]=at(4.4,1.2),g=new THREE.Group();g.position.set(x,0,z);r.add(g);const spin=new THREE.Group();g.add(spin);
+          const cone=add(new THREE.ConeGeometry(.16,.2,16),red,0,.12,0,spin);cone.rotation.x=Math.PI;const band=cyl(.162,.162,.05,16,yellow,0,.245,0,spin);const cap=cyl(.12,.16,.04,16,blue,0,.29,0,spin);const handle=cyl(.015,.015,.14,6,wood,0,.37,0,spin);
+          for(const part of [cone,band,cap,handle])mark(part,toy('top','A humming top','Tin, painted in stripes, with a plunger on top. Pumped, it spins and sings.','SPIN'));
+          g.rotation.z=.35;g.position.y=.03;block(room,x,z,.4,.4);state.top={g,spin,v:0}}
+        // The drum, with its sticks.
+        {const [x,z]=at(-2.6,6),g=new THREE.Group();g.position.set(x,0,z);r.add(g);const parts=[cyl(.22,.22,.28,18,red,0,.16,0,g),cyl(.225,.225,.03,18,yellow,0,.03,0,g),cyl(.225,.225,.03,18,yellow,0,.29,0,g),cyl(.21,.21,.005,18,cream,0,.305,0,g)];
+          for(let i=0;i<8;i++){const a=i/8*TAU,cord=box(.01,.26,.01,cream,Math.cos(a)*.222,.16,Math.sin(a)*.222,g);cord.rotation.z=(i%2?.35:-.35);parts.push(cord)}
+          for(const s of [-1,1]){const stick=cyl(.012,.012,.32,6,wood,s*.05,.33,0,g);stick.rotation.z=Math.PI/2;stick.rotation.y=s*.35;parts.push(stick,sphere(.022,cream,s*.05+Math.cos(s*.35)*.16,.33,-Math.sin(s*.35)*.16,g,6))}
+          for(const part of parts)mark(part,toy('drum','A toy drum','Red and gold, with its sticks laid across the top. It is not for playing after bedtime.','PLAY'));block(room,x,z,.5,.5);state.drum={g,t:-1}}
+        // Ninepins and a wooden ball.
+        {const [x,z]=at(6.5,-4.7),pins=[],pinParts=[];let n=0;for(let row=0;row<3;row++)for(let i=0;i<=row;i++){const p=new THREE.Group();p.position.set(x+(i-row/2)*.18,0,z-row*.16);r.add(p);
+            pinParts.push(cyl(.035,.05,.22,10,cream,0,.11,0,p),sphere(.04,cream,0,.26,0,p,8),cyl(.041,.041,.02,10,n%2?red:blue,0,.2,0,p));pins.push({p,home:p.position.clone(),tip:0,dir:(n*1.7)%TAU});n++}
+          // three rows of 1, 2 and 3, and three more behind (nine pins)
+          for(let i=0;i<3;i++){const p=new THREE.Group();p.position.set(x+(i-1)*.18,0,z-.48);r.add(p);pinParts.push(cyl(.035,.05,.22,10,cream,0,.11,0,p),sphere(.04,cream,0,.26,0,p,8),cyl(.041,.041,.02,10,i%2?red:blue,0,.2,0,p));pins.push({p,home:p.position.clone(),tip:0,dir:(i*2.3+1)%TAU})}
+          const ball=sphere(.09,greenP,x,.09,z+1.5,r,12);const card=toy('pins','Ninepins','Nine wooden skittles and a ball. Roll it and see how many go down.','BOWL');for(const part of [...pinParts,ball])mark(part,card);
+          block(room,x,z-.24,.7,.7);state.pins={pins,ball,start:ball.position.clone(),t:-1}}
+        // Noah's ark, with the animals two by two (one giraffe is missing her partner).
+        {const [x,z]=at(-5.6,-5.65),g=new THREE.Group();g.position.set(x,0,z);r.add(g);const parts=[box(1.1,.2,.42,wood,0,.14,0,g),box(.9,.06,.36,wood,0,.05,0,g)];
+          for(const sx of [-1,1]){const bow=box(.2,.2,.42,wood,sx*.58,.2,0,g);bow.rotation.z=sx*.6;parts.push(bow)}
+          parts.push(box(.56,.26,.3,cream,0,.37,0,g),box(.64,.04,.36,red,0,.52,-.09,g),box(.64,.04,.36,red,0,.52,.09,g),box(.08,.12,.01,blue,.12,.36,.152,g),box(.08,.12,.01,blue,-.12,.36,.152,g));
+          parts[parts.length-4].rotation.x=.5;parts[parts.length-3].rotation.x=-.5;
+          const grey=paint(0x8e8e96),giraffe=paint(0xe0b050),lion=paint(0xd4923a),zebra=paint(0xeeeeee);
+          const animal=(dx,dz,col,w,h,l,neck)=>{parts.push(box(l,h,w,col,dx,h/2+.04,dz,g));if(neck)parts.push(box(.03,neck,.03,col,dx+l/2-.02,h+neck/2+.04,dz,g));for(const sx of [-1,1])parts.push(box(.025,.04,.025,col,dx+sx*l*.35,.02,dz,g))};
+          animal(-.42,.36,grey,.1,.1,.16);animal(-.2,.36,grey,.1,.1,.16);animal(.04,.36,giraffe,.06,.08,.12,.2);animal(.26,.36,lion,.07,.07,.13);animal(.44,.36,lion,.07,.07,.13);animal(.62,.32,zebra,.07,.07,.13);animal(.62,.44,zebra,.07,.07,.13);
+          for(const part of parts)mark(part,toy('ark','Noah’s ark','The animals go in two by two: elephants, lions and zebras. One giraffe has been waiting a long time for the other.','LOOK'));
+          block(room,x,z,1.4,.6);block(room,x+.1,z+.36,1.1,.3);state.ark={g}}
+        attic.toys=state;attic.toyAt=key=>state[key];
+        attic.play=key=>{const t=time;
+          if(key==='teddy'){sound?.(90,.5,'sawtooth',.05);setTimeout(()=>sound?.(70,.4,'sawtooth',.04),180);state.teddy.hug=t;showNotice('You give him a squeeze, and somewhere inside the old growler goes “grrrr”.',4)}
+          else if(key==='jack'){const j=state.jack;if(j.t>=0)return;j.t=0;[523,523,587,587,659,784,659,523].forEach((f,i)=>setTimeout(()=>sound?.(f,.16,'triangle',.05),i*170));showNotice('Round and round goes the crank, and the tune plays…',4)}
+          else if(key==='top'){const tp=state.top;tp.v=34;tp.g.rotation.z=0;tp.g.position.y=0;sound?.(220,2.5,'sine',.035);showNotice('The top spins up, humming, and sways on its point until it runs down.',4)}
+          else if(key==='drum'){[0,110,190,260,320,380,520].forEach((ms,i)=>setTimeout(()=>sound?.(i===6?80:120,.09,'triangle',.14),ms));state.drum.t=0;showNotice('Rat-a-tat-tat, tat-tat… BOOM.',3)}
+          else if(key==='pins'){const pn=state.pins;if(pn.t>=0)return;pn.t=0;showNotice('The ball trundles down the boards…',3)}
+          else if(key==='ark')showNotice('The animals go in two by two: elephants, lions and zebras. One giraffe has been waiting a long time for the other.',6)};
+        attic.updateToys=(t,dt,motion)=>{
+          const j=state.jack;if(j.t>=0){j.t+=dt;j.crank.rotation.x=-Math.min(j.t,1.4)*8;
+            if(j.t>1.4&&!j.popped){j.popped=true;sound?.(880,.08,'square',.05);sound?.(330,.25,'triangle',.08);showNotice('POP! Up he springs, wobbling and grinning.',4)}
+            const up=j.t<1.4?0:j.t<7?1:Math.max(0,1-(j.t-7)/.6),since=Math.max(0,j.t-1.4);j.lid.rotation.x=-up*1.9;j.jack.scale.y=Math.max(.01,up*(1+Math.sin(since*14)*.25*Math.exp(-since*1.6)*motion));j.jack.rotation.z=Math.sin(since*6)*.25*Math.exp(-since*.8)*motion;
+            if(j.t>7.6){j.t=-1;j.popped=false;j.jack.scale.y=.01;j.lid.rotation.x=0}}
+          const tp=state.top;if(tp.v>0){tp.spin.rotation.y+=tp.v*dt;tp.v=Math.max(0,tp.v-dt*4.5);const wob=Math.max(0,1-tp.v/20);tp.g.rotation.x=Math.sin(t*5)*.12*wob*motion;tp.g.rotation.z=Math.cos(t*5)*.12*wob*motion;if(tp.v===0){tp.g.rotation.set(0,0,.35);tp.g.position.y=.03}}
+          const dr=state.drum;if(dr.t>=0){dr.t+=dt;dr.g.position.y=Math.abs(Math.sin(dr.t*40))*.01*motion;if(dr.t>.6){dr.t=-1;dr.g.position.y=0}}
+          const pn=state.pins;if(pn.t>=0){pn.t+=dt;const k=Math.min(1,pn.t/.9);pn.ball.position.set(pn.start.x,.09,pn.start.z-k*1.95);pn.ball.rotation.x-=dt*12*(1-k);
+            if(k>=1&&!pn.down){pn.down=true;for(let i=0;i<5;i++)setTimeout(()=>sound?.(300+i*90,.06,'square',.04),i*60);let fell=0;pn.pins.forEach((pin,i)=>{pin.tip=(i*7+Math.floor(t*10))%10<8?1:0;fell+=pin.tip});showNotice(fell===9?'A strike! All nine go down.':`Clatter! ${fell} of the nine go down.`,4)}
+            if(pn.down)for(const pin of pn.pins)if(pin.tip){const e=Math.min(1,(pn.t-.9)/.3);pin.p.rotation.set(Math.cos(pin.dir)*e*1.45,0,Math.sin(pin.dir)*e*1.45)}
+            if(pn.t>6.5){pn.t=-1;pn.down=false;pn.ball.position.copy(pn.start);for(const pin of pn.pins){pin.tip=0;pin.p.rotation.set(0,0,0)}}}
+          const td=state.teddy;if(td.hug!==undefined){const since=t-td.hug;td.g.scale.setScalar(since<.5?1-.08*Math.sin(since/.5*Math.PI):1)}};}
       light(r,0xffcf8f,5.5,11,cx,3.4,cz+1);light(r,0xa9b9ff,2.5,8,cx,2.6,cz-d/2+1.5);
       return shown;
     }
@@ -485,6 +549,7 @@
       if(data.type==='attic-kitten'){attic?.stroke();return true}
       if(data.type==='attic-treats'){attic?.shake();return true}
       if(data.type==='attic-yarn'){attic?.roll();return true}
+      if(data.type==='attic-toy'){attic?.play(data.toy);return true}
       if(data.type==='curious-detail'){showNotice(data.author,7);sound?.(300,.12,'triangle',.035);if(data.title==='A dappled rocking horse'){const horse=animated.find(a=>a.kind==='rock');if(horse)horse.kick=time}return true}
       return false;
     }
@@ -530,7 +595,7 @@
         else if(a.kind==='rock'){const since=a.kick!==undefined?t-a.kick:99;a.object.rotation.x=(since<6?Math.sin(since*3.2)*.16*Math.exp(-since*.45):Math.sin(t*.8)*.012)*(motion||.2)}
         else if(a.kind==='train'){const base=t*.45*(motion||.25);a.train.children.forEach((car,i)=>{const ang=base-i*.25;car.position.set(a.cx+Math.cos(ang)*1.7,car.position.y,a.cz+Math.sin(ang)*1.7);car.rotation.y=-ang})}
       }
-      if(room.key==='attic')attic?.update(t,dt);
+      if(room.key==='attic'){attic?.update(t,dt);attic?.updateToys?.(t,dt,motion||.3)}
       if(room.key==='horologist'&&Math.floor(t*2)!==Math.floor((t-dt)*2))sound?.(Math.floor(t*2)%2?2800:2300,.025,'square',.006);
     }
 
