@@ -135,6 +135,8 @@
       // The Portage: a night wind in the trees, leaves stirring, an owl, and a loon from the frozen lake ahead.
       'portage':{beds:[['wind',.05],['air',.02]],events:[['rustle',1.3,.04],['owl',.3,.03],['loon',.15,.03]]},
       'chance-room':{beds:[['air',.03]],events:[['rustle',1.3,.05],['creak',.9,.04]]},
+      // The Uncatalogued: a store room full of books, pages stirring, a heap settling, the boards creaking underfoot.
+      'uncatalogued':{beds:[['air',.035]],events:[['rustle',1.5,.05],['thump',.35,.03],['creak',.7,.04]]},
       'lost-property':{beds:[['air',.03]],events:[['creak',1.1,.05],['rustle',1.2,.04]]},
       // The Map Room: a quiet room, a clock, and big sheets of paper being turned over.
       'map-room':{beds:[['air',.035]],ticks:[[1.6,'tock',.025]],events:[['rustle',1.4,.04]]},
