@@ -32,6 +32,22 @@
     {id:708,title:'The Princess and the Goblin',author:'George MacDonald',category:'Wonder',fame:30,room:'attic',note:'A thread you cannot see leads through the dark under the mountain.'},
     {id:778,title:'Five Children and It',author:'E. Nesbit',category:'Wonder',fame:40,room:'attic',note:'A grumpy sand-fairy grants one wish a day. Every one goes wrong by sunset.'},
     {id:225,title:'At the Back of the North Wind',author:'George MacDonald',category:'Wonder',fame:22,room:'attic',note:'A coachman’s son is carried through the night by a wind with a woman’s voice.'},
-    {id:289,title:'The Wind in the Willows',author:'Kenneth Grahame',category:'Wonder',fame:70,room:'attic',note:'Messing about in boats, and Toad’s disastrous love of motor-cars.'}
+    {id:289,title:'The Wind in the Willows',author:'Kenneth Grahame',category:'Wonder',fame:70,room:'attic',note:'Messing about in boats, and Toad’s disastrous love of motor-cars.'},
+    // The Children's Attic, the painted bookcase on the west wall (shelf 'case'): picture books and rhymes on the top tier,
+    // stories to grow into below. Most are copies of books that also stand elsewhere in the library.
+    {id:10607,title:'The Real Mother Goose',author:'Blanche Fisher Wright (ill.)',category:'Poetry',fame:40,room:'attic',shelf:'case',note:'The old nursery rhymes, nearly every one with its own picture.'},
+    {id:14407,title:'The Tale of Benjamin Bunny',author:'Beatrix Potter',category:'Wonder',fame:40,room:'attic',shelf:'case',note:'Peter goes back for his clothes, with his cousin, which is braver than it sounds.'},
+    {id:14837,title:'The Tale of Tom Kitten',author:'Beatrix Potter',category:'Wonder',fame:35,room:'attic',shelf:'case',note:'Three kittens in their best clothes, and a garden wall.'},
+    {id:14814,title:'The Tale of Jemima Puddle-Duck',author:'Beatrix Potter',category:'Wonder',fame:40,room:'attic',shelf:'case',note:'A duck in a bonnet meets a very polite gentleman with sandy whiskers.'},
+    {id:902,title:'The Happy Prince, and Other Tales',author:'Oscar Wilde',category:'Wonder',fame:40,room:'attic',shelf:'case',note:'A golden statue, a swallow who stays too long, and a garden with a wall round it.'},
+    {id:540,title:'The Red Fairy Book',author:'Andrew Lang',category:'Fairy Tale',fame:30,room:'attic',shelf:'case',note:'The second of Lang’s coloured fairy books, and Jack’s beanstalk is in it.'},
+    {id:55,title:'The Wonderful Wizard of Oz',author:'L. Frank Baum',category:'Wonder',fame:70,room:'attic',shelf:'case',note:'A cyclone, a yellow brick road, and three friends who already have what they want.'},
+    {id:236,title:'The Jungle Book',author:'Rudyard Kipling',category:'Adventure',fame:65,room:'attic',shelf:'case',note:'Mowgli among the wolves, and Rikki-tikki-tavi in the garden.'},
+    {id:16,title:'Peter Pan',author:'J. M. Barrie',category:'Wonder',fame:75,room:'attic',shelf:'case',note:'Second to the right, and straight on till morning.'},
+    {id:500,title:'The Adventures of Pinocchio',author:'Carlo Collodi',category:'Wonder',fame:55,room:'attic',shelf:'case',note:'A puppet who runs away from everyone who loves him, and comes back.'},
+    {id:1874,title:'The Railway Children',author:'E. Nesbit',category:'Wonder',fame:50,room:'attic',shelf:'case',note:'Three children, a cottage by the line, and the 9.15 they wave to every day.'},
+    {id:770,title:'The Story of the Treasure Seekers',author:'E. Nesbit',category:'Wonder',fame:30,room:'attic',shelf:'case',note:'Six Bastables set out to restore the family fortune. One of them is telling it.'},
+    {id:113,title:'The Secret Garden',author:'Frances Hodgson Burnett',category:'Wonder',fame:70,room:'attic',shelf:'case',note:'A buried key, a locked door in a wall, and a garden nobody has been into for ten years.'},
+    {id:146,title:'A Little Princess',author:'Frances Hodgson Burnett',category:'Wonder',fame:50,room:'attic',shelf:'case',note:'Sara Crewe loses everything but her imagination, and her attic is transformed in the night.'},
   ];
 })();

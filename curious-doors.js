@@ -17,6 +17,13 @@
       attic:{key:'attic',cx:-240,cz:60,w:16,d:13,h:4.6,title:'The Children’s Attic',door:{x:18.72,z:-13.5,yaw:-Math.PI/2}}
     };
     const blockers=[],animated=[],doors={};let time=0;
+    // The attic's slide, against the east wall: six painted steps climb north to a little platform, and the chute runs on
+    // north down to the floor. u is the distance along it from the foot of the steps; its steps and chute are the floor there.
+    const SLIDE={x:rooms.attic.cx+6.75,z0:rooms.attic.cz+5.6,half:.42,step:.27,rise:.27,steps:6,deck:.8,chute:3};
+    SLIDE.top=SLIDE.steps*SLIDE.rise;SLIDE.uDeck=SLIDE.steps*SLIDE.step;SLIDE.uChute=SLIDE.uDeck+SLIDE.deck;SLIDE.uEnd=SLIDE.uChute+SLIDE.chute;
+    function slideHeight(x,z){const u=SLIDE.z0-z;if(Math.abs(x-SLIDE.x)>SLIDE.half||u<0||u>SLIDE.uEnd)return null;
+      if(u<SLIDE.uDeck)return (Math.floor(u/SLIDE.step)+1)*SLIDE.rise;if(u<SLIDE.uChute)return SLIDE.top;return SLIDE.top*(1-(u-SLIDE.uChute)/SLIDE.chute)}
+    let slideRide=null;
     const store={get:key=>{try{return localStorage.getItem(key)}catch(e){return null}},set:(key,value)=>{try{localStorage.setItem(key,value)}catch(e){}}};
 
     // ---------- small builders ----------
@@ -39,9 +46,15 @@
 
     // Face-out display of a room's books on a ledge: covers visible, each one a real, readable volume.
     const displayGeometry=new THREE.BoxGeometry(.72,1.02,.12);
-    function displayBooks(room,parent,x0,y,z,spacing=.95,rotY=0){
-      const list=books.filter(book=>book.room===room.key);
-      list.forEach((book,i)=>{const mesh=add(displayGeometry,bookMaterial(book),x0+i*spacing,y,z,parent);mesh.rotation.order='YXZ';mesh.rotation.y=rotY;mesh.rotation.x=-.12;mesh.rotation.z=Math.sin(book.id)*.03;mesh.userData={type:'book',book,loaded:false,home:{position:mesh.position.clone(),quaternion:mesh.quaternion.clone(),parent}};interactables.push(mesh)});
+    // A room's books are listed in data/curious-rooms-books.js. Many are also on other shelves, where the library already has
+    // them, so each is looked up by its id among the library's books and this room shows its own copy.
+    function roomBooks(room,shelf){
+      const records=window.ATHENAEUM_CURIOUS_BOOKS||books;
+      return records.filter(record=>record.room===room.key&&(record.shelf||'')===(shelf||'')).map(record=>books.find(book=>book.id===record.id)).filter(Boolean);
+    }
+    // Lays books out in a row along x (or along z, for a case on a side wall), each one a real, readable volume.
+    function displayBooks(room,parent,x0,y,z,spacing=.95,rotY=0,{list=roomBooks(room),alongZ=false,geometry=displayGeometry}={}){
+      list.forEach((book,i)=>{const mesh=add(geometry,bookMaterial(book),alongZ?x0:x0+i*spacing,y,alongZ?z+i*spacing:z,parent);mesh.rotation.order='YXZ';mesh.rotation.y=rotY;mesh.rotation.x=-.12;mesh.rotation.z=Math.sin(book.id)*.03;mesh.userData={type:'book',book,loaded:false,home:{position:mesh.position.clone(),quaternion:mesh.quaternion.clone(),parent}};interactables.push(mesh)});
       return list.length;
     }
     function armchair(room,parent,x,z,yaw,fabric,title,author){
@@ -77,7 +90,7 @@
       for(const [dx,y,radius,speed] of specs){const c=clock(r,radius,cx+dx,y,cz-d/2+.2,0,speed>0,speed<0?'#d9ccb0':'#efe2c0');animated.push({kind:'clock',room,hands:c,speed,phase:dx})}
       // Long display shelf for the room's books under the clocks.
       box(12.4,.12,.62,MAT.darkWood,cx,1.18,cz-d/2+.5,r);box(12.4,.06,.12,MAT.brass,cx,1.26,cz-d/2+.78,r);block(room,cx,cz-d/2+.5,12.6,.9);
-      const count=displayBooks(room,r,cx-(books.filter(b=>b.room===room.key).length-1)*1.1/2,1.75,cz-d/2+.5,1.1);
+      const count=displayBooks(room,r,cx-(roomBooks(room).length-1)*1.1/2,1.75,cz-d/2+.5,1.1);
       // Grandfather clock with a real swinging pendulum.
       const gx=cx+w/2-1.1,gz=cz-d/2+1.1;box(1.05,4.1,.7,panel,gx,2.05,gz,r);const gc=clock(r,.38,gx-.53,3.4,gz,-Math.PI/2);animated.push({kind:'clock',room,hands:gc,speed:.5,phase:0});
       const pendulum=new THREE.Group();pendulum.position.set(gx-.37,2.95,gz);r.add(pendulum);box(.03,1.3,.03,MAT.brass,0,-.65,0,pendulum);const bob=cyl(.16,.16,.04,16,MAT.gold||MAT.brass,0,-1.32,0,pendulum);bob.rotation.z=Math.PI/2;animated.push({kind:'pendulum',room,object:pendulum,phase:0});
@@ -125,7 +138,7 @@
       const count=60,flyGeo=new THREE.BufferGeometry(),flyPos=new Float32Array(count*3),seeds=[];for(let i=0;i<count;i++){seeds.push([Math.random()*TAU,Math.random()*TAU,.5+Math.random()]);flyPos.set([cx,1,cz],i*3)}flyGeo.setAttribute('position',new THREE.BufferAttribute(flyPos,3));const flies=new THREE.Points(flyGeo,new THREE.PointsMaterial({color:0xd8ff8a,size:.09,transparent:true,opacity:.85,blending:THREE.AdditiveBlending,depthWrite:false}));r.add(flies);animated.push({kind:'fireflies',room,points:flies,seeds});
       // Potting bench display of the room's books, and an iron bench to read on.
       box(9,.1,.8,std(0x4a3a2a),cx,1.02,cz-d/2+.8,r);for(const x of [-4.2,0,4.2])box(.1,1,.7,iron,cx+x,.5,cz-d/2+.8,r);block(room,cx,cz-d/2+.8,9.2,1);
-      const n=books.filter(b=>b.room===room.key).length,shown=displayBooks(room,r,cx-(n-1)*1.3/2,1.6,cz-d/2+.8,1.3);
+      const n=roomBooks(room).length,shown=displayBooks(room,r,cx-(n-1)*1.3/2,1.6,cz-d/2+.8,1.3);
       const benchG=new THREE.Group();benchG.position.set(cx+3.2,0,cz+3.4);benchG.rotation.y=Math.PI;r.add(benchG);const seat=box(2.2,.1,.7,iron,0,.55,0,benchG),back=box(2.2,.7,.08,iron,0,1,-.33,benchG);for(const x of [-1,1])box(.08,.55,.6,iron,x,.27,0,benchG);registerSeat?.([seat,back],benchG,new THREE.Vector3(0,1.4,.1),0,{title:'A wrought-iron garden bench',author:'Cold at first, then pleasant. Sit and read by moonlight.'});block(room,cx+3.2,cz+3.4,2.4,.9);
       light(r,0xcfe6c0,6,12,cx,3.6,cz-1);light(r,0xffcf8a,4,9,cx,2.4,cz-d/2+1.8);
       return shown;
@@ -141,7 +154,7 @@
       const fx=cx+2.2,fz=cz-d/2+.55;box(3.2,2.3,.8,MAT.stone,fx,1.15,fz,r);box(3.6,.18,1,MAT.darkWood,fx,2.35,fz+.05,r);box(1.9,1.3,.5,MAT.black,fx,.85,fz+.2,r);block(room,fx,fz,3.8,1.4);
       const flameMats=[glow(0xff8a2a,2.4),glow(0xffc25c,2.8)];const flames=[];for(let i=0;i<5;i++){const f=add(new THREE.ConeGeometry(.16+i%2*.06,.55+i%3*.15,8),flameMats[i%2],fx-.5+i*.25,.62,fz+.32,r);flames.push(f)}
       const fire=light(r,0xff8c3c,9,11,fx,1.1,fz+1);animated.push({kind:'fire',room,flames,light:fire});
-      const mantelCount=books.filter(b=>b.room===room.key).length,shown=displayBooks(room,r,fx-(mantelCount-1)*.8/2,2.93,fz-.05,.8);
+      const mantelCount=roomBooks(room).length,shown=displayBooks(room,r,fx-(mantelCount-1)*.8/2,2.93,fz-.05,.8);
       const rug=add(new THREE.PlaneGeometry(7.5,5.2),new THREE.MeshStandardMaterial({map:canvasTexture((c,cw,ch)=>{c.fillStyle='#4a1a1e';c.fillRect(0,0,cw,ch);c.strokeStyle='#a0713e';c.lineWidth=10;c.strokeRect(14,14,cw-28,ch-28);c.lineWidth=3;c.strokeRect(34,34,cw-68,ch-68);c.fillStyle='#6b2a2c';for(let i=0;i<6;i++){c.beginPath();c.ellipse(cw/2,ch/2,40+i*28,24+i*18,0,0,TAU);c.stroke()}},512,356),roughness:1}),fx,.012,fz+3,r);rug.rotation.x=-Math.PI/2;
       // A tall looking-glass that shows a little more of the room than is there.
       const mirror=add(new THREE.PlaneGeometry(1.2,2.4),new THREE.MeshStandardMaterial({color:0x9aa4a8,metalness:1,roughness:.04}),cx-w/2+.2,1.9,cz-1.5,r);mirror.rotation.y=Math.PI/2;box(.08,2.6,1.4,MAT.gold||MAT.brass,cx-w/2+.17,1.9,cz-1.5,r);detail(mirror,'A tall looking-glass','For a moment the reflection shows an extra chair by the fire. There is no extra chair.');
@@ -167,7 +180,7 @@
       const win=add(new THREE.CircleGeometry(1.1,32),new THREE.MeshBasicMaterial({map:canvasTexture((c,cw,ch)=>{const g=c.createLinearGradient(0,0,0,ch);g.addColorStop(0,'#0c1532');g.addColorStop(1,'#1f2f5c');c.fillStyle=g;c.fillRect(0,0,cw,ch);for(let i=0;i<60;i++){c.fillStyle=`rgba(255,250,220,${.4+Math.random()*.6})`;c.fillRect(Math.random()*cw,Math.random()*ch*.8,2,2)}c.fillStyle='#f6efcf';c.beginPath();c.arc(cw*.68,ch*.32,26,0,TAU);c.fill();c.fillStyle='#16224a';c.beginPath();c.arc(cw*.63,ch*.29,24,0,TAU);c.fill()},256,256)}),cx,3.2,cz-d/2+.17,r);
       add(new THREE.TorusGeometry(1.12,.09,8,32),beam,cx,3.2,cz-d/2+.2,r);box(.08,2.2,.06,beam,cx,3.2,cz-d/2+.22,r);box(2.2,.08,.06,beam,cx,3.2,cz-d/2+.22,r);detail(win,'A round attic window','The moon is the kind drawn in picture books: exactly crescent, faintly smiling.','LOOK');
       const seatBase=box(7.2,.55,1.2,std(0x6e3b2e),cx,.28,cz-d/2+.75,r),seatCushion=box(7.2,.18,1.1,std(0x2d4b6e,{roughness:.95}),cx,.64,cz-d/2+.8,r);block(room,cx,cz-d/2+.8,7.4,1.5);
-      const n=books.filter(b=>b.room===room.key).length;box(n*.82+.4,.08,.34,beam,cx,1.05,cz-d/2+.3,r);const shown=displayBooks(room,r,cx-(n-1)*.82/2,1.58,cz-d/2+.32,.82);
+      const n=roomBooks(room).length;box(n*.82+.4,.08,.34,beam,cx,1.05,cz-d/2+.3,r);let shown=displayBooks(room,r,cx-(n-1)*.82/2,1.58,cz-d/2+.32,.82);
       const seatGroup=new THREE.Group();seatGroup.position.set(cx,0,cz-d/2+.9);r.add(seatGroup);registerSeat?.([seatBase,seatCushion],seatGroup,new THREE.Vector3(0,1.35,.2),Math.PI,{title:'The window seat',author:'Plump cushions and a view of the moon. Sit and read a story.'});
       // Rocking horse that rocks when you pass.
       const hx=cx-4.8,hz=cz+1.5,horse=new THREE.Group();horse.position.set(hx,0,hz);horse.rotation.y=.6;r.add(horse);const dapple=std(0xe8e0d0,{roughness:.8}),red=std(0x8c2a22);
@@ -180,6 +193,30 @@
       const rug=add(new THREE.CircleGeometry(2.3,40),new THREE.MeshStandardMaterial({color:0x6a2f3a,roughness:1}),cx,.012,cz+1.2,r);rug.rotation.x=-Math.PI/2;const track=add(new THREE.TorusGeometry(1.7,.03,6,48),MAT.brass,cx,.03,cz+1.2,r);track.rotation.x=Math.PI/2;
       const train=new THREE.Group();r.add(train);const loco=new THREE.Group();train.add(loco);box(.34,.22,.2,std(0x1f5a3a,{metalness:.3,roughness:.5}),0,.14,0,loco);cyl(.07,.07,.14,8,MAT.black,.1,.3,0,loco);for(let i=1;i<=3;i++){const car=box(.3,.18,.18,std([0x8c2a22,0x2e6fa7,0xd4a017][i-1]),-.4*i,.12,0,train);car.userData.offset=i}animated.push({kind:'train',room,train,cx,cz:cz+1.2});
       detail(box(.4,.3,.3,new THREE.MeshBasicMaterial({visible:false}),0,.15,0,loco),'A clockwork train','Nobody has wound it for years. It goes round anyway.');
+      // A painted bookcase on the west wall: picture books and rhymes on the top tier, stories to grow into below.
+      {const paint=std(0x37597d,{roughness:.7}),cream=std(0xe8dcc0,{roughness:.8}),caseBooks=roomBooks(room,'case'),perTier=Math.ceil(caseBooks.length/2),gap=.66,len=perTier*gap+.3,bx=cx-w/2+.36,bz=cz-2.1;
+        box(.04,2.4,len,paint,cx-w/2+.17,1.2,bz,r);for(const sz of [-1,1])box(.42,2.46,.06,paint,bx,1.23,bz+sz*len/2,r);
+        for(const y of [.05,.3,1.32,2.4])box(.42,y===.05?.1:.06,len,y===.05||y===2.4?paint:cream,bx,y,bz,r);
+        const bookGeometry=new THREE.BoxGeometry(.56,.8,.1),z0=bz-(perTier-1)*gap/2;
+        shown+=displayBooks(room,r,bx+.06,1.77,z0,gap,Math.PI/2,{list:caseBooks.slice(0,perTier),alongZ:true,geometry:bookGeometry});
+        shown+=displayBooks(room,r,bx+.06,.75,z0,gap,Math.PI/2,{list:caseBooks.slice(perTier),alongZ:true,geometry:bookGeometry});
+        plaque(r,'THE NURSERY BOOKCASE','picture books, rhymes and stories to grow into',cx-w/2+.2,2.95,bz,2.6,Math.PI/2,{bg:'#1b2440',ink:'#f1dfae',rule:'#c9a45c'});
+        block(room,bx,bz,.42,len)}
+      // The slide (see SLIDE): red steps between yellow rails, a blue platform and a yellow chute, with a cushion at the bottom.
+      // Climb the steps; at the top, the slide (or anything on it) sends the reader down the chute.
+      {const red=std(0xb8352a,{roughness:.6}),yellow=std(0xe9b934,{roughness:.4}),blue=std(0x2d5a96,{roughness:.6});
+        const g=new THREE.Group();g.position.set(SLIDE.x,0,SLIDE.z0);g.rotation.y=Math.PI/2;r.add(g);const parts=[];
+        const card={type:'curious-slide',room:room.key,title:'A painted wooden slide',author:'Up the steps, and down the slide. The cushion at the bottom has seen a great deal of use.',action:'SLIDE DOWN'};
+        for(let i=0;i<SLIDE.steps;i++)parts.push(box(SLIDE.step,.06,SLIDE.half*2,red,(i+.5)*SLIDE.step,(i+1)*SLIDE.rise-.03,0,g));
+        parts.push(box(SLIDE.deck,.1,SLIDE.half*2+.1,blue,SLIDE.uDeck+SLIDE.deck/2,SLIDE.top-.05,0,g));
+        for(const sz of [-1,1]){const z=sz*(SLIDE.half+.05);
+          const rail=box(Math.hypot(SLIDE.uDeck,SLIDE.top),.06,.06,yellow,SLIDE.uDeck/2,SLIDE.top/2+.6,z,g);rail.rotation.z=Math.atan2(SLIDE.top,SLIDE.uDeck);
+          for(const u of [.05,SLIDE.uDeck,SLIDE.uChute]){const ph=u===.05?.7:SLIDE.top+.7;box(.08,ph,.08,blue,u,ph/2,z,g)}
+          box(SLIDE.deck,.06,.06,yellow,SLIDE.uDeck+SLIDE.deck/2,SLIDE.top+.65,z,g);
+          const side=box(Math.hypot(SLIDE.chute,SLIDE.top),.22,.05,red,(SLIDE.uChute+SLIDE.uEnd)/2,SLIDE.top/2+.08,z,g);side.rotation.z=-Math.atan2(SLIDE.top,SLIDE.chute);parts.push(side)}
+        const chute=box(Math.hypot(SLIDE.chute,SLIDE.top),.06,SLIDE.half*2,yellow,(SLIDE.uChute+SLIDE.uEnd)/2,SLIDE.top/2,0,g);chute.rotation.z=-Math.atan2(SLIDE.top,SLIDE.chute);parts.push(chute);
+        box(.9,.1,1,std(0x8c2a22,{roughness:1}),SLIDE.uEnd+.45,.05,0,g);
+        for(const part of parts)mark(part,card)}
       light(r,0xffcf8f,5.5,11,cx,3.4,cz+1);light(r,0xa9b9ff,2.5,8,cx,2.6,cz-d/2+1.5);
       return shown;
     }
@@ -257,8 +294,11 @@
     function unload(room){if(!room.active)return;room.root.removeFromParent();room.active=false}
     function zoneAt(x,z){for(const room of Object.values(rooms))if(x>room.cx-room.w/2&&x<room.cx+room.w/2&&z>room.cz-room.d/2&&z<room.cz+room.d/2)return room;return null}
     function contains(x,z){return !!zoneAt(x,z)}
-    function floorAt(x,z){return contains(x,z)?0:null}
-    function allowed(x,z){const room=zoneAt(x,z);if(!room)return false;const radius=player.radius||.42;if(x-radius<room.cx-room.w/2+.4||x+radius>room.cx+room.w/2-.4||z-radius<room.cz-room.d/2+.4||z+radius>room.cz+room.d/2-.4)return false;return !blockers.some(b=>b.room===room.key&&x+radius>b.minX&&x-radius<b.maxX&&z+radius>b.minZ&&z-radius<b.maxZ)}
+    function floorAt(x,z){return contains(x,z)?slideHeight(x,z)??0:null}
+    function allowed(x,z){const room=zoneAt(x,z);if(!room)return false;const radius=player.radius||.42;if(x-radius<room.cx-room.w/2+.4||x+radius>room.cx+room.w/2-.4||z-radius<room.cz-room.d/2+.4||z+radius>room.cz+room.d/2-.4)return false;
+      // On the attic's slide a change of floor is one step at a time: no climbing on from the side, no stepping off the top.
+      if(room.key==='attic'){const here=slideHeight(player.pos.x,player.pos.z)??0,there=slideHeight(x,z)??0;if(Math.abs(there-here)>.45)return false;if(there>0)return true}
+      return !blockers.some(b=>b.room===room.key&&x+radius>b.minX&&x-radius<b.maxX&&z+radius>b.minZ&&z-radius<b.maxZ)}
 
     const ARRIVALS={horologist:'A hundred clocks disagree about the hour. The orrery turns; one tiny moon is labelled “the Library”.',conservatory:'Warm, wet air and moonlight through the glass. Fireflies drift between the palms.',parlour:'The bookcase swings shut behind you. A fire is lit, two chairs are drawn up, and the dust sheets have not moved. Probably.',attic:'“Come in — but mind your head.” Nobody is there. The clockwork train is already going round.'};
     function enter(room){activate(room);move(room.cx,room.cz+room.d/2-1.8,0);showNotice(ARRIVALS[room.key],8);analytics?.track('Room Explored',{room:'curious-'+room.key});if(!store.get('athenaeum-curious-'+room.key)){store.set('athenaeum-curious-'+room.key,'1')}}
@@ -274,13 +314,19 @@
       const data=object?.userData;if(!data)return false;
       if(data.type==='curious-door'){const door=doors[data.room];if(door.kind==='bookcase'&&door.state==='open'){enter(door.room);return true}openDoor(door);return true}
       if(data.type==='curious-exit'){const room=rooms[data.room],door=doors[room.key],back=1.9;move(room.door.x+Math.sin(room.door.yaw)*back,room.door.z+Math.cos(room.door.yaw)*back,room.door.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again, and its familiar lamplight.',4);door.state='closing';door.t=0;return true}
+      if(data.type==='curious-slide'){slideDown();return true}
       if(data.type==='curious-detail'){showNotice(data.author,7);sound?.(300,.12,'triangle',.035);if(data.title==='A dappled rocking horse'){const horse=animated.find(a=>a.kind==='rock');if(horse)horse.kick=time}return true}
       return false;
     }
 
+    // A ride down the attic's chute: from the platform to the cushion in a little over a second.
+    function slideDown(){if(slideRide)return true;
+      if((slideHeight(player.pos.x,player.pos.z)??0)<SLIDE.top-.05){showNotice('Up the steps first: the slide only goes one way.',4);return false}
+      slideRide={t:0};[784,659,523].forEach((f,i)=>setTimeout(()=>sound?.(f,.18,'triangle',.05),i*120));return true}
     const flyPosition=new THREE.Vector3();
     function update(t,dt,reduced=isReducedMotion()){
       time=t;const motion=reduced?0:1;
+      if(slideRide){slideRide.t+=dt;const k=Math.min(1,slideRide.t/1.2),u=SLIDE.uChute-.05+(SLIDE.uEnd+.6-SLIDE.uChute)*k*k;player.pos.x=SLIDE.x;player.pos.z=SLIDE.z0-u;if(k>=1)slideRide=null}
       // Keep rooms warm near their doors; free them when the reader has been away a while.
       for(const room of Object.values(rooms)){const near=Math.hypot(player.pos.x-room.door.x,player.pos.z-room.door.z)<PRELOAD_DISTANCE,inside=zoneAt(player.pos.x,player.pos.z)===room;/* Built as the reader approaches rather than when the door opens, so its shaders are compiled in the background before it is seen. */if(near||inside){activate(room)}else if(room.active&&t-room.lastNeeded>KEEP_WARM_SECONDS)unload(room)}
       // Door mechanisms.
@@ -318,6 +364,6 @@
     }
 
     clockDoor(rooms.horologist);glassDoor(rooms.conservatory);bookcaseDoor(rooms.parlour);nurseryDoor(rooms.attic);
-    return {contains,floorAt,allowed,interact,update,zoneAt,rooms,doors,activate};
+    return {contains,floorAt,allowed,interact,update,zoneAt,rooms,doors,activate,slide:SLIDE,slideHeight};
   };
 })();
