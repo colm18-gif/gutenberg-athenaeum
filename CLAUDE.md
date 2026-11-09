@@ -236,7 +236,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   not the rooms reached by carpet, balloon, boat, rocket, the globe, the model Nautilus or the window, nor the secret ones
   (a test checks). The way back is the room's own door. From behind, or with a book in hand, it stays shut.
 - The Children's Attic (`curious-doors.js`, x −240, z 60) is behind the small painted NURSERY door in the Grand Hall's
-  east wall (x 18.72, z −13.5; knock first), one of the four curious doors. Its books are `room:'attic'` in
+  east wall (x 18.72, z −13.5; knock first), one of the four curious doors (`?room=attic`, `nursery`, `childrens-attic`,
+  `slide`; `curious-attic` in `roomLink`). Its books are `room:'attic'` in
   `data/curious-rooms-books.js`: the ledge over the window seat, and with `shelf:'case'` the painted nursery bookcase on
   the west wall (picture books and rhymes on the top tier, stories to grow into below; split evenly between the tiers).
   A curious room's book is looked up by id (`roomBooks`), so a book the library already shelves elsewhere shows that
@@ -584,7 +585,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
-  daily-room, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song) goes to a room.
+  daily-room, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.
