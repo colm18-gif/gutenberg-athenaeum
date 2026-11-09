@@ -1920,7 +1920,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     const preAfterDarkAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return afterDarkExpansion.contains(x,z)?afterDarkExpansion.allowed(x,z):preAfterDarkAllowed(x,z,y)};
     const preAfterDarkInteract=interact;interact=function(){if(focus&&!selected&&afterDarkExpansion.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preAfterDarkInteract()};
     // Four curious doors in the Grand Hall, each opening onto a small themed room built on demand.
-    const curiousDoors=window.createCuriousDoors?.({doorKit:getDoorKit(),THREE,scene,MAT,player,camera,interactables,books,bookMaterial,canvasTexture,showNotice,playSample,sound,registerSeat,analytics:window.libraryAnalytics,isLowBandwidth:()=>lowBandwidth,isReducedMotion:()=>reducedMotion,
+    const curiousDoors=window.createCuriousDoors?.({doorKit:getDoorKit(),THREE,scene,MAT,player,camera,interactables,books,bookMaterial,canvasTexture,showNotice,playSample,sound,purr,registerSeat,analytics:window.libraryAnalytics,isLowBandwidth:()=>lowBandwidth,isReducedMotion:()=>reducedMotion,
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;const spot=nearestWalkable(x,z)||{x,z};x=spot.x;z=spot.z;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
     });
     if(curiousDoors){

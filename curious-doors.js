@@ -8,7 +8,7 @@
   'use strict';
 
   window.createCuriousDoors=function(options){
-    const {THREE,scene,MAT,player,camera,interactables,books,bookMaterial,canvasTexture,showNotice,playSample,sound,move,registerSeat,doorKit,isLowBandwidth=()=>false,isReducedMotion=()=>false,analytics}=options;
+    const {THREE,scene,MAT,player,camera,interactables,books,bookMaterial,canvasTexture,showNotice,playSample,sound,purr,move,registerSeat,doorKit,isLowBandwidth=()=>false,isReducedMotion=()=>false,analytics}=options;
     const KEEP_WARM_SECONDS=25,PRELOAD_DISTANCE=9,TAU=Math.PI*2;
     const rooms={
       horologist:{key:'horologist',cx:-240,cz:-60,w:18,d:14,h:5.4,title:'The Horologist’s Study',door:{x:-18.72,z:22.9,yaw:Math.PI/2}},
@@ -23,7 +23,7 @@
     SLIDE.top=SLIDE.steps*SLIDE.rise;SLIDE.uDeck=SLIDE.steps*SLIDE.step;SLIDE.uChute=SLIDE.uDeck+SLIDE.deck;SLIDE.uEnd=SLIDE.uChute+SLIDE.chute;
     function slideHeight(x,z){const u=SLIDE.z0-z;if(Math.abs(x-SLIDE.x)>SLIDE.half||u<0||u>SLIDE.uEnd)return null;
       if(u<SLIDE.uDeck)return (Math.floor(u/SLIDE.step)+1)*SLIDE.rise;if(u<SLIDE.uChute)return SLIDE.top;return SLIDE.top*(1-(u-SLIDE.uChute)/SLIDE.chute)}
-    let slideRide=null;
+    let slideRide=null,attic=null;
     const store={get:key=>{try{return localStorage.getItem(key)}catch(e){return null}},set:(key,value)=>{try{localStorage.setItem(key,value)}catch(e){}}};
 
     // ---------- small builders ----------
@@ -46,6 +46,108 @@
 
     // Face-out display of a room's books on a ledge: covers visible, each one a real, readable volume.
     const displayGeometry=new THREE.BoxGeometry(.72,1.02,.12);
+    // Picture covers for the Children's Attic's own copies: a scene from each book under its title, drawn here (no image
+    // files). The game's real-cover swap leaves them be (userData.pictureCover).
+    function atticCoverArt(c,W,H,id){
+      const ell=(x,y,rx,ry,f,a=0)=>{c.fillStyle=f;c.beginPath();c.ellipse(x*W,y*H,rx*W,ry*H,a,0,TAU);c.fill()};
+      const poly=(pts,f)=>{c.fillStyle=f;c.beginPath();pts.forEach(([x,y],i)=>i?c.lineTo(x*W,y*H):c.moveTo(x*W,y*H));c.fill()};
+      const rect=(x,y,w,h,f)=>{c.fillStyle=f;c.fillRect(x*W,y*H,w*W,h*H)};
+      const line=(pts,col,width)=>{c.strokeStyle=col;c.lineWidth=width;c.lineCap='round';c.beginPath();pts.forEach(([x,y],i)=>i?c.lineTo(x*W,y*H):c.moveTo(x*W,y*H));c.stroke()};
+      const sky=(a,b)=>{const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,a);g.addColorStop(1,b);c.fillStyle=g;c.fillRect(0,0,W,H)};
+      const stars=(n=24)=>{for(let i=0;i<n;i++)ell((i*37%97)/97,(i*23%53)/120,.006,.005,'#fff8dc')};
+      const moon=(x,y,r)=>{ell(x,y,r,r*W/H,'#fff3c8')};
+      const ground=(col,y=.86)=>ell(.5,1,.8,1-y+.06,col);
+      const rabbit=(x,y,s,fur,jacket)=>{ell(x,y,.12*s,.15*s,fur);ell(x,y-.17*s,.08*s,.08*s,fur);ell(x-.035*s,y-.3*s,.022*s,.08*s,fur,-.15);ell(x+.035*s,y-.3*s,.022*s,.08*s,fur,.15);
+        ell(x-.03*s,y-.18*s,.01*s,.01*s,'#222');ell(x+.03*s,y-.18*s,.01*s,.01*s,'#222');ell(x,y-.14*s,.012*s,.009*s,'#e89aa6');if(jacket)poly([[x-.12*s,y-.05*s],[x+.12*s,y-.05*s],[x+.1*s,y+.08*s],[x-.1*s,y+.08*s]],jacket);ell(x+.11*s,y+.1*s,.035*s,.03*s,'#fff')};
+      const kitten=(x,y,s,fur,coat)=>{ell(x,y,.09*s,.1*s,coat||fur);ell(x,y-.13*s,.07*s,.065*s,fur);poly([[x-.065*s,y-.15*s],[x-.05*s,y-.24*s],[x-.02*s,y-.18*s]],fur);poly([[x+.065*s,y-.15*s],[x+.05*s,y-.24*s],[x+.02*s,y-.18*s]],fur);
+        ell(x-.025*s,y-.14*s,.01*s,.012*s,'#2a3a1a');ell(x+.025*s,y-.14*s,.01*s,.012*s,'#2a3a1a')};
+      switch(id){
+        case 2781:// Just So Stories: how the Leopard got his spots.
+          sky('#f6c25a','#e08a2a');ground('#c9a04a');ell(.5,.62,.28,.12,'#e8b84a');ell(.22,.52,.1,.09,'#e8b84a');line([[.76,.6],[.92,.5],[.95,.4]],'#e8b84a',7);
+          for(const [x,y] of [[.36,.58],[.46,.55],[.56,.6],[.66,.57],[.42,.66],[.54,.68],[.62,.64],[.2,.5],[.26,.55]])ell(x,y,.02,.018,'#5a3a1a');
+          for(const x of [.32,.4,.6,.68])rect(x,.68,.035,.14,'#e8b84a');ell(.19,.5,.012,.012,'#222');break;
+        case 503:// The Blue Fairy Book: a castle in the moonlight.
+          sky('#1d3a7a','#4a72c0');stars();moon(.78,.16,.06);ground('#1f3f5a',.82);rect(.3,.42,.4,.4,'#c8d4ea');
+          for(const x of [.24,.62])rect(x,.32,.14,.5,'#dbe4f4');for(const x of [.24,.62])poly([[x-.01,.33],[x+.07,.16],[x+.15,.33]],'#2d4f9a');
+          rect(.45,.62,.1,.2,'#2d3d5a');for(const x of [.29,.67])rect(x,.42,.04,.06,'#ffd57a');break;
+        case 11757:// The Velveteen Rabbit, with his pink bow, in the nursery.
+          sky('#bcd8ee','#eadfc8');rect(0,.78,1,.22,'#c99a6a');rabbit(.5,.6,1.7,'#c9a27a');poly([[.43,.5],[.5,.47],[.57,.5],[.5,.53]],'#f08aa6');break;
+        case 14838:// Peter Rabbit in his blue jacket, among Mr. McGregor's lettuces.
+          sky('#cfe6f5','#a8d08a');ground('#6aa64a',.78);for(let i=0;i<5;i++)ell(.1+i*.2,.86,.07,.05,'#8fd06a');rabbit(.5,.6,1.5,'#a8794a','#3a6ad0');break;
+        case 708:// The Princess and the Goblin: the mountain, and the thread that leads through the dark.
+          sky('#0f1a35','#2a3a5a');stars(16);poly([[0,.9],[.45,.2],[1,.9]],'#3a3f4a');ell(.45,.7,.1,.12,'#0a0c12');
+          line([[.12,.95],[.3,.82],[.4,.74],[.45,.7]],'#e8eef8',2);ell(.8,.2,.05,.04,'#ffe9a8');ell(.8,.2,.1,.08,'rgba(255,233,168,.25)');break;
+        case 778:// Five Children and It: the Psammead in the gravel pit.
+          sky('#bfe0f5','#f4e2b0');ground('#d9b86a',.7);ell(.5,.62,.18,.14,'#8a6a3a');ell(.36,.48,.05,.08,'#8a6a3a',-.5);ell(.64,.48,.05,.08,'#8a6a3a',.5);
+          line([[.45,.54],[.42,.42]],'#5a4a2a',4);line([[.55,.54],[.58,.42]],'#5a4a2a',4);ell(.42,.4,.03,.025,'#222');ell(.58,.4,.03,.025,'#222');ell(.5,.66,.04,.02,'#5a3a1a');break;
+        case 225:// At the Back of the North Wind: Diamond carried through the night in her hair.
+          sky('#0c1636','#2d4a8a');stars(30);for(let i=0;i<6;i++)line([[.05,.25+i*.08],[.4,.2+i*.09],[.7,.32+i*.07],[1,.24+i*.08]],`rgba(200,215,255,${.25+i*.08})`,6);
+          ell(.55,.44,.035,.035,'#f1d3b3');poly([[.51,.47],[.59,.47],[.58,.58],[.52,.58]],'#3a5a9a');break;
+        case 289:// The Wind in the Willows: messing about in boats.
+          sky('#d6ecf5','#a8d0c0');rect(0,.6,1,.4,'#4a8ab0');for(const x of [.08,.9]){rect(x-.01,.25,.03,.38,'#5a4a2a');ell(x,.3,.12,.16,'#7ab05a')}
+          poly([[.3,.62],[.7,.62],[.64,.72],[.36,.72]],'#b3352a');ell(.42,.58,.035,.045,'#5a4a3a');ell(.58,.58,.035,.045,'#3a3a3a');line([[.6,.62],[.8,.76]],'#8a6a3a',3);
+          for(let i=0;i<6;i++)line([[.1+i*.15,.82],[.18+i*.15,.82]],'#d6ecf5',2);break;
+        case 10607:// The Real Mother Goose: the cow jumped over the moon.
+          sky('#16244a','#3a5a9a');stars();moon(.5,.62,.13);ell(.5,.62,.11,.12,'#16244a');ell(.62,.56,.13,.13,'#fff3c8');
+          ell(.42,.3,.14,.07,'#fbfbf6');ell(.29,.25,.05,.045,'#fbfbf6');ell(.45,.29,.04,.03,'#2a2a2a');ell(.36,.32,.03,.025,'#2a2a2a');
+          line([[.34,.34],[.28,.42]],'#fbfbf6',4);line([[.52,.34],[.6,.4]],'#fbfbf6',4);line([[.36,.25],[.25,.18]],'#fbfbf6',4);line([[.5,.25],[.6,.17]],'#fbfbf6',4);break;
+        case 14407:// Benjamin Bunny: Peter's jacket and shoes on the scarecrow, and the two cousins.
+          sky('#d6ecf5','#b8d890');ground('#7aa64a',.8);line([[.68,.85],[.68,.25]],'#6a4a2a',5);line([[.56,.38],[.8,.38]],'#6a4a2a',4);
+          poly([[.6,.36],[.76,.36],[.74,.56],[.62,.56]],'#3a6ad0');ell(.68,.24,.06,.03,'#c86a3a');rabbit(.3,.68,1.1,'#a8794a');rabbit(.46,.72,.8,'#8a6a42');break;
+        case 14837:// Tom Kitten: three kittens in their best clothes on the garden wall.
+          sky('#d6ecf5','#c8e0a0');rect(0,.58,1,.42,'#b8705a');for(let r=0;r<4;r++)for(let i=0;i<6;i++)rect(i*.18+(r%2)*.09-.05,.6+r*.1,.16,.008,'#8a4a3a');
+          kitten(.25,.5,1,'#c8a07a','#4a6ad0');kitten(.5,.48,1.1,'#9a9a92','#e8e0f0');kitten(.75,.5,1,'#d0a070','#d07090');break;
+        case 14814:// Jemima Puddle-Duck in her bonnet and shawl, among the foxgloves.
+          sky('#e0eef5','#b8d890');ground('#7aa64a',.84);for(const x of [.12,.86]){line([[x,.85],[x,.4]],'#4a7a3a',3);for(let i=0;i<5;i++)ell(x+.02,.45+i*.08,.025,.035,'#c86aa6')}
+          ell(.5,.64,.18,.13,'#fbfbf6');ell(.44,.42,.07,.07,'#fbfbf6');poly([[.38,.43],[.3,.46],[.38,.47]],'#e8a02a');poly([[.38,.4],[.5,.33],[.53,.44],[.42,.47]],'#5a8ad0');
+          poly([[.36,.58],[.64,.56],[.58,.7],[.42,.7]],'#e08aa6');break;
+        case 902:// The Happy Prince, on his tall column above the city, with the swallow.
+          sky('#2a3060','#e0a060');for(let i=0;i<8;i++)rect(i*.13,.72-((i*5)%3)*.06,.11,.4,'#3a2a3a');rect(.46,.42,.08,.4,'#b8a888');
+          ell(.5,.32,.05,.1,'#f2c230');ell(.5,.2,.035,.035,'#f2c230');ell(.5,.12,.03,.012,'#f2c230');ell(.5,.2,.008,.008,'#c62a1f');
+          poly([[.6,.24],[.68,.21],[.64,.27]],'#1a1a2a');poly([[.63,.24],[.7,.18],[.66,.24]],'#1a1a2a');break;
+        case 540:// The Red Fairy Book: Jack's beanstalk, up to the giant's castle in the clouds.
+          sky('#b3202a','#f08a6a');ell(.66,.2,.24,.08,'#fff4ea');rect(.6,.08,.14,.1,'#e8dcc8');for(const x of [.58,.73])rect(x,.04,.04,.14,'#e8dcc8');
+          line([[.4,1],[.48,.8],[.38,.6],[.5,.42],[.44,.28],[.56,.2]],'#3f8a2a',8);for(let i=0;i<6;i++)ell(.44+(i%2?.05:-.04),.86-i*.12,.04,.025,'#5ab03a',i%2?.6:-.6);break;
+        case 55:// The Wonderful Wizard of Oz: the yellow brick road to the Emerald City.
+          sky('#c8e8f5','#e8f0c0');ground('#6ab04a',.6);poly([[.42,.55],[.58,.55],[.9,1],[.1,1]],'#f2c230');for(let i=0;i<6;i++)line([[.42-i*.06,.58+i*.08],[.58+i*.06,.58+i*.08]],'#c89a1a',1.5);
+          for(const [x,h] of [[.4,.2],[.46,.32],[.52,.26],[.58,.18]])poly([[x-.03,.55],[x,.55-h],[x+.03,.55]],'#2a9a5a');for(const x of [.12,.2,.8,.88])ell(x,.75,.025,.02,'#d02a2a');break;
+        case 236:// The Jungle Book: a wolf under the moon, among the leaves.
+          sky('#16302a','#3a6a4a');moon(.72,.2,.08);poly([[.3,.85],[.42,.4],[.5,.36],[.56,.42],[.6,.85]],'#8a8a92');poly([[.44,.42],[.46,.28],[.5,.38]],'#8a8a92');poly([[.52,.4],[.56,.27],[.58,.42]],'#8a8a92');
+          poly([[.5,.36],[.36,.32],[.48,.42]],'#7a7a82');ell(.49,.38,.01,.01,'#f2c230');for(let i=0;i<5;i++)ell(i*.25,.95,.16,.12,'#2a5a2a',i);break;
+        case 16:// Peter Pan: over the roofs of London, second to the right and straight on till morning.
+          sky('#0c1438','#2a3a7a');stars(30);ell(.78,.16,.025,.02,'#fffbe0');ell(.78,.16,.06,.05,'rgba(255,251,224,.25)');
+          for(let i=0;i<7;i++){rect(i*.15,.7+(i%3)*.04,.13,.4,'#141a2a');rect(i*.15+.03,.64+(i%3)*.04,.03,.08,'#141a2a')}rect(.7,.4,.08,.6,'#141a2a');ell(.74,.46,.025,.02,'#fff3c8');
+          ell(.4,.42,.03,.03,'#f1d3b3');poly([[.37,.45],[.5,.47],[.48,.52],[.36,.5]],'#3a8a3a');ell(.52,.36,.01,.01,'#fff59a');break;
+        case 500:// Pinocchio: the wooden puppet in his pointed cap.
+          sky('#f5e0b0','#e0a860');ell(.42,.55,.17,.17,'#e0b07a');poly([[.52,.52],[.92,.5],[.52,.58]],'#d09a62');poly([[.28,.44],[.42,.08],[.58,.42]],'#c62a1f');
+          ell(.38,.5,.022,.022,'#222');ell(.47,.5,.022,.022,'#222');line([[.35,.64],[.42,.67],[.48,.64]],'#8a3a2a',3);ell(.31,.58,.03,.02,'#e88a7a');break;
+        case 1874:// The Railway Children: the train coming round the cutting, and the red flags.
+          sky('#cfe6f5','#d8ecc0');ground('#7aa64a',.62);line([[0,.8],[1,.74]],'#5a4a3a',3);line([[0,.86],[1,.8]],'#5a4a3a',3);
+          rect(.4,.6,.3,.14,'#2a5a3a');rect(.62,.5,.1,.24,'#2a5a3a');rect(.44,.5,.04,.1,'#1a1a1a');ell(.47,.42,.05,.04,'#e8e8f0');ell(.42,.32,.07,.05,'#f0f0f5');
+          for(const x of [.48,.62])ell(x,.76,.03,.03,'#1a1a1a');for(const x of [.12,.22]){line([[x,.82],[x,.6]],'#6a4a2a',2);poly([[x,.6],[x+.07,.63],[x,.66]],'#d02a2a')}break;
+        case 770:// The Story of the Treasure Seekers: a spade, and a hole dug for treasure.
+          sky('#d6ecf5','#c8e0a0');ground('#6aa64a',.62);ell(.45,.74,.24,.08,'#5a3a1a');ell(.45,.72,.2,.05,'#3a2410');ell(.48,.72,.025,.015,'#f2c230');
+          line([[.72,.8],[.82,.3]],'#8a6a3a',5);poly([[.68,.78],[.78,.82],[.74,.96],[.64,.92]],'#9aa0a8');line([[.79,.3],[.86,.31]],'#8a6a3a',5);for(const x of [.15,.25])ell(x,.66,.05,.04,'#5a3a1a');break;
+        case 113:// The Secret Garden: the door in the ivied wall, the key, and the robin.
+          sky('#d6ecf5','#c8e0b0');rect(0,.3,1,.7,'#b8705a');for(let r=0;r<7;r++)for(let i=0;i<7;i++)rect(i*.16+(r%2)*.08-.05,.33+r*.1,.15,.008,'#8a4a3a');
+          rect(.38,.4,.24,.6,'#2a6a3a');ell(.5,.4,.12,.06,'#2a6a3a');ell(.58,.68,.012,.012,'#f2c230');for(let i=0;i<14;i++)ell((i*.29)%1,.32+(i*.13)%.4,.07,.05,'#3f7a33');
+          ell(.78,.26,.05,.04,'#8a5a3a');ell(.8,.28,.03,.025,'#e0582a');ell(.75,.23,.007,.007,'#111');break;
+        case 146:// A Little Princess: Sara's attic, with Emily in her chair and the window over the snowy roofs.
+          sky('#5a4a3a','#3a2a20');rect(.12,.12,.4,.32,'#1d2a50');for(let i=0;i<10;i++)ell(.14+(i*.37)%.36,.14+(i*.23)%.28,.006,.005,'#fff');rect(.12,.36,.4,.08,'#e8eef5');
+          line([[.32,.12],[.32,.44]],'#3a2a20',4);line([[.12,.28],[.52,.28]],'#3a2a20',4);rect(.58,.62,.24,.04,'#8a5a3a');rect(.6,.4,.04,.3,'#8a5a3a');rect(.76,.66,.03,.22,'#8a5a3a');
+          ell(.68,.54,.06,.08,'#c86a8a');ell(.68,.42,.04,.04,'#f1d3b3');ell(.68,.39,.045,.03,'#e8c050');rect(0,.82,1,.18,'#6a4a32');break;
+        default:sky('#1b2440','#c9a45c')}
+    }
+    const ATTIC_FRAMES=['#1b2440','#7a2a2a','#2a5a3a','#3a3a6a','#6a4a1a','#1f4f6a'],atticCoverCache=new Map();
+    function atticCoverMaterial(book){
+      if(!atticCoverCache.has(book.id)){const frame=ATTIC_FRAMES[book.id%ATTIC_FRAMES.length];atticCoverCache.set(book.id,new THREE.MeshStandardMaterial({roughness:.7,map:canvasTexture((c,W,H)=>{
+        c.fillStyle=frame;c.fillRect(0,0,W,H);c.save();c.beginPath();c.rect(12,12,W-24,H*.66);c.clip();c.translate(12,12);atticCoverArt(c,W-24,H*.66,book.id);c.restore();
+        c.strokeStyle='#e9c46a';c.lineWidth=4;c.strokeRect(12,12,W-24,H*.66);c.fillStyle='#fff8e8';c.textAlign='center';
+        const words=book.title.replace(/, and Other Tales$/,'').split(' '),lines=[];let line='';c.font=`bold ${Math.round(H*.058)}px Georgia`;
+        for(const word of words){const t=line?line+' '+word:word;if(c.measureText(t).width>W-28&&line){lines.push(line);line=word}else line=t}lines.push(line);
+        lines.slice(0,3).forEach((l,i)=>c.fillText(l,W/2,H*.76+i*H*.062));c.font=`italic ${Math.round(H*.042)}px Georgia`;c.fillStyle='#e9c46a';c.fillText(book.author.replace(/ \((ed|ill)\.\)$/,''),W/2,H*.96)},256,352)}))}
+      return atticCoverCache.get(book.id);
+    }
     // A room's books are listed in data/curious-rooms-books.js. Many are also on other shelves, where the library already has
     // them, so each is looked up by its id among the library's books and this room shows its own copy.
     function roomBooks(room,shelf){
@@ -53,8 +155,8 @@
       return records.filter(record=>record.room===room.key&&(record.shelf||'')===(shelf||'')).map(record=>books.find(book=>book.id===record.id)).filter(Boolean);
     }
     // Lays books out in a row along x (or along z, for a case on a side wall), each one a real, readable volume.
-    function displayBooks(room,parent,x0,y,z,spacing=.95,rotY=0,{list=roomBooks(room),alongZ=false,geometry=displayGeometry}={}){
-      list.forEach((book,i)=>{const mesh=add(geometry,bookMaterial(book),alongZ?x0:x0+i*spacing,y,alongZ?z+i*spacing:z,parent);mesh.rotation.order='YXZ';mesh.rotation.y=rotY;mesh.rotation.x=-.12;mesh.rotation.z=Math.sin(book.id)*.03;mesh.userData={type:'book',book,loaded:false,home:{position:mesh.position.clone(),quaternion:mesh.quaternion.clone(),parent}};interactables.push(mesh)});
+    function displayBooks(room,parent,x0,y,z,spacing=.95,rotY=0,{list=roomBooks(room),alongZ=false,geometry=displayGeometry,picture=room.key==='attic'}={}){
+      list.forEach((book,i)=>{const mesh=add(geometry,picture?atticCoverMaterial(book):bookMaterial(book),alongZ?x0:x0+i*spacing,y,alongZ?z+i*spacing:z,parent);mesh.rotation.order='YXZ';mesh.rotation.y=rotY;mesh.rotation.x=-.12;mesh.rotation.z=Math.sin(book.id)*.03;mesh.userData={type:'book',book,loaded:false,pictureCover:picture,home:{position:mesh.position.clone(),quaternion:mesh.quaternion.clone(),parent}};interactables.push(mesh)});
       return list.length;
     }
     function armchair(room,parent,x,z,yaw,fabric,title,author){
@@ -217,6 +319,71 @@
         const chute=box(Math.hypot(SLIDE.chute,SLIDE.top),.06,SLIDE.half*2,yellow,(SLIDE.uChute+SLIDE.uEnd)/2,SLIDE.top/2,0,g);chute.rotation.z=-Math.atan2(SLIDE.top,SLIDE.chute);parts.push(chute);
         box(.9,.1,1,std(0x8c2a22,{roughness:1}),SLIDE.uEnd+.45,.05,0,g);
         for(const part of parts)mark(part,card)}
+      // Marmalade, the attic's ginger kitten. She pads round her haunts (the nursery bookcase, the window seat, the clockwork
+      // train, the foot of the slide, her saucer of milk) and every fifth stop curls up in her basket for a while. The tin of
+      // treats on the stool brings her at a run (three times in five minutes, as Clio's does), the ball of yarn rolls away
+      // for her to chase, and stroked she purrs (game.js's own purr). No light; one small group.
+      {const ginger=std(0xd9863a,{roughness:.9}),white=std(0xf4ede2,{roughness:.9}),pink=std(0xe8a0a8),dark=std(0x1a1a1a,{roughness:.4}),green=std(0x6fae4a,{roughness:.4});
+        const bed={x:cx-6.6,z:cz+5.3},saucer={x:cx-5.7,z:cz+5.65},tin={x:cx-4.6,z:cz+6.05};
+        // The basket bed, with a quilt and a cushion.
+        const wicker=std(0xb08850,{roughness:.95}),bedParts=[];
+        const rim=add(new THREE.CylinderGeometry(.42,.36,.24,20,1,true),wicker,bed.x,.12,bed.z,r);rim.material.side=THREE.DoubleSide;bedParts.push(rim);
+        bedParts.push(add(new THREE.TorusGeometry(.42,.04,6,24),wicker,bed.x,.24,bed.z,r));bedParts[1].rotation.x=Math.PI/2;
+        const cushion=add(new THREE.CylinderGeometry(.36,.36,.08,20),std(0x2d4b6e,{roughness:1}),bed.x,.06,bed.z,r);bedParts.push(cushion);
+        const quilt=box(.4,.03,.3,std(0xc0392b,{roughness:1}),bed.x+.12,.12,bed.z+.1,r);quilt.rotation.y=.5;bedParts.push(quilt);
+        const bedCard={type:'curious-detail',title:'Marmalade’s basket',author:'A wicker basket with a cushion and a patchwork quilt, the warmest place in the attic. Every so often the kitten curls up in it.',action:'LOOK'};
+        for(const part of bedParts)mark(part,bedCard);block(room,bed.x,bed.z,.9,.9);
+        // Her saucer of milk.
+        add(new THREE.CylinderGeometry(.13,.09,.03,18),white,saucer.x,.015,saucer.z,r);const milk=add(new THREE.CylinderGeometry(.11,.11,.005,18),std(0xfbfbf6,{roughness:.3}),saucer.x,.033,saucer.z,r);
+        mark(milk,{type:'curious-detail',title:'A saucer of milk',author:'Somebody keeps it filled. Nobody admits to it.',action:'LOOK'});
+        // The tin of treats on a little painted stool.
+        box(.36,.34,.36,std(0x2e6fa7,{roughness:.7}),tin.x,.17,tin.z,r);const tinBody=cyl(.07,.07,.12,16,std(0xd4a017,{roughness:.35,metalness:.4}),tin.x,.4,tin.z,r);cyl(.072,.072,.02,16,MAT.brass,tin.x,.47,tin.z,r);
+        mark(tinBody,{type:'attic-treats',title:'A tin of kitten treats',author:'It rattles. Give it a shake and see who comes.',action:'SHAKE'});block(room,tin.x,tin.z,.45,.45);
+        // A ball of red yarn, with a trailing end.
+        const yarn=new THREE.Group();r.add(yarn);const ball=sphere(.09,std(0xc0392b,{roughness:1}),0,.09,0,yarn,12);const strand=box(.3,.01,.012,std(0xc0392b,{roughness:1}),.18,.01,.05,yarn);strand.rotation.y=.4;
+        mark(ball,{type:'attic-yarn',title:'A ball of yarn',author:'Red wool, a little unravelled. Somebody has been playing with it.',action:'ROLL'});
+        const YARN=[[cx-2.6,cz+3.6],[cx-1.8,cz-2.8],[cx+2.2,cz-3.2],[cx+3.6,cz+4.2],[cx-3.4,cz-.4]];yarn.position.set(YARN[0][0],0,YARN[0][1]);
+        // The kitten: ginger with a white chest and paws.
+        const cat=new THREE.Group();r.add(cat);
+        const body=sphere(.13,ginger,0,.14,0,cat,14);body.scale.set(1,.85,1.5);const chest=sphere(.08,white,0,.14,.13,cat,10);
+        const head=new THREE.Group();head.position.set(0,.25,.2);cat.add(head);const headParts=[sphere(.09,ginger,0,0,0,head,14),sphere(.045,white,0,-.03,.06,head,10)];
+        for(const sx of [-1,1]){const ear=add(new THREE.ConeGeometry(.035,.07,6),ginger,sx*.05,.08,-.01,head);ear.rotation.z=-sx*.25;const inner=add(new THREE.ConeGeometry(.02,.04,6),pink,sx*.05,.075,.005,head);inner.rotation.z=-sx*.25;
+          headParts.push(ear,inner,sphere(.016,green,sx*.035,.018,.075,head,8),sphere(.008,dark,sx*.035,.018,.09,head,6))}
+        headParts.push(sphere(.012,pink,0,-.012,.09,head,6));
+        const legs=[];for(const [lx,lz] of [[-.06,.12],[.06,.12],[-.06,-.12],[.06,-.12]])legs.push(cyl(.025,.025,.1,6,white,lx,.05,lz,cat));
+        const tail=cyl(.018,.012,.28,6,ginger,0,.22,-.26,cat);tail.rotation.x=-.9;
+        const awake={type:'attic-kitten',title:'Marmalade, the attic kitten',author:'A ginger kitten with white socks, who lives in the attic and knows exactly where the treats are kept.',action:'STROKE'};
+        const asleep={type:'attic-kitten',title:'Marmalade is asleep',author:'Curled up in her basket, nose under her tail. Shh!',action:'LOOK'};
+        const catParts=[body,chest,...headParts,...legs,tail];for(const part of catParts)mark(part,awake);const setCard=card=>{for(const part of catParts)part.userData=card};
+        const SPOTS=[[cx-6.8,cz-2],[cx+1.5,cz-4.4],[cx+.5,cz+4],[cx+5.4,cz+4.6],[cx+.5,cz+4],[saucer.x+.32,saucer.z]],MILK=5;
+        const kitten={x:cx+.5,z:cz+4,yaw:0,goal:0,wait:2,sleep:0,since:0,head:0,treats:[],purred:false};cat.position.set(kitten.x,0,kitten.z);
+        const pose=sleeping=>{if(sleeping){body.scale.set(1.25,.62,1.25);head.position.set(.14,.12,.12);head.rotation.set(.5,0,0);tail.rotation.set(-1.5,0,.9)}else{body.scale.set(1,.85,1.5);head.position.set(0,.25,.2);head.rotation.set(0,0,0);tail.rotation.set(-.9,0,0)}for(const l of legs)l.visible=!sleeping;setCard(sleeping?asleep:awake)};
+        const wake=()=>{if(kitten.sleep>0){kitten.sleep=0;pose(false);kitten.goal=0;kitten.wait=.5}};
+        attic={kitten,bed,saucer,tin,yarn,spots:SPOTS,yarnSpots:YARN,
+          get asleep(){return kitten.sleep>0},
+          stroke(){if(kitten.sleep>0){purr?.(2.5,.12);showNotice('She stretches one paw in her sleep, and purrs.',4);return}kitten.wait=Math.max(kitten.wait,3.5);purr?.(3.2,.26);showNotice('Marmalade leans into your hand and purrs like a little engine.',4)},
+          shake(){[1320,1180,1320].forEach((f,i)=>setTimeout(()=>sound?.(f,.04,'square',.02),i*70));while(kitten.treats.length&&time-kitten.treats[0]>300)kitten.treats.shift();
+            if(kitten.treats.length>=3){showNotice('Marmalade looks at the tin, then at you, and stays where she is. She has had enough treats for now.',5);return false}
+            kitten.treats.push(time);wake();kitten.goal=-2;kitten.wait=0;showNotice('A rattle of the tin, and the patter of small paws.',4);return true},
+          roll(){const i=(YARN.findIndex(([x,z])=>Math.hypot(yarn.position.x-x,yarn.position.z-z)<.3)+1)%YARN.length;attic.rolling={from:yarn.position.clone(),to:new THREE.Vector3(YARN[i][0],0,YARN[i][1]),t:0};
+            if(kitten.sleep<=0){kitten.goal=-3;kitten.wait=.4;showNotice('The yarn rolls away across the boards, and Marmalade is after it.',4)}else showNotice('The yarn rolls away. In her basket, one ear twitches.',4)},
+          update(t,dt){
+            if(attic.rolling){const k=Math.min(1,(attic.rolling.t+=dt)/1.2),e=1-(1-k)*(1-k);yarn.position.lerpVectors(attic.rolling.from,attic.rolling.to,e);ball.rotation.x+=dt*8*(1-k);if(k>=1)attic.rolling=null}
+            if(kitten.sleep>0){kitten.sleep-=dt;body.scale.y=.62+.03*Math.sin(t*1.6);
+              if(!kitten.purred&&Math.hypot(player.pos.x-bed.x,player.pos.z-bed.z)<1.8){kitten.purred=true;purr?.(2.5,.1)}
+              if(kitten.sleep<=0){pose(false);kitten.goal=0;kitten.wait=1.5}return}
+            if(kitten.wait>0){kitten.wait-=dt;tail.rotation.z=Math.sin(t*2.2)*.35;if(kitten.head>0){kitten.head-=dt;head.rotation.x=.6+Math.sin(t*12)*.05;if(kitten.head<=0)head.rotation.x=0}return}
+            const target=kitten.goal===-1?bed:kitten.goal===-2?{x:tin.x-.05,z:tin.z-.5}:kitten.goal===-3?{x:yarn.position.x-.18,z:yarn.position.z-.1}:{x:SPOTS[kitten.goal][0],z:SPOTS[kitten.goal][1]};
+            const dx=target.x-kitten.x,dz=target.z-kitten.z,dist=Math.hypot(dx,dz);
+            if(dist<.06){
+              if(kitten.goal===-1){kitten.sleep=45;kitten.purred=false;kitten.x=bed.x;kitten.z=bed.z;cat.position.set(bed.x,.1,bed.z);pose(true);return}
+              if(kitten.goal===-2){kitten.wait=4;kitten.head=4;cat.rotation.y=0;purr?.(3,.22);kitten.goal=0;return}
+              if(kitten.goal===-3){if(attic.rolling)return;kitten.wait=3;kitten.goal=0;// she bats it a little further
+                attic.rolling={from:yarn.position.clone(),to:yarn.position.clone().add(new THREE.Vector3(Math.sin(kitten.yaw)*.35,0,Math.cos(kitten.yaw)*.35)),t:0};return}
+              if(kitten.goal===MILK){kitten.head=4;cat.rotation.y=-Math.PI/2}
+              kitten.since++;kitten.wait=2+((kitten.since*7)%5);kitten.goal=kitten.since%5===0?-1:(kitten.goal+1)%SPOTS.length;return}
+            const step=Math.min(dist,(kitten.goal===-2||kitten.goal===-3?1.4:.45)*dt);kitten.x+=dx/dist*step;kitten.z+=dz/dist*step;kitten.yaw=Math.atan2(dx,dz);
+            cat.position.set(kitten.x,Math.abs(Math.sin(t*9))*.012,kitten.z);cat.rotation.y=kitten.yaw;legs.forEach((l,i)=>{l.rotation.x=Math.sin(t*9+(i%3?Math.PI:0))*.5});tail.rotation.z=Math.sin(t*4)*.2}}}
       light(r,0xffcf8f,5.5,11,cx,3.4,cz+1);light(r,0xa9b9ff,2.5,8,cx,2.6,cz-d/2+1.5);
       return shown;
     }
@@ -315,6 +482,9 @@
       if(data.type==='curious-door'){const door=doors[data.room];if(door.kind==='bookcase'&&door.state==='open'){enter(door.room);return true}openDoor(door);return true}
       if(data.type==='curious-exit'){const room=rooms[data.room],door=doors[room.key],back=1.9;move(room.door.x+Math.sin(room.door.yaw)*back,room.door.z+Math.cos(room.door.yaw)*back,room.door.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again, and its familiar lamplight.',4);door.state='closing';door.t=0;return true}
       if(data.type==='curious-slide'){slideDown();return true}
+      if(data.type==='attic-kitten'){attic?.stroke();return true}
+      if(data.type==='attic-treats'){attic?.shake();return true}
+      if(data.type==='attic-yarn'){attic?.roll();return true}
       if(data.type==='curious-detail'){showNotice(data.author,7);sound?.(300,.12,'triangle',.035);if(data.title==='A dappled rocking horse'){const horse=animated.find(a=>a.kind==='rock');if(horse)horse.kick=time}return true}
       return false;
     }
@@ -360,10 +530,11 @@
         else if(a.kind==='rock'){const since=a.kick!==undefined?t-a.kick:99;a.object.rotation.x=(since<6?Math.sin(since*3.2)*.16*Math.exp(-since*.45):Math.sin(t*.8)*.012)*(motion||.2)}
         else if(a.kind==='train'){const base=t*.45*(motion||.25);a.train.children.forEach((car,i)=>{const ang=base-i*.25;car.position.set(a.cx+Math.cos(ang)*1.7,car.position.y,a.cz+Math.sin(ang)*1.7);car.rotation.y=-ang})}
       }
+      if(room.key==='attic')attic?.update(t,dt);
       if(room.key==='horologist'&&Math.floor(t*2)!==Math.floor((t-dt)*2))sound?.(Math.floor(t*2)%2?2800:2300,.025,'square',.006);
     }
 
     clockDoor(rooms.horologist);glassDoor(rooms.conservatory);bookcaseDoor(rooms.parlour);nurseryDoor(rooms.attic);
-    return {contains,floorAt,allowed,interact,update,zoneAt,rooms,doors,activate,slide:SLIDE,slideHeight,enter:key=>rooms[key]&&enter(rooms[key])};
+    return {contains,floorAt,allowed,interact,update,zoneAt,rooms,doors,activate,slide:SLIDE,slideHeight,get attic(){return attic},enter:key=>rooms[key]&&enter(rooms[key])};
   };
 })();
