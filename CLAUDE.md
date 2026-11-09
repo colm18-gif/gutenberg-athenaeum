@@ -244,6 +244,12 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   copy. Their texts are `texts/pg<id>.txt` or `texts/bundled-gzip`. Against the east wall a painted slide (`SLIDE`):
   its steps and chute are the floor there (`slideHeight`), `allowed` takes the steps one at a time, and at the top the
   slide carries the reader down the chute to the cushion.
+  Every attic copy wears a drawn picture cover (`atticCoverArt`, a scene per book id, no files; `pictureCover` keeps
+  game.js's real-cover swap off them): a new attic book needs its own `case`. Marmalade, the attic's ginger kitten
+  (`attic` in curious-doors.js, ticked only while the reader is in the attic), pads between `SPOTS`, naps in her basket
+  every fifth stop (purring softly when a reader comes near), runs to the tin of treats (`attic-treats`, three in five
+  minutes), chases the ball of yarn (`attic-yarn`) and purrs when stroked (game.js's `purr`, passed in). `?debug` exposes
+  `__athenaeum.curiousDoors`.
 - The Station Subway (`station-subway.js`) is the plain way to the night trains: in the Grand Hall's east aisle between the
   columns (x 12.6–15.4, z −21 to −14.5, clear of the Wandering Door's forecourt), steps go down through the floor under an
   iron arch with two lamps, signed TO THE TRAINS. The well is really sunk: its tiles and steps are drawn first (`renderOrder`

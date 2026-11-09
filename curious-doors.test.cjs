@@ -14,11 +14,11 @@ const stair=fs.readFileSync('high-staircase.js','utf8');
 function stub(){const target=function(){};return new Proxy(target,{get(t,k){if(k in t)return t[k];if(k===Symbol.toPrimitive)return()=>0;if(k==='then'||k===Symbol.iterator)return undefined;t[k]=stub();return t[k]},apply(){return stub()},construct(){return stub()},set(t,k,v){t[k]=v;return true}})}
 function loadBooks(){const context={window:{}};vm.runInNewContext(fs.readFileSync('data/curious-rooms-books.js','utf8'),context);return context.window.ATHENAEUM_CURIOUS_BOOKS}
 function fixture(){
-  const books=loadBooks().map(book=>({...book})),interactables=[],seats=[],moves=[],notices=[],player={pos:{x:0,y:0,z:0},radius:.42};
+  const purrs=[],books=loadBooks().map(book=>({...book})),interactables=[],seats=[],moves=[],notices=[],player={pos:{x:0,y:0,z:0},radius:.42};
   const context={window:{ATHENAEUM_CURIOUS_BOOKS:loadBooks()},localStorage:{getItem:()=>null,setItem(){}},Math,Object,Array,Number,String,Set,Map,Float32Array,setTimeout:()=>0};
   vm.runInNewContext(fs.readFileSync('curious-doors.js','utf8'),context);
-  const doors=context.window.createCuriousDoors({THREE:stub(),scene:stub(),MAT:stub(),player,camera:stub(),interactables,books,bookMaterial:()=>stub(),canvasTexture:()=>stub(),showNotice:text=>notices.push(text),playSample:()=>true,sound:()=>{},registerSeat:(parts,group,eye,yaw,options)=>seats.push(options),move:(x,z,yaw)=>{moves.push({x,z,yaw});player.pos.x=x;player.pos.z=z}});
-  return {doors,books,interactables,seats,moves,notices,player};
+  const doors=context.window.createCuriousDoors({THREE:stub(),scene:stub(),MAT:stub(),player,camera:stub(),interactables,books,bookMaterial:()=>stub(),canvasTexture:()=>stub(),showNotice:text=>notices.push(text),playSample:()=>true,sound:()=>{},purr:()=>purrs.push(1),registerSeat:(parts,group,eye,yaw,options)=>seats.push(options),move:(x,z,yaw)=>{moves.push({x,z,yaw});player.pos.x=x;player.pos.z=z}});
+  return {doors,books,interactables,seats,moves,notices,player,purrs};
 }
 
 test('curious rooms load before the game and their books are new, bundled and complete',()=>{
@@ -113,6 +113,36 @@ test('?room=attic (or nursery) goes straight into the Children’s Attic',()=>{
   const f=fixture();f.doors.enter('attic');
   assert.equal(f.doors.zoneAt(f.player.pos.x,f.player.pos.z)?.key,'attic');
   assert.ok(f.doors.allowed(f.player.pos.x,f.player.pos.z),'the reader arrives somewhere walkable');
+});
+
+test('the attic’s books wear picture covers that the real-cover swap leaves alone',()=>{
+  const f=fixture();f.doors.activate(f.doors.rooms.attic);
+  const attic=new Set(loadBooks().filter(book=>book.room==='attic').map(book=>book.id));
+  const shelved=f.interactables.filter(object=>object.userData?.type==='book'&&attic.has(object.userData.book.id));
+  assert.equal(shelved.length,attic.size);
+  assert.ok(shelved.every(object=>object.userData.pictureCover===true),'every attic copy is marked pictureCover');
+  const src=fs.readFileSync('curious-doors.js','utf8');
+  for(const id of attic)assert.match(src,new RegExp(`case ${id}:`),`book ${id} has a drawn scene`);
+  assert.match(game,/object\.userData\.pictureCover\|\|/,'game.js skips picture covers when it swaps in real ones');
+});
+
+test('Marmalade comes for treats (three in five minutes), naps in her basket, and purrs when stroked',()=>{
+  const f=fixture(),room=f.doors.rooms.attic;f.doors.activate(room);const cat=f.doors.attic;
+  f.doors.interact({userData:{type:'curious-door',room:'attic'}});for(let t=0;t<3;t+=.05)f.doors.update(t,.05,false);
+  assert.equal(f.doors.zoneAt(f.player.pos.x,f.player.pos.z),room);
+  let t=3;
+  assert.equal(cat.shake(),true);let nearest=99;for(const end=t+15;t<end;t+=.05){f.doors.update(t,.05,false);nearest=Math.min(nearest,Math.hypot(cat.kitten.x-cat.tin.x,cat.kitten.z-cat.tin.z))}
+  assert.ok(nearest<.7,'the treat brings her to the tin');
+  assert.ok(f.purrs.length>=1,'she purrs over her treat');
+  assert.equal(cat.shake(),true);assert.equal(cat.shake(),true);assert.equal(cat.shake(),false,'a fourth treat is refused');
+  t+=301;f.doors.update(t,.05,false);assert.equal(cat.shake(),true,'five minutes later she will take another');
+  // Left to herself she goes round her haunts and, every fifth stop, to her basket.
+  let slept=false;for(let i=0;i<4000&&!slept;i++){f.doors.update(t,.05,false);t+=.05;slept=cat.asleep}
+  assert.ok(slept,'she curls up in her basket');
+  assert.ok(Math.hypot(cat.kitten.x-cat.bed.x,cat.kitten.z-cat.bed.z)<.1);
+  const before=f.purrs.length;cat.stroke();assert.ok(f.purrs.length>before,'stroked, she purrs');
+  // Every haunt is on open attic floor.
+  for(const [x,z] of [...cat.spots,...cat.yarnSpots])assert.equal(f.doors.zoneAt(x,z),room);
 });
 
 test('reading from a chair releases the mouse so the reader controls are usable',()=>{
