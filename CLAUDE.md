@@ -13,7 +13,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Files the jobs rewrite without a new build are listed in `LIVE_DATA` there.
 - Rooms behind doors (`evening-room.js`, `learners-room.js`, `periodicals-room.js`, `international-wing.js`,
   `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`, `map-room.js`, `medicine-room.js`, `set-texts-room.js`,
-  `austen-room.js`, `burns-room.js`, `canada-room.js`, `gulliver-room.js`, `nemo-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`, `walden.js`)
+  `austen-room.js`, `burns-room.js`, `canada-room.js`, `gulliver-room.js`, `nemo-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`, `walden.js`, `uncatalogued-room.js`)
   are built only when the reader approaches and freed ~25 s after they leave. So are the Room of Chance (its portrait
   stays), the Lost Property Office (its hatch stays) and the high staircase, Rocket Hall, Moon and rocket cabin (`high-staircase.js`: only its door in the west wing
   is built at startup; a stair book carried away keeps it). The basement and the roof garden, built in `game.js` on a first visit, are
@@ -228,6 +228,19 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - The Room of Chance (`chance-room.js`, x 500, z 60, clear of the Moon at x 340, z 30) is behind a small crooked portrait
   on the east wing's east wall (x 36.6, z 2.05), between the Restricted Catalogue's gate and the Verne engraving
   (`?room=chance`): forty-two books shuffled afresh on each visit, a table, and a plaque, NO ORDER GOVERNS THESE SHELVES.
+- The Uncatalogued (`uncatalogued-room.js`, x 1400, z −250) is behind a plain planked door marked UNCATALOGUED in the west
+  wall of the staff Sorting Room (`after-dark-expansion.js`, x −180, z −24; the door at x −193.72, z −26.4, between the
+  service shelves and the hand truck; `?room=uncatalogued`, `estate`, `heaps`, `piles`, `unsorted`): a house's library
+  delivered this evening, not yet sorted. Books in leaning towers, drifts across the boards, four tea chests (one
+  tipped on its side and spilled, one stacked on despite its stencil), an armchair under a dust sheet (a seat), a
+  trestle table with the day book, and five empty cases with pencilled cards (`KINDS`: POETRY & PLAYS, NOVELS,
+  CHILDREN'S BOOKS, LIVES & LETTERS, PHILOSOPHY & SCIENCE). Among the heaps is a lot of twenty of the library's own
+  books, four of each kind, drawn afresh each time the room is built. A reader carries one to a case: game.js's
+  carrying wrapper asks `accepts` (a wrong case says so; the second time it names the kind) and `placeSelected` lets a
+  target with a `place` function stand the book in it. A whole lot sorted brightens the lamp and is counted for good
+  (`athenaeum-uncatalogued-lots`, on the day book). Taking a book off a tower makes it settle. The heaps are two
+  InstancedMeshes (covers with instance colours, and a pages block that shows at head, tail and fore-edge); one lamp.
+  A book listed in `KINDS` must be in the core list in game.js and plainly of its kind.
 - The Wandering Door (`wandering-door.js`, x 6, z −24.5, facing east) stands on its own, in no wall, at the north end of
   the Grand Hall behind the long bookcase (`?room=wandering-door`, `elsewhere`): ELSEWHERE gilded on its glass. Opened
   from the front, it shows the kit's lamplit passage and sends the reader into a room chosen at random through
@@ -594,7 +607,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
-  daily-room, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, within, set-texts, voynich, chance, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
+  daily-room, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.

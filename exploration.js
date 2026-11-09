@@ -44,6 +44,7 @@
     'lost-property':['Ring the bell at the book lift in the west wing’s south wall.'],
     'evening-room':['The east wing’s south wall, the red door.'],
     'chance-room':['A small crooked portrait on the east wing’s east wall.'],
+    uncatalogued:['Through the staff Sorting Room: the plain door in its west wall, marked UNCATALOGUED. Bring a strong back.','afterdark-sorting'],
     'station-subway':['The steps going down through the Grand Hall’s floor, TO THE TRAINS.'],
     mountain:['The painting of a mountain by moonlight on the Grand Hall’s north wall. Look closely.'],
     contested:['Through the Restricted Catalogue, the door bound in banned books.'],
