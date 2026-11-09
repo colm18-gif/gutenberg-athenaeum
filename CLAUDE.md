@@ -235,6 +235,14 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   journal). Its list in game.js is rooms behind ordinary doors only (theme rooms, reading rooms, the International Wing):
   not the rooms reached by carpet, balloon, boat, rocket, the globe, the model Nautilus or the window, nor the secret ones
   (a test checks). The way back is the room's own door. From behind, or with a book in hand, it stays shut.
+- The Children's Attic (`curious-doors.js`, x −240, z 60) is behind the small painted NURSERY door in the Grand Hall's
+  east wall (x 18.72, z −13.5; knock first), one of the four curious doors. Its books are `room:'attic'` in
+  `data/curious-rooms-books.js`: the ledge over the window seat, and with `shelf:'case'` the painted nursery bookcase on
+  the west wall (picture books and rhymes on the top tier, stories to grow into below; split evenly between the tiers).
+  A curious room's book is looked up by id (`roomBooks`), so a book the library already shelves elsewhere shows that
+  copy. Their texts are `texts/pg<id>.txt` or `texts/bundled-gzip`. Against the east wall a painted slide (`SLIDE`):
+  its steps and chute are the floor there (`slideHeight`), `allowed` takes the steps one at a time, and at the top the
+  slide carries the reader down the chute to the cushion.
 - The Station Subway (`station-subway.js`) is the plain way to the night trains: in the Grand Hall's east aisle between the
   columns (x 12.6–15.4, z −21 to −14.5, clear of the Wandering Door's forecourt), steps go down through the floor under an
   iron arch with two lamps, signed TO THE TRAINS. The well is really sunk: its tiles and steps are drawn first (`renderOrder`
