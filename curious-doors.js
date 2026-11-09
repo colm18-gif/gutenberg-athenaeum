@@ -210,7 +210,7 @@
         for(let i=0;i<SLIDE.steps;i++)parts.push(box(SLIDE.step,.06,SLIDE.half*2,red,(i+.5)*SLIDE.step,(i+1)*SLIDE.rise-.03,0,g));
         parts.push(box(SLIDE.deck,.1,SLIDE.half*2+.1,blue,SLIDE.uDeck+SLIDE.deck/2,SLIDE.top-.05,0,g));
         for(const sz of [-1,1]){const z=sz*(SLIDE.half+.05);
-          const rail=box(Math.hypot(SLIDE.uDeck,SLIDE.top),.06,.06,yellow,SLIDE.uDeck/2,SLIDE.top/2+.6,z,g);rail.rotation.z=Math.atan2(SLIDE.top,SLIDE.uDeck);
+          const rail=box(Math.hypot(SLIDE.uDeck,SLIDE.top),.06,.06,yellow,SLIDE.uDeck/2,SLIDE.top/2+.6,z,g);rail.rotation.z=Math.atan2(SLIDE.top,SLIDE.uDeck);const stringer=box(Math.hypot(SLIDE.uDeck,SLIDE.top)+.1,.16,.04,blue,SLIDE.uDeck/2,SLIDE.top/2-.04,sz*(SLIDE.half+.02),g);stringer.rotation.z=Math.atan2(SLIDE.top,SLIDE.uDeck);
           for(const u of [.05,SLIDE.uDeck,SLIDE.uChute]){const ph=u===.05?.7:SLIDE.top+.7;box(.08,ph,.08,blue,u,ph/2,z,g)}
           box(SLIDE.deck,.06,.06,yellow,SLIDE.uDeck+SLIDE.deck/2,SLIDE.top+.65,z,g);
           const side=box(Math.hypot(SLIDE.chute,SLIDE.top),.22,.05,red,(SLIDE.uChute+SLIDE.uEnd)/2,SLIDE.top/2+.08,z,g);side.rotation.z=-Math.atan2(SLIDE.top,SLIDE.chute);parts.push(side)}
