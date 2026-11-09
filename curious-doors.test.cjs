@@ -145,6 +145,23 @@ test('Marmalade comes for treats (three in five minutes), naps in her basket, an
   for(const [x,z] of [...cat.spots,...cat.yarnSpots])assert.equal(f.doors.zoneAt(x,z),room);
 });
 
+test('the attic’s toys each do something, and leave the kitten’s rounds and the way in clear',()=>{
+  const f=fixture(),room=f.doors.rooms.attic;f.doors.activate(room);const cat=f.doors.attic;
+  f.doors.interact({userData:{type:'curious-door',room:'attic'}});let t=0;for(;t<3;t+=.05)f.doors.update(t,.05,false);
+  const keys=['teddy','jack','top','drum','pins','ark'];
+  for(const key of keys){assert.ok(f.interactables.some(o=>o.userData?.type==='attic-toy'&&o.userData.toy===key),`${key} can be touched`);
+    f.notices.length=0;assert.ok(f.doors.interact({userData:{type:'attic-toy',toy:key}}),`${key} answers`);assert.ok(f.notices.length,`${key} says something`)}
+  const jack=cat.toyAt('jack'),pins=cat.toyAt('pins'),top=cat.toyAt('top');
+  assert.ok(top.v>0,'the top spins');let popped=false,down=false;
+  for(const end=t+3;t<end;t+=.05){f.doors.update(t,.05,false);popped||=jack.popped;down||=pins.down}
+  assert.ok(popped,'the jack pops up');assert.ok(down,'the ball reaches the pins');
+  for(const end=t+10;t<end;t+=.05)f.doors.update(t,.05,false);
+  assert.equal(jack.t,-1,'the jack goes back in his box');assert.equal(pins.t,-1,'the pins are set up again');assert.equal(top.v,0,'the top runs down');
+  // Nothing stands where the kitten goes, where the yarn rolls, or where a reader comes in.
+  f.player.pos.x=room.cx;f.player.pos.z=room.cz+room.d/2-1.8;
+  for(const [x,z] of [...cat.spots,...cat.yarnSpots,[room.cx,room.cz+room.d/2-1.8]])assert.ok(f.doors.allowed(x,z),`(${(x-room.cx).toFixed(1)}, ${(z-room.cz).toFixed(1)}) is open floor`);
+});
+
 test('reading from a chair releases the mouse so the reader controls are usable',()=>{
   assert.match(game,/ui\.reader\.classList\.remove\('hidden'\);document\.exitPointerLock\?\.\(\);/);
 });
