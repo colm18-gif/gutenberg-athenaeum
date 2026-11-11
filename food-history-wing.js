@@ -8,7 +8,7 @@
     {key:'preservation',title:'THE PRESERVATION VAULT',subtitle:'Salt, smoke, canning and winter stores',x:-8.5,z:-1.4,ids:[19031,12350,15464,12238]},
     {key:'spices',title:'THE GLOBAL SPICE EXCHANGE',subtitle:'Taste, travel and trade',x:8.5,z:-1.4,ids:[29728,24407,44915,16035]}
   ];
-  // A hand-reviewed selection, not an automatic import of unverified spreadsheet rows.
+  // A small editorial starting selection; verify Gutenberg edition details before wider cataloguing.
   const TITLES={
     10136:['The Book of Household Management','Isabella Beeton'],
     12815:['American Cookery','Amelia Simmons'],
