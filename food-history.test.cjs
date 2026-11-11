@@ -31,3 +31,9 @@ test('wing geometry is built on entry rather than immediately',()=>{
   assert.ok(beforeReturn.includes('function activate(){if(!root)build()'));
   assert.ok(beforeReturn.includes('else if(root&&t-lastNeeded>KEEP'));
 });
+
+test('the entrance is freestanding, curated and persists when the far wing unloads',()=>{
+  for(const term of ['function dressThreshold()','gastronomic-entry-arch','food-history-entrance-plaque','function botanical(side)','food-history-display-cabinet','copper preserving pan','const entranceOwned=owned.splice(0)'])
+    assert.ok(source.includes(term),term);
+  assert.ok(source.indexOf('const entranceOwned=owned.splice(0)')<source.indexOf('function unload()'));
+});
