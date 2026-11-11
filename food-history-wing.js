@@ -137,6 +137,66 @@
     const doorway=new THREE.Group();doorway.name='food-history-threshold';doorway.position.set(THRESHOLD.x,0,THRESHOLD.z);doorway.rotation.y=THRESHOLD.yaw;scene.add(doorway);
     if(!doorKit?.hang(doorway,{data:doorwayData,mark:(m,d)=>mark(m,d,true),width:1.9,height:3.1,color:0x593a28,style:'painted',label:'FOOD HISTORY'}))
       mark(add(new THREE.BoxGeometry(1.9,3.1,.17),new THREE.MeshStandardMaterial({color:0x593a28}),0,1.55,0,doorway),doorwayData,true);
+    // Grand Hall entrance dressing: a proper freestanding oak-and-stone doorway, not a false wall arch.
+    // DoorKit supplies the functioning leaves and the portal; this surround leaves its opening unobstructed.
+    function dressThreshold(){
+      const stone=mat(0x72655a,.93),oak=mat(0x382419,.63),gilt=mat(0xc69c55,.42);
+      const ivory=mat(0xe3d4b6,.91),glass=own(new THREE.MeshStandardMaterial({color:0xdce8df,transparent:true,opacity:.19,roughness:.12,depthWrite:false}));
+      const surround=new THREE.Group();surround.name='gastronomic-entry-arch';doorway.add(surround);
+      // Stone piers and curved masonry arch; no infill behind the arch, and a real operable door underneath.
+      for(const side of [-1,1]){
+        box(.34,2.72,.42,stone,side*1.3,1.36,-.07,surround);
+        box(.15,2.72,.49,oak,side*1.07,1.36,-.04,surround);
+        box(.5,.24,.54,stone,side*1.3,2.74,-.07,surround);
+        box(.52,.22,.55,stone,side*1.3,.11,-.07,surround);
+      }
+      const arch=add(own(new THREE.TorusGeometry(1.3,.17,10,28,Math.PI)),stone,0,2.72,-.07,surround);
+      const innerArch=add(own(new THREE.TorusGeometry(1.06,.055,7,28,Math.PI)),gilt,0,2.72,.16,surround);
+      box(.38,.31,.5,stone,0,4.07,-.07,surround); // keystone at the crown
+      // The brass engraved name deliberately sits above the functioning leaf.
+      const plate=panel(surround,'THE GASTRONOMIC ATHENAEUM','A history of food, cooking & culture',0,4.48,.26,5.6,.8);
+      plate.name='food-history-entrance-plaque';
+      mark(plate,{type:'food-history-card',title:'The Gastronomic Athenaeum',author:'A whole wing devoted to culinary history. Open the oak doors to enter.',action:'READ'},true);
+      // Botanical engravings drawn procedurally onto parchment: wheat on the left, spices and grapevine on the right.
+      function botanical(side){
+        const canvas=own(canvasTexture((c,W,H)=>{
+          c.fillStyle='#d9c6a2';c.fillRect(0,0,W,H);
+          c.strokeStyle='#5b452b';c.lineWidth=5;c.strokeRect(13,13,W-26,H-26);
+          c.strokeStyle='#7a6b43';c.lineWidth=3;
+          c.beginPath();c.moveTo(W*.5,H*.82);c.bezierCurveTo(W*.47,H*.59,W*.56,H*.39,W*.5,H*.18);c.stroke();
+          for(let i=0;i<7;i++){
+            const y=H*(.26+i*.075),left=i%2===0,x=W*.5;
+            c.save();c.translate(x,y);c.rotate(left?-.58:.58);
+            c.beginPath();c.ellipse(left?-18:18,0,20,9,0,0,Math.PI*2);c.stroke();c.restore();
+          }
+          c.fillStyle='#58432d';c.textAlign='center';c.font='italic 25px Georgia';
+          c.fillText(side<0?'TRITICUM':'VITIS & SPICES',W/2,H-40);
+        },256,400));
+        const frame=box(.88,1.37,.07,oak,side*2.34,2.3,.02,surround);
+        const print=add(own(new THREE.PlaneGeometry(.76,1.22)),own(new THREE.MeshStandardMaterial({map:canvas,roughness:.95,side:THREE.DoubleSide})),side*2.34,2.3,.069,surround);
+        mark(print,{type:'food-history-card',title:side<0?'Wheat and the harvest':'Grapevines and spices',author:'Botanical illustrations recall the plants that shaped the history of the table.',action:'READ'},true);
+      }
+      botanical(-1);botanical(1);
+      // A compact vitrine placed off the door's approach: copper pan, preserving vessel and cookbook.
+      const cabinet=new THREE.Group();cabinet.name='food-history-display-cabinet';cabinet.position.set(3.65,0,.05);surround.add(cabinet);
+      box(1.55,.83,.66,oak,0,.415,0,cabinet);
+      box(1.62,.07,.7,gilt,0,.86,0,cabinet);
+      box(1.61,.08,.7,oak,0,1.85,0,cabinet);
+      for(const x of [-.76,.76])for(const z of [-.31,.31])box(.045,.91,.045,gilt,x,1.38,z,cabinet);
+      for(const z of [-.31,.31])box(1.55,.9,.025,glass,0,1.38,z,cabinet);
+      for(const x of [-.76,.76])box(.025,.9,.64,glass,x,1.38,0,cabinet);
+      // Contents stay behind glass; the whole vitrine carries one readable interpretive card.
+      add(own(new THREE.CylinderGeometry(.23,.19,.16,16)),gilt,-.42,1.02,0,cabinet); // copper preserving pan
+      add(own(new THREE.CylinderGeometry(.11,.13,.44,12)),ivory,.26,1.19,-.06,cabinet); // storage jar
+      const exhibitBook=box(.47,.07,.31,oak,.08,1.03,.15,cabinet);exhibitBook.rotation.y=.25;
+      const displayCard={type:'food-history-card',title:'A table of discoveries',author:'A cookbook, copper preserving pan and storage vessel: three objects that connect the pages on these shelves to everyday kitchens.',action:'READ'};
+      mark(exhibitBook,displayCard,true);
+      const label=panel(cabinet,'BEYOND THESE DOORS','lies the history of what humanity has eaten',0,.55,.348,1.48,.37);
+      mark(label,displayCard,true);
+      // Small floor threshold that leaves a generous 2 m clear walk-up to the door.
+      box(2.46,.035,.56,stone,0,.02,.34,surround);
+    }
+    dressThreshold();
     function contains(x,z){return x>ROOM.cx-ROOM.w/2&&x<ROOM.cx+ROOM.w/2&&z>ROOM.cz-ROOM.d/2&&z<ROOM.cz+ROOM.d/2}
     function floorAt(x,z){return contains(x,z)?0:null}
     function allowed(x,z){
