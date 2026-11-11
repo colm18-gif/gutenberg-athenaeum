@@ -196,7 +196,9 @@
       // Small floor threshold that leaves a generous 2 m clear walk-up to the door.
       box(2.46,.035,.56,stone,0,.02,.34,surround);
     }
+    // The entrance stays in the main hall while the distant wing unloads. Keep its assets out of the disposable room pool.
     dressThreshold();
+    const entranceOwned=owned.splice(0);
     function contains(x,z){return x>ROOM.cx-ROOM.w/2&&x<ROOM.cx+ROOM.w/2&&z>ROOM.cz-ROOM.d/2&&z<ROOM.cz+ROOM.d/2}
     function floorAt(x,z){return contains(x,z)?0:null}
     function allowed(x,z){
