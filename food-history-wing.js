@@ -28,7 +28,8 @@
   window.createFoodHistoryWing=function(o){
     const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,registerBook,showNotice,playSample,analytics,move,isHolding=()=>false,doorKit=null}=o;
     const ROOM={cx:-780,cz:-420,w:26,d:21,h:6.4};
-    const THRESHOLD={x:-8,z:12,yaw:Math.PI};
+    // West wall of the Grand Hall, north of the botanical portrait and clear of the writing desks.
+    const THRESHOLD={x:-18.1,z:25,yaw:Math.PI/2};
     const PRELOAD=8,KEEP=25;
     const owned=[],ours=[],shelfBooks=[],blocks=[];let root=null,t=0,lastNeeded=-1000;
     const own=x=>(owned.push(x),x);
@@ -178,7 +179,7 @@
       }
       botanical(-1);botanical(1);
       // A compact vitrine placed off the door's approach: copper pan, preserving vessel and cookbook.
-      const cabinet=new THREE.Group();cabinet.name='food-history-display-cabinet';cabinet.position.set(3.65,0,.05);surround.add(cabinet);
+      const cabinet=new THREE.Group();cabinet.name='food-history-display-cabinet';cabinet.position.set(-3.55,0,.05);surround.add(cabinet);
       box(1.55,.83,.66,oak,0,.415,0,cabinet);
       box(1.62,.07,.7,gilt,0,.86,0,cabinet);
       box(1.61,.08,.7,oak,0,1.85,0,cabinet);
@@ -217,7 +218,7 @@
       if(!d||!String(d.type).startsWith('food-history-'))return false;
       if(d.type==='food-history-door'){if(doorKit&&d.kit)doorKit.pass(d.kit,d,enter);else enter();return true}
       if(d.type==='food-history-exit'){
-        const leave=()=>{move(THRESHOLD.x,THRESHOLD.z-2,Math.PI);playSample?.('doorOpen',.8,1)};
+        const leave=()=>{move(THRESHOLD.x+2.75,THRESHOLD.z,-Math.PI/2);playSample?.('doorOpen',.8,1)};
         if(doorKit&&d.kit)doorKit.pass(d.kit,d,leave);else leave();return true;
       }
       if(d.type==='food-history-card'){showNotice(d.title+': '+d.author,10);return true}
