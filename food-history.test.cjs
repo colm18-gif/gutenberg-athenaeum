@@ -37,3 +37,9 @@ test('the entrance is freestanding, curated and persists when the far wing unloa
     assert.ok(source.includes(term),term);
   assert.ok(source.indexOf('const entranceOwned=owned.splice(0)')<source.indexOf('function unload()'));
 });
+
+test('grand hall doorway clears the writing desk and return is inside the hall',()=>{
+  assert.ok(source.includes('THRESHOLD={x:-18.1,z:25,yaw:Math.PI/2}'));
+  assert.ok(source.includes('cabinet.position.set(-3.55,0,.05)'));
+  assert.ok(source.includes('move(THRESHOLD.x+2.75,THRESHOLD.z,-Math.PI/2)'));
+});
