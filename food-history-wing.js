@@ -39,6 +39,8 @@
     const BAIZE_DOOR={dx:7};                            // in the hall's north wall, between the pilasters at 5 and 9
     const BELLS=['DRAWING ROOM','DINING ROOM','MORNING ROOM','THE LIBRARY','STUDY','BEDROOM 1','BEDROOM 2','NURSERY','FRONT DOOR','BACK DOOR'];
     const LIBRARY_BELL=BELLS.indexOf('THE LIBRARY'),BELL_KEY='athenaeum-food-library-bell';
+    // The back stairs, against the south wall, rising east from x = VICTORIAN.cx + dx0 to a landing and the door at the top.
+    const STAIR={dx0:2.9,steps:11,run:.4,rise:.2,depth:1.05};
     const vicLive={lights:[],coals:[],bells:[],ringing:-1,ringUntil:0,nextRing:0,hatch:null,hatchOpen:0,sent:null,feet:null,feetX:0,feetNext:0,clock:null};
     const bellAnswered=()=>{try{return localStorage.getItem(BELL_KEY)==='1'}catch(e){return false}};
     const showBell=()=>bellAnswered()||new URLSearchParams(location.search).has('bell');
@@ -336,7 +338,7 @@
       plates.position.set(W0+.33,1.45,dz);root.add(plates);plates.userData=card('dresser');interactables.push(plates);ours.push(plates);
       // The scullery, through a doorway at the west wall's south end.
       mark(plane(1.1,2.3,tex((c,TW,TH)=>{c.fillStyle='#2a2723';c.fillRect(0,0,TW,TH);c.fillStyle='#6f6a62';c.fillRect(TW*.12,TH*.6,TW*.76,TH*.12);c.fillStyle='#4b4740';c.fillRect(TW*.18,TH*.72,TW*.64,TH*.06);
-        c.fillStyle='#3a3a3a';c.fillRect(TW*.66,TH*.28,TW*.06,TH*.32);c.fillRect(TW*.6,TH*.28,TW*.2,TH*.04);c.fillStyle='#8b8578';c.fillRect(TW*.3,TH*.5,TW*.16,TH*.1)},128,256,{emissive:0xffffff,emissiveIntensity:.08}),W0+.03,1.15,S0-1.4,Math.PI/2),card('scullery'));
+        c.fillStyle='#3a3a3a';c.fillRect(TW*.66,TH*.28,TW*.06,TH*.32);c.fillRect(TW*.6,TH*.28,TW*.2,TH*.04);c.fillStyle='#8b8578';c.fillRect(TW*.3,TH*.5,TW*.16,TH*.1)},128,256,{emissive:0xffffff,emissiveIntensity:.08}),W0+.06,1.15,S0-1.4,Math.PI/2),card('scullery'));
       for(const s of [-1,1])box(.12,2.4,.1,wood,W0+.06,1.2,S0-1.4+s*.6,root);box(.12,.1,1.3,wood,W0+.06,2.4,S0-1.4,root);
       // The dumbwaiter hatch beside the dresser.
       const hz=cz+1.4;box(.2,.95,.9,wood,W0+.1,1.4,hz,root);
@@ -365,8 +367,16 @@
       add(own(new THREE.CylinderGeometry(.008,.008,1.4,4)),brass,tx,h-.7,tz,root);lathe([[0,0],[.16,.12],[.17,.14]],mat(0xf2ead6,.4,),tx,h-1.55,tz);
       const gas=new THREE.PointLight(0xffd9a0,2.4,12,2);gas.position.set(tx,h-1.5,tz);root.add(gas);vicLive.lights.push({light:gas,base:2.4,amp:.05});
       // The back stairs, rising east along the south wall, and the shelf of the kitchen's books.
-      for(let i=0;i<9;i++){const x=cx+3.4+i*.5,stepH=.25+i*.4;const st=box(.5,stepH,1,wood,x,stepH/2,S0-.55,root);mark(st,{type:'food-history-stair'})}
-      block(cx+5.4,S0-.55,4.6,1.1);box(.08,1,.08,wood,cx+3.2,.5,S0-1.05,root);
+      // Walkable: STAIR's steps are the floor there (floorAt), taken one at a time (allowed); at the top landing the reader
+      // goes on through the door into the dining room.
+      for(let i=0;i<STAIR.steps;i++){const x=cx+STAIR.dx0+(i+.5)*STAIR.run,stepH=(i+1)*STAIR.rise;const st=box(STAIR.run,stepH,STAIR.depth,wood,x,stepH/2,S0-STAIR.depth/2-.05,root);mark(st,{type:'food-history-stair'})}
+      const top=STAIR.steps*STAIR.rise,lx0=cx+STAIR.dx0+STAIR.steps*STAIR.run;
+      box(E0-lx0,top,STAIR.depth,wood,(lx0+E0)/2,top/2,S0-STAIR.depth/2-.05,root);
+      for(let i=0;i<=STAIR.steps;i+=2){const x=cx+STAIR.dx0+i*STAIR.run,y=(i+1)*STAIR.rise;add(own(new THREE.CylinderGeometry(.02,.02,.9,5)),wood,x,y+.45,S0-STAIR.depth-.02,root)}
+      {const len=Math.hypot(STAIR.steps*STAIR.run,top),rail=add(own(new THREE.BoxGeometry(len,.06,.06)),wood,cx+STAIR.dx0+STAIR.steps*STAIR.run/2,top/2+.95,S0-STAIR.depth-.02,root);rail.rotation.z=Math.atan2(top,STAIR.steps*STAIR.run)}
+      box(.1,1.1,.1,wood,cx+STAIR.dx0-.05,.55,S0-STAIR.depth-.02,root);
+      // The door at the head of the stairs, in the east wall: up to the dining room.
+      box(.06,2.1,.9,mat(0x5a3f28,.85),E0-.04,top+1.05,S0-STAIR.depth/2-.05,root);mark(box(.07,.5,.7,mat(0xe8dcc0,.7),E0-.05,top+1.6,S0-STAIR.depth/2-.05,root),{type:'food-history-stair'});
       mark(panel(root,'THE KITCHEN BELOW STAIRS','About 1860',cx+1.2,3.6,S0-.2,3.6,.55,Math.PI),card('below'));
       box(2.8,.06,.4,wood,cx+2.6,1.05,N0+.22,root);box(2.8,.06,.4,wood,cx+2.6,2.25,N0+.22,root);
       const own_=shelf('victorian');own_.slice(0,6).forEach((b,i)=>hangingBook(b,cx+1.65+(i%3)*.95,1.6+Math.floor(i/3)*1.2,N0+.3,0,.82));
@@ -444,7 +454,8 @@
       // The fireplace on the north wall: marble, a looking-glass over it, a clock, the coals and the fire's light.
       const fx=cx-1.6;box(1.9,1.2,.35,marble,fx,.6,N0+.18,root);box(2.2,.07,.45,marble,fx,1.23,N0+.24,root);box(.9,.7,.05,mat(0x0e0b0a,.9),fx,.45,N0+.37,root);block(fx,N0+.3,2.3,.8);
       const coals=own(new THREE.MeshStandardMaterial({color:0x2a100a,emissive:0xff5a1e,emissiveIntensity:.8,roughness:.9}));dineLive.coals.push(coals);mark(plane(.6,.25,coals,fx,.25,N0+.4),card('fire'));
-      plane(1.6,1.5,own(new THREE.MeshStandardMaterial({color:0x9aa3a6,metalness:.9,roughness:.08})),fx,2.1,N0+.04);box(1.75,1.65,.04,gilt,fx,2.1,N0+.02,root);
+      // The glass stands 3 cm proud of its frame: in the same plane the two flickered against each other.
+      box(1.75,1.65,.04,gilt,fx,2.1,N0+.02,root);plane(1.6,1.5,own(new THREE.MeshStandardMaterial({color:0x8d979a,metalness:.6,roughness:.2})),fx,2.1,N0+.07);
       lathe([[0,0],[.1,0],[.1,.18],[.06,.26],[0,.28]],gilt,fx,1.27,N0+.25);
       const fire=new THREE.PointLight(0xff9a4a,1.6,7,2);fire.position.set(fx,.6,N0+1);root.add(fire);dineLive.lights.push({light:fire,base:1.6,amp:.4});
       // The bell-pull beside the chimneypiece.
@@ -563,11 +574,17 @@
     const inKitchen=(x,z)=>inBox(KITCHEN,x,z),inVictorian=(x,z)=>inBox(VICTORIAN,x,z),inDining=(x,z)=>inBox(DINING,x,z);
     function contains(x,z){return inBox(ROOM,x,z)||inKitchen(x,z)||inVictorian(x,z)||inDining(x,z)}
     function zoneAt(x,z){return inKitchen(x,z)?'ancient-kitchen':inVictorian(x,z)?'victorian-kitchen':inDining(x,z)?'victorian-dining':inBox(ROOM,x,z)?'food-history':null}
-    function floorAt(x,z){return contains(x,z)?0:null}
+    // On the back stairs the floor is the step underfoot; everywhere else in the wing it is level.
+    function stairAt(x,z){const V=VICTORIAN,S0=V.cz+V.d/2,x0=V.cx+STAIR.dx0;if(!inVictorian(x,z)||x<x0||z<S0-STAIR.depth-.05)return null;
+      return Math.min(STAIR.steps,Math.floor((x-x0)/STAIR.run)+1)*STAIR.rise}
+    function floorAt(x,z){if(!contains(x,z))return null;return stairAt(x,z)??0}
     function allowed(x,z){
       if(!contains(x,z))return false;
       const r=player.radius||.42,R=inKitchen(x,z)?KITCHEN:inVictorian(x,z)?VICTORIAN:inDining(x,z)?DINING:ROOM,m=R===ROOM?.42:.12;
       if(x-r<R.cx-R.w/2+m||x+r>R.cx+R.w/2-m||z-r<R.cz-R.d/2+m||z+r>R.cz+R.d/2-m)return false;
+      // A change of floor of much more than a step is refused, so the stairs are climbed from the bottom, not from the side.
+      // (game.js eases the reader's height towards the floor, so on the way up it trails a step by up to about 0.17 m.)
+      const here=player.pos.y||0,there=floorAt(x,z)??0;if(Math.abs(there-here)>STAIR.rise*2.5)return false;
       return !blocks.some(b=>Math.abs(x-b.x)<b.w/2+r&&Math.abs(z-b.z)<b.d/2+r);
     }
     function enter(){
@@ -660,6 +677,8 @@
       for(const c of vicLive.coals)c.emissiveIntensity=.8+.2*Math.sin(time*1.9);
       if(vicLive.clock)vicLive.clock.rotation.z=-Math.floor(time)%60/60*Math.PI*2;
       // The library's bell: rings soon after the reader comes down, then every minute or so, until it has been answered.
+      // At the head of the back stairs the reader goes on through the door into the dining room.
+      if(inVictorian(player.pos.x,player.pos.z)&&player.pos.x>VICTORIAN.cx+STAIR.dx0+(STAIR.steps-.5)*STAIR.run&&(player.pos.y||0)>STAIR.rise*(STAIR.steps-1.5)){enterDining();return}
       if(!vicLive.sent&&inVictorian(player.pos.x,player.pos.z)&&vicLive.nextRing&&time>vicLive.nextRing){ringBell(time);vicLive.nextRing=time+45+Math.random()*30}
       vicLive.bells.forEach((g,i)=>{const live=i===vicLive.ringing&&time<vicLive.ringUntil;g.rotation.x=live?Math.sin(time*22)*.5*Math.max(0,(vicLive.ringUntil-time)/7):0});
       if(vicLive.hatch&&vicLive.hatchOpen>0&&vicLive.hatchOpen<1){vicLive.hatchOpen=Math.min(1,vicLive.hatchOpen+dt*.8);vicLive.hatch.position.y=vicLive.hatchBase+vicLive.hatchOpen*.62}
@@ -684,7 +703,7 @@
     }
     // Where Clio curls up when she is found here: on the warm flagstones before the medieval fire.
     const clioSpot={x:KITCHEN.cx+KITCHEN.w/2-2.1,y:0,z:KITCHEN.cz-1.2,yaw:Math.PI/2};
-    return {enter,enterKitchen,enterBelow,enterDining,interact,dining:DINING,jib:JIB,menus:MENUS,menuText,get dinnerSent(){return !!dineLive.sent},victorian:VICTORIAN,baizeDoor:BAIZE_DOOR,bells:BELLS,ringBell:()=>ringBell(t),get bellAnswered(){return !!vicLive.sent},contains,zoneAt,allowed,floorAt,update,activate,unload,room:ROOM,kitchen:KITCHEN,kitchenDoor:KITCHEN_DOOR,kitchenEntry:KITCHEN_ENTRY,arch:ARCH,clioSpot,collections:COLLECTIONS,facts,
+    return {enter,enterKitchen,enterBelow,enterDining,interact,stair:STAIR,dining:DINING,jib:JIB,menus:MENUS,menuText,get dinnerSent(){return !!dineLive.sent},victorian:VICTORIAN,baizeDoor:BAIZE_DOOR,bells:BELLS,ringBell:()=>ringBell(t),get bellAnswered(){return !!vicLive.sent},contains,zoneAt,allowed,floorAt,update,activate,unload,room:ROOM,kitchen:KITCHEN,kitchenDoor:KITCHEN_DOOR,kitchenEntry:KITCHEN_ENTRY,arch:ARCH,clioSpot,collections:COLLECTIONS,facts,
       openJar:()=>openJar(true),get dormouseFound(){return !!kitchenLive.satyricon},get built(){return !!root},get books(){return shelfBooks.slice()}};
   };
 })();

@@ -244,8 +244,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   z −492; `?room=victorian-kitchen`, `below-stairs`, `beeton`), a London basement kitchen of about 1860: the range in its
   chimney breast, the dresser of willow plates (one InstancedMesh), the copper, the scrubbed table with scales and a
   raised pie, the scullery through a doorway, the area window with railings and feet going by, the Windsor chair and
-  the board of servants' bells (`BELLS`); its books are the shelf `food-victorian`, and its back stairs lead up to the
-  hall. Two lights, the gas and the range. The secret: the bell labelled THE LIBRARY rings (game.js's `pianoTone`,
+  the board of servants' bells (`BELLS`); its books are the shelf `food-victorian`. Its back stairs (`STAIR`) are
+  walked: the steps are the floor there (`floorAt`), `allowed` refuses a change of floor of more than about two steps
+  (game.js eases the reader's height, so a climber trails a step), and at the top the reader goes on into the dining room. Two lights, the gas and the range. The secret: the bell labelled THE LIBRARY rings (game.js's `pianoTone`,
   passed as `tone`) soon after the reader comes down and every minute or so after; answered while it still swings, the
   dumbwaiter by the dresser brings down a tray with Fanny and the Servant Problem (`food-bells`), found for good
   (`athenaeum-food-library-bell`; `?bell`). The kitchen's back stairs climb to the dining room it serves (x −780, z −522;
