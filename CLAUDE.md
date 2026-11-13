@@ -226,7 +226,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   banquet and cauldron, Hamlet's "To be", and the colophon. Every quotation on its cards was read off the photograph. Its
   whole book reads the same series a file a page (`series`, with each file's MD5 folders in `hashes`; 960 wide only).
 - The Gastronomic Athenaeum (`food-history-wing.js`, hall x −780, z −420; `?room=food-history`, `food`, `gastronomy`)
-  is through the oak doors under a stone arch on the Grand Hall's west wall (x −18.1, z 25): a hall with the Historical
+  is through a walnut door, its name gilded on the glass, on the Grand Hall's west wall (x −18.1, z 26.35, between the
+  Horologist's round door and the Kipling bookcase, with half a metre either side: the hall has no other room for it,
+  so nothing more stands round it; a test keeps it clear of both): a hall with the Historical
   Cookbook Gallery (north), the Preservation Vault (west) and the Global Spice Exchange (east), from the shelves
   `food-cookbooks`, `food-preservation` and `food-spices` in `data/new-books.js` (never numbers typed into the room;
   every number is checked in `docs/food-history-catalogue.md`: four first used there named other books). A planked
