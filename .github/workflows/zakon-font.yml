@@ -1,0 +1,29 @@
+name: Zakon typeface
+
+# Fetches the Zakon typeface and its terms of use from Ukraine's Ministry of Culture (mincult.gov.ua/zakon), prints
+# the terms and which characters each font covers, and keeps the files as a workflow artifact. It commits nothing:
+# the licence must be read before the font goes into this public repository.
+on:
+  workflow_dispatch:
+  push:
+    branches: ['claude/**', 'ccr-**']
+    paths: ['scripts/fetch-zakon.py', '.github/workflows/zakon-font.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get install -y poppler-utils >/dev/null && pip install fonttools brotli >/dev/null
+      - run: python3 scripts/fetch-zakon.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zakon
+          path: zakon
+          if-no-files-found: ignore
+          retention-days: 7
