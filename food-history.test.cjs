@@ -131,3 +131,20 @@ test('the kitchen below stairs keeps to two lights and an instanced dresser',()=
   assert.match(below,/new THREE\.InstancedMesh/);
   assert.ok(shelfIds('food-victorian').length<=12,'two cases of six');
 });
+
+test('the hall side is the library’s walnut with the name gilded on the glass, kept when the far wing unloads',()=>{
+  assert.match(source,/doorKit\.readingRoom\?\.\('THE GASTRONOMIC\\nATHENAEUM'/);
+  for(const gone of ['function dressThreshold()','gastronomic-entry-arch','function botanical(side)','display-cabinet'])assert.ok(!source.includes(gone),gone+' no longer crowds the wall');
+  assert.ok(source.indexOf('const entranceOwned=owned.splice(0)')<source.indexOf('function unload()'));
+});
+
+test('the entrance in the Grand Hall keeps clear of the other doors and cases on the west wall',()=>{
+  const at=+source.match(/const THRESHOLD=\{x:-18\.1,z:(-?[\d.]+),yaw:Math\.PI\/2\}/)[1],half=+source.match(/const ENTRANCE_HALF=([\d.]+)/)[1];
+  // Its neighbours, from the files that place them: the Horologist's round door (a ring of radius 1.78) and the Kipling case.
+  const curious=fs.readFileSync('curious-doors.js','utf8'),kipling=fs.readFileSync('kipling-shelf.js','utf8');
+  assert.ok(curious.includes("door:{x:-18.72,z:22.9")&&curious.includes('new THREE.TorusGeometry(1.58,.2,'),'the Horologist’s door is where and as big as this test thinks');
+  assert.ok(kipling.includes('CASE={x:-18.54,z:29.1,w:2.2'),'so is the Kipling case');
+  const taken=[['the Horologist’s door',22.9-1.78,22.9+1.78],['the Kipling bookcase',29.1-1.1,29.1+1.1],['the Austen Room',11.8,14],['the Room of the Day',-15.6,-13.4]];
+  for(const [name,a,b] of taken)assert.ok(at+half+.5<=a||at-half-.5>=b,`the entrance (z ${at-half} to ${at+half}) keeps half a metre from ${name}`);
+  assert.ok(source.includes('move(THRESHOLD.x+2.75,THRESHOLD.z,-Math.PI/2)'),'the way back out stands the reader in front of it');
+});
