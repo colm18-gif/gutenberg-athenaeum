@@ -56,8 +56,8 @@ test('the room builds on approach, shows its four shelves, and is freed after',(
 });
 
 test('Clio is sometimes found asleep in the rooms behind doors, as the same cat, and goes home with the reader',()=>{
-  const block=game.slice(game.indexOf("// Clio's haunts"),game.indexOf("// Clio's haunts")+4000);
-  for(const zone of ['irish-room','poe-room','international-wing'])assert(block.includes(`zone==='${zone}'`),zone);
+  const block=game.slice(game.indexOf("// Clio's haunts"),game.indexOf("// Clio's haunts")+4600);
+  for(const zone of ['irish-room','poe-room','international-wing','ancient-kitchen'])assert(block.includes(`zone==='${zone}'`),zone);
   assert.match(block,/home=cat\.position\.clone\(\)/);assert.match(block,/cat\.position\.copy\(home\)/,'back to the Grand Hall afterwards');
   assert.match(block,/!catGuideTarget/,'never while leading the reader');assert.doesNotMatch(block,/new THREE\.|PointLight/,'nothing new is built');
   assert(block.includes("['clio','quill'].some(k=>new URLSearchParams(location.search).has(k))"),'?clio (or the old ?quill) shows Clio every time, for checking');

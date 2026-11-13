@@ -225,6 +225,21 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Merchant and Twelfth Night each opposite the FINIS before them, Romeo's feast and orchard, Caesar's Ides, Macbeth's
   banquet and cauldron, Hamlet's "To be", and the colophon. Every quotation on its cards was read off the photograph. Its
   whole book reads the same series a file a page (`series`, with each file's MD5 folders in `hashes`; 960 wide only).
+- The Gastronomic Athenaeum (`food-history-wing.js`, hall x −780, z −420; `?room=food-history`, `food`, `gastronomy`)
+  is through the oak doors under a stone arch on the Grand Hall's west wall (x −18.1, z 25): a hall with the Historical
+  Cookbook Gallery (north), the Preservation Vault (west) and the Global Spice Exchange (east), from the shelves
+  `food-cookbooks`, `food-preservation` and `food-spices` in `data/new-books.js` (never numbers typed into the room;
+  every number is checked in `docs/food-history-catalogue.md`: four first used there named other books). A planked
+  door at the west end of the hall's north wall (`KITCHEN_DOOR`) leads to the Ancient Kitchen (x −780, z −462;
+  `?room=kitchen`, `ancient-kitchen`, `apicius`): a Roman kitchen of the first century AD west of a stone arch (raised
+  masonry hearth, lararium, amphorae with garum, mortarium, Pompeian bread, the courtyard through a doorway) and an
+  English one of about 1400 east of it (great fireplace with a cauldron on a crane, trestle table with trenchers, churn,
+  barrels, herbs drying on a beam as one InstancedMesh, the spice chest), shelf `food-kitchen`. Two lights, the oil lamp
+  and the fire, flickering only while the reader is near. The secret is the dormouse jar (glirarium): lifting its lid
+  wakes a dormouse and leaves Trimalchio's dinner from the Satyricon (`food-dormouse`) on the stool, found for good
+  (`athenaeum-food-dormouse`; `?dormouse`). Clio may be found asleep before the kitchen fire. The brief's other rooms
+  are not built: add them one at a time, each with its own shelf, and keep to cards that say only what the books and
+  sound history support (the spices-hid-rotten-meat story is a myth; a test keeps it off the cards).
 - The Room of Chance (`chance-room.js`, x 500, z 60, clear of the Moon at x 340, z 30) is behind a small crooked portrait
   on the east wing's east wall (x 36.6, z 2.05), between the Restricted Catalogue's gate and the Verne engraving
   (`?room=chance`): forty-two books shuffled afresh on each visit, a table, and a plaque, NO ORDER GOVERNS THESE SHELVES.

@@ -179,6 +179,10 @@
       'austen-room':{beds:[['air',.025]],ticks:[[1,'tick',.016]],events:[['rustle',.8,.035],['creak',.3,.03]]},
       // The Poe Room: a still house, its floorboards settling (the heart under them is poe-room.js's own).
       'poe-room':{beds:[['air',.03]],events:[['creak',.9,.05],['rustle',.6,.03]]},
+      // The Gastronomic Athenaeum: a quiet reading hall, a cup set down now and then. The Ancient Kitchen: the fire,
+      // pots simmering, a ladle against a pot, birds in the Roman courtyard and, far off, now and then a bell.
+      'food-history':{beds:[['air',.03]],events:[['rustle',.8,.035],['clink',.3,.02]]},
+      'ancient-kitchen':{beds:[['fire',.07],['air',.02]],events:[['crackle',28,.08],['snap',5,.06],['bubble',7,.03],['clink',.8,.03],['bird',.5,.015],['drip',.4,.02],['bell',.15,.02]]},
       // The periodicals room: a clock, and pages turning at the reading slopes.
       'periodicals-room':{beds:[['air',.02]],ticks:[[1,'tock',.028]],events:[['rustle',.8,.045]]},
       'learners-room':{beds:[['air',.035]],events:[['rustle',1.6,.035],['creak',.5,.04]]},
