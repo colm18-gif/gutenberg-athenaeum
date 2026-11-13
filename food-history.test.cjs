@@ -112,6 +112,8 @@ test('through the green baize door, down the back stairs, to the kitchen below s
   w.interact(interactables.find(o=>o.userData.type==='food-history-stair'));const up=moves.at(-1);
   assert.equal(w.zoneAt(up.x,up.z),'victorian-dining');assert.ok(w.allowed(up.x,up.z),'up the back stairs, through the jib door into the dining room');
   for(const name of ['THE LIBRARY','DRAWING ROOM','FRONT DOOR'])assert.ok(w.bells.includes(name),name);
+  const exit=interactables.find(o=>o.userData.type==='food-history-below-exit');assert.ok(exit,'the kitchen has a second way out, not only the back stairs');
+  w.interact(exit);const out=moves.at(-1);assert.equal(w.zoneAt(out.x,out.z),'food-history');assert.ok(w.allowed(out.x,out.z),'up through the baize door into the hall');
 });
 
 test('the library’s bell rings below stairs, and answered while it swings, the dumbwaiter sends down a book',()=>{
