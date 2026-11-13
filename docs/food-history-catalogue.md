@@ -66,3 +66,15 @@ cocoa (not Hazlitt).
 | 36921 | The Deipnosophists, Vol. 1 (of 3) (65023, 66508 the others) | Athenaeus, tr. C. D. Yonge |
 | 58392 | The Babees' Book: Medieval Manners for the Young | F. J. Furnivall and Edith Rickert |
 | 57493 | The Natural History of Pliny, Vol. 1 (of 6) | Pliny the Elder, tr. John Bostock |
+| 69519 | New System of Domestic Cookery | Maria Eliza Rundell |
+| 55314 | The English Housekeeper | Anne Cobbett |
+| 47444 | The Gastronomic Regenerator | Alexis Soyer |
+| 41899 | The Modern Housewife | Alexis Soyer |
+| 42544 | Soyer's Culinary Campaign | Alexis Soyer |
+| 22114 | A Plain Cookery Book for the Working Classes | Charles Elmé Francatelli |
+| 50191 | Mrs. Beeton's Dictionary of Every-Day Cookery | Isabella Beeton |
+| 51590 | From Kitchen to Garret | J. E. Panton |
+| 55998 | London Labour and the London Poor, Vol. 1 (60440, 57060, 63415 the others) | Henry Mayhew |
+| 2829 | Fanny and the Servant Problem | Jerome K. Jerome |
+| 29084 | The Cook and Housekeeper's Complete and Universal Dictionary | Mary Eaton |
+| 14594 | Cassell's Vegetarian Cookery | A. G. Payne |
