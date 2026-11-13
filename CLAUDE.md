@@ -248,7 +248,16 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   hall. Two lights, the gas and the range. The secret: the bell labelled THE LIBRARY rings (game.js's `pianoTone`,
   passed as `tone`) soon after the reader comes down and every minute or so after; answered while it still swings, the
   dumbwaiter by the dresser brings down a tray with Fanny and the Servant Problem (`food-bells`), found for good
-  (`athenaeum-food-library-bell`; `?bell`). The brief's other rooms
+  (`athenaeum-food-library-bell`; `?bell`). The kitchen's back stairs climb to the dining room it serves (x −780, z −522;
+  `?room=victorian-dining`, `dining-room`, `timmins`): red flock walls, a mahogany table laid for eight à la russe
+  (plates, glasses and silver as three InstancedMeshes; an epergne and two candelabra), eight chairs that are the
+  library's seats (`registerSeat`, each opening one of the shelf `food-dining`), the sideboard, the marble chimneypiece
+  with a looking-glass, the gasolier, and a menu card at the head of the table showing this month's dinner for eight
+  from Beeton (`MENUS`, checked line by line against pg10136 by a test). A papered jib door in the east wall goes back
+  down to the kitchen; the double doors in the south wall go out to the hall. Two lights, the gasolier and the fire.
+  The secret: pull the bell-pull by the chimneypiece, the DINING ROOM bell rings below, and a few seconds later the
+  dumbwaiter comes up with a covered dish and A Little Dinner at Timmins's (`food-dinner`), found for good
+  (`athenaeum-food-timmins`; `?timmins`). The brief's other rooms
   are not built: add them one at a time, each with its own shelf, and keep to cards that say only what the books and
   sound history support (the spices-hid-rotten-meat story is a myth; a test keeps it off the cards).
 - The Room of Chance (`chance-room.js`, x 500, z 60, clear of the Moon at x 340, z 30) is behind a small crooked portrait

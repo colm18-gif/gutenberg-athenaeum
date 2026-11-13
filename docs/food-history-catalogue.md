@@ -78,3 +78,11 @@ cocoa (not Hazlitt).
 | 2829 | Fanny and the Servant Problem | Jerome K. Jerome |
 | 29084 | The Cook and Housekeeper's Complete and Universal Dictionary | Mary Eaton |
 | 14594 | Cassell's Vegetarian Cookery | A. G. Payne |
+| 33716 | Manners and Rules of Good Society (39040 another edition) | Anonymous |
+| 12426 | Routledge's Manual of Etiquette | George Routledge |
+| 2686 | The Book of Snobs | W. M. Thackeray |
+| 2859 | A Little Dinner at Timmins's | W. M. Thackeray |
+| 394 | Cranford (57539 another edition) | Elizabeth Gaskell |
+| 883 | Our Mutual Friend | Charles Dickens |
+| 69859 | Table Traits, with Something on Them | John Doran |
+| 53079 | Dinners and Diners | Nathaniel Newnham-Davis |
