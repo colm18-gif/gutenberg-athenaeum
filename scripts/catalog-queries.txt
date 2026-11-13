@@ -1,13 +1,47 @@
-# English translations of the Ukrainian Reading Room's writers, for English readers
-; Shevchenko ; en
-; Franko, Ivan ; en
-; Ukrainka ; en
-; Kotsiubynsky|Kotsyubynsky|Kotzubinsky|Kociubynskyj ; en
-; Vovchok|Markovych|Markovich ; en
-; Kvitka ; en
-; Kobylianska|Kobylyanska ; en
-; Stefanyk ; en
-; Nechui|Levytsky ; en
-; Kotliarevsky|Kotlyarevsky ; en
-Cossack Fairy|Ukrain|Ruthenian|Little Russian ; ; en
-ws? Shevchenko translated English
+# The Gastronomic Athenaeum: the numbers already in food-history-wing.js, then the titles named in the project brief
+= 10136 12815 12519 6501 22790 8102 19031 12350 15464 12238 29728 24407 44915 16035
+Pantropheon ; Soyer ; en
+Physiolog.*Taste|Physiologie du go ; Brillat ; 
+Pleasures of the Table ; Ellwanger ; en
+Curiosities of Food ; Simmonds ; en
+Old Cookery Books ; Hazlitt ; en
+Food and Flavo ; Finck ; en
+History of Bread ; Ashton ; en
+Cookery and Dining|Apicius ; ; 
+Forme of Cury ; ; en
+Accomplisht Cook ; May ; en
+Eales ; ; en
+Kenelm Digby|Closet of ; Digby ; en
+Early English Meals ; ; en
+Household Management ; Beeton ; en
+Modern Cookery ; Acton ; en
+Cook's Oracle|Cook.s Oracle ; Kitchiner ; en
+Virginia Housewife|Virginia House-wife ; Randolph ; en
+American Cookery ; Simmons ; en
+Boston Cooking|Cook Book ; Farmer ; en
+Modern Cookery|Guide to Modern ; Escoffier ; en
+White House Cook|Whitehouse Cook ; ; en
+Culinary Chemistry ; Accum ; en
+Adulterations of Food ; Accum ; en
+Science in the Kitchen ; Kellogg ; en
+Foods and Their Adulteration ; Wiley ; en
+Chemistry of Food ; ; en
+Human Foods ; ; en
+Preserving all kinds|Art of Preserving ; Appert ; en
+Curing, Preserving|Art and Mystery of Curing ; ; en
+Every Step in Canning ; ; en
+Still.Room ; ; en
+Fermented Pickles ; ; en
+Canning, Freezing ; ; en
+All About Coffee ; Ukers ; en
+Ideal Bartender ; Bullock ; en
+Curiosities of Ale ; ; en
+Modern American Drinks ; ; en
+Gourmet's Guide|Gourmet.s Guide ; ; en
+Cuisine Creole ; Hearn ; en
+Italian Cook Book ; ; en
+Jewish Cook Book ; ; en
+Dishes & Beverages|Dishes and Beverages ; ; en
+Belgian Cook ; ; en
+Khaki Kook ; ; en
+Foods That Will Win ; ; en
