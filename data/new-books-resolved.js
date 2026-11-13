@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-11-08",
+ "updated": "2026-11-13",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -2542,6 +2542,138 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "The Republic": {
    "id": 1497,
    "words": 217257
+  },
+  "The Accomplisht Cook": {
+   "id": 22790,
+   "words": 143681
+  },
+  "Mrs. Mary Eales's Receipts": {
+   "id": 20735,
+   "words": 17396
+  },
+  "The Closet of Sir Kenelm Digby Knight Opened": {
+   "id": 16441,
+   "words": 94618
+  },
+  "The Cook's Oracle": {
+   "id": 28681,
+   "words": 180422
+  },
+  "American Cookery": {
+   "id": 12815,
+   "words": 14704
+  },
+  "The Virginia Housewife": {
+   "id": 12519,
+   "words": 46666
+  },
+  "Modern Cookery for Private Families": {
+   "id": 72482,
+   "words": 312644
+  },
+  "The Book of Household Management": {
+   "id": 10136,
+   "words": 506525
+  },
+  "The Whitehouse Cookbook": {
+   "id": 13923,
+   "words": 222672
+  },
+  "Science in the Kitchen": {
+   "id": 12238,
+   "words": 210740
+  },
+  "The Boston Cooking-School Cook Book": {
+   "id": 65061,
+   "words": 174614
+  },
+  "A Guide to Modern Cookery": {
+   "id": 71395,
+   "words": 323655
+  },
+  "The Art of Preserving All Kinds of Animal and Vegetable Substances": {
+   "id": 52551,
+   "words": 23477
+  },
+  "A Treatise on Adulterations of Food, and Culinary Poisons": {
+   "id": 19031,
+   "words": 45321
+  },
+  "The Still-Room": {
+   "id": 49449,
+   "words": 31275
+  },
+  "Making Fermented Pickles": {
+   "id": 48722,
+   "words": 7746
+  },
+  "Every Step in Canning": {
+   "id": 13775,
+   "words": 61387
+  },
+  "Foods That Will Win the War and How to Cook Them": {
+   "id": 15464,
+   "words": 28299
+  },
+  "The Physiology of Taste": {
+   "id": 5434,
+   "words": 69865
+  },
+  "The Curiosities of Food": {
+   "id": 71509,
+   "words": 112709
+  },
+  "All About Coffee": {
+   "id": 28500,
+   "words": 408149
+  },
+  "The Food of the Gods": {
+   "id": 16035,
+   "words": 18685
+  },
+  "La Cuisine Creole": {
+   "id": 75027,
+   "words": 72194
+  },
+  "The Italian Cook Book": {
+   "id": 24407,
+   "words": 31150
+  },
+  "The International Jewish Cook Book": {
+   "id": 12350,
+   "words": 150889
+  },
+  "The Belgian Cookbook": {
+   "id": 7223,
+   "words": 32161
+  },
+  "Cookery and Dining in Imperial Rome": {
+   "id": 29728,
+   "words": 101701
+  },
+  "The Forme of Cury": {
+   "id": 8102,
+   "words": 43771
+  },
+  "Early English Meals and Manners": {
+   "id": 24790,
+   "words": 210510
+  },
+  "Old Cookery Books and Ancient Cuisine": {
+   "id": 12293,
+   "words": 47776
+  },
+  "The Pantropheon": {
+   "id": 51259,
+   "words": 177052
+  },
+  "The History of Bread": {
+   "id": 53219,
+   "words": 44037
+  },
+  "The Satyricon, Dinner of Trimalchio": {
+   "id": 5219,
+   "words": 19481
   },
   "Don Quijote [es]": {
    "id": 2000,
