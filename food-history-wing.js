@@ -37,6 +37,7 @@
     // with feet going by, and the board of servants' bells. Two lights: the gas over the table and the range's fire.
     const VICTORIAN={cx:-780,cz:-492,w:16,d:12,h:4.2};
     const BAIZE_DOOR={dx:7};                            // in the hall's north wall, between the pilasters at 5 and 9
+    const BELOW_EXIT={dx:1.2};                          // the kitchen's door up to the hall, in its south wall, x = VICTORIAN.cx + dx
     const BELLS=['DRAWING ROOM','DINING ROOM','MORNING ROOM','THE LIBRARY','STUDY','BEDROOM 1','BEDROOM 2','NURSERY','FRONT DOOR','BACK DOOR'];
     const LIBRARY_BELL=BELLS.indexOf('THE LIBRARY'),BELL_KEY='athenaeum-food-library-bell';
     // The back stairs, against the south wall, rising east from x = VICTORIAN.cx + dx0 to a landing and the door at the top.
@@ -170,7 +171,9 @@
       for(const z of [N0-.15,S0+.15]){box(w/2,h,.3,ochre,cx-w/4,h/2,z,root);box(w/2,h,.3,stone,cx+w/4,h/2,z,root)}
       for(let x=cx+1.5;x<E0;x+=2.4)box(.26,.3,d,timber,x,h-.15,cz,root);
       // A dado of darker red on the Roman walls, as in Pompeian kitchens.
-      box(.04,.9,d,mat(0x7a2e1e,.9),W0+.02,.45,cz,root);box(w/2,.9,.04,mat(0x7a2e1e,.9),cx-w/4,.45,N0+.02,root);box(w/2,.9,.04,mat(0x7a2e1e,.9),cx-w/4,.45,S0-.02,root);
+      box(.04,.9,d,mat(0x7a2e1e,.9),W0+.02,.45,cz,root);box(w/2,.9,.04,mat(0x7a2e1e,.9),cx-w/4,.45,S0-.02,root);
+      // The north dado stops either side of the courtyard doorway (x cx−6 ± 0.8), so the two never share a plane and flicker.
+      for(const [x0,x1] of [[W0,cx-6.85],[cx-5.15,cx]])box(x1-x0,.9,.04,mat(0x7a2e1e,.9),(x0+x1)/2,.45,N0+.02,root);
       // The dividing wall and its arch.
       const half=ARCH.half;
       for(const [z0,z1] of [[N0,cz-half],[cz+half,S0]]){box(.5,h,z1-z0,stone,cx,h/2,(z0+z1)/2,root);block(cx,(z0+z1)/2,.5,z1-z0)}
@@ -197,7 +200,8 @@
       // The courtyard, seen through an open doorway in the north wall.
       mark(plane(1.6,2.6,tex((c,TW,TH)=>{const g=c.createLinearGradient(0,0,0,TH*.55);g.addColorStop(0,'#a9c6d8');g.addColorStop(1,'#efe4c8');c.fillStyle=g;c.fillRect(0,0,TW,TH*.55);
         c.fillStyle='#c98f5a';c.fillRect(0,TH*.3,TW,TH*.25);c.fillStyle='#e9dcc0';for(let i=0;i<4;i++)c.fillRect(20+i*60,TH*.22,14,TH*.33);
-        c.fillStyle='#b9a582';c.fillRect(0,TH*.55,TW,TH*.45);c.fillStyle='#6f8f9b';c.fillRect(TW*.25,TH*.68,TW*.5,TH*.1);c.fillStyle='#4f7a3c';for(const x of [.12,.82]){c.beginPath();c.arc(TW*x,TH*.6,26,0,7);c.fill()}},256,416,{emissive:0xffffff,emissiveIntensity:.25}),cx-6,1.35,N0+.04),card('courtyard'));
+        c.fillStyle='#b9a582';c.fillRect(0,TH*.55,TW,TH*.45);c.fillStyle='#6f8f9b';c.fillRect(TW*.25,TH*.68,TW*.5,TH*.1);c.fillStyle='#4f7a3c';for(const x of [.12,.82]){c.beginPath();c.arc(TW*x,TH*.6,26,0,7);c.fill()}},256,416,{emissive:0xffffff,emissiveIntensity:.25}),cx-6,1.35,N0+.06),card('courtyard'));
+      for(const s of [-1,1])box(.14,2.75,.12,timber,cx-6+s*.87,1.375,N0+.06,root);box(1.88,.14,.12,timber,cx-6,2.72,N0+.06,root);
       for(const s of [-1,1])box(.14,2.75,.2,timber,cx-6+s*.86,1.38,N0+.08,root);box(1.86,.16,.2,timber,cx-6,2.78,N0+.08,root);
       // Amphorae stood in a rack along the north wall; the one with the painted label held garum.
       const amph=[[0,0],[.05,.05],[.13,.35],[.17,.7],[.15,.95],[.07,1.07],[.06,1.25],[.09,1.29]];
@@ -377,6 +381,10 @@
       box(.1,1.1,.1,wood,cx+STAIR.dx0-.05,.55,S0-STAIR.depth-.02,root);
       // The door at the head of the stairs, in the east wall: up to the dining room.
       box(.06,2.1,.9,mat(0x5a3f28,.85),E0-.04,top+1.05,S0-STAIR.depth/2-.05,root);mark(box(.07,.5,.7,mat(0xe8dcc0,.7),E0-.05,top+1.6,S0-STAIR.depth/2-.05,root),{type:'food-history-stair'});
+      // The kitchen's other way out: the door at the foot of the stairs from the green baize door, up to the hall.
+      const upData={type:'food-history-below-exit',title:'The Gastronomic Athenaeum',author:'Up the stairs and through the green baize door to the hall.',action:'GO UP'};
+      if(!doorKit?.hang(root,{data:upData,mark,x:cx+BELOW_EXIT.dx,z:S0-.2,yaw:Math.PI,width:1.2,height:2.4,fanlight:false,color:0x2f5a35,style:'plain',label:'UP TO THE HALL',own}))
+        mark(box(1.2,2.4,.2,mat(0x2f5a35,.95),cx+BELOW_EXIT.dx,1.2,S0-.12,root),upData);
       mark(panel(root,'THE KITCHEN BELOW STAIRS','About 1860',cx+1.2,3.6,S0-.2,3.6,.55,Math.PI),card('below'));
       box(2.8,.06,.4,wood,cx+2.6,1.05,N0+.22,root);box(2.8,.06,.4,wood,cx+2.6,2.25,N0+.22,root);
       const own_=shelf('victorian');own_.slice(0,6).forEach((b,i)=>hangingBook(b,cx+1.65+(i%3)*.95,1.6+Math.floor(i/3)*1.2,N0+.3,0,.82));
@@ -621,6 +629,10 @@
         if(doorKit&&d.kit)doorKit.pass(d.kit,d,leave);else leave();return true;
       }
       if(d.type==='food-history-baize-door'){if(doorKit&&d.kit)doorKit.pass(d.kit,d,enterBelow);else enterBelow();return true}
+      if(d.type==='food-history-below-exit'){
+        const leave=()=>{move(ROOM.cx+BAIZE_DOOR.dx,ROOM.cz-ROOM.d/2+1.8,Math.PI);playSample?.('doorOpen',.8,1);showNotice('Up the stairs and out through the green baize door into the hall.',5)};
+        if(doorKit&&d.kit)doorKit.pass(d.kit,d,leave);else leave();return true;
+      }
       if(d.type==='food-history-stair'){enterDining();return true}
       if(d.type==='food-history-jib'){move(VICTORIAN.cx+2.2,VICTORIAN.cz+VICTORIAN.d/2-1.5,0);playSample?.('stoneStep',.7,.95);showNotice('Through the jib door and down the back stairs to the kitchen.',5);return true}
       if(d.type==='food-history-dining-door'){const leave=()=>{move(ROOM.cx+BAIZE_DOOR.dx,ROOM.cz-ROOM.d/2+1.8,Math.PI);playSample?.('doorOpen',.8,1)};if(doorKit&&d.kit)doorKit.pass(d.kit,d,leave);else leave();return true}
@@ -703,7 +715,7 @@
     }
     // Where Clio curls up when she is found here: on the warm flagstones before the medieval fire.
     const clioSpot={x:KITCHEN.cx+KITCHEN.w/2-2.1,y:0,z:KITCHEN.cz-1.2,yaw:Math.PI/2};
-    return {enter,enterKitchen,enterBelow,enterDining,interact,stair:STAIR,dining:DINING,jib:JIB,menus:MENUS,menuText,get dinnerSent(){return !!dineLive.sent},victorian:VICTORIAN,baizeDoor:BAIZE_DOOR,bells:BELLS,ringBell:()=>ringBell(t),get bellAnswered(){return !!vicLive.sent},contains,zoneAt,allowed,floorAt,update,activate,unload,room:ROOM,kitchen:KITCHEN,kitchenDoor:KITCHEN_DOOR,kitchenEntry:KITCHEN_ENTRY,arch:ARCH,clioSpot,collections:COLLECTIONS,facts,
+    return {enter,enterKitchen,enterBelow,enterDining,interact,stair:STAIR,dining:DINING,jib:JIB,menus:MENUS,menuText,get dinnerSent(){return !!dineLive.sent},victorian:VICTORIAN,baizeDoor:BAIZE_DOOR,belowExit:BELOW_EXIT,bells:BELLS,ringBell:()=>ringBell(t),get bellAnswered(){return !!vicLive.sent},contains,zoneAt,allowed,floorAt,update,activate,unload,room:ROOM,kitchen:KITCHEN,kitchenDoor:KITCHEN_DOOR,kitchenEntry:KITCHEN_ENTRY,arch:ARCH,clioSpot,collections:COLLECTIONS,facts,
       openJar:()=>openJar(true),get dormouseFound(){return !!kitchenLive.satyricon},get built(){return !!root},get books(){return shelfBooks.slice()}};
   };
 })();
