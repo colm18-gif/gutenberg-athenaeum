@@ -184,6 +184,8 @@
       'food-history':{beds:[['air',.03]],events:[['rustle',.8,.035],['clink',.3,.02]]},
       // The kitchen below stairs: the range, the clock on the mantel, a pan lid, footsteps on the floor above.
       'victorian-kitchen':{beds:[['fire',.035],['air',.025]],ticks:[[1,'tick',.018]],events:[['crackle',10,.05],['clink',1.2,.03],['bubble',3,.02],['thump',.4,.025],['creak',.5,.03]]},
+      // The dining room: the fire, the clock on the chimneypiece, glass and silver set down, a carriage in the street.
+      'victorian-dining':{beds:[['fire',.03],['air',.02]],ticks:[[1,'tick',.014]],events:[['crackle',8,.04],['clink',.9,.025],['clop',.25,.02],['creak',.4,.025]]},
       'ancient-kitchen':{beds:[['fire',.07],['air',.02]],events:[['crackle',28,.08],['snap',5,.06],['bubble',7,.03],['clink',.8,.03],['bird',.5,.015],['drip',.4,.02],['bell',.15,.02]]},
       // The periodicals room: a clock, and pages turning at the reading slopes.
       'periodicals-room':{beds:[['air',.02]],ticks:[[1,'tock',.028]],events:[['rustle',.8,.045]]},

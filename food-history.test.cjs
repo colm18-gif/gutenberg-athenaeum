@@ -30,11 +30,12 @@ function wing({search=''}={}){
   vm.runInNewContext(source,context);
   const books=new Map(food.map(([id,title,author])=>[id,{id,title,author}]));
   const player={pos:new V(),radius:.42},interactables=[],notices=[],moves=[];
-  const arrivals={cookbooks:shelfIds('food-cookbooks'),preservation:shelfIds('food-preservation'),spices:shelfIds('food-spices'),kitchen:shelfIds('food-kitchen'),dormouse:shelfIds('food-dormouse'),victorian:shelfIds('food-victorian'),bells:shelfIds('food-bells')};
+  const arrivals={cookbooks:shelfIds('food-cookbooks'),preservation:shelfIds('food-preservation'),spices:shelfIds('food-spices'),kitchen:shelfIds('food-kitchen'),dormouse:shelfIds('food-dormouse'),victorian:shelfIds('food-victorian'),bells:shelfIds('food-bells'),dining:shelfIds('food-dining'),dinner:shelfIds('food-dinner')};
+  const seats=[];const registerSeat=(parts,group,eye,yaw,options)=>{const data={type:'seat',group,eye,yaw,...options};for(const p of parts){p.userData=data;interactables.push(p)}seats.push(data);return data};
   const tones=[];
   const w=context.window.createFoodHistoryWing({THREE,scene:thing(),MAT:new Proxy({},{get:()=>thing()}),player,interactables,canvasTexture:()=>thing(),bookMaterial:()=>thing(),
-    findBook:id=>books.get(id),arrivals,showNotice:t=>notices.push(t),playSample(){},tone:(...a)=>tones.push(a),move:(x,z,yaw)=>{moves.push({x,z,yaw});player.pos.set(x,0,z)}});
-  return {w,player,interactables,notices,moves,tones};
+    findBook:id=>books.get(id),arrivals,registerSeat,showNotice:t=>notices.push(t),playSample(){},tone:(...a)=>tones.push(a),move:(x,z,yaw)=>{moves.push({x,z,yaw});player.pos.set(x,0,z)}});
+  return {w,player,interactables,notices,moves,tones,seats};
 }
 
 test('the wing loads before game.js and is wired into the library',()=>{
@@ -42,19 +43,19 @@ test('the wing loads before game.js and is wired into the library',()=>{
   assert.ok(index.indexOf("startupScript('food-history-wing.js')")<index.indexOf("startupScript('game.js')"));
   for(const term of ["'food-history':foodHistoryWing","'ancient-kitchen':foodHistoryWing","foodHistoryWing.floorAt","foodHistoryWing.allowed","foodHistoryWing.interact","foodHistoryWing.update","foodHistoryWing?.zoneAt(x,z)"])
     assert.ok(game.includes(term),term);
-  assert.match(game,/\['food-history','The Gastronomic Athenaeum'\],\['ancient-kitchen','The Ancient Kitchen'\],\['victorian-kitchen','The kitchen below stairs'\]/,'all three places are in the journal');
+  assert.match(game,/\['food-history','The Gastronomic Athenaeum'\],\['ancient-kitchen','The Ancient Kitchen'\],\['victorian-kitchen','The kitchen below stairs'\],\['victorian-dining','The dining room'\]/,'all four places are in the journal');
   assert.ok(game.includes("'victorian-kitchen':foodHistoryWing"),'?room=victorian-kitchen');
-  for(const place of ['food-history','ancient-kitchen','victorian-kitchen'])assert.ok(ambience.includes(`'${place}':{beds:`),place+' has an ambience');
+  for(const place of ['food-history','ancient-kitchen','victorian-kitchen','victorian-dining'])assert.ok(ambience.includes(`'${place}':{beds:`),place+' has an ambience');
 });
 
 test('its books are the food-* shelves of data/new-books.js, not numbers typed into the room',()=>{
   assert.doesNotMatch(source,/TITLES|registerBook/);
-  for(const room of ['cookbooks','preservation','spices','kitchen','dormouse','victorian','bells'])assert.ok(game.includes(`${room}:arrivalIds('food-${room}')`),room);
+  for(const room of ['cookbooks','preservation','spices','kitchen','dormouse','victorian','bells','dining','dinner'])assert.ok(game.includes(`${room}:arrivalIds('food-${room}')`),room);
   // The four numbers first given here named other books (docs/food-history-catalogue.md).
   for(const wrong of [6501,44915])assert.ok(!food.some(e=>e[0]===wrong),wrong);
   const doc=fs.readFileSync('docs/food-history-catalogue.md','utf8');
   for(const [id,title] of food)assert.ok(doc.includes(`| ${id} |`),`${title} (${id}) is in the checked list`);
-  for(const room of ['food-cookbooks','food-preservation','food-spices','food-kitchen','food-dormouse','food-victorian','food-bells'])assert.ok(shelfIds(room).length,room);
+  for(const room of ['food-cookbooks','food-preservation','food-spices','food-kitchen','food-dormouse','food-victorian','food-bells','food-dining','food-dinner'])assert.ok(shelfIds(room).length,room);
   assert.ok(shelfIds('food-preservation').length<=10&&shelfIds('food-spices').length<=10,'the side cases hold two rows of five');
   assert.ok(shelfIds('food-cookbooks').length<=14,'the gallery holds two rows of seven');
 });
@@ -109,7 +110,7 @@ test('through the green baize door, down the back stairs, to the kitchen below s
   for(let x=at.x;x>V.cx-6;x-=.2)assert.ok(w.allowed(x,V.cz+V.d/2-1.5),'a clear way west along the south wall, x '+x.toFixed(1));
   for(let z=at.z;z>V.cz-1.5;z-=.2)assert.ok(w.allowed(V.cx+2.2,z),'and north past the table, z '+z.toFixed(1));
   w.interact(interactables.find(o=>o.userData.type==='food-history-stair'));const up=moves.at(-1);
-  assert.equal(w.zoneAt(up.x,up.z),'food-history');assert.ok(w.allowed(up.x,up.z),'up the back stairs into the hall');
+  assert.equal(w.zoneAt(up.x,up.z),'victorian-dining');assert.ok(w.allowed(up.x,up.z),'up the back stairs, through the jib door into the dining room');
   for(const name of ['THE LIBRARY','DRAWING ROOM','FRONT DOOR'])assert.ok(w.bells.includes(name),name);
 });
 
@@ -126,7 +127,7 @@ test('the library’s bell rings below stairs, and answered while it swings, the
 });
 
 test('the kitchen below stairs keeps to two lights and an instanced dresser',()=>{
-  const below=source.slice(source.indexOf('function buildVictorian()'),source.indexOf('function sendDown('));
+  const below=source.slice(source.indexOf('function buildVictorian()'),source.indexOf('function buildDining()'));
   assert.equal((below.match(/new THREE\.PointLight/g)||[]).length,2,'the gas and the range');
   assert.match(below,/new THREE\.InstancedMesh/);
   assert.ok(shelfIds('food-victorian').length<=12,'two cases of six');
@@ -147,4 +148,44 @@ test('the entrance in the Grand Hall keeps clear of the other doors and cases on
   const taken=[['the Horologist’s door',22.9-1.78,22.9+1.78],['the Kipling bookcase',29.1-1.1,29.1+1.1],['the Austen Room',11.8,14],['the Room of the Day',-15.6,-13.4]];
   for(const [name,a,b] of taken)assert.ok(at+half+.5<=a||at-half-.5>=b,`the entrance (z ${at-half} to ${at+half}) keeps half a metre from ${name}`);
   assert.ok(source.includes('move(THRESHOLD.x+2.75,THRESHOLD.z,-Math.PI/2)'),'the way back out stands the reader in front of it');
+});
+
+test('the back stairs climb to the dining room, whose jib door goes down again and whose double doors go out to the hall',()=>{
+  const {w,interactables,moves,seats}=wing();w.enterDining();
+  const D=w.dining,at=moves.at(-1);assert.equal(w.zoneAt(at.x,at.z),'victorian-dining');assert.ok(w.allowed(at.x,at.z));
+  for(let x=at.x;x>D.cx+3.6;x-=.2)assert.ok(w.allowed(x,at.z),'a clear way in from the jib door, x '+x.toFixed(1));
+  assert.equal(w.allowed(D.cx,D.cz),false,'the table');
+  for(let x=D.cx-3;x<D.cx+3;x+=.2)assert.ok(w.allowed(x,D.cz+D.d/2-.9),'a clear way along the south side to the doors, x '+x.toFixed(1));
+  w.interact(interactables.find(o=>o.userData.type==='food-history-jib'));let p=moves.at(-1);assert.equal(w.zoneAt(p.x,p.z),'victorian-kitchen');assert.ok(w.allowed(p.x,p.z),'down the back stairs to the kitchen');
+  w.interact(interactables.find(o=>o.userData.type==='food-history-dining-door'));p=moves.at(-1);assert.equal(w.zoneAt(p.x,p.z),'food-history');assert.ok(w.allowed(p.x,p.z),'out to the hall');
+  assert.equal(seats.length,8,'eight chairs, the library’s seats');for(const s of seats)assert.equal(JSON.stringify(s.bookIds),JSON.stringify(shelfIds('food-dining')),'each opens one of the dining room’s books');
+});
+
+test('the menu card at the head of the table is this month’s dinner for eight, word for word from Beeton',()=>{
+  const zlib=require('node:zlib');const text=zlib.gunzipSync(fs.readFileSync('texts/bundled-gzip/pg10136.txt.gz')).toString('utf8').replace(/\r/g,'');
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const {w,interactables,notices}=wing();w.activate();assert.equal(w.menus.length,12);
+  months.forEach((m,i)=>{const head=new RegExp('\\d+\\.--DINNER FOR 8 PERSONS \\('+m+'\\)\\.?\\n','i').exec(text);assert.ok(head,m);
+    const rest=text.slice(head.index+head[0].length),block=rest.slice(0,rest.search(/\n\d+\.--/)).split('\n').map(l=>l.trim()).filter(Boolean);
+    assert.equal(JSON.stringify(w.menus[i]),JSON.stringify(block),m+' is Beeton’s own bill of fare')});
+  w.interact(interactables.find(o=>o.userData.type==='food-history-menu'));const month=months[new Date().getMonth()];
+  assert.match(notices.at(-1),new RegExp(month));assert.ok(notices.at(-1).includes(w.menus[new Date().getMonth()][1]),'and shows it');
+});
+
+test('pull the dining-room bell, and the kitchen sends up a covered dish and a book',()=>{
+  const {w,interactables,notices,tones}=wing();w.enterDining();
+  const pull=interactables.find(o=>o.userData.type==='food-history-bellpull');assert.ok(pull);
+  w.update(10,.016);w.interact(pull);assert.ok(tones.length>0,'a bell rings below');assert.equal(w.dinnerSent,false,'not at once');
+  w.update(12,.016);assert.equal(w.dinnerSent,false);w.update(14,.016);assert.equal(w.dinnerSent,true,'a few seconds later');
+  assert.ok(w.books.some(b=>b.userData.book.id===shelfIds('food-dinner')[0]),'the book is on the tray');
+  const shown=wing({search:'?timmins'});shown.w.activate();assert.equal(shown.w.dinnerSent,true,'?timmins shows it at once');
+});
+
+test('the dining room keeps to two lights, and its cards quote only what their books say',()=>{
+  const room=source.slice(source.indexOf('function buildDining()'),source.indexOf('function sendUp('));
+  assert.equal((room.match(/new THREE\.PointLight/g)||[]).length,2,'the gasolier and the fire');
+  assert.ok((room.match(/new THREE\.InstancedMesh/g)||[]).length>=3,'plates, glasses and silver');
+  const notes=fs.readFileSync('data/new-books.js','utf8');assert.ok(notes.includes('elegant economy'));
+  assert.ok(fs.readFileSync('texts/pg394.txt','utf8').includes('elegant economy'),'Cranford’s own phrase');
+  const beeton=require('node:zlib');const b=beeton.gunzipSync(fs.readFileSync('texts/bundled-gzip/pg10136.txt.gz')).toString('utf8');assert.ok(/menus_? for dinners _?à la Russe/.test(b),'Beeton gives menus for dinners à la Russe');
 });

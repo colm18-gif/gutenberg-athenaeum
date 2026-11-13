@@ -12,7 +12,7 @@
     {key:'spices',title:'THE GLOBAL SPICE EXCHANGE',subtitle:'Taste, travel and trade',x:8.5,z:-1.4}
   ];
   window.createFoodHistoryWing=function(o){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,tone=()=>{},analytics,move,isHolding=()=>false,doorKit=null}=o;
+    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,tone=()=>{},registerSeat=null,analytics,move,isHolding=()=>false,doorKit=null}=o;
     const ROOM={cx:-780,cz:-420,w:26,d:21,h:6.4};
     // On the Grand Hall's west wall, between the Horologist's round door (its ring reaches z 24.7) and the Kipling
     // bookcase (from z 28): the hall's walls are otherwise full. The hall side is the library's walnut with the name gilded
@@ -42,6 +42,20 @@
     const vicLive={lights:[],coals:[],bells:[],ringing:-1,ringUntil:0,nextRing:0,hatch:null,hatchOpen:0,sent:null,feet:null,feetX:0,feetNext:0,clock:null};
     const bellAnswered=()=>{try{return localStorage.getItem(BELL_KEY)==='1'}catch(e){return false}};
     const showBell=()=>bellAnswered()||new URLSearchParams(location.search).has('bell');
+    // The dining room above the kitchen, up its back stairs (x −780, z −522): the room the bells ring from. A long
+    // mahogany table laid for eight à la russe, the sideboard, the fire under a looking-glass, the gasolier, red walls.
+    // A papered jib door in the east wall goes back down to the kitchen; the double doors in the south wall go out to the
+    // Athenaeum's hall. Two lights: the gasolier and the fire.
+    const DINING={cx:-780,cz:-522,w:14,d:10,h:4.8};
+    const JIB={dz:3};                                   // the jib door in the east wall, z = DINING.cz + dz
+    // Isabella Beeton's bill of fare for a dinner for eight, month by month, as printed in The Book of Household
+    // Management (1861; pg10136, checked line by line by a test). The menu card at the head of the table shows this month's.
+    const MENUS=[["FIRST COURSE.", "Mulligatawny Soup.", "Brill and Shrimp Sauce.", "Fried Whitings.", "ENTREES.", "Fricasseed Chicken.", "Pork Cutlets, with Tomato Sauce.", "SECOND COURSE.", "Haunch of Mutton.", "Boiled Turkey and Celery Sauce.", "Boiled Tongue, garnished with Brussels Sprouts.", "THIRD COURSE.", "Roast Pheasants.", "Meringues à la Crême.", "Compôte of Apples.", "Orange Jelly.", "Cheesecakes.", "Soufflé of Rice.", "DESSERT AND ICES."], ["FIRST COURSE.", "Mock Turtle Soup.", "Fillets of Turbot a la Crême.", "Fried Filleted Soles and Anchovy Sauce.", "ENTREES.", "Larded Fillets of Rabbits.", "Tendrons de Veau with Purée of Tomatoes.", "SECOND COURSE.", "Stewed Rump of Beef à la Jardinière.", "Roast Fowls.", "Boiled Ham.", "THIRD COURSE.", "Roast Pigeons or Larks.", "Rhubarb Tartlets.", "Meringues.", "Clear Jelly. Cream.", "Ice Pudding.", "Soufflé.", "DESSERT AND ICES."], ["FIRST COURSE.", "Calf's-Head Soup.", "Brill and Shrimp Sauce.", "Broiled Mackerel à la Maître d'Hôtel.", "ENTREES.", "Lobster Cutlets.", "Calf's Liver and Bacon, aux fines herbes.", "SECOND COURSE.", "Roast Loin of Veal.", "Two Boiled Fowls à la Béchamel.", "Boiled Knuckle of Ham.", "Vegetables--Spinach or Brocoli.", "THIRD COURSE.", "Wild Ducks.", "Apple Custards.", "Blancmange.", "Lemon Jelly.", "Jam Sandwiches.", "Ice Pudding.", "Potatoes à la Maître d'Hôtel.", "DESSERT AND ICES."], ["FIRST COURSE.", "Spring Soup.", "Slices of Salmon and Caper Sauce.", "Fried Filleted Soles.", "ENTREES.", "Chicken Vol-au-Vent.", "Mutton Cutlets and Tomato Sauce.", "SECOND COURSE.", "Roast Loin of Veal.", "Boiled Fowls à la Béchamel.", "Tongue.", "Vegetables.", "THIRD COURSE.", "Guinea-Fowl.", "Sea-kale.", "Artichoke Bottoms.", "Cabinet Pudding.", "Blancmange.", "Apricot Tartlets.", "Rice Fritters.", "Macaroni and Parmesan Cheese.", "DESSERT."], ["FIRST COURSE.", "Julienne Soup.", "Brill and Lobster Sauce.", "Fried Fillets of Mackerel.", "ENTREES", "Lamb Cutlets and Cucumbers.", "Lobster Patties.", "SECOND COURSE.", "Roast Fillet of Veal.", "Boiled Leg of Lamb.", "Asparagus.", "THIRD COURSE.", "Ducklings.", "Gooseberry Tart.", "Custards.", "Fancy Pastry.", "Soufflé.", "DESSERT AND ICES."], ["FIRST COURSE.", "Vermicelli Soup.", "Trout à la Genévése", "Salmon Cutlets.", "ENTREES.", "Lamb Cutlets and Peas.", "Fricasseed Chicken.", "SECOND COURSE.", "Roast Ribs of Beef.", "Half Calf's Head, Tongue, and Brains.", "Boiled Ham.", "Vegetables.", "THIRD COURSE.", "Roast Ducks.", "Compôte of Gooseberries.", "Strawberry Jelly.", "Pastry.", "Iced Pudding.", "Cauliflower with Cream Sauce.", "DESSERT AND ICES."], ["FIRST COURSE.", "Green-Pea Soup.", "Salmon and Lobster Sauce.", "Crimped Perch and Dutch Sauce.", "ENTREES.", "Stewed Veal and Peas.", "Lamb Cutlets and Cucumbers.", "SECOND COURSE.", "Haunch of Venison.", "Boiled Fowls à la Béchamel.", "Braised Ham.", "Vegetables.", "THIRD COURSE.", "Roast Ducks.", "Peas à la Française.", "Lobster Salad.", "Strawberry Cream.", "Blancmange.", "Cherry Tart.", "Cheesecakes.", "Iced Pudding.", "DESSERT AND ICES."], ["FIRST COURSE.", "Julienne Soup.", "Fillets of Turbot and Dutch Sauce.", "Red Mullet.", "ENTREES.", "Riz de Veau aux Tomates.", "Fillets of Ducks and Peas.", "SECOND COURSE.", "Haunch of Venison.", "Boiled Capon and Oysters.", "Ham, garnished.", "Vegetables.", "THIRD COURSE.", "Leveret.", "Fruit Jelly.", "Compote of Greengages.", "Plum Tart. Custards, in glasses.", "Omelette soufflé.", "DESSERT AND ICES."], ["FIRST COURSE.", "Flemish Soup.", "Turbot, garnished with Fried Smelts.", "Red Mullet and Italian Sauce.", "ENTREES.", "Tendrons de Veau and Truffles.", "Lamb Cutlets and Sauce Piquante.", "SECOND COURSE.", "Loin of Veal à la Béchamel.", "Roast Haunch of Venison.", "Braised Ham.", "Grouse Pie.", "Vegetables.", "THIRD COURSE.", "Roast Hare.", "Plum Tart.", "Whipped Cream.", "Punch Jelly.", "Compôte of Damsons.", "Marrow Pudding.", "DESSERT."], ["FIRST COURSE.", "Calf's-Head Soup.", "Crimped Cod and Oyster Sauce.", "Stewed Eels.", "ENTREES.", "Stewed Mutton Kidneys.", "Curried Sweetbreads.", "SECOND COURSE.", "Boiled Leg of Mutton, garnished with Carrots and Turnips. Roast Goose.", "THIRD COURSE.", "Partridges.", "Fruit Jelly. Italian Cream.", "Vol-au-Vent of Pears.", "Apple Tart.", "Cabinet Pudding.", "DESSERT AND ICES."], ["FIRST COURSE.", "Mulligatawny Soup.", "Fried slices of Codfish and Oyster Sauce.", "Eels en Matelote.", "ENTREES.", "Broiled Pork Cutlets and Tomata Sauce.", "Tendrons de Veau à la Jardinière.", "SECOND COURSE.", "Boiled Leg of Mutton and Vegetables.", "Roast Goose.", "Cold Game Pie.", "THIRD COURSE.", "Snipes.", "Teal.", "Apple Soufflé.", "Iced Charlotte.", "Tartlets.", "Champagne Jelly.", "Coffee Cream.", "Mince Pies.", "DESSERT AND ICES."], ["FIRST COURSE.", "Carrot Soup.", "Crimped Cod and Oyster Sauce.", "Baked Soles.", "ENTREES.", "Mutton Kidneys à la Française.", "Oyster Patties.", "SECOND COURSE.", "Boiled Beef and Vegetables.", "Marrow-bones.", "Roast Fowls and Water-cresses", "Tongue, garnished.", "Game Pie.", "THIRD COURSE.", "Partridges.", "Blancmange.", "Compôte of Apples.", "Vol-au-Vent of Pears.", "Almond Cheesecakes.", "Lemon Pudding.", "DESSERT AND ICES."]];
+    const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const DINNER_KEY='athenaeum-food-timmins';
+    const dineLive={lights:[],flames:[],coals:[],hatch:null,hatchOpen:0,sent:null,pulled:0,pullAt:0};
+    const dinnerFound=()=>{try{return localStorage.getItem(DINNER_KEY)==='1'}catch(e){return false}};
+    const showDinner=()=>dinnerFound()||new URLSearchParams(location.search).has('timmins');
     const owned=[],ours=[],shelfBooks=[],blocks=[];let root=null,t=0,lastNeeded=-1000;
     const own=x=>(owned.push(x),x);
     const add=(g,m,x,y,z,parent)=>{const mesh=new THREE.Mesh(g,m);mesh.position.set(x,y,z);parent.add(mesh);return mesh};
@@ -93,8 +107,18 @@
       scullery:['The scullery','Next to the kitchen, the scullery was where the washing-up, the preparing of vegetables and the roughest cleaning were done, at a shallow stone sink with a pump or a single cold tap. It was the scullery maid’s room, and she was the most junior servant in the house.'],
       area:['The area window','A basement kitchen looked up into the area, the sunken yard between the house and the street. Tradesmen came down the area steps to the kitchen door, and from inside one saw the railings and the feet of everyone going by.'],
       bells:['The bells','Each bell hung on a coiled spring and was rung by a wire pulled in a room upstairs. The spring kept the bell swinging after it rang, so whoever came in could see which room had called. One of these is labelled THE LIBRARY, and it is the only one that still rings.'],
-      stair:['The back stairs','Up the back stairs to the hall. Servants used these, out of sight, so as not to meet the family on the main staircase.'],
+      stair:['The back stairs','Up the back stairs to the dining room. Servants used these, out of sight, so as not to meet the family on the main staircase.'],
       hatch:['The dumbwaiter','A small lift in the wall, worked by a rope over a pulley, that carried dishes between the kitchen and the rooms upstairs.']
+    });
+    Object.assign(facts,{
+      dining:['The dining room','The room the bells ring from: a dining room of about 1860, over the kitchen, laid for a dinner for eight. Dining rooms were papered or painted in deep, warm colours, red above all, and furnished in heavy mahogany.'],
+      russe:['Dinner à la russe','By the 1860s the fashionable way to serve a dinner was à la russe: the dishes were carved and handed round by servants, course after course, and the table held only flowers, fruit and silver. Beeton gives several menus for dinners à la Russe beside the older kind, where whole courses were set out on the table at once.'],
+      epergne:['The epergne','A silver centrepiece of branching dishes for fruit and sweets, set in the middle of the table, high enough to be admired and low enough, in theory, to talk across.'],
+      sideboard:['The sideboard','The butler’s station: the decanters, the soup tureen and the plate waiting for the next course. In a dinner à la russe the carving was done here, out of the guests’ way.'],
+      jib:['The jib door','A door papered over to match the wall, so that servants could come and go without being seen. This one goes down the back stairs to the kitchen.'],
+      bellpull:['The bell-pull','A tasselled cord by the fireplace, wired to the board of bells in the kitchen below, where it rings the bell marked DINING ROOM.'],
+      fire:['The fireplace','A marble chimneypiece with a looking-glass over it, to double the candlelight. The coal fire was lit by a housemaid long before anyone came down.'],
+      timmins:['The dumbwaiter','The kitchen’s dumbwaiter comes up here too, between the sideboard and the door.']
     });
     const card=(key)=>({type:'food-history-card',title:facts[key][0],author:facts[key][1],action:'READ'});
     const shelf=key=>(arrivals[key]||[]).map(id=>findBook(id)).filter(Boolean);
@@ -351,6 +375,101 @@
       block(cx+4.45,N0+.22,6.6,.5);
       vicLive.nextRing=0;if(showBell())sendDown(true);
     }
+    function buildDining(){
+      const D=DINING,{cx,cz,w,d,h}=D,W0=cx-w/2,E0=cx+w/2,N0=cz-d/2,S0=cz+d/2;
+      const mahogany=own(new THREE.MeshStandardMaterial({color:0x4a1f12,roughness:.45})),silver=own(new THREE.MeshStandardMaterial({color:0xd8d8d2,metalness:.85,roughness:.25}));
+      const marble=mat(0xe2ddd2,.35),cloth=mat(0xf1ece0,.9),velvet=mat(0x5e1418,.9),china=mat(0xf4f1ea,.4),gilt=mat(0xc69c55,.4);
+      const glass=own(new THREE.MeshStandardMaterial({color:0xe8f0f2,transparent:true,opacity:.35,roughness:.05,metalness:.2,depthWrite:false}));
+      const tex=(draw,W,H,opts={})=>own(new THREE.MeshStandardMaterial({map:own(canvasTexture(draw,W,H)),roughness:.95,...opts}));
+      const plane=(pw,ph,m,x,y,z,ry=0,rx=0)=>{const p=add(own(new THREE.PlaneGeometry(pw,ph)),m,x,y,z,root);p.rotation.set(rx,ry,0);return p};
+      const lathe=(pts,m,x,y,z,seg=14)=>add(own(new THREE.LatheGeometry(pts.map(([a,b])=>new THREE.Vector2(a,b)),seg)),m,x,y,z,root);
+      // Red flock walls over a mahogany dado; a pale ceiling with a plaster rose; boards and a Turkey carpet.
+      const paper=tex((c,TW,TH)=>{c.fillStyle='#5a1216';c.fillRect(0,0,TW,TH);c.fillStyle='#6e1c1f';for(let y=0;y<4;y++)for(let x=0;x<4;x++){const px=x*64+(y%2)*32+32,py=y*64+32;c.beginPath();c.ellipse(px,py,12,20,0,0,7);c.fill();c.beginPath();c.ellipse(px,py-22,6,8,0,0,7);c.fill()}},256,256);
+      paper.map.wrapS=paper.map.wrapT=THREE.RepeatWrapping;paper.map.repeat.set(4,2);
+      box(w,.2,d,mat(0x3a2416,.6),cx,-.1,cz,root);box(w,.2,d,mat(0xd8d0bd,.95),cx,h+.1,cz,root);
+      lathe([[0,0],[.5,0],[.45,.06],[.2,.1],[0,.1]],mat(0xe8e1d0,.9),cx,h-.1,cz).rotation.x=Math.PI;
+      box(.3,h,d,paper,W0-.15,h/2,cz,root);box(w,h,.3,paper,cx,h/2,N0-.15,root);
+      // The east wall leaves room for the jib door (papered like the wall, so it hardly shows).
+      const jz=cz+JIB.dz;box(.3,h,jz-.6-N0,paper,E0+.15,h/2,(N0+jz-.6)/2,root);box(.3,h,S0-(jz+.6),paper,E0+.15,h/2,(jz+.6+S0)/2,root);box(.3,h-2.3,1.2,paper,E0+.15,(h+2.3)/2,jz,root);
+      const jib=new THREE.Group();jib.position.set(E0+.02,0,jz);root.add(jib);
+      const jibLeaf=add(own(new THREE.BoxGeometry(.06,2.3,1.2)),paper,0,1.15,0,jib);mark(jibLeaf,{type:'food-history-jib',title:facts.jib[0],author:facts.jib[1],action:'GO DOWN'});
+      add(own(new THREE.BoxGeometry(.06,.9,1.2)),mahogany,-.01,.45,0,jib);add(own(new THREE.SphereGeometry(.025,8,6)),gilt,-.05,1.05,-.45,jib);
+      // The south wall: the double doors to the hall between two curtained windows on the night.
+      for(const s of [-1,1]){const x0=s<0?W0:cx+1,x1=s<0?cx-1:E0;box(x1-x0,h,.3,paper,(x0+x1)/2,h/2,S0+.15,root)}box(2,h-3,.3,paper,cx,(h+3)/2,S0+.15,root);
+      for(const s of [-1,1]){const wx=cx+s*4;plane(1.3,2.2,own(new THREE.MeshBasicMaterial({color:0x0e1626})),wx,2.1,S0-.01,Math.PI);
+        for(const k of [-1,1]){const cur=box(.55,3.6,.12,velvet,wx+k*.85,2.2,S0-.12,root);cur.scale.set(1,1,1)}box(2.4,.18,.18,gilt,wx,4.05,S0-.15,root)}
+      const out={type:'food-history-dining-door',title:'The Gastronomic Athenaeum',author:'Through the double doors to the hall.',action:'RETURN'};
+      if(!doorKit?.hang(root,{data:out,mark,x:cx,z:S0-.2,yaw:Math.PI,width:1.9,height:2.9,color:0x4a1f12,style:'walnut',label:'THE HALL',own}))
+        mark(box(1.9,2.9,.2,mahogany,cx,1.45,S0-.22,root),out);
+      for(const [len,x,z,ry] of [[d,W0+.02,cz,Math.PI/2],[d,E0-.02,cz,-Math.PI/2],[w,cx,N0+.02,0]]){const p=plane(len,.95,mahogany,x,.475,z,ry);p.material.side=THREE.DoubleSide}
+      mark(plane(6.2,3.6,tex((c,TW,TH)=>{c.fillStyle='#4a1512';c.fillRect(0,0,TW,TH);c.strokeStyle='#8a6a3a';c.lineWidth=4;c.strokeRect(8,8,TW-16,TH-16);c.fillStyle='#1c2330';c.fillRect(26,26,TW-52,TH-52);
+        for(let y=0;y<4;y++)for(let x=0;x<7;x++){const px=40+x*30,py=40+y*27;c.fillStyle=(x+y)%2?'#5a2018':'#2d3a3a';c.beginPath();c.moveTo(px,py-9);c.lineTo(px+9,py);c.lineTo(px,py+9);c.lineTo(px-9,py);c.fill()}},256,160),cx,.005,cz,0,-Math.PI/2),card('dining'));
+      // The table, laid for eight à la russe: plates, three glasses and cutlery at each place, the epergne and two candelabra.
+      const tw=4.6,td=1.4,ty=.76;box(tw,.07,td,mahogany,cx,ty,cz,root);box(tw+.1,.01,td+.1,cloth,cx,ty+.04,cz,root);for(const sx of [-1,1])for(const sz of [-1,1])add(own(new THREE.CylinderGeometry(.05,.035,ty,8)),mahogany,cx+sx*(tw/2-.25),ty/2,cz+sz*(td/2-.2),root);
+      block(cx,cz,tw+1.4,td+1.4);
+      const places=[];for(const s of [-1,1])for(let i=0;i<3;i++)places.push([cx-1.4+i*1.4,cz+s*.5,s]);places.push([cx-tw/2+.3,cz,0,'foot'],[cx+tw/2-.3,cz,0,'head']);
+      const plates=new THREE.InstancedMesh(own(new THREE.CylinderGeometry(.13,.11,.015,18)),china,8),glasses=new THREE.InstancedMesh(own(new THREE.CylinderGeometry(.03,.02,.14,8)),glass,24),knives=new THREE.InstancedMesh(own(new THREE.BoxGeometry(.015,.006,.2)),silver,32);
+      {const m4=new THREE.Matrix4(),q=new THREE.Quaternion(),one=new THREE.Vector3(1,1,1);let g=0,k=0;
+        places.forEach(([x,z,s,end],i)=>{const dir=end==='head'?{x:-1,z:0}:end==='foot'?{x:1,z:0}:{x:0,z:-s};
+          m4.compose(new THREE.Vector3(x,ty+.055,z),q,one);plates.setMatrixAt(i,m4);
+          for(let j=0;j<3;j++){const off=.16+j*.07;m4.compose(new THREE.Vector3(x+dir.x*.18+(dir.z?off*(-s):0)*1,ty+.12,z+dir.z*.18+(dir.x?off:0)),q,one);glasses.setMatrixAt(g++,m4)}
+          for(const o of [-.19,-.15,.15,.19]){const qq=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0),dir.x?Math.PI/2:0);m4.compose(new THREE.Vector3(x+(dir.x?0:o),ty+.05,z+(dir.x?o:0)),qq,one);knives.setMatrixAt(k++,m4)}})}
+      for(const m of [plates,glasses,knives]){root.add(m);ours.push(m)}
+      plates.position.set(0,0,0);plates.userData=card('russe');interactables.push(plates);
+      const ep=lathe([[0,0],[.16,0],[.05,.05],[.04,.45],[.22,.5],[.24,.53],[0,.53]],silver,cx,ty+.05,cz);mark(ep,card('epergne'));
+      for(const [dx,dz,col] of [[0,0,0x7a2a3a],[.08,.05,0xc89a3a],[-.07,.04,0x6c8a2a],[.02,-.08,0xb0402a]])add(own(new THREE.SphereGeometry(.05,8,6)),mat(col,.6),cx+dx,ty+.62,cz+dz,root);
+      for(const s of [-1,1]){const x=cx+s*1.4;lathe([[0,0],[.08,0],[.03,.04],[.025,.4],[.04,.42]],silver,x,ty+.05,cz);
+        for(const a of [0,2.1,4.2,-1]){const r=a<0?0:.13,px=x+Math.cos(a)*r,pz=cz+Math.sin(a)*r;add(own(new THREE.CylinderGeometry(.012,.012,.16,6)),mat(0xf3eedf,.6),px,ty+.55,pz,root);
+          const fl=add(own(new THREE.ConeGeometry(.012,.04,6)),own(new THREE.MeshBasicMaterial({color:0xffcf7a})),px,ty+.65,pz,root);dineLive.flames.push(fl)}}
+      // The menu card at the head of the table: this month's dinner for eight.
+      const head=places.find(p=>p[3]==='head');const menu=box(.12,.16,.01,mat(0xf7f1e2,.8),head[0]-.15,ty+.12,head[1],root);menu.rotation.y=Math.PI/2;
+      mark(menu,{type:'food-history-menu',title:'The bill of fare',author:'This month’s dinner for eight, from Isabella Beeton.',action:'READ'});
+      // Eight chairs, the library's own seats, each opening one of the dining room's books.
+      places.forEach(([x,z,s,end],i)=>{const yaw=end==='head'?-Math.PI/2:end==='foot'?Math.PI/2:s>0?Math.PI:0,ch=new THREE.Group(),
+        off=end==='head'?{x:.55,z:0}:end==='foot'?{x:-.55,z:0}:{x:0,z:s*.55};ch.position.set(x+off.x,0,z+off.z);ch.rotation.y=yaw;root.add(ch);
+        const seat=add(own(new THREE.BoxGeometry(.46,.06,.44)),velvet,0,.46,0,ch),back=add(own(new THREE.BoxGeometry(.46,.62,.06)),mahogany,0,.8,.21,ch);
+        for(const [lx,lz] of [[-.2,-.18],[.2,-.18],[-.2,.18],[.2,.18]])add(own(new THREE.CylinderGeometry(.02,.018,.44,6)),mahogany,lx,.22,lz,ch);
+        if(registerSeat){const data=registerSeat([seat,back],ch,new THREE.Vector3(0,1.2,.05),yaw,{title:'A chair at the dinner table',author:'Sit, and read one of the dining room’s books.'});
+          Object.defineProperty(data,'bookIds',{get:()=>shelf('dining').map(b=>b.id),configurable:true});ours.push(seat,back)}
+        else mark(seat,card('russe'))});
+      // The sideboard on the west wall, with decanters and the tureen; a still life over it.
+      box(.6,.95,2.6,mahogany,W0+.32,.475,cz-.6,root);block(W0+.32,cz-.6,.7,2.7);mark(box(.62,.05,2.62,mahogany,W0+.32,.97,cz-.6,root),card('sideboard'));
+      for(const dz of [-.9,-.5])lathe([[0,0],[.07,0],[.08,.12],[.03,.2],[.025,.28],[.035,.3]],glass,W0+.3,1,cz-.6+dz);
+      lathe([[0,0],[.12,0],[.18,.12],[.17,.2],[.08,.24],[.03,.28]],silver,W0+.3,1,cz-.2);add(own(new THREE.CylinderGeometry(.25,.25,.02,20)),silver,W0+.3,1,cz+.35,root);
+      plane(1.4,1,tex((c,TW,TH)=>{c.fillStyle='#2a1f16';c.fillRect(0,0,TW,TH);c.fillStyle='#c69c55';c.fillRect(0,0,TW,6);c.fillRect(0,TH-6,TW,6);c.fillRect(0,0,6,TH);c.fillRect(TW-6,0,6,TH);
+        for(const [x,y,r,col] of [[70,80,22,'#8a2a2a'],[100,90,18,'#c8a03a'],[125,78,20,'#5a7a2a'],[95,60,14,'#6a2a5a']]){c.fillStyle=col;c.beginPath();c.arc(x,y,r,0,7);c.fill()}c.fillStyle='#8a7a6a';c.fillRect(50,100,110,10)},200,140),W0+.03,2.3,cz-.6,Math.PI/2);
+      // The dumbwaiter's upper hatch, beside the sideboard.
+      const hz=cz+1.6;box(.2,.95,.9,mahogany,W0+.1,1.4,hz,root);const hatch=box(.04,.7,.7,mat(0x6b2a1e,.6),W0+.22,1.4,hz,root);mark(hatch,{type:'food-history-dining-hatch'});
+      dineLive.hatch=hatch;dineLive.hatchBase=1.4;dineLive.tray={x:W0+.32,y:1.12,z:hz};
+      // The fireplace on the north wall: marble, a looking-glass over it, a clock, the coals and the fire's light.
+      const fx=cx-1.6;box(1.9,1.2,.35,marble,fx,.6,N0+.18,root);box(2.2,.07,.45,marble,fx,1.23,N0+.24,root);box(.9,.7,.05,mat(0x0e0b0a,.9),fx,.45,N0+.37,root);block(fx,N0+.3,2.3,.8);
+      const coals=own(new THREE.MeshStandardMaterial({color:0x2a100a,emissive:0xff5a1e,emissiveIntensity:.8,roughness:.9}));dineLive.coals.push(coals);mark(plane(.6,.25,coals,fx,.25,N0+.4),card('fire'));
+      plane(1.6,1.5,own(new THREE.MeshStandardMaterial({color:0x9aa3a6,metalness:.9,roughness:.08})),fx,2.1,N0+.04);box(1.75,1.65,.04,gilt,fx,2.1,N0+.02,root);
+      lathe([[0,0],[.1,0],[.1,.18],[.06,.26],[0,.28]],gilt,fx,1.27,N0+.25);
+      const fire=new THREE.PointLight(0xff9a4a,1.6,7,2);fire.position.set(fx,.6,N0+1);root.add(fire);dineLive.lights.push({light:fire,base:1.6,amp:.4});
+      // The bell-pull beside the chimneypiece.
+      const pull=new THREE.Group();pull.position.set(fx+1.35,2.2,N0+.06);root.add(pull);dineLive.pull=pull;
+      add(own(new THREE.BoxGeometry(.08,1.6,.02)),velvet,0,0,0,pull);const tassel=add(own(new THREE.ConeGeometry(.05,.16,8)),gilt,0,-.86,0,pull);
+      for(const m of pull.children)mark(m,{type:'food-history-bellpull'});
+      // The gasolier over the table.
+      add(own(new THREE.CylinderGeometry(.012,.012,1.2,5)),gilt,cx,h-.6,cz,root);for(let i=0;i<4;i++){const a=i*Math.PI/2;lathe([[0,0],[.09,.08],[.1,.1]],mat(0xf2ead6,.4),cx+Math.cos(a)*.35,h-1.3,cz+Math.sin(a)*.35)}
+      const gas=new THREE.PointLight(0xffd9a0,2.6,12,2);gas.position.set(cx,h-1.4,cz);root.add(gas);dineLive.lights.push({light:gas,base:2.6,amp:.04});
+      // A small case of the dining room's books in the north-east corner.
+      box(.4,1.9,2,mahogany,E0-.22,.95,N0+1.5,root);block(E0-.22,N0+1.5,.5,2.1);
+      shelf('dining').slice(0,9).forEach((b,i)=>hangingBook(b,E0-.36,.75+Math.floor(i/3)*.55,N0+.85+(i%3)*.62,-Math.PI/2,.5));
+      mark(panel(root,'THE DINING ROOM','Above the kitchen · about 1860',cx,4.1,S0-.2,3.4,.5,Math.PI),card('dining'));
+      if(showDinner())sendUp(true);
+    }
+    function sendUp(quiet){
+      if(!dineLive.hatch||dineLive.sent)return false;
+      dineLive.hatchOpen=1e-3;const book=shelf('dinner')[0],T=dineLive.tray;
+      add(own(new THREE.BoxGeometry(.5,.02,.42)),own(new THREE.MeshStandardMaterial({color:0xb7b2a6,metalness:.6,roughness:.3})),T.x,T.y,T.z,root);
+      add(own(new THREE.SphereGeometry(.16,14,8,0,Math.PI*2,0,Math.PI/2)),own(new THREE.MeshStandardMaterial({color:0xd8d8d2,metalness:.85,roughness:.25})),T.x,T.y+.01,T.z-.08,root);
+      if(book)dineLive.sent=hangingBook(book,T.x,T.y+.22,T.z+.12,Math.PI/2,.42);else dineLive.sent=true;
+      if(!quiet){try{localStorage.setItem(DINNER_KEY,'1')}catch(e){}analytics?.track('Secret Found',{secret:'food-timmins'})}
+      return true;
+    }
+    function menuText(date=new Date()){const m=date.getMonth();return 'Dinner for 8 persons, '+MONTHS[m]+', from Isabella Beeton: '+MENUS[m].join(' ').replace(/\.(?= [A-Z])/g,'.').replace(/ (FIRST COURSE|ENTREES|SECOND COURSE|THIRD COURSE|DESSERT)/g,' · $1')}
     function sendDown(quiet){
       if(!vicLive.hatch||vicLive.sent)return false;
       vicLive.hatchOpen=1e-3;const book=shelf('bells')[0],T=vicLive.tray;
@@ -432,7 +551,7 @@
       const toBelow={type:'food-history-baize-door',title:'Below stairs',author:'Through the green baize door and down the back stairs to the kitchen.',action:'ENTER'};
       if(!doorKit?.hang(root,{data:toBelow,mark,x:cx+BAIZE_DOOR.dx,z:cz-d/2+.18,yaw:0,width:1.9,height:3.1,color:0x2f5a35,style:'plain',label:'BELOW STAIRS',own}))
         mark(box(1.9,3.1,.2,mat(0x2f5a35,.95),cx+BAIZE_DOOR.dx,1.55,cz-d/2+.2,root),toBelow);
-      buildKitchen();buildVictorian();collectBooks();scene.add(root);
+      buildKitchen();buildVictorian();buildDining();collectBooks();scene.add(root);
     }
     const doorwayData={type:'food-history-door',title:'The Gastronomic Athenaeum',author:'Beyond the old doors: food, cooking and culinary history.',action:'ENTER'};
     const doorway=new THREE.Group();doorway.name='food-history-threshold';doorway.position.set(THRESHOLD.x,0,THRESHOLD.z);doorway.rotation.y=THRESHOLD.yaw;scene.add(doorway);
@@ -441,13 +560,13 @@
     // The entrance stays in the main hall while the distant wing unloads. Keep its assets out of the disposable room pool.
     const entranceOwned=owned.splice(0);
     const inBox=(r,x,z)=>x>r.cx-r.w/2&&x<r.cx+r.w/2&&z>r.cz-r.d/2&&z<r.cz+r.d/2;
-    const inKitchen=(x,z)=>inBox(KITCHEN,x,z),inVictorian=(x,z)=>inBox(VICTORIAN,x,z);
-    function contains(x,z){return inBox(ROOM,x,z)||inKitchen(x,z)||inVictorian(x,z)}
-    function zoneAt(x,z){return inKitchen(x,z)?'ancient-kitchen':inVictorian(x,z)?'victorian-kitchen':inBox(ROOM,x,z)?'food-history':null}
+    const inKitchen=(x,z)=>inBox(KITCHEN,x,z),inVictorian=(x,z)=>inBox(VICTORIAN,x,z),inDining=(x,z)=>inBox(DINING,x,z);
+    function contains(x,z){return inBox(ROOM,x,z)||inKitchen(x,z)||inVictorian(x,z)||inDining(x,z)}
+    function zoneAt(x,z){return inKitchen(x,z)?'ancient-kitchen':inVictorian(x,z)?'victorian-kitchen':inDining(x,z)?'victorian-dining':inBox(ROOM,x,z)?'food-history':null}
     function floorAt(x,z){return contains(x,z)?0:null}
     function allowed(x,z){
       if(!contains(x,z))return false;
-      const r=player.radius||.42,R=inKitchen(x,z)?KITCHEN:inVictorian(x,z)?VICTORIAN:ROOM,m=R===ROOM?.42:.12;
+      const r=player.radius||.42,R=inKitchen(x,z)?KITCHEN:inVictorian(x,z)?VICTORIAN:inDining(x,z)?DINING:ROOM,m=R===ROOM?.42:.12;
       if(x-r<R.cx-R.w/2+m||x+r>R.cx+R.w/2-m||z-r<R.cz-R.d/2+m||z+r>R.cz+R.d/2-m)return false;
       return !blocks.some(b=>Math.abs(x-b.x)<b.w/2+r&&Math.abs(z-b.z)<b.d/2+r);
     }
@@ -460,6 +579,11 @@
       activate();move(KITCHEN.cx+KITCHEN_ENTRY.dx,KITCHEN.cz+KITCHEN.d/2-1.6,0);playSample?.('doorOpen',.8,.9);
       showNotice('The Ancient Kitchen. A Roman kitchen this side of the arch, an English one of about 1400 beyond it.',8);
       analytics?.track('Room Explored',{room:'ancient-kitchen'});
+    }
+    function enterDining(){
+      activate();move(DINING.cx+DINING.w/2-1.3,DINING.cz+JIB.dz,Math.PI/2);playSample?.('stoneStep',.7,1.1);
+      showNotice('Up the back stairs and through a door papered to look like wall: the dining room, laid for a dinner for eight.',8);
+      analytics?.track('Room Explored',{room:'victorian-dining'});
     }
     function enterBelow(){
       activate();move(VICTORIAN.cx+2.2,VICTORIAN.cz+VICTORIAN.d/2-1.5,0);playSample?.('stoneStep',.7,1);
@@ -480,7 +604,16 @@
         if(doorKit&&d.kit)doorKit.pass(d.kit,d,leave);else leave();return true;
       }
       if(d.type==='food-history-baize-door'){if(doorKit&&d.kit)doorKit.pass(d.kit,d,enterBelow);else enterBelow();return true}
-      if(d.type==='food-history-stair'){move(ROOM.cx+BAIZE_DOOR.dx,ROOM.cz-ROOM.d/2+1.8,Math.PI);playSample?.('stoneStep',.7,1.1);showNotice(facts.stair[1],5);return true}
+      if(d.type==='food-history-stair'){enterDining();return true}
+      if(d.type==='food-history-jib'){move(VICTORIAN.cx+2.2,VICTORIAN.cz+VICTORIAN.d/2-1.5,0);playSample?.('stoneStep',.7,.95);showNotice('Through the jib door and down the back stairs to the kitchen.',5);return true}
+      if(d.type==='food-history-dining-door'){const leave=()=>{move(ROOM.cx+BAIZE_DOOR.dx,ROOM.cz-ROOM.d/2+1.8,Math.PI);playSample?.('doorOpen',.8,1)};if(doorKit&&d.kit)doorKit.pass(d.kit,d,leave);else leave();return true}
+      if(d.type==='food-history-menu'){showNotice(menuText(),16);return true}
+      if(d.type==='food-history-bellpull'){
+        if(dineLive.sent){showNotice('Far below, the bell marked DINING ROOM rings again. Nobody comes: dinner has been sent up already, and is waiting in the dumbwaiter by the sideboard.',8);for(let i=0;i<3;i++)tone(1568,i*.2,.3,.012);return true}
+        if(!dineLive.pulled){dineLive.pulled=1;dineLive.pullAt=t;for(let i=0;i<4;i++)tone(1568,.1+i*.18,.3,.012);showNotice('You pull the bell. Far below, the bell marked DINING ROOM rings on its spring.',6)}
+        return true;
+      }
+      if(d.type==='food-history-dining-hatch'){showNotice(dineLive.sent?'The dumbwaiter is up. Under the dish cover, nothing at all; beside it, a book about a dinner that went badly.':facts.timmins[0]+': '+facts.timmins[1],8);return true}
       if(d.type==='food-history-bell'){
         if(vicLive.ringing===LIBRARY_BELL&&t<vicLive.ringUntil+3&&sendDown(false)){showNotice('You answer the bell. Somewhere above, a rope creaks, and the dumbwaiter comes down to the hatch by the dresser with a tray on it: a covered dish, and a book.',10)}
         else if(vicLive.sent)showNotice('THE LIBRARY’s bell hangs still. Whatever the library wanted, it has sent down already: the tray is in the dumbwaiter by the dresser.',8);
@@ -504,6 +637,7 @@
       ours.length=0;shelfBooks.length=0;blocks.length=0;
       kitchenLive.lights.length=0;kitchenLive.flames.length=0;kitchenLive.steam.length=0;kitchenLive.coals.length=0;kitchenLive.herbBase.length=0;
       kitchenLive.herbs=kitchenLive.lid=kitchenLive.mouse=kitchenLive.satyricon=null;kitchenLive.lidOpen=0;
+      dineLive.lights.length=0;dineLive.flames.length=0;dineLive.coals.length=0;dineLive.hatch=dineLive.sent=dineLive.pull=null;dineLive.hatchOpen=0;dineLive.pulled=0;
       vicLive.lights.length=0;vicLive.coals.length=0;vicLive.bells.length=0;vicLive.hatch=vicLive.sent=vicLive.feet=vicLive.clock=null;vicLive.hatchOpen=0;vicLive.ringing=-1;
     }
     function animateKitchen(time,dt=.016){
@@ -532,14 +666,25 @@
       if(vicLive.feet){if(time>vicLive.feetNext){const [a,b]=vicLive.feetRange;vicLive.feetX+=dt*.9;vicLive.feet.position.x=a+vicLive.feetX;vicLive.feet.children.forEach((c,i)=>c.position.y=(i<2?.2:-.06)+Math.max(0,Math.sin(time*7+(i%2)*Math.PI))*.05);
         if(a+vicLive.feetX>b){vicLive.feetX=0;vicLive.feet.position.x=a;vicLive.feetNext=time+14+Math.random()*16}}}
     }
+    function animateDining(time,dt=.016){
+      if(!root||!dineLive.lights.length)return;
+      if(Math.hypot(player.pos.x-DINING.cx,player.pos.z-DINING.cz)>13)return;
+      for(const L of dineLive.lights)L.light.intensity=L.base+L.amp*(Math.sin(time*6.1)*.5+Math.sin(time*10.7+.4)*.5);
+      for(const c of dineLive.coals)c.emissiveIntensity=.75+.2*Math.sin(time*1.7);
+      dineLive.flames.forEach((f,i)=>f.scale.y=1+.18*Math.sin(time*9+i));
+      if(dineLive.pull)dineLive.pull.rotation.z=dineLive.pulled&&time-dineLive.pullAt<1.2?Math.sin((time-dineLive.pullAt)*9)*.06:0;
+      // The kitchen answers the bell: a little after it is pulled, the dumbwaiter comes up with a covered dish and a book.
+      if(dineLive.pulled&&!dineLive.sent&&time-dineLive.pullAt>3.5){if(sendUp(false)){playSample?.('bookPull',.5,.8);showNotice('A rope creaks in the wall, and the dumbwaiter comes up beside the sideboard: a covered dish, and a book.',9)}}
+      if(dineLive.hatch&&dineLive.hatchOpen>0&&dineLive.hatchOpen<1){dineLive.hatchOpen=Math.min(1,dineLive.hatchOpen+dt*.8);dineLive.hatch.position.y=dineLive.hatchBase+dineLive.hatchOpen*.62}
+    }
     function update(time,dt){
-      t=time;animateKitchen(time,dt);animateVictorian(time,dt);
+      t=time;animateKitchen(time,dt);animateVictorian(time,dt);animateDining(time,dt);
       if(contains(player.pos.x,player.pos.z)||Math.hypot(player.pos.x-THRESHOLD.x,player.pos.z-THRESHOLD.z)<PRELOAD)activate();
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!shelfBooks.some(b=>b.parent!==root))unload();
     }
     // Where Clio curls up when she is found here: on the warm flagstones before the medieval fire.
     const clioSpot={x:KITCHEN.cx+KITCHEN.w/2-2.1,y:0,z:KITCHEN.cz-1.2,yaw:Math.PI/2};
-    return {enter,enterKitchen,enterBelow,interact,victorian:VICTORIAN,baizeDoor:BAIZE_DOOR,bells:BELLS,ringBell:()=>ringBell(t),get bellAnswered(){return !!vicLive.sent},contains,zoneAt,allowed,floorAt,update,activate,unload,room:ROOM,kitchen:KITCHEN,kitchenDoor:KITCHEN_DOOR,kitchenEntry:KITCHEN_ENTRY,arch:ARCH,clioSpot,collections:COLLECTIONS,facts,
+    return {enter,enterKitchen,enterBelow,enterDining,interact,dining:DINING,jib:JIB,menus:MENUS,menuText,get dinnerSent(){return !!dineLive.sent},victorian:VICTORIAN,baizeDoor:BAIZE_DOOR,bells:BELLS,ringBell:()=>ringBell(t),get bellAnswered(){return !!vicLive.sent},contains,zoneAt,allowed,floorAt,update,activate,unload,room:ROOM,kitchen:KITCHEN,kitchenDoor:KITCHEN_DOOR,kitchenEntry:KITCHEN_ENTRY,arch:ARCH,clioSpot,collections:COLLECTIONS,facts,
       openJar:()=>openJar(true),get dormouseFound(){return !!kitchenLive.satyricon},get built(){return !!root},get books(){return shelfBooks.slice()}};
   };
 })();
