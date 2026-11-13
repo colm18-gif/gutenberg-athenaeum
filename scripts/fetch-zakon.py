@@ -50,6 +50,35 @@ def drive_direct(url):
     m = re.search(r'drive\.google\.com/(?:file/d/|open\?id=|uc\?id=)([\w-]+)', url)
     return f'https://drive.google.com/uc?export=download&id={m.group(1)}' if m else url
 
+def drive_folder_items(folder_id, depth=0, seen=None):
+    """Files in a public Drive folder and its subfolders, through Drive's embedded folder view."""
+    seen = seen if seen is not None else set()
+    if folder_id in seen or depth > 3:
+        return []
+    seen.add(folder_id)
+    _, _, data = get(f'https://drive.google.com/embeddedfolderview?id={folder_id}')
+    page = data.decode('utf-8', 'replace')
+    items = []
+    for href, label in links_of(page, 'https://drive.google.com/'):
+        sub = re.search(r'/drive/folders/([\w-]+)', href)
+        f = re.search(r'/file/d/([\w-]+)', href)
+        if sub:
+            print(f'  folder {label!r}')
+            items += drive_folder_items(sub.group(1), depth + 1, seen)
+        elif f:
+            print(f'  file {label!r}')
+            items.append((f'https://drive.google.com/uc?export=download&id={f.group(1)}', label))
+    return items
+
+def kind_of(data):
+    if data[:4] == b'%PDF': return '.pdf'
+    if data[:2] == b'PK': return '.zip'
+    if data[:4] in (b'OTTO',): return '.otf'
+    if data[:4] in (b'\x00\x01\x00\x00', b'true'): return '.ttf'
+    if data[:4] == b'wOF2': return '.woff2'
+    if data[:4] == b'wOFF': return '.woff'
+    return ''
+
 def save(name, data):
     os.makedirs(OUT, exist_ok=True)
     name = re.sub(r'[^\w.\-]+', '_', name)[-120:] or 'file'
@@ -114,6 +143,18 @@ def main():
         if not (LOOKS_LIKE_DOWNLOAD.search(hay) or LOOKS_LIKE_TERMS.search(hay)):
             continue
         seen.add(key)
+        folder = re.search(r'drive\.google\.com/drive/folders/([\w-]+)', key)
+        if folder:
+            print(f'\n# Drive folder {key}')
+            try:
+                for furl, flabel in drive_folder_items(folder.group(1)):
+                    _, _, fdata = get(furl)
+                    name = flabel if os.path.splitext(flabel)[1] else flabel + kind_of(fdata)
+                    files.append(save(name, fdata))
+                    print(f'  saved {name} ({len(fdata):,} bytes)')
+            except Exception as e:
+                print(f'  could not list the folder: {e}')
+            continue
         try:
             got, ctype, data = get(drive_direct(key))
         except Exception as e:
@@ -126,7 +167,10 @@ def main():
             if LOOKS_LIKE_TERMS.search(hay) or LOOKS_LIKE_TERMS.search(body[:200000]):
                 print(text_of(body)[:12000])
             continue
-        files.append(save(os.path.basename(lower) or label or 'download', data))
+        name = os.path.basename(lower) or label or 'download'
+        if not os.path.splitext(name)[1]:
+            name = (label or name) + kind_of(data)
+        files.append(save(name, data))
 
     # Unpack archives and gather fonts and documents.
     fonts, docs = [], []
