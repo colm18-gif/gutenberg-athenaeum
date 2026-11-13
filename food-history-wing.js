@@ -3,34 +3,31 @@
 // The wing is built on demand, uses existing book/reader interactions, and unloads when away.
 (function(){
   'use strict';
+  // Each collection's books are the shelf of the same name in data/new-books.js (food-cookbooks, food-preservation,
+  // food-spices), checked against their texts by the New books workflow; the numbers were looked up in Gutenberg's
+  // catalogue (docs/food-history-catalogue.md). Only resolved books appear.
   const COLLECTIONS=[
-    {key:'cookbooks',title:'THE HISTORICAL COOKBOOK GALLERY',subtitle:'The changing art of the recipe',x:-1,z:-6.9,ids:[10136,12815,12519,6501,22790,8102]},
-    {key:'preservation',title:'THE PRESERVATION VAULT',subtitle:'Salt, smoke, canning and winter stores',x:-8.5,z:-1.4,ids:[19031,12350,15464,12238]},
-    {key:'spices',title:'THE GLOBAL SPICE EXCHANGE',subtitle:'Taste, travel and trade',x:8.5,z:-1.4,ids:[29728,24407,44915,16035]}
+    {key:'cookbooks',title:'THE HISTORICAL COOKBOOK GALLERY',subtitle:'The changing art of the recipe',x:-1,z:-6.9},
+    {key:'preservation',title:'THE PRESERVATION VAULT',subtitle:'Salt, smoke, canning and winter stores',x:-8.5,z:-1.4},
+    {key:'spices',title:'THE GLOBAL SPICE EXCHANGE',subtitle:'Taste, travel and trade',x:8.5,z:-1.4}
   ];
-  // A small editorial starting selection; verify Gutenberg edition details before wider cataloguing.
-  const TITLES={
-    10136:['The Book of Household Management','Isabella Beeton'],
-    12815:['American Cookery','Amelia Simmons'],
-    12519:['The Virginia Housewife','Mary Randolph'],
-    6501:['The Boston Cooking-School Cook Book','Fannie Merritt Farmer'],
-    22790:['The Accomplisht Cook','Robert May'],
-    8102:['The Forme of Cury','Samuel Pegge (editor)'],
-    19031:['A Treatise on Adulterations of Food, and Culinary Poisons','Friedrich Accum'],
-    12350:['Every Step in Canning','Grace Viall Gray'],
-    15464:['Foods That Will Win the War and How to Cook Them','C. Houston and Alberta Goudiss'],
-    12238:['Science in the Kitchen','E. E. Kellogg'],
-    29728:['Cookery and Dining in Imperial Rome','Apicius'],
-    24407:['The Italian Cook Book','Maria Gentile'],
-    44915:['The Physiology of Taste','Jean Anthelme Brillat-Savarin'],
-    16035:['Old Cookery Books and Ancient Cuisine','William Carew Hazlitt']
-  };
   window.createFoodHistoryWing=function(o){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,registerBook,showNotice,playSample,analytics,move,isHolding=()=>false,doorKit=null}=o;
+    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,analytics,move,isHolding=()=>false,doorKit=null}=o;
     const ROOM={cx:-780,cz:-420,w:26,d:21,h:6.4};
     // West wall of the Grand Hall, north of the botanical portrait and clear of the writing desks.
     const THRESHOLD={x:-18.1,z:25,yaw:Math.PI/2};
     const PRELOAD=8,KEEP=25;
+    // The Ancient Kitchen: north of the hall, through a planked door in the hall's north wall. A Roman kitchen of the
+    // first century AD (west, through the courtyard door's light) and an English one of about 1400 (east, round the
+    // great fireplace), divided by a stone arch. Two lights only: the Roman oil lamp and the medieval fire.
+    const KITCHEN={cx:-780,cz:-462,w:18,d:12,h:5};
+    const KITCHEN_DOOR={dx:-9};                         // in the hall's north wall, x = ROOM.cx + dx
+    const KITCHEN_ENTRY={dx:-4.5};                      // in the kitchen's south wall, x = KITCHEN.cx + dx (Roman side)
+    const ARCH={half:1.5,top:3.2};                      // the arch's opening: z within KITCHEN.cz ± half, up to top
+    const DORMOUSE_KEY='athenaeum-food-dormouse';
+    const kitchenLive={lights:[],flames:[],steam:[],herbs:null,herbBase:[],coals:[],lid:null,lidOpen:0,mouse:null,satyricon:null};
+    const remembered=()=>{try{return localStorage.getItem(DORMOUSE_KEY)==='1'}catch(e){return false}};
+    const showDormouse=()=>remembered()||new URLSearchParams(location.search).has('dormouse');
     const owned=[],ours=[],shelfBooks=[],blocks=[];let root=null,t=0,lastNeeded=-1000;
     const own=x=>(owned.push(x),x);
     const add=(g,m,x,y,z,parent)=>{const mesh=new THREE.Mesh(g,m);mesh.position.set(x,y,z);parent.add(mesh);return mesh};
@@ -53,23 +50,36 @@
       table:['A laid table','Food history is also a history of labour, class, colonialism and exchange. Whose recipes were written down, and whose were not?'],
       jars:['The preservation shelves','Preserving food changed what could be eaten in winter and carried on journeys. Historic preservation instructions may be unsafe by modern standards.'],
       spice:['The spice chests','Pepper, cinnamon, cloves and other ingredients travelled across long trading networks. Those histories include commerce, migration, exploitation and cultural exchange.'],
-      plans:['Doors yet to open','The Confectioner’s Parlour, Coffee House, Market Garden and other rooms are on the architect’s plan. This first wing opens the Cookbook Gallery, Preservation Vault and Spice Exchange.']
+      plans:['Doors yet to open','The Confectioner’s Parlour, Coffee House, Market Garden and other rooms are on the architect’s plan. So far the wing opens the Cookbook Gallery, the Preservation Vault, the Spice Exchange and, through the door in the north-west corner, the Ancient Kitchen.']
     };
+    Object.assign(facts,{
+      kitchen:['The Ancient Kitchen','On one side a Roman kitchen of the first century AD, on the other an English one of about 1400. The two oldest cookery books in this wing, Apicius and the Forme of Cury, were written for kitchens like these.'],
+      hearth:['A Roman hearth','Kitchens at Pompeii were small and often dark, with a raised masonry hearth where charcoal burned under pots set on iron tripods and gridirons. Fuel was stacked in the arches underneath.'],
+      lararium:['The household shrine','Many kitchens at Pompeii had a shrine to the household gods painted on the wall near the hearth, often with serpents, the guardians of the place, gliding towards an altar. Offerings were made there at mealtimes.'],
+      garum:['Garum','Fish sauce, made by salting fish and their innards and leaving them for months to ferment; the liquid was strained off and carried round the empire in amphorae. Apicius uses it in most savoury dishes, much as salt is used now. At Pompeii Aulus Umbricius Scaurus grew rich on it and had its jars pictured in the mosaic floor of his house.'],
+      amphorae:['Amphorae','Two-handled clay jars for wine, oil, fish sauce and fruit, pointed at the foot so they could be stood in sand or stacked in a ship’s hold. Many carried a painted label giving what was inside and who had sent it.'],
+      mortarium:['A mortarium','A heavy clay bowl with grit fired into its inside and a spout to pour from. Herbs, nuts and spices were ground in it with a pestle, and a great many of Apicius’s sauces begin there. Broken ones turn up wherever Romans lived, Britain included.'],
+      bread:['Bread from Pompeii','Loaves carbonised in the eruption of AD 79 survive at Pompeii and Herculaneum: round, and scored into eight wedges so they could be broken apart. Some were stamped with the baker’s mark.'],
+      courtyard:['The courtyard','Through the doorway, the open courtyard of the house, with its rain basin and a few plants in the morning light. Water was fetched from here, and in a small house the courtyard was where much of the work was done.'],
+      dormouse:['A dormouse jar','The Romans fattened dormice for the table in earthenware jars like this, pierced for air and ridged inside for the animals to run along. Apicius gives a stuffed dormouse; Petronius’s Trimalchio serves them with honey and poppy seed. The lid is loose.'],
+      arch:['The arch','A thousand years and more lie between the two sides of this arch. Romans and medieval English cooks both pounded, boiled and roasted over open fires, and both loved pepper.'],
+      fireplace:['The great fireplace','In a medieval household nearly everything was cooked over an open fire: boiled in a great pot hung from a crane, roasted on spits before the flames, or baked in a separate oven. The Forme of Cury’s recipes assume such a fire and give no times or temperatures.'],
+      trenchers:['Trenchers','A trencher was a thick slice of coarse bread, some days old, used as a plate. After the meal it might go to the poor or to the dogs, and in time the word passed to the wooden board that replaced it.'],
+      spices:['The spice chest','The Forme of Cury calls for pepper, ginger, cinnamon, cloves, saffron and galingale, and for two ready-mixed powders, powdour fort, strong, and powdour douce, sweet. Spices came from Asia by long trade routes and were costly, and using them freely showed what a household could afford. The old story that they hid the taste of rotten meat has little behind it.'],
+      herbs:['Drying herbs','Herbs came from the kitchen garden and were hung to dry for the winter. The Forme of Cury’s salad calls for a whole garden of them: parsley, sage, garlic, leeks, borage, mint, fennel, cress, rosemary and purslane among them.'],
+      churn:['The churn','Cream was churned into butter by plunging the dasher up and down until the butter came, and the butter was salted to keep. It was usually the dairymaid’s work, and slow.']
+    });
     const card=(key)=>({type:'food-history-card',title:facts[key][0],author:facts[key][1],action:'READ'});
-    function getBook(id){
-      let book=findBook(id);if(book)return book;
-      const record=TITLES[id];if(!record)return null;
-      return registerBook({id,title:record[0],author:record[1],category:'Food History',fame:25,source:'Project Gutenberg',sourceUrl:'https://www.gutenberg.org/ebooks/'+id,licence:'Public Domain',textUrl:'https://www.gutenberg.org/cache/epub/'+id+'/pg'+id+'.txt'});
-    }
-    function hangingBook(book,x,y,z,yaw=0){
-      const mesh=add(own(new THREE.BoxGeometry(.8,1.03,.18)),own(bookMaterial(book)),x,y,z,root);
+    const shelf=key=>(arrivals[key]||[]).map(id=>findBook(id)).filter(Boolean);
+    function hangingBook(book,x,y,z,yaw=0,scale=1){
+      const mesh=add(own(new THREE.BoxGeometry(.8*scale,1.03*scale,.18*scale)),own(bookMaterial(book)),x,y,z,root);
       mesh.rotation.y=yaw;
       mesh.userData={type:'book',book,loaded:false,foodHistory:true,home:{position:mesh.position.clone(),quaternion:mesh.quaternion.clone(),parent:root}};
-      interactables.push(mesh);ours.push(mesh);shelfBooks.push(mesh);
+      interactables.push(mesh);ours.push(mesh);shelfBooks.push(mesh);return mesh;
     }
     function collectBooks(){
       for(const collection of COLLECTIONS){
-        const books=collection.ids.map(getBook).filter(Boolean);
+        const books=shelf(collection.key);
         const onBack=collection.key==='cookbooks';
         const w=onBack?10:7;
         const x=ROOM.cx+collection.x,z=ROOM.cz+collection.z;
@@ -78,7 +88,7 @@
         const side=collection.x<0?-1:1;
         for(const h of [1,2.2])box(onBack?w:.45,.08,onBack?.45:w,MAT.darkWood,shelfX,h,shelfZ,root);
         books.forEach((book,i)=>{
-          const col=i%7,row=Math.floor(i/7),offset=(col-(Math.min(7,books.length)-1)/2)*1.23;
+          const per=onBack?7:5,col=i%per,row=Math.floor(i/per),inRow=Math.min(per,books.length-row*per),offset=(col-(inRow-1)/2)*1.23;
           if(onBack)hangingBook(book,shelfX+offset,1.62+row*1.2,shelfZ+.19,0);
           else hangingBook(book,shelfX-side*.19,1.62+row*1.2,shelfZ+offset,side*Math.PI/2);
         });
@@ -88,6 +98,157 @@
         mark(label,{type:'food-history-card',title:collection.title,author:collection.subtitle+'. Select a volume to read.',action:'READ'});
       }
     }
+    function buildKitchen(){
+      const K=KITCHEN,{cx,cz,w,d,h}=K,W0=cx-w/2,E0=cx+w/2,N0=cz-d/2,S0=cz+d/2;
+      const ochre=mat(0x7f5d3e,.96),stone=mat(0x55504a,.97),timber=mat(0x3a2718,.8),iron=mat(0x27231f,.55),bronze=mat(0x8a6236,.45);
+      const clay=mat(0xa75b37,.88),darkClay=mat(0x7d4127,.9),crust=mat(0x8a5426,.8),wicker=mat(0x8d6b3c,.9),cloth=mat(0x8f8068,.95);
+      const tex=(draw,W,H,opts={})=>own(new THREE.MeshStandardMaterial({map:own(canvasTexture(draw,W,H)),roughness:.95,...opts}));
+      const plane=(pw,ph,m,x,y,z,ry=0,rx=0)=>{const p=add(own(new THREE.PlaneGeometry(pw,ph)),m,x,y,z,root);p.rotation.set(rx,ry,0);return p};
+      const lathe=(pts,m,x,y,z,seg=14)=>add(own(new THREE.LatheGeometry(pts.map(([a,b])=>new THREE.Vector2(a,b)),seg)),m,x,y,z,root);
+      // Floors: terracotta tiles on the Roman side, flagstones on the medieval.
+      const tiles=tex((c,TW,TH)=>{c.fillStyle='#4a2616';c.fillRect(0,0,TW,TH);for(let y=0;y<4;y++)for(let x=0;x<4;x++){const v=88+((x*7+y*13)%5)*6;c.fillStyle=`rgb(${v+18},${v-38},${v-58})`;c.fillRect(x*64+3,y*64+3,58,58)}},256,256);
+      tiles.map.wrapS=tiles.map.wrapT=THREE.RepeatWrapping;tiles.map.repeat.set(4.5,6);
+      const flags=tex((c,TW,TH)=>{c.fillStyle='#2e2a26';c.fillRect(0,0,TW,TH);for(let y=0;y<4;y++)for(let x=0;x<3;x++){const v=62+((x*5+y*3)%4)*8;c.fillStyle=`rgb(${v},${v-4},${v-10})`;c.fillRect(x*85+(y%2)*30+3,y*64+3,78,58)}},256,256);
+      flags.map.wrapS=flags.map.wrapT=THREE.RepeatWrapping;flags.map.repeat.set(3,4);
+      box(w/2,.2,d,tiles,cx-w/4,-.1,cz,root);box(w/2,.2,d,flags,cx+w/4,-.1,cz,root);
+      // Walls and ceiling: ochre plaster west, stone east; the medieval side has open beams.
+      box(w/2,.2,d,mat(0x6e5640,.95),cx-w/4,h+.1,cz,root);box(w/2,.2,d,timber,cx+w/4,h+.1,cz,root);
+      box(.3,h,d,ochre,W0-.15,h/2,cz,root);box(.3,h,d,stone,E0+.15,h/2,cz,root);
+      for(const z of [N0-.15,S0+.15]){box(w/2,h,.3,ochre,cx-w/4,h/2,z,root);box(w/2,h,.3,stone,cx+w/4,h/2,z,root)}
+      for(let x=cx+1.5;x<E0;x+=2.4)box(.26,.3,d,timber,x,h-.15,cz,root);
+      // A dado of darker red on the Roman walls, as in Pompeian kitchens.
+      box(.04,.9,d,mat(0x7a2e1e,.9),W0+.02,.45,cz,root);box(w/2,.9,.04,mat(0x7a2e1e,.9),cx-w/4,.45,N0+.02,root);box(w/2,.9,.04,mat(0x7a2e1e,.9),cx-w/4,.45,S0-.02,root);
+      // The dividing wall and its arch.
+      const half=ARCH.half;
+      for(const [z0,z1] of [[N0,cz-half],[cz+half,S0]]){box(.5,h,z1-z0,stone,cx,h/2,(z0+z1)/2,root);block(cx,(z0+z1)/2,.5,z1-z0)}
+      box(.5,h-ARCH.top,2*half,stone,cx,(h+ARCH.top)/2,cz,root);
+      const arch=add(own(new THREE.TorusGeometry(half,.14,8,20,Math.PI)),mat(0x8a7f70,.9),cx,ARCH.top-half*.35,cz,root);arch.rotation.y=Math.PI/2;arch.scale.set(1,.35,1);
+      for(const side of [-1,1])mark(box(.06,.5,.9,stone,cx+side*.28,ARCH.top+.6,cz,root),card('arch'));
+      // ROMAN SIDE. The raised masonry hearth along the west wall, glowing charcoal, a tripod and a gridiron.
+      const hz=cz-1.6;box(.95,.95,3.2,ochre,W0+.48,.475,hz,root);block(W0+.48,hz,1.05,3.3);
+      for(const dz of [-1,0,1])box(.05,.42,.7,mat(0x1a120c,.95),W0+.97,.3,hz+dz*.95,root);
+      const coals=own(new THREE.MeshStandardMaterial({color:0x2a100a,emissive:0xff5a1e,emissiveIntensity:.8,roughness:.9}));
+      kitchenLive.coals.push(coals);
+      mark(plane(.7,2.9,coals,W0+.48,.96,hz,0,-Math.PI/2),card('hearth'));
+      for(const a of [0,2.1,4.2]){const leg=add(own(new THREE.CylinderGeometry(.015,.015,.36,5)),iron,W0+.48+Math.cos(a)*.17,1.13,hz-.8+Math.sin(a)*.17,root);leg.rotation.set(Math.sin(a)*.25,0,-Math.cos(a)*.25)}
+      const pot=lathe([[0,0],[.18,.02],[.22,.12],[.2,.24],[.17,.26]],bronze,W0+.48,1.28,hz-.8);mark(pot,card('hearth'));
+      box(.5,.02,.6,iron,W0+.48,1.08,hz+.7,root);lathe([[0,0],[.2,.0],[.22,.05]],darkClay,W0+.48,1.1,hz+.7);
+      // Soot above the hearth.
+      plane(1.4,2.6,tex((c,TW,TH)=>{const g=c.createLinearGradient(0,TH,0,0);g.addColorStop(0,'rgba(20,14,10,.85)');g.addColorStop(1,'rgba(20,14,10,0)');c.fillStyle=g;c.fillRect(0,0,TW,TH)},64,128,{transparent:true,depthWrite:false}),W0+.03,2.3,hz,Math.PI/2);
+      // The lararium, painted on the west wall north of the hearth: an altar, two serpents, a garland.
+      mark(plane(1.3,1.1,tex((c,TW,TH)=>{c.fillStyle='#c9a46a';c.fillRect(0,0,TW,TH);c.fillStyle='#8e2a1c';c.fillRect(8,8,TW-16,TH-16);c.fillStyle='#d8c08a';c.fillRect(TW/2-24,TH-90,48,72);c.fillRect(TW/2-34,TH-96,68,10);
+        c.strokeStyle='#2f5a2a';c.lineWidth=9;for(const s of [-1,1]){c.beginPath();c.moveTo(TW/2+s*120,TH-30);for(let i=1;i<=6;i++)c.lineTo(TW/2+s*(120-i*16),TH-30-Math.sin(i*1.4)*18-i*9);c.stroke()}
+        c.strokeStyle='#3d6b2f';c.lineWidth=6;c.beginPath();c.moveTo(30,40);c.quadraticCurveTo(TW/2,95,TW-30,40);c.stroke();c.fillStyle='#e8b04a';c.beginPath();c.arc(TW/2,TH-104,7,0,7);c.fill()},320,270),W0+.04,1.85,cz-4.4,Math.PI/2),card('lararium'));
+      // A high window in the west wall, pale with morning.
+      plane(.9,.6,own(new THREE.MeshBasicMaterial({color:0xdfe6e8})),W0+.04,4.05,cz+2.8,Math.PI/2);
+      // The courtyard, seen through an open doorway in the north wall.
+      mark(plane(1.6,2.6,tex((c,TW,TH)=>{const g=c.createLinearGradient(0,0,0,TH*.55);g.addColorStop(0,'#a9c6d8');g.addColorStop(1,'#efe4c8');c.fillStyle=g;c.fillRect(0,0,TW,TH*.55);
+        c.fillStyle='#c98f5a';c.fillRect(0,TH*.3,TW,TH*.25);c.fillStyle='#e9dcc0';for(let i=0;i<4;i++)c.fillRect(20+i*60,TH*.22,14,TH*.33);
+        c.fillStyle='#b9a582';c.fillRect(0,TH*.55,TW,TH*.45);c.fillStyle='#6f8f9b';c.fillRect(TW*.25,TH*.68,TW*.5,TH*.1);c.fillStyle='#4f7a3c';for(const x of [.12,.82]){c.beginPath();c.arc(TW*x,TH*.6,26,0,7);c.fill()}},256,416,{emissive:0xffffff,emissiveIntensity:.25}),cx-6,1.35,N0+.04),card('courtyard'));
+      for(const s of [-1,1])box(.14,2.75,.2,timber,cx-6+s*.86,1.38,N0+.08,root);box(1.86,.16,.2,timber,cx-6,2.78,N0+.08,root);
+      // Amphorae stood in a rack along the north wall; the one with the painted label held garum.
+      const amph=[[0,0],[.05,.05],[.13,.35],[.17,.7],[.15,.95],[.07,1.07],[.06,1.25],[.09,1.29]];
+      const amphMat=[clay,mat(0xb46a43,.88),darkClay,clay];
+      for(let i=0;i<4;i++){const x=cx-3.2+i*.62,a=lathe(amph,amphMat[i],x,0,N0+.45);a.rotation.z=(i%2?.06:-.05);mark(a,card(i===1?'garum':'amphorae'));
+        for(const s of [-1,1]){const hnd=add(own(new THREE.TorusGeometry(.07,.015,5,8,Math.PI)),amphMat[i],x+s*.09,1.12,N0+.45,root);hnd.rotation.set(0,Math.PI/2,s*.3)}}
+      plane(.14,.12,own(new THREE.MeshStandardMaterial({color:0xe9dcc0,roughness:.9})),cx-3.2+.62,.82,N0+.62);
+      box(2.8,.08,.12,timber,cx-2.27,.5,N0+.28,root);block(cx-2.27,N0+.45,2.9,.8);
+      // The work table: a mortarium and pestle, bread, an oil jar and a basket.
+      const tx=cx-4.5,tz=cz-.2;box(2.4,.08,1.1,timber,tx,.9,tz,root);for(const sx of [-1.05,1.05])for(const sz of [-.45,.45])box(.08,.86,.08,timber,tx+sx,.43,tz+sz,root);block(tx,tz,2.6,1.3);
+      mark(lathe([[0,0],[.2,.02],[.26,.1],[.27,.14],[.24,.12],[.05,.05]],mat(0xcdb38f,.9),tx-.7,.94,tz),card('mortarium'));
+      const pestle=add(own(new THREE.CylinderGeometry(.03,.045,.24,7)),mat(0xcdb38f,.9),tx-.62,1.08,tz+.05,root);pestle.rotation.z=.6;
+      const loafTex=tex((c,TW,TH)=>{c.fillStyle='#8a5426';c.fillRect(0,0,TW,TH);c.strokeStyle='#4a2a10';c.lineWidth=5;for(let i=0;i<4;i++){c.beginPath();c.moveTo(TW/2+Math.cos(i*Math.PI/4)*TW/2,TH/2+Math.sin(i*Math.PI/4)*TH/2);c.lineTo(TW/2-Math.cos(i*Math.PI/4)*TW/2,TH/2-Math.sin(i*Math.PI/4)*TH/2);c.stroke()}c.beginPath();c.arc(TW/2,TH/2,TW*.14,0,7);c.stroke()},64,64);
+      for(const [dx,dz] of [[.15,-.15],[.5,.2],[.15,.28]]){const loaf=add(own(new THREE.CylinderGeometry(.13,.14,.07,16)),[loafTex,crust,crust],tx+dx,.97,tz+dz,root);mark(loaf,card('bread'))}
+      lathe([[0,0],[.08,.02],[.1,.12],[.06,.24],[.04,.3],[.05,.32]],clay,tx+.9,.94,tz-.3);
+      lathe([[0,0],[.16,0],[.2,.14],[.21,.16]],wicker,tx+.85,.94,tz+.25);
+      for(const [dx,dz,col] of [[-.05,0,0x6d7f2f],[.05,.05,0x8a3a5a],[0,-.06,0xc28a2a]])add(own(new THREE.SphereGeometry(.05,8,6)),mat(col,.8),tx+.85+dx,1.07,tz+.25+dz,root);
+      // Bronze ladles and a strainer hung on pegs by the hearth.
+      for(let i=0;i<3;i++){const y=2.15,z=hz+1.95+i*.28;add(own(new THREE.CylinderGeometry(.008,.008,.5,5)),bronze,W0+.07,y,z,root);add(own(new THREE.SphereGeometry(.055,8,5,0,Math.PI*2,Math.PI/2,Math.PI/2)),bronze,W0+.07,y-.27,z,root)}
+      // The oil lamp on its bracket over the table, and the Roman side's light.
+      lathe([[0,0],[.06,.01],[.07,.03],[.03,.05]],bronze,tx,2.6,tz);add(own(new THREE.CylinderGeometry(.004,.004,1.2,4)),iron,tx,3.2,tz,root);
+      const lampFlame=add(own(new THREE.ConeGeometry(.018,.06,6)),own(new THREE.MeshBasicMaterial({color:0xffc06a})),tx+.07,2.68,tz,root);kitchenLive.flames.push({mesh:lampFlame,base:1,amp:.15});
+      const lamp=new THREE.PointLight(0xffc887,3,12,2);lamp.position.set(tx,2.5,tz);root.add(lamp);kitchenLive.lights.push({light:lamp,base:3,amp:.2});
+      // The dormouse jar (glirarium), by the table's corner, and the stool beside it.
+      const jx=cx-2.3,jz=cz+2.6,jarMat=tex((c,TW,TH)=>{c.fillStyle='#9a5634';c.fillRect(0,0,TW,TH);c.fillStyle='#2a1208';for(let r=0;r<4;r++)for(let i=0;i<18;i++){c.beginPath();c.arc(i*TW/18+7+(r%2)*6,TH*(.28+r*.14),2.2,0,7);c.fill()}},256,128);
+      const jar=lathe([[0,0],[.16,.01],[.24,.18],[.25,.38],[.2,.56],[.17,.6]],jarMat,jx,0,jz,16);mark(jar,{type:'food-history-dormouse'});
+      const lid=new THREE.Group();lid.position.set(jx-.17,.6,jz);root.add(lid);
+      const lidMesh=add(own(new THREE.CylinderGeometry(.19,.19,.04,16)),darkClay,.17,.02,0,lid);add(own(new THREE.SphereGeometry(.03,8,6)),darkClay,.17,.06,0,lid);
+      mark(lidMesh,{type:'food-history-dormouse'});kitchenLive.lid=lid;block(jx,jz,.6,.6);
+      const mouse=new THREE.Group();mouse.position.set(jx,.5,jz);mouse.visible=false;root.add(mouse);
+      const fur=mat(0x8b8178,.95);add(own(new THREE.SphereGeometry(.07,10,8)),fur,0,0,0,mouse).scale.set(1.2,.85,1);
+      add(own(new THREE.SphereGeometry(.045,10,8)),fur,.08,.03,0,mouse);for(const s of [-1,1])add(own(new THREE.SphereGeometry(.018,6,5)),mat(0xb09a8c,.9),.08,.075,s*.03,mouse);
+      for(const s of [-1,1])add(own(new THREE.SphereGeometry(.009,6,5)),mat(0x111111,.3),.12,.04,s*.02,mouse);
+      const tail=add(own(new THREE.CylinderGeometry(.014,.022,.16,6)),fur,-.11,.04,0,mouse);tail.rotation.z=1.1;
+      kitchenLive.mouse=mouse;
+      box(.45,.42,.45,timber,jx+.62,.21,jz,root);block(jx+.62,jz,.55,.55);
+      kitchenLive.stool={x:jx+.62,y:.42,z:jz};
+      // Steam over the Roman pot.
+      steamAt(W0+.48,1.55,hz-.8);
+      // The Roman shelf of books, in the south wall west of the door.
+      box(2.6,.06,.4,timber,cx-7.2,1.05,S0-.22,root);box(2.6,.06,.4,timber,cx-7.2,2.25,S0-.22,root);
+      shelf('kitchen').filter(b=>[29728,53219,51259].includes(b.id)).forEach((b,i)=>hangingBook(b,cx-8.1+i*.9,1.6,S0-.3,Math.PI,.82));
+      block(cx-7.2,S0-.22,2.7,.5);
+      // MEDIEVAL SIDE. The great fireplace in the east wall, a pot crane and cauldron, and the fire itself.
+      const fz=cz-1.2,fx=E0;
+      for(const s of [-1,1])box(1,2.7,.6,stone,fx-.5,1.35,fz+s*1.75,root);
+      box(1.1,.6,4.1,stone,fx-.55,3,fz,root);box(.8,h-3.3,3.3,stone,fx-.4,3.3+(h-3.3)/2,fz,root);
+      box(.1,2.7,2.9,mat(0x15100c,.98),fx-.05,1.35,fz,root);box(1,.08,2.9,mat(0x3a332d,.95),fx-.5,.04,fz,root);
+      mark(box(.06,.5,4,stone,fx-1.06,3,fz,root),card('fireplace'));block(fx-.55,fz,1.2,4.2);
+      const fireMat=own(new THREE.MeshBasicMaterial({color:0xff7a22,transparent:true,opacity:.55,blending:THREE.AdditiveBlending,depthWrite:false}));
+      for(let i=0;i<5;i++){const f=add(own(new THREE.ConeGeometry(.13+i%2*.05,.45+i%3*.15,9)),fireMat,fx-.55+(i%2)*.12,.32,fz-.5+i*.25,root);kitchenLive.flames.push({mesh:f,base:1,amp:.28,phase:i*1.7});mark(f,card('fireplace'))}
+      for(let i=0;i<6;i++)add(own(new THREE.CylinderGeometry(.06,.06,.7,6)),mat(0x3b2416,.9),fx-.55,.1,fz-.6+i*.24,root).rotation.x=Math.PI/2;
+      add(own(new THREE.CylinderGeometry(.04,.04,2.4,6)),iron,fx-.2,1.25,fz+1.25,root);
+      const arm=add(own(new THREE.CylinderGeometry(.03,.03,1.1,6)),iron,fx-.72,2.3,fz+1.25,root);arm.rotation.z=Math.PI/2;
+      add(own(new THREE.CylinderGeometry(.01,.01,1.05,4)),iron,fx-1.15,1.78,fz+1.25,root);
+      const cauldron=add(own(new THREE.SphereGeometry(.32,14,10,0,Math.PI*2,Math.PI*.35,Math.PI*.65)),iron,fx-1.15,1.35,fz+1.25,root);mark(cauldron,card('fireplace'));
+      steamAt(fx-1.15,1.55,fz+1.25);
+      const fire=new THREE.PointLight(0xff9a4a,5,15,2);fire.position.set(fx-1.4,1.1,fz);root.add(fire);kitchenLive.lights.push({light:fire,base:5,amp:.9});
+      // The bread peel against the jamb, and the churn.
+      const peel=box(.32,1.7,.03,timber,fx-1.15,.85,fz-2.25,root);peel.rotation.z=.12;
+      const churn=lathe([[0,0],[.2,0],[.17,.9],[.15,.92]],timber,E0-.5,0,S0-.9);mark(churn,card('churn'));add(own(new THREE.CylinderGeometry(.015,.015,.7,5)),timber,E0-.5,1.15,S0-.9,root);block(E0-.5,S0-.9,.5,.5);
+      // Barrels by the north wall.
+      for(const [dx,dz] of [[1.4,.5],[2.3,.55]]){const bx=cx+dx,bz=N0+dz;lathe([[0,0],[.28,0],[.33,.35],[.28,.7],[0,.7]],mat(0x6a4a2e,.85),bx,0,bz);for(const y of [.12,.58])add(own(new THREE.TorusGeometry(.31,.012,4,16)),iron,bx,y,bz,root).rotation.x=Math.PI/2;block(bx,bz,.7,.7)}
+      // The trestle table with trenchers, bowls and a knife.
+      const mx=cx+4.6,mz=cz+1.6;box(3.2,.08,1,timber,mx,.82,mz,root);for(const sx of [-1.3,1.3]){const t1=box(.08,.8,.9,timber,mx+sx,.4,mz,root);t1.scale.set(1,1,.9)}block(mx,mz,3.4,1.2);
+      for(let i=0;i<4;i++){const tr=box(.3,.05,.22,crust,mx-1.1+i*.73,.885,mz+(i%2?.18:-.18),root);mark(tr,card('trenchers'))}
+      for(let i=0;i<3;i++)lathe([[0,0],[.09,.01],[.12,.07]],mat(0x7b5a39,.8),mx-.75+i*.73,.86,mz+(i%2?-.2:.2));
+      const knife=box(.22,.01,.03,iron,mx+.4,.87,mz,root);knife.rotation.y=.4;
+      // The spice chest.
+      const sc=box(.6,.4,.4,timber,cx+1.6,.2,S0-1.2,root);mark(sc,card('spices'));box(.62,.04,.42,iron,cx+1.6,.41,S0-1.2,root);block(cx+1.6,S0-1.2,.7,.5);
+      // Herbs hung from a beam to dry: one instanced mesh, swaying a little in the draught from the door.
+      const herbs=new THREE.InstancedMesh(own(new THREE.ConeGeometry(.08,.34,6)),mat(0x5f6b38,.95),12);
+      const m4=new THREE.Matrix4(),q=new THREE.Quaternion(),one=new THREE.Vector3(1,1,1),flip=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),Math.PI);
+      // The mesh stands at the beam (focus is found by an object's own position); its herbs are placed relative to it.
+      for(let i=0;i<12;i++){const pos=new THREE.Vector3(-3.1+i*.55,-(i%3)*.08,0);kitchenLive.herbBase.push(pos);m4.compose(pos,flip,one);herbs.setMatrixAt(i,m4)}
+      herbs.position.set(cx+4.3,3.95,cz+3.3);root.add(herbs);kitchenLive.herbs=herbs;kitchenLive.herbFlip=flip;
+      herbs.userData=card('herbs');interactables.push(herbs);ours.push(herbs);
+      box(7,.14,.14,timber,cx+4.3,4.25,cz+3.3,root);
+      // The medieval shelf of books, on the north wall.
+      box(2.6,.06,.4,timber,cx+5.6,1.05,N0+.22,root);box(2.6,.06,.4,timber,cx+5.6,2.25,N0+.22,root);
+      shelf('kitchen').filter(b=>[8102,24790,12293].includes(b.id)).forEach((b,i)=>hangingBook(b,cx+4.7+i*.9,1.6,N0+.3,0,.82));
+      block(cx+5.6,N0+.22,2.7,.5);
+      // The room's sign over the door, and its way back.
+      mark(panel(root,'THE ANCIENT KITCHEN','Rome · Medieval England',cx+KITCHEN_ENTRY.dx,3.7,S0-.2,4.2,.6,Math.PI),card('kitchen'));
+      const back={type:'food-history-kitchen-exit',title:'The Gastronomic Athenaeum',author:'Back to the reading hall.',action:'RETURN'};
+      if(!doorKit?.hang(root,{data:back,mark,x:cx+KITCHEN_ENTRY.dx,z:S0-.2,yaw:Math.PI,width:1.9,height:3.1,color:0x6b3a22,style:'planked',label:'THE GASTRONOMIC ATHENAEUM',own}))
+        mark(box(1.9,3.1,.2,timber,cx+KITCHEN_ENTRY.dx,1.55,S0-.22,root),back);
+      if(showDormouse())openJar(true);
+    }
+    function steamAt(x,y,z){
+      const n=24,pos=new Float32Array(n*3),geo=own(new THREE.BufferGeometry());
+      for(let i=0;i<n;i++){pos[i*3]=(Math.random()-.5)*.2;pos[i*3+1]=Math.random()*.9;pos[i*3+2]=(Math.random()-.5)*.2}
+      geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
+      const pts=new THREE.Points(geo,own(new THREE.PointsMaterial({color:0xd8d2c8,size:.045,transparent:true,opacity:.2,depthWrite:false})));
+      pts.position.set(x,y,z);root.add(pts);kitchenLive.steam.push(pts);
+    }
+    function openJar(quiet){
+      if(!kitchenLive.lid||kitchenLive.satyricon)return false;
+      kitchenLive.lidOpen=1e-3;kitchenLive.mouse.visible=true;
+      const book=shelf('dormouse')[0];
+      if(book){const st=kitchenLive.stool;kitchenLive.satyricon=hangingBook(book,st.x,st.y+.42,st.z,-Math.PI/2,.8)}
+      if(!quiet){try{localStorage.setItem(DORMOUSE_KEY,'1')}catch(e){}analytics?.track('Secret Found',{secret:'food-dormouse'})}
+      return true;
+    }
     function build(){
       if(root)return;root=new THREE.Group();root.name='food-history-wing';
       const oak=mat(0x543722),plaster=mat(0x70614d),brass=mat(0xb78f50,.4),linen=mat(0x9b8468);
@@ -96,7 +257,9 @@
       for(const x of [cx-w/2,cx+w/2])box(.35,h,d,plaster,x,h/2,cz,root);
       for(const z of [cz-d/2,cz+d/2])box(w,h,.35,plaster,cx,h/2,z,root);
       for(let x=-w/2+2;x<w/2;x+=4){for(const z of [cz-d/2+.23,cz+d/2-.23])box(.28,h,.34,oak,cx+x,h/2,z,root)}
-      for(const z of [cz-d/2+.23,cz+d/2-.23])box(w,.94,.22,oak,cx,.47,z,root);
+      box(w,.94,.22,oak,cx,.47,cz+d/2-.23,root);
+      // The north wainscot stops either side of the Ancient Kitchen's door (KITCHEN_DOOR, between two pilasters).
+      {const a=cx-w/2,b=cx+KITCHEN_DOOR.dx-1.15,c=cx+KITCHEN_DOOR.dx+1.15,e=cx+w/2;box(b-a,.94,.22,oak,(a+b)/2,.47,cz-d/2+.23,root);box(e-c,.94,.22,oak,(c+e)/2,.47,cz-d/2+.23,root)}
       for(const x of [cx-w/2+.23,cx+w/2-.23])box(.22,.94,d,oak,x,.47,cz,root);
       mark(panel(root,'THE GASTRONOMIC ATHENAEUM','Food, cooking, culture & time',cx,5.25,cz-d/2+.23,8.3,.95),card('hall'));
       // A feast table, a runner and a few simple place settings in the central aisle.
@@ -132,7 +295,11 @@
         const light=new THREE.PointLight(0xffc887,5.5,15,2);light.position.set(x,4.6,cz+1);root.add(light);
         add(own(new THREE.CylinderGeometry(.36,.56,.34,12)),brass,x,5.1,cz+1,root);
       }
-      collectBooks();scene.add(root);
+      // The Ancient Kitchen's door, in the north wall's west end.
+      const toKitchen={type:'food-history-kitchen-door',title:'The Ancient Kitchen',author:'Roman and medieval: the oldest cookery on these shelves, and where it was cooked.',action:'ENTER'};
+      if(!doorKit?.hang(root,{data:toKitchen,mark,x:cx+KITCHEN_DOOR.dx,z:cz-d/2+.18,yaw:0,width:1.9,height:3.1,color:0x6b3a22,style:'planked',label:'THE ANCIENT KITCHEN',own}))
+        mark(box(1.9,3.1,.2,oak,cx+KITCHEN_DOOR.dx,1.55,cz-d/2+.2,root),toKitchen);
+      buildKitchen();collectBooks();scene.add(root);
     }
     const doorwayData={type:'food-history-door',title:'The Gastronomic Athenaeum',author:'Beyond the old doors: food, cooking and culinary history.',action:'ENTER'};
     const doorway=new THREE.Group();doorway.name='food-history-threshold';doorway.position.set(THRESHOLD.x,0,THRESHOLD.z);doorway.rotation.y=THRESHOLD.yaw;scene.add(doorway);
@@ -200,18 +367,26 @@
     // The entrance stays in the main hall while the distant wing unloads. Keep its assets out of the disposable room pool.
     dressThreshold();
     const entranceOwned=owned.splice(0);
-    function contains(x,z){return x>ROOM.cx-ROOM.w/2&&x<ROOM.cx+ROOM.w/2&&z>ROOM.cz-ROOM.d/2&&z<ROOM.cz+ROOM.d/2}
+    const inBox=(r,x,z)=>x>r.cx-r.w/2&&x<r.cx+r.w/2&&z>r.cz-r.d/2&&z<r.cz+r.d/2;
+    const inKitchen=(x,z)=>inBox(KITCHEN,x,z);
+    function contains(x,z){return inBox(ROOM,x,z)||inKitchen(x,z)}
+    function zoneAt(x,z){return inKitchen(x,z)?'ancient-kitchen':inBox(ROOM,x,z)?'food-history':null}
     function floorAt(x,z){return contains(x,z)?0:null}
     function allowed(x,z){
       if(!contains(x,z))return false;
-      const r=player.radius||.42;
-      if(x-r<ROOM.cx-ROOM.w/2+.42||x+r>ROOM.cx+ROOM.w/2-.42||z-r<ROOM.cz-ROOM.d/2+.42||z+r>ROOM.cz+ROOM.d/2-.42)return false;
+      const r=player.radius||.42,R=inKitchen(x,z)?KITCHEN:ROOM,m=R===KITCHEN?.12:.42;
+      if(x-r<R.cx-R.w/2+m||x+r>R.cx+R.w/2-m||z-r<R.cz-R.d/2+m||z+r>R.cz+R.d/2-m)return false;
       return !blocks.some(b=>Math.abs(x-b.x)<b.w/2+r&&Math.abs(z-b.z)<b.d/2+r);
     }
     function enter(){
       activate();move(ROOM.cx,ROOM.cz+ROOM.d/2-2,0);playSample?.('doorOpen',.8,1);
-      showNotice('The Gastronomic Athenaeum. Explore the Cookbook Gallery ahead, the Preservation Vault to the left and the Spice Exchange to the right.',9);
+      showNotice('The Gastronomic Athenaeum. The Cookbook Gallery is ahead, the Preservation Vault to the left and the Spice Exchange to the right; the Ancient Kitchen is through the door in the far left corner.',9);
       analytics?.track('Room Explored',{room:'food-history'});
+    }
+    function enterKitchen(){
+      activate();move(KITCHEN.cx+KITCHEN_ENTRY.dx,KITCHEN.cz+KITCHEN.d/2-1.6,0);playSample?.('doorOpen',.8,.9);
+      showNotice('The Ancient Kitchen. A Roman kitchen this side of the arch, an English one of about 1400 beyond it.',8);
+      analytics?.track('Room Explored',{room:'ancient-kitchen'});
     }
     function interact(object){
       const d=object?.userData;
@@ -220,6 +395,16 @@
       if(d.type==='food-history-exit'){
         const leave=()=>{move(THRESHOLD.x+2.75,THRESHOLD.z,-Math.PI/2);playSample?.('doorOpen',.8,1)};
         if(doorKit&&d.kit)doorKit.pass(d.kit,d,leave);else leave();return true;
+      }
+      if(d.type==='food-history-kitchen-door'){if(doorKit&&d.kit)doorKit.pass(d.kit,d,enterKitchen);else enterKitchen();return true}
+      if(d.type==='food-history-kitchen-exit'){
+        const leave=()=>{move(ROOM.cx+KITCHEN_DOOR.dx,ROOM.cz-ROOM.d/2+1.8,Math.PI);playSample?.('doorOpen',.8,.9)};
+        if(doorKit&&d.kit)doorKit.pass(d.kit,d,leave);else leave();return true;
+      }
+      if(d.type==='food-history-dormouse'){
+        if(openJar(false)){playSample?.('pageTurn',.5,.7);showNotice('You lift the lid. A dormouse looks up, unimpressed, and goes back to sleep. Someone has left a book on the stool beside the jar: Trimalchio’s dinner, where dormice come to the table with honey and poppy seed.',11)}
+        else showNotice(kitchenLive.satyricon?'The dormouse is still asleep. Trimalchio’s dinner is on the stool beside the jar.':facts.dormouse[0]+': '+facts.dormouse[1],9);
+        return true;
       }
       if(d.type==='food-history-card'){showNotice(d.title+': '+d.author,10);return true}
       return false;
@@ -230,12 +415,30 @@
       for(let i=interactables.length-1;i>=0;i--)if(ours.includes(interactables[i]))interactables.splice(i,1);
       for(const obj of owned.splice(0))obj.dispose?.();
       ours.length=0;shelfBooks.length=0;blocks.length=0;
+      kitchenLive.lights.length=0;kitchenLive.flames.length=0;kitchenLive.steam.length=0;kitchenLive.coals.length=0;kitchenLive.herbBase.length=0;
+      kitchenLive.herbs=kitchenLive.lid=kitchenLive.mouse=kitchenLive.satyricon=null;kitchenLive.lidOpen=0;
     }
-    function update(time){
-      t=time;
+    function animateKitchen(time,dt=.016){
+      if(!root||!kitchenLive.lights.length)return;
+      const near=Math.hypot(player.pos.x-KITCHEN.cx,player.pos.z-KITCHEN.cz)<16;if(!near)return;
+      for(const L of kitchenLive.lights)L.light.intensity=L.base+L.amp*(Math.sin(time*7.3)*.5+Math.sin(time*13.1+1.3)*.3+Math.sin(time*2.1)*.2);
+      for(const F of kitchenLive.flames){const k=F.base+F.amp*Math.sin(time*9+(F.phase||0))*Math.sin(time*5.3+(F.phase||0)*.7);F.mesh.scale.set(1,k,1)}
+      for(const c of kitchenLive.coals)c.emissiveIntensity=.7+.25*Math.sin(time*1.7)+.1*Math.sin(time*6.1);
+      for(const pts of kitchenLive.steam){const a=pts.geometry.attributes.position;for(let i=0;i<a.count;i++){let y=a.getY(i)+dt*.25;if(y>.9)y=0;a.setY(i,y);a.setX(i,a.getX(i)+Math.sin(time+i)*dt*.02)}a.needsUpdate=true}
+      if(kitchenLive.herbs){const m4=new THREE.Matrix4(),one=new THREE.Vector3(1,1,1),q=new THREE.Quaternion();
+        kitchenLive.herbBase.forEach((p,i)=>{q.setFromAxisAngle(new THREE.Vector3(1,0,0),Math.sin(time*.8+i)*.05).multiply(kitchenLive.herbFlip);m4.compose(p,q,one);kitchenLive.herbs.setMatrixAt(i,m4)});
+        kitchenLive.herbs.instanceMatrix.needsUpdate=true}
+      if(kitchenLive.lid&&kitchenLive.lidOpen>0&&kitchenLive.lidOpen<1){kitchenLive.lidOpen=Math.min(1,kitchenLive.lidOpen+dt*1.5);kitchenLive.lid.rotation.z=kitchenLive.lidOpen*1.9}
+      if(kitchenLive.mouse?.visible)kitchenLive.mouse.position.y=.5+Math.sin(time*1.6)*.006;
+    }
+    function update(time,dt){
+      t=time;animateKitchen(time,dt);
       if(contains(player.pos.x,player.pos.z)||Math.hypot(player.pos.x-THRESHOLD.x,player.pos.z-THRESHOLD.z)<PRELOAD)activate();
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!shelfBooks.some(b=>b.parent!==root))unload();
     }
-    return {enter,interact,contains,allowed,floorAt,update,activate,unload,room:ROOM,collections:COLLECTIONS,get built(){return !!root},get books(){return shelfBooks.slice()}};
+    // Where Clio curls up when she is found here: on the warm flagstones before the medieval fire.
+    const clioSpot={x:KITCHEN.cx+KITCHEN.w/2-2.1,y:0,z:KITCHEN.cz-1.2,yaw:Math.PI/2};
+    return {enter,enterKitchen,interact,contains,zoneAt,allowed,floorAt,update,activate,unload,room:ROOM,kitchen:KITCHEN,kitchenDoor:KITCHEN_DOOR,kitchenEntry:KITCHEN_ENTRY,arch:ARCH,clioSpot,collections:COLLECTIONS,facts,
+      openJar:()=>openJar(true),get dormouseFound(){return !!kitchenLive.satyricon},get built(){return !!root},get books(){return shelfBooks.slice()}};
   };
 })();

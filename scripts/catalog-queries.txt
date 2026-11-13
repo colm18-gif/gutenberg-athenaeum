@@ -1,13 +1,7 @@
-# English translations of the Ukrainian Reading Room's writers, for English readers
-; Shevchenko ; en
-; Franko, Ivan ; en
-; Ukrainka ; en
-; Kotsiubynsky|Kotsyubynsky|Kotzubinsky|Kociubynskyj ; en
-; Vovchok|Markovych|Markovich ; en
-; Kvitka ; en
-; Kobylianska|Kobylyanska ; en
-; Stefanyk ; en
-; Nechui|Levytsky ; en
-; Kotliarevsky|Kotlyarevsky ; en
-Cossack Fairy|Ukrain|Ruthenian|Little Russian ; ; en
-ws? Shevchenko translated English
+# The Ancient Kitchen: Trimalchio's feast, and other early cookery
+Satyricon|Satyr|Trimalchio ; Petronius ; en
+Fifteenth.Century Cookery|Cookery.Books ; ; en
+Deipnosophist|Banquet of the Learned ; Athen ; en
+Boke of|Babees ; ; en
+Pliny|Natural History ; Pliny ; en
+= 71687 59977 28491 25914 13487
