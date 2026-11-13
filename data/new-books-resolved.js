@@ -2707,6 +2707,34 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 2829,
    "words": 21647
   },
+  "Manners and Rules of Good Society": {
+   "id": 33716,
+   "words": 75097
+  },
+  "Routledge's Manual of Etiquette": {
+   "id": 12426,
+   "words": 87763
+  },
+  "Cranford": {
+   "id": 394,
+   "words": 72102
+  },
+  "Our Mutual Friend": {
+   "id": 883,
+   "words": 328639
+  },
+  "Table Traits, with Something on Them": {
+   "id": 69859,
+   "words": 174679
+  },
+  "Dinners and Diners": {
+   "id": 53079,
+   "words": 86728
+  },
+  "A Little Dinner at Timmins's": {
+   "id": 2859,
+   "words": 10789
+  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633
