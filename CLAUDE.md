@@ -493,7 +493,12 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   reached the water, two earthen jars, raisins drying, the "O drug!" money and his journal on the table (`JOURNAL`, opened at
   today's date or the last entry before it), and the wreck on the reef. Every word given to him is checked against
   `texts/pg521.txt` by a test. His own copy of Robinson Crusoe lies on the sea chest (`ownCopy`).
-- Clio (once Quill), the library cat, has a corner under the portrait on the Grand Hall's west wall by the fire
+- Clio (once Quill), the library cat, is modelled on the owner's own cat (photographs, 13 November 2026): sixteen, a
+  long-haired black cat with four little white socks, a white bib and chin, pale green eyes and a black tail; fussy, very
+  brave (she guards a door rather than refusing it), fond of climbing (an errand, `perch`, takes her to the top of her
+  scratching post to survey the hall) and of her Avoca blanket (a drawn throw of colour blocks in her basket), and sure she
+  is a princess. Keep what she says and does to that.
+- Clio has a corner under the portrait on the Grand Hall's west wall by the fire
   (`clioCorner` in game.js, x −18, z −21 to −19): a wicker basket she sometimes sleeps in, a saucer of milk she drinks
   from (the jug beside it fills it), a scratching post, and a tin of treats on a shelf. Her errands to them are run
   after her haunts ("Clio's errands", wrapping `updateCat`, `guideCat` and `interact`); shaking the tin brings her at a
