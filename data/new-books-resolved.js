@@ -2675,6 +2675,38 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 5219,
    "words": 19481
   },
+  "New System of Domestic Cookery": {
+   "id": 69519,
+   "words": 79531
+  },
+  "The English Housekeeper": {
+   "id": 55314,
+   "words": 151266
+  },
+  "The Gastronomic Regenerator": {
+   "id": 47444,
+   "words": 295683
+  },
+  "The Modern Housewife": {
+   "id": 41899,
+   "words": 155343
+  },
+  "A Plain Cookery Book for the Working Classes": {
+   "id": 22114,
+   "words": 31956
+  },
+  "From Kitchen to Garret": {
+   "id": 51590,
+   "words": 115557
+  },
+  "London Labour and the London Poor": {
+   "id": 55998,
+   "words": 506636
+  },
+  "Fanny and the Servant Problem": {
+   "id": 2829,
+   "words": 21647
+  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633
