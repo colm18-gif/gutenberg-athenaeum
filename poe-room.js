@@ -209,7 +209,7 @@
       time=t;const inside=contains(player.pos.x,player.pos.z),near=Math.hypot(player.pos.x-DOOR.x,player.pos.z-DOOR.z)<PRELOAD;
       // The door is drawn only for a reader in or near the Gothic Parlour; it stands in its wall, and nowhere else can see it.
       if(doorGroup)doorGroup.visible=Math.hypot(player.pos.x-DOOR.x,player.pos.z-DOOR.z)<16;
-      if(inside||near)activate();
+      if(inside||near&&(root||window.libraryMayBuild?.()!==false))activate();
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==root))unload();
       if(!root)return;
       if(inside){if(insideSince===null)insideSince=t;heartbeat(t);

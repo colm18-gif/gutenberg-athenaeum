@@ -15,7 +15,7 @@ test('the Periodicals Room has its periodicals, each with a note',()=>{
 
 test('the door sits beneath the clock, and the room is built only when needed',()=>{
   assert.match(room,/const DOOR=\{x:0,z:30\.45,yaw:Math\.PI\}/);
-  assert.match(room,/if\(inside\|\|near\)activate\(\)/);
+  assert.match(room,/if\(inside\|\|near&&\(root\|\|window\.libraryMayBuild\?\.\(\)!==false\)\)activate\(\)/);
   assert.match(room,/else if\(root&&t-lastNeeded>KEEP&&!isHolding\(\)/);
   const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(m=>m[1]);assert.ok(order.indexOf('periodicals-room.js')>-1&&order.indexOf('periodicals-room.js')<order.indexOf('game.js'));
   assert.match(game,/if\(periodicalsRoom\?\.contains\(x,z\)\)return 'periodicals-room';/);

@@ -570,6 +570,11 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   once the room is freed.
 - Performance matters (many visitors are on phones): merge static parts by material, use `InstancedMesh`, avoid
   adding lights where the library's own can be borrowed.
+- Taps are answered first (Cloudflare showed slow taps on phones, November 2026): for 300 ms after a tap, click or
+  non-movement key (`heavyWorkWaits` in game.js) work that can wait holds off, and at most one room is built ahead of
+  the reader per frame. A room that preloads near its door asks first: `if(inside||near&&(root||window.libraryMayBuild?.()!==false))activate()`
+  (a test checks every module). The static batcher scans and merges a few milliseconds a frame (`SLICE_MS`); a piece
+  stays drawn on its own until its batch is merged.
 - To check things visually, serve the repo (`python3 -m http.server 8765`) and drive it with Playwright using
   `/opt/pw-browsers` Chromium with `--use-angle=swiftshader`; `index.html?debug&noktx2` exposes `window.__athenaeum`
   (teleport, placeAt, rooms, books…). Three.js loads from a CDN, so route it to a local copy.

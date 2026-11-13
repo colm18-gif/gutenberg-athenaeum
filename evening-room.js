@@ -169,7 +169,7 @@
     }
     function update(t,dt=0,reduced=false){
       time=t;const inside=contains(player.pos.x,player.pos.z),near=Math.hypot(player.pos.x-DOOR.x,player.pos.z-DOOR.z)<PRELOAD;
-      if(inside||near)activate();
+      if(inside||near&&(root||window.libraryMayBuild?.()!==false))activate();
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==root))unload();
       if(fire&&inside&&!reduced){for(const f of fire.flames)f.mesh.scale.y=1+Math.sin(t*9+f.phase)*.14+Math.sin(t*15+f.phase)*.06;fire.light.intensity=6+Math.sin(t*7)*.8+Math.sin(t*13.7)*.4}
     }

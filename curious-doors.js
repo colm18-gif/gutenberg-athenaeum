@@ -563,7 +563,7 @@
       time=t;const motion=reduced?0:1;
       if(slideRide){slideRide.t+=dt;const k=Math.min(1,slideRide.t/1.2),u=SLIDE.uChute-.05+(SLIDE.uEnd+.6-SLIDE.uChute)*k*k;player.pos.x=SLIDE.x;player.pos.z=SLIDE.z0-u;if(k>=1)slideRide=null}
       // Keep rooms warm near their doors; free them when the reader has been away a while.
-      for(const room of Object.values(rooms)){const near=Math.hypot(player.pos.x-room.door.x,player.pos.z-room.door.z)<PRELOAD_DISTANCE,inside=zoneAt(player.pos.x,player.pos.z)===room;/* Built as the reader approaches rather than when the door opens, so its shaders are compiled in the background before it is seen. */if(near||inside){activate(room)}else if(room.active&&t-room.lastNeeded>KEEP_WARM_SECONDS)unload(room)}
+      for(const room of Object.values(rooms)){const near=Math.hypot(player.pos.x-room.door.x,player.pos.z-room.door.z)<PRELOAD_DISTANCE,inside=zoneAt(player.pos.x,player.pos.z)===room;/* Built as the reader approaches rather than when the door opens, so its shaders are compiled in the background before it is seen. */if(inside||near&&(room.active||window.libraryMayBuild?.()!==false)){activate(room)}else if(room.active&&t-room.lastNeeded>KEEP_WARM_SECONDS)unload(room)}
       // Door mechanisms.
       for(const door of Object.values(doors)){
         const nearDoor=Math.hypot(player.pos.x-door.room.door.x,player.pos.z-door.room.door.z)<14;if(!nearDoor&&door.state==='closed')continue;

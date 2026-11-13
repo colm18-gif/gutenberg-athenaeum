@@ -477,7 +477,7 @@
     // ---------- each frame ----------
     function update(t,dt=0){
       time=t;const {x,z}=player.pos,inside=contains(x,z),near=Math.hypot(x-DOOR.x,z-DOOR.z)<PRELOAD;
-      if(inside||near)activate();
+      if(inside||near&&(root||window.libraryMayBuild?.()!==false))activate();
       if(!root)return;
       if(!inside&&!near&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==b.userData.home.parent))unload();
       if(!root||!inside)return;

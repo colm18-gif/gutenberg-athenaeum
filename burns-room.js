@@ -251,7 +251,7 @@
     }
     function update(t){
       const dt=Math.min(.1,Math.max(0,t-time));time=t;const inside=contains(player.pos.x,player.pos.z),near=Math.hypot(player.pos.x-DOOR.x,player.pos.z-DOOR.z)<PRELOAD;
-      if(inside||near)activate();
+      if(inside||near&&(root||window.libraryMayBuild?.()!==false))activate();
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==root&&b.parent!==kirk?.g))unload();
       // The fire flickers as it crackles.
       if(fire)fire.emissiveIntensity=1.35+.35*Math.sin(t*9.1)*Math.sin(t*3.7)+(Math.random()<.04?.5:0);

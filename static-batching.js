@@ -18,6 +18,7 @@ window.createStaticBatcher=function({THREE,scene,exclusions=()=>[],cell=14,scanE
   const released=new WeakSet();   // pieces that moved after batching: never batched again
   const batches=new Map();        // key -> batch
   const dirty=new Set();
+  const urgent=new Set();        // batches that lost a piece and must be rebuilt this frame
   let nextScan=performance.now()+500,enabled=true,lastStamp=null,scansLeft=3;
   const matrix=new THREE.Matrix3(),vector=new THREE.Vector3(),hiddenSphere=new THREE.Sphere(new THREE.Vector3(0,-1e9,0),0);
   function hide(mesh){mesh.boundingSphere=hiddenSphere}
@@ -58,46 +59,66 @@ window.createStaticBatcher=function({THREE,scene,exclusions=()=>[],cell=14,scanE
     const merged=new THREE.BufferGeometry();for(const name of names)merged.setAttribute(name,new THREE.BufferAttribute(arrays[name],pieces[0].geometry.attributes[name].itemSize));merged.setIndex(new THREE.BufferAttribute(index,1));merged.computeBoundingBox();merged.computeBoundingSphere();return merged;
   }
 
-  function release(mesh){const record=members.get(mesh);if(!record)return;members.delete(mesh);show(mesh);released.add(mesh);record.batch.pieces.delete(mesh);dirty.add(record.batch)}
+  function release(mesh){const record=members.get(mesh);if(!record)return;members.delete(mesh);show(mesh);released.add(mesh);record.batch.pieces.delete(mesh);urgent.add(record.batch)}
   function rebuild(batch){
     if(batch.mesh){batch.mesh.parent?.remove(batch.mesh);batch.mesh.geometry.dispose();batch.mesh=null}
-    const pieces=[...batch.pieces].filter(piece=>piece.parent===batch.parent);
+    for(const piece of batch.pieces)if(piece.parent!==batch.parent){if(members.delete(piece))show(piece);batch.pieces.delete(piece)}
+    const pieces=[...batch.pieces];
     if(pieces.length<2||!batch.parent.parent&&batch.parent!==scene){for(const piece of pieces){if(members.delete(piece))show(piece)}batch.pieces.clear();batches.delete(batch.key);return}
+    for(const piece of pieces){const record=members.get(piece);if(record?.pending){record.pending=false;hide(piece)}}
     const first=pieces[0],mesh=new THREE.Mesh(mergeGeometry(pieces),batch.material);
     mesh.name='static-batch';mesh.castShadow=first.castShadow;mesh.receiveShadow=first.receiveShadow;mesh.matrixAutoUpdate=false;mesh.updateMatrix();
     batch.parent.add(mesh);batch.mesh=mesh;
   }
 
-  function scan(){
-    const excluded=new Set(exclusions()),now=performance.now(),ready=new Map();
-    scene.traverse(object=>{
-      if(members.has(object)||!eligible(object,excluded))return;
-      const current=state(object),seen=sightings.get(object);
-      if(!seen||!sameState(seen.state,current)){sightings.set(object,{state:current,at:now});return}
-      if(now-seen.at<scanEvery*900)return;
+  // Spread over frames: the scene is walked a slice at a time and batches are merged a few at a time, a few
+  // milliseconds a frame, and none of it in the frame after a tap (`defer`), so a tap is answered first.
+  // A piece joins its batch (`pending`) but stays drawn on its own until the batch is merged with it.
+  const SLICE_MS=3;
+  let scanning=null; // {queue,at,excluded,ready}
+  function startScan(){const queue=[];scene.traverse(object=>{if(object.isMesh)queue.push(object)});scanning={queue,at:0,excluded:new Set(exclusions()),ready:new Map()}}
+  function stepScan(until){
+    const {queue,excluded,ready}=scanning;
+    while(scanning.at<queue.length){
+      if((scanning.at&63)===0&&performance.now()>until)return false;
+      const object=queue[scanning.at++];
+      if(members.has(object)||!object.parent||!eligible(object,excluded))continue;
+      const current=state(object),seen=sightings.get(object),now=performance.now();
+      if(!seen||!sameState(seen.state,current)){sightings.set(object,{state:current,at:now});continue}
+      if(now-seen.at<scanEvery*900)continue;
       const key=keyFor(object);if(!ready.has(key))ready.set(key,[]);ready.get(key).push(object);
-    });
+    }
     for(const [key,pieces] of ready){
       let batch=batches.get(key);
       if(!batch&&pieces.length<2)continue;
       if(!batch){batch={key,parent:pieces[0].parent,material:pieces[0].material,pieces:new Set(),mesh:null};batches.set(key,batch)}
-      for(const piece of pieces){sightings.delete(piece);members.set(piece,{batch,state:state(piece)});batch.pieces.add(piece);hide(piece)}
+      for(const piece of pieces){if(!piece.parent||!unchanged(piece,sightings.get(piece)?.state||state(piece)))continue;sightings.delete(piece);members.set(piece,{batch,state:state(piece),pending:true});batch.pieces.add(piece)}
       dirty.add(batch);
     }
     // Forget candidates that have left the scene.
     for(const object of sightings.keys())if(!object.parent)sightings.delete(object);
+    scanning=null;return true;
   }
 
-  function update(dt){
+  function update(dt,defer=false){
     if(!enabled)return;
-    for(const [mesh,record] of members)if(mesh.boundingSphere!==hiddenSphere||!mesh.frustumCulled||mesh.layers.mask!==1||!unchanged(mesh,record.state))release(mesh);
-    /* Wall-clock timing: a slow device's clamped frame times would otherwise delay every scan. */const now=performance.now();if(now>=nextScan){nextScan=now+scanEvery*1000;
+    for(const [mesh,record] of members){
+      if(record.pending){if(!unchanged(mesh,record.state)){members.delete(mesh);record.batch.pieces.delete(mesh)}continue}
+      if(mesh.boundingSphere!==hiddenSphere||!mesh.frustumCulled||mesh.layers.mask!==1||!unchanged(mesh,record.state))release(mesh);
+    }
+    // A batch that lost a moved piece is rebuilt at once, so the piece is never drawn twice.
+    if(urgent.size){for(const batch of urgent){dirty.delete(batch);rebuild(batch)}urgent.clear()}
+    if(defer)return;
+    const until=performance.now()+SLICE_MS;
+    if(scanning){if(!stepScan(until))return}
+    /* Wall-clock timing: a slow device's clamped frame times would otherwise delay every scan. */else{const now=performance.now();if(now>=nextScan){nextScan=now+scanEvery*1000;
       /* Walking the whole scene every couple of seconds caused regular hitches. Scan only after something
          changes (a room is built or a zone swapped in), a few times so newly placed pieces can settle. */
-      const stamp=changeStamp?changeStamp():undefined;if(stamp===undefined||stamp!==lastStamp){lastStamp=stamp;scansLeft=3}if(scansLeft>0){scansLeft--;scan()}}
-    if(dirty.size){for(const batch of dirty)rebuild(batch);dirty.clear()}
+      const stamp=changeStamp?changeStamp():undefined;if(stamp===undefined||stamp!==lastStamp){lastStamp=stamp;scansLeft=3}if(scansLeft>0){scansLeft--;startScan();if(!stepScan(until))return}}}
+    // At least one batch a frame, then more while the slice lasts.
+    for(const batch of dirty){dirty.delete(batch);rebuild(batch);if(performance.now()>until)break}
   }
-  function setEnabled(on){enabled=on;if(!on){for(const mesh of members.keys())show(mesh);members.clear();for(const batch of batches.values())if(batch.mesh){batch.mesh.parent?.remove(batch.mesh);batch.mesh.geometry.dispose()}batches.clear();sightings.clear()}}
+  function setEnabled(on){enabled=on;if(!on){for(const mesh of members.keys())show(mesh);members.clear();for(const batch of batches.values())if(batch.mesh){batch.mesh.parent?.remove(batch.mesh);batch.mesh.geometry.dispose()}batches.clear();sightings.clear();dirty.clear();urgent.clear();scanning=null}}
   return {update,setEnabled,release,get stats(){let meshes=0;for(const batch of batches.values())if(batch.mesh)meshes++;return {batches:meshes,pieces:members.size}}};
 };
 })();

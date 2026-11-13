@@ -114,9 +114,9 @@ test('static pieces are batched per material without breaking collision rays or 
   const batching=fs.readFileSync('static-batching.js','utf8');
   new (require('node:vm').Script)(batching);
   assert.match(game,/window\.createStaticBatcher\?\.\(\{THREE,scene,exclusions:\(\)=>interactables,changeStamp:sceneStamp\}\)/);
-  assert.match(batching,/if\(stamp===undefined\|\|stamp!==lastStamp\)\{lastStamp=stamp;scansLeft=3\}if\(scansLeft>0\)\{scansLeft--;scan\(\)\}/,'the scene is only walked after it changes');
+  assert.match(batching,/if\(stamp===undefined\|\|stamp!==lastStamp\)\{lastStamp=stamp;scansLeft=3\}if\(scansLeft>0\)\{scansLeft--;startScan\(\);/,'the scene is only walked after it changes');
   assert.match(game,/if\(warmingShaders\|\|stamp===warmedStamp\)return;/,'shader warm-up also waits for a change');
-  assert.match(game,/staticBatcher\?\.update\(dt\);if\(visual\)/,'the batch check runs right before rendering, so a moved piece is never drawn stale');
+  assert.match(game,/staticBatcher\?\.update\(dt,heavyWorkWaits\(\)\);if\(visual\)/,'the batch check runs right before rendering, so a moved piece is never drawn stale');
   // Originals must stay raycastable: hide them from the camera only, never via layers or visibility.
   assert.match(batching,/function hide\(mesh\)\{mesh\.boundingSphere=hiddenSphere\}/);
   assert.doesNotMatch(batching,/layers\.mask=|\.visible=false/);
@@ -148,15 +148,36 @@ test('rooms and wings are compiled before the reader reaches them',()=>{
   assert.match(game,/const detachedAreas=\(\)=>Object\.values\(performanceZones\)\.filter\(zone=>!zone\.active&&zone\.group\)/);
   assert.match(game,/roots=parallel\?detachedAreas\(\):detachedAreas\(\)\.filter\(group=>areaNear\(group,45\)\)/);
   assert.match(game,/chunkSize:parallel\?2:1,pause:parallel\?16:40,whenIdle:!parallel/,'where compiling blocks the page it happens only while standing still');
-  assert.match(game,/if\(whenIdle\)while\(playerIsMoving\(\)\|\|document\.hidden\)await/);
+  assert.match(game,/while\(whenIdle&&\(playerIsMoving\(\)\|\|document\.hidden\)\|\|heavyWorkWaits\(\)\)await/);
   assert.match(game,/setTimeout\(warmUnvisitedAreas,4000\);setInterval\(warmUnvisitedAreas,6000\)/);
   // An area's lamps are only switched off for the moment its pieces compile.
   assert.match(game,/try\{for\(const object of batch\)if\(!detached\.length\|\|object\.parent\)renderer\.compile\(object,camera,scene\)\}finally\{for\(const light of hidden\)light\.visible=true\}/);
   assert.match(game,/hideLamps=\(\)=>\{const hidden=\[\];for\(const root of detached\)root\.traverse\(object=>\{if\(object\.isLight&&object\.visible\)\{object\.visible=false;hidden\.push\(object\)\}\}\);return hidden\}/);
   assert.match(game,/refreshBudgetLights\.stamp=null;budgetRefreshTimer=0;applyLightBudget\(\);/,'warming uses the light count that will be drawn');
   // Door rooms are built as the reader approaches, so the regular warm-up catches them before they are seen.
-  assert.match(curious,/if\(near\|\|inside\)\{activate\(room\)\}/);
-  assert.match(daily,/if\(inside\|\|near\)activate\(\)/);
+  assert.match(curious,/if\(inside\|\|near&&\(room\.active\|\|window\.libraryMayBuild\?\.\(\)!==false\)\)\{activate\(room\)\}/);
+  assert.match(daily,/if\(inside\|\|near&&\(active\|\|window\.libraryMayBuild\?\.\(\)!==false\)\)activate\(\)/);
+});
+
+test('a tap is answered before heavy work: one room built ahead of the reader per frame, none just after a tap',()=>{
+  // Cloudflare's field data (November 2026): slow taps on phones, mostly waiting for the next frame to be drawn.
+  assert.match(game,/function markInput\(e\)\{if\(e\.type==='keydown'&&\(e\.repeat\|\|/,'held movement keys do not count as taps');
+  assert.match(game,/window\.libraryMayBuild=\(\)=>\{if\(buildSlotTaken\|\|heavyWorkWaits\(\)\)return false;buildSlotTaken=true;return true\}/);
+  assert.match(game,/buildSlotTaken=false;updateWorld\(t,dt\);/,'the slot frees once a frame, even after a frame that threw');
+  // Every room built ahead of the reader asks first; a room the reader is already inside is built at once.
+  const ask=/if\(inside\|\|near&&\((?:root|active|room\.active)\|\|window\.libraryMayBuild\?\.\(\)!==false\)\)/;
+  for(const file of fs.readdirSync('.').filter(name=>name.endsWith('.js')&&name!=='game.js')){
+    const source=fs.readFileSync(file,'utf8');
+    assert.doesNotMatch(source,/if\(inside\|\|near\)activate\(\)|if\(near\|\|inside\)\{activate/,file+' builds ahead of the reader without asking');
+    if(/libraryMayBuild/.test(source))assert.match(source,ask,file);
+  }
+  // The batcher merges a few milliseconds a frame, and only rebuilds a batch at once when a piece has left it.
+  const batching=fs.readFileSync('static-batching.js','utf8');
+  assert.match(batching,/function update\(dt,defer=false\)/);
+  assert.match(batching,/if\(urgent\.size\)\{for\(const batch of urgent\)\{dirty\.delete\(batch\);rebuild\(batch\)\}urgent\.clear\(\)\}\s*if\(defer\)return;/);
+  assert.match(batching,/for\(const piece of pieces\)\{const record=members\.get\(piece\);if\(record\?\.pending\)\{record\.pending=false;hide\(piece\)\}\}/,'a piece is hidden only once its batch is drawn');
+  // The ambience builds a whole event sound only in real idle time.
+  assert.match(fs.readFileSync('room-ambience.js','utf8'),/if\(next\.whole&&\(wholeDone\|\|deadline\?\.didTimeout\|\|/);
 });
 
 test('paintings and plates download when the reader comes near, not all at entry',()=>{
@@ -179,7 +200,7 @@ test('shader error checks, which stall the first frames, run only with ?debug',(
 
 test('a lamp added anywhere is budgeted before the next frame, so the lamp count never jumps',()=>{
   assert.match(game,/THREE\.Object3D\.prototype\.add=function\(\.\.\.objects\)\{if\(!lampsAdded&&objects\.some\(holdsLight\)\)lampsAdded=true;return add\.apply\(this,objects\)\}/);
-  assert.match(game,/if\(lampsAdded\)\{lampsAdded=false;refreshBudgetLights\.stamp=null;budgetRefreshTimer=0;applyLightBudget\(\)\}staticBatcher\?\.update\(dt\);if\(visual\)/);
+  assert.match(game,/if\(lampsAdded\)\{lampsAdded=false;refreshBudgetLights\.stamp=null;budgetRefreshTimer=0;applyLightBudget\(\)\}staticBatcher\?\.update\(dt,heavyWorkWaits\(\)\);if\(visual\)/);
 });
 
 test('shared wood and leather keep one shader while their textures load',()=>{

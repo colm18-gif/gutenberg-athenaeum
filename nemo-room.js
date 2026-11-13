@@ -273,7 +273,7 @@
     }
     function update(t){
       const dt=Math.min(.1,Math.max(0,t-time));time=t;const inside=contains(player.pos.x,player.pos.z),near=Math.hypot(player.pos.x-model.x,player.pos.z-model.z)<PRELOAD;
-      if(inside||near)activate();
+      if(inside||near&&(root||window.libraryMayBuild?.()!==false))activate();
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==root&&b.parent!==organ?.group))unload();
       if(!inside||!sea)return;
       if(opening!==null&&t>=opening){opening=null;setPanels(true)}

@@ -297,7 +297,7 @@
     }
     function update(t,dt=1/60){
       time=t;const inside=contains(player.pos.x,player.pos.z),near=Math.hypot(player.pos.x-DOOR.x,player.pos.z-DOOR.z)<PRELOAD;
-      if(inside||near)activate();
+      if(inside||near&&(root||window.libraryMayBuild?.()!==false))activate();
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==root&&b.parent!==drawer?.g))unload();
       if(drawer&&drawer.open!==drawer.target)drawer.open=Math.min(drawer.target,drawer.open+dt*1.5);
       if(drawer)drawer.slide.position.z=-.42-.3*(1-Math.pow(1-drawer.open,3));
