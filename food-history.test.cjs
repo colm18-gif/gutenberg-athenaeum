@@ -189,3 +189,25 @@ test('the dining room keeps to two lights, and its cards quote only what their b
   assert.ok(fs.readFileSync('texts/pg394.txt','utf8').includes('elegant economy'),'Cranford’s own phrase');
   const beeton=require('node:zlib');const b=beeton.gunzipSync(fs.readFileSync('texts/bundled-gzip/pg10136.txt.gz')).toString('utf8');assert.ok(/menus_? for dinners _?à la Russe/.test(b),'Beeton gives menus for dinners à la Russe');
 });
+
+test('the kitchen’s back stairs are climbed a step at a time, and lead on into the dining room',()=>{
+  const {w,player}=wing();w.enterBelow();
+  const V=w.victorian,S=w.stair,z=V.cz+V.d/2-.8,x0=V.cx+S.dx0;
+  assert.equal(w.floorAt(x0-.3,z),0,'the kitchen floor before the first step');
+  // Walk up as game.js does: the height eases towards the floor underfoot (damp, rate 12) at about 4 m/s.
+  player.pos.set(x0-.6,0,z);let t=50;const dt=1/60,damp=(a,b)=>a+(b-a)*(1-Math.exp(-12*dt));
+  while(w.zoneAt(player.pos.x,player.pos.z)==='victorian-kitchen'){
+    const nx=player.pos.x+4*dt;assert.ok(w.allowed(nx,z),'each step up is allowed, x '+nx.toFixed(2));player.pos.x=nx;
+    player.pos.y=damp(player.pos.y,w.floorAt(player.pos.x,z)??0);t+=dt;w.update(t,dt);
+    assert.ok(t<60,'the top is reached');}
+  assert.equal(w.zoneAt(player.pos.x,player.pos.z),'victorian-dining','at the head of the stairs, on into the dining room');
+  // From the kitchen floor, the stairs cannot be stepped onto from the side above the second step.
+  const side=wing();side.w.enterBelow();side.player.pos.set(x0+2,0,V.cz+V.d/2-1.5);
+  assert.equal(side.w.allowed(x0+2,z),false,'not from the side');
+  assert.ok(side.w.allowed(x0+.1,z),'but the first step from the floor, yes');
+});
+
+test('nothing in the new rooms is drawn in the same plane as what it hangs on',()=>{
+  assert.ok(!source.includes('fx,2.1,N0+.04);box(1.75,1.65,.04,gilt,fx,2.1,N0+.02'),'the looking-glass stands proud of its frame');
+  assert.match(source,/box\(1\.75,1\.65,\.04,gilt,fx,2\.1,N0\+\.02,root\);plane\(1\.6,1\.5,[^;]+fx,2\.1,N0\+\.07\)/);
+});
