@@ -432,7 +432,7 @@
     }
     function update(t){
       time=t;const inside=contains(player.pos.x,player.pos.z),near=Math.hypot(player.pos.x-DOOR.x,player.pos.z-DOOR.z)<PRELOAD;
-      if(inside||near)activate();
+      if(inside||near&&(root||window.libraryMayBuild?.()!==false))activate();
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==b.userData.home.parent))unload();
     }
     function zoneAt(x,z){return inLil(x,z)?'lilliput':inBrob(x,z)?'brobdingnag':null}

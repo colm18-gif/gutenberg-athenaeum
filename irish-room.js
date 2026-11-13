@@ -250,7 +250,7 @@
     }
     function update(t,dt=0,reduced=false){
       time=t;const inside=contains(player.pos.x,player.pos.z),near=Math.hypot(player.pos.x-DOOR.x,player.pos.z-DOOR.z)<PRELOAD;
-      if(inside||near)activate();
+      if(inside||near&&(root||window.libraryMayBuild?.()!==false))activate();
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==root))unload();
       // The sod is lifted and set down beside the hollow.
       if(secret?.lifting){const s=secret,k=Math.min(1,s.lift+dt/.7),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2,a=s.rest,b=s.aside;s.lift=k;

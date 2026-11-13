@@ -273,7 +273,7 @@
     }
     function update(t){
       const dt=Math.min(.1,Math.max(0,t-time));time=t;const inside=contains(player.pos.x,player.pos.z),near=Math.hypot(player.pos.x-DOOR.x,player.pos.z-DOOR.z)<PRELOAD;
-      if(inside||near)activate();
+      if(inside||near&&(root||window.libraryMayBuild?.()!==false))activate();
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==root&&b.parent!==cabinet?.g))unload();
       if(cabinet&&cabinet.open!==cabinet.target){cabinet.open=Math.min(cabinet.target,cabinet.open+dt*.8);const ease=1-Math.pow(1-cabinet.open,3);for(const door of cabinet.doors)door.hinge.rotation.y=door.side*ease*1.9}
       else if(cabinet)for(const door of cabinet.doors)door.hinge.rotation.y=door.side*cabinet.open*1.9;

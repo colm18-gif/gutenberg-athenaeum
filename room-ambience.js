@@ -84,11 +84,14 @@
 
     // ---------- Warm-up: build every sound in the background, a few milliseconds at a time ----------
     const WARM=[['noise-brown',6,NOISE_FILL('brown'),2],['noise-pink',6,NOISE_FILL('pink'),2],['embers',4,EMBERS_FILL,1],['fountain',5,FOUNTAIN_FILL,2],['noise-white',6,NOISE_FILL('white'),2],['waves',12,WAVES_FILL,2]];
-    const warmQueue=[...WARM.map(([key,seconds,fill,channels])=>()=>{if(!cache.has(key)&&!jobs.has(key))jobs.set(key,startBuffer(seconds,fill,channels));return key}),...Object.keys(EVENTS).map(type=>()=>{eventBuffer(type);return null})];
+    const warmQueue=[...WARM.map(([key,seconds,fill,channels])=>()=>{if(!cache.has(key)&&!jobs.has(key))jobs.set(key,startBuffer(seconds,fill,channels));return key}),...Object.keys(EVENTS).map(type=>Object.assign(()=>{eventBuffer(type);return null},{whole:true}))];
     const idle=cb=>window.requestIdleCallback?window.requestIdleCallback(cb,{timeout:400}):typeof setTimeout==='function'?setTimeout(()=>cb({timeRemaining:()=>6}),120):null;
     let warming=null;
     function warmUp(deadline){if(typeof performance==='undefined')return;const until=performance.now()+Math.min(6,Math.max(2,deadline?.timeRemaining?.()??4));
-      while(performance.now()<until){if(warming){const job=jobs.get(warming);if(!job){warming=null;continue}if(job.steps.next().done){jobs.delete(warming);cache.set(warming,job.buffer);warming=null}continue}const next=warmQueue.shift();if(!next)return;warming=next()}
+      /* A short event sound is built whole, in one go: only one per call, and only when the page is truly idle
+         (not when the timeout forced the call), so it never holds up a tap. */
+      let wholeDone=false;
+      while(performance.now()<until){if(warming){const job=jobs.get(warming);if(!job){warming=null;continue}if(job.steps.next().done){jobs.delete(warming);cache.set(warming,job.buffer);warming=null}continue}const next=warmQueue[0];if(!next)return;if(next.whole&&(wholeDone||deadline?.didTimeout||(deadline?.timeRemaining?.()??0)<8))break;warmQueue.shift();if(next.whole)wholeDone=true;warming=next()}
       idle(warmUp)}
     idle(warmUp);
 

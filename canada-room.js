@@ -274,7 +274,7 @@
     }
     function update(t){
       const dt=Math.min(.1,Math.max(0,t-time));time=t;const inside=contains(player.pos.x,player.pos.z),near=Math.hypot(player.pos.x-DOOR.x,player.pos.z-DOOR.z)<PRELOAD;
-      if(inside||near)activate();
+      if(inside||near&&(root||window.libraryMayBuild?.()!==false))activate();
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==root))unload();
       if(!inside)return;
       // The stove roars, and blazes for a moment when its door has been opened.
