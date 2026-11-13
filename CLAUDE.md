@@ -237,7 +237,16 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   barrels, herbs drying on a beam as one InstancedMesh, the spice chest), shelf `food-kitchen`. Two lights, the oil lamp
   and the fire, flickering only while the reader is near. The secret is the dormouse jar (glirarium): lifting its lid
   wakes a dormouse and leaves Trimalchio's dinner from the Satyricon (`food-dormouse`) on the stool, found for good
-  (`athenaeum-food-dormouse`; `?dormouse`). Clio may be found asleep before the kitchen fire. The brief's other rooms
+  (`athenaeum-food-dormouse`; `?dormouse`). Clio may be found asleep before the kitchen fire. A green baize door at the
+  east end of the hall's north wall (`BAIZE_DOOR`) goes down the back stairs to the kitchen below stairs (x −780,
+  z −492; `?room=victorian-kitchen`, `below-stairs`, `beeton`), a London basement kitchen of about 1860: the range in its
+  chimney breast, the dresser of willow plates (one InstancedMesh), the copper, the scrubbed table with scales and a
+  raised pie, the scullery through a doorway, the area window with railings and feet going by, the Windsor chair and
+  the board of servants' bells (`BELLS`); its books are the shelf `food-victorian`, and its back stairs lead up to the
+  hall. Two lights, the gas and the range. The secret: the bell labelled THE LIBRARY rings (game.js's `pianoTone`,
+  passed as `tone`) soon after the reader comes down and every minute or so after; answered while it still swings, the
+  dumbwaiter by the dresser brings down a tray with Fanny and the Servant Problem (`food-bells`), found for good
+  (`athenaeum-food-library-bell`; `?bell`). The brief's other rooms
   are not built: add them one at a time, each with its own shelf, and keep to cards that say only what the books and
   sound history support (the spices-hid-rotten-meat story is a myth; a test keeps it off the cards).
 - The Room of Chance (`chance-room.js`, x 500, z 60, clear of the Moon at x 340, z 30) is behind a small crooked portrait

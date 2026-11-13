@@ -12,7 +12,7 @@
     {key:'spices',title:'THE GLOBAL SPICE EXCHANGE',subtitle:'Taste, travel and trade',x:8.5,z:-1.4}
   ];
   window.createFoodHistoryWing=function(o){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,analytics,move,isHolding=()=>false,doorKit=null}=o;
+    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,tone=()=>{},analytics,move,isHolding=()=>false,doorKit=null}=o;
     const ROOM={cx:-780,cz:-420,w:26,d:21,h:6.4};
     // West wall of the Grand Hall, north of the botanical portrait and clear of the writing desks.
     const THRESHOLD={x:-18.1,z:25,yaw:Math.PI/2};
@@ -28,6 +28,16 @@
     const kitchenLive={lights:[],flames:[],steam:[],herbs:null,herbBase:[],coals:[],lid:null,lidOpen:0,mouse:null,satyricon:null};
     const remembered=()=>{try{return localStorage.getItem(DORMOUSE_KEY)==='1'}catch(e){return false}};
     const showDormouse=()=>remembered()||new URLSearchParams(location.search).has('dormouse');
+    // The kitchen below stairs (about 1860), north of the Ancient Kitchen, through a green baize door at the east end of
+    // the hall's north wall: the iron range, the dresser, the copper, the scrubbed table, the scullery, the area window
+    // with feet going by, and the board of servants' bells. Two lights: the gas over the table and the range's fire.
+    const VICTORIAN={cx:-780,cz:-492,w:16,d:12,h:4.2};
+    const BAIZE_DOOR={dx:7};                            // in the hall's north wall, between the pilasters at 5 and 9
+    const BELLS=['DRAWING ROOM','DINING ROOM','MORNING ROOM','THE LIBRARY','STUDY','BEDROOM 1','BEDROOM 2','NURSERY','FRONT DOOR','BACK DOOR'];
+    const LIBRARY_BELL=BELLS.indexOf('THE LIBRARY'),BELL_KEY='athenaeum-food-library-bell';
+    const vicLive={lights:[],coals:[],bells:[],ringing:-1,ringUntil:0,nextRing:0,hatch:null,hatchOpen:0,sent:null,feet:null,feetX:0,feetNext:0,clock:null};
+    const bellAnswered=()=>{try{return localStorage.getItem(BELL_KEY)==='1'}catch(e){return false}};
+    const showBell=()=>bellAnswered()||new URLSearchParams(location.search).has('bell');
     const owned=[],ours=[],shelfBooks=[],blocks=[];let root=null,t=0,lastNeeded=-1000;
     const own=x=>(owned.push(x),x);
     const add=(g,m,x,y,z,parent)=>{const mesh=new THREE.Mesh(g,m);mesh.position.set(x,y,z);parent.add(mesh);return mesh};
@@ -68,6 +78,19 @@
       spices:['The spice chest','The Forme of Cury calls for pepper, ginger, cinnamon, cloves, saffron and galingale, and for two ready-mixed powders, powdour fort, strong, and powdour douce, sweet. Spices came from Asia by long trade routes and were costly, and using them freely showed what a household could afford. The old story that they hid the taste of rotten meat has little behind it.'],
       herbs:['Drying herbs','Herbs came from the kitchen garden and were hung to dry for the winter. The Forme of Cury’s salad calls for a whole garden of them: parsley, sage, garlic, leeks, borage, mint, fennel, cress, rosemary and purslane among them.'],
       churn:['The churn','Cream was churned into butter by plunging the dasher up and down until the butter came, and the butter was salted to keep. It was usually the dairymaid’s work, and slow.']
+    });
+    Object.assign(facts,{
+      below:['The kitchen below stairs','The kitchen of a London town house of about 1860, under the street, where the cook, the kitchenmaid and the scullery maid fed the household upstairs. Isabella Beeton wrote for the mistress of a house like this, and set out the duties of each of them.'],
+      baize:['The green baize door','In a Victorian house a door covered in green baize divided the family’s rooms from the servants’. The cloth deadened the noise of the kitchen, and the door was the line that each side crossed only on business.'],
+      range:['The range','The closed iron range, its fire boxed in between an oven and a boiler, spread through English kitchens in the first half of the nineteenth century, and ranges were often called kitcheners (no relation to William Kitchiner, whose Cook’s Oracle is on the shelf). It heated the water and the oven as well as the hob, ate coal, and had to be black-leaded every morning, usually by the kitchenmaid before anyone else was up.'],
+      dresser:['The dresser','The everyday china lived on the dresser, plates on edge in the rack above and dishes in the cupboards below. Blue-and-white willow pattern, printed in Staffordshire, was on dressers all over the country.'],
+      copper:['The copper','Copper pans heat evenly, but they were lined with tin, which had to be renewed, because acid food left in bare copper could poison; Friedrich Accum’s Treatise in the Preservation Vault has a good deal to say about it. Keeping the copper bright with sand, salt and vinegar was the scullery maid’s work.'],
+      table:['The kitchen table','The deal table was scrubbed pale every day. Eliza Acton, and Isabella Beeton after her, gave exact quantities, so the scales came out for almost every recipe.'],
+      scullery:['The scullery','Next to the kitchen, the scullery was where the washing-up, the preparing of vegetables and the roughest cleaning were done, at a shallow stone sink with a pump or a single cold tap. It was the scullery maid’s room, and she was the most junior servant in the house.'],
+      area:['The area window','A basement kitchen looked up into the area, the sunken yard between the house and the street. Tradesmen came down the area steps to the kitchen door, and from inside one saw the railings and the feet of everyone going by.'],
+      bells:['The bells','Each bell hung on a coiled spring and was rung by a wire pulled in a room upstairs. The spring kept the bell swinging after it rang, so whoever came in could see which room had called. One of these is labelled THE LIBRARY, and it is the only one that still rings.'],
+      stair:['The back stairs','Up the back stairs to the hall. Servants used these, out of sight, so as not to meet the family on the main staircase.'],
+      hatch:['The dumbwaiter','A small lift in the wall, worked by a rope over a pulley, that carried dishes between the kitchen and the rooms upstairs.']
     });
     const card=(key)=>({type:'food-history-card',title:facts[key][0],author:facts[key][1],action:'READ'});
     const shelf=key=>(arrivals[key]||[]).map(id=>findBook(id)).filter(Boolean);
@@ -234,6 +257,108 @@
         mark(box(1.9,3.1,.2,timber,cx+KITCHEN_ENTRY.dx,1.55,S0-.22,root),back);
       if(showDormouse())openJar(true);
     }
+    function buildVictorian(){
+      const V=VICTORIAN,{cx,cz,w,d,h}=V,W0=cx-w/2,E0=cx+w/2,N0=cz-d/2,S0=cz+d/2;
+      const lime=mat(0xb8ae96,.97),dado=mat(0x5a4632,.9),deal=mat(0xb59c72,.9),iron=mat(0x1d1c1b,.45),brick=mat(0x5e3426,.95),brass=mat(0xb48a45,.35);
+      const copper=own(new THREE.MeshStandardMaterial({color:0xb2603a,metalness:.65,roughness:.35})),china=mat(0xe9e4da,.5),wood=mat(0x4a3220,.8);
+      const tex=(draw,W,H,opts={})=>own(new THREE.MeshStandardMaterial({map:own(canvasTexture(draw,W,H)),roughness:.95,...opts}));
+      const plane=(pw,ph,m,x,y,z,ry=0,rx=0)=>{const p=add(own(new THREE.PlaneGeometry(pw,ph)),m,x,y,z,root);p.rotation.set(rx,ry,0);return p};
+      const lathe=(pts,m,x,y,z,seg=14)=>add(own(new THREE.LatheGeometry(pts.map(([a,b])=>new THREE.Vector2(a,b)),seg)),m,x,y,z,root);
+      // Flagstones, limewashed walls over a brown dado, a whitewashed ceiling.
+      const flags=tex((c,TW,TH)=>{c.fillStyle='#3b3833';c.fillRect(0,0,TW,TH);for(let y=0;y<4;y++)for(let x=0;x<3;x++){const v=68+((x*5+y*3)%4)*4;c.fillStyle=`rgb(${v},${v-3},${v-9})`;c.fillRect(x*85+(y%2)*30+3,y*64+3,78,58)}},256,256);
+      flags.map.wrapS=flags.map.wrapT=THREE.RepeatWrapping;flags.map.repeat.set(5,4);
+      box(w,.2,d,flags,cx,-.1,cz,root);box(w,.2,d,mat(0xa89f8a,.97),cx,h+.1,cz,root);
+      box(.3,h,d,lime,W0-.15,h/2,cz,root);box(.3,h,d,lime,E0+.15,h/2,cz,root);box(w,h,.3,lime,cx,h/2,N0-.15,root);
+      // The south wall leaves an opening for the area window (x −5.3 to −3.7 from the middle, y 2.6 to 3.8).
+      const wx0=cx-5.3,wx1=cx-3.7,wy0=2.6,wy1=3.8;
+      box(wx0-W0,h,.3,lime,(W0+wx0)/2,h/2,S0+.15,root);box(E0-wx1,h,.3,lime,(wx1+E0)/2,h/2,S0+.15,root);
+      box(wx1-wx0,wy0,.3,lime,(wx0+wx1)/2,wy0/2,S0+.15,root);box(wx1-wx0,h-wy1,.3,lime,(wx0+wx1)/2,(wy1+h)/2,S0+.15,root);
+      for(const [len,x,z,ry] of [[d,W0+.02,cz,Math.PI/2],[d,E0-.02,cz,-Math.PI/2],[w,cx,N0+.02,0],[w,cx,S0-.02,Math.PI]]){const p=plane(len,1.2,dado,x,.6,z,ry);p.material.side=THREE.DoubleSide}
+      // The area: pavement-level light, railings, and now and then a pair of feet going by.
+      plane(wx1-wx0+.6,1.6,own(new THREE.MeshBasicMaterial({map:own(canvasTexture((c,TW,TH)=>{const g=c.createLinearGradient(0,0,0,TH);g.addColorStop(0,'#c9d2d6');g.addColorStop(.62,'#aeb3ad');g.addColorStop(.63,'#77736b');g.addColorStop(1,'#5d5952');c.fillStyle=g;c.fillRect(0,0,TW,TH)},128,128))})),(wx0+wx1)/2,(wy0+wy1)/2+.1,S0+.9,Math.PI);
+      for(let i=0;i<9;i++)add(own(new THREE.CylinderGeometry(.012,.012,.9,5)),iron,wx0-.2+i*.25,wy1-.15,S0+.55,root);
+      add(own(new THREE.BoxGeometry(2.2,.03,.03)),iron,(wx0+wx1)/2,wy1+.3,S0+.55,root);
+      const feet=new THREE.Group();feet.position.set(wx0-.6,wy1-.05,S0+.72);root.add(feet);
+      for(const s of [-1,1]){add(own(new THREE.BoxGeometry(.09,.5,.09)),mat(0x24201c,.8),s*.09,.2,0,feet);add(own(new THREE.BoxGeometry(.16,.06,.09)),mat(0x111111,.6),s*.09+.04,-.06,0,feet)}
+      vicLive.feet=feet;vicLive.feetRange=[wx0-.6,wx1+.6];
+      for(const s of [-1,1])box(.06,wy1-wy0+.1,.12,wood,(s<0?wx0:wx1),(wy0+wy1)/2,S0-.02,root);
+      for(let i=1;i<4;i++)add(own(new THREE.CylinderGeometry(.01,.01,wy1-wy0,4)),iron,wx0+i*(wx1-wx0)/4,(wy0+wy1)/2,S0+.05,root);
+      mark(box(wx1-wx0,.06,.3,wood,(wx0+wx1)/2,wy0-.02,S0-.08,root),card('area'));
+      // The range in its brick chimney breast, on the north wall.
+      const rx=cx-1,rz=N0+.3;box(3.6,h,.6,brick,rx,h/2,N0+.3,root);
+      const range=box(2.7,.95,.62,iron,rx,.475,rz+.55,root);mark(range,card('range'));block(rx,rz+.4,3.7,1.1);
+      for(const s of [-1,1]){mark(box(.75,.6,.03,mat(0x2a2826,.4),rx+s*.9,.5,rz+.87,root),card('range'));add(own(new THREE.SphereGeometry(.03,8,6)),brass,rx+s*.9+s*-.28,.5,rz+.9,root)}
+      const coals=own(new THREE.MeshStandardMaterial({color:0x2a100a,emissive:0xff5a1e,emissiveIntensity:.9,roughness:.9}));vicLive.coals.push(coals);
+      mark(plane(.7,.4,coals,rx,.55,rz+.865),card('range'));for(let i=0;i<6;i++)add(own(new THREE.BoxGeometry(.02,.42,.02)),iron,rx-.3+i*.12,.55,rz+.88,root);
+      add(own(new THREE.CylinderGeometry(.012,.012,2.7,5)),brass,rx,.9,rz+.9,root).rotation.z=Math.PI/2;
+      lathe([[0,0],[.13,0],[.15,.12],[.11,.2],[.03,.24],[.04,.27]],copper,rx-.6,.95,rz+.5);
+      lathe([[0,0],[.14,0],[.15,.14],[.16,.15]],copper,rx+.5,.95,rz+.55);
+      box(3.4,.06,.3,wood,rx,1.95,rz+.4,root);
+      for(let i=0;i<4;i++)lathe([[0,0],[.09,0],[.07,.06],[.08,.1],[.05,.16],[.02,.17]],copper,rx-1.3+i*.45+(i>1?.8:0),1.98,rz+.4);
+      const clock=new THREE.Group();clock.position.set(rx,2.2,rz+.42);root.add(clock);add(own(new THREE.BoxGeometry(.32,.38,.14)),wood,0,0,0,clock);
+      add(own(new THREE.CircleGeometry(.11,20)),china,0,.03,.072,clock);const hand=add(own(new THREE.BoxGeometry(.008,.08,.005)),iron,0,.06,.076,clock);vicLive.clock=hand;
+      const fire=new THREE.PointLight(0xff8a3a,2.2,7,2);fire.position.set(rx,.7,rz+1.3);root.add(fire);vicLive.lights.push({light:fire,base:2.2,amp:.5});
+      // The dresser on the west wall: plates on edge in the rack, one instanced mesh.
+      const dz=cz-1.2;box(.55,.9,2.8,wood,W0+.28,.45,dz,root);box(.25,1.7,2.8,wood,W0+.13,1.85,dz,root);block(W0+.28,dz,.65,2.9);
+      for(const y of [1.3,1.85,2.4])box(.24,.03,2.8,wood,W0+.3,y,dz,root);
+      const plateTex=tex((c,TW,TH)=>{c.fillStyle='#ece7de';c.fillRect(0,0,TW,TH);c.strokeStyle='#2f4f8a';c.lineWidth=7;c.beginPath();c.arc(TW/2,TH/2,TW*.42,0,7);c.stroke();c.lineWidth=2;c.beginPath();c.arc(TW/2,TH/2,TW*.25,0,7);c.stroke();c.fillStyle='#4a6aa8';c.fillRect(TW*.38,TH*.42,TW*.24,TH*.12)},64,64);
+      const plates=new THREE.InstancedMesh(own(new THREE.CircleGeometry(.12,16)),plateTex,24);
+      {const m4=new THREE.Matrix4(),q=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0,1,0),Math.PI/2),one=new THREE.Vector3(1,1,1);
+        for(let i=0;i<24;i++){const row=Math.floor(i/8),col=i%8;m4.compose(new THREE.Vector3(0,row*.55,(col-3.5)*.32),q,one);plates.setMatrixAt(i,m4)}}
+      plates.position.set(W0+.33,1.45,dz);root.add(plates);plates.userData=card('dresser');interactables.push(plates);ours.push(plates);
+      // The scullery, through a doorway at the west wall's south end.
+      mark(plane(1.1,2.3,tex((c,TW,TH)=>{c.fillStyle='#2a2723';c.fillRect(0,0,TW,TH);c.fillStyle='#6f6a62';c.fillRect(TW*.12,TH*.6,TW*.76,TH*.12);c.fillStyle='#4b4740';c.fillRect(TW*.18,TH*.72,TW*.64,TH*.06);
+        c.fillStyle='#3a3a3a';c.fillRect(TW*.66,TH*.28,TW*.06,TH*.32);c.fillRect(TW*.6,TH*.28,TW*.2,TH*.04);c.fillStyle='#8b8578';c.fillRect(TW*.3,TH*.5,TW*.16,TH*.1)},128,256,{emissive:0xffffff,emissiveIntensity:.08}),W0+.03,1.15,S0-1.4,Math.PI/2),card('scullery'));
+      for(const s of [-1,1])box(.12,2.4,.1,wood,W0+.06,1.2,S0-1.4+s*.6,root);box(.12,.1,1.3,wood,W0+.06,2.4,S0-1.4,root);
+      // The dumbwaiter hatch beside the dresser.
+      const hz=cz+1.4;box(.2,.95,.9,wood,W0+.1,1.4,hz,root);
+      const hatch=box(.04,.7,.7,mat(0x6b4a2c,.8),W0+.22,1.4,hz,root);mark(hatch,{type:'food-history-hatch'});vicLive.hatch=hatch;vicLive.hatchBase=1.4;
+      vicLive.tray={x:W0+.32,y:1.12,z:hz};
+      // The copper on a rack on the east wall.
+      const cz2=cz+1.2;box(.06,.06,2.4,iron,E0-.12,2.3,cz2,root);
+      for(let i=0;i<7;i++){const r=.09+(i%3)*.03,z=cz2-1.05+i*.35;const pan=add(own(new THREE.CylinderGeometry(r,r*.92,.08+r*.3,16)),copper,E0-.14-(.04+r*.15),2.05-r,z,root);pan.rotation.z=Math.PI/2;mark(pan,card('copper'));add(own(new THREE.BoxGeometry(.02,.22,.03)),iron,E0-.1,2.15+.0,z,root)}
+      // The bells, on a board high on the east wall.
+      const bz=cz-2.6,by=3.15;mark(plane(2.9,.95,tex((c,TW,TH)=>{c.fillStyle='#5b3b24';c.fillRect(0,0,TW,TH);c.fillStyle='#e9dcc0';c.font='bold 11px Georgia';c.textAlign='center';
+        BELLS.forEach((name,i)=>{const x=(i%5+.5)*TW/5,y=i<5?TH*.46:TH*.95;for(const [k,line] of name.split(' ').entries())c.fillText(line,x,y-10+k*12)})},320,104),E0-.03,by,bz,-Math.PI/2),card('bells'));
+      BELLS.forEach((name,i)=>{const g=new THREE.Group();g.position.set(E0-.12,by+(i<5?.35:-.08),bz-1.16+(i%5)*.58);root.add(g);
+        add(own(new THREE.TorusGeometry(.03,.005,4,10)),brass,0,.05,0,g);const bell=add(own(new THREE.SphereGeometry(.08,10,8,0,Math.PI*2,0,Math.PI/2)),brass,0,-.03,0,g);bell.rotation.x=Math.PI;
+        mark(bell,i===LIBRARY_BELL?{type:'food-history-bell'}:card('bells'));vicLive.bells.push(g)});
+      // The scrubbed deal table with a mixing bowl, rolling pin, scales and a raised pie.
+      const tx=cx-.6,tz=cz+.9;box(2.6,.08,1.2,deal,tx,.86,tz,root);for(const sx of [-1.18,1.18])for(const sz of [-.5,.5])box(.09,.82,.09,deal,tx+sx,.41,tz+sz,root);block(tx,tz,2.8,1.4);
+      mark(box(2.6,.02,1.2,deal,tx,.9,tz,root),card('table'));
+      lathe([[0,0],[.12,0],[.2,.12],[.22,.14]],mat(0xd9c9a3,.6),tx-.8,.9,tz-.15);
+      add(own(new THREE.CylinderGeometry(.03,.03,.45,8)),deal,tx-.2,.93,tz+.3,root).rotation.z=Math.PI/2;
+      box(.3,.05,.16,iron,tx+.5,.92,tz-.25,root);add(own(new THREE.CylinderGeometry(.1,.08,.04,14)),brass,tx+.42,1.0,tz-.25,root);for(let i=0;i<3;i++)add(own(new THREE.CylinderGeometry(.03-i*.006,.03-i*.006,.025,10)),brass,tx+.62,.96+i*.025,tz-.25,root);
+      lathe([[0,0],[.13,0],[.14,.12],[.11,.15],[0,.16]],mat(0xb9853f,.75),tx+.85,.9,tz+.25);
+      // The cook's Windsor chair by the range.
+      const ch=new THREE.Group();ch.position.set(cx+1.6,0,N0+1.7);ch.rotation.y=-.6;root.add(ch);add(own(new THREE.BoxGeometry(.45,.05,.42)),wood,0,.45,0,ch);
+      for(const [x,z] of [[-.18,-.16],[.18,-.16],[-.18,.16],[.18,.16]])add(own(new THREE.CylinderGeometry(.015,.015,.45,5)),wood,x,.22,z,ch);for(let i=0;i<5;i++)add(own(new THREE.CylinderGeometry(.01,.01,.5,4)),wood,-.16+i*.08,.72,-.19,ch);block(cx+1.6,N0+1.7,.6,.6);
+      // The gas pendant over the table.
+      add(own(new THREE.CylinderGeometry(.008,.008,1.4,4)),brass,tx,h-.7,tz,root);lathe([[0,0],[.16,.12],[.17,.14]],mat(0xf2ead6,.4,),tx,h-1.55,tz);
+      const gas=new THREE.PointLight(0xffd9a0,2.4,12,2);gas.position.set(tx,h-1.5,tz);root.add(gas);vicLive.lights.push({light:gas,base:2.4,amp:.05});
+      // The back stairs, rising east along the south wall, and the shelf of the kitchen's books.
+      for(let i=0;i<9;i++){const x=cx+3.4+i*.5,stepH=.25+i*.4;const st=box(.5,stepH,1,wood,x,stepH/2,S0-.55,root);mark(st,{type:'food-history-stair'})}
+      block(cx+5.4,S0-.55,4.6,1.1);box(.08,1,.08,wood,cx+3.2,.5,S0-1.05,root);
+      mark(panel(root,'THE KITCHEN BELOW STAIRS','About 1860',cx+1.2,3.6,S0-.2,3.6,.55,Math.PI),card('below'));
+      box(2.8,.06,.4,wood,cx+2.6,1.05,N0+.22,root);box(2.8,.06,.4,wood,cx+2.6,2.25,N0+.22,root);
+      const own_=shelf('victorian');own_.slice(0,6).forEach((b,i)=>hangingBook(b,cx+1.65+(i%3)*.95,1.6+Math.floor(i/3)*1.2,N0+.3,0,.82));
+      box(2.8,.06,.4,wood,cx+6.3,1.05,N0+.22,root);box(2.8,.06,.4,wood,cx+6.3,2.25,N0+.22,root);
+      own_.slice(6,12).forEach((b,i)=>hangingBook(b,cx+5.35+(i%3)*.95,1.6+Math.floor(i/3)*1.2,N0+.3,0,.82));
+      block(cx+4.45,N0+.22,6.6,.5);
+      vicLive.nextRing=0;if(showBell())sendDown(true);
+    }
+    function sendDown(quiet){
+      if(!vicLive.hatch||vicLive.sent)return false;
+      vicLive.hatchOpen=1e-3;const book=shelf('bells')[0],T=vicLive.tray;
+      add(own(new THREE.BoxGeometry(.5,.02,.42)),own(new THREE.MeshStandardMaterial({color:0xb7b2a6,metalness:.6,roughness:.3})),T.x,T.y,T.z,root);
+      if(book)vicLive.sent=hangingBook(book,T.x,T.y+.22,T.z,Math.PI/2,.42);else vicLive.sent=true;
+      if(!quiet){try{localStorage.setItem(BELL_KEY,'1')}catch(e){}analytics?.track('Secret Found',{secret:'food-library-bell'})}
+      return true;
+    }
+    function ringBell(time){
+      vicLive.ringing=LIBRARY_BELL;vicLive.ringUntil=time+7;
+      for(let i=0;i<5;i++){tone(1760,i*.16,.35,.035);tone(2349,i*.16+.03,.3,.02)}
+    }
     function steamAt(x,y,z){
       const n=24,pos=new Float32Array(n*3),geo=own(new THREE.BufferGeometry());
       for(let i=0;i<n;i++){pos[i*3]=(Math.random()-.5)*.2;pos[i*3+1]=Math.random()*.9;pos[i*3+2]=(Math.random()-.5)*.2}
@@ -259,7 +384,7 @@
       for(let x=-w/2+2;x<w/2;x+=4){for(const z of [cz-d/2+.23,cz+d/2-.23])box(.28,h,.34,oak,cx+x,h/2,z,root)}
       box(w,.94,.22,oak,cx,.47,cz+d/2-.23,root);
       // The north wainscot stops either side of the Ancient Kitchen's door (KITCHEN_DOOR, between two pilasters).
-      {const a=cx-w/2,b=cx+KITCHEN_DOOR.dx-1.15,c=cx+KITCHEN_DOOR.dx+1.15,e=cx+w/2;box(b-a,.94,.22,oak,(a+b)/2,.47,cz-d/2+.23,root);box(e-c,.94,.22,oak,(c+e)/2,.47,cz-d/2+.23,root)}
+      {let from=cx-w/2;for(const dx of [KITCHEN_DOOR.dx,BAIZE_DOOR.dx]){const to=cx+dx-1.15;box(to-from,.94,.22,oak,(from+to)/2,.47,cz-d/2+.23,root);from=cx+dx+1.15}box(cx+w/2-from,.94,.22,oak,(from+cx+w/2)/2,.47,cz-d/2+.23,root)}
       for(const x of [cx-w/2+.23,cx+w/2-.23])box(.22,.94,d,oak,x,.47,cz,root);
       mark(panel(root,'THE GASTRONOMIC ATHENAEUM','Food, cooking, culture & time',cx,5.25,cz-d/2+.23,8.3,.95),card('hall'));
       // A feast table, a runner and a few simple place settings in the central aisle.
@@ -299,7 +424,11 @@
       const toKitchen={type:'food-history-kitchen-door',title:'The Ancient Kitchen',author:'Roman and medieval: the oldest cookery on these shelves, and where it was cooked.',action:'ENTER'};
       if(!doorKit?.hang(root,{data:toKitchen,mark,x:cx+KITCHEN_DOOR.dx,z:cz-d/2+.18,yaw:0,width:1.9,height:3.1,color:0x6b3a22,style:'planked',label:'THE ANCIENT KITCHEN',own}))
         mark(box(1.9,3.1,.2,oak,cx+KITCHEN_DOOR.dx,1.55,cz-d/2+.2,root),toKitchen);
-      buildKitchen();collectBooks();scene.add(root);
+      // The green baize door to the kitchen below stairs, at the north wall's east end.
+      const toBelow={type:'food-history-baize-door',title:'Below stairs',author:'Through the green baize door and down the back stairs to the kitchen.',action:'ENTER'};
+      if(!doorKit?.hang(root,{data:toBelow,mark,x:cx+BAIZE_DOOR.dx,z:cz-d/2+.18,yaw:0,width:1.9,height:3.1,color:0x2f5a35,style:'plain',label:'BELOW STAIRS',own}))
+        mark(box(1.9,3.1,.2,mat(0x2f5a35,.95),cx+BAIZE_DOOR.dx,1.55,cz-d/2+.2,root),toBelow);
+      buildKitchen();buildVictorian();collectBooks();scene.add(root);
     }
     const doorwayData={type:'food-history-door',title:'The Gastronomic Athenaeum',author:'Beyond the old doors: food, cooking and culinary history.',action:'ENTER'};
     const doorway=new THREE.Group();doorway.name='food-history-threshold';doorway.position.set(THRESHOLD.x,0,THRESHOLD.z);doorway.rotation.y=THRESHOLD.yaw;scene.add(doorway);
@@ -368,13 +497,13 @@
     dressThreshold();
     const entranceOwned=owned.splice(0);
     const inBox=(r,x,z)=>x>r.cx-r.w/2&&x<r.cx+r.w/2&&z>r.cz-r.d/2&&z<r.cz+r.d/2;
-    const inKitchen=(x,z)=>inBox(KITCHEN,x,z);
-    function contains(x,z){return inBox(ROOM,x,z)||inKitchen(x,z)}
-    function zoneAt(x,z){return inKitchen(x,z)?'ancient-kitchen':inBox(ROOM,x,z)?'food-history':null}
+    const inKitchen=(x,z)=>inBox(KITCHEN,x,z),inVictorian=(x,z)=>inBox(VICTORIAN,x,z);
+    function contains(x,z){return inBox(ROOM,x,z)||inKitchen(x,z)||inVictorian(x,z)}
+    function zoneAt(x,z){return inKitchen(x,z)?'ancient-kitchen':inVictorian(x,z)?'victorian-kitchen':inBox(ROOM,x,z)?'food-history':null}
     function floorAt(x,z){return contains(x,z)?0:null}
     function allowed(x,z){
       if(!contains(x,z))return false;
-      const r=player.radius||.42,R=inKitchen(x,z)?KITCHEN:ROOM,m=R===KITCHEN?.12:.42;
+      const r=player.radius||.42,R=inKitchen(x,z)?KITCHEN:inVictorian(x,z)?VICTORIAN:ROOM,m=R===ROOM?.42:.12;
       if(x-r<R.cx-R.w/2+m||x+r>R.cx+R.w/2-m||z-r<R.cz-R.d/2+m||z+r>R.cz+R.d/2-m)return false;
       return !blocks.some(b=>Math.abs(x-b.x)<b.w/2+r&&Math.abs(z-b.z)<b.d/2+r);
     }
@@ -387,6 +516,11 @@
       activate();move(KITCHEN.cx+KITCHEN_ENTRY.dx,KITCHEN.cz+KITCHEN.d/2-1.6,0);playSample?.('doorOpen',.8,.9);
       showNotice('The Ancient Kitchen. A Roman kitchen this side of the arch, an English one of about 1400 beyond it.',8);
       analytics?.track('Room Explored',{room:'ancient-kitchen'});
+    }
+    function enterBelow(){
+      activate();move(VICTORIAN.cx+2.2,VICTORIAN.cz+VICTORIAN.d/2-1.5,0);playSample?.('stoneStep',.7,1);
+      showNotice('Down the back stairs to the kitchen below stairs, about 1860. The range is lit; the bells are on the board by the door.',8);
+      vicLive.nextRing=t+12;analytics?.track('Room Explored',{room:'victorian-kitchen'});
     }
     function interact(object){
       const d=object?.userData;
@@ -401,6 +535,15 @@
         const leave=()=>{move(ROOM.cx+KITCHEN_DOOR.dx,ROOM.cz-ROOM.d/2+1.8,Math.PI);playSample?.('doorOpen',.8,.9)};
         if(doorKit&&d.kit)doorKit.pass(d.kit,d,leave);else leave();return true;
       }
+      if(d.type==='food-history-baize-door'){if(doorKit&&d.kit)doorKit.pass(d.kit,d,enterBelow);else enterBelow();return true}
+      if(d.type==='food-history-stair'){move(ROOM.cx+BAIZE_DOOR.dx,ROOM.cz-ROOM.d/2+1.8,Math.PI);playSample?.('stoneStep',.7,1.1);showNotice(facts.stair[1],5);return true}
+      if(d.type==='food-history-bell'){
+        if(vicLive.ringing===LIBRARY_BELL&&t<vicLive.ringUntil+3&&sendDown(false)){showNotice('You answer the bell. Somewhere above, a rope creaks, and the dumbwaiter comes down to the hatch by the dresser with a tray on it: a covered dish, and a book.',10)}
+        else if(vicLive.sent)showNotice('THE LIBRARY’s bell hangs still. Whatever the library wanted, it has sent down already: the tray is in the dumbwaiter by the dresser.',8);
+        else showNotice('The bell labelled THE LIBRARY hangs still on its spring. It is the only one on the board that still rings, now and then. A bell is answered while it is still swinging.',9);
+        return true;
+      }
+      if(d.type==='food-history-hatch'){showNotice(vicLive.sent?'The dumbwaiter stands open. On the tray: a covered dish, still warm, and a book.':facts.hatch[0]+': '+facts.hatch[1],8);return true}
       if(d.type==='food-history-dormouse'){
         if(openJar(false)){playSample?.('pageTurn',.5,.7);showNotice('You lift the lid. A dormouse looks up, unimpressed, and goes back to sleep. Someone has left a book on the stool beside the jar: Trimalchio’s dinner, where dormice come to the table with honey and poppy seed.',11)}
         else showNotice(kitchenLive.satyricon?'The dormouse is still asleep. Trimalchio’s dinner is on the stool beside the jar.':facts.dormouse[0]+': '+facts.dormouse[1],9);
@@ -417,6 +560,7 @@
       ours.length=0;shelfBooks.length=0;blocks.length=0;
       kitchenLive.lights.length=0;kitchenLive.flames.length=0;kitchenLive.steam.length=0;kitchenLive.coals.length=0;kitchenLive.herbBase.length=0;
       kitchenLive.herbs=kitchenLive.lid=kitchenLive.mouse=kitchenLive.satyricon=null;kitchenLive.lidOpen=0;
+      vicLive.lights.length=0;vicLive.coals.length=0;vicLive.bells.length=0;vicLive.hatch=vicLive.sent=vicLive.feet=vicLive.clock=null;vicLive.hatchOpen=0;vicLive.ringing=-1;
     }
     function animateKitchen(time,dt=.016){
       if(!root||!kitchenLive.lights.length)return;
@@ -431,14 +575,27 @@
       if(kitchenLive.lid&&kitchenLive.lidOpen>0&&kitchenLive.lidOpen<1){kitchenLive.lidOpen=Math.min(1,kitchenLive.lidOpen+dt*1.5);kitchenLive.lid.rotation.z=kitchenLive.lidOpen*1.9}
       if(kitchenLive.mouse?.visible)kitchenLive.mouse.position.y=.5+Math.sin(time*1.6)*.006;
     }
+    function animateVictorian(time,dt=.016){
+      if(!root||!vicLive.lights.length)return;
+      if(Math.hypot(player.pos.x-VICTORIAN.cx,player.pos.z-VICTORIAN.cz)>14)return;
+      for(const L of vicLive.lights)L.light.intensity=L.base+L.amp*(Math.sin(time*6.7)*.5+Math.sin(time*11.3+.7)*.5);
+      for(const c of vicLive.coals)c.emissiveIntensity=.8+.2*Math.sin(time*1.9);
+      if(vicLive.clock)vicLive.clock.rotation.z=-Math.floor(time)%60/60*Math.PI*2;
+      // The library's bell: rings soon after the reader comes down, then every minute or so, until it has been answered.
+      if(!vicLive.sent&&inVictorian(player.pos.x,player.pos.z)&&vicLive.nextRing&&time>vicLive.nextRing){ringBell(time);vicLive.nextRing=time+45+Math.random()*30}
+      vicLive.bells.forEach((g,i)=>{const live=i===vicLive.ringing&&time<vicLive.ringUntil;g.rotation.x=live?Math.sin(time*22)*.5*Math.max(0,(vicLive.ringUntil-time)/7):0});
+      if(vicLive.hatch&&vicLive.hatchOpen>0&&vicLive.hatchOpen<1){vicLive.hatchOpen=Math.min(1,vicLive.hatchOpen+dt*.8);vicLive.hatch.position.y=vicLive.hatchBase+vicLive.hatchOpen*.62}
+      if(vicLive.feet){if(time>vicLive.feetNext){const [a,b]=vicLive.feetRange;vicLive.feetX+=dt*.9;vicLive.feet.position.x=a+vicLive.feetX;vicLive.feet.children.forEach((c,i)=>c.position.y=(i<2?.2:-.06)+Math.max(0,Math.sin(time*7+(i%2)*Math.PI))*.05);
+        if(a+vicLive.feetX>b){vicLive.feetX=0;vicLive.feet.position.x=a;vicLive.feetNext=time+14+Math.random()*16}}}
+    }
     function update(time,dt){
-      t=time;animateKitchen(time,dt);
+      t=time;animateKitchen(time,dt);animateVictorian(time,dt);
       if(contains(player.pos.x,player.pos.z)||Math.hypot(player.pos.x-THRESHOLD.x,player.pos.z-THRESHOLD.z)<PRELOAD)activate();
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!shelfBooks.some(b=>b.parent!==root))unload();
     }
     // Where Clio curls up when she is found here: on the warm flagstones before the medieval fire.
     const clioSpot={x:KITCHEN.cx+KITCHEN.w/2-2.1,y:0,z:KITCHEN.cz-1.2,yaw:Math.PI/2};
-    return {enter,enterKitchen,interact,contains,zoneAt,allowed,floorAt,update,activate,unload,room:ROOM,kitchen:KITCHEN,kitchenDoor:KITCHEN_DOOR,kitchenEntry:KITCHEN_ENTRY,arch:ARCH,clioSpot,collections:COLLECTIONS,facts,
+    return {enter,enterKitchen,enterBelow,interact,victorian:VICTORIAN,baizeDoor:BAIZE_DOOR,bells:BELLS,ringBell:()=>ringBell(t),get bellAnswered(){return !!vicLive.sent},contains,zoneAt,allowed,floorAt,update,activate,unload,room:ROOM,kitchen:KITCHEN,kitchenDoor:KITCHEN_DOOR,kitchenEntry:KITCHEN_ENTRY,arch:ARCH,clioSpot,collections:COLLECTIONS,facts,
       openJar:()=>openJar(true),get dormouseFound(){return !!kitchenLive.satyricon},get built(){return !!root},get books(){return shelfBooks.slice()}};
   };
 })();

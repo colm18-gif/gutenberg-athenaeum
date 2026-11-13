@@ -1,7 +1,15 @@
-# The Ancient Kitchen: Trimalchio's feast, and other early cookery
-Satyricon|Satyr|Trimalchio ; Petronius ; en
-Fifteenth.Century Cookery|Cookery.Books ; ; en
-Deipnosophist|Banquet of the Learned ; Athen ; en
-Boke of|Babees ; ; en
-Pliny|Natural History ; Pliny ; en
-= 71687 59977 28491 25914 13487
+# The Victorian kitchen, below stairs
+Plain Cookery|Working Classes ; Francatelli ; en
+ ; Francatelli ; en
+ ; Soyer ; en
+ ; Beeton ; en
+Domestic Cookery|New System ; Rundell ; en
+Art of Cookery ; Glasse ; en
+ ; Marshall, Agnes ; en
+Servant|Domestic Service|Housemaid|Kitchen.?maid|Butler ; ; en
+Cassell|Dictionary of Cookery ; ; en
+Housekeep ; ; en
+Kitchen ; ; en
+Model Cookery|Warne ; ; en
+London Labour ; Mayhew ; en
+Cookery for|Shilling Cookery|Everyday Cookery|Every.Day Cookery ; ; en

@@ -30,10 +30,11 @@ function wing({search=''}={}){
   vm.runInNewContext(source,context);
   const books=new Map(food.map(([id,title,author])=>[id,{id,title,author}]));
   const player={pos:new V(),radius:.42},interactables=[],notices=[],moves=[];
-  const arrivals={cookbooks:shelfIds('food-cookbooks'),preservation:shelfIds('food-preservation'),spices:shelfIds('food-spices'),kitchen:shelfIds('food-kitchen'),dormouse:shelfIds('food-dormouse')};
+  const arrivals={cookbooks:shelfIds('food-cookbooks'),preservation:shelfIds('food-preservation'),spices:shelfIds('food-spices'),kitchen:shelfIds('food-kitchen'),dormouse:shelfIds('food-dormouse'),victorian:shelfIds('food-victorian'),bells:shelfIds('food-bells')};
+  const tones=[];
   const w=context.window.createFoodHistoryWing({THREE,scene:thing(),MAT:new Proxy({},{get:()=>thing()}),player,interactables,canvasTexture:()=>thing(),bookMaterial:()=>thing(),
-    findBook:id=>books.get(id),arrivals,showNotice:t=>notices.push(t),playSample(){},move:(x,z,yaw)=>{moves.push({x,z,yaw});player.pos.set(x,0,z)}});
-  return {w,player,interactables,notices,moves};
+    findBook:id=>books.get(id),arrivals,showNotice:t=>notices.push(t),playSample(){},tone:(...a)=>tones.push(a),move:(x,z,yaw)=>{moves.push({x,z,yaw});player.pos.set(x,0,z)}});
+  return {w,player,interactables,notices,moves,tones};
 }
 
 test('the wing loads before game.js and is wired into the library',()=>{
@@ -41,18 +42,19 @@ test('the wing loads before game.js and is wired into the library',()=>{
   assert.ok(index.indexOf("startupScript('food-history-wing.js')")<index.indexOf("startupScript('game.js')"));
   for(const term of ["'food-history':foodHistoryWing","'ancient-kitchen':foodHistoryWing","foodHistoryWing.floorAt","foodHistoryWing.allowed","foodHistoryWing.interact","foodHistoryWing.update","foodHistoryWing?.zoneAt(x,z)"])
     assert.ok(game.includes(term),term);
-  assert.match(game,/\['food-history','The Gastronomic Athenaeum'\],\['ancient-kitchen','The Ancient Kitchen'\]/,'both places are in the journal');
-  for(const place of ['food-history','ancient-kitchen'])assert.ok(ambience.includes(`'${place}':{beds:`),place+' has an ambience');
+  assert.match(game,/\['food-history','The Gastronomic Athenaeum'\],\['ancient-kitchen','The Ancient Kitchen'\],\['victorian-kitchen','The kitchen below stairs'\]/,'all three places are in the journal');
+  assert.ok(game.includes("'victorian-kitchen':foodHistoryWing"),'?room=victorian-kitchen');
+  for(const place of ['food-history','ancient-kitchen','victorian-kitchen'])assert.ok(ambience.includes(`'${place}':{beds:`),place+' has an ambience');
 });
 
 test('its books are the food-* shelves of data/new-books.js, not numbers typed into the room',()=>{
   assert.doesNotMatch(source,/TITLES|registerBook/);
-  for(const room of ['cookbooks','preservation','spices','kitchen','dormouse'])assert.ok(game.includes(`${room}:arrivalIds('food-${room}')`),room);
+  for(const room of ['cookbooks','preservation','spices','kitchen','dormouse','victorian','bells'])assert.ok(game.includes(`${room}:arrivalIds('food-${room}')`),room);
   // The four numbers first given here named other books (docs/food-history-catalogue.md).
   for(const wrong of [6501,44915])assert.ok(!food.some(e=>e[0]===wrong),wrong);
   const doc=fs.readFileSync('docs/food-history-catalogue.md','utf8');
   for(const [id,title] of food)assert.ok(doc.includes(`| ${id} |`),`${title} (${id}) is in the checked list`);
-  for(const room of ['food-cookbooks','food-preservation','food-spices','food-kitchen','food-dormouse'])assert.ok(shelfIds(room).length,room);
+  for(const room of ['food-cookbooks','food-preservation','food-spices','food-kitchen','food-dormouse','food-victorian','food-bells'])assert.ok(shelfIds(room).length,room);
   assert.ok(shelfIds('food-preservation').length<=10&&shelfIds('food-spices').length<=10,'the side cases hold two rows of five');
   assert.ok(shelfIds('food-cookbooks').length<=14,'the gallery holds two rows of seven');
 });
@@ -91,9 +93,41 @@ test('the dormouse jar gives up Trimalchio’s dinner once, and remembers',()=>{
 });
 
 test('the kitchen keeps to the library’s budget: two lights, instanced herbs, nothing that moves unless near',()=>{
-  const kitchen=source.slice(source.indexOf('function buildKitchen()'),source.indexOf('function steamAt('));
+  const kitchen=source.slice(source.indexOf('function buildKitchen()'),source.indexOf('function buildVictorian()'));
   assert.equal((kitchen.match(/new THREE\.PointLight/g)||[]).length,2,'the oil lamp and the fire');
   assert.match(kitchen,/new THREE\.InstancedMesh/);
   assert.match(source,/const near=Math\.hypot\(player\.pos\.x-KITCHEN\.cx,player\.pos\.z-KITCHEN\.cz\)<16;if\(!near\)return/);
   assert.doesNotMatch(kitchen,/spices? (?:were used to )?(?:hide|mask)[^.]*rotten meat\./i,'the cards do not repeat the rotten-meat myth as fact');
+});
+
+test('through the green baize door, down the back stairs, to the kitchen below stairs and back up',()=>{
+  const {w,interactables,moves}=wing();w.activate();
+  const R=w.room,V=w.victorian,door=interactables.find(o=>o.userData.type==='food-history-baize-door');assert.ok(door);
+  assert.ok(w.allowed(R.cx+w.baizeDoor.dx,R.cz-R.d/2+1.8),'clear floor before the baize door');
+  for(const p of [-11,-7,-3,1,5,9])assert.ok(Math.abs(w.baizeDoor.dx-p)>1.1&&Math.abs(w.kitchenDoor.dx-p)>1.1,'neither door is on a pilaster at '+p);
+  w.interact(door);const at=moves.at(-1);assert.equal(w.zoneAt(at.x,at.z),'victorian-kitchen');assert.ok(w.allowed(at.x,at.z),'the reader arrives on open floor at the foot of the stairs');
+  for(let x=at.x;x>V.cx-6;x-=.2)assert.ok(w.allowed(x,V.cz+V.d/2-1.5),'a clear way west along the south wall, x '+x.toFixed(1));
+  for(let z=at.z;z>V.cz-1.5;z-=.2)assert.ok(w.allowed(V.cx+2.2,z),'and north past the table, z '+z.toFixed(1));
+  w.interact(interactables.find(o=>o.userData.type==='food-history-stair'));const up=moves.at(-1);
+  assert.equal(w.zoneAt(up.x,up.z),'food-history');assert.ok(w.allowed(up.x,up.z),'up the back stairs into the hall');
+  for(const name of ['THE LIBRARY','DRAWING ROOM','FRONT DOOR'])assert.ok(w.bells.includes(name),name);
+});
+
+test('the library’s bell rings below stairs, and answered while it swings, the dumbwaiter sends down a book',()=>{
+  const {w,player,interactables,notices,tones}=wing();w.enterBelow();
+  const bell=interactables.find(o=>o.userData.type==='food-history-bell');assert.ok(bell);
+  w.interact(bell);assert.equal(w.bellAnswered,false,'a still bell is not answered');assert.match(notices.at(-1),/still/);
+  w.update(5,.016);assert.equal(tones.length,0,'not straight away');
+  w.update(13,.016);assert.ok(tones.length>0,'it rings soon after the reader comes down');
+  w.update(14,.016);w.interact(bell);assert.equal(w.bellAnswered,true);assert.match(notices.at(-1),/dumbwaiter/);
+  assert.ok(w.books.some(b=>b.userData.book.id===shelfIds('food-bells')[0]),'the book is on the tray');
+  const n=tones.length;w.update(200,.016);assert.equal(tones.length,n,'once answered, it does not ring again');
+  const shown=wing({search:'?bell'});shown.w.activate();assert.equal(shown.w.bellAnswered,true,'?bell shows it at once');
+});
+
+test('the kitchen below stairs keeps to two lights and an instanced dresser',()=>{
+  const below=source.slice(source.indexOf('function buildVictorian()'),source.indexOf('function sendDown('));
+  assert.equal((below.match(/new THREE\.PointLight/g)||[]).length,2,'the gas and the range');
+  assert.match(below,/new THREE\.InstancedMesh/);
+  assert.ok(shelfIds('food-victorian').length<=12,'two cases of six');
 });
