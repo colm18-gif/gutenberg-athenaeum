@@ -1464,7 +1464,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     function triggerMidnight(){midnightRoomOpen=true;rabbitWaypoint=1;rabbit.position.copy(rabbitPath[0]);rabbit.visible=true;rabbitActive=true;midnightDoor.visible=true;showNotice('Midnight. Twelve chimes answer from inside the walls. A white rabbit crosses the library.',7);for(let i=0;i<12;i++)setTimeout(()=>sound(i===11?196:146,.75,'sine',.1),i*310)}
     function triggerBookEasterEgg(book){if(book.id===2701){whiteVolumeLevel=Math.min(3,whiteVolumeLevel+1);whaleCall();showNotice(whiteVolumeLevel<3?'A distant whale calls beyond the rain. Somewhere, a white volume climbs to a higher shelf.':'A distant whale calls beyond the rain. The white volume has reached the highest shelf.',6)}else if(book.id===5200){insectQueued=true;sound(62,.55,'sawtooth',.08)}else if(book.id===11&&midnightRoomOpen&&!awakenedBooks.has(11))showNotice('The little door seems to be listening as you begin Alice’s story.',5)}
     function usefulClue(){if(!awakenedBooks.has(11))return 'Useful thing: turn at least one page of Alice’s Adventures in Wonderland before midnight.';if(!discovered.has('west-shelf'))return 'Useful thing: one western shelf holds a book that sits askew and leans toward your hand.';if(!discovered.has('below-catalogue'))return 'Useful thing: the iron outline beside the fireplace is a hatch, not decoration.';if(!discovered.has('roof-book'))return 'Useful thing: the upper stair continues beyond the balcony and into the rain.';if(!discovered.has('tunnel'))return 'Useful thing: in the secret western room, listen for the wall that breathes.';return 'Useful thing: the telescope counts every different book whose pages you have turned.'}
-    function showNotice(t,seconds=3){if(showNotice.gate&&!showNotice.gate())return;const inMainLibrary=player.pos.y>-.5&&Math.abs(player.pos.x)<57&&player.pos.z>-32&&player.pos.z<32;if(/Clio/i.test(t)&&!inMainLibrary)return;ui.notice.textContent=t;ui.notice.style.opacity=1;noticeTimer=seconds}
+    function showNotice(t,seconds=3){if(showNotice.gate&&!showNotice.gate())return;const inMainLibrary=player.pos.y>-.5&&Math.abs(player.pos.x)<57&&player.pos.z>-32&&player.pos.z<32;if(/Clio/i.test(t)&&!inMainLibrary&&!clioCorner.away)return;/* Clio's news is for the hall, unless she is asleep in the reader's room */ui.notice.textContent=t;ui.notice.style.opacity=1;noticeTimer=seconds}
     const COLLECTION_NAMES={'brass-token':'Serendipity token','map-fragment':'Three-title map','silver-key':'Archive key','reader-ribbon':'Crimson reading ribbon','pressed-flower':'Pressed night flower','midnight-ink':'Bottle of midnight ink','last-catalogue':'The final catalogue'};
     function mysteryCount(){return MYSTERIES.filter(([id])=>discovered.has(id)).length}
     function updateSecretCount(){const count=mysteryCount();$('#secretCount').textContent=`${count} / ${SECRET_TOTAL}`}
@@ -2734,24 +2734,34 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
         if(zone==='irish-room'&&irishRoom?.built){const r=irishRoom.room;return {x:r.cx-1,y:0,z:r.cz-r.d/2+2.1,yaw:.3,line:'Clio is asleep on the hearth, warming one side and then the other.'}}
         if(zone==='ancient-kitchen'&&foodHistoryWing?.built){const c=foodHistoryWing.clioSpot;return {...c,line:'Clio is asleep on the warm flagstones before the kitchen fire, exactly where a cook would trip over her.'}}
         if(zone==='poe-room'&&poeRoom?.built){const r=poeRoom.room;return {x:r.cx-2.3,y:0,z:r.cz+2.1,yaw:-.4,line:'Clio is curled up beside Poe’s desk, one eye half open. Poe kept a cat too: Catterina, a tortoiseshell, who is said to have sat on his shoulder while he wrote.'}}
+        // With the kittens: on the rug inside the attic train's track, and on the children's room floor. The kitten comes
+        // over and curls up against her when the reader does (`meet`), and Clio washes its ears.
+        if(zone==='attic'&&curiousDoors?.attic){const r=curiousDoors.rooms.attic;return {x:r.cx-.25,y:0,z:r.cz+1.2,yaw:0,kitten:()=>curiousDoors.attic,line:'Clio is asleep on the nursery rug, inside the ring of the clockwork train, which goes round her and does not wake her. Marmalade creeps up, sniffs her nose, and curls up against her. Clio opens one eye, sighs like a princess much put upon, and washes the kitten’s ears.'}}
+        const K=internationalWing?.children,inK=K&&Math.abs(player.pos.x-K.cx)<K.w/2&&Math.abs(player.pos.z-K.cz)<K.d/2;
+        if(zone==='international-wing'&&K&&internationalWing.isBuilt('ukrainian')&&(inK||Math.random()<.5))return {x:K.cx+2.6,y:0,z:K.cz-.6,yaw:0,key:'ukrainian',kitten:()=>internationalWing.kitten,line:'Clio has come through the arch from the Ukrainian Reading Room and gone to sleep on the children’s floor. The little grey kitten from the lullaby pads over, touches noses, and curls up against her, and Clio, sixteen and very dignified, washes its ears. Котик і кішка. (A kitten and a cat.)'};
         const key=zone==='international-wing'&&internationalWing?.roomAt(player.pos.x,player.pos.z);
         if(key&&key!=='hub'&&internationalWing.isBuilt(key)){const r=internationalWing.rooms[key];return {x:r.cx+2.8,y:.84,z:r.cz+1.2,yaw:0,key,line:'Clio is asleep on the reading table, between the lamp and the books. A cat is the same in every language.'}}
         return null};
       const curl=on=>{legs.forEach(o=>o.visible=!on);eyes.forEach(o=>o.visible=!on);for(const {o,y} of pose)o.position.y=on?y-.42:y;head.position.x=on?.6:.68;head.position.y=on?.6:1.12;tail.rotation.set(on?Math.PI/2:0,on?0:Math.PI/2,0);// the tail laid flat round the body, then up again
         const text=on?{...awake,author:'Fast asleep, like a princess. She might not mind a scratch behind the ears.'}:awake;for(const part of catParts)part.userData=text};
       clioCorner.curl=curl;
+      // Washing a kitten's ears: the curled head (and its ears) leans to the kitten at her side and nods as she licks.
+      const ears=cat.children.filter(o=>o.geometry?.type==='ConeGeometry'),groom=k=>{const dz=.2*k,dy=Math.abs(Math.sin(clock.elapsedTime*5))*.06*k;head.position.set(.6,.6+dy,dz);for(const {o,y} of pose)if(ears.includes(o)){o.position.y=y-.42+dy;o.position.z=o.userData.earZ??=o.position.z;o.position.z=o.userData.earZ+dz}};
       const preClioWorld=updateWorld;updateWorld=function(t,dt){preClioWorld(t,dt);
-        const zone=foodHistoryWing?.zoneAt(player.pos.x,player.pos.z)==='ancient-kitchen'?'ancient-kitchen':irishRoom?.contains(player.pos.x,player.pos.z)?'irish-room':poeRoom?.contains(player.pos.x,player.pos.z)?'poe-room':internationalWing?.contains(player.pos.x,player.pos.z)?'international-wing':null;
+        const zone=curiousDoors?.zoneAt(player.pos.x,player.pos.z)?.key==='attic'?'attic':foodHistoryWing?.zoneAt(player.pos.x,player.pos.z)==='ancient-kitchen'?'ancient-kitchen':irishRoom?.contains(player.pos.x,player.pos.z)?'irish-room':poeRoom?.contains(player.pos.x,player.pos.z)?'poe-room':internationalWing?.contains(player.pos.x,player.pos.z)?'international-wing':null;
         const where=zone==='international-wing'?'wing:'+internationalWing.roomAt(player.pos.x,player.pos.z):zone;
         if(away){petTime=Math.max(0,petTime-dt);head.rotation.z=petTime>0?Math.sin(petTime*5)*.13:0;
+          if(away.groom>0){away.groom-=dt;away.lick=Math.min(1,(away.lick||0)+dt);groom(away.groom>1?away.lick:Math.max(0,away.groom))}else if(away.groomAt!=null&&(away.groomAt-=dt)<=0){away.groomAt=null;away.groom=14}
           if(where!==away.where){// back to the hall, or on to another room: Clio goes home
-            cat.position.copy(home);cat.rotation.set(0,0,0);curl(false);away=null}
+            if(away.groomAt!==undefined)groom(0);cat.position.copy(home);cat.rotation.set(0,0,0);curl(false);away=clioCorner.away=null}
           else if(!greeted&&Math.hypot(player.pos.x-cat.position.x,player.pos.z-cat.position.z)<3.2){greeted=true;
             // In the Ukrainian room, the bandura plays the lullaby «Котику сіренький» softly while she sleeps, once a visit.
-            if(away.key==='ukrainian'){showNotice('Clio is asleep on the reading table, and softly the bandura plays «Котику сіренький», the lullaby Ukrainian children are sung to sleep with: «Котику сіренький, котику біленький, котку волохатий, не ходи по хаті». Кіт спить. (The cat is asleep.)',12);playKotyku()}
-            else showNotice(away.line,7)}}
+            if(away.key==='ukrainian'&&away.kitten){showNotice(away.line+' Softly the bandura plays «Котику сіренький», the kitten’s own lullaby.',12);playKotyku()}
+            else if(away.key==='ukrainian'){showNotice('Clio is asleep on the reading table, and softly the bandura plays «Котику сіренький», the lullaby Ukrainian children are sung to sleep with: «Котику сіренький, котику біленький, котку волохатий, не ходи по хаті». Кіт спить. (The cat is asleep.)',12);playKotyku()}
+            else showNotice(away.line,7);
+            const kitten=away.kitten?.();if(kitten?.meet){kitten.meet(away.x+.15,away.z+.62);away.groomAt=5}}}
         // On arriving in a room, Clio is there half the time on a first visit and one in three after (never while leading the reader somewhere).
-        if(where&&where!==lastZone&&!away&&!catGuideTarget){const s=spot(zone);if(s&&(alwaysClio||Math.random()<(haunts[where]===undefined?.5:.33))){clioCorner.cancel?.();home=cat.position.clone();cat.position.set(s.x,s.y,s.z);cat.rotation.set(0,s.yaw,0);curl(true);away={...s,where};greeted=false}haunts[where]=true}
+        if(where&&where!==lastZone&&!away&&!catGuideTarget){const s=spot(zone);if(s&&(alwaysClio||Math.random()<(haunts[where]===undefined?.5:.33))){clioCorner.cancel?.();home=cat.position.clone();cat.position.set(s.x,s.y,s.z);cat.rotation.set(0,s.yaw,0);curl(true);away=clioCorner.away={...s,where};greeted=false}haunts[where]=true}
         lastZone=where}}
     // Clio's errands: now and then on her rounds of the Grand Hall she goes to her saucer to drink, to her post to scratch
     // or to her basket to sleep, and when the tin is shaken she comes at a run for a treat (three, and then she has had enough).
@@ -2765,15 +2775,31 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       // The way to the corner keeps clear of the return table and the long shelf across the south of the hall.
       const start=(kind,spot,speed=.78,face=null)=>{stop();const pts=[];if(cat.position.z>.5&&cat.position.x>-15)pts.push(c.mid);if(cat.position.z>-16.4&&spot.z<-16.4)pts.push(c.north);pts.push(spot.clone());errand={kind,pts,speed,face,at:false,t:0}};
       const towards=(o,gap)=>c.spot.set(o.x+gap,0,o.z);
-      const arrive=()=>{errand.at=true;const k=errand.kind;errand.t=k==='bed'?35+Math.random()*45:k==='perch'?18+Math.random()*24:k==='milk'?7:k==='post'?3.6:2.6;
+      const arrive=()=>{errand.at=true;const k=errand.kind;errand.t=k==='bed'?35+Math.random()*45:k==='rabbit'?9:k==='perch'?18+Math.random()*24:k==='milk'?7:k==='post'?3.6:2.6;
         if(k==='bed'){cat.position.y=.1;c.curl(true);errand.greeted=false}
         if(k==='perch'){cat.position.set(c.post.x+.12,.92,c.post.z);paperNoise(.08,.05,700,1.2);if(near(6))showNotice(['Clio climbs her post in three bounds and settles on the top, surveying the hall like a princess on her balcony.','Up goes Clio, sixteen years old and not a bit afraid of heights. From the top of her post she looks down on everyone.'][Math.floor(Math.random()*2)],5)}
+        if(k==='rabbit'&&near(26))showNotice(bunny?'The rabbit is through the wing door and away to its little door. Clio stops on the threshold, sits, and washes a paw, as though she had only meant to see it off.':'The rabbit is gone. Clio sits down on the threshold of the west wing with her tail lashing, and pretends she had only meant to see it off.',6);
         if(k==='treat'){treats.push(performance.now());meow();paperNoise(.12,.2,1300,1.4);setTimeout(()=>purr(3),900);
           if(near(4))showNotice(treats.length>=3?'That is her third. Clio eats it, winds once round your ankles, purring, and does not ask again for a while.':['You tip a treat into your palm. Clio takes it delicately, crunches it loudly, and looks at the tin for another.','Clio eats the treat in one crunch and then, to be safe, sniffs your empty hand.','The treat vanishes. Clio sits, wraps her tail round her feet and gives you a slow blink: high praise.'][Math.floor(Math.random()*3)],5)}};
       const walk=dt=>{const to=errand.pts[0],v=tmpVector.set(to.x-cat.position.x,0,to.z-cat.position.z),d=v.length();if(d<.12){errand.pts.shift();if(!errand.pts.length)arrive();return}
         v.multiplyScalar(1/d);const step=Math.min(d,dt*errand.speed),fast=errand.speed>1;cat.position.x+=v.x*step;cat.position.z+=v.z*step;cat.rotation.y=THREE.MathUtils.damp(cat.rotation.y,Math.atan2(-v.z,v.x),fast?6:4,dt);cat.position.y=.02+Math.abs(Math.sin(performance.now()*(fast?.012:.006)))*.025;tail.rotation.x=Math.sin(clock.elapsedTime*2)*.12};
+      // Now and then the White Rabbit (the midnight one, out early) runs close by Clio across the hall to its little door in
+      // the west wing, and Clio, sixteen and a princess, is after it as far as the wing door. She never catches it.
+      const CHASE=[[7,-14],[1,-5],[-8,1],[-17.4,1.5],[-22.5,3],[-27.3,8.2]].map(([x,z])=>new THREE.Vector3(x,0,z)),CHASE_STOP=3,chaseSoon=new URLSearchParams(location.search).has('rabbit');// ?rabbit: a chase within seconds, for checking
+      const readerInHall=()=>Math.abs(player.pos.x)<19&&Math.abs(player.pos.z)<31&&player.pos.y>-.5;
+      let bunny=null,nextChaseAt=performance.now()+(chaseSoon?8000:150000+Math.random()*150000);
+      const chase=()=>{let from=0,best=Infinity;for(let i=0;i<CHASE_STOP;i++){const d=Math.hypot(CHASE[i].x-cat.position.x,CHASE[i].z-cat.position.z);if(d<best){best=d;from=i}}
+        stop();errand={kind:'rabbit',pts:CHASE.slice(from,CHASE_STOP+1).map(p=>p.clone()),speed:2.4,face:Math.PI,at:false,t:0};
+        const lead=Math.min(1,1.6/Math.max(.01,best));rabbit.position.set(cat.position.x+(CHASE[from].x-cat.position.x)*lead,.03,cat.position.z+(CHASE[from].z-cat.position.z)*lead);rabbit.visible=true;bunny={pts:CHASE.slice(from).map(p=>p.clone())};
+        window.libraryAnalytics?.track?.('Clio Chases Rabbit');meow();
+        if(near(16))showNotice(['A White Rabbit with pink eyes runs close by Clio, and she is after it at once: sixteen years old, and a princess, and not caring who sees.','Something white bolts out from under a reading table. Clio’s ears go flat, her tail goes up, and she is off after the rabbit like a kitten.'][Math.floor(Math.random()*2)],5)};
+      const runBunny=dt=>{if(rabbitActive){bunny=null;return}// the midnight rabbit has the run of the hall
+        const to=bunny.pts[0],v=tmpVector.set(to.x-rabbit.position.x,0,to.z-rabbit.position.z),d=v.length();
+        if(d<.3){bunny.pts.shift();if(!bunny.pts.length){rabbit.visible=false;bunny=null}else sound(330,.08,'triangle',.025);return}
+        v.multiplyScalar(1/d);const step=Math.min(d,dt*3.4);rabbit.position.x+=v.x*step;rabbit.position.z+=v.z*step;rabbit.rotation.y=THREE.MathUtils.damp(rabbit.rotation.y,Math.atan2(-v.z,v.x),8,dt);rabbit.position.y=.03+Math.abs(Math.sin(clock.elapsedTime*11))*.13};
       const preErrandCat=updateCat;updateCat=function(dt){
-        const now=performance.now();
+        const now=performance.now();if(bunny)runBunny(Math.min(dt,.1));
+        if(!errand&&!bunny&&started&&!catGuideTarget&&petTime<=0&&catPause<=0&&now>nextChaseAt&&!rabbitActive&&inHall()&&readerInHall()&&near(16)){nextChaseAt=now+(chaseSoon?60000:300000+Math.random()*300000);chase()}
         if(!errand&&started&&!catGuideTarget&&petTime<=0&&catPause<=0&&now>nextErrandAt&&inHall()){const r=Math.random(),k=c.next||(c.milk>.3&&r<.3?'milk':r<.5?'post':r<.7?'perch':'bed');c.next=null;c.run(k)}
         if(!errand)return preErrandCat(dt);
         if(catGuideTarget){stop();return preErrandCat(dt)}// showing the reader something comes first
@@ -2783,6 +2809,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
         if(k==='milk'){headTo(.92,.5+Math.sin(t*10)*.03);cat.rotation.z=THREE.MathUtils.damp(cat.rotation.z,-.12,4,dt);c.milk=Math.max(0,c.milk-dt*.05);setMilk();if(near()&&now>soundAt){soundAt=now+420;paperNoise(.05,.04,900,2)}}
         else if(k==='post'){cat.rotation.z=THREE.MathUtils.damp(cat.rotation.z,.75,6,dt);cat.position.x=c.post.x+.6+Math.sin(t*14)*.015;if(near(8)&&now>soundAt){soundAt=now+340;paperNoise(.2,.09,3200,1.5)}}
         else if(k==='treat'){headTo(.82,.75+Math.abs(Math.sin(t*7))*.08);tail.rotation.x=Math.sin(t*6)*.25}
+        else if(k==='rabbit'){tail.rotation.x=Math.sin(t*7)*.35;headTo(.68+Math.sin(t*.9)*.04,1.12)}// on the threshold, tail lashing, still looking after it
         else if(k==='perch'){tail.rotation.x=Math.sin(t*1.3)*.2}// on top of her post, keeping an eye on her library
         else{petTime=Math.max(0,petTime-dt);head.rotation.z=petTime>0?Math.sin(petTime*5)*.13:0;body.scale.y=.8+Math.sin(t*1.6)*.02;// asleep, and breathing
           const by=Math.hypot(player.pos.x-cat.position.x,player.pos.z-cat.position.z);if(by<3&&now>soundAt){soundAt=now+3200;purr(3.2,.22*(1-by/3.4))}// a sleepy purr, for a reader who comes close

@@ -145,6 +145,17 @@ test('Marmalade comes for treats (three in five minutes), naps in her basket, an
   for(const [x,z] of [...cat.spots,...cat.yarnSpots])assert.equal(f.doors.zoneAt(x,z),room);
 });
 
+test('when Clio sleeps in the attic, Marmalade curls up against her on the rug inside the train’s track',()=>{
+  const f=fixture(),room=f.doors.rooms.attic;f.doors.activate(room);const cat=f.doors.attic;
+  f.doors.interact({userData:{type:'curious-door',room:'attic'}});let t=0;for(;t<3;t+=.05)f.doors.update(t,.05,false);
+  const spot=/if\(zone==='attic'&&curiousDoors\?\.attic\)\{const r=curiousDoors\.rooms\.attic;return \{x:r\.cx-([\d.]+),y:0,z:r\.cz\+([\d.]+)/.exec(game);assert(spot,'Clio’s place in the attic');
+  const x=room.cx-Number(spot[1]),z=room.cz+Number(spot[2]);
+  for(const [px,pz] of [[x,z],[x+.55,z],[x-.55,z],[x+.15,z+.62]]){assert.ok(f.doors.allowed(px,pz),'open floor');assert.ok(Math.hypot(px-room.cx,pz-(room.cz+1.2))<1.5,'inside the train’s ring')}
+  cat.meet(x+.15,z+.62);for(const end=t+30;t<end&&!cat.asleep;t+=.05)f.doors.update(t,.05,false);
+  assert.ok(cat.asleep,'she curls up');assert.ok(Math.hypot(cat.kitten.x-(x+.15),cat.kitten.z-(z+.62))<.1,'against Clio');
+  for(const end=t+60;t<end&&cat.asleep;t+=.05)f.doors.update(t,.05,false);assert.ok(!cat.asleep,'and gets up again');
+});
+
 test('the attic’s toys each do something, and leave the kitten’s rounds and the way in clear',()=>{
   const f=fixture(),room=f.doors.rooms.attic;f.doors.activate(room);const cat=f.doors.attic;
   f.doors.interact({userData:{type:'curious-door',room:'attic'}});let t=0;for(;t<3;t+=.05)f.doors.update(t,.05,false);

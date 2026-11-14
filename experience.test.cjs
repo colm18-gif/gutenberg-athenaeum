@@ -287,7 +287,7 @@ test('visual repair pass keeps library materials and wayfinding legible',()=>{
   assert.match(game,/fillText\('THE WHITE'/);
   assert.match(game,/whiteVolumeGroup\.position\.y=THREE\.MathUtils\.damp/);
   assert.match(game,/picturePassage:\{src:'assets\/audio\/painting-passage\.ogg'/);
-  assert.match(game,/if\(\/Clio\/i\.test\(t\)&&!inMainLibrary\)return/);
+  assert.match(game,/if\(\/Clio\/i\.test\(t\)&&!inMainLibrary&&!clioCorner\.away\)return/,'Clio’s news stays in the hall, unless she is asleep in the reader’s room');
   assert.match(game,/new THREE\.AmbientLight\(0xd0a879,atmosphericFill\?1\.5:1\.75\)/);
   assert.match(game,/ambient\.intensity=1\.68\+daylight\*\.68/);
   assert.match(game,/toneMappingExposure=1\.95\+daylight\*\.32/);

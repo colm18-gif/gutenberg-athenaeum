@@ -513,7 +513,17 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   She purrs (`purr` in game.js, made from pulsed noise, no file) when petted, after a treat, and in her basket when a
   reader comes close.
 - Clio, the library cat, is sometimes found asleep in the Irish Room, the Poe Room or a wing reading room (the same
-  cat moved and curled up; `?clio` makes it every time). The librarian stays in the Grand Hall.
+  cat moved and curled up; `?clio` makes it every time). The librarian stays in the Grand Hall. She is also found with
+  the kittens: on the attic rug inside the train's track, and on the children's room floor (half the time in the
+  Ukrainian room, always when the reader comes in by the little yellow door). When the reader comes near, the kitten
+  trots over and curls up against her (`meet` on Marmalade and on `internationalWing.kitten`) and Clio washes its ears.
+  Her lines show outside the hall only while she is asleep in the reader's room (`clioCorner.away`; otherwise
+  `showNotice` keeps her news to the hall).
+- Now and then (every five to ten minutes, with the reader in the hall and within 16 m of her) the White Rabbit runs
+  close by Clio and she chases it (`CHASE` in Clio's errands, kind `rabbit`), the rabbit through the west wing door to
+  its little door, Clio only as far as the threshold (`CHASE_STOP`), where she sits with her tail lashing. She never
+  catches it. The midnight rabbit comes first; showing the reader something comes before a chase; `?rabbit` brings
+  one within seconds.
 - Back ways (`passages.js`): eight short passages join neighbouring rooms behind doors, so a reader can wander without
   going back to the Grand Hall: the Cellar Stair (Poe Room ↔ Irish Room, down), the Night Corridor (English Reading Room
   ↔ Poe Room), the Long Gallery (Medicine Room ↔ English Reading Room; the Map Room's walls are hung edge to edge, so it
