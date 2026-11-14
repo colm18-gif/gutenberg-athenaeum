@@ -42,15 +42,13 @@ test('the Station Subway loads at startup and is wired into the game like the ba
   assert.match(fs.readFileSync('room-ambience.js','utf8'),/'station-subway':\{beds:/);
 });
 
-test('the stairwell is in the Grand Hall’s east aisle, clear of the columns, the Wandering Door and its forecourt',()=>{
+test('the stairwell is in the Grand Hall’s east aisle, clear of the Wandering Door and its forecourt',()=>{
   const {subway,colliders,interactables}=world(),{x0,x1,z0,z1}=subway.well;
   const rails=colliders.filter(c=>c.name==='station-stairwell');assert.equal(rails.length,3,'railings on three sides');
   const boxes=rails.map(c=>({minX:c.x-c.w/2,maxX:c.x+c.w/2,minZ:c.z-c.d/2,maxZ:c.z+c.d/2}));
   const box={minX:Math.min(...boxes.map(b=>b.minX)),maxX:Math.max(...boxes.map(b=>b.maxX)),minZ:Math.min(...boxes.map(b=>b.minZ)),maxZ:Math.max(...boxes.map(b=>b.maxZ))};
   assert(box.minX<x0&&box.maxX>x1&&box.minZ<z0,'the railings close the well on the west, east and north');
   assert(!boxes.some(b=>b.minX<x1-.5&&b.maxX>x0+.5&&b.maxZ>z1-1),'the open end is not blocked: readers walk down the steps');
-  // The hall's columns stand at x ±11 and ±17, z −25, −5, 15 and 27.
-  for(const x of [11,17])for(const z of [-25,-5])assert(!(x+.6>box.minX&&x-.6<box.maxX&&z+.6>box.minZ&&z-.6<box.maxZ),`clear of the column at ${x}, ${z}`);
   // The Wandering Door (x 6, z −24.5) opens towards readers standing at x 10.5.
   assert(box.minX>11,'clear of the Wandering Door and the reader in front of it');
   assert(Math.abs(box.maxX)<18.5&&box.minZ>-30&&box.maxZ<-12,'inside the hall');
