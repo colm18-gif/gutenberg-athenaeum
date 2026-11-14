@@ -149,7 +149,7 @@
       const lamp=new THREE.PointLight(0xc8d4ff,9,30,1.6);lamp.position.set(cx-1,h-.6,cz);g.add(lamp);lamps.push(lamp);
       // The door back to the Irish Room, and the door on to Brobdingnag.
       const back={type:'gulliver-exit',title:'Back to the Irish Room',author:'Out of Lilliput, the way you came.',action:'RETURN'};
-      if(!doorKit?.hang(g,{data:back,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,label:'THE IRISH ROOM',own,...LOOK}))mark(box(1.3,2.9,.16,std(LOOK.color),cx,1.45,cz+d/2-.2,g),back);
+      if(!doorKit?.hang(g,{data:back,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,onward:'towards the Grand Hall',label:'THE IRISH ROOM',own,...LOOK}))mark(box(1.3,2.9,.16,std(LOOK.color),cx,1.45,cz+d/2-.2,g),back);
       const on={type:'gulliver-onward',title:'Brobdingnag',author:'On to the second voyage: a country where you are the size of a Lilliputian.',action:'ENTER'};
       if(!doorKit?.hang(g,{data:on,mark,x:cx,z:cz-d/2+.2,yaw:0,label:'BROBDINGNAG',own,...LOOK}))mark(box(1.3,2.9,.16,std(LOOK.color),cx,1.45,cz-d/2+.2,g),on);
     }

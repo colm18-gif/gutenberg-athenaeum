@@ -175,7 +175,7 @@
       add(own(new THREE.CylinderGeometry(.008,.008,.9,4)),MAT.brass||MAT.darkWood,cx+TABLE.x,h-.48,cz+TABLE.z,root);
       // The door back to the Sorting Room.
       const exit={type:'uncat-exit',title:'Back to the Sorting Room',author:'The staff room, where the string and the returns are.',action:'RETURN'};
-      if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,label:'STAFF · SORTING',own,...DOOR_LOOK}))mark(box(1.9,3.1,.16,own(new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.8})),cx,1.55,cz+d/2-.2,root),exit);
+      if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,onward:'towards the Grand Hall',label:'STAFF · SORTING',own,...DOOR_LOOK}))mark(box(1.9,3.1,.16,own(new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.8})),cx,1.55,cz+d/2-.2,root),exit);
       scene.add(root);
     }
     function caseCard(kind){

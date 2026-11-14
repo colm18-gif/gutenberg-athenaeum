@@ -107,7 +107,7 @@
       add(own(new THREE.CylinderGeometry(.008,.008,1,4)),MAT.brass||MAT.darkWood,cx,h-.55,cz-.5,root);
       // The door back to the Medicine Room.
       const exit={type:'naturalist-exit',title:'Back to the Medicine Room',author:'The Fabrica of Vesalius is just the other side.',action:'RETURN'};
-      if(!doorKit?.hang(root,{data:exit,mark,x:cx+w/2-.2,z:DOOR_Z,yaw:-Math.PI/2,label:'THE MEDICINE ROOM',own,...DOOR_LOOK}))mark(box(.16,3.1,1.9,own(new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.7})),cx+w/2-.2,1.55,DOOR_Z,root),exit);
+      if(!doorKit?.hang(root,{data:exit,mark,x:cx+w/2-.2,z:DOOR_Z,yaw:-Math.PI/2,onward:'towards the Grand Hall',label:'THE MEDICINE ROOM',own,...DOOR_LOOK}))mark(box(.16,3.1,1.9,own(new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.7})),cx+w/2-.2,1.55,DOOR_Z,root),exit);
       scene.add(root);
     }
     // Two rows of books on each of three walls: the origin on the west, the collectors on the north (short of the

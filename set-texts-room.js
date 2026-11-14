@@ -108,7 +108,7 @@
       add(own(new THREE.CylinderGeometry(.2,.38,.32,14,1,true)),own(new THREE.MeshStandardMaterial({color:0xf2d6a0,emissive:0xffb35c,emissiveIntensity:1.1,roughness:.7})),cx,h-1,cz+.4,root);
       // The door back to the English Reading Room.
       const exit={type:'settexts-exit',title:'Back to the English Reading Room',author:'The schoolroom is just the other side.',action:'RETURN'};
-      if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,label:'THE ENGLISH READING ROOM',own,...DOOR_LOOK}))mark(box(1.9,3.1,.16,own(new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.7})),cx,1.55,cz+d/2-.2,root),exit);
+      if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,onward:'towards the Grand Hall',label:'THE ENGLISH READING ROOM',own,...DOOR_LOOK}))mark(box(1.9,3.1,.16,own(new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.7})),cx,1.55,cz+d/2-.2,root),exit);
       scene.add(root);
     }
     // The First Folio on show: a glass case on a plinth, the facsimile lying open in a cradle at its title page, the

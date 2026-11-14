@@ -362,7 +362,7 @@
       root.add(loon);state.loon={group:loon,at:{x:8,z:28},next:6,down:0};placeLoon();for(const part of loon.children)mark(part,card('loon'));
       // The garden door back, standing on its own among the pines.
       const gate=W(SPOTS.gate.x,SPOTS.gate.z),exit={type:'walden-exit',title:'The Naturalist’s Cabinet',author:CARDS.gate[1],action:'RETURN'};
-      if(!doorKit?.hang(root,{data:exit,mark,x:gate.x,z:gate.z,yaw:0,label:'THE NATURALIST’S CABINET',own,...DOOR_LOOK}))mark(box(1.9,3.1,.16,std({color:DOOR_LOOK.color,roughness:.7}),gate.x,1.55,gate.z,root),exit);
+      if(!doorKit?.hang(root,{data:exit,mark,x:gate.x,z:gate.z,yaw:0,onward:'towards the Grand Hall',label:'THE NATURALIST’S CABINET',own,...DOOR_LOOK}))mark(box(1.9,3.1,.16,std({color:DOOR_LOOK.color,roughness:.7}),gate.x,1.55,gate.z,root),exit);
       block(gate.x,gate.z-.2,2.4,.7);
       // Behind the Portage's door (hung by passages.js while the clearing is built), so nobody walks round the back of it.
       block(TRAIL.x-.2,TRAIL.z,.7,2.4);

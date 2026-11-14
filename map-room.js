@@ -266,7 +266,7 @@
       const wallLamp=new THREE.PointLight(0xffe0b0,3.2,14,2);wallLamp.position.set(cx,4.2,cz-d/2+3.2);root.add(wallLamp);
       // The door back to the west wing.
       const exit={type:'map-exit',title:'Back to the west wing',author:'The wing, and the Grand Hall beyond it.',action:'RETURN'};
-      if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,label:'THE WEST WING',own,...DOOR_LOOK}))mark(box(1.9,3.1,.16,own(new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.7})),cx,1.55,cz+d/2-.2,root),exit);
+      if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,onward:'towards the Grand Hall',label:'THE WEST WING',own,...DOOR_LOOK}))mark(box(1.9,3.1,.16,own(new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.7})),cx,1.55,cz+d/2-.2,root),exit);
       scene.add(root);
     }
     function placeBook(book,spot,geometry,group){

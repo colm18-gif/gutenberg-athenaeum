@@ -83,7 +83,9 @@
     const panelCache=new Map();
     function panelGeometry(w,h){const key=w.toFixed(2)+'x'+h.toFixed(2);if(panelCache.has(key))return panelCache.get(key);const s=new THREE.Shape(),r=Math.min(w,h)*.08;s.moveTo(-w/2+r,-h/2);s.lineTo(w/2-r,-h/2);s.quadraticCurveTo(w/2,-h/2,w/2,-h/2+r);s.lineTo(w/2,h/2-r);s.quadraticCurveTo(w/2,h/2,w/2-r,h/2);s.lineTo(-w/2+r,h/2);s.quadraticCurveTo(-w/2,h/2,-w/2,h/2-r);s.lineTo(-w/2,-h/2+r);s.quadraticCurveTo(-w/2,-h/2,-w/2+r,-h/2);const g=new THREE.ExtrudeGeometry(s,{depth:.03,bevelEnabled:true,bevelThickness:.035,bevelSize:.05,bevelSegments:2,curveSegments:4});panelCache.set(key,g);return g}
 
-    function plateTexture(text){return keep('plate'+text,()=>canvasTexture((c,w,h)=>{c.fillStyle='#caa15a';c.fillRect(0,0,w,h);c.strokeStyle='#6b4d22';c.lineWidth=5;c.strokeRect(6,6,w-12,h-12);c.fillStyle='#2b1d0e';c.textAlign='center';c.textBaseline='middle';let size=34;c.font=`bold ${size}px Georgia`;while(c.measureText(text).width>w-30&&size>14){size-=2;c.font=`bold ${size}px Georgia`}c.fillText(text,w/2,h/2+2)},512,96))}
+    // A brass plate on the leaf naming where the door leads; `onward`, in italic beneath, says where that leads in turn
+    // (towards the Grand Hall), so a reader deep in a chain of rooms can find the way home.
+    function plateTexture(text,onward=''){return keep('plate'+text+'|'+onward,()=>canvasTexture((c,w,h)=>{c.fillStyle='#caa15a';c.fillRect(0,0,w,h);c.strokeStyle='#6b4d22';c.lineWidth=5;c.strokeRect(6,6,w-12,h-12);c.fillStyle='#2b1d0e';c.textAlign='center';c.textBaseline='middle';const fit=(t,size,style)=>{c.font=`${style} ${size}px Georgia`;while(c.measureText(t).width>w-30&&size>14){size-=2;c.font=`${style} ${size}px Georgia`}};fit(text,34,'bold');c.fillText(text,w/2,onward?h*.36:h/2+2);if(onward){c.fillStyle='#4a3318';c.fillRect(w*.32,h*.6,w*.36,2);c.fillStyle='#2b1d0e';fit(onward,28,'italic');c.fillText(onward,w/2,h*.77)}},512,onward?148:96))}
 
     // Gilt lettering on a glazed reading-room door: gold-leaf capitals with a fine rule, on glass lit warm from the room
     // beyond, as on the doors of the old institutional reading rooms. One texture per name, shared by every door using it.
@@ -110,7 +112,7 @@
     function drawAfterPortal(object){object.traverse(o=>{if(o.isMesh)o.renderOrder=1002})}
 
     // Builds a door facing +z with its threshold at y=0. Returns handles for animation.
-    function build(parent,{style='walnut',width=2.2,height=3.6,label='',glow=true,fanlight:hasFan=true,color=null,frame=null,trim:trimOption=null,fanColor=null,glazed=false,planked=false,plain=false,cornice=true,pediment=null,gilt=null}={}){
+    function build(parent,{style='walnut',width=2.2,height=3.6,label='',onward='',glow=true,fanlight:hasFan=true,color=null,frame=null,trim:trimOption=null,fanColor=null,glazed=false,planked=false,plain=false,cornice=true,pediment=null,gilt=null}={}){
       const group=new THREE.Group();parent.add(group);const banned=style==='banned',fanlight=hasFan&&!banned;
       const leafMaterial=banned?pagesMap():color?.isMaterial?color:color!=null?paint(color):gilt?mat.readingWalnut:mat[style]||mat.walnut,trim=trimOption||(style==='forbidden'||banned?mat.iron2:mat.brass),frameMat=frame||(style==='iron'?mat.iron2:mat.frame);
       const hasPediment=cornice&&(pediment??(style==='walnut'||style==='painted')),glass=fanColor!=null?fanGlass(fanColor):mat.fan,paneMaterial=fanColor!=null?paneGlass(fanColor):mat.fan;
@@ -150,7 +152,7 @@
       const knobX=width/2-.24,knobY=Math.min(1.05,height*.3);if(style!=='iron')add(leaf,keep('SphereGeometry(.07,14,10)',()=>new THREE.SphereGeometry(.07,14,10)),trim,knobX,knobY,-.14);if(style!=='iron'){add(leaf,keep('CylinderGeometry(.075,.075,.02,16)',()=>new THREE.CylinderGeometry(.075,.075,.02,16)),trim,knobX,knobY,.07).rotation.x=Math.PI/2;add(leaf,keep('SphereGeometry(.07,14,10)',()=>new THREE.SphereGeometry(.07,14,10)),trim,knobX,knobY,.14);const esc=box(leaf,.06,.14,.02,trim,knobX,knobY-.2,.07);box(leaf,.022,.06,.022,MAT.black||mat.iron2,knobX,knobY-.21,.08)}
       for(const y of [.35,height/2,height-.35])box(leaf,.06,.24,.12,trim,-width/2+.03,y,.02);
       if((style==='walnut'||style==='painted')&&!planked&&!plain)box(leaf,width-.12,.18,.015,trim,0,.12,.06);
-      if(label&&!gilt){const plate=add(leaf,keep('PlaneGeometry(.9,.17)',()=>new THREE.PlaneGeometry(.9,.17)),keep('plateMat'+label,()=>new THREE.MeshStandardMaterial({map:plateTexture(label),metalness:.6,roughness:.35})),0,glazed?height-.36:planked?height*.52:height*.75+(style==='iron'?.05:0),style==='iron'||planked?.105:.125);hits.push(plate)}
+      if(label&&!gilt){const ph=onward?.26:.17,plate=add(leaf,keep('PlaneGeometry(.9,'+ph+')',()=>new THREE.PlaneGeometry(.9,ph)),keep('plateMat'+label+'|'+onward,()=>new THREE.MeshStandardMaterial({map:plateTexture(label,onward),metalness:.6,roughness:.35})),0,glazed?height-.36:planked?height*.52:height*.75+(style==='iron'?.05:0),style==='iron'||planked?.105:.125);hits.push(plate)}
       // Light spilling through the opening once the leaf moves.
       const spill=glow?new THREE.PointLight(0xffc27a,0,7,2):null;if(spill){spill.position.set(0,height*.55,-.8);group.add(spill)}
       drawAfterPortal(leaf);const door={group,pivot,leaf,hits,panes,fan,spill,portal,open:0,target:0,onOpened:null,swing:style==='iron'?-1.25:-1.45};

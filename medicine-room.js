@@ -122,7 +122,7 @@
       add(own(new THREE.CylinderGeometry(.008,.008,1,4)),MAT.brass||MAT.darkWood,cx,h-.55,cz+.6,root);
       // The door back to the Map Room.
       const exit={type:'medicine-exit',title:'Back to the Map Room',author:'Snow’s cholera map is on the table just the other side.',action:'RETURN'};
-      if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,label:'THE MAP ROOM',own,...DOOR_LOOK}))mark(box(1.9,3.1,.16,own(new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.7})),cx,1.55,cz+d/2-.2,root),exit);
+      if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,onward:'towards the Grand Hall',label:'THE MAP ROOM',own,...DOOR_LOOK}))mark(box(1.9,3.1,.16,own(new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.7})),cx,1.55,cz+d/2-.2,root),exit);
       scene.add(root);
     }
     // The Fabrica on show in the middle of the room: a glass case on a plinth, the facsimile lying open in a cradle at the

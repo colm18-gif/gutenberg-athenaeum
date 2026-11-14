@@ -105,7 +105,7 @@
       add(own(new THREE.CylinderGeometry(.01,.01,.75,4)),MAT.brass||dark,cx,h-.42,cz+.4,root);
       // The door back to the Irish Room.
       const exit={type:'burns-exit',title:'Back to the Irish Room',author:'Twelve miles of water, at the narrowest.',action:'RETURN'};
-      if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,label:'THE IRISH ROOM',own,...DOOR_LOOK}))mark(box(1.8,2.9,.16,own(new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.7})),cx,1.45,cz+d/2-.2,root),exit);
+      if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,onward:'towards the Grand Hall',label:'THE IRISH ROOM',own,...DOOR_LOOK}))mark(box(1.8,2.9,.16,own(new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.7})),cx,1.45,cz+d/2-.2,root),exit);
       scene.add(root);
     }
     // The hearth in the north wall: a stone chimney breast, a coal fire, the kettle on its swee, and a fiddle on a peg.

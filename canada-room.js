@@ -124,7 +124,7 @@
       add(own(new THREE.CylinderGeometry(.01,.01,.85,4)),MAT.brass||dark,cx,h-.47,cz+.6,root);
       // The door back to the Burns Room.
       const exit={type:'canada-exit',title:'Back to the Burns Room',author:'Across the Atlantic again, the way the emigrant ships came.',action:'RETURN'};
-      if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,label:'THE BURNS ROOM',own,...DOOR_LOOK}))mark(box(1.8,2.9,.16,own(new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.7})),cx,1.45,cz+d/2-.2,root),exit);
+      if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,onward:'towards the Grand Hall',label:'THE BURNS ROOM',own,...DOOR_LOOK}))mark(box(1.8,2.9,.16,own(new THREE.MeshStandardMaterial({color:DOOR_LOOK.color,roughness:.7})),cx,1.45,cz+d/2-.2,root),exit);
       scene.add(root);
     }
     // Where a shelf's books stand: along its wall, a distance from its middle, facing into the room.
