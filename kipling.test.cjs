@@ -12,10 +12,10 @@ test('the Kipling bookcase holds books of his, and has room for them all',()=>{
   for(const [,title,author] of shelf){assert.equal(author,'Rudyard Kipling');}
 });
 
-test('the case stands clear of the Gastronomic Athenaeum’s door, the corner and the hidden door',()=>{
+test('the case stands clear of the Horologist’s door, the corner and the hidden door',()=>{
   const c=Object.fromEntries([...source.match(/const CASE=\{([^}]*)\}/)[1].matchAll(/(\w+):(-?[\d.]+)/g)].map(m=>[m[1],Number(m[2])]));
   assert.ok(c.x+c.d/2<=-18.75+c.d+.01,'its back is against the west wall');
-  assert.ok(c.z-c.w/2>=27.7,'clear of the Gastronomic Athenaeum’s door');assert.ok(c.z+c.w/2<=30.4,'clear of the south wall');
+  assert.ok(c.z-c.w/2>=27.7,'well clear of the Horologist’s door (its ring reaches z 24.7)');assert.ok(c.z+c.w/2<=30.4,'clear of the south wall');
 });
 
 test('the library wires the Kipling bookcase in, before game.js, with a link straight to it',()=>{

@@ -13,7 +13,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Files the jobs rewrite without a new build are listed in `LIVE_DATA` there.
 - Rooms behind doors (`evening-room.js`, `learners-room.js`, `periodicals-room.js`, `international-wing.js`,
   `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`, `map-room.js`, `medicine-room.js`, `set-texts-room.js`,
-  `austen-room.js`, `burns-room.js`, `canada-room.js`, `gulliver-room.js`, `nemo-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`, `walden.js`, `uncatalogued-room.js`)
+  `austen-room.js`, `burns-room.js`, `canada-room.js`, `long-corridor.js`, `gulliver-room.js`, `nemo-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`, `walden.js`, `uncatalogued-room.js`)
   are built only when the reader approaches and freed ~25 s after they leave. So are the Room of Chance (its portrait
   stays), the Lost Property Office (its hatch stays) and the high staircase, Rocket Hall, Moon and rocket cabin (`high-staircase.js`: only its door in the west wing
   is built at startup; a stair book carried away keeps it). The basement and the roof garden, built in `game.js` on a first visit, are
@@ -225,10 +225,18 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Merchant and Twelfth Night each opposite the FINIS before them, Romeo's feast and orchard, Caesar's Ides, Macbeth's
   banquet and cauldron, Hamlet's "To be", and the colophon. Every quotation on its cards was read off the photograph. Its
   whole book reads the same series a file a page (`series`, with each file's MD5 folders in `hashes`; 960 wide only).
+- The Long Corridor (`long-corridor.js`, x 1700, z 0, 5 m by 24 m; `?room=long-corridor`, `corridor`): the Grand Hall's
+  walls are full, so new rooms open off this corridor rather than off the hall (the owner's choice, 14 November 2026).
+  Its door is the library's walnut, THE LONG CORRIDOR gilded on the glass, in the hall's east wall at x 18.72, z −24.25,
+  between the Night Conservatory's door and The Long Road East, north of the subway steps (a test keeps it clear), with
+  Miss Havisham's stopped clock hung over it (`y` in `CLOCKS`). Inside: walnut wainscot, six bays a side between
+  pilasters (`bayZ`), a runner, a painted window at the far end, a card by the door, two lamps. A new room's door goes in
+  an empty bay (each is plain panelling until then: no doors that open on nothing), handed the corridor as the
+  Gastronomic Athenaeum is (`foodDoor`, `standBefore`). Its way out is THE GRAND HALL.
 - The Gastronomic Athenaeum (`food-history-wing.js`, hall x −780, z −420; `?room=food-history`, `food`, `gastronomy`)
-  is through a walnut door, its name gilded on the glass, on the Grand Hall's west wall (x −18.1, z 26.35, between the
-  Horologist's round door and the Kipling bookcase, with half a metre either side: the hall has no other room for it,
-  so nothing more stands round it; a test keeps it clear of both): a hall with the Historical
+  is through a walnut door, its name gilded on the glass, in the second bay of the Long Corridor's west wall
+  (`corridor.foodDoor`; until 14 November 2026 it was squeezed onto the Grand Hall's west wall between the
+  Horologist's round door and the Kipling bookcase); its way out is THE LONG CORRIDOR: a hall with the Historical
   Cookbook Gallery (north), the Preservation Vault (west) and the Global Spice Exchange (east), from the shelves
   `food-cookbooks`, `food-preservation` and `food-spices` in `data/new-books.js` (never numbers typed into the room;
   every number is checked in `docs/food-history-catalogue.md`: four first used there named other books). A planked
@@ -435,7 +443,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   didukh stands at Christmas; the reader lights it (`intl-holodomor`). On the day, the room's welcome names it.
   `?holodomor` shows it on any day.
 - The Kipling bookcase (`kipling-shelf.js`) stands against the Grand Hall's west wall in the south-west corner (x −18.54,
-  z 29.1, between the Gastronomic Athenaeum's door and the corner; `?room=kipling`): Rudyard Kipling's books face-out in the order he
+  z 29.1, south of the Horologist's round door; `?room=kipling`): Rudyard Kipling's books face-out in the order he
   published them, four shelves of three, from the shelf `kipling` in `data/new-books.js`, under a brass plate whose card says where his other books are. Added after the Kipling Society wrote in.
 - The Map Room (`map-room.js`, x −420, z −60) is behind a door in the west wing's north wall (x −21.4; `?room=maps`): twenty
   old maps hung edge to edge (Mercator, Waldseemüller, the Hereford Mappa Mundi, Piri Reis, the Catalan Atlas, Ricci,
@@ -538,7 +546,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   time (`dimFor`): from 22:30 the west wing's lamps dim, from 23:30 the east wing's, from 00:30 the hall's (to 55%, back by
   06:00), and the reader carries a lantern (seen in hand) there and in the dusty places. The moonlight follows the real
   moon (`moonPhase`; the time label names it), and the Antipodes skylight turns with the sky over Sydney. Three stopped
-  clocks on bare stretches of the hall's walls (`CLOCKS`: Havisham's twenty to nine, the Hatter's six o'clock, Poe's ebony clock at
+  clocks on the hall's walls (Havisham's over the Long Corridor's door; `CLOCKS`: Havisham's twenty to nine, the Hatter's six o'clock, Poe's ebony clock at
   midnight; quotations checked against the texts) are found for good (`athenaeum-stopped-clocks`). The explorers'
   anteroom (x 1320, z 320, freed like the basement; `?room=explorers`) is through the kit locker in the Map Room's
   north-west corner: kit on its pegs, a sledge, a chart left blank (Conrad, checked against pg219), the map-voyages shelf,
@@ -568,7 +576,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `cornice`, `pediment`; no light of its own), then lets the reader through with `doorKit.pass(data.kit,data,go)` so
   the leaf swings first. On the Grand Hall's side, a room's door is the library's walnut with its name gilded on the glass
   (`...doorKit.readingRoom('THE X ROOM','sub line')` after the room's own look); the room's side keeps its colours. Mark the hall side of a door so it is not among the room's own parts, or it stops answering
-  once the room is freed.
+  once the room is freed. A room's way out carries a brass plate naming the room it opens on; where that is not the
+  Grand Hall, pass `onward:'towards the Grand Hall'` too, for a second line beneath (a test lists them).
 - Performance matters (many visitors are on phones): merge static parts by material, use `InstancedMesh`, avoid
   adding lights where the library's own can be borrowed.
 - Taps are answered first (Cloudflare showed slow taps on phones, November 2026): for 300 ms after a tap, click or
@@ -655,7 +664,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
-  daily-room, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
+  daily-room, long-corridor, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.

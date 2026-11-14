@@ -141,15 +141,12 @@ test('the hall side is the library’s walnut with the name gilded on the glass,
   assert.ok(source.indexOf('const entranceOwned=owned.splice(0)')<source.indexOf('function unload()'));
 });
 
-test('the entrance in the Grand Hall keeps clear of the other doors and cases on the west wall',()=>{
-  const at=+source.match(/const THRESHOLD=\{x:-18\.1,z:(-?[\d.]+),yaw:Math\.PI\/2\}/)[1],half=+source.match(/const ENTRANCE_HALF=([\d.]+)/)[1];
-  // Its neighbours, from the files that place them: the Horologist's round door (a ring of radius 1.78) and the Kipling case.
-  const curious=fs.readFileSync('curious-doors.js','utf8'),kipling=fs.readFileSync('kipling-shelf.js','utf8');
-  assert.ok(curious.includes("door:{x:-18.72,z:22.9")&&curious.includes('new THREE.TorusGeometry(1.58,.2,'),'the Horologist’s door is where and as big as this test thinks');
-  assert.ok(kipling.includes('CASE={x:-18.54,z:29.1,w:2.2'),'so is the Kipling case');
-  const taken=[['the Horologist’s door',22.9-1.78,22.9+1.78],['the Kipling bookcase',29.1-1.1,29.1+1.1],['the Austen Room',11.8,14],['the Room of the Day',-15.6,-13.4]];
-  for(const [name,a,b] of taken)assert.ok(at+half+.5<=a||at-half-.5>=b,`the entrance (z ${at-half} to ${at+half}) keeps half a metre from ${name}`);
-  assert.ok(source.includes('move(THRESHOLD.x+2.75,THRESHOLD.z,-Math.PI/2)'),'the way back out stands the reader in front of it');
+test('its door is in the Long Corridor, and the way back out stands the reader before it there',()=>{
+  assert.ok(source.includes('const THRESHOLD=corridor?.foodDoor||'),'the door is where the corridor says');
+  assert.ok(game.includes('createFoodHistoryWing?.({doorKit:getDoorKit(),corridor:longCorridor,'),'game.js hands the wing the corridor');
+  assert.ok(index.indexOf("startupScript('long-corridor.js')")<index.indexOf("startupScript('food-history-wing.js')"));
+  assert.ok(source.includes("label:'THE LONG CORRIDOR',onward:'towards the Grand Hall'"),'its way out says where it goes');
+  assert.ok(source.includes('corridor?.standBefore?.(THRESHOLD,2.75)'),'the way back out stands the reader in front of it');
 });
 
 test('the back stairs climb to the dining room, whose jib door goes down again and whose double doors go out to the hall',()=>{
