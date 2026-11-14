@@ -398,14 +398,15 @@ function coverTexture(book){if(book.secretBindingTexture)return book.secretBindi
     // Second, their spines at the jambs and their gilt fore-edges meeting in the middle. As the reader comes near, each
     // block of pages slides into the wall and each cover swings into the wing like a leaf of a double door, its first
     // leaves fanning after it. A cover is half the doorway wide, so its swing clears the wings' tables and doors. The
-    // covers, endpapers, page and edges are drawn once and shared by all four volumes; no lights.
+    // endpapers, page and edges are drawn once and shared by all four volumes, each wing's leather by its two; no lights.
     function wingVolume(side,direction){
       const W=3.85,H=6.9,hall=-side,hingeZ=direction*3.72,CW=3.68,first=direction===-side,g=new THREE.Group();
       const textures=wingVolume.textures||(wingVolume.textures={});
-      const leather=wingVolume.leather||(wingVolume.leather=new THREE.MeshStandardMaterial({color:0x5a1e18,roughness:.6}));
+      // Each wing's set is bound in its own leather (the west in green morocco, the east in oxblood), tooled alike.
+      const hide=side<0?'#1f3a2a':'#5a1e18',leathers=wingVolume.leathers||(wingVolume.leathers={}),leather=leathers[side]||(leathers[side]=new THREE.MeshStandardMaterial({color:hide,roughness:.6}));
       const gilt=wingVolume.gilt||(wingVolume.gilt=new THREE.MeshStandardMaterial({color:0xd0a850,metalness:.75,roughness:.35}));
       const coverKey=`${side}:${first}`,coverMat=textures[coverKey]||(textures[coverKey]=new THREE.MeshStandardMaterial({roughness:.62,map:canvasTexture((c,w,h)=>{
-        c.fillStyle='#5a1e18';c.fillRect(0,0,w,h);let k=7+side*3+(first?1:2);const rnd=()=>(k=(k*9301+49297)%233280)/233280;for(let i=0;i<5000;i++){c.fillStyle=`rgba(0,0,0,${rnd()*.12})`;c.fillRect(rnd()*w,rnd()*h,2,2)}
+        c.fillStyle=hide;c.fillRect(0,0,w,h);let k=7+side*3+(first?1:2);const rnd=()=>(k=(k*9301+49297)%233280)/233280;for(let i=0;i<5000;i++){c.fillStyle=`rgba(0,0,0,${rnd()*.12})`;c.fillRect(rnd()*w,rnd()*h,2,2)}
         c.strokeStyle='#c9a24a';c.lineWidth=6;c.strokeRect(24,24,w-48,h-48);c.lineWidth=2;c.strokeRect(38,38,w-76,h-76);for(const [x,y] of [[38,38],[w-38,38],[38,h-38],[w-38,h-38]]){c.beginPath();c.arc(x,y,14,0,7);c.stroke()}
         c.fillStyle='#d8b45a';c.textAlign='center';c.font='bold 46px Georgia';c.fillText('THE',w/2,h*.3);c.fillText(side<0?'WEST WING':'EAST WING',w/2,h*.38);
         c.font='italic 26px Georgia';c.fillText(first?'Volume the First':'Volume the Second',w/2,h*.47);c.beginPath();c.arc(w/2,h*.66,46,0,7);c.stroke();c.font='bold 48px Georgia';c.fillText(first?'I':'II',w/2,h*.68)},512,768)}));
