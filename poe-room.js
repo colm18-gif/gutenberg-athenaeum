@@ -134,7 +134,7 @@
       const stencil=add(own(new THREE.PlaneGeometry(.5,.18)),own(new THREE.MeshStandardMaterial({map:own(canvasTexture((c,W,H)=>{c.fillStyle='#5a3a20';c.fillRect(0,0,W,H);c.fillStyle='#e8d8b0';c.textAlign='center';c.font='bold 28px Georgia';c.fillText('AMONTILLADO',W/2,H*.68)},256,64)),roughness:.9})),kx,.62,kz-.352,root);stencil.rotation.y=Math.PI;
       // The raven over the chamber door, inside, and the door back to the Gothic Parlour.
       const exit={type:'poe-exit',title:'The chamber door',author:'Back to the Gothic Parlour.',action:'RETURN'};
-      if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,label:'THE GOTHIC PARLOUR',own,...DOOR_LOOK}))mark(box(1.9,3.1,.16,DOOR_LOOK.color,cx,1.55,cz+d/2-.2,root),exit);
+      if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,onward:'towards the Grand Hall',label:'THE GOTHIC PARLOUR',own,...DOOR_LOOK}))mark(box(1.9,3.1,.16,DOOR_LOOK.color,cx,1.55,cz+d/2-.2,root),exit);
       raven(root,cx,3.95,cz+d/2-.26,Math.PI).scale.setScalar(1.6);
       scene.add(root);
     }

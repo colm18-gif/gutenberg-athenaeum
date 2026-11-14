@@ -287,7 +287,7 @@
       // The room's sign over the door, and its way back.
       mark(panel(root,'THE ANCIENT KITCHEN','Rome · Medieval England',cx+KITCHEN_ENTRY.dx,3.7,S0-.2,4.2,.6,Math.PI),card('kitchen'));
       const back={type:'food-history-kitchen-exit',title:'The Gastronomic Athenaeum',author:'Back to the reading hall.',action:'RETURN'};
-      if(!doorKit?.hang(root,{data:back,mark,x:cx+KITCHEN_ENTRY.dx,z:S0-.2,yaw:Math.PI,width:1.9,height:3.1,color:0x6b3a22,style:'planked',label:'THE GASTRONOMIC ATHENAEUM',own}))
+      if(!doorKit?.hang(root,{data:back,mark,x:cx+KITCHEN_ENTRY.dx,z:S0-.2,yaw:Math.PI,width:1.9,height:3.1,color:0x6b3a22,style:'planked',onward:'towards the Grand Hall',label:'THE GASTRONOMIC ATHENAEUM',own}))
         mark(box(1.9,3.1,.2,timber,cx+KITCHEN_ENTRY.dx,1.55,S0-.22,root),back);
       if(showDormouse())openJar(true);
     }

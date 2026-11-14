@@ -165,7 +165,7 @@
       lamp(root,0xffd49a,6,9,cx,3.2,cz-d/2+2.2);
       // The door back to the west wing.
       const exit={type:'learners-exit',title:'Back to the west wing',author:'The lamplit library is just the other side.',action:'RETURN'};
-      if(!doorKit?.hang(root,{data:exit,mark,x:cx-3.4,z:cz+d/2-.2,yaw:Math.PI,label:'THE WEST WING',...DOOR_LOOK})){mark(box(1.9,3.1,.16,MAT.darkWood,cx-3.4,1.55,cz+d/2-.2,root),exit);for(const px of [-1.05,1.05])box(.16,3.35,.24,MAT.brass,cx-3.4+px,1.68,cz+d/2-.22,root);box(2.3,.16,.24,MAT.brass,cx-3.4,3.3,cz+d/2-.22,root)}
+      if(!doorKit?.hang(root,{data:exit,mark,x:cx-3.4,z:cz+d/2-.2,yaw:Math.PI,onward:'towards the Grand Hall',label:'THE WEST WING',...DOOR_LOOK})){mark(box(1.9,3.1,.16,MAT.darkWood,cx-3.4,1.55,cz+d/2-.2,root),exit);for(const px of [-1.05,1.05])box(.16,3.35,.24,MAT.brass,cx-3.4+px,1.68,cz+d/2-.22,root);box(2.3,.16,.24,MAT.brass,cx-3.4,3.3,cz+d/2-.22,root)}
       scene.add(root);
     }
     function placeBook(entry,x,y,z,yaw,geometry,tilt=-.08){

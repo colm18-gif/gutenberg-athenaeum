@@ -97,3 +97,26 @@ test('carrying a book through the daily exit uses the door instead of setting do
   const focusSource=game.slice(game.indexOf('function updateFocus('),game.indexOf('function updateFocus(')+7000);
   assert.match(focusSource,/object\.userData\?\.type!=='daily-exit'/,'the exit can be focused while carrying');
 });
+
+// A room's way out names the room it opens on; where that is not the Grand Hall (or the hall's own wing), the plate
+// says beneath it that the way goes on towards the Grand Hall, so a reader deep in a chain of rooms can find home.
+{
+  const test = require('node:test');
+  const assert = require('node:assert/strict');
+  const fs = require('node:fs');
+  const path = require('node:path');
+  test('exits that lead to another room say the way goes on towards the Grand Hall', () => {
+    const kit = fs.readFileSync(path.join(__dirname, 'library-doors.js'), 'utf8');
+    assert.match(kit, /function plateTexture\(text,onward=''\)/, 'the plate takes an onward line');
+    assert.match(kit, /label='',onward='',/, 'build takes onward');
+    const exits = { 'burns-room.js': 'THE IRISH ROOM', 'canada-room.js': 'THE BURNS ROOM', 'map-room.js': 'THE WEST WING',
+      'medicine-room.js': 'THE MAP ROOM', 'naturalist-room.js': 'THE MEDICINE ROOM', 'walden.js': 'THE NATURALIST’S CABINET',
+      'poe-room.js': 'THE GOTHIC PARLOUR', 'set-texts-room.js': 'THE ENGLISH READING ROOM', 'learners-room.js': 'THE WEST WING',
+      'evening-room.js': 'THE EAST WING', 'uncatalogued-room.js': 'STAFF · SORTING', 'gulliver-room.js': 'THE IRISH ROOM',
+      'food-history-wing.js': 'THE GASTRONOMIC ATHENAEUM' };
+    for (const [file, label] of Object.entries(exits)) {
+      const src = fs.readFileSync(path.join(__dirname, file), 'utf8');
+      assert.ok(src.includes(`onward:'towards the Grand Hall',label:'${label}'`), `${file}: its way out to ${label} says it goes on to the hall`);
+    }
+  });
+}
