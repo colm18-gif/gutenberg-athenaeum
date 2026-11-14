@@ -1,5 +1,5 @@
 // The Kipling bookcase: a walnut case against the Grand Hall's west wall, in the south-west corner between the
-// Gastronomic Athenaeum's door and the corner, with Rudyard Kipling's books face-out in the order he published them (the shelf `kipling`
+// Horologist's round door and the corner, with Rudyard Kipling's books face-out in the order he published them (the shelf `kipling`
 // in data/new-books.js) and a brass plate on top. Reading the plate says where his other books are.
 // ?room=kipling goes straight to it.
 //
@@ -7,7 +7,8 @@
 (function(){
   'use strict';
 
-  // The wall's face is at x -18.75; the Gastronomic Athenaeum's door (to z 27.3) and the south wall (z 30.52) leave z 27.7 to 30.3 clear.
+  // The wall's face is at x -18.75; the case keeps to z 27.7 to 30.3, short of the south wall (z 30.52). (The Gastronomic
+  // Athenaeum's door, to z 27.3, stood north of it until it moved to the Long Corridor on 14 November 2026.)
   const CASE={x:-18.54,z:29.1,w:2.2,h:2.62,d:.42};
   const ROWS=4,PER_ROW=3,BOARD_Y=[.08,.72,1.36,2];
   // Where a reader stands to look at it: in front of the case, facing west.

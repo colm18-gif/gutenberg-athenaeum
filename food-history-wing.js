@@ -12,13 +12,13 @@
     {key:'spices',title:'THE GLOBAL SPICE EXCHANGE',subtitle:'Taste, travel and trade',x:8.5,z:-1.4}
   ];
   window.createFoodHistoryWing=function(o){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,tone=()=>{},registerSeat=null,analytics,move,isHolding=()=>false,doorKit=null}=o;
+    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,tone=()=>{},registerSeat=null,analytics,move,isHolding=()=>false,doorKit=null,corridor=null}=o;
     const ROOM={cx:-780,cz:-420,w:26,d:21,h:6.4};
-    // On the Grand Hall's west wall, between the Horologist's round door (its ring reaches z 24.7) and the Kipling
-    // bookcase (from z 28): the hall's walls are otherwise full. The hall side is the library's walnut with the name gilded
-    // on the glass, as for every room behind a door; until 13 November a stone arch, a plaque, two prints and a cabinet
-    // stood round it here and crowded both neighbours.
-    const THRESHOLD={x:-18.1,z:26.35,yaw:Math.PI/2};
+    // In the second bay on the west side of the Long Corridor (long-corridor.js, handed in as `corridor`), whose door is in
+    // the Grand Hall's east wall. Until 14 November 2026 it stood on the hall's west wall, squeezed between the
+    // Horologist's round door and the Kipling bookcase with half a metre either side. The door is the library's walnut
+    // with the name gilded on the glass, as for every room behind a door. (Without the corridor it falls back there.)
+    const THRESHOLD=corridor?.foodDoor||{x:-18.1,z:26.35,yaw:Math.PI/2};
     const ENTRANCE_HALF=1.1;                            // the door and its frame, along the wall either side of the middle
     const PRELOAD=8,KEEP=25;
     // The Ancient Kitchen: north of the hall, through a planked door in the hall's north wall. A Roman kitchen of the
@@ -554,8 +554,8 @@
       block(sx,sz,4.2,1);
       mark(panel(root,'FUTURE WINGS','Bakery · Coffee House · Market Garden',cx,2.4,cz+d/2-.26,6,.72,Math.PI),card('plans'));
       // A narrow brass-framed return door at the south end of the hall.
-      const exit={type:'food-history-exit',title:'Return to the main library',author:'Step back into the Athenaeum.',action:'RETURN'};
-      if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.25,yaw:Math.PI,width:1.9,height:3.1,color:0x50362c,style:'painted',label:'THE MAIN LIBRARY',own}))
+      const exit={type:'food-history-exit',title:corridor?'Back to the Long Corridor':'Return to the main library',author:corridor?'Out into the corridor, and along it to the Grand Hall.':'Step back into the Athenaeum.',action:'RETURN'};
+      if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.25,yaw:Math.PI,width:1.9,height:3.1,color:0x50362c,style:'painted',...(corridor?{label:'THE LONG CORRIDOR',onward:'towards the Grand Hall'}:{label:'THE MAIN LIBRARY'}),own}))
         mark(box(2,3,.2,oak,cx,1.5,cz+d/2-.24,root),exit);
       // Warm, restrained gaslight: geometry is shared and everything is freed when unused.
       for(const x of [cx-7,cx,cx+7]){
@@ -620,7 +620,7 @@
       if(!d||!String(d.type).startsWith('food-history-'))return false;
       if(d.type==='food-history-door'){if(doorKit&&d.kit)doorKit.pass(d.kit,d,enter);else enter();return true}
       if(d.type==='food-history-exit'){
-        const leave=()=>{move(THRESHOLD.x+2.75,THRESHOLD.z,-Math.PI/2);playSample?.('doorOpen',.8,1)};
+        const leave=()=>{const p=corridor?.standBefore?.(THRESHOLD,2.75)||{x:THRESHOLD.x+2.75,z:THRESHOLD.z,yaw:-Math.PI/2};move(p.x,p.z,p.yaw);playSample?.('doorOpen',.8,1)};
         if(doorKit&&d.kit)doorKit.pass(d.kit,d,leave);else leave();return true;
       }
       if(d.type==='food-history-kitchen-door'){if(doorKit&&d.kit)doorKit.pass(d.kit,d,enterKitchen);else enterKitchen();return true}

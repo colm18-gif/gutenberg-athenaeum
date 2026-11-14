@@ -88,8 +88,9 @@
     'west-shelf':[-36.3,1.6,-3],'tunnel':[-51.8,1.5,-3],'below-catalogue':[-7,.1,-25.8]};
 
   // ---------- Three stopped clocks, on the walls of the Grand Hall (bare stretches, clear of doors and pictures) ----------
+  // Havisham's hangs over the Long Corridor's door (long-corridor.js), above its cornice (`y`).
   const CLOCKS=[
-    {key:'havisham',x:18.72,z:-24.25,yaw:-Math.PI/2,h:8,m:40,ebony:false,title:'A clock stopped at twenty minutes to nine',
+    {key:'havisham',x:18.72,z:-24.25,y:4.3,yaw:-Math.PI/2,h:8,m:40,ebony:false,title:'A clock stopped at twenty minutes to nine',
       text:'As at Satis House, in Great Expectations: “her watch had stopped at twenty minutes to nine, and that a clock in the room had stopped at twenty minutes to nine.” It was the hour her letter came, while she was dressing to be married.',
       quote:'her watch had stopped at twenty minutes to nine, and that a clock in the room had stopped at twenty minutes to nine',source:'pg1400'},
     {key:'hatter',x:-18.72,z:15.6,yaw:Math.PI/2,h:6,m:0,ebony:false,title:'A clock stopped at six o’clock',
@@ -283,7 +284,7 @@
       c.fillStyle=spec.ebony?'#c9b27a':ink;c.font='bold 26px Georgia';c.textAlign='center';c.textBaseline='middle';const R=['XII','I','II','III','IV','V','VI','VII','VIII','IX','X','XI'];R.forEach((n,i)=>{const a=i/12*Math.PI*2;c.fillText(n,r+Math.sin(a)*(r-36),r-Math.cos(a)*(r-36))});
       const hand=(a,len,wd)=>{c.lineWidth=wd;c.lineCap='round';c.beginPath();c.moveTo(r,r);c.lineTo(r+Math.sin(a)*len,r-Math.cos(a)*len);c.stroke()};c.strokeStyle=spec.ebony?'#d8c08a':'#1a120a';
       hand(((spec.h%12)+spec.m/60)/12*Math.PI*2,r*.48,9);hand(spec.m/60*Math.PI*2,r*.72,5);c.fillStyle=c.strokeStyle;c.beginPath();c.arc(r,r,8,0,7);c.fill()},256,256)}
-    for(const spec of CLOCKS){const g=new THREE.Group();g.position.set(spec.x,3.05,spec.z);g.rotation.y=spec.yaw;scene.add(g);
+    for(const spec of CLOCKS){const g=new THREE.Group();g.position.set(spec.x,spec.y??3.05,spec.z);g.rotation.y=spec.yaw;scene.add(g);
       const caseMat=spec.ebony?new THREE.MeshStandardMaterial({color:0x0c0a09,roughness:.35,metalness:.1}):dark,info={type:'stopped-clock',key:spec.key,title:spec.title,author:spec.text,action:'LOOK'};
       mark(add(g,new THREE.CylinderGeometry(.42,.42,.09,28),caseMat,0,0,.04),info).rotation.x=Math.PI/2;add(g,new THREE.TorusGeometry(.4,.03,6,28),brass,0,0,.09);
       mark(add(g,new THREE.CircleGeometry(.36,28),new THREE.MeshStandardMaterial({map:clockFace(spec),roughness:.6}),0,0,.091),info);

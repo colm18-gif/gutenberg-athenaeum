@@ -184,6 +184,8 @@
       'poe-room':{beds:[['air',.03]],events:[['creak',.9,.05],['rustle',.6,.03]]},
       // The Gastronomic Athenaeum: a quiet reading hall, a cup set down now and then. The Ancient Kitchen: the fire,
       // pots simmering, a ladle against a pot, birds in the Roman courtyard and, far off, now and then a bell.
+      // The Long Corridor: a quiet panelled corridor, the boards creaking now and then underfoot.
+      'long-corridor':{beds:[['air',.03]],events:[['creak',.5,.035]]},
       'food-history':{beds:[['air',.03]],events:[['rustle',.8,.035],['clink',.3,.02]]},
       // The kitchen below stairs: the range, the clock on the mantel, a pan lid, footsteps on the floor above.
       'victorian-kitchen':{beds:[['fire',.035],['air',.025]],ticks:[[1,'tick',.018]],events:[['crackle',10,.05],['clink',1.2,.03],['bubble',3,.02],['thump',.4,.025],['creak',.5,.03]]},
