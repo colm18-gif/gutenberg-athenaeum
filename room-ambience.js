@@ -163,6 +163,8 @@
       'mountain-summit':{beds:[['wind',.15],['air',.035]],events:[]},
       // The falls at the meadow's edge, and the cave behind them: the water loud outside, a roar through rock within, and drips.
       'mountain-falls':{beds:[['fountain',.17],['waves',.05],['wind',.03]],events:[['owl',.1,.02]]},
+      // The library that was never built: a very large stone room, air moving high up, a page turned somewhere far off.
+      'boullee-library':{beds:[['air',.05],['wind',.015]],events:[['rustle',.6,.03],['creak',.2,.02]]},
       'falls-cave':{beds:[['fountain',.07],['rumble',.05],['air',.03]],events:[['drip',5,.045]]},
       forest:{beds:[['wind',.07],['air',.03]],events:[['owl',.9,.05],['rustle',1.6,.05],['creak',.7,.04]]},
       // The Forest Song: a spring night by a forest lake in Volyn, frogs in the reeds, birds in the dark, a breeze.

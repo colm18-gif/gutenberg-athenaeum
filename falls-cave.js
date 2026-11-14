@@ -81,7 +81,7 @@
       const lantern=add(own(new THREE.BoxGeometry(.18,.26,.18)),own(new THREE.MeshBasicMaterial({color:0xffcf80})),cx,1.15,cz-4.6);mark(lantern,card('lantern'));
       const light=new THREE.PointLight(0xffc27a,10,16,2);light.position.set(cx,1.8,cz-4.2);root.add(light);
       const bench=new THREE.Group();bench.position.set(cx-1.2,0,cz-2.4);root.add(bench);const seat=add(own(new THREE.BoxGeometry(2,.42,.7)),rock,0,.24,0,bench);block(cx-1.2,cz-2.4,2.2,.9);
-      registerSeat?.([seat],bench,new THREE.Vector3(0,1.15,0),Math.PI,{title:'A stone bench',author:'Sit by the lantern, with the falls behind you, and read one of the cave’s books.',bookIds:()=>books.map(b=>b.userData.book.id)});
+      registerSeat?.([seat],bench,new THREE.Vector3(0,1.15,0),Math.PI,{title:'A stone bench',author:'Sit by the lantern, with the falls behind you, and read one of the cave’s books.',bookIds:books.map(b=>b.userData.book.id)});// an array: game.js reads its length
       state={tex:waterTex,spray,pos:sprayAttr.array,light};scene.add(root);
     }
     function unload(){if(!root)return;root.removeFromParent();root=null;state=null;

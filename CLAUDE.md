@@ -233,6 +233,22 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   pilasters (`bayZ`), a runner, a painted window at the far end, a card by the door, two lamps. A new room's door goes in
   an empty bay (each is plain panelling until then: no doors that open on nothing), handed the corridor as the
   Gastronomic Athenaeum is (`foodDoor`, `standBefore`). Its way out is THE GRAND HALL.
+- The library that was never built (`boullee-library.js`, centre x 2000, z 0; `?room=boullee`, `never-built`,
+  `basilica`, `amphitheatre`): Étienne-Louis Boullée's reading room of 1785 for the King's Library in Paris, which
+  exists only as drawings in the Bibliothèque nationale de France. His drawing hangs framed in the Long Corridor's third
+  east bay (`corridor.pictureBay`, kept clear of panelling; built at startup and kept); stepping into it, the reader
+  stands at the south end of the hall, by the gilt frame that leads back. The hall is 96 m long: a marble floor 16 m
+  wide, four tiers of bookcases a side (3.4 m high, terraces 3.6 m deep), a colonnade on the top terrace (y 13.6) and a
+  coffered vault to 45 m, open to the sky along its crown. Stairs (`STACKS`: sixteen steps and a landing a tier,
+  doubling back) are at both ends of both sides; the steps are the floor there, `allowed` takes a step or two at a time,
+  and a tier's face is a wall. Everything is painted with unlit materials, no lights: the tiers' books are one tiling
+  texture; columns, steps and the small figures in antique dress are InstancedMeshes; inside, the sky and fog are a
+  pale haze. Eight of the library's own books about books (`OWN`, the core list's Archive) stand on stone lecterns up
+  the tiers; a bench at the north end is a seat. The secret: brass letters in the floor (`PAVEMENT`), each line upright
+  to the terrace opposite, are read by looking down from the top terrace's edge; that leaves the catalogue of John
+  Dee's library (19553) on the stand between two columns at the north end of the east top terrace, found for good
+  (`athenaeum-boullee-pavement`; `?pavement`). Its cards say only what is well attested (1785, never built, "a vast
+  amphitheatre of books", the School of Athens, books passed from hand to hand): keep them to that.
 - The Gastronomic Athenaeum (`food-history-wing.js`, hall x −780, z −420; `?room=food-history`, `food`, `gastronomy`)
   is through a walnut door, its name gilded on the glass, in the second bay of the Long Corridor's west wall
   (`corridor.foodDoor`; until 14 November 2026 it was squeezed onto the Grand Hall's west wall between the
@@ -674,7 +690,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
-  daily-room, long-corridor, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
+  daily-room, long-corridor, boullee, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.
