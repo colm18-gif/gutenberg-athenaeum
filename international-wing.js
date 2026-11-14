@@ -756,8 +756,11 @@
         const kitten={x:K.cx+1.6,z:K.cz-1.2,yaw:0,goal:0,wait:2,sleep:0,since:0};cat.position.set(kitten.x,0,kitten.z);
         const setCard=card=>{for(const part of catParts)part.userData=card};
         // Stroked, she purrs (game.js's own purr, made from pulsed noise; softly in her sleep).
-        let now=0,scratching=0;const treats=[];
-        room.kitten={get asleep(){return kitten.sleep>0},get x(){return kitten.x},get z(){return kitten.z},basket,post,tin,nap:()=>{kitten.goal=-1;kitten.wait=0},
+        let now=0,scratching=0,meetAt=null;const treats=[];
+        const withClio={...asleep,title:'Котик спить біля Кліо · The kitten is asleep against Clio',author:`Котик згорнувся клубочком біля бібліотечної кішки. (The kitten has curled up against the library cat.) ${KITTEN}.`};
+        room.kitten={get asleep(){return kitten.sleep>0},
+          // Clio, come over from the Grand Hall to sleep here: the kitten trots over and curls up against her.
+          meet:(x,z)=>{if(kitten.sleep>0){kitten.sleep=0;body.scale.set(1,.85,1.5);head.position.set(0,.25,.2);head.rotation.set(0,0,0);tail.rotation.set(-.9,0,0);for(const l of legs)l.visible=true}meetAt={x,z};kitten.goal=-4;kitten.wait=0},get x(){return kitten.x},get z(){return kitten.z},basket,post,tin,nap:()=>{kitten.goal=-1;kitten.wait=0},
           stroke:()=>{if(kitten.sleep>0){purr?.(2.5,.12);return false}kitten.wait=Math.max(kitten.wait,3);purr?.(3.2,.26);return true},
           shake:()=>{tone?.(1320,0,.04,.03,'piano');tone?.(1180,.07,.04,.03,'piano');tone?.(1320,.14,.04,.03,'piano');
             while(treats.length&&now-treats[0]>300)treats.shift();if(treats.length>=3)return false;treats.push(now);
@@ -770,12 +773,13 @@
             // At the post she stretches up and scratches; at the treats she eats, head down.
             if(scratching>0){scratching-=dt;cat.rotation.x=-.9;body.position.y=.22;head.position.set(0,.34+Math.abs(Math.sin(t*10))*.03,.24);legs[0].rotation.x=legs[1].rotation.x=-1.2+Math.sin(t*14)*.4;if(scratching<=0){cat.rotation.x=0;body.position.y=.14;head.position.set(0,.25,.2)}}
             return}
-          const target=kitten.goal===-1?basket:kitten.goal===-2?{x:tin.x-.4,z:tin.z}:{x:spots[kitten.goal][0],z:spots[kitten.goal][1]};const dx=target.x-kitten.x,dz=target.z-kitten.z,dist=Math.hypot(dx,dz);
+          const target=kitten.goal===-1?basket:kitten.goal===-2?{x:tin.x-.4,z:tin.z}:kitten.goal===-4?meetAt:{x:spots[kitten.goal][0],z:spots[kitten.goal][1]};const dx=target.x-kitten.x,dz=target.z-kitten.z,dist=Math.hypot(dx,dz);
           if(dist<.06){if(kitten.goal===-1){kitten.sleep=45;kitten.x=basket.x;kitten.z=basket.z;cat.position.set(basket.x,.04,basket.z);setCard(asleep);return}
+            if(kitten.goal===-4){kitten.sleep=40;kitten.goal=0;cat.position.set(kitten.x,.02,kitten.z);setCard(withClio);return}
             if(kitten.goal===-2){kitten.wait=4;cat.rotation.y=Math.PI/2;head.rotation.set(.6,0,0);setTimeout?.(()=>head.rotation.set(0,0,0),4000);purr?.(3,.22);kitten.goal=0;return}
             if(kitten.goal===POST){scratching=3;cat.rotation.y=-Math.PI/2}
             kitten.since++;kitten.goal=kitten.since%5===0?-1:(kitten.goal+1)%spots.length;kitten.wait=2+((kitten.since*7)%5);return}
-          const step=Math.min(dist,(kitten.goal===-2?1.6:.45)*dt);kitten.x+=dx/dist*step;kitten.z+=dz/dist*step;kitten.yaw=Math.atan2(dx,dz);
+          const step=Math.min(dist,(kitten.goal===-2?1.6:kitten.goal===-4?1:.45)*dt);kitten.x+=dx/dist*step;kitten.z+=dz/dist*step;kitten.yaw=Math.atan2(dx,dz);
           cat.position.set(kitten.x,Math.abs(Math.sin(t*9))*.012,kitten.z);cat.rotation.y=kitten.yaw;legs.forEach((l,i)=>{l.rotation.x=Math.sin(t*9+(i%3?Math.PI:0))*.5});tail.rotation.z=Math.sin(t*4)*.2})}
 
       // Picture covers for the children's room's own copies: each a painted scene from its book under the title, drawn
@@ -1220,7 +1224,7 @@
         if(key!==here&&t-lastNeeded[key]>KEEP&&!isHolding()&&!room.books.some(b=>b.parent!==room.root))unload(key)}
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,unload:()=>{for(const key of Object.keys(built))unload(key)},featured,roomAt,door:DOOR,room:ROOM,rooms:ROOMS,
+    return {contains,floorAt,allowed,interact,update,enter,unload:()=>{for(const key of Object.keys(built))unload(key)},featured,roomAt,door:DOOR,room:ROOM,rooms:ROOMS,children:CHILDREN_ROOM,get kitten(){return built.ukrainian?.kitten},
       get built(){return !!built.hub},isBuilt:key=>!!built[key],get books(){return Object.values(built).flatMap(room=>room.books)},zoneAt:(x,z)=>contains(x,z)?'international-wing':null};
   },{BOOK_PICTURES,TRANSLATIONS});
 })();

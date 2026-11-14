@@ -56,11 +56,28 @@ test('the room builds on approach, shows its four shelves, and is freed after',(
 });
 
 test('Clio is sometimes found asleep in the rooms behind doors, as the same cat, and goes home with the reader',()=>{
-  const block=game.slice(game.indexOf("// Clio's haunts"),game.indexOf("// Clio's haunts")+4600);
-  for(const zone of ['irish-room','poe-room','international-wing','ancient-kitchen'])assert(block.includes(`zone==='${zone}'`),zone);
+  const block=game.slice(game.indexOf("// Clio's haunts"),game.indexOf("// Clio's errands"));
+  for(const zone of ['irish-room','poe-room','international-wing','ancient-kitchen','attic'])assert(block.includes(`zone==='${zone}'`),zone);
   assert.match(block,/home=cat\.position\.clone\(\)/);assert.match(block,/cat\.position\.copy\(home\)/,'back to the Grand Hall afterwards');
   assert.match(block,/!catGuideTarget/,'never while leading the reader');assert.doesNotMatch(block,/new THREE\.|PointLight/,'nothing new is built');
   assert(block.includes("['clio','quill'].some(k=>new URLSearchParams(location.search).has(k))"),'?clio (or the old ?quill) shows Clio every time, for checking');
+});
+
+test('with the kittens: Clio is sometimes asleep in the attic or the children’s room, and the kitten curls up against her',()=>{
+  const block=game.slice(game.indexOf("// Clio's haunts"),game.indexOf("// Clio's errands"));
+  assert.match(block,/kitten:\(\)=>curiousDoors\.attic/,'Marmalade in the attic');assert.match(block,/kitten:\(\)=>internationalWing\.kitten/,'the grey kitten in the children’s room');
+  assert.match(block,/kitten\.meet\(/,'the kitten comes over when the reader does');assert.match(block,/groom\(0\)/,'her head goes back when she goes home');
+});
+
+test('now and then the White Rabbit runs close by Clio and she chases it to the west wing door, never catching it',()=>{
+  const block=game.slice(game.indexOf("// Clio's errands"),game.indexOf('// ---- First visit'));
+  assert.match(block,/kind:'rabbit'/);assert.match(block,/if\(rabbitActive\)\{bunny=null;return\}/,'the midnight rabbit comes first');
+  assert.match(block,/!catGuideTarget&&petTime<=0/,'never while she is showing the reader something');assert.match(block,/readerInHall\(\)&&near\(16\)/,'only where a reader can see it');
+  // She stops on the hall side of the wing door (x ±19, a door 7.4 m wide about z 0), and the rabbit's last steps go through it.
+  const pts=JSON.parse(/const CHASE=(\[\[.*?\]\])\.map/.exec(block)[1]),stop=Number(/CHASE_STOP=(\d+)/.exec(block)[1]);
+  assert(Math.abs(pts[stop][0])<19&&Math.abs(pts[stop][1])<3.6,'Clio stops in the hall, at the wing door');
+  for(const [x,z] of pts.slice(stop+1))if(Math.abs(x)<19.5)assert(Math.abs(z)<3.6,'through the doorway, not the wall');
+  assert(fs.readFileSync('analytics.js','utf8').includes("'Clio Chases Rabbit'"));
 });
 
 test('the Grand Hall side of every room behind a door is the library’s walnut, with the room’s name gilded on the glass',()=>{

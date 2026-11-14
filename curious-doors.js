@@ -354,6 +354,7 @@
         const tail=cyl(.018,.012,.28,6,ginger,0,.22,-.26,cat);tail.rotation.x=-.9;
         const awake={type:'attic-kitten',title:'Marmalade, the attic kitten',author:'A ginger kitten with white socks, who lives in the attic and knows exactly where the treats are kept.',action:'STROKE'};
         const asleep={type:'attic-kitten',title:'Marmalade is asleep',author:'Curled up in her basket, nose under her tail. Shh!',action:'LOOK'};
+        const withClio={type:'attic-kitten',title:'Marmalade is asleep against Clio',author:'The attic kitten, curled up in the warm lee of the library cat. Clio is pretending not to have noticed.',action:'LOOK'};
         const catParts=[body,chest,...headParts,...legs,tail];for(const part of catParts)mark(part,awake);const setCard=card=>{for(const part of catParts)part.userData=card};
         const SPOTS=[[cx-6.8,cz-2],[cx+1.5,cz-4.4],[cx+.5,cz+4],[cx+5.4,cz+4.6],[cx+.5,cz+4],[saucer.x+.32,saucer.z]],MILK=5;
         const kitten={x:cx+.5,z:cz+4,yaw:0,goal:0,wait:2,sleep:0,since:0,head:0,treats:[],purred:false};cat.position.set(kitten.x,0,kitten.z);
@@ -365,6 +366,8 @@
           shake(){[1320,1180,1320].forEach((f,i)=>setTimeout(()=>sound?.(f,.04,'square',.02),i*70));while(kitten.treats.length&&time-kitten.treats[0]>300)kitten.treats.shift();
             if(kitten.treats.length>=3){showNotice('Marmalade looks at the tin, then at you, and stays where she is. She has had enough treats for now.',5);return false}
             kitten.treats.push(time);wake();kitten.goal=-2;kitten.wait=0;showNotice('A rattle of the tin, and the patter of small paws.',4);return true},
+          // Clio, come up from the Grand Hall to sleep in the attic: the kitten trots over and curls up against her.
+          meet(x,z){if(kitten.sleep>0){kitten.sleep=0;pose(false)}kitten.meet={x,z};kitten.goal=-4;kitten.wait=0},
           roll(){const i=(YARN.findIndex(([x,z])=>Math.hypot(yarn.position.x-x,yarn.position.z-z)<.3)+1)%YARN.length;attic.rolling={from:yarn.position.clone(),to:new THREE.Vector3(YARN[i][0],0,YARN[i][1]),t:0};
             if(kitten.sleep<=0){kitten.goal=-3;kitten.wait=.4;showNotice('The yarn rolls away across the boards, and Marmalade is after it.',4)}else showNotice('The yarn rolls away. In her basket, one ear twitches.',4)},
           update(t,dt){
@@ -373,16 +376,17 @@
               if(!kitten.purred&&Math.hypot(player.pos.x-bed.x,player.pos.z-bed.z)<1.8){kitten.purred=true;purr?.(2.5,.1)}
               if(kitten.sleep<=0){pose(false);kitten.goal=0;kitten.wait=1.5}return}
             if(kitten.wait>0){kitten.wait-=dt;tail.rotation.z=Math.sin(t*2.2)*.35;if(kitten.head>0){kitten.head-=dt;head.rotation.x=.6+Math.sin(t*12)*.05;if(kitten.head<=0)head.rotation.x=0}return}
-            const target=kitten.goal===-1?bed:kitten.goal===-2?{x:tin.x-.05,z:tin.z-.5}:kitten.goal===-3?{x:yarn.position.x-.18,z:yarn.position.z-.1}:{x:SPOTS[kitten.goal][0],z:SPOTS[kitten.goal][1]};
+            const target=kitten.goal===-1?bed:kitten.goal===-2?{x:tin.x-.05,z:tin.z-.5}:kitten.goal===-3?{x:yarn.position.x-.18,z:yarn.position.z-.1}:kitten.goal===-4?kitten.meet:{x:SPOTS[kitten.goal][0],z:SPOTS[kitten.goal][1]};
             const dx=target.x-kitten.x,dz=target.z-kitten.z,dist=Math.hypot(dx,dz);
             if(dist<.06){
               if(kitten.goal===-1){kitten.sleep=45;kitten.purred=false;kitten.x=bed.x;kitten.z=bed.z;cat.position.set(bed.x,.1,bed.z);pose(true);return}
               if(kitten.goal===-2){kitten.wait=4;kitten.head=4;cat.rotation.y=0;purr?.(3,.22);kitten.goal=0;return}
+              if(kitten.goal===-4){kitten.sleep=40;kitten.purred=false;kitten.goal=0;cat.position.set(kitten.x,.02,kitten.z);pose(true);setCard(withClio);return}
               if(kitten.goal===-3){if(attic.rolling)return;kitten.wait=3;kitten.goal=0;// she bats it a little further
                 attic.rolling={from:yarn.position.clone(),to:yarn.position.clone().add(new THREE.Vector3(Math.sin(kitten.yaw)*.35,0,Math.cos(kitten.yaw)*.35)),t:0};return}
               if(kitten.goal===MILK){kitten.head=4;cat.rotation.y=-Math.PI/2}
               kitten.since++;kitten.wait=2+((kitten.since*7)%5);kitten.goal=kitten.since%5===0?-1:(kitten.goal+1)%SPOTS.length;return}
-            const step=Math.min(dist,(kitten.goal===-2||kitten.goal===-3?1.4:.45)*dt);kitten.x+=dx/dist*step;kitten.z+=dz/dist*step;kitten.yaw=Math.atan2(dx,dz);
+            const step=Math.min(dist,(kitten.goal===-2||kitten.goal===-3?1.4:kitten.goal===-4?1:.45)*dt);kitten.x+=dx/dist*step;kitten.z+=dz/dist*step;kitten.yaw=Math.atan2(dx,dz);
             cat.position.set(kitten.x,Math.abs(Math.sin(t*9))*.012,kitten.z);cat.rotation.y=kitten.yaw;legs.forEach((l,i)=>{l.rotation.x=Math.sin(t*9+(i%3?Math.PI:0))*.5});tail.rotation.z=Math.sin(t*4)*.2}}}
       // Toys about the floor, each in open floor clear of the kitten's rounds, and each does something when touched: a teddy
       // bear on the window seat, a jack-in-the-box, a spinning top, a drum, ninepins and a Noah's ark. No lights.

@@ -211,6 +211,19 @@ test('the kitten purrs when stroked, comes running for treats (three in five min
   assert(near,'she visits her post');
 });
 
+test('when Clio comes to sleep in the children’s room, the kitten trots over and curls up against her',()=>{
+  const a=wing();a.w.enter('ukrainian');a.w.update(1);const k=a.w.kitten;assert(k?.meet,'game.js can reach the kitten');
+  assert.deepEqual(Object.keys(a.w.children).filter(x=>['cx','cz','w','d'].includes(x)).sort(),['cx','cz','d','w']);
+  // Clio's place there (game.js) is open floor, and so is the kitten's beside her.
+  const spot=/x:K\.cx\+([\d.]+),y:0,z:K\.cz-([\d.]+),yaw:0,key:'ukrainian'/.exec(game);assert(spot,'Clio’s place in the children’s room');
+  const cx=K.cx+Number(spot[1]),cz=K.cz-Number(spot[2]);
+  for(const [x,z] of [[cx,cz],[cx+.5,cz],[cx-.5,cz],[cx+.15,cz+.62]])assert(inK(x,z)&&a.w.allowed(x,z),`(${x.toFixed(1)}, ${z.toFixed(1)}) is open floor`);
+  k.meet(cx+.15,cz+.62);let t=1;for(;t<40&&!k.asleep;t+=.1)a.w.update(t);
+  assert(k.asleep,'she curls up');assert(Math.hypot(k.x-(cx+.15),k.z-(cz+.62))<.1,'against Clio');
+  assert.match(a.interactables.find(o=>o.userData?.type==='intl-kitten').userData.title,/Clio/);
+  for(;t<90&&k.asleep;t+=.1)a.w.update(t);assert(!k.asleep,'and wakes, and goes back to her rounds');
+});
+
 // Україна англійською: the case of Ukrainian books in English on the Ukrainian room's south wall, west of the door, and
 // the reader's links between a book and its translation.
 const englishShelf=load('data/new-books.js','ATHENAEUM_NEW_BOOKS')||[];
