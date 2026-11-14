@@ -186,12 +186,12 @@
       const frame=new THREE.Group();frame.position.set(cx,0,Z(L/2-2.4));root.add(frame);const out={...card('frame'),type:'boullee-out',action:'STEP BACK'};
       mark(add(own(new THREE.BoxGeometry(2.5,3.5,.16)),brass,0,1.9,0,frame),out);mark(add(own(new THREE.PlaneGeometry(2.2,3.2)),basic({map:t.frame}),0,1.9,-.09,frame),out).rotation.y=Math.PI;block(cx,Z(L/2-2.4),2.7,.5);
       const bench=new THREE.Group();bench.position.set(cx,0,Z(-L/2+3));root.add(bench);const seat=add(own(new THREE.BoxGeometry(2.6,.46,.7)),blocks,0,.23,0,bench);block(cx,Z(-L/2+3),2.8,.9);
-      registerSeat?.([seat],bench,new THREE.Vector3(0,1.15,0),Math.PI,{title:'A stone bench',author:'Sit at the north end with the whole length of the hall before you, and read one of its books.',bookIds:()=>books.map(b=>b.userData.book.id)});
+      registerSeat?.([seat],bench,new THREE.Vector3(0,1.15,0),Math.PI,{title:'A stone bench',author:'Sit at the north end with the whole length of the hall before you, and read one of its books.',bookIds:state.seatIds=books.map(b=>b.userData.book.id)});// an array, read when the reader sits: the secret's book joins it
       scene.add(root);
     }
     function reveal(announce=true){if(!state||state.revealed)return;const book=findBook(SECRET);state.revealed=true;if(!book)return;
       const bm=new THREE.Mesh(own(new THREE.BoxGeometry(.62,.86,.09)),own(bookMaterial(book)));bm.position.set(0,1.42,.2);bm.rotation.x=-.38;state.stand.add(bm);
-      bm.userData={type:'book',book,loaded:false,boullee:true,home:{position:bm.position.clone(),quaternion:bm.quaternion.clone(),parent:state.stand}};interactables.push(bm);ours.push(bm);books.push(bm);
+      bm.userData={type:'book',book,loaded:false,boullee:true,home:{position:bm.position.clone(),quaternion:bm.quaternion.clone(),parent:state.stand}};interactables.push(bm);ours.push(bm);books.push(bm);state.seatIds?.push(book.id);
       if(announce){playSample?.('pageTurn',.5,.8);showNotice(`From up here the brass letters in the floor can be read at last: ${PAVEMENT}. And on the stand at the north end of this terrace there is a book that was not there before: the catalogue of Dr John Dee’s library at Mortlake, which was plundered while he was abroad. The catalogue outlasted the library.`,14)}}
     function unload(){if(!root)return;root.removeFromParent();root=null;state=null;
       for(let i=interactables.length-1;i>=0;i--)if(ours.includes(interactables[i]))interactables.splice(i,1);

@@ -80,7 +80,8 @@ test('eight of the library’s own books about books stand on lecterns a reader 
     h.player.pos.set(H.cx+open,level*H.rise,H.cz+lz);assert.ok(h.b.allowed(H.cx+open,H.cz+lz),`open floor before ${book.title}`)}
   assert.ok(!h.b.own.some(([id])=>id===28174),'The Private Library stays a secret edition');
   const about=h.b.cards.about[1];for(const fact of ['1785','Étienne-Louis Boullée','never built','Bibliothèque nationale de France','School of Athens'])assert.ok(about.includes(fact),fact);
-  assert.equal(h.seats.length,1);assert.ok(h.interactables.filter(o=>o.userData.type==='boullee-card').length>=6);
+  assert.equal(h.seats.length,1);assert.deepEqual([...h.seats[0].bookIds].sort(),[...h.b.own].map(e=>e[0]).sort(),'the bench opens one of the hall’s own books (game.js wants an array)');
+  assert.match(fs.readFileSync('falls-cave.js','utf8'),/bookIds:books\.map/,'and so does the cave’s');assert.ok(h.interactables.filter(o=>o.userData.type==='boullee-card').length>=6);
 });
 
 test('the secret: from the top terrace, looking down, the floor can be read, and Dee’s catalogue is left on the stand for good',()=>{
