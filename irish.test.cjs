@@ -72,7 +72,10 @@ test('the Grand Hall side of every room behind a door is the library’s walnut,
 test('the doors to the wings are a two-volume set of giant books, drawn cheaply',()=>{
   const fn=game.slice(game.indexOf('function wingVolume('),game.indexOf('const wingDoors=[]'));
   assert.match(fn,/InstancedMesh/,'the spine bands in one instanced mesh per volume');
-  for(const shared of ['textures','leather','gilt','endpaper','page','edge'])assert.match(fn,new RegExp(`wingVolume\\.${shared}\\|\\|`),`${shared}, drawn once and shared`);
+  for(const shared of ['textures','leathers','gilt','endpaper','page','edge'])assert.match(fn,new RegExp(`wingVolume\\.${shared}\\|\\|`),`${shared}, drawn once and shared`);
+  // Each wing's set has its own leather (west green, east oxblood), shared by its two volumes.
+  assert.match(fn,/side<0\?'#1f3a2a':'#5a1e18'/,'the west wing in green, the east in oxblood');
+  assert.match(fn,/leathers\[side\]\|\|/,'one leather per wing');
   assert.match(fn,/Volume the First/);assert.match(fn,/Volume the Second/);assert.match(fn,/WEST WING/);assert.match(fn,/EAST WING/);
   assert.doesNotMatch(fn,/PointLight|URLSearchParams/);assert.match(game,/const volume=wingVolume\(side,direction\)/);
   assert.match(game,/for\(const volume of door\.panels\)volume\.userData\.open\(door\.opening\)/);
