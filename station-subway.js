@@ -1,5 +1,5 @@
-// The Station Subway: the plain way from the Grand Hall to the night trains. In the hall's east aisle, between the
-// columns, a stairwell goes down through the floor under an iron arch signed TO THE TRAINS; at its foot a white-tiled
+// The Station Subway: the plain way from the Grand Hall to the night trains. In the hall's east aisle,
+// a stairwell goes down through the floor under an iron arch signed TO THE TRAINS; at its foot a white-tiled
 // subway runs to the gates of the Library Platform (night-train.js), and a way out at the platform's south end leads
 // back. The long way, through the memory rooms to the gates beyond the Repository, is still there for readers who
 // follow the tremor under the brass rails.

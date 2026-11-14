@@ -47,12 +47,11 @@ test('the door is in the Grand Hall’s west wall, on the hall floor and clear o
   const floorHeight=vm.runInNewContext(`(()=>{const basementFloorY=-6;${floorSource[0]};return floorHeight})()`);
   const ix=Math.sin(r.door.yaw),iz=Math.cos(r.door.yaw);
   for(let d=.6;d<=6;d+=.3)for(const across of [-.5,0,.5])assert.equal(floorHeight(r.door.x+ix*d+iz*across,r.door.z+iz*d-ix*across),0,`the hall floor ${d.toFixed(1)} m in front of the door`);
-  // The gramophone's corner (game.js) and the botanist's portrait either side; the column at x −17, z 15 is passed on its open side.
+  // The gramophone's corner (game.js) and the botanist's portrait either side.
   const gramophone=game.match(/g\.position\.set\((-?[\d.]+),0,([\d.]+)\);g\.rotation\.y=Math\.PI\/2;scene\.add\(g\);\s*const part=/);assert(gramophone,'the gramophone');
   assert(r.door.z-1.25>Number(gramophone[2])+.55+.5,'clear of the gramophone');
   const botanist=game.match(/painting\(-18\.65,([\d.]+),([\d.]+),([\d.]+),([\d.]+),Math\.PI\/2,\[[^\]]*\],'assets\/botanist\.jpg'/);assert(botanist,'the botanist');
   assert(r.door.z+1.25<Number(botanist[2])-Number(botanist[3])/2,'clear of the botanist’s portrait');
-  assert(r.door.z+.95<15-.7,'the doorway itself is not behind the column');
   for(const file of ['curious-doors.js','daily-room.js'])for(const d of [...fs.readFileSync(file,'utf8').matchAll(/x:-18\.72,z:(-?[\d.]+)/g)])assert(Math.abs(Number(d[1])-r.door.z)>4,`clear of the door at z ${d[1]}`);
   const {cx,cz,w,d}=r.room;
   // The Room of Chance, the Lost Property Office, the Moon, the railway platforms and the Mars approach.

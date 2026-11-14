@@ -52,8 +52,12 @@ test('the stopped clocks are stopped where their books say, and the Conrad is Co
   }
   const [havisham,hatter,ebony]=X.CLOCKS;assert.deepEqual([havisham.h,havisham.m,hatter.h,hatter.m,ebony.h,ebony.m],[8,40,6,0,12,0]);
   assert.ok(text('pg219').includes(plain(`I would put my finger on it and say, ‘${X.CONRAD}’`)),'Heart of Darkness');
-  // On the hall's columns (x ±11, radius 0.45), facing out.
-  for(const c of X.CLOCKS){const col=[[11,-5],[11,27],[-11,-25]].find(([x,z])=>Math.hypot(c.x-x,c.z-z)<.6);assert.ok(col,`${c.key} hangs on a column`)}
+  // On the hall's side walls (x ±18.75), facing into the hall, clear of the wing doorways (z −13.62 to 9.62). The hall's
+  // columns were taken out on 14 November 2026; the north wall's chimney breast stands well out from it, so not there.
+  for(const c of X.CLOCKS){
+    assert.ok(Math.abs(Math.abs(c.x)-18.72)<.05,`${c.key} hangs on a side wall`);
+    assert.ok(Math.abs(c.yaw-(c.x<0?Math.PI/2:-Math.PI/2))<1e-6,`${c.key} faces the hall`);assert.ok(c.z<-13.62-.6||c.z>9.62+.6,`${c.key} is clear of the wing doorway`);
+  }
 });
 
 test('closing time dims the west wing, then the east, then the hall, and morning brings them back',()=>{

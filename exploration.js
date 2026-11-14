@@ -6,12 +6,12 @@
 //   The plan                 the journal's plan of the hall keeps the reader's route, a compass and its dragons
 //   Draughts                 dust drifts towards a mystery not yet solved
 //   Footprints               the reader's own in the dusty places below, and an earlier reader's in the basement
-//   The despatch tube        a brass tube on a column of the Grand Hall drops capsules with slips from the stacks
+//   The despatch tube        a brass tube on the Grand Hall's west wall drops capsules with slips from the stacks
 //   Marginalia               a book picked up may have a pencilled note on its flyleaf pointing to its room
 //   Treasures                the Book of Kells is pointed out by a slip and a pencilled note until it has been opened
 //   Closing time             from half past ten at night the wings and then the hall dim, and the reader's lantern shows
 //   The real sky             the moonlight follows tonight's moon; the Antipodes skylight turns with the southern sky
-//   Stopped clocks           three clocks on the hall's columns stopped at the hours books stopped them
+//   Stopped clocks           three clocks on the hall's walls stopped at the hours books stopped them
 //   The explorers' anteroom  through the kit locker in the Map Room's corner: kit on pegs, a sledge, a ledger of departures
 //   The book trolley         a trolley met somewhere new each visit, with three books and their return slips
 //
@@ -87,15 +87,15 @@
   const DRAUGHTS={'folded-note':[5.2,.95,3.6],'book-under-table':[7,.44,6.4],'book-mantel':[-13,5.6,-27.25],'book-balcony':[15,5.5,25],'roof-book':[-13.2,10.44,41.15],
     'west-shelf':[-36.3,1.6,-3],'tunnel':[-51.8,1.5,-3],'below-catalogue':[-7,.1,-25.8]};
 
-  // ---------- Three stopped clocks, on columns of the Grand Hall ----------
+  // ---------- Three stopped clocks, on the walls of the Grand Hall (bare stretches, clear of doors and pictures) ----------
   const CLOCKS=[
-    {key:'havisham',x:10.52,z:-5,yaw:-Math.PI/2,h:8,m:40,ebony:false,title:'A clock stopped at twenty minutes to nine',
+    {key:'havisham',x:18.72,z:-24.25,yaw:-Math.PI/2,h:8,m:40,ebony:false,title:'A clock stopped at twenty minutes to nine',
       text:'As at Satis House, in Great Expectations: “her watch had stopped at twenty minutes to nine, and that a clock in the room had stopped at twenty minutes to nine.” It was the hour her letter came, while she was dressing to be married.',
       quote:'her watch had stopped at twenty minutes to nine, and that a clock in the room had stopped at twenty minutes to nine',source:'pg1400'},
-    {key:'hatter',x:10.52,z:27,yaw:-Math.PI/2,h:6,m:0,ebony:false,title:'A clock stopped at six o’clock',
+    {key:'hatter',x:-18.72,z:15.6,yaw:Math.PI/2,h:6,m:0,ebony:false,title:'A clock stopped at six o’clock',
       text:'The Hatter quarrelled with Time, and Time stopped for him at tea-time, in Alice’s Adventures in Wonderland: “It’s always six o’clock now.” So the table is always laid for tea.',
       quote:'It’s always six o’clock now.',source:'pg11'},
-    {key:'ebony',x:-11,z:-24.52,yaw:0,h:12,m:0,ebony:true,title:'An ebony clock stopped at midnight',
+    {key:'ebony',x:18.72,z:24.1,yaw:-Math.PI/2,h:12,m:0,ebony:true,title:'An ebony clock stopped at midnight',
       text:'The ebony clock of Poe’s The Masque of the Red Death, which struck the hours in the black apartment until, at midnight, the uninvited guest was unmasked: “And the life of the ebony clock went out with that of the last of the gay.”',
       quote:'And the life of the ebony clock went out with that of the last of the gay.',source:'pg2148'}
   ];
@@ -228,10 +228,11 @@
     const earlier=new THREE.InstancedMesh(printGeo,printMat,trail.length);earlier.frustumCulled=false;earlier.raycast=()=>{};trail.forEach(([x,z],i)=>{const n=trail[Math.min(i+1,trail.length-1)],q=trail[Math.max(i-1,0)],yaw=Math.atan2(-(n[0]-q[0]),-(n[1]-q[1]));dummy.position.set(x+Math.cos(yaw)*.1*(i%2?1:-1),-5.988,z-Math.sin(yaw)*.1*(i%2?1:-1));dummy.rotation.set(0,yaw,0);dummy.updateMatrix();earlier.setMatrixAt(i,dummy.matrix)});scene.add(earlier);
 
     // ---------- 6. The despatch tube ----------
-    const TUBE={x:-10.53,z:-5};const tube=new THREE.Group();tube.position.set(TUBE.x,0,TUBE.z);scene.add(tube);
-    const tubeInfo={type:'despatch-tube',title:'The despatch tube',author:'A brass tube from the stacks, run down the column into a wire basket. Now and then something comes down it.',action:'LOOK'};
+    // On the west wall north of the wing's door, where nothing else hangs; the group stands 0.1 m off the wall and faces east.
+    const TUBE={x:-18.65,z:-16.9};const tube=new THREE.Group();tube.position.set(TUBE.x,0,TUBE.z);scene.add(tube);
+    const tubeInfo={type:'despatch-tube',title:'The despatch tube',author:'A brass tube from the stacks, run down the wall into a wire basket. Now and then something comes down it.',action:'LOOK'};
     for(const part of [add(tube,new THREE.CylinderGeometry(.055,.055,6.4,10),brass,.12,4.95,0),add(tube,new THREE.CylinderGeometry(.13,.11,.5,14),brass,.16,1.55,0),add(tube,new THREE.TorusGeometry(.13,.02,6,14),brass,.16,1.3,0)])mark(part,tubeInfo).rotation.x=part.geometry.type==='TorusGeometry'?Math.PI/2:0;
-    for(const y of [2.4,4.2,6,7.6])add(tube,new THREE.BoxGeometry(.05,.06,.2),dark,.04,y,0);
+    for(const y of [2.4,4.2,6,7.6])add(tube,new THREE.BoxGeometry(.24,.06,.2),dark,.02,y,0);
     const basket=mark(add(tube,new THREE.CylinderGeometry(.26,.2,.2,12,1,true),new THREE.MeshStandardMaterial({color:0x2c2a26,metalness:.7,roughness:.5,side:THREE.DoubleSide,wireframe:true}),.42,1.02,0),tubeInfo);
     add(tube,new THREE.CircleGeometry(.2,12),new THREE.MeshStandardMaterial({color:0x2c2a26,metalness:.6,roughness:.6}),.42,.925,0).rotation.x=-Math.PI/2;add(tube,new THREE.BoxGeometry(.3,.03,.05),dark,.2,.98,0);
     const plateTex=canvasTexture((c,w,h)=>{c.fillStyle='#b8914a';c.fillRect(0,0,w,h);c.strokeStyle='#5a3e1a';c.lineWidth=4;c.strokeRect(5,5,w-10,h-10);c.fillStyle='#2b1d0e';c.textAlign='center';c.font='bold 26px Georgia';c.fillText('PNEUMATIC DESPATCH',w/2,40);c.font='italic 20px Georgia';c.fillText('from the stacks',w/2,70)},320,90);
@@ -241,7 +242,7 @@
     const despatch={next:120,waiting:false,given:new Set()};
     function hiss(){const a=audio();if(!a?.ctx||a.ctx.state!=='running'){sound(900,.5,'sawtooth',.01);return}const {ctx,master}=a,n=Math.floor(ctx.sampleRate*.9),b=ctx.createBuffer(1,n,ctx.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*Math.sin(Math.PI*i/n);
       const src=ctx.createBufferSource(),f=ctx.createBiquadFilter(),g=ctx.createGain(),near=clamp(1-Math.hypot(p.x-TUBE.x,p.z-TUBE.z)/26,0,1);src.buffer=b;f.type='bandpass';f.frequency.value=2600;f.Q.value=.7;g.gain.value=.12*near;src.connect(f).connect(g).connect(master);src.start();src.onended=()=>{src.disconnect();f.disconnect();g.disconnect()}}
-    function updateDespatch(t){if(despatch.waiting||t<despatch.next||!inHall()||isReading())return;despatch.waiting=true;hiss();setTimeout(()=>{capsule.visible=true;sound(70,.22,'square',.07);if(Math.hypot(p.x-TUBE.x,p.z-TUBE.z)<16)showNotice('Something rattles down the brass tube on the column and drops into the wire basket.',5)},900)}
+    function updateDespatch(t){if(despatch.waiting||t<despatch.next||!inHall()||isReading())return;despatch.waiting=true;hiss();setTimeout(()=>{capsule.visible=true;sound(70,.22,'square',.07);if(Math.hypot(p.x-TUBE.x,p.z-TUBE.z)<16)showNotice('Something rattles down the brass tube on the wall and drops into the wire basket.',5)},900)}
     const unseen=key=>{try{return storage?.getItem(TREASURES[key].seen)!=='1'}catch(e){return false}};
     function openCapsule(){const options=Object.keys(HINTS).filter(k=>reachable(k)&&!despatch.given.has(k)),treasures=Object.keys(TREASURES).filter(k=>unseen(k)&&!despatch.given.has('treasure:'+k));
       capsule.visible=false;despatch.waiting=false;despatch.next=nowT+200+Math.random()*140;sound(520,.08,'triangle',.05);
@@ -289,7 +290,7 @@
       add(g,new THREE.BoxGeometry(.06,.5,.04),caseMat,0,.55,.02);}
     function readClock(d){if(wound.has(d.key))return;wound.add(d.key);save('athenaeum-stopped-clocks',[...wound]);
       if(CLOCKS.every(c=>wound.has(c.key))){setTimeout(()=>{showNotice('Twenty to nine, six o’clock and midnight. For a moment every clock in the library holds its breath; then they all go on.',9);[784,659,523,392].forEach((f,i)=>setTimeout(()=>sound(f,1.1,'sine',.05),i*420))},2600);analytics?.track?.('Secret Found',{secret:'stopped-clocks'})}
-      else setTimeout(()=>showNotice(`${wound.size} of ${CLOCKS.length} stopped clocks found. The others are on the hall’s columns too.`,5),2600)}
+      else setTimeout(()=>showNotice(`${wound.size} of ${CLOCKS.length} stopped clocks found. The others are on the hall’s walls too.`,5),2600)}
 
     // ---------- 11. The explorers' anteroom ----------
     const lockerTex=canvasTexture((c,w,h)=>{c.fillStyle='#b8914a';c.fillRect(0,0,w,h);c.strokeStyle='#5a3e1a';c.lineWidth=4;c.strokeRect(5,5,w-10,h-10);c.fillStyle='#2b1d0e';c.textAlign='center';c.font='bold 24px Georgia';c.fillText('EXPEDITION STORES',w/2,38);c.font='italic 17px Georgia';c.fillText('not wanted on voyage',w/2,64)},300,84);

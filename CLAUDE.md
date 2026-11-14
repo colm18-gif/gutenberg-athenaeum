@@ -303,8 +303,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Its toys (`attic-toy`, `attic.play`), each in open floor clear of the kitten's `SPOTS`, the yarn and the way in (a test
   checks): a teddy bear on the window seat (it growls), a jack-in-the-box, a humming top, a drum, ninepins with a ball
   (they go down and stand up again) and a Noah's ark, beside the rocking horse, blocks, doll's house, train and slide.
-- The Station Subway (`station-subway.js`) is the plain way to the night trains: in the Grand Hall's east aisle between the
-  columns (x 12.6–15.4, z −21 to −14.5, clear of the Wandering Door's forecourt), steps go down through the floor under an
+- The Station Subway (`station-subway.js`) is the plain way to the night trains: in the Grand Hall's east aisle (x 12.6–15.4, z −21 to −14.5, clear of the Wandering Door's forecourt), steps go down through the floor under an
   iron arch with two lamps, signed TO THE TRAINS. The well is really sunk: its tiles and steps are drawn first (`renderOrder`
   −2), then a lid at floor level that writes depth only (−1), so the parquet is not drawn over the opening; railings on
   three sides are colliders; readers walk down the first steps (to about −0.9 m, above the basement's reach) and are taken
@@ -436,7 +435,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   didukh stands at Christmas; the reader lights it (`intl-holodomor`). On the day, the room's welcome names it.
   `?holodomor` shows it on any day.
 - The Kipling bookcase (`kipling-shelf.js`) stands against the Grand Hall's west wall in the south-west corner (x −18.54,
-  z 29.1, between the column at z 27 and the corner; `?room=kipling`): Rudyard Kipling's books face-out in the order he
+  z 29.1, between the Gastronomic Athenaeum's door and the corner; `?room=kipling`): Rudyard Kipling's books face-out in the order he
   published them, four shelves of three, from the shelf `kipling` in `data/new-books.js`, under a brass plate whose card says where his other books are. Added after the Kipling Society wrote in.
 - The Map Room (`map-room.js`, x −420, z −60) is behind a door in the west wing's north wall (x −21.4; `?room=maps`): twenty
   old maps hung edge to edge (Mercator, Waldseemüller, the Hereford Mappa Mundi, Piri Reis, the Catalan Atlas, Ricci,
@@ -532,14 +531,14 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   journal's plan keeps the reader's route (`athenaeum-hall-route`), a compass, and "here be dragons" while it has blanks.
   Dust drifts towards a mystery not yet recorded (`DRAUGHTS`). Footprints: the reader's own in the basement, memory rooms
   and tunnel, and an earlier reader's from the hatch to the narrow door behind the pipes. A brass despatch tube on the hall's
-  column at x −11, z −5 drops a capsule every few minutes with a slip saying how to find a room (`HINTS`; a room behind
+  west wall at z −16.9 drops a capsule every few minutes with a slip saying how to find a room (`HINTS`; a room behind
   another only once that one is found). A book picked up may have a pencilled note pointing to its room (`MARGINS`). Until the Book of Kells has been opened
   (`athenaeum-kells-seen`, set in game.js), the tube sometimes sends a slip to its case and a Celtic or Irish book picked up
   outside the Irish Room may carry a note pointing to it (`TREASURES`). Closing
   time (`dimFor`): from 22:30 the west wing's lamps dim, from 23:30 the east wing's, from 00:30 the hall's (to 55%, back by
   06:00), and the reader carries a lantern (seen in hand) there and in the dusty places. The moonlight follows the real
   moon (`moonPhase`; the time label names it), and the Antipodes skylight turns with the sky over Sydney. Three stopped
-  clocks on the hall's columns (`CLOCKS`: Havisham's twenty to nine, the Hatter's six o'clock, Poe's ebony clock at
+  clocks on bare stretches of the hall's walls (`CLOCKS`: Havisham's twenty to nine, the Hatter's six o'clock, Poe's ebony clock at
   midnight; quotations checked against the texts) are found for good (`athenaeum-stopped-clocks`). The explorers'
   anteroom (x 1320, z 320, freed like the basement; `?room=explorers`) is through the kit locker in the Map Room's
   north-west corner: kit on its pegs, a sledge, a chart left blank (Conrad, checked against pg219), the map-voyages shelf,
@@ -562,6 +561,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   corner is the cupboard under the stairs (`stairCupboard` in game.js): a walnut door that opens on brooms, a candle stub and
   The Circular Staircase. A door at ground level needs open hall floor in front of it (the Austen Room's test checks its own
   approach against `floorHeight`).
+- The Grand Hall has no columns (all sixteen were taken out on 14 November 2026, at the owner's wish: they cluttered the
+  floor and half blocked the Gastronomic Athenaeum's door). Don't put them back; hang things on the walls instead.
 - Doors come from the shared kit in `library-doors.js`. A room behind a door is given `doorKit` and hangs both sides of
   its door with `doorKit.hang(parent,{data,mark,...look})` (`color`, `glazed`, `planked`, `plain`, `fanColor`, `frame`,
   `cornice`, `pediment`; no light of its own), then lets the reader through with `doorKit.pass(data.kit,data,go)` so
