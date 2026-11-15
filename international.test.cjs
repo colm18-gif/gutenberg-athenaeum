@@ -19,7 +19,7 @@ test('the Spanish Reading Room has its classics, each with a note in Spanish',()
     assert.doesNotMatch(note,/\b(the|and|which|with)\b/i,`${title}: the note should be in Spanish`);
   }
   // There is a place on the racks for every book (ten across three tiers on the north wall, six on the west).
-  assert.match(wing,/for\(let row=0;row<3;row\+\+\)for\(let i=0;i<10;i\+\+\)/);assert.match(wing,/for\(let row=0;row<3;row\+\+\)for\(let i=0;i<6;i\+\+\)/);
+  assert.match(wing,/cols=def\.window\?12:10/);assert.match(wing,/for\(let row=0;row<3;row\+\+\)for\(let i=0;i<cols;i\+\+\)/);assert.match(wing,/for\(let row=0;row<3;row\+\+\)for\(let i=0;i<6;i\+\+\)/);
   assert.ok(spanish.length<=48,'more books than places on the racks');
 });
 
@@ -233,6 +233,15 @@ test('every chair in the rooms can be sat in',()=>{
   assert.doesNotMatch(game,/note\(chair,'Watson’s chair'/);
 });
 
+test('the Ukrainian room’s north racks have a place for every book that stands on them',()=>{
+  // Its west wall is a window, so it has the north racks only: three tiers of twelve. The children's books, the
+  // Executed Renaissance and the book in Shevchenko's boot stand elsewhere (apart); the rest must all find a place.
+  const wing=fs.readFileSync('international-wing.js','utf8'),list=load('data/new-books-wing.js','ATHENAEUM_NEW_BOOKS_WING').filter(e=>e[4]==='ukrainian').map(e=>e[1]);
+  const titles=name=>[...wing.match(new RegExp(`const ${name}=\\[([^\\]]*)\\]`))[1].matchAll(/'((?:[^'\\]|\\.)*)'/g)].map(m=>m[1].replace(/\\'/g,"'"));
+  const apart=new Set([...titles('CHILDREN'),...titles('MEMORIAL'),'Княжна']),racked=list.filter(t=>!apart.has(t));
+  assert.ok(racked.length<=36,`${racked.length} books for 36 places on the north racks`);
+});
+
 test('the Ukrainian Reading Room: classics from Wikisource behind a blue door with a rushnyk',async()=>{
   const wingList=load('data/new-books-wing.js','ATHENAEUM_NEW_BOOKS_WING'),ukrainian=wingList.filter(entry=>entry[4]==='ukrainian');
   const {ROOMS,ROOM_LANGUAGES,validate}=await import('./scripts/new-books.mjs'),ws=await import('./scripts/wikisource.mjs');
@@ -264,7 +273,7 @@ test('the Ukrainian Reading Room: classics from Wikisource behind a blue door wi
   assert.match(wing,/ukrainian:\{x:HUB\.cx,z:NORTH,yaw:Math\.PI,wall:'north'\}/,'straight ahead of the way into the lobby');assert.match(wing,/ukrainian:\['УКРАЇНСЬКА ЧИТАЛЬНЯ'/);
   assert.match(wing,/if\(key==='ukrainian'\)\{\/\/ A rushnyk/);assert.match(wing,/if\(kind==='vyshyvanka'\)/);
   assert.match(game,/uk:'ukrainian-room'/);assert.match(game,/'ukrainian-room':internationalWing&&\(\(\)=>enterWing\('ukrainian'\)\)/);
-  assert.match(html,/\|uk\|ua\|ukrainian\|ukrainska\|українська\|ukrainian-room\|forest-song\|lisova-pisnia\|лісова-пісня\|mavka\|lesia-ukrainka\)\$\/\.test\(room\)\)startupScript/);
+  assert.match(html,/\|uk\|ua\|ukrainian\|ukrainska\|українська\|ukrainian-room\|forest-song\|lisova-pisnia\|лісова-пісня\|mavka\|lesia-ukrainka\|carpathians\|karpaty\|polonyna\|полонина\|chornohora\|hutsul\|trembita\|shadows-of-forgotten-ancestors\|tini\)\$\/\.test\(room\)\)startupScript/);
   // Book pages: in Ukrainian, credited to Wikisource, with addresses in Latin letters.
   const pages=await import('./scripts/book-pages.mjs');assert.equal(pages.slug('Хіба ревуть воли, як ясла повні?'),'khiba-revut-voly-yak-yasla-povni');
   assert.equal(pages.slug('Григорій Квітка-Основ’яненко'),'hryhorii-kvitka-osnovianenko');assert.equal(pages.readingTime(60000,'uk'),'4 год');

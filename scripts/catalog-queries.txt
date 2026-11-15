@@ -1,20 +1,10 @@
-# Emily Dickinson's room: her poems and letters, her circle, what she read, and her herbarium
-Poems|Letters|Single Hound ; Dickinson ; en
-Emily Dickinson ; ; en
- ; Dickinson, Emily ; en
- ; Higginson, Thomas Wentworth ; en
- ; Jackson, Helen Hunt ; en
- ; Todd, Mabel Loomis ; en
- ; Bianchi ; en
-Aurora Leigh|Sonnets from the Portuguese ; Browning ; en
-Poems ; Brontë|Bronte ; en
-Reveries of a Bachelor|Kavanagh|Representative Men ; ; en
-Botany|Flora|Wild Flowers|How to Know the Wild Flowers|Familiar Lectures ; ; en
-Herbarium|Language of Flowers|Flowers and their ; ; en
-Amherst ; ; en
-commons? Emily Dickinson herbarium
-commons? Dickinson herbarium Houghton
-commons? Emily Dickinson daguerreotype
-commons? Emily Dickinson manuscript poem
-commons? Emily Dickinson fascicle
-commons? Dickinson Homestead Amherst
+# The Ukrainian Reading Room: how three pages are laid out (two gave only their front matter, one was not found)
+ws Одержима
+ws Пальмове гилля (1901)
+ws Верховина і інші оповідання
+ws Верховина (Марко Черемшина)
+ws Писанки
+ws На Купала — на Івана
+ws? Черемшина оповідання
+ws? Одержима драматична поема
+ws? Кримський поезії

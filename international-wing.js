@@ -153,7 +153,7 @@
 
   window.createInternationalWing=Object.assign(function(options){
     const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),
-      wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null,tone=null,gospel=null,forestSong=null,openLink=null,purr=null,storage=window.localStorage}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
+      wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null,tone=null,gospel=null,forestSong=null,carpathians=null,openLink=null,purr=null,storage=window.localStorage}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
     const DOOR={x:8.6,z:30.45,yaw:Math.PI};
     // The doors in the lobby's walls, one to each reading room, and a second door to the Italian in the Latin room's east
     // wall (room: the room a door opens on, when it is not its key; from: the room a door is in, when it is not the lobby).
@@ -947,6 +947,18 @@
         const data={type:'intl-sopilka',title:'Сопілка',author:'Сопілка Лукаша з «Лісової пісні» Лесі Українки (1911). Заграйте на ній, і почнеться весна в старому лісі на Волині. (Lukash’s reed pipe from Lesia Ukrainka’s Forest Song. Play it, and spring begins in an old forest in Volyn.)',action:'PLAY'};
         for(const part of [pipe,linen,sign])mark(part,data)}
 
+      // A trembita, the Hutsuls' long wooden horn bound in birch bark, standing in the north-east corner between the racks'
+      // end and Kateryna, under a small plaque: blow it, and the reader is on the polonyna of Kotsiubynsky's Shadows of
+      // Forgotten Ancestors (carpathians.js).
+      if(carpathians){const tx=EX-.32,tz=cz-d/2+1.02;
+        const bark=own(canvasTexture((c,W,H)=>{c.fillStyle='#d8cfb8';c.fillRect(0,0,W,H);for(let y=0;y<H;y+=10){c.fillStyle='rgba(60,40,24,.6)';c.fillRect(0,y,W,2)}c.fillStyle='#7a5636';c.fillRect(0,H-12,W,12)},16,256));
+        const horn=add(own(new THREE.CylinderGeometry(.022,.06,3.2,10)),own(new THREE.MeshStandardMaterial({map:bark,roughness:.8})),tx,1.62,tz,root);horn.rotation.set(-.06,0,-.07);
+        const foot=add(own(new THREE.CylinderGeometry(.05,.06,.07,10)),MAT.darkWood,tx-.004,.04,tz+.004,root);
+        const sign=add(own(new THREE.PlaneGeometry(.95,.3)),own(new THREE.MeshStandardMaterial({map:own(plaque('ТРЕМБІТА','Тіні забутих предків · The polonyna',420,132,'#3a2412')),roughness:.8,emissive:0x2a1a0a,emissiveIntensity:.3})),EX-.03,1.6,tz+.62,root);sign.rotation.y=-Math.PI/2;
+        const reach=add(own(new THREE.BoxGeometry(.6,2.2,.6)),own(new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false})),tx,1.1,tz,root);
+        const data={type:'intl-trembita',title:'Трембіта',author:'Трембіта, довга гуцульська труба з дерева, обвита берестом. Нею перегукуються в Карпатах і сповіщають горам про радість і смерть. Затрубіть, і ви на полонині з «Тіней забутих предків» Михайла Коцюбинського (1911). (A trembita, the Hutsuls’ long wooden horn bound in birch bark, with which the Carpathians call to each other and tell the mountains of joy and of death. Blow it, and you are on the mountain pasture of Kotsiubynsky’s Shadows of Forgotten Ancestors.)',action:'BLOW'};
+        for(const part of [horn,foot,sign,reach])mark(part,data);block(tx,tz,.5,.5)}
+
       // The Peresopnytsia Gospel under glass in the middle of the west side (peresopnytsia-book.js): a plinth, the
       // facsimile open in a cradle at Mark's portrait and the first page of his Gospel, which face each other in the book.
       if(gospel){const gx=cx-6,gz=cz-.5,g=new THREE.Group();g.position.set(gx,0,gz);root.add(g);
@@ -1056,13 +1068,14 @@
       mark(sign,{type:'intl-card',title:def.card[0],author:def.card[1],action:'READ'});
       if(def.hub){buildHub({cx,cz,w,d,h,box,own,mark,root,block,room});scene.add(root);return}
       // Books face-out on sloping racks: three tiers along the north wall, three along the west wall.
-      const spots=[];
-      for(let row=0;row<3;row++)for(let i=0;i<10;i++)spots.push({x:cx-9.9+i*2.2,z:cz-d/2+.42,y:1.62+row*1.12,yaw:0});
-      // A room with a window in its west wall (def.window) has racks on the north wall only.
+      // A room with a window in its west wall (def.window) has racks on the north wall only, so they are set closer: twelve
+      // columns to a tier instead of ten.
+      const spots=[],cols=def.window?12:10,pitch=22/cols;
+      for(let row=0;row<3;row++)for(let i=0;i<cols;i++)spots.push({x:cx-11+pitch/2+i*pitch,z:cz-d/2+.42,y:1.62+row*1.12,yaw:0});
       if(!def.window)for(let row=0;row<3;row++)for(let i=0;i<6;i++)spots.push({x:cx-w/2+.42,z:cz-5.5+i*2.05,y:1.62+row*1.12,yaw:Math.PI/2});
       // Dark wooden bookcases behind the racks, with uprights between the columns and a cornice along the top.
       box(22.6,3.45,.06,MAT.darkWood,cx,2.84,cz-d/2+.2);box(22.8,.14,.46,MAT.darkWood,cx,4.6,cz-d/2+.36);
-      for(let i=0;i<=10;i++)box(.07,3.45,.4,MAT.darkWood,cx-11+i*2.2,2.84,cz-d/2+.38);
+      for(let i=0;i<=cols;i++)box(.07,3.45,.4,MAT.darkWood,cx-11+i*pitch,2.84,cz-d/2+.38);
       for(let row=0;row<3;row++)box(22.4,.05,.36,MAT.darkWood,cx,1.1+row*1.12,cz-d/2+.36);
       block(cx,cz-d/2+.4,w,.8);
       if(!def.window){box(.06,3.45,12.8,MAT.darkWood,cx-w/2+.2,2.84,cz);box(.46,.14,13,MAT.darkWood,cx-w/2+.36,4.6,cz);
@@ -1201,6 +1214,7 @@
         showNotice('За халявою — маленька саморобна книжечка, списана дрібним почерком. На засланні Шевченкові заборонили писати й малювати, і він ховав вірші в чоботі. (Tucked in the boot: a tiny handmade notebook of poems, as Shevchenko hid his in exile. It lies on the trunk now.)',10);
         playSample?.('pageTurn',.7,.9);analytics?.track('Secret Found',{secret:'shevchenko-boot'});return true}
       if(data.type==='intl-gospel'){if(gospel)gospel.open();return true}
+      if(data.type==='intl-trembita'){if(carpathians){if(tone)for(const [i,f] of [392,490,588,784].entries())tone(f,i*.5,.9,.06,'trembita');setTimeout(()=>carpathians(),1900)}return true}
       if(data.type==='intl-sopilka'){if(forestSong){if(tone)for(const [i,f] of [587.33,659.25,698.46,880].entries())tone(f,i*.3,.5,.05,'flute');setTimeout(()=>forestSong(),1100)}return true}
       if(data.type==='intl-holodomor'){built.ukrainian?.lightCandle?.();playSample?.('pageTurn',.4,.7);showNotice(`Свічка горить. ${data.author}`,16);return true}
       if(data.type==='intl-bandura'){showNotice(`${data.title}: ${data.author}`,12);if(tone&&time>=shchedrykUntil)shchedrykUntil=time+playShchedryk();return true}

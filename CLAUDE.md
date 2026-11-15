@@ -410,6 +410,23 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   visit (`athenaeum-forest-song-mavka`); played to again, she answers «Як солодко грає…». A blue door with a rushnyk
   leads back to the room. No lights. Every «quotation» is checked against the bundled text by a test; the English after
   each is the library's own plain rendering.
+- The polonyna (`carpathians.js`, centre x 200, z 1300; walkable within 30 m): the high summer pasture under Chornohora in
+  Kotsiubynsky's Shadows of Forgotten Ancestors (book 988269, in the wing's list), on a summer night. Two ways in: a
+  trembita standing in the Ukrainian Reading Room's north-east corner, between the racks' end and Kateryna, under a plaque
+  (`intl-trembita`; the wing is given `carpathians`), and a button in the reader for that story alone (`?room=carpathians`,
+  `polonyna`, `karpaty`, `chornohora`, `hutsul`, `trembita`, `tini`; a link loads the wing's books first). A polonyna lies
+  above the forest: the top is level (`heightAt`), the spruces stand down its slopes below the reader's eye (the forest
+  comes up only on the west, to the stone, and on the north, behind the cows; the way to Chornohora and to the knoll is
+  kept clear), and a sea of mist and far ranges lie beyond. The staia (log hut, open to the south) with its fire that
+  must not go out all summer and the black cauldron; its bench is a seat with the story on it; the vatah's trembita by
+  its door plays a call on `pianoTone`'s `trembita` voice (`CALL`); the sheep pen (fence rails merged, the flock two
+  InstancedMeshes, a clear box answers for them); four sheepdogs; three cows with bells; a log bench at the north-west
+  edge turned to Chornohora (a seat). The secret is Ivan's floyara on the mossy stone at the forest's edge: it plays the
+  shcheznyk's tune (`LOST`, then `FOUND`, the library's own, flute voice), bearded goats shake their heads out of the
+  windfall's roots and go back into them, and Cheremshyna's Верховина (`FOUND_BOOK`) is left on the stone, found for good
+  (`athenaeum-carpathians-goats`; `?goats`). Once a visit, 40 s in, the white herdsman and his deer are seen by the lone
+  spruce on the knoll and vanish. No lights. Every «quotation» is checked against `texts/bundled-gzip/pg988269.txt.gz`
+  by a test (`carpathians.test.cjs`); the English after each is the library's plain rendering.
 - «Слава Україні!»: at the east end of the Ukrainian Reading Room's north racks, on the middle tier past the last book,
   a thin blue volume stands pushed in crooked (`intl-slava`). Pulled, it tips out, and carved into the back of the shelf
   behind it, in gilded letters, is «Слава Україні!»; the card gives the answer, «Героям слава!». Found once, kept
@@ -419,7 +436,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   goes through the wing door straight into the room); its door straight ahead across the wing's lobby, between sunflower
   jars (`sunflowerJar`, shared materials) and two Ukrainian flags; the librarian's topic «Where is the Ukrainian Reading Room?»; and the last step of the
   first-visit tour. A test keeps all four.
-- The Ukrainian Reading Room's west wall is a window, not a bookcase (`window:true` on its def skips the west racks): a
+- The Ukrainian Reading Room's west wall is a window, not a bookcase (`window:true` on its def skips the west racks, and
+  sets its north racks at twelve columns a tier, 36 places: a test keeps every book that stands on them in one): a
   painted night over a village by the Dnipro (moon, poplars, a whitewashed хата, the cherry orchard, a stork), framed with
   a rushnyk; its card (`WINDOW`) quotes «Садок вишневий коло хати…» from the room's own Kobzar (book 962510, Кобзарь 1876,
   in place of «В казематі»), checked by a test. Keep `WINDOW` above `MITTEN`: the mitten's test reads every «quotation»
@@ -708,7 +726,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
-  daily-room, long-corridor, boullee, dickinson, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
+  daily-room, long-corridor, boullee, dickinson, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.
