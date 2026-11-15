@@ -94,11 +94,18 @@ export const COLLECTIONS={
 };
 export const FOLK_PAGES=new Set(['Баю-баю/Рукавичка','Баю-баю/Пан Коцький','Котигорошко']);
 
+// A page with no header (Одержима is bare text, with no link to anyone) is taken when the author's own page lists it.
+async function listedByAuthor(title,author,lang){
+  if(/^українська народна/i.test(author.trim()))return false;
+  const name=author.replace(/\s*\(.*\)\s*$/,'').trim(),j=await api({action:'parse',page:`${WIKISOURCE_LANGUAGES[lang].author}:${name}`,prop:'links',redirects:'1'},lang);
+  return !!j?.parse?.links?.some(l=>l.ns===0&&norm(l.title)===norm(title));
+}
+
 // The whole book: the page, and its chapters when the page is only a table of contents.
 export async function fetchWikisource(page,author,lang='uk',say=()=>{}){
   const root=await parse(page,lang);if(!root){say(`  ${page}: not found on Wikisource`);return null}
   const first=htmlToText(root.html);
-  if(!(FOLK_PAGES.has(page)&&/^українська народна/i.test(author.trim()))&&!byAuthor(first.links,root.categories,author,lang)){say(`  ${root.title}: does not name ${author} as its author`);return null}
+  if(!(FOLK_PAGES.has(page)&&/^українська народна/i.test(author.trim()))&&!byAuthor(first.links,root.categories,author,lang)&&!await listedByAuthor(root.title,author,lang)){say(`  ${root.title}: does not name ${author} as its author`);return null}
   async function read(title,got){
     const parts=[],seen=new Set([title]);
     // A page's own subpages, wherever it links them (a table of contents, or the header's "next"); `direct` keeps
