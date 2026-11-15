@@ -2011,7 +2011,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // novels set for GCSE English Literature, kept out of the English Reading Room, which has only one darker book.
     // The First Folio (folio-book.js) lies under glass in the Set Texts Room; the book is made with the other fine books below.
     let folioBook=null;
-    const setTextsRoom=window.createSetTextsRoom?.({doorKit:getDoorKit(),THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,
+    const setTextsRoom=window.createSetTextsRoom?.({doorKit:getDoorKit(),openLink:openLinkCard,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,
       folio:{open:()=>folioBook?.open(),get folios(){return folioBook?.folios}},
       findBook:id=>books.find(b=>b.id===id),arrivals:arrivalIds('set-texts'),learners:learnersRoom?.room,analytics:window.libraryAnalytics,isHolding:()=>!!selected,
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}

@@ -410,6 +410,12 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   visit (`athenaeum-forest-song-mavka`); played to again, she answers «Як солодко грає…». A blue door with a rushnyk
   leads back to the room. No lights. Every «quotation» is checked against the bundled text by a test; the English after
   each is the library's own plain rendering.
+- The press on the walls: Chytomo's article about the Ukrainian Reading Room (10 November 2026, in Ukrainian; `CHYTOMO`
+  in `international-wing.js`) hangs framed on that room's east wall between Kateryna and the arch, and NATE's blog piece,
+  A library made for exploration (29 October 2026; `NATE` in `set-texts-room.js`), on the Set Texts Room's east wall north
+  of the board for teachers. Each card opens its article in game.js's `openLinkCard` (`intl-link`, `settexts-nate`). Cards
+  name the publication, never the journalist (a correspondent). Chytomo's English version is to follow: link it too when
+  it is out.
 - The polonyna (`carpathians.js`, centre x 200, z 1300; walkable within 30 m): the high summer pasture under Chornohora in
   Kotsiubynsky's Shadows of Forgotten Ancestors (book 988269, in the wing's list), on a summer night. Two ways in: a
   trembita standing in the Ukrainian Reading Room's north-east corner, between the racks' end and Kateryna, under a plaque

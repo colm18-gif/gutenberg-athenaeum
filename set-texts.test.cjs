@@ -95,3 +95,13 @@ test('the Anthologies keep every line of every poem, even Exposure’s long ones
   const text=require('node:zlib').gunzipSync(fs.readFileSync('texts/bundled-gzip/pg940001.txt.gz')).toString('utf8');
   assert.match(text,/Our brains ache, in the merciless iced east winds that knife us\.\.\.\nWearied we keep awake/);
 });
+
+test('the press on the walls: NATE’s piece in the Set Texts Room and Chytomo’s in the Ukrainian Reading Room open their articles',()=>{
+  const fs=require('node:fs'),room=fs.readFileSync('set-texts-room.js','utf8'),wing=fs.readFileSync('international-wing.js','utf8'),game=fs.readFileSync('game.js','utf8');
+  assert.match(room,/url:'https:\/\/www\.nate\.org\.uk\/2026\/10\/29\/a-library-made-for-exploration\/'/);
+  assert.match(room,/if\(data\.type==='settexts-nate'\)\{if\(openLink\)openLink\(/,'NATE’s piece opens in the link card');
+  assert.match(game,/createSetTextsRoom\?\.\(\{doorKit:getDoorKit\(\),openLink:openLinkCard,/,'and the room is given it');
+  assert.match(wing,/url:'https:\/\/chytomo\.com\/v-irlandii-bibliotekar-stvoryv-virtualnu-ukrainsku-chytalniu\/'/);
+  assert.match(wing,/const link=\{type:'intl-link',title:CHYTOMO\.title,author:CHYTOMO\.card,url:CHYTOMO\.url/,'Chytomo’s opens the same way as the Unwritten');
+  assert.match(wing,/card:'Читомо[^']*\(Chytomo[^']*\)'/,'its card in Ukrainian, then English');
+});
