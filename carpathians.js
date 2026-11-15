@@ -23,7 +23,7 @@
   // Far from everything else: the Forest Song is at x 600, z 900, the mountain at x 1100, z 700.
   const CENTRE={x:200,z:1300},WALK=30,FLAT=33,KEEP=25,BOOK=988269,FOUND_BOOK=958034;
   // Places on the polonyna, relative to its centre (yaw 0 faces north, -z).
-  const SPOTS={door:{x:0,z:24},staia:{x:-3,z:-2},trembita:{x:.42,z:-1.2},dogs:{x:-6.4,z:3.4},pen:{x:10,z:-4},gate:{x:4,z:1.5},lookout:{x:-13,z:-24},
+  const SPOTS={door:{x:0,z:24},staia:{x:-3,z:-2},trembita:{x:.42,z:-1.2},dogs:{x:-6.4,z:3.4},pen:{x:10,z:-4},gate:{x:4,z:1.5},lookout:{x:-3,z:-26.5},
     stone:{x:-22,z:4},roots:{x:-25.4,z:5},cows:{x:-8,z:-19},knoll:{x:-20,z:-33},chornohora:{x:-62,z:-88}};
   const STAIA={w:6,d:4.4,h:2.3},PEN={w:12,d:9};
   const PATHS=[['door','staia'],['door','gate'],['door','stone']];
@@ -131,9 +131,11 @@
       for(let tries=0;tries<14000&&list.length<480;tries++){const a=rand()*Math.PI*2,r=24+Math.sqrt(rand())*44,x=Math.cos(a)*r,z=Math.sin(a)*r;
         const west=x<-17&&Math.abs(z-2)<16,north=z<-24&&Math.abs(x+8)<14;if(r<WALK+.5&&!west||r<44&&!west&&!north)continue;
         if(Math.abs(((a-chA+Math.PI*3)%(Math.PI*2))-Math.PI)<.3&&r<70)continue;
-        if(Math.hypot(x-SPOTS.stone.x,z-SPOTS.stone.z)<4.5||Math.hypot(x-SPOTS.roots.x,z-SPOTS.roots.z)<3.4||Math.hypot(x-SPOTS.knoll.x,z-SPOTS.knoll.z)<7||Math.hypot(x-SPOTS.door.x,z-SPOTS.door.z)<5)continue;
+        if(Math.hypot(x-SPOTS.stone.x,z-SPOTS.stone.z)<4.5||Math.hypot(x-SPOTS.roots.x,z-SPOTS.roots.z)<3.4||Math.hypot(x-SPOTS.knoll.x,z-SPOTS.knoll.z)<7||Math.hypot(x-SPOTS.door.x,z-SPOTS.door.z)<5||Math.hypot(x-SPOTS.lookout.x,z-SPOTS.lookout.z)<4)continue;
         if(r<WALK+2&&nearPath(x,z,2.5))continue;
-        {const k=SPOTS.knoll,l=Math.hypot(k.x,k.z),u=(x*k.x+z*k.z)/l;if(u>0&&u<l&&Math.abs(x*k.z-z*k.x)/l<5)continue}
+        // Clear lines of sight: from the middle to the knoll, and from the lookout bench to Chornohora.
+        const blocks=(o,t,w)=>{const dx=t.x-o.x,dz=t.z-o.z,l=Math.hypot(dx,dz),u=((x-o.x)*dx+(z-o.z)*dz)/l;return u>0&&u<l&&Math.abs((x-o.x)*dz-(z-o.z)*dx)/l<w};
+        if(blocks({x:0,z:0},SPOTS.knoll,5)||blocks(SPOTS.lookout,ch,7))continue;
         if(list.some(t=>Math.hypot(t.x-x,t.z-z)<(r>FLAT?2.2:2.6)))continue;
         list.push({x,z,y:heightAt(r),s:(r>FLAT?8:10)+rand()*(west||north?8:5),yaw:rand()*7})}
       // The lone spruce on the knoll, taller than the rest.
@@ -163,7 +165,7 @@
       {const c=at('chornohora'),g=new THREE.Group();g.position.set(c.x,0,c.z);root.add(g);
         const massif=add(cone,basic({color:0x26324e,fog:false}),0,-14,0,g);massif.scale.set(70,64,48);
         // The snowfield: the top of the massif, the same shape, a little proud of it.
-        const snow=add(cone,basic({color:0x9ea9c0,fog:false}),0,9.5,0,g);snow.scale.set(19.2,17,13.2);
+        const snow=add(cone,basic({color:0x8792a8,fog:false}),0,12.6,0,g);snow.scale.set(13.4,11.2,9.2);
         const shoulder=add(cone,basic({color:0x1a2640,fog:false}),26,-20,8,g);shoulder.scale.set(48,44,36);
         const snow2=add(cone,basic({color:0x8f9ab2,fog:false}),26,-2.2,8,g);snow2.scale.set(10,8.8,7.5);
         const hit=add(own(new THREE.PlaneGeometry(60,40)),basic({transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide}),0,0,0,g);hit.lookAt(CENTRE.x,0,CENTRE.z);mark(hit,card('chornohora','Чорногора'))}
