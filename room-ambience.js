@@ -163,6 +163,11 @@
       'mountain-summit':{beds:[['wind',.15],['air',.035]],events:[]},
       // The falls at the meadow's edge, and the cave behind them: the water loud outside, a roar through rock within, and drips.
       'mountain-falls':{beds:[['fountain',.17],['waves',.05],['wind',.03]],events:[['owl',.1,.02]]},
+      // The Library of Celsus: an open court at dusk with swifts over it, the hall behind quiet and stony, and the
+      // vault under the apse quieter still.
+      'celsus-court':{beds:[['air',.03],['wind',.02]],events:[['bird',.7,.03],['rustle',.4,.025]]},
+      'celsus-hall':{beds:[['air',.035]],events:[['rustle',.5,.03],['creak',.2,.02]]},
+      'celsus-crypt':{beds:[['air',.025],['rumble',.02]],events:[['drip',4,.03]]},
       // Emily Dickinson's room: a quiet upstairs bedroom, a clock somewhere in the house, a bird in the garden.
       'dickinson-room':{beds:[['air',.02]],ticks:[[1,'tock',.014]],events:[['bird',.5,.03],['creak',.3,.025]]},
       // The library that was never built: a very large stone room, air moving high up, a page turned somewhere far off.
