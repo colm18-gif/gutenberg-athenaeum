@@ -273,7 +273,7 @@ test('the Ukrainian Reading Room: classics from Wikisource behind a blue door wi
   assert.match(wing,/ukrainian:\{x:HUB\.cx,z:NORTH,yaw:Math\.PI,wall:'north'\}/,'straight ahead of the way into the lobby');assert.match(wing,/ukrainian:\['УКРАЇНСЬКА ЧИТАЛЬНЯ'/);
   assert.match(wing,/if\(key==='ukrainian'\)\{\/\/ A rushnyk/);assert.match(wing,/if\(kind==='vyshyvanka'\)/);
   assert.match(game,/uk:'ukrainian-room'/);assert.match(game,/'ukrainian-room':internationalWing&&\(\(\)=>enterWing\('ukrainian'\)\)/);
-  assert.match(html,/\|uk\|ua\|ukrainian\|ukrainska\|українська\|ukrainian-room\|forest-song\|lisova-pisnia\|лісова-пісня\|mavka\|lesia-ukrainka\)\$\/\.test\(room\)\)startupScript/);
+  assert.match(html,/\|uk\|ua\|ukrainian\|ukrainska\|українська\|ukrainian-room\|forest-song\|lisova-pisnia\|лісова-пісня\|mavka\|lesia-ukrainka\|carpathians\|karpaty\|polonyna\|полонина\|chornohora\|hutsul\|trembita\|shadows-of-forgotten-ancestors\|tini\)\$\/\.test\(room\)\)startupScript/);
   // Book pages: in Ukrainian, credited to Wikisource, with addresses in Latin letters.
   const pages=await import('./scripts/book-pages.mjs');assert.equal(pages.slug('Хіба ревуть воли, як ясла повні?'),'khiba-revut-voly-yak-yasla-povni');
   assert.equal(pages.slug('Григорій Квітка-Основ’яненко'),'hryhorii-kvitka-osnovianenko');assert.equal(pages.readingTime(60000,'uk'),'4 год');
