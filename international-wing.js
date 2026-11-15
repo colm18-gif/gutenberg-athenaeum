@@ -1056,13 +1056,14 @@
       mark(sign,{type:'intl-card',title:def.card[0],author:def.card[1],action:'READ'});
       if(def.hub){buildHub({cx,cz,w,d,h,box,own,mark,root,block,room});scene.add(root);return}
       // Books face-out on sloping racks: three tiers along the north wall, three along the west wall.
-      const spots=[];
-      for(let row=0;row<3;row++)for(let i=0;i<10;i++)spots.push({x:cx-9.9+i*2.2,z:cz-d/2+.42,y:1.62+row*1.12,yaw:0});
-      // A room with a window in its west wall (def.window) has racks on the north wall only.
+      // A room with a window in its west wall (def.window) has racks on the north wall only, so they are set closer: twelve
+      // columns to a tier instead of ten.
+      const spots=[],cols=def.window?12:10,pitch=22/cols;
+      for(let row=0;row<3;row++)for(let i=0;i<cols;i++)spots.push({x:cx-11+pitch/2+i*pitch,z:cz-d/2+.42,y:1.62+row*1.12,yaw:0});
       if(!def.window)for(let row=0;row<3;row++)for(let i=0;i<6;i++)spots.push({x:cx-w/2+.42,z:cz-5.5+i*2.05,y:1.62+row*1.12,yaw:Math.PI/2});
       // Dark wooden bookcases behind the racks, with uprights between the columns and a cornice along the top.
       box(22.6,3.45,.06,MAT.darkWood,cx,2.84,cz-d/2+.2);box(22.8,.14,.46,MAT.darkWood,cx,4.6,cz-d/2+.36);
-      for(let i=0;i<=10;i++)box(.07,3.45,.4,MAT.darkWood,cx-11+i*2.2,2.84,cz-d/2+.38);
+      for(let i=0;i<=cols;i++)box(.07,3.45,.4,MAT.darkWood,cx-11+i*pitch,2.84,cz-d/2+.38);
       for(let row=0;row<3;row++)box(22.4,.05,.36,MAT.darkWood,cx,1.1+row*1.12,cz-d/2+.36);
       block(cx,cz-d/2+.4,w,.8);
       if(!def.window){box(.06,3.45,12.8,MAT.darkWood,cx-w/2+.2,2.84,cz);box(.46,.14,13,MAT.darkWood,cx-w/2+.36,4.6,cz);
