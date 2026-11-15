@@ -13,7 +13,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Files the jobs rewrite without a new build are listed in `LIVE_DATA` there.
 - Rooms behind doors (`evening-room.js`, `learners-room.js`, `periodicals-room.js`, `international-wing.js`,
   `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`, `map-room.js`, `medicine-room.js`, `set-texts-room.js`,
-  `austen-room.js`, `burns-room.js`, `canada-room.js`, `long-corridor.js`, `gulliver-room.js`, `nemo-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`, `walden.js`, `uncatalogued-room.js`)
+  `austen-room.js`, `burns-room.js`, `canada-room.js`, `long-corridor.js`, `dickinson-room.js`, `gulliver-room.js`, `nemo-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`, `walden.js`, `uncatalogued-room.js`)
   are built only when the reader approaches and freed ~25 s after they leave. So are the Room of Chance (its portrait
   stays), the Lost Property Office (its hatch stays) and the high staircase, Rocket Hall, Moon and rocket cabin (`high-staircase.js`: only its door in the west wing
   is built at startup; a stair book carried away keeps it). The basement and the roof garden, built in `game.js` on a first visit, are
@@ -249,6 +249,24 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Dee's library (19553) on the stand between two columns at the north end of the east top terrace, found for good
   (`athenaeum-boullee-pavement`; `?pavement`). Its cards say only what is well attested (1785, never built, "a vast
   amphitheatre of books", the School of Athens, books passed from hand to hand): keep them to that.
+- Emily Dickinson's room (`dickinson-room.js`, x 2200, z 300; `?room=dickinson`, `emily-dickinson`, `amherst`): her
+  bedroom at the Homestead in Amherst, through a white-painted door in the Long Corridor's fourth west bay
+  (`corridor.dickinsonDoor`; EMILY DICKINSON gilded on the corridor side); its way out is THE LONG CORRIDOR. Rose
+  wallpaper, straw matting, a sleigh bed, three oval frames (Mrs Browning, George Eliot, Carlyle), and by the west
+  window her writing table, about eighteen inches square, with the room's one lamp and her chair (a seat). The window
+  is painted (the garden in a low sun; snow from November to February) and its light lies aslant on the floor (an
+  additive patch, no light). Shelves `dickinson-poems` (the three series as first published, north wall),
+  `dickinson-read` (after the library's own Jane Eyre, Middlemarch, Sonnets from the Portuguese and Representative Men,
+  `OWN`), `dickinson-circle` (Higginson, Helen Hunt Jackson) and `dickinson-garden` in `data/new-books.js`. Framed: the
+  daguerreotype of about 1847 and three poems in her own hand (`PICTURES`, fetched by `scripts/fetch-maps.mjs` into
+  `assets/pictures` and looked at); LOOK CLOSELY opens one large in the picture card (`showRoomPicture` in game.js,
+  Escape closes it). Under glass, her herbarium, drawn by the library and saying so: Commons has no photographs of the
+  real one (Harvard's Houghton Library), so it shows four flowers she wrote poems about (`SPECIMENS`). Her white dress
+  on a form; the basket at the window. The secret is the bureau's bottom drawer: the forty sewn booklets (one
+  InstancedMesh) and the complete Poems (`dickinson-drawer`) left on top, found for good (`athenaeum-dickinson-drawer`;
+  `?drawer`). Every line of hers (`LINES`, in the wording of the 1890s editions, which is what Gutenberg has) is checked
+  against pg12242, and her letters (`LETTERS`) against Higginson's essay in pg68129, by a test; every “quotation” on a
+  card must be one of them. Gutenberg has no Dickinson letters and no Single Hound.
 - The Gastronomic Athenaeum (`food-history-wing.js`, hall x −780, z −420; `?room=food-history`, `food`, `gastronomy`)
   is through a walnut door, its name gilded on the glass, in the second bay of the Long Corridor's west wall
   (`corridor.foodDoor`; until 14 November 2026 it was squeezed onto the Grand Hall's west wall between the
@@ -587,7 +605,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - Plain text: `read.html?book=ID` shows any book as one readable page (linked from every book page and the reader). Reading
   cards (`reading-card.js`, `/card` on the visitors' book worker) carry bookmarks between devices by a four-word code.
 - Every chair, sofa and bench is one of the library's seats: build it with `chair()`/`sofa()`/`bench()` in game.js, or
-  pass `registerSeat` into a room module and call it (with a `bookIds` getter for that room's books; push the parts
+  pass `registerSeat` into a room module and call it (with `bookIds`, an array of that room's books' numbers, not a function; push the parts
   onto the room's list so they are freed with it). `?debug` exposes `__athenaeum.seats`.
 - The upper gallery runs along the Grand Hall's east side south of the stair (x 11–19, z 16 and beyond): `floorHeight` gives
   that floor as the gallery's (y 5) to a reader up there and as the hall's (y 0) to one on the ground (by the reader's own
@@ -690,7 +708,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
-  daily-room, long-corridor, boullee, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
+  daily-room, long-corridor, boullee, dickinson, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.

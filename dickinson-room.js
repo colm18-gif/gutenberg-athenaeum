@@ -44,6 +44,11 @@
     arbutus:'Pink, small, and punctual, / Aromatic, low,',
     daisy:'The daisy follows soft the sun,'
   };
+  // Her letters to Higginson, as he printed them in his essay on her (Carlyle's Laugh, the library's text): checked by a test.
+  const LETTERS={
+    alive:'Are you too deeply occupied to say if my verse is alive?',
+    portrait:'small, like the wren; and my hair is bold like the chestnut bur; and my eyes, like the sherry in the glass, that the guest leaves.'
+  };
   const q=key=>`“${LINES[key]}”`;
   // The drawn herbarium's specimens: each a flower she wrote a poem about, under the Latin name of her day.
   const SPECIMENS=[
@@ -62,10 +67,10 @@
     dress:['A white dress','In her later years she dressed in white. One dress of hers survives, in Amherst: plain white cotton, buttoned down the front, with a pocket large enough for a pencil and a folded sheet of paper.'],
     bureau:['A cherry bureau','A chest of four drawers. The top ones hold what a bureau holds. The bottom drawer is not quite shut.'],
     herbarium:['Her herbarium',`As a schoolgirl she pressed more than four hundred plants into an album of sixty-six pages and labelled each with its Latin name. The real album is at Harvard’s Houghton Library, too fragile now to be handled, and there is no photograph of it the library may use: this opening is drawn by the library, with four flowers she wrote poems about, named as the botany of her day named them. ${q('prairie')}`],
-    daguerreotype:['Emily Dickinson, about 1847','A daguerreotype taken when she was sixteen or so, a student at Mount Holyoke: the one photograph of her that is certain. Asked years later for a portrait, she sent a description instead: small, like the wren, with eyes like the sherry in the glass that the guest leaves.'],
-    alabaster:['In her own hand: Safe in their Alabaster Chambers',`The poem as she copied it out in 1862, in the pencil-thin slanting hand of those years, with her dashes. ${q('alabaster')} The manuscript is in the Boston Public Library, among the papers of Colonel Higginson.`],
+    daguerreotype:['Emily Dickinson, about 1847',`A daguerreotype taken when she was sixteen or so, a student at Mount Holyoke: the one photograph of her that is certain. In 1862 Colonel Higginson asked her for a portrait, and she answered that she had none, but was “${LETTERS.portrait}” Her first letter to him had asked: “${LETTERS.alive}”`],
+    alabaster:['In her own hand: Safe in their Alabaster Chambers',`The poem as she copied it out in ink in 1862, with her dashes and her capitals, in the version that goes on “Grand go the Years”. ${q('alabaster')} The stamp at the top is the Boston Public Library’s, where the manuscript is kept.`],
     wild:['In her own hand: Wild Nights',`${q('wild')} When the poems were being edited in 1891, Higginson worried that readers might find more in this one than the poet meant; he printed it all the same.`],
-    liquor:['In her own hand: I taste a liquor never brewed',`${q('liquor')} One of the few printed in her lifetime: the Springfield Republican ran it in 1861, unsigned, with its rhymes mended. The manuscript is at Harvard’s Houghton Library.`]
+    liquor:['In her own hand: I taste a liquor never brewed',`${q('liquor')} One of the few printed in her lifetime: the Springfield Republican ran it in 1861, unsigned, with its rhymes mended. This is her own fair copy: the small crosses mark words she was still choosing between, with the alternatives at the foot of the page. It is at Harvard’s Houghton Library.`]
   };
   const PICTURES={
     daguerreotype:{file:'dickinson-daguerreotype',credit:'Daguerreotype, about 1847. Amherst College Archives and Special Collections. Public domain, from Wikimedia Commons.'},
@@ -123,8 +128,8 @@
       paper.wrapS=paper.wrapT=THREE.RepeatWrapping;paper.repeat?.set?.(7,2.6);
       const matting=own(canvasTexture((c,W,H)=>{c.fillStyle='#c9b27c';c.fillRect(0,0,W,H);for(let y=0;y<H;y+=4){c.fillStyle=y%8?'rgba(120,96,52,.28)':'rgba(255,240,200,.16)';c.fillRect(0,y,W,2)}for(let x=0;x<W;x+=64){c.fillStyle='rgba(90,70,36,.35)';c.fillRect(x,0,2,H)}},256,256));
       matting.wrapS=matting.wrapT=THREE.RepeatWrapping;matting.repeat?.set?.(5,5);
-      const wall=std({color:0xffffff,map:paper,roughness:.95}),white=std({color:0xe9e4d6,roughness:.7}),cherry=std({color:0x6a2f1e,roughness:.55}),dark=std({color:0x3b2418,roughness:.7}),linen=std({color:0xf2efe6,roughness:.95});
-      box(w,.3,d,std({color:0xffffff,map:matting,roughness:.95}),cx,-.15,cz,root);box(w,.2,d,std({color:0xf1ece0,roughness:1}),cx,h+.1,cz,root);
+      const wall=std({color:0xb9b2a2,map:paper,roughness:.95}),white=std({color:0xa8a294,roughness:.7}),cherry=std({color:0x4a2014,roughness:.55}),dark=std({color:0x2b1a11,roughness:.7}),linen=std({color:0xb5b1a6,roughness:.95});
+      box(w,.3,d,std({color:0x9c8f74,map:matting,roughness:.95}),cx,-.15,cz,root);box(w,.2,d,std({color:0xa59f90,roughness:1}),cx,h+.1,cz,root);
       box(w,h,.3,wall,cx,h/2,z0,root);box(w,h,.3,wall,cx,h/2,z1,root);box(.3,h,d,wall,x0,h/2,cz,root);box(.3,h,d,wall,x1,h/2,cz,root);
       for(const [bx,bz,bw,bd] of [[cx,z0+.17,w,.05],[cx,z1-.17,w,.05],[x0+.17,cz,.05,d],[x1-.17,cz,.05,d]]){box(bw,.18,bd,white,bx,.09,bz,root);box(bw,.1,bd,white,bx,h-.05,bz,root)}
       mark(sign(root,'EMILY DICKINSON','Amherst · 1830–1886',2.6,.44,cx+2.6,h-.42,z0+.17),card('sign'));
@@ -148,7 +153,7 @@
       buildBureau(cx-3.4,z1-.5,cherry,drawer[0]||null);
       buildDress(cx+3.3,z1-.8,linen,dark);
       // The lamp on the writing table is the room's one light.
-      const lamp=new THREE.PointLight(0xffd9a6,7,15,2);lamp.position.set(x0+1.3,1.7,cz+.3);root.add(lamp);
+      const lamp=new THREE.PointLight(0xffd9a6,4,14,2);lamp.position.set(x0+1.3,1.7,cz+.3);root.add(lamp);
       // The way back to the corridor.
       const exit={type:'dickinson-exit',title:'Back to the Long Corridor',author:'Out through the white door, and along the corridor to the Grand Hall.',action:'RETURN'};
       if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:z1-.2,yaw:Math.PI,onward:'towards the Grand Hall',label:'THE LONG CORRIDOR',own,...DOOR_LOOK}))mark(box(1.7,2.9,.16,white,cx,1.45,z1-.2,root),exit);
@@ -166,8 +171,8 @@
       const g=new THREE.Group();g.position.set(x,y,z);g.rotation.y=yaw;root.add(g);const p=PICTURES[key],height=width*1.45;
       const data={type:'dickinson-picture',picture:key,title:CARDS[key][0],author:CARDS[key][1],action:'LOOK CLOSELY'};
       const frame=mark(box(width+.12,height+.12,.04,MAT.darkWood||std({color:0x2c1c12,roughness:.6}),0,0,0,g),data);
-      const mat=std({color:0xd8cfb8,roughness:.9}),sheet=mark(add(own(new THREE.PlaneGeometry(width,height)),mat,0,0,.025,g),data);
-      try{new THREE.TextureLoader().load(`${pictures}${p.file}-wall.jpg`,texture=>{if(!root)return texture.dispose?.();texture.colorSpace=THREE.SRGBColorSpace;own(texture);mat.map=texture;mat.color?.set?.(0xffffff);mat.needsUpdate=true;
+      const mat=std({color:0x9a927f,roughness:.9}),sheet=mark(add(own(new THREE.PlaneGeometry(width,height)),mat,0,0,.025,g),data);
+      try{new THREE.TextureLoader().load(`${pictures}${p.file}-wall.jpg`,texture=>{if(!root)return texture.dispose?.();texture.colorSpace=THREE.SRGBColorSpace;own(texture);mat.map=texture;mat.color?.set?.(0xc9c4b8);mat.needsUpdate=true;
         const image=texture.image;if(image?.width&&image?.height){const k=image.height/image.width/1.45;sheet.scale.y=k;frame.scale.y=(height*k+.12)/(height+.12)}})}catch(e){}
     }
     // The west window: the garden and the Pelham hills in a low sun (snow from November to February), and the light it
@@ -181,8 +186,8 @@
           if(snow){c.lineWidth=2;for(let b=0;b<7;b++){c.beginPath();c.moveTo(tx,ty-10-b*6);c.lineTo(tx+(b%2?1:-1)*(16+r()*22),ty-34-b*7);c.stroke()}}else{c.fillStyle='#4f7a3e';c.beginPath();c.arc(tx,ty-58,30+r()*10,0,7);c.fill()}}
         if(!snow)for(let i=0;i<70;i++){c.fillStyle=['#d98b96','#f1ead4','#a2547f','#e8c04a','#4b5fb0'][i%5];c.beginPath();c.arc(r()*W,H*.78+r()*H*.2,2+r()*2.4,0,7);c.fill()}},384,512));
       const g=new THREE.Group();g.position.set(x,1.85,z);g.rotation.y=Math.PI/2;root.add(g);
-      const pane=add(own(new THREE.PlaneGeometry(1.5,2.1)),std({map:view,emissive:0xffffff,emissiveMap:view,emissiveIntensity:.8,roughness:.4}),0,0,0,g);mark(pane,card('window'));
-      const white=std({color:0xf1ece0,roughness:.6});for(const sx of [-.8,0,.8])box(sx?.1:.05,2.3,.07,white,sx,0,.03,g);for(const sy of [-1.1,0,1.1])box(1.7,sy?.1:.05,.07,white,0,sy,.03,g);
+      const pane=add(own(new THREE.PlaneGeometry(1.5,2.1)),std({map:view,emissive:0xffffff,emissiveMap:view,emissiveIntensity:.6,roughness:.4}),0,0,0,g);mark(pane,card('window'));
+      const white=std({color:0xa8a294,roughness:.6});for(const sx of [-.8,0,.8])box(sx?.1:.05,2.3,.07,white,sx,0,.03,g);for(const sy of [-1.1,0,1.1])box(1.7,sy?.1:.05,.07,white,0,sy,.03,g);
       const muslin=std({color:0xfbf8f0,roughness:1,transparent:true,opacity:.86,side:THREE.DoubleSide});for(const sx of [-1.02,1.02])add(own(new THREE.PlaneGeometry(.42,2.5)),muslin,sx,-.05,.09,g);
       // The slant of light: a long pale parallelogram across the floor from the window, and motes are left to the reader.
       const patch=own(canvasTexture((c,W,H)=>{c.clearRect(0,0,W,H);const gr=c.createLinearGradient(0,0,W,0);gr.addColorStop(0,'rgba(255,232,180,.75)');gr.addColorStop(1,'rgba(255,232,180,0)');c.fillStyle=gr;
@@ -212,25 +217,25 @@
     function buildBed(x,z,white,linen,cherry){
       const g=new THREE.Group();g.position.set(x,0,z);root.add(g);const parts=[box(1.2,.24,2.05,cherry,0,.36,0,g),box(1.14,.16,1.98,linen,0,.56,0,g),box(1.26,.95,.08,cherry,0,.6,-1.04,g),box(1.26,.62,.08,cherry,0,.43,1.04,g),box(.9,.12,.4,linen,0,.68,-.72,g)];
       for(const part of parts)mark(part,card('bed'));block(x,z,1.4,2.2);
-      const gilt=MAT.brass||std({color:0xb08d3a,metalness:.6,roughness:.4}),shade=std({color:0x2a231c,roughness:.9});
+      const gilt=MAT.brass||std({color:0xb08d3a,metalness:.6,roughness:.4}),shade=std({color:0x6b5a45,roughness:.9});
       [-.55,0,.55].forEach(dx=>{const ring=add(own(new THREE.TorusGeometry(.15,.02,6,20)),gilt,x+dx,2.2,z-1.13,root);ring.scale.set(.82,1.1,1);const oval=add(own(new THREE.CircleGeometry(.14,18)),shade,x+dx,2.2,z-1.125,root);oval.scale.set(.82,1.1,1);mark(ring,card('portraits'));mark(oval,card('portraits'))});
     }
     // The herbarium, open under glass on a small table: two pages of pressed flowers, drawn, each with its label.
     function buildCase(x,z,cherry){
-      const pages=own(canvasTexture((c,W,H)=>{c.fillStyle='#e9dfc4';c.fillRect(0,0,W,H);c.fillStyle='rgba(120,96,60,.25)';c.fillRect(W/2-3,0,6,H);let k=11;const r=()=>(k=(k*9301+49297)%233280)/233280;
+      const pages=own(canvasTexture((c,W,H)=>{c.fillStyle='#d2c39c';c.fillRect(0,0,W,H);c.fillStyle='rgba(90,70,40,.45)';c.fillRect(W/2-3,0,6,H);let k=11;const r=()=>(k=(k*9301+49297)%233280)/233280;
         for(let i=0;i<260;i++){c.fillStyle=`rgba(140,112,70,${r()*.08})`;c.fillRect(r()*W,r()*H,2+r()*5,1+r()*3)}
-        SPECIMENS.forEach((s,i)=>{const px=(i%2?.3:.2)*W/2+(i<2?0:W/2)+W*.08,py=(i%2?.66:.3)*H,stem=120;c.save();c.translate(px,py);c.rotate((r()-.5)*.5);
+        SPECIMENS.forEach((s,i)=>{const px=(i<2?.25:.75)*W+(i%2?40:-40),py=(i%2?.68:.26)*H,stem=120;c.save();c.translate(px,py);c.scale(1.5,1.5);c.rotate((r()-.5)*.5);
           c.strokeStyle='#6f7445';c.lineWidth=3;c.beginPath();c.moveTo(0,stem*.5);c.quadraticCurveTo(10,0,0,-stem*.5);c.stroke();c.fillStyle='#7f8552';
           for(const [ly,sd] of [[20,1],[-6,-1],[-28,1]]){c.beginPath();c.ellipse(sd*14,ly,16,5,sd*.6,0,7);c.fill()}c.fillStyle=s.petal;c.strokeStyle='rgba(60,50,40,.35)';c.lineWidth=1;
           if(s.kind==='rays'){for(let p=0;p<14;p++){c.save();c.translate(0,-stem*.5);c.rotate(p*Math.PI/7);c.beginPath();c.ellipse(0,-16,4,12,0,0,7);c.fill();c.stroke();c.restore()}c.fillStyle='#c9a13a';c.beginPath();c.arc(0,-stem*.5,7,0,7);c.fill()}
           else if(s.kind==='head'){for(let p=0;p<22;p++){c.beginPath();c.ellipse((r()-.5)*22,-stem*.5-6+(r()-.5)*20,3,7,r()*3,0,7);c.fill()}}
           else if(s.kind==='cluster'){for(let p=0;p<6;p++){const ax=(r()-.5)*34,ay=-stem*.5+(r()-.5)*22;for(let t=0;t<5;t++){c.beginPath();c.arc(ax+Math.cos(t*1.257)*5,ay+Math.sin(t*1.257)*5,4,0,7);c.fill()}}}
           else{c.beginPath();c.moveTo(-9,-stem*.5+8);c.lineTo(-13,-stem*.5-26);for(let t=0;t<=8;t++)c.lineTo(-13+t*3.25,-stem*.5-26-(t%2?7:0));c.lineTo(9,-stem*.5+8);c.closePath();c.fill();c.stroke()}
-          c.restore();c.fillStyle='#f6f0dc';c.fillRect(px-74,py+72,148,26);c.strokeStyle='rgba(90,70,40,.5)';c.strokeRect(px-74,py+72,148,26);c.fillStyle='#3a2c1c';c.font='italic 15px Georgia';c.textAlign='center';c.fillText(s.name,px,py+90)})},1024,640));
+          c.restore();c.fillStyle='#efe6cc';c.fillRect(px-120,py+104,240,34);c.strokeStyle='rgba(70,54,30,.7)';c.strokeRect(px-120,py+104,240,34);c.fillStyle='#2a1f12';c.font='italic 21px Georgia';c.textAlign='center';c.fillText(s.name,px,py+128)})},1024,640));
       const g=new THREE.Group();g.position.set(x,0,z);root.add(g);const data={...card('herbarium'),action:'LOOK'};
       const top=box(1.3,.05,.9,cherry,0,.8,0,g);for(const [lx,lz] of [[-.58,-.38],[.58,-.38],[-.58,.38],[.58,.38]])box(.05,.78,.05,cherry,lx,.39,lz,g);
-      const cover=box(1.04,.03,.66,std({color:0x2f4a36,roughness:.8}),0,.84,0,g);const sheet=add(own(new THREE.PlaneGeometry(1,.62)),std({map:pages,roughness:.95}),0,.858,0,g);sheet.rotation.x=-Math.PI/2;
-      const glass=box(1.2,.16,.8,std({color:0xdfeee8,transparent:true,opacity:.14,roughness:.05,metalness:.1}),0,.91,0,g);for(const part of [top,cover,sheet,glass])mark(part,data);block(x,z,1.5,1.1);
+      const cover=box(1.04,.03,.66,std({color:0x2f4a36,roughness:.8}),0,.84,0,g);const sheet=add(own(new THREE.PlaneGeometry(1,.62)),std({color:0xc8c2b4,map:pages,roughness:.95}),0,.858,0,g);sheet.rotation.x=-Math.PI/2;
+      const glass=box(1.2,.16,.8,std({color:0xdfeee8,transparent:true,opacity:.08,roughness:.05,metalness:.1}),0,.91,0,g);for(const part of [top,cover,sheet,glass])mark(part,data);block(x,z,1.5,1.1);
     }
     // The bureau, and what was in its bottom drawer.
     function buildBureau(x,z,cherry,book){
@@ -300,7 +305,7 @@
       if(!inside||!bureau)return;
       if(bureau.open>0&&bureau.open<1){bureau.open=Math.min(1,bureau.open+dt/1.1);const e=1-(1-bureau.open)*(1-bureau.open);bureau.front.position.z=.26+.3*e}}
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,leave,activate,unload,catalogue,door:DOOR,room:ROOM,groups:GROUPS,own:OWN,lines:LINES,cards:CARDS,specimens:SPECIMENS,pictures:PICTURES,winter,
+    return {contains,floorAt,allowed,interact,update,enter,leave,activate,unload,catalogue,door:DOOR,room:ROOM,groups:GROUPS,own:OWN,lines:LINES,cards:CARDS,letters:LETTERS,specimens:SPECIMENS,pictures:PICTURES,winter,
       get built(){return !!root},get books(){return books.slice()},get found(){return !!bureau?.found||wasFound()},zoneAt:(x,z)=>contains(x,z)?'dickinson-room':null};
   };
 })();

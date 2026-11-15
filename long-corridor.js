@@ -1,7 +1,7 @@
 // The Long Corridor: a panelled corridor behind a walnut door in the Grand Hall's east wall (x 18.72, z -24.25, between the
 // Night Conservatory's stained-glass door and The Long Road East), with Miss Havisham's stopped clock hung over the door.
 // The hall's own walls are full, so rooms that come after it open off this corridor instead: its bays are hung with doors
-// as rooms are built (and its east wall's third bay with Boullée's drawing, the way into boullee-library.js). The first is the Gastronomic Athenaeum's (food-history-wing.js, handed `corridor`), whose door stood
+// as rooms are built (and its east wall's third bay with Boullée's drawing, the way into boullee-library.js; and Emily Dickinson's door, dickinson-room.js, in the west wall's fourth bay). The first is the Gastronomic Athenaeum's (food-history-wing.js, handed `corridor`), whose door stood
 // squeezed between the Horologist's and the Kipling case on the west wall until 14 November 2026. The empty bays are plain
 // panelling, not doors that open on nothing. Like the other rooms behind doors it is built as the reader comes near and
 // freed ~25 s after they leave; the hall side of its door stays. Two lamps of its own, marked freed with the room.
