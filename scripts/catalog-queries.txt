@@ -1,10 +1,4 @@
-# The Ukrainian Reading Room: how three pages are laid out (two gave only their front matter, one was not found)
-ws Одержима
-ws Пальмове гилля (1901)
-ws Верховина і інші оповідання
-ws Верховина (Марко Черемшина)
-ws Писанки
-ws На Купала — на Івана
-ws? Черемшина оповідання
-ws? Одержима драматична поема
-ws? Кримський поезії
+# Одержима: which author page its Wikisource page names (the importer found none for Леся Українка)
+ws! Одержима
+ws Автор:Леся Українка
+ws? Одержима Українка

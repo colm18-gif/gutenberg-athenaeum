@@ -6,6 +6,7 @@
 # Two more kinds of line look beyond Gutenberg, for the rooms whose books or pictures come from Wikimedia:
 #   ws <page>       a page on Ukrainian Wikisource (an author's page, Автор:…, or a work): the pages it links to
 #   ws? <words>     a search of Ukrainian Wikisource's texts
+#   ws! <page>      every link on a Ukrainian Wikisource page, in every namespace (author pages too), and its categories
 #   commons? <words>  a search of Wikimedia Commons's files, with each file's size and licence
 import csv, io, json, re, sys, urllib.parse, urllib.request
 # gutenberg.org sometimes refuses GitHub's runners (503) for a while; its mirrors carry the same file.
@@ -22,7 +23,13 @@ def api(host, **params):
     return json.loads(urllib.request.urlopen(req, timeout=60).read().decode('utf-8'))
 def wikimedia(line):
     try:
-        if line.startswith('ws? '):
+        if line.startswith('ws! '):
+            page = line[4:].strip()
+            data = api('uk.wikisource.org', action='parse', page=page, prop='links|categories', redirects=1).get('parse', {})
+            print(f'\n== {line}  ({data.get("title")})')
+            for l in data.get('links', []): print(f"  [{l.get('ns')}] {l['title']}{'' if l.get('exists') else '  (no page)'}")
+            for c in data.get('categories', []): print(f"  category: {c.get('category')}")
+        elif line.startswith('ws? '):
             hits = api('uk.wikisource.org', action='query', list='search', srsearch=line[4:], srlimit=25, srnamespace=0)['query']['search']
             print(f'\n== {line}  ({len(hits)})')
             for h in hits: print(f"  {h['title']}  |  {h.get('wordcount', 0)} words")
@@ -50,7 +57,7 @@ print(f'{len(rows)} texts in the catalogue')
 for line in open('scripts/catalog-queries.txt', encoding='utf-8'):
     line = line.strip()
     if not line or line.startswith('#'): continue
-    if line.startswith(('ws ', 'ws? ', 'commons? ')): wikimedia(line); continue
+    if line.startswith(('ws ', 'ws? ', 'ws! ', 'commons? ')): wikimedia(line); continue
     if line.startswith('='):
         print(f'\n== numbers')
         for n in line[1:].split():

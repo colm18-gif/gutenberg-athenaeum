@@ -107,8 +107,10 @@ export async function fetchWikisource(page,author,lang='uk',say=()=>{}){
       if(direct&&rest.includes('/')||EDITORIAL.test(rest.split('/').pop()))continue;seen.add(l.title);found.push(l.title)}return found};
     async function collect(prefix,{text,links},depth){
       const kids=depth<2?take(links,prefix):[];
-      // A table of contents or a title page is mostly links; a chapter is mostly text.
-      if(kids.length&&(text.length<4000||text.length<kids.length*400)){
+      // A table of contents or a title page is mostly links; a chapter is mostly text. A printed contents' dot leaders
+      // (". . . . 12") are not text: Krymsky's Пальмове гилля has 24,000 characters of them.
+      const words=text.replace(/(?:\.\s*){3,}/g,' ').replace(/\s+/g,' ').length;
+      if(kids.length&&(words<4000||words<kids.length*400)){
         if(depth===0&&text.trim())parts.push(text.trim());// the book's own front page: title, preface or prologue
         const queue=[...kids];
         while(queue.length&&parts.length<600){const kid=queue.shift(),p=await parse(kid,lang);if(!p)continue;const g=htmlToText(p.html);
