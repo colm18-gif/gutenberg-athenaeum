@@ -86,6 +86,9 @@ export function byAuthor(links,categories,author,lang){
 // Collections whose front page holds only a preface or a contents, with their tales in the book's own order (Franko's
 // numbered preface; the 1920 collection's ЗМІСТ). A tale missing from Wikisource is left out and said so in the log.
 export const COLLECTIONS={
+  // Cheremshyna's Верховина (Kraków, 1940): its front page is the edition's introduction, so the book is read from its
+  // title story on, then the other four. The edition's order is not known here: they follow the year's feasts.
+  'Верховина і інші оповідання/Верховина':{base:'Верховина і інші оповідання/',tales:['Коляда','Писанки','На Купала — на Івана','Ласка']},
   'Коли ще звірі говорили':{base:'Твори (Франко, 1956–1962)/7/',tales:['Осел і Лев','Старе добро забувається','Лисичка і Журавель','Лисичка і Рак','Лис і Дрозд','Заяць і Їжак','Королик і Ведмідь','Вовк війтом','Заяць і Ведмідь','Ворона і Гадюка','Три міхи хитрощів','Вовк, Лисиця і Осел','Лисичка-черничка','Мурко й Бурко','Лисичка кума','Війна між Псом і Котом','Фарбований Лис','Ворони і Сови','Як звірі правувалися з людьми','Байка про байку']},
   'Українські народні казки (1920)':{base:'Українські народні казки (1920)/',tales:['Рись-мати','Брат і сестра в лісі','Попович Ясат','Летючий корабель','Царівна-жаба','Про царенка Йвана та чортову дочку','Убогий та багатий і дівка-чорнявка','Безщасний Данило й розумна жінка','Правда та Неправда','Гордий царь']}
 };

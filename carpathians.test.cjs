@@ -31,7 +31,7 @@ function polonyna({stored=null,book=true,search=''}={}){
   const context={window:{},Math,JSON,Set,Float32Array,location:{search:''}};vm.runInNewContext(source,context);
   const scene=new O();scene.background=colour;scene.fog={color:colour,density:0};
   const interactables=[],notices=[],player={pos:new V(),radius:.42},tracked=[],home=[],notes=[],seats=[];
-  const titles={988269:'Тіні забутих предків',996952:'Верховина'};
+  const titles={988269:'Тіні забутих предків',958034:'Верховина'};
   const f=context.window.createCarpathians({THREE,scene,MAT:{},player,interactables,canvasTexture:()=>({dispose(){},offset:{set(){}},repeat:{set(){}}}),bookMaterial:()=>new M({}),
     findBook:id=>book&&titles[id]?{id,title:titles[id],author:''}:null,storage,search:()=>search,tone:(...a)=>notes.push(a),
     registerSeat:(parts,group,eye,yaw,data)=>{for(const p of parts){p.userData={type:'seat',...data};interactables.push(p)}seats.push(data)},

@@ -21,7 +21,7 @@
   'use strict';
 
   // Far from everything else: the Forest Song is at x 600, z 900, the mountain at x 1100, z 700.
-  const CENTRE={x:200,z:1300},WALK=30,FLAT=33,KEEP=25,BOOK=988269,FOUND_BOOK=996952;
+  const CENTRE={x:200,z:1300},WALK=30,FLAT=33,KEEP=25,BOOK=988269,FOUND_BOOK=958034;
   // Places on the polonyna, relative to its centre (yaw 0 faces north, -z).
   const SPOTS={door:{x:0,z:24},staia:{x:-3,z:-2},trembita:{x:.42,z:-1.2},dogs:{x:-6.4,z:3.4},pen:{x:10,z:-4},gate:{x:4,z:1.5},lookout:{x:-13,z:-24},
     stone:{x:-22,z:4},roots:{x:-25.4,z:5},cows:{x:-8,z:-19},knoll:{x:-20,z:-33},chornohora:{x:-62,z:-88}};
@@ -103,16 +103,16 @@
     function buildGround(){
       const rings=[0,3,6,9,12,15,18,21,24,27,30,33,36,40,45,51,58,66,75],seg=56,rand=mulberry(7),positions=[],colours=[],c=new THREE.Color();
       const vertex=(r,a)=>{const x=Math.cos(a)*r,z=Math.sin(a)*r,y=heightAt(r)+(r>FLAT?Math.sin(a*5+r*.3)*1.2*Math.min(1,(r-FLAT)/10):0);
-        const k=r<=FLAT?1:Math.max(.35,1-(r-FLAT)/40),j=.9+rand()*.2;c.setRGB(.11*k*j,.17*k*j,.08*k*j);return [x,y,z,c.r,c.g,c.b]};
+        const k=r<=FLAT?1:Math.max(.35,1-(r-FLAT)/40),j=.9+rand()*.2;c.setRGB(.03*k*j,.046*k*j,.024*k*j);return [x,y,z,c.r,c.g,c.b]};
       const grid=rings.map(r=>Array.from({length:seg},(_,i)=>vertex(r,i/seg*Math.PI*2)));
       for(let ri=0;ri<rings.length-1;ri++)for(let i=0;i<seg;i++){const a=grid[ri][i],b=grid[ri][(i+1)%seg],p=grid[ri+1][i],q=grid[ri+1][(i+1)%seg];
-        for(const v of [a,p,b,b,p,q]){positions.push(CENTRE.x+v[0],v[1],CENTRE.z+v[2]);colours.push(v[3],v[4],v[5])}}
+        for(const v of [a,b,p,b,q,p]){positions.push(CENTRE.x+v[0],v[1],CENTRE.z+v[2]);colours.push(v[3],v[4],v[5])}}
       const geometry=own(new THREE.BufferGeometry());geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setAttribute('color',new THREE.Float32BufferAttribute(colours,3));geometry.computeVertexNormals();
       const ground=new THREE.Mesh(geometry,std({vertexColors:true,roughness:1}));ground.name='carp-ground';root.add(ground);
       // The trodden paths, a little above the grass.
-      const path=std({color:0x3e3526,roughness:1});
+      const path=std({color:0x2a2519,roughness:1});
       for(const [a0,b0] of PATHS){const a=SPOTS[a0],b=SPOTS[b0],l=Math.hypot(b.x-a.x,b.z-a.z);
-        const strip=add(own(new THREE.PlaneGeometry(1.1,l)),path,CENTRE.x+(a.x+b.x)/2,.012,CENTRE.z+(a.z+b.z)/2);strip.rotation.order='YXZ';strip.rotation.set(-Math.PI/2,Math.atan2(b.x-a.x,b.z-a.z),0)}
+        const strip=add(own(new THREE.PlaneGeometry(.75,l)),path,CENTRE.x+(a.x+b.x)/2,.012,CENTRE.z+(a.z+b.z)/2);strip.rotation.order='YXZ';strip.rotation.set(-Math.PI/2,Math.atan2(b.x-a.x,b.z-a.z),0)}
       // Summer flowers in the grass, pale in the moonlight: one instanced mesh.
       const n=160,flowers=own(new THREE.InstancedMesh(own(new THREE.IcosahedronGeometry(.03,0)),std({color:0xd8cce8,emissive:0xb8a8d8,emissiveIntensity:.15,roughness:.8}),n)),o=new THREE.Object3D();let i=0;
       for(let tries=0;tries<n*20&&i<n;tries++){const a=rand()*Math.PI*2,r=Math.sqrt(rand())*WALK,x=Math.cos(a)*r,z=Math.sin(a)*r;
@@ -122,19 +122,22 @@
     }
 
     // ---------- the spruces ----------
-    // Round the polonyna's edge and down its slopes into the mist; closer in on the west, where the forest comes up to
-    // the stone. One InstancedMesh.
+    // A polonyna lies above the forest: the spruces stand down its slopes, below the reader's eye, so the mist and the
+    // far ranges show over them. The forest comes up to the level only on the west, to the stone, and on the north,
+    // behind the cows; the way to Chornohora is left open. One InstancedMesh.
     function buildSpruces(){
       const rand=mulberry(31),list=[];
-      for(let tries=0;tries<12000&&list.length<520;tries++){const a=rand()*Math.PI*2,r=24+Math.sqrt(rand())*40,x=Math.cos(a)*r,z=Math.sin(a)*r;
-        const west=x<-17&&Math.abs(z-2)<16;if(r<WALK+.5&&!west)continue;
+      const ch=SPOTS.chornohora,chA=Math.atan2(ch.z,ch.x);
+      for(let tries=0;tries<14000&&list.length<480;tries++){const a=rand()*Math.PI*2,r=24+Math.sqrt(rand())*44,x=Math.cos(a)*r,z=Math.sin(a)*r;
+        const west=x<-17&&Math.abs(z-2)<16,north=z<-24&&Math.abs(x+8)<14;if(r<WALK+.5&&!west||r<44&&!west&&!north)continue;
+        if(Math.abs(((a-chA+Math.PI*3)%(Math.PI*2))-Math.PI)<.3&&r<70)continue;
         if(Math.hypot(x-SPOTS.stone.x,z-SPOTS.stone.z)<4.5||Math.hypot(x-SPOTS.roots.x,z-SPOTS.roots.z)<3.4||Math.hypot(x-SPOTS.knoll.x,z-SPOTS.knoll.z)<7||Math.hypot(x-SPOTS.door.x,z-SPOTS.door.z)<5)continue;
         if(r<WALK+2&&nearPath(x,z,2.5))continue;
         {const k=SPOTS.knoll,l=Math.hypot(k.x,k.z),u=(x*k.x+z*k.z)/l;if(u>0&&u<l&&Math.abs(x*k.z-z*k.x)/l<5)continue}
         if(list.some(t=>Math.hypot(t.x-x,t.z-z)<(r>FLAT?2.2:2.6)))continue;
-        list.push({x,z,y:heightAt(r),s:(r>FLAT?15:12)+rand()*9,yaw:rand()*7})}
+        list.push({x,z,y:heightAt(r),s:(r>FLAT?8:10)+rand()*(west||north?8:5),yaw:rand()*7})}
       // The lone spruce on the knoll, taller than the rest.
-      const k=SPOTS.knoll;list.push({x:k.x,z:k.z,y:heightAt(Math.hypot(k.x,k.z))+.4,s:24,yaw:0});
+      const k=SPOTS.knoll;list.push({x:k.x,z:k.z,y:heightAt(Math.hypot(k.x,k.z))+.4,s:17,yaw:0});
       const mesh=new THREE.InstancedMesh(spruceGeometry(),std({vertexColors:true,roughness:.95}),list.length);mesh.name='carp-spruces';const o=new THREE.Object3D();
       list.forEach((t,i)=>{o.position.set(CENTRE.x+t.x,t.y,CENTRE.z+t.z);o.rotation.set(0,t.yaw,0);o.scale.setScalar(t.s);o.updateMatrix();mesh.setMatrixAt(i,o.matrix);
         if(Math.hypot(t.x,t.z)<WALK+1)trunks.push({x:CENTRE.x+t.x,z:CENTRE.z+t.z,r:.03*t.s+.15})});
@@ -158,15 +161,16 @@
         list.forEach((p,i)=>{o.position.set(CENTRE.x+p.x,p.y+p.h/2,CENTRE.z+p.z);o.rotation.set(0,p.x,0);o.scale.set(p.w,p.h,p.w);o.updateMatrix();mesh.setMatrixAt(i,o.matrix)});
         mesh.instanceMatrix.needsUpdate=true;root.add(mesh)}
       {const c=at('chornohora'),g=new THREE.Group();g.position.set(c.x,0,c.z);root.add(g);
-        const massif=add(cone,basic({color:0x1d2a44,fog:false}),0,-14,0,g);massif.scale.set(70,64,48);
-        const snow=add(cone,basic({color:0xc9d3e6,fog:false}),0,9.4,0,g);snow.scale.set(14.4,17,9.9);
+        const massif=add(cone,basic({color:0x26324e,fog:false}),0,-14,0,g);massif.scale.set(70,64,48);
+        // The snowfield: the top of the massif, the same shape, a little proud of it.
+        const snow=add(cone,basic({color:0x9ea9c0,fog:false}),0,9.5,0,g);snow.scale.set(19.2,17,13.2);
         const shoulder=add(cone,basic({color:0x1a2640,fog:false}),26,-20,8,g);shoulder.scale.set(48,44,36);
-        const snow2=add(cone,basic({color:0xb9c4da,fog:false}),26,-2.2,8,g);snow2.scale.set(9.8,8.8,7.4);
+        const snow2=add(cone,basic({color:0x8f9ab2,fog:false}),26,-2.2,8,g);snow2.scale.set(10,8.8,7.5);
         const hit=add(own(new THREE.PlaneGeometry(60,40)),basic({transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide}),0,0,0,g);hit.lookAt(CENTRE.x,0,CENTRE.z);mark(hit,card('chornohora','Чорногора'))}
       // The sea of mist, lying below the polonyna's edge.
       const mistMap=own(canvasTexture((c,W,H)=>{c.fillStyle='rgba(150,160,182,.55)';c.fillRect(0,0,W,H);const r0=mulberry(9);for(let i=0;i<90;i++){const x=r0()*W,y=r0()*H,r=30+r0()*80,g=c.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,'rgba(220,228,240,.35)');g.addColorStop(1,'rgba(220,228,240,0)');c.fillStyle=g;c.fillRect(x-r,y-r,r*2,r*2)}},512,512));
       mistMap.wrapS=mistMap.wrapT=THREE.RepeatWrapping;mistMap.repeat?.set(4,4);
-      const mist=add(own(THREE.RingGeometry?new THREE.RingGeometry(38,128,64,1):new THREE.CircleGeometry(128,64)),basic({map:mistMap,transparent:true,opacity:.9,depthWrite:false,color:0x7d889e,fog:false,side:THREE.DoubleSide}),CENTRE.x,-13,CENTRE.z);
+      const mist=add(own(THREE.RingGeometry?new THREE.RingGeometry(38,128,64,1):new THREE.CircleGeometry(128,64)),basic({map:mistMap,transparent:true,opacity:.8,depthWrite:false,color:0x4b5568,fog:false,side:THREE.DoubleSide}),CENTRE.x,-15,CENTRE.z);
       mist.rotation.x=-Math.PI/2;mist.name='carp-mist';mark(mist,card('mist','Море мряки'));state.mist=mist;
       // The moon and its halo, and the stars over the polonyna.
       const moon=add(own(new THREE.CircleGeometry(3.4,32)),basic({color:0xeef0f6,fog:false}),CENTRE.x+46,48,CENTRE.z+58);moon.lookAt(CENTRE.x,0,CENTRE.z);
@@ -181,7 +185,7 @@
     // ---------- the staia, its fire, the trembita and the dogs ----------
     function buildStaia(){
       const s=at('staia'),g=new THREE.Group();g.position.set(s.x,0,s.z);root.add(g);
-      const logs=std({color:0x4b3624,roughness:1}),dark=std({color:0x2c2017,roughness:1});
+      const logs=std({color:0x7a5a3c,roughness:1}),dark=std({color:0x2c2017,roughness:1});
       const logTex=own(canvasTexture((c,W,H)=>{c.fillStyle='#4b3624';c.fillRect(0,0,W,H);for(let y=0;y<H;y+=16){c.fillStyle='#2a1c12';c.fillRect(0,y,W,3);c.fillStyle='rgba(120,90,60,.25)';c.fillRect(0,y+6,W,2)}},64,128));
       logTex.wrapS=logTex.wrapT=THREE.RepeatWrapping;logs.map=logTex;
       const {w,d,h}=STAIA,t=.24,door=2.2;

@@ -952,9 +952,9 @@
       // Forgotten Ancestors (carpathians.js).
       if(carpathians){const tx=EX-.32,tz=cz-d/2+1.02;
         const bark=own(canvasTexture((c,W,H)=>{c.fillStyle='#d8cfb8';c.fillRect(0,0,W,H);for(let y=0;y<H;y+=10){c.fillStyle='rgba(60,40,24,.6)';c.fillRect(0,y,W,2)}c.fillStyle='#7a5636';c.fillRect(0,H-12,W,12)},16,256));
-        const horn=add(own(new THREE.CylinderGeometry(.016,.05,3.2,10)),own(new THREE.MeshStandardMaterial({map:bark,roughness:.8})),tx,1.62,tz,root);horn.rotation.set(-.06,0,-.07);
+        const horn=add(own(new THREE.CylinderGeometry(.022,.06,3.2,10)),own(new THREE.MeshStandardMaterial({map:bark,roughness:.8})),tx,1.62,tz,root);horn.rotation.set(-.06,0,-.07);
         const foot=add(own(new THREE.CylinderGeometry(.05,.06,.07,10)),MAT.darkWood,tx-.004,.04,tz+.004,root);
-        const sign=add(own(new THREE.PlaneGeometry(.95,.3)),own(new THREE.MeshStandardMaterial({map:own(plaque('ТРЕМБІТА','Тіні забутих предків · The polonyna',420,132,'#3a2412')),roughness:.8,emissive:0x2a1a0a,emissiveIntensity:.3})),EX+.08,1.25,tz+.62,root);sign.rotation.y=-Math.PI/2;
+        const sign=add(own(new THREE.PlaneGeometry(.95,.3)),own(new THREE.MeshStandardMaterial({map:own(plaque('ТРЕМБІТА','Тіні забутих предків · The polonyna',420,132,'#3a2412')),roughness:.8,emissive:0x2a1a0a,emissiveIntensity:.3})),EX-.03,1.6,tz+.62,root);sign.rotation.y=-Math.PI/2;
         const reach=add(own(new THREE.BoxGeometry(.6,2.2,.6)),own(new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false})),tx,1.1,tz,root);
         const data={type:'intl-trembita',title:'Трембіта',author:'Трембіта, довга гуцульська труба з дерева, обвита берестом. Нею перегукуються в Карпатах і сповіщають горам про радість і смерть. Затрубіть, і ви на полонині з «Тіней забутих предків» Михайла Коцюбинського (1911). (A trembita, the Hutsuls’ long wooden horn bound in birch bark, with which the Carpathians call to each other and tell the mountains of joy and of death. Blow it, and you are on the mountain pasture of Kotsiubynsky’s Shadows of Forgotten Ancestors.)',action:'BLOW'};
         for(const part of [horn,foot,sign,reach])mark(part,data);block(tx,tz,.5,.5)}
