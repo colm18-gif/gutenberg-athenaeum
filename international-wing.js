@@ -48,6 +48,11 @@
     card:'«Розстріляне відродження» не закінчилося в 1937 році. (The Executed Renaissance did not end in 1937.) Since Russia began its war against Ukraine in 2014, the Unwritten Project, Недописані, has recorded more than three hundred members of Ukraine’s literary community killed by Russia: poets, prose writers, translators, editors. Among them are Victoria Amelina and Maksym Kryvtsov. Its volunteers, under its founders, the poet and paramedic Olena Herasymiuk and the soldier and writer Yevhen Lir, look for manuscripts, piece together lives, and keep the work that was left unfinished.',
     spines:'Книжки, яких уже ніхто не допише. (Books that no one will now finish writing.)',
     url:'https://chytomo.com/en/ukraine-s-unwritten-memorial-project-adds-20-names-to-list-of-literary-figures-killed-by-russia/'};
+  // Chytomo, the Ukrainian magazine about books and reading, wrote about this room on 10 November 2026: its article hangs
+  // framed on the east wall, between Kateryna and the arch, and opens in a dialog with a real link (as the Unwritten does).
+  const CHYTOMO={title:'«В Ірландії бібліотекар створив віртуальну Українську читальню»',date:'10.11.2026',
+    card:'Читомо, видання про книжки й читання, написало про цю читальню 10 листопада 2026 року. (Chytomo, the Ukrainian magazine about books and reading, wrote about this room on 10 November 2026: “In Ireland, a librarian has created a virtual Ukrainian Reading Room”.)',
+    url:'https://chytomo.com/v-irlandii-bibliotekar-stvoryv-virtualnu-ukrainsku-chytalniu/'};
   // The children's room, Дитяча кімната: through a painted arch in the Ukrainian Reading Room's east wall, the two rooms
   // sharing that wall, so the room beyond, lit warmly, is seen from anywhere in the reading room. Its two low shelves:
   // the youngest readers' tales (CHILDREN, kept off the main racks) and, for older readers, stories from the room's own
@@ -946,6 +951,20 @@
         const sign=add(own(new THREE.PlaneGeometry(1.3,.32)),own(new THREE.MeshStandardMaterial({map:own(plaque('ЛІСОВА ПІСНЯ','Леся Українка · The Forest Song',520,128,'#1f3a22')),roughness:.8,emissive:0x2a3a18,emissiveIntensity:.3})),px,1.5,pz,root);sign.rotation.y=Math.PI;
         const data={type:'intl-sopilka',title:'Сопілка',author:'Сопілка Лукаша з «Лісової пісні» Лесі Українки (1911). Заграйте на ній, і почнеться весна в старому лісі на Волині. (Lukash’s reed pipe from Lesia Ukrainka’s Forest Song. Play it, and spring begins in an old forest in Volyn.)',action:'PLAY'};
         for(const part of [pipe,linen,sign])mark(part,data)}
+
+      // Chytomo's article about the room, cut out and framed on the east wall between Kateryna and the arch's painted jamb,
+      // clear of the mitten's cut-outs below. Its card opens the article.
+      {const pz=cz-3.25,py=2.35,paper=own(canvasTexture((c,W,H)=>{c.fillStyle='#f1ead8';c.fillRect(0,0,W,H);c.fillStyle='#1b1b1b';c.textAlign='left';
+          c.font=`bold ${Math.round(W*.13)}px Georgia`;c.fillText('Читомо',W*.08,H*.13);c.fillRect(W*.08,H*.16,W*.84,3);
+          c.font=`${Math.round(W*.045)}px Georgia`;c.fillStyle='#b3202a';c.fillText('ЕКСКЛЮЗИВ · '+CHYTOMO.date,W*.08,H*.215);
+          c.fillStyle='#1b1b1b';c.font=`bold ${Math.round(W*.068)}px Georgia`;
+          const words=CHYTOMO.title.replace(/[«»]/g,'').split(' '),lines=[];let line='';for(const w of words){const t=line?line+' '+w:w;if(c.measureText(t).width>W*.84){lines.push(line);line=w}else line=t}lines.push(line);
+          lines.forEach((l,i)=>c.fillText(l,W*.08,H*.3+i*H*.065));
+          const top=H*.3+lines.length*H*.065+H*.02;c.fillStyle='#8a8478';for(let y=top;y<H*.94;y+=H*.022)for(const x0 of [.08,.52])c.fillRect(W*x0,y,W*.4*(y%7<5?1:.7),3)},512,720));
+        const face=add(own(new THREE.PlaneGeometry(.66,.93)),own(new THREE.MeshStandardMaterial({map:paper,roughness:.9})),EX-.03,py,pz,root);face.rotation.y=-Math.PI/2;
+        const frame=add(own(new THREE.BoxGeometry(.04,1.07,.8)),MAT.darkWood,EX+.0,py,pz,root);
+        const link={type:'intl-link',title:CHYTOMO.title,author:CHYTOMO.card,url:CHYTOMO.url,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:'Читати на Читомо · Read it on Chytomo',action:'READ'};
+        mark(face,link);mark(frame,{...link})}
 
       // A trembita, the Hutsuls' long wooden horn bound in birch bark, standing in the north-east corner between the racks'
       // end and Kateryna, under a small plaque: blow it, and the reader is on the polonyna of Kotsiubynsky's Shadows of

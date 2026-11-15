@@ -21,8 +21,12 @@
     sign:['The Set Texts Room','Shakespeare on the west wall, the nineteenth-century novel on the north. Sit at the table to read one of them. Under the glass in the middle, the First Folio lies open for you to turn.']
   };
 
+  // NATE, the National Association for the Teaching of English, published a piece about the library on its blog.
+  const NATE={card:'NATE, the UK’s National Association for the Teaching of English, published this piece about the library on its blog on 29 October 2026, written by the librarian who built it.',
+    url:'https://www.nate.org.uk/2026/10/29/a-library-made-for-exploration/'};
+
   window.createSetTextsRoom=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=[],showNotice,playSample,move,analytics,isHolding=()=>false,registerSeat=null,doorKit=null,folio=null,
+    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=[],showNotice,playSample,move,analytics,isHolding=()=>false,registerSeat=null,doorKit=null,folio=null,openLink=null,
       learners={cx:-330,cz:-60,w:16,d:14}}=options;
     // In the English Reading Room's east wall, near its south-east corner, facing into that room.
     const DOOR={x:learners.cx+learners.w/2-.15,z:learners.cz+learners.d/2-1.9,yaw:-Math.PI/2};
@@ -88,6 +92,17 @@
         lines.forEach((l,i)=>c.fillText(l,W/2,140+i*44));c.font='bold 38px Georgia';c.fillStyle='#ffe2a0';c.fillText('libraryafterdark.space/set-texts',W/2,400);
       },1024,460));
       const board=add(own(new THREE.PlaneGeometry(3.8,1.7)),own(new THREE.MeshStandardMaterial({map:boardMap,roughness:.95,emissive:0x151515,emissiveIntensity:.3})),cx+w/2-.17,2.45,cz-.6,root);board.rotation.y=-Math.PI/2;mark(board,card('board'));
+      // NATE's blog piece about the library, framed on the east wall north of the board: NATE is the UK's association
+      // of English teachers. Its card opens the piece (game.js's openLinkCard).
+      {const pz=cz-3.9,paper=own(canvasTexture((c,W,H)=>{c.fillStyle='#f4f1e8';c.fillRect(0,0,W,H);c.fillStyle='#1d3557';c.fillRect(0,0,W,H*.19);
+          c.fillStyle='#ffffff';c.textAlign='left';c.font=`bold ${Math.round(W*.11)}px Georgia`;c.fillText('NATE',W*.08,H*.105);
+          c.font=`${Math.round(W*.038)}px Georgia`;c.fillText('National Association for the Teaching of English',W*.08,H*.165);
+          c.fillStyle='#1b1b1b';c.font=`bold ${Math.round(W*.085)}px Georgia`;c.fillText('A library made',W*.08,H*.27);c.fillText('for exploration',W*.08,H*.34);
+          c.fillStyle='#6b6b6b';c.font=`${Math.round(W*.045)}px Georgia`;c.fillText('29 October 2026',W*.08,H*.4);
+          c.fillStyle='#9a958a';for(let y=H*.46;y<H*.94;y+=H*.024)c.fillRect(W*.08,y,W*.84*(y%9<7?1:.6),3)},512,680));
+        const face=add(own(new THREE.PlaneGeometry(.75,1)),own(new THREE.MeshStandardMaterial({map:paper,roughness:.9})),cx+w/2-.19,2.45,pz,root);face.rotation.y=-Math.PI/2;
+        const frame=box(.04,1.14,.89,MAT.darkWood,cx+w/2-.16,2.45,pz,root);
+        const data={type:'settexts-nate',title:'A library made for exploration',author:NATE.card,url:NATE.url,action:'READ'};mark(face,data);mark(frame,{...data})}
       // The anthology on a lectern by the board, open towards the room.
       if(poems){const lx=cx+w/2-.95,lz=cz+3.2;box(.5,1.05,.4,MAT.darkWood,lx,.52,lz,root);const top=box(.6,.05,.8,MAT.darkWood,lx,1.1,lz,root);top.rotation.z=.3;block(lx,lz,.8,.9);
         placeBook(poems,{x:lx-.02,y:1.42,z:lz,yaw:-Math.PI/2,tilt:-1.05},geometry,'poems');
@@ -163,6 +178,7 @@
       if(data.type==='settexts-door'){through(data,enter);return true}
       if(data.type==='settexts-exit'){through(data,()=>{move(DOOR.x-1.6,DOOR.z,Math.PI/2);playSample?.('doorOpen',.8,1);showNotice('The English Reading Room again.',3)});return true}
       if(data.type==='settexts-folio'){if(folio)folio.open();else showNotice('The case is locked tonight.',4);return true}
+      if(data.type==='settexts-nate'){if(openLink)openLink({kicker:'THE SET TEXTS ROOM',title:data.title,text:data.author,url:data.url,label:'Read it on NATE’s site'});else showNotice(`${data.title}: ${data.author}`,10);return true}
       if(data.type==='settexts-card'){showNotice(`${data.title}: ${data.author}`,10);return true}
       return false;
     }
