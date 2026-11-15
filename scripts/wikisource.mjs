@@ -94,11 +94,18 @@ export const COLLECTIONS={
 };
 export const FOLK_PAGES=new Set(['Баю-баю/Рукавичка','Баю-баю/Пан Коцький','Котигорошко']);
 
+// A page with no header (Одержима is bare text, with no link to anyone) is taken when the author's own page lists it.
+async function listedByAuthor(title,author,lang){
+  if(/^українська народна/i.test(author.trim()))return false;
+  const name=author.replace(/\s*\(.*\)\s*$/,'').trim(),j=await api({action:'parse',page:`${WIKISOURCE_LANGUAGES[lang].author}:${name}`,prop:'links',redirects:'1'},lang);
+  return !!j?.parse?.links?.some(l=>l.ns===0&&norm(l.title)===norm(title));
+}
+
 // The whole book: the page, and its chapters when the page is only a table of contents.
 export async function fetchWikisource(page,author,lang='uk',say=()=>{}){
   const root=await parse(page,lang);if(!root){say(`  ${page}: not found on Wikisource`);return null}
   const first=htmlToText(root.html);
-  if(!(FOLK_PAGES.has(page)&&/^українська народна/i.test(author.trim()))&&!byAuthor(first.links,root.categories,author,lang)){say(`  ${root.title}: does not name ${author} as its author`);return null}
+  if(!(FOLK_PAGES.has(page)&&/^українська народна/i.test(author.trim()))&&!byAuthor(first.links,root.categories,author,lang)&&!await listedByAuthor(root.title,author,lang)){say(`  ${root.title}: does not name ${author} as its author`);return null}
   async function read(title,got){
     const parts=[],seen=new Set([title]);
     // A page's own subpages, wherever it links them (a table of contents, or the header's "next"); `direct` keeps
@@ -107,8 +114,10 @@ export async function fetchWikisource(page,author,lang='uk',say=()=>{}){
       if(direct&&rest.includes('/')||EDITORIAL.test(rest.split('/').pop()))continue;seen.add(l.title);found.push(l.title)}return found};
     async function collect(prefix,{text,links},depth){
       const kids=depth<2?take(links,prefix):[];
-      // A table of contents or a title page is mostly links; a chapter is mostly text.
-      if(kids.length&&(text.length<4000||text.length<kids.length*400)){
+      // A table of contents or a title page is mostly links; a chapter is mostly text. A printed contents' dot leaders
+      // (". . . . 12") are not text: Krymsky's Пальмове гилля has 24,000 characters of them.
+      const words=text.replace(/(?:\.\s*){3,}/g,' ').replace(/\s+/g,' ').length;
+      if(kids.length&&(words<4000||words<kids.length*400)){
         if(depth===0&&text.trim())parts.push(text.trim());// the book's own front page: title, preface or prologue
         const queue=[...kids];
         while(queue.length&&parts.length<600){const kid=queue.shift(),p=await parse(kid,lang);if(!p)continue;const g=htmlToText(p.html);
