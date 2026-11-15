@@ -25,6 +25,10 @@
 //              books once banned, burned, prosecuted or suppressed, that no other shelf holds
 //   ciphers    the Restricted Catalogue, on the case behind the lectern where the Voynich Manuscript lies open (game.js):
 //              books about ciphers, herbals and those who tried to read what could not be read, held nowhere else
+//   celsus-*  the Library of Celsus, off the Long Corridor (celsus-room.js): sophia (philosophy), episteme (lives,
+//             histories and the natural world), ennoia (the poets), arete (conduct and the fable), crypt (the book
+//             left on the sarcophagus in the vault). Its cases start from the library's own classical books: any
+//             new arrival here must be a text that is always loaded, not one of the International Wing's.
 //   dickinson-* Emily Dickinson's room, off the Long Corridor (dickinson-room.js): poems (the three series as first
 //              published), circle (Higginson and Helen Hunt Jackson), read (what she read), garden (botany and
 //              flowers), drawer (the complete Poems, found in her bureau)

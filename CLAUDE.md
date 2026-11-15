@@ -267,6 +267,27 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `?drawer`). Every line of hers (`LINES`, in the wording of the 1890s editions, which is what Gutenberg has) is checked
   against pg12242, and her letters (`LETTERS`) against Higginson's essay in pg68129, by a test; every “quotation” on a
   card must be one of them. Gutenberg has no Dickinson letters and no Single Hound.
+- The Library of Celsus (`celsus-room.js`; the court x 2500, z 9, the hall x 2500, z −6, the vault under its apse;
+  `?room=celsus`, `ephesus`, `library-of-celsus`): the library at Ephesus, through a plain marble door in the Long
+  Corridor's fifth east bay (`corridor.celsusDoor`); its way out is THE LONG CORRIDOR. The reader arrives in the court
+  before the two-storey front at dusk, the sun low in the west (a painted sky dome and one warm light; the owner's
+  choice of dusk over the Aegean noon, 15 November 2026). The front is a screen wall on z=0 with three doorways, and it
+  is solid everywhere else: `inDoorway` and the thresholds through its own metre of thickness are the only way between
+  the court and the hall, and the three steps are climbed in the doorways. Four statues stand in its lower niches —
+  Sophia, Episteme, Ennoia and Arete — and they are the room's catalogue: each has a case in the hall under her name
+  cut in Greek (Sophia west, Episteme east, Ennoia and Arete either side of the apse), stocked from the library's own
+  classical books (`GROUPS`, plus the shelves `celsus-*` in `data/new-books.js`). Every number must be one that is
+  always loaded, from game.js's core list or `data/new-books.js`: the Latin Reading Room's Boethius, Tacitus and Ovid
+  are in `data/new-books-wing.js`, fetched only near the International Wing, and came up empty here until a test
+  caught it. The hall's upper niches hold the scrolls (InstancedMeshes, out of reach); its walls are double, as they
+  were, to keep the damp off. Only the front ever survived at Ephesus, so the hall is a reconstruction and its card and
+  the arrival notice both say so; the statues there are copies too (the originals are in Vienna). The secret is the
+  vault: the hall floor is laid in four pieces round a real opening east of the apse, a stair of twelve goes down, and
+  reading the inscription on Celsus's sarcophagus leaves the library's Meditations on the lid, found for good
+  (`athenaeum-celsus-crypt`; `?crypt`). Colliders carry the floor they stand on (`block(...,'vault')`), because they
+  are flat and Arete's case fenced off the sarcophagus beneath it until they did. Two lights, the sun and the apse's
+  bronze lamp. Three ambiences: `celsus-court`, `celsus-hall`, `celsus-crypt`. Cards keep to what is attested (the
+  consulship of 92, twelve thousand scrolls, the anastylosis of 1970–78): no stories about Goths or Alexandria.
 - The Gastronomic Athenaeum (`food-history-wing.js`, hall x −780, z −420; `?room=food-history`, `food`, `gastronomy`)
   is through a walnut door, its name gilded on the glass, in the second bay of the Long Corridor's west wall
   (`corridor.foodDoor`; until 14 November 2026 it was squeezed onto the Grand Hall's west wall between the

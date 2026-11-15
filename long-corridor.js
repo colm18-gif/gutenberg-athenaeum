@@ -1,7 +1,7 @@
 // The Long Corridor: a panelled corridor behind a walnut door in the Grand Hall's east wall (x 18.72, z -24.25, between the
 // Night Conservatory's stained-glass door and The Long Road East), with Miss Havisham's stopped clock hung over the door.
 // The hall's own walls are full, so rooms that come after it open off this corridor instead: its bays are hung with doors
-// as rooms are built (and its east wall's third bay with Boullée's drawing, the way into boullee-library.js; and Emily Dickinson's door, dickinson-room.js, in the west wall's fourth bay). The first is the Gastronomic Athenaeum's (food-history-wing.js, handed `corridor`), whose door stood
+// as rooms are built (and its east wall's third bay with Boullée's drawing, the way into boullee-library.js; Emily Dickinson's door, dickinson-room.js, in the west wall's fourth bay; and the Library of Celsus's, celsus-room.js, in the east wall's fifth). The first is the Gastronomic Athenaeum's (food-history-wing.js, handed `corridor`), whose door stood
 // squeezed between the Horologist's and the Kipling case on the west wall until 14 November 2026. The empty bays are plain
 // panelling, not doors that open on nothing. Like the other rooms behind doors it is built as the reader comes near and
 // freed ~25 s after they leave; the hall side of its door stays. Two lamps of its own, marked freed with the room.
@@ -19,6 +19,8 @@
     const DICKINSON_DOOR={x:ROOM.cx-ROOM.w/2+WALL/2+.02,z:bayZ(3),yaw:Math.PI/2,bay:3,side:'west'};
     // The east wall's third bay is kept for a picture: Boullée's drawing of the library that was never built.
     const PICTURE_BAY={side:'east',bay:2};
+    // The Library of Celsus (celsus-room.js): the east wall's fifth bay, opposite nothing in particular.
+    const CELSUS_DOOR={x:ROOM.cx+ROOM.w/2-WALL/2-.02,z:bayZ(4),yaw:-Math.PI/2,bay:4,side:'east'};
     const PRELOAD=7,KEEP=25;
     const LOOK={style:'walnut',width:1.9,height:3.1};
     const through=(data,go)=>doorKit&&data.kit?doorKit.pass(data.kit,data,go):go();
@@ -60,6 +62,7 @@
         if(side===FOOD_DOOR.side&&k===FOOD_DOOR.bay)continue;if(k===0&&side==='east')continue;// the east bay by the door has the corridor's card
         if(side===DICKINSON_DOOR.side&&k===DICKINSON_DOOR.bay)continue;
         if(side===PICTURE_BAY.side&&k===PICTURE_BAY.bay)continue;// Boullée's drawing hangs there (boullee-library.js)
+        if(side===CELSUS_DOOR.side&&k===CELSUS_DOOR.bay)continue;
         const z=bayZ(k);box(.05,2.2,2.6,panel,x+s*.18,2.5,z,root);box(.03,2,2.4,plaster,x+s*.2,2.5,z,root)}
       for(let k=1;k<BAYS;k++){const z=z1-k*BAY;for(const [x,s] of [[x0,1],[x1,-1]]){box(.08,.08,.22,brass,x+s*.33,2.75,z,root);add(own(new THREE.SphereGeometry(.09,10,8)),glow,x+s*.46,2.85,z,root)}}
       // A long runner down the middle of the floor.
@@ -127,7 +130,7 @@
       else if(root&&t-lastNeeded>KEEP)unload();
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,activate,unload,standBefore,door:DOOR,room:ROOM,foodDoor:FOOD_DOOR,pictureBay:PICTURE_BAY,dickinsonDoor:DICKINSON_DOOR,bayZ,bays:BAYS,
+    return {contains,floorAt,allowed,interact,update,enter,activate,unload,standBefore,door:DOOR,room:ROOM,foodDoor:FOOD_DOOR,pictureBay:PICTURE_BAY,dickinsonDoor:DICKINSON_DOOR,celsusDoor:CELSUS_DOOR,bayZ,bays:BAYS,
       get built(){return !!root},zoneAt:(x,z)=>contains(x,z)?'long-corridor':null};
   };
 })();
