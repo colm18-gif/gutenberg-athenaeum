@@ -15,6 +15,8 @@
     const BAY=4,BAYS=6,bayZ=k=>ROOM.cz+ROOM.d/2-BAY/2-k*BAY;
     // The Gastronomic Athenaeum's door: in the west wall's second bay, ahead and to the left of a reader coming in.
     const WALL=.3,FOOD_DOOR={x:ROOM.cx-ROOM.w/2+WALL/2+.02,z:bayZ(1),yaw:Math.PI/2,bay:1,side:'west'};
+    // Emily Dickinson's room (dickinson-room.js): the west wall's fourth bay.
+    const DICKINSON_DOOR={x:ROOM.cx-ROOM.w/2+WALL/2+.02,z:bayZ(3),yaw:Math.PI/2,bay:3,side:'west'};
     // The east wall's third bay is kept for a picture: Boullée's drawing of the library that was never built.
     const PICTURE_BAY={side:'east',bay:2};
     const PRELOAD=7,KEEP=25;
@@ -56,6 +58,7 @@
       const glow=own(new THREE.MeshStandardMaterial({color:0xffd9a0,emissive:0xffb35c,emissiveIntensity:1.2,roughness:.4}));
       for(let k=0;k<BAYS;k++)for(const [x,s,side] of [[x0,1,'west'],[x1,-1,'east']]){
         if(side===FOOD_DOOR.side&&k===FOOD_DOOR.bay)continue;if(k===0&&side==='east')continue;// the east bay by the door has the corridor's card
+        if(side===DICKINSON_DOOR.side&&k===DICKINSON_DOOR.bay)continue;
         if(side===PICTURE_BAY.side&&k===PICTURE_BAY.bay)continue;// Boullée's drawing hangs there (boullee-library.js)
         const z=bayZ(k);box(.05,2.2,2.6,panel,x+s*.18,2.5,z,root);box(.03,2,2.4,plaster,x+s*.2,2.5,z,root)}
       for(let k=1;k<BAYS;k++){const z=z1-k*BAY;for(const [x,s] of [[x0,1],[x1,-1]]){box(.08,.08,.22,brass,x+s*.33,2.75,z,root);add(own(new THREE.SphereGeometry(.09,10,8)),glow,x+s*.46,2.85,z,root)}}
@@ -124,7 +127,7 @@
       else if(root&&t-lastNeeded>KEEP)unload();
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,activate,unload,standBefore,door:DOOR,room:ROOM,foodDoor:FOOD_DOOR,pictureBay:PICTURE_BAY,bayZ,bays:BAYS,
+    return {contains,floorAt,allowed,interact,update,enter,activate,unload,standBefore,door:DOOR,room:ROOM,foodDoor:FOOD_DOOR,pictureBay:PICTURE_BAY,dickinsonDoor:DICKINSON_DOOR,bayZ,bays:BAYS,
       get built(){return !!root},zoneAt:(x,z)=>contains(x,z)?'long-corridor':null};
   };
 })();
