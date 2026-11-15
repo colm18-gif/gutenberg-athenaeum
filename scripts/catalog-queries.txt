@@ -1,20 +1,24 @@
-# Emily Dickinson's room: her poems and letters, her circle, what she read, and her herbarium
-Poems|Letters|Single Hound ; Dickinson ; en
-Emily Dickinson ; ; en
- ; Dickinson, Emily ; en
- ; Higginson, Thomas Wentworth ; en
- ; Jackson, Helen Hunt ; en
- ; Todd, Mabel Loomis ; en
- ; Bianchi ; en
-Aurora Leigh|Sonnets from the Portuguese ; Browning ; en
-Poems ; Brontë|Bronte ; en
-Reveries of a Bachelor|Kavanagh|Representative Men ; ; en
-Botany|Flora|Wild Flowers|How to Know the Wild Flowers|Familiar Lectures ; ; en
-Herbarium|Language of Flowers|Flowers and their ; ; en
-Amherst ; ; en
-commons? Emily Dickinson herbarium
-commons? Dickinson herbarium Houghton
-commons? Emily Dickinson daguerreotype
-commons? Emily Dickinson manuscript poem
-commons? Emily Dickinson fascicle
-commons? Dickinson Homestead Amherst
+# The Ukrainian Reading Room: writers not yet on its shelves, and more of Lesia Ukrainka and Skovoroda
+ws Автор:Степан Руданський
+ws Автор:Юрій Федькович
+ws Автор:Олена Пчілка
+ws Автор:Наталія Кобринська
+ws Автор:Марко Черемшина
+ws Автор:Осип Маковей
+ws Автор:Агатангел Кримський
+ws Автор:Олександр Олесь
+ws Автор:Богдан-Ігор Антонич
+ws Автор:Михайло Семенко
+ws Автор:Леся Українка
+ws Автор:Григорій Сковорода
+ws Автор:Пантелеймон Куліш
+ws Автор:Микола Вороний
+ws Автор:Архип Тесленко
+ws? Руданський співомовки
+ws? Федькович Довбуш
+ws? Черемшина Карби
+ws? Олесь З журбою радість обнялась
+ws? Антонич Привітання життя
+ws? Кримський Пальмове гілля
+ws? Пчілка оповідання
+ws? Семенко Кобзар
