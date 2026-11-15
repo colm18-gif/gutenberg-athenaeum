@@ -69,6 +69,46 @@
   "licence": "Public domain",
   "description": "H. I. Narbut. An illustration \"Ukrainian alphabet\""
  },
+ "dickinson-daguerreotype": {
+  "file": "Black-white photograph of Emily Dickinson2.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Black-white_photograph_of_Emily_Dickinson2.jpg",
+  "width": 1733,
+  "height": 2048,
+  "artist": "Unknown author Unknown author",
+  "date": "between 1846 and 1847 date QS:P,+1846-00-00T00:00:00Z/8,P1319,+1846-00-00T00:00:",
+  "licence": "Public domain",
+  "description": "Black and white daguerrotype of Emily Dickinson , c. early 1847"
+ },
+ "dickinson-alabaster": {
+  "file": "Emily Dickinson, Amherst, Mass., autograph manuscript poem, Safe in their Alabaster Chamber, 1862, from the Digital Commonwealth - 1 commonwealth kh04mv67t.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Emily_Dickinson,_Amherst,_Mass.,_autograph_manuscript_poem,_Safe_in_their_Alabaster_Chamber,_1862,_from_the_Digital_Commonwealth_-_1_commonwealth_kh04mv67t.jpg",
+  "width": 1298,
+  "height": 2048,
+  "artist": "Emily Dickinson",
+  "date": "1862",
+  "licence": "Public domain",
+  "description": "Emily Dickinson, Amherst, Mass., autograph manuscript poem, Safe in their Alabaster Chamber, 1862, from the Digital Commonwealth - 1 commonwealth kh04mv67t."
+ },
+ "dickinson-wild-nights": {
+  "file": "Emily Dickinson \"Wild nights\" manuscript.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Emily_Dickinson_%22Wild_nights%22_manuscript.jpg",
+  "width": 1324,
+  "height": 1872,
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
+ "dickinson-liquor": {
+  "file": "Emily Dickinson- I taste a liquor never brewed - Houghton Library (72a), J214, Fr207.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Emily_Dickinson-_I_taste_a_liquor_never_brewed_-_Houghton_Library_(72a),_J214,_Fr207.jpg",
+  "width": 1109,
+  "height": 1779,
+  "artist": "Emily Dickinson",
+  "date": "1861",
+  "licence": "Public domain",
+  "description": "Manuscript copy of Emily Dickinson poem I taste a liquor never brewed . The source image was straightened and cropped of its black border."
+ },
  "kotyku-score": {
   "file": "Котику сіренький.GIF",
   "page": "https://commons.wikimedia.org/wiki/File:%D0%9A%D0%BE%D1%82%D0%B8%D0%BA%D1%83_%D1%81%D1%96%D1%80%D0%B5%D0%BD%D1%8C%D0%BA%D0%B8%D0%B9.GIF",

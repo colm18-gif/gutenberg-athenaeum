@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-11-13",
+ "updated": "2026-11-15",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -1702,6 +1702,70 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "The Spell of the Yukon": {
    "id": 207,
    "words": 13467
+  },
+  "Poems by Emily Dickinson, Series One": {
+   "id": 2678,
+   "words": 8575
+  },
+  "Poems by Emily Dickinson, Series Two": {
+   "id": 2679,
+   "words": 12954
+  },
+  "Poems by Emily Dickinson, Third Series": {
+   "id": 12241,
+   "words": 9409
+  },
+  "Poems by Emily Dickinson, Three Series, Complete": {
+   "id": 12242,
+   "words": 30911
+  },
+  "Carlyle’s Laugh, and Other Surprises": {
+   "id": 68129,
+   "words": 71413
+  },
+  "Army Life in a Black Regiment": {
+   "id": 6764,
+   "words": 87087
+  },
+  "Women and the Alphabet": {
+   "id": 13474,
+   "words": 79933
+  },
+  "Ramona": {
+   "id": 2802,
+   "words": 154836
+  },
+  "Mercy Philbrick’s Choice": {
+   "id": 10519,
+   "words": 80235
+  },
+  "A Calendar of Sonnets": {
+   "id": 9825,
+   "words": 1352
+  },
+  "Aurora Leigh": {
+   "id": 56621,
+   "words": 88324
+  },
+  "Poems by Currer, Ellis, and Acton Bell": {
+   "id": 1019,
+   "words": 31410
+  },
+  "Reveries of a Bachelor": {
+   "id": 62823,
+   "words": 62905
+  },
+  "The Elements of Botany": {
+   "id": 33757,
+   "words": 84720
+  },
+  "The Manual of the Botany of the Northern United States": {
+   "id": 39423,
+   "words": 352675
+  },
+  "The Language of Flowers": {
+   "id": 71779,
+   "words": 51403
   },
   "The Battle of the Books": {
    "id": 623,

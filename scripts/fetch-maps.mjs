@@ -50,6 +50,13 @@ export const PICTURES = [
   { key: 'kids-narbut-a', file: 'Нарбут Г.І. Літера А 1919 р.jpg', minSize: 450 },
   { key: 'kids-narbut-z', file: 'Г.Нарбут літера З Українська абетка.jpg', minSize: 450 },
   { key: 'kids-narbut-y', file: 'Azbuka Narbuta - И.jpg', minSize: 450 },
+  // Emily Dickinson's room (dickinson-room.js): the daguerreotype of about 1847, the only authenticated photograph of
+  // her, and three poems in her own hand (Safe in their Alabaster Chambers as she sent it to Higginson in 1862, now in
+  // the Boston Public Library; Wild Nights; I taste a liquor never brewed, at Harvard's Houghton Library).
+  { key: 'dickinson-daguerreotype', files: ['Black-white photograph of Emily Dickinson2.jpg', 'Emily Dickinson daguerreotype (Restored).jpg'], minSize: 700 },
+  { key: 'dickinson-alabaster', file: 'Emily Dickinson, Amherst, Mass., autograph manuscript poem, Safe in their Alabaster Chamber, 1862, from the Digital Commonwealth - 1 commonwealth kh04mv67t.jpg' },
+  { key: 'dickinson-wild-nights', file: 'Emily Dickinson "Wild nights" manuscript.jpg' },
+  { key: 'dickinson-liquor', file: 'Emily Dickinson- I taste a liquor never brewed - Houghton Library (72a), J214, Fr207.jpg' },
   // The score of the lullaby «Котику сіренький», read to give the bandura its tune when Clio sleeps in the room (not hung).
   { key: 'kotyku-score', file: 'Котику сіренький.GIF', search: 'Котику сіренький', gif: true }
 ];

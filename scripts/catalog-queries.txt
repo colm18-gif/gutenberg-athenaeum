@@ -1,13 +1,20 @@
-# The dining room above the kitchen: dining, dinner-giving, etiquette and the Victorian table
-Aristology|Art of Dining ; ; en
-Book of the Table|Kettner ; ; en
-What Shall We Have for Dinner|Clutterbuck ; ; en
-Habits of Good Society|Manners and Rules|Good Society ; ; en
-Etiquette ; ; en
-Book of Snobs ; Thackeray ; en
-Cranford ; Gaskell ; en
-Dinner|Dining ; ; en
-Our Mutual Friend ; Dickens ; en
-Table Traits|Table-Talk|Table Talk ; ; en
-Epicure|Gourmand|Almanach des Gourmands ; ; en
-Servants' Hall|Below Stairs ; ; en
+# Emily Dickinson's room: her poems and letters, her circle, what she read, and her herbarium
+Poems|Letters|Single Hound ; Dickinson ; en
+Emily Dickinson ; ; en
+ ; Dickinson, Emily ; en
+ ; Higginson, Thomas Wentworth ; en
+ ; Jackson, Helen Hunt ; en
+ ; Todd, Mabel Loomis ; en
+ ; Bianchi ; en
+Aurora Leigh|Sonnets from the Portuguese ; Browning ; en
+Poems ; Brontë|Bronte ; en
+Reveries of a Bachelor|Kavanagh|Representative Men ; ; en
+Botany|Flora|Wild Flowers|How to Know the Wild Flowers|Familiar Lectures ; ; en
+Herbarium|Language of Flowers|Flowers and their ; ; en
+Amherst ; ; en
+commons? Emily Dickinson herbarium
+commons? Dickinson herbarium Houghton
+commons? Emily Dickinson daguerreotype
+commons? Emily Dickinson manuscript poem
+commons? Emily Dickinson fascicle
+commons? Dickinson Homestead Amherst
