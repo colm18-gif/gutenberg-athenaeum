@@ -279,8 +279,13 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   classical books (`GROUPS`, plus the shelves `celsus-*` in `data/new-books.js`). Every number must be one that is
   always loaded, from game.js's core list or `data/new-books.js`: the Latin Reading Room's Boethius, Tacitus and Ovid
   are in `data/new-books-wing.js`, fetched only near the International Wing, and came up empty here until a test
-  caught it. The hall's upper niches hold the scrolls (InstancedMeshes, out of reach); its walls are double, as they
-  were, to keep the damp off. Only the front ever survived at Ephesus, so the hall is a reconstruction and its card and
+  caught it. The hall's upper niches hold the scrolls (InstancedMeshes, out of reach, with coloured tags); its walls are double, as they
+  were, to keep the damp off. Dressed (16 November 2026, to be more interesting to look at): fluted columns with
+  acanthus capitals, Celsus's name on the lintel, a garland frieze, triangular pediments, draped statues (`figure`, a
+  lathe) standing between each pair of columns as at Ephesus; in the court, paving, ashlar walls, cypresses, two torches
+  and a marble bench; in the hall, opus sectile, coloured marble panelling, a coffered ceiling, pilasters, framed
+  niches lined with timber (`boxes`, one InstancedMesh a material), a candelabrum for the lamp and a reading table with an
+  open roll. The bench and the table's two benches are seats. Flames are drawn and flicker (`flames`); no light was added. Only the front ever survived at Ephesus, so the hall is a reconstruction and its card and
   the arrival notice both say so; the statues there are copies too (the originals are in Vienna). The secret is the
   vault: the hall floor is laid in four pieces round a real opening east of the apse, a stair of twelve goes down, and
   reading the inscription on Celsus's sarcophagus leaves the library's Meditations on the lid, found for good
