@@ -45,7 +45,8 @@ test('it loads after the corridor and before game.js, and is wired into the libr
   for(const zone of ['celsus-court','celsus-hall','celsus-crypt'])assert.ok(ambience.includes(`'${zone}':{beds:`),`${zone} has an ambience`);
   assert.match(source,/if\(inside\|\|near&&\(root\|\|window\.libraryMayBuild\?\.\(\)!==false\)\)activate\(\)/,'it asks before building ahead of the reader');
   assert.equal((source.match(/new THREE\.PointLight/g)||[]).length,2,'two lights: the sun in the court and the lamp in the apse');
-  assert.equal((source.match(/new THREE\.InstancedMesh/g)||[]).length,3,'the columns, their capitals and the scrolls are instanced');
+  assert.ok((source.match(/new THREE\.InstancedMesh/g)||[]).length>=3,'the columns, their capitals and the scrolls are instanced');
+  assert.match(source,/function boxes\(list,material/,'and the niches\' frames, linings and shelves and the pilasters go in bulk');
 });
 
 test('its door is in the Long Corridor’s fifth east bay, on bare wall, and stays when the room is freed',()=>{
