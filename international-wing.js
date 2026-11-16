@@ -52,7 +52,13 @@
   // framed on the east wall, between Kateryna and the arch, and opens in a dialog with a real link (as the Unwritten does).
   const CHYTOMO={title:'«В Ірландії бібліотекар створив віртуальну Українську читальню»',date:'10.11.2026',
     card:'Читомо, видання про книжки й читання, написало про цю читальню 10 листопада 2026 року. (Chytomo, the Ukrainian magazine about books and reading, wrote about this room on 10 November 2026: “In Ireland, a librarian has created a virtual Ukrainian Reading Room”.)',
-    url:'https://chytomo.com/v-irlandii-bibliotekar-stvoryv-virtualnu-ukrainsku-chytalniu/'};
+    url:'https://chytomo.com/v-irlandii-bibliotekar-stvoryv-virtualnu-ukrainsku-chytalniu/',
+    en:{url:'https://chytomo.com/en/irish-librarian-creates-virtual-ukrainian-reading-room-with-literary-classics-and-memorial-shelves/',label:'In English · Англійською'}};
+  // Ukrinform, Ukraine's national news agency, took up the story in its Diaspora pages in November 2026: framed on the east
+  // wall as Chytomo's is, on the other side of the arch, between the rushnyk and Shevchenko's drawing of Raim.
+  const UKRINFORM={title:'«В Ірландії бібліотекар створив віртуальну Українську читальню»',date:'ЛИСТОПАД 2026',
+    card:'Національне інформаційне агентство України «Укрінформ» написало про цю читальню в листопаді 2026 року. (Ukrinform, Ukraine’s national news agency, wrote about this room in November 2026: “In Ireland, a librarian has created a virtual Ukrainian Reading Room”.)',
+    url:'https://ukrinform.ua/rubric-diaspora/4185152-v-irlandii-bibliotekar-stvoriv-virtualnu-ukrainsku-citalnu.html'};
   // The children's room, Дитяча кімната: through a painted arch in the Ukrainian Reading Room's east wall, the two rooms
   // sharing that wall, so the room beyond, lit warmly, is seen from anywhere in the reading room. Its two low shelves:
   // the youngest readers' tales (CHILDREN, kept off the main racks) and, for older readers, stories from the room's own
@@ -952,19 +958,24 @@
         const data={type:'intl-sopilka',title:'Сопілка',author:'Сопілка Лукаша з «Лісової пісні» Лесі Українки (1911). Заграйте на ній, і почнеться весна в старому лісі на Волині. (Lukash’s reed pipe from Lesia Ukrainka’s Forest Song. Play it, and spring begins in an old forest in Volyn.)',action:'PLAY'};
         for(const part of [pipe,linen,sign])mark(part,data)}
 
-      // Chytomo's article about the room, cut out and framed on the east wall between Kateryna and the arch's painted jamb,
-      // clear of the mitten's cut-outs below. Its card opens the article.
-      {const pz=cz-3.25,py=2.35,paper=own(canvasTexture((c,W,H)=>{c.fillStyle='#f1ead8';c.fillRect(0,0,W,H);c.fillStyle='#1b1b1b';c.textAlign='left';
-          c.font=`bold ${Math.round(W*.13)}px Georgia`;c.fillText('Читомо',W*.08,H*.13);c.fillRect(W*.08,H*.16,W*.84,3);
-          c.font=`${Math.round(W*.045)}px Georgia`;c.fillStyle='#b3202a';c.fillText('ЕКСКЛЮЗИВ · '+CHYTOMO.date,W*.08,H*.215);
+      // The press about the room, cut out and framed on the east wall either side of the arch, clear of the mitten's
+      // cut-outs below: Chytomo's between Kateryna and the arch's painted jamb, Ukrinform's between the jamb and the drawing
+      // of Raim. Each card opens its article (Chytomo's in Ukrainian or in English).
+      const clipping=(name,kicker,title)=>own(canvasTexture((c,W,H)=>{c.fillStyle='#f1ead8';c.fillRect(0,0,W,H);c.fillStyle='#1b1b1b';c.textAlign='left';
+          c.font=`bold ${Math.round(W*.13)}px Georgia`;c.fillText(name,W*.08,H*.13);c.fillRect(W*.08,H*.16,W*.84,3);
+          c.font=`${Math.round(W*.045)}px Georgia`;c.fillStyle='#b3202a';c.fillText(kicker,W*.08,H*.215);
           c.fillStyle='#1b1b1b';c.font=`bold ${Math.round(W*.068)}px Georgia`;
-          const words=CHYTOMO.title.replace(/[«»]/g,'').split(' '),lines=[];let line='';for(const w of words){const t=line?line+' '+w:w;if(c.measureText(t).width>W*.84){lines.push(line);line=w}else line=t}lines.push(line);
+          const words=title.replace(/[«»]/g,'').split(' '),lines=[];let line='';for(const w of words){const t=line?line+' '+w:w;if(c.measureText(t).width>W*.84){lines.push(line);line=w}else line=t}lines.push(line);
           lines.forEach((l,i)=>c.fillText(l,W*.08,H*.3+i*H*.065));
           const top=H*.3+lines.length*H*.065+H*.02;c.fillStyle='#8a8478';for(let y=top;y<H*.94;y+=H*.022)for(const x0 of [.08,.52])c.fillRect(W*x0,y,W*.4*(y%7<5?1:.7),3)},512,720));
+      const framed=(paper,pz,link)=>{const py=2.35;
         const face=add(own(new THREE.PlaneGeometry(.66,.93)),own(new THREE.MeshStandardMaterial({map:paper,roughness:.9})),EX-.03,py,pz,root);face.rotation.y=-Math.PI/2;
         const frame=add(own(new THREE.BoxGeometry(.04,1.07,.8)),MAT.darkWood,EX+.0,py,pz,root);
-        const link={type:'intl-link',title:CHYTOMO.title,author:CHYTOMO.card,url:CHYTOMO.url,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:'Читати на Читомо · Read it on Chytomo',action:'READ'};
-        mark(face,link);mark(frame,{...link})}
+        mark(face,link);mark(frame,{...link})};
+      {const link={type:'intl-link',title:CHYTOMO.title,author:CHYTOMO.card,url:CHYTOMO.url,also:CHYTOMO.en,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:'Читати на Читомо · Read it on Chytomo',action:'READ'};
+        framed(clipping('Читомо','ЕКСКЛЮЗИВ · '+CHYTOMO.date,CHYTOMO.title),cz-3.25,link)}
+      {const link={type:'intl-link',title:UKRINFORM.title,author:UKRINFORM.card,url:UKRINFORM.url,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:'Читати в Укрінформі · Read it on Ukrinform',action:'READ'};
+        framed(clipping('Укрінформ','ДІАСПОРА · '+UKRINFORM.date,UKRINFORM.title),cz+3.25,link)}
 
       // A trembita, the Hutsuls' long wooden horn bound in birch bark, standing in the north-east corner between the racks'
       // end and Kateryna, under a small plaque: blow it, and the reader is on the polonyna of Kotsiubynsky's Shadows of
@@ -1216,7 +1227,7 @@
         showNotice(`Горошина! ${KOTYHOROSHKO.pea} А в кутку тепер стоїть його булава. (And in the corner now stands his mace.)`,16);
         analytics?.track('Secret Found',{secret:'kotyhoroshko-pea'});return true}
       // A card that opens a page elsewhere: in a new tab, leaving the library where it was.
-      if(data.type==='intl-link'){if(openLink)openLink({kicker:data.kicker||'',title:data.title,text:data.author,url:data.url,label:data.label||'Read more'});else showNotice(`${data.title}: ${data.author}`,12);return true}
+      if(data.type==='intl-link'){if(openLink)openLink({kicker:data.kicker||'',title:data.title,text:data.author,url:data.url,label:data.label||'Read more',also:data.also});else showNotice(`${data.title}: ${data.author}`,12);return true}
       if(data.type==='intl-mitten'){const room=built.ukrainian;if(!room?.mittenNext)return true;const {kind,words}=room.mittenNext();
         if(tone){if(kind==='dog')for(const [i,f] of [196,196,174.6].entries())tone(f,i*.22,.18,.08,'piano');else tone(880+Math.random()*220,0,.12,.03,'bandura')}
         showNotice(words,kind==='dog'||kind==='bear'?14:9);

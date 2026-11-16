@@ -1359,8 +1359,8 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // own click on it (a tab opened from the game loop, after the walk up to the card, is often blocked). Shares the
     // support dialog's look and its open, Escape and Tab handling.
     let supportDialog='#support';
-    function openLinkCard({kicker='',title='',text='',url,label='Read more',note='Opens in a new tab.'}){if(!url)return;supportOpen=true;supportDialog='#linkCard';dragging=false;for(const k in keys)keys[k]=false;player.vel.set(0,0,0);
-      $('#linkCardKicker').textContent=kicker;$('#linkCardTitle').textContent=title;$('#linkCardText').textContent=text;$('#linkCardGo').href=url;$('#linkCardGo').textContent=label;$('#linkCardNote').textContent=note;
+    function openLinkCard({kicker='',title='',text='',url,label='Read more',note='Opens in a new tab.',also=null}){if(!url)return;supportOpen=true;supportDialog='#linkCard';dragging=false;for(const k in keys)keys[k]=false;player.vel.set(0,0,0);
+      $('#linkCardKicker').textContent=kicker;$('#linkCardTitle').textContent=title;$('#linkCardText').textContent=text;$('#linkCardGo').href=url;$('#linkCardGo').textContent=label;const also$=$('#linkCardAlso');also$.classList.toggle('hidden',!also?.url);if(also?.url){also$.href=also.url;also$.textContent=also.label||'Read more'}$('#linkCardNote').textContent=note;
       $('#linkCard').classList.remove('hidden');document.exitPointerLock?.();$('#linkCardGo').focus()}
     $('#closeLinkCard').addEventListener('click',closeSupport);
     $('#supportStripe').href=SUPPORT_URL;$('#supportStripe').addEventListener('click',()=>window.libraryAnalytics?.track('Stripe Support Opened'));$('#closeSupport').addEventListener('click',closeSupport);
