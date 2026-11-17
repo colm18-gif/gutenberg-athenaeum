@@ -59,6 +59,10 @@
       // A single louder snap, as a lump of coal splits.
       // A bullfrog's trump from the shore: a low, rough tr-r-r-oonk, a buzz of quick pulses falling into a hollow note.
       frog:()=>buffer(.9,(d,n)=>{let phase=0;for(let i=0;i<n;i++){const t=i/sr,f=t<.45?150-30*t:118,buzz=t<.45?(Math.sin(t*2*Math.PI*38)>0?1:.25):1;phase+=2*Math.PI*f/sr;d[i]=(Math.sin(phase)+.35*Math.sin(phase*2))*buzz*Math.sin(Math.PI*Math.min(1,t/.9))*.5}}),
+      // A Caribbean whistling frog after dark: two quick, clear notes, the second higher and sliding up, ko-KEE.
+      treefrog:()=>buffer(.42,(d,n)=>{let phase=0;for(let i=0;i<n;i++){const t=i/sr,first=t<.09,u=first?t/.09:(t-.13)/.2,on=t<.09||(t>=.13&&t<.33)?Math.sin(Math.PI*Math.min(1,Math.max(0,u))):0,f=first?2300:2600+900*u;phase+=2*Math.PI*f/sr;d[i]=Math.sin(phase)*on*.35}}),
+      // The mountain chicken's call: a deep, hollow whoop, rising and falling.
+      whoop:()=>buffer(.7,(d,n)=>{let phase=0;for(let i=0;i<n;i++){const t=i/sr,u=t/.7,f=170+110*Math.sin(Math.PI*u);phase+=2*Math.PI*f/sr;d[i]=(Math.sin(phase)+.3*Math.sin(phase*2))*Math.pow(Math.sin(Math.PI*u),1.5)*.45}}),
       // A whippoorwill: three quick whistled notes, whip-poor-will, the last rising.
       whippoorwill:()=>buffer(1.1,(d,n)=>{let phase=0;for(let i=0;i<n;i++){const t=i/sr,k=t<.18?0:t<.42?1:t<.9?2:3,u=k===0?t/.18:k===1?(t-.18)/.24:k===2?(t-.42)/.48:1,f=k===0?1700+600*u:k===1?1500-200*u:2000+900*u*u,on=k<3?Math.sin(Math.PI*u):0;phase+=2*Math.PI*f/sr;d[i]=Math.sin(phase)*on*.42}}),
       // A loon's wail across the water: a long note that climbs, holds and falls back, with a tremble in it.
@@ -169,6 +173,8 @@
       'celsus-hall':{beds:[['air',.035]],events:[['rustle',.5,.03],['creak',.2,.02]]},
       'celsus-crypt':{beds:[['air',.025],['rumble',.02]],events:[['drip',4,.03]]},
       // Emily Dickinson's room: a quiet upstairs bedroom, a clock somewhere in the house, a bird in the garden.
+      // Montserrat at night: the whistling frogs, insects, the sea far below, and now and then the mountain chicken's whoop.
+      montserrat:{beds:[['insects',.045],['waves',.02],['wind',.015]],events:[['treefrog',14,.03],['whoop',.15,.03],['creak',.2,.02]]},
       'dickinson-room':{beds:[['air',.02]],ticks:[[1,'tock',.014]],events:[['bird',.5,.03],['creak',.3,.025]]},
       // Scrooge's chambers: a very low fire, a clock on the stairs, the old house creaking in the fog.
       'scrooge-room':{beds:[['fire',.05],['air',.03]],ticks:[[1.2,'tock',.016]],events:[['crackle',14,.05],['creak',.5,.035]]},

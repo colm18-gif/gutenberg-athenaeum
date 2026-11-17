@@ -282,6 +282,33 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Marley's head on every tile; then The Chimes (`scrooge-chimes`) lies on the table, found for good
   (`athenaeum-scrooge-chimes`; `?chimes`). Every word of Dickens (`QUOTES`) is checked against `texts/pg46.txt` by a test,
   and every “quotation” on a card must be one of them. Eerie, not frightening: Marley is never seen, only his face.
+- Ships in bottles (`ships-in-bottles.js`; `?room=ships-in-bottles`, `bottles`): a mahogany shelf in the Long Corridor's
+  fourth east bay (`corridor.bottleBay`, between Boullée's drawing and Celsus), built at startup and kept, under a brass
+  plate, SHIPS IN BOTTLES. Each bottle lies in a cradle with a ship under sail for an island; looking in goes to that
+  island, and a bottle there brings the reader back to stand before the shelf (`standBefore(key)`). Islands hand the
+  shelf their bottle with `add` (four slots); only bottles that lead somewhere are on it. The owner's choice of a way in
+  for small places nobody expects to find (17 November 2026); Pitcairn and Samoa have the strongest books for the next.
+- Montserrat (`montserrat-room.js`, the house x 2600, z 600, a verandah to the south; `?room=montserrat`, `emerald-isle`,
+  `plymouth`, `soufriere`): the first bottle. A timber house in the north of the island at night; the verandah looks south
+  over the Centre Hills to the Soufrière Hills, the dome glowing and its plume drifting west, the ash fan running down
+  to Plymouth (painted inside a half cylinder with a dome of stars and a dark hillside below the rail; the dome's glow
+  is an additive patch that breathes; the eye's height is the horizon). One light, the lamp on the table. The Emerald
+  Isle of the Caribbean: its cards (`CARDS`) keep to what is attested — settled from St Kitts in 1632, Irish Catholics
+  after, mostly Irish among its Europeans by the 1670s, Erin with her harp and cross on the flag since 1909 (shown on
+  a 1929 penny stamp, `assets/pictures/montserrat-stamp`), St Patrick's Day a holiday that also remembers the rising
+  planned for 17 March 1768 (a plaque with a candle, no game). Indentured servants were bound for years; the enslaved
+  for life: a test keeps the "Irish slaves" myth off the cards, the notes and the source. Gutenberg has no book about
+  the island, so the shelves are the Caribbean around it: `montserrat-voices` (after the library's own Equiano and
+  Seacole, `OWN`), `montserrat-islands` and `montserrat-travellers` (Trollope, Froude, Kingsley, with notes that say
+  what they were; Froudacity answers Froude across the room). Equiano bought his freedom here on 10 July 1766: his deed
+  hangs on the north wall as his book prints it (`MANUMISSION`), and his words (`EQUIANO`, including his climb of the
+  hot springs above Plymouth) are checked against pg15399 by a test; every “quotation” on a card must be one of them.
+  Framed: the Admiralty chart of 1869, the oriole plate from The Ibis of 1882 (credited to the plate, not to Keulemans
+  as Commons has it: the lithograph is signed J. Smit), the stamp, and a photograph of the hills on the verandah's
+  west wall. Two chairs at the table and the rocking chair are seats. The secret: something whoops now and then among
+  the potted ferns at the verandah's west end (`tone`, flute); looking there finds the mountain chicken, found for good
+  (`athenaeum-montserrat-mountain-chicken`; `?mountainchicken`). Whistling frogs and the whoop are in
+  `room-ambience.js` (`treefrog`, `whoop`). Built ahead while the reader stands at the shelf.
 - The Library of Celsus (`celsus-room.js`; the court x 2500, z 9, the hall x 2500, z −6, the vault under its apse;
   `?room=celsus`, `ephesus`, `library-of-celsus`): the library at Ephesus, through a plain marble door in the Long
   Corridor's fifth east bay (`corridor.celsusDoor`); its way out is THE LONG CORRIDOR. The reader arrives in the court
@@ -774,7 +801,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
-  daily-room, long-corridor, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
+  daily-room, long-corridor, ships-in-bottles, montserrat, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.

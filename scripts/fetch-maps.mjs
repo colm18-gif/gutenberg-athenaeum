@@ -60,8 +60,8 @@ export const PICTURES = [
   // The score of the lullaby «Котику сіренький», read to give the bandura its tune when Clio sleeps in the room (not hung).
   { key: 'kotyku-score', file: 'Котику сіренький.GIF', search: 'Котику сіренький', gif: true },
   // Montserrat (montserrat-room.js), in a bottle on the Long Corridor's shelf: the Admiralty's chart of the island of
-  // 1869, a stamp of 1929 (to be looked at: does it show Erin and her harp?), Keulemans's painting of the Montserrat
-  // oriole for its first description in 1882, the mountain chicken, and the Soufrière Hills. All public domain.
+  // 1869, a penny stamp of 1929 with Erin, her cross and her harp beside George V (looked at), the plate of the Montserrat
+  // oriole from The Ibis of 1882, the mountain chicken, and the Soufrière Hills. All public domain.
   { key: 'montserrat-chart', file: 'Admiralty Chart No 254 Montserrat, Published 1869.jpg' },
   { key: 'montserrat-stamp', file: 'Stamp Montserrat 1929 1p.jpg', minSize: 450 },
   { key: 'montserrat-oriole', file: 'IcterusOberiKeulemans.jpg' },
