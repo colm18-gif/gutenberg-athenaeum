@@ -287,7 +287,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   plate, SHIPS IN BOTTLES. Each bottle lies in a cradle with a ship under sail for an island; looking in goes to that
   island, and a bottle there brings the reader back to stand before the shelf (`standBefore(key)`). Islands hand the
   shelf their bottle with `add` (four slots); only bottles that lead somewhere are on it. The owner's choice of a way in
-  for small places nobody expects to find (17 November 2026); Pitcairn and Samoa have the strongest books for the next.
+  for small places nobody expects to find (17 November 2026). Montserrat is the first bottle, Pitcairn the second; Samoa has
+  the strongest books for the next.
 - Montserrat (`montserrat-room.js`, the house x 2600, z 600, a verandah to the south; `?room=montserrat`, `emerald-isle`,
   `plymouth`, `soufriere`): the first bottle. A timber house in the north of the island at night; the verandah looks south
   over the Centre Hills to the Soufrière Hills, the dome glowing and its plume drifting west, the ash fan running down
@@ -309,6 +310,27 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   the potted ferns at the verandah's west end (`tone`, flute); looking there finds the mountain chicken, found for good
   (`athenaeum-montserrat-mountain-chicken`; `?mountainchicken`). Whistling frogs and the whoop are in
   `room-ambience.js` (`treefrog`, `whoop`). Built ahead while the reader stands at the shelf.
+- Pitcairn Island (`pitcairn-island.js`, the square x 2600, z 900; `?room=pitcairn`, `adamstown`, `bounty`, `sailho`):
+  the second bottle (the Bounty under sail for a steep green island). The square at Adamstown at dawn, open ground
+  walled on its south edge above Bounty Bay: the public hall on its north side (open-fronted, white ceiling, the
+  shelves and pictures, a long table with two benches that are seats and the bottle home), the church to the east
+  (hollow, dim inside, the Bounty's Bible under glass by its open door), the bell under its own roof and the
+  Bounty's anchor on its plinth to the west, palms. A painted ring all round (the dawn in the east, the island rising
+  behind, the bay below with its landing and boat sheds), a dome of sky, and the ring's foot far below so nothing of
+  the library shows under the bay. One light, the sun, while it is built. Shelves `pitcairn-island` (headed by
+  Rosalind Amelia Young's history, the only book here by an islander), `pitcairn-bounty` (Bligh's two accounts, the
+  Pandora) and `pitcairn-seas` (Cook's first journal, O'Brien); Barrow is in the first. Cards keep to what is
+  attested (28 April 1789, the women "some of whom had not come by choice", the killings, Adams alone by 1800, the
+  Topaz 1808, the Briton and Tagus 1814, the Bible taken 1839 and given back 1949, the anchor raised 1957). Every
+  quotation (`QUOTES`: Bligh's cabin at sun-rising from pg20337; Young's "Won't you heave us a rope now?", the
+  paafata "with their posts turned wrong end up", the Bible and prayer book, Ship-landing Point, from pg69363) is
+  checked by a test. Pictures (looked at): Dodd's print of 1790, Beechey's chart (surveyed 1825, published 1829), the
+  Bounty's sheer draught of 1787, Shillibeer's Thursday October Christian (1814), Adams after Richard Beechey (1829),
+  Fanshawe's house and grave (1849), Bounty Bay from Lady Belcher (1870), and the 1940 threepenny stamp's map (none of
+  that set shows the Bible). The secret is the bell: rung, a sail comes up out of the sea to the south-east, told in
+  the islanders' own words of 1814, and Ballantyne's The Lonely Island (`pitcairn-bell`) is left on its ledge, found
+  for good (`athenaeum-pitcairn-sail`). Twain's Great Revolution in Pitcairn is not in Gutenberg's Stolen White
+  Elephant (3181 is the title story alone), and Nordhoff and Hall's Faery Lands did not resolve: neither is shelved.
 - The Library of Celsus (`celsus-room.js`; the court x 2500, z 9, the hall x 2500, z −6, the vault under its apse;
   `?room=celsus`, `ephesus`, `library-of-celsus`): the library at Ephesus, through a plain marble door in the Long
   Corridor's fifth east bay (`corridor.celsusDoor`); its way out is THE LONG CORRIDOR. The reader arrives in the court
@@ -801,7 +823,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
-  daily-room, long-corridor, ships-in-bottles, montserrat, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
+  daily-room, long-corridor, ships-in-bottles, montserrat, pitcairn, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.

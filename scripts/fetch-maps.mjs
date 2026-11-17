@@ -66,7 +66,19 @@ export const PICTURES = [
   { key: 'montserrat-stamp', file: 'Stamp Montserrat 1929 1p.jpg', minSize: 450 },
   { key: 'montserrat-oriole', file: 'IcterusOberiKeulemans.jpg' },
   { key: 'montserrat-frog', files: ['Leptodactylus fallax (1).jpg', 'Leptodactylus fallax (2).jpg'] },
-  { key: 'montserrat-volcano', files: ['Soufriere Hills.jpg', 'Montserrat Soufriere volcano 2.jpg'] }
+  { key: 'montserrat-volcano', files: ['Soufriere Hills.jpg', 'Montserrat Soufriere volcano 2.jpg'] },
+  // Pitcairn Island (pitcairn-island.js), the second bottle: Robert Dodd's print of 1790 of Bligh set adrift, the
+  // Admiralty's chart of the island of 1829 (from Beechey's survey of 1825), the Bounty's sheer draught of 1787,
+  // Thursday October Christian drawn in 1814, John Adams in 1825, his house and grave in 1849, Bounty Bay in 1870, and
+  // the threepenny stamp of 1940, the island's first set, with its map of the Pacific (none of the set shows the Bible). All public domain.
+  { key: 'pitcairn-adrift', file: "The Mutineers turning Lieut Bligh and part of the Officers and Crew adrift from His Majesty's Ship the Bounty ( 29 April 1789) RMG S0713.jpg" },
+  { key: 'pitcairn-chart', file: 'Admiralty Chart No 1113 Pitcairn Island, Published 1829.jpg' },
+  { key: 'pitcairn-draught', file: 'Admiralty Sheer Draught Ship Plans - HMS Bounty RMG J2028.png' },
+  { key: 'pitcairn-thursday', file: 'Thursday (Friday) Fletcher October Christian.jpg', minSize: 800 },
+  { key: 'pitcairn-adams', file: 'John Adams (BM 1861,1109.519).jpg' },
+  { key: 'pitcairn-house', file: "Edward Gennys Fanshawe, John Adams house and grave Pitcairn's Island, Augt 12th 1849.jpg" },
+  { key: 'pitcairn-bay', file: 'Bounty Bay mutineersofbount00belcuoft 0006.jpg' },
+  { key: 'pitcairn-stamp-3', file: 'Pitcairn 1940 03.jpg', minSize: 590 }
 ];
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
