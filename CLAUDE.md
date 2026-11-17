@@ -287,8 +287,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   plate, SHIPS IN BOTTLES. Each bottle lies in a cradle with a ship under sail for an island; looking in goes to that
   island, and a bottle there brings the reader back to stand before the shelf (`standBefore(key)`). Islands hand the
   shelf their bottle with `add` (four slots); only bottles that lead somewhere are on it. The owner's choice of a way in
-  for small places nobody expects to find (17 November 2026). Montserrat is the first bottle, Pitcairn the second; Samoa has
-  the strongest books for the next.
+  for small places nobody expects to find (17 November 2026). Montserrat is the first bottle, Pitcairn the second, Tristan da
+  Cunha the third; Samoa has the strongest books for the fourth (the last slot).
 - Montserrat (`montserrat-room.js`, the house x 2600, z 600, a verandah to the south; `?room=montserrat`, `emerald-isle`,
   `plymouth`, `soufriere`): the first bottle. A timber house in the north of the island at night; the verandah looks south
   over the Centre Hills to the Soufrière Hills, the dome glowing and its plume drifting west, the ash fan running down
@@ -331,6 +331,25 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   the islanders' own words of 1814, and Ballantyne's The Lonely Island (`pitcairn-bell`) is left on its ledge, found
   for good (`athenaeum-pitcairn-sail`). Twain's Great Revolution in Pitcairn is not in Gutenberg's Stolen White
   Elephant (3181 is the title story alone), and Nordhoff and Hall's Faery Lands did not resolve: neither is shelved.
+- Tristan da Cunha (`tristan-island.js`, the cottage x 2600, z 1200, its yard to the north; `?room=tristan`,
+  `tristan-da-cunha`, `edinburgh`, `seven-seas`, `glass`): the third bottle (a ship for a lone cone with a cap of cloud).
+  A stone cottage in the Settlement on an evening after a gale, thatched, limewashed inside, its beams and boards from
+  wrecks; its door (the only way, `allowed`) opens north on a walled yard with a canvas longboat on trestles and flax;
+  the north window has the telescope and the sill; a small south window on the cliffs. A painted ring all round (the sea
+  to the north with the low sun in the north-west, the plain and the village's houses, the cone of 1961 to the east, the
+  cliffs and the peak in its cloud to the south), a dome, the ring's foot far below. Two lights: the sun and the hearth's
+  fire (flickering). Shelves: `ships` on the west wall (the library's own books that call there or try to: Poe's Pym,
+  Verne's Castaways, Bligh, Flinders, Darwin, `OWN`, then `tristan-ships`, the Quest), `island` (Katherine Barrow's
+  Three Years in Tristan da Cunha, 8213, the one book about the island, after the library's Earle, Curiosities of Food and
+  Book of Buried Treasure) and `atlantic` (St Helena, Slocum, the Australia) on the south wall. Cards keep to what
+  Barrow and the books say, or is well attested (1506; the garrison of 1816 against a rescue of Napoleon; Glass of Kelso
+  staying in 1817 with his wife and two children; the women from St Helena; Repetto and Lavarello in the 1890s; the seven
+  surnames; Prince Alfred in 1867; 10 October 1961 and the return in 1963). Every quotation (`QUOTES`, with `SOURCES`
+  naming its book) is checked by a test. Pictures (looked at): Earle's Solitude (1824), Glass at his house after Earle,
+  Smit's thrush and bunting (1881), the island from the ISS (2013), the first stamps (1952). The secret is the
+  telescope: "Do many ships put in to Tristan d'Acunha?" "As many as we require" (Verne's Glass). Each look brings a ship
+  from a book (`SHIPS`: Poe's Jane, Verne's Duncan, Verne's Halbrane) fading in on the sea; after the third, An Antarctic
+  Mystery (10339) is on the window sill, found for good (`athenaeum-tristan-ships`; `?glass`).
 - The Library of Celsus (`celsus-room.js`; the court x 2500, z 9, the hall x 2500, z −6, the vault under its apse;
   `?room=celsus`, `ephesus`, `library-of-celsus`): the library at Ephesus, through a plain marble door in the Long
   Corridor's fifth east bay (`corridor.celsusDoor`); its way out is THE LONG CORRIDOR. The reader arrives in the court
@@ -823,7 +842,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
-  daily-room, long-corridor, ships-in-bottles, montserrat, pitcairn, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
+  daily-room, long-corridor, ships-in-bottles, montserrat, pitcairn, tristan, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.
