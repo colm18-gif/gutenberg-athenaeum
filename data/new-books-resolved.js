@@ -2823,6 +2823,50 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 2859,
    "words": 10789
   },
+  "The History of Mary Prince, a West Indian Slave": {
+   "id": 17851,
+   "words": 27472
+  },
+  "Froudacity": {
+   "id": 4068,
+   "words": 46827
+  },
+  "The West Indies": {
+   "id": 63216,
+   "words": 5578
+  },
+  "Harlem Shadows": {
+   "id": 64989,
+   "words": 12117
+  },
+  "Antigua and the Antiguans, Volume 1": {
+   "id": 38788,
+   "words": 123181
+  },
+  "The History of the Island of Dominica": {
+   "id": 48847,
+   "words": 42414
+  },
+  "A True & Exact History of the Island of Barbados": {
+   "id": 70489,
+   "words": 79661
+  },
+  "Two Years in the French West Indies": {
+   "id": 6381,
+   "words": 128022
+  },
+  "The West Indies and the Spanish Main": {
+   "id": 55100,
+   "words": 120308
+  },
+  "The English in the West Indies": {
+   "id": 32728,
+   "words": 126307
+  },
+  "At Last: A Christmas in the West Indies": {
+   "id": 10669,
+   "words": 154623
+  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633
