@@ -3,6 +3,7 @@
 #   title pattern ; author pattern ; language     (patterns are case-insensitive regular expressions; blank = any)
 # and every matching text is printed with its number, title, authors and language. A line '= 8613 8614 ...' prints each
 # of those numbers with its type (Text, Sound...) and the texts with the same title. Run by the Catalogue lookup workflow.
+#   subject? <pattern>  a search of the catalogue's own subject headings and bookshelves (up to 40 texts)
 # Two more kinds of line look beyond Gutenberg, for the rooms whose books or pictures come from Wikimedia:
 #   ws <page>       a page on Ukrainian Wikisource (an author's page, Автор:…, or a work): the pages it links to
 #   ws? <words>     a search of Ukrainian Wikisource's texts
@@ -58,6 +59,14 @@ for line in open('scripts/catalog-queries.txt', encoding='utf-8'):
     line = line.strip()
     if not line or line.startswith('#'): continue
     if line.startswith(('ws ', 'ws? ', 'ws! ', 'commons? ')): wikimedia(line); continue
+    if line.startswith('subject? '):
+        # Gutenberg's own subject headings and bookshelves, for books about a place whose titles don't name it
+        pattern = line[9:].strip()
+        hits = [r for r in rows if re.search(pattern, r.get('Subjects', '') + ' | ' + r.get('Bookshelves', ''), re.I)]
+        print(f'\n== {line}  ({len(hits)})')
+        for r in hits[:40]:
+            print(f"  {r['Text#']:>6}  {r['Title'][:90]!r}  |  {r['Authors'][:40]}  |  {r['Language']}  |  {r.get('Subjects', '')[:90]}")
+        continue
     if line.startswith('='):
         print(f'\n== numbers')
         for n in line[1:].split():

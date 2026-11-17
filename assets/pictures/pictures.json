@@ -118,5 +118,55 @@
   "date": "",
   "licence": "Public domain",
   "description": "Ukrainian people's song \"котику сіренький\""
+ },
+ "montserrat-chart": {
+  "file": "Admiralty Chart No 254 Montserrat, Published 1869.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Admiralty_Chart_No_254_Montserrat,_Published_1869.jpg",
+  "width": 1416,
+  "height": 2048,
+  "artist": "United Kingdom Hydrographic Office",
+  "date": "1869-02-01",
+  "licence": "Public domain",
+  "description": "Nautical chart of Montserrat, at a scale of 1:36,400. Surveyed by Staff Commander J. Parsons, assisted by Navg. Lieuts H.R. Harris and G. Stanley, 1867. Not current - not to be used for navigation!"
+ },
+ "montserrat-stamp": {
+  "file": "Stamp Montserrat 1929 1p.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Stamp_Montserrat_1929_1p.jpg",
+  "width": 500,
+  "height": 601,
+  "artist": "",
+  "date": "1929",
+  "licence": "Public domain",
+  "description": "Montserrat 1-penny stamp of 1929"
+ },
+ "montserrat-oriole": {
+  "file": "IcterusOberiKeulemans.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:IcterusOberiKeulemans.jpg",
+  "width": 1252,
+  "height": 2048,
+  "artist": "John Gerrard Keulemans",
+  "date": "1882",
+  "licence": "Public domain",
+  "description": "« Icterus oberi » = Icterus oberi ( Montserrat oriole )"
+ },
+ "montserrat-frog": {
+  "file": "Leptodactylus fallax (1).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Leptodactylus_fallax_(1).jpg",
+  "width": 2048,
+  "height": 1390,
+  "artist": "TimVickers",
+  "date": "2008-08-23",
+  "licence": "Public domain",
+  "description": "Giant Ditch Frog ( Leptodactylus fallax )"
+ },
+ "montserrat-volcano": {
+  "file": "Soufriere Hills.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Soufriere_Hills.jpg",
+  "width": 2048,
+  "height": 1536,
+  "artist": "CommonismNow",
+  "date": "16 June 2007 (original upload date)",
+  "licence": "Public domain",
+  "description": "Soufrière Hills volcano on Caribbean Island Montserrat"
  }
 }
