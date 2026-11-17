@@ -103,7 +103,7 @@
     // ---------- the door and its knocker, in the Long Corridor ----------
     // Marley's face, drawn: pale and livid, the spectacles pushed up on the forehead, the hair stirred as if by hot air.
     function faceTexture(c,W,H,small=false){
-      const cx=W/2,cy=H*.54,rx=W*.3,ry=H*.36;c.clearRect(0,0,W,H);
+      const cx=W/2,cy=H*.54,rx=W*.3,ry=H*.36;if(!small)c.clearRect(0,0,W,H);
       if(!small){const glow=c.createRadialGradient(cx,cy,rx*.4,cx,cy,W*.5);glow.addColorStop(0,'rgba(170,200,190,.5)');glow.addColorStop(1,'rgba(170,200,190,0)');c.fillStyle=glow;c.fillRect(0,0,W,H)}
       c.strokeStyle=small?'#2f4f8f':'rgba(200,214,206,.85)';c.lineWidth=W/90;for(let i=0;i<9;i++){const a=-2.6+i*.65;c.beginPath();c.moveTo(cx+Math.cos(a)*rx*.8,cy-ry*.7+Math.sin(a)*ry*.2);c.quadraticCurveTo(cx+Math.cos(a)*rx*1.4,cy-ry*1.15,cx+Math.cos(a)*rx*1.2+Math.sin(i)*W*.04,cy-ry*1.3)}c.stroke();
       c.fillStyle=small?'#f4f1e8':'#b8c8be';c.beginPath();c.ellipse(cx,cy,rx,ry,0,0,7);c.fill();if(small){c.strokeStyle='#2f4f8f';c.lineWidth=W/40;c.stroke()}
@@ -304,7 +304,7 @@
       [0,()=>showNotice(`As you look at it, the bell begins to swing. ${q('swing')}`,9)],
       [6.5,()=>showNotice(`${q('cease')} They are succeeded by a clanking noise, deep down below, ${QUOTES.chain.replace(/\.$/,'')}…`,8)],
       [10,()=>{playSample?.('doorOpen',1,.45);showNotice(`${q('cellar')} and the clanking comes up the stairs, and straight towards the door.`,6)}],
-      [13.5,()=>{if(fire){fire.flare=1;fire.heads=9}showNotice(`It stops. ${q('flame').replace(/,”$/,'”')} and for a moment ${QUOTES.heads}`,8)}],
+      [13.5,()=>{if(fire){fire.flare=1;fire.heads=9}showNotice(`Then it stops, at the door. In the grate ${q('flame')} as though it knew him, and fell again; and for a moment the tiles are as Dickens has them: ${q('heads')}`,9)}],
       [19,()=>{reveal(true);try{storage?.setItem(FOUND_KEY,'1')}catch(e){}playSample?.('pageTurn',.6,.8);
         showNotice(table?.book?`The room is quiet again. On the little table by the fire, beside the basin, there is a book that was not there before: ${table.book.title}, Dickens’s goblin story of some bells.`:'The room is quiet again.',11)}]
     ];
