@@ -1,15 +1,14 @@
-# Tristan da Cunha: books for a third bottle.
-subject? Tristan da Cunha|Tristan d.Acunha|St\.? Helena|Saint Helena|Ascension Island|Inaccessible Island|South Atlantic
-Tristan|Acunha ; ; 
-Residence in New Zealand|Nine Months|Tristan d ; Earle ; 
-Arthur Gordon Pym ; Poe ; en
-Shackleton.s Last Voyage|Quest ; Wild ; en
-Notes by a Naturalist|Challenger ; Moseley ; en
-Voyage of the Challenger|Challenger ; ; en
-Three Years in Tristan|Lonely Island ; ; en
-Atlantic|Islands ; Thomson ; en
-Cruise of the Cachalot|Log of a Sea-Waif ; Bullen ; en
-Napoleon.*St\.? Helena|St\.? Helena ; ; en
-Petrel|Albatross|Penguin ; ; en
-Sailing Alone Around the World ; Slocum ; en
-Voyage of the Beagle|Journal of Researches ; Darwin ; en
+# Tristan da Cunha: pictures on Commons for the third bottle.
+commons? Tristan da Cunha Earle
+commons? Tristan da Cunha chart Admiralty
+commons? Tristan da Cunha stamp 1946 potato
+commons? Tristan da Cunha 1952 stamp
+commons? Edinburgh of the Seven Seas
+commons? Tristan da Cunha 1961 eruption
+commons? Tristan da Cunha longboat
+commons? Inaccessible Island rail Atlantisia
+commons? Tristan da Cunha Challenger 1873
+commons? Tristan da Cunha Queen Mary's Peak
+commons? William Glass Tristan
+commons? Tristan da Cunha Quest 1922
+= 8213 58973 44480 15246
