@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-11-15",
+ "updated": "2026-11-17",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -1766,6 +1766,30 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "The Language of Flowers": {
    "id": 71779,
    "words": 51403
+  },
+  "The Cricket on the Hearth": {
+   "id": 678,
+   "words": 31932
+  },
+  "The Battle of Life": {
+   "id": 676,
+   "words": 29964
+  },
+  "The Haunted Man and the Ghost’s Bargain": {
+   "id": 644,
+   "words": 34150
+  },
+  "Ghost Stories of an Antiquary": {
+   "id": 8486,
+   "words": 45989
+  },
+  "Sketches by Boz": {
+   "id": 882,
+   "words": 254491
+  },
+  "The Chimes": {
+   "id": 653,
+   "words": 30982
   },
   "The Battle of the Books": {
    "id": 623,
@@ -4170,6 +4194,9 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Benito Cereno",
   "History of the Expedition under the Command of Captains Lewis and Clark, Vol. 1.",
   "The Necessity of Atheism",
+  "Old Christmas",
+  "The Rose and the Ring",
+  "The Life of Charles Dickens",
   "María [es]",
   "Poesías [es]"
  ]
