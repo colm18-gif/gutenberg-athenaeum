@@ -267,6 +267,21 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `?drawer`). Every line of hers (`LINES`, in the wording of the 1890s editions, which is what Gutenberg has) is checked
   against pg12242, and her letters (`LETTERS`) against Higginson's essay in pg68129, by a test; every “quotation” on a
   card must be one of them. Gutenberg has no Dickinson letters and no Single Hound.
+- Scrooge's chambers (`scrooge-room.js`, x 2200, z −300; `?room=scrooge`, `marley`, `carol`, `christmas-carol`): the
+  gloomy suite up a yard from A Christmas Carol, made one room (sitting-room, bedroom, closet), through a heavy door in the
+  Long Corridor's second east bay (`corridor.scroogeDoor`, opposite the Gastronomic Athenaeum; SCROOGE'S CHAMBERS gilded on
+  the corridor side). Its brass knocker stays with the door, and the first time a reader comes up to it (once a page load)
+  it is, for three seconds, Marley's face (a drawn pane that fades in and out over the ring; no light). Inside: the old
+  fireplace paved with Dutch tiles of Scripture (one drawn texture), a very low fire (the room's one light, flickering), the
+  gruel on the hob, Scrooge's armchair facing it (a seat), the little table with basin and dip, a curtained four-poster,
+  the dressing-gown in its suspicious attitude, the closet, and a window on the foggy yard (snow in December and January).
+  Shelves `scrooge-christmas` (after the library's own Carol, 46), `scrooge-winter` (after 7256, 69297 and 1597) and
+  `scrooge-london` (after Pickwick and four of the novels) in `data/new-books.js` (`OWN`). The secret is the disused bell
+  high by the chimney breast: looked at, it swings, every bell in the house rings (`tone`), they cease together, a chain
+  is dragged over the casks below (`sound`), the cellar door booms, the dying flame leaps up and there is a copy of old
+  Marley's head on every tile; then The Chimes (`scrooge-chimes`) lies on the table, found for good
+  (`athenaeum-scrooge-chimes`; `?chimes`). Every word of Dickens (`QUOTES`) is checked against `texts/pg46.txt` by a test,
+  and every “quotation” on a card must be one of them. Eerie, not frightening: Marley is never seen, only his face.
 - The Library of Celsus (`celsus-room.js`; the court x 2500, z 9, the hall x 2500, z −6, the vault under its apse;
   `?room=celsus`, `ephesus`, `library-of-celsus`): the library at Ephesus, through a plain marble door in the Long
   Corridor's fifth east bay (`corridor.celsusDoor`); its way out is THE LONG CORRIDOR. The reader arrives in the court
@@ -759,7 +774,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
-  daily-room, long-corridor, boullee, dickinson, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
+  daily-room, long-corridor, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.
