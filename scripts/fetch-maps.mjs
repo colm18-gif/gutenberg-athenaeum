@@ -58,7 +58,15 @@ export const PICTURES = [
   { key: 'dickinson-wild-nights', file: 'Emily Dickinson "Wild nights" manuscript.jpg' },
   { key: 'dickinson-liquor', file: 'Emily Dickinson- I taste a liquor never brewed - Houghton Library (72a), J214, Fr207.jpg' },
   // The score of the lullaby «Котику сіренький», read to give the bandura its tune when Clio sleeps in the room (not hung).
-  { key: 'kotyku-score', file: 'Котику сіренький.GIF', search: 'Котику сіренький', gif: true }
+  { key: 'kotyku-score', file: 'Котику сіренький.GIF', search: 'Котику сіренький', gif: true },
+  // Montserrat (montserrat-room.js), in a bottle on the Long Corridor's shelf: the Admiralty's chart of the island of
+  // 1869, a stamp of 1929 (to be looked at: does it show Erin and her harp?), Keulemans's painting of the Montserrat
+  // oriole for its first description in 1882, the mountain chicken, and the Soufrière Hills. All public domain.
+  { key: 'montserrat-chart', file: 'Admiralty Chart No 254 Montserrat, Published 1869.jpg' },
+  { key: 'montserrat-stamp', file: 'Stamp Montserrat 1929 1p.jpg', minSize: 450 },
+  { key: 'montserrat-oriole', file: 'IcterusOberiKeulemans.jpg' },
+  { key: 'montserrat-frog', files: ['Leptodactylus fallax (1).jpg', 'Leptodactylus fallax (2).jpg'] },
+  { key: 'montserrat-volcano', files: ['Soufriere Hills.jpg', 'Montserrat Soufriere volcano 2.jpg'] }
 ];
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
