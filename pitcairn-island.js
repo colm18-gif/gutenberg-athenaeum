@@ -232,9 +232,9 @@
       const dome=add(own(new THREE.SphereGeometry(R+.5,32,12,0,Math.PI*2,0,Math.PI/2)),own(new THREE.MeshBasicMaterial({map:domeTex,side:THREE.BackSide,fog:false})),0,EYE+PANO*HORIZON-.4,0,g);dome.raycast=()=>{};
       // The ring's own foot, far below the square, so that nothing of the library shows under the painted bay.
       const under=add(own(new THREE.CircleGeometry(R-.2,48)),own(new THREE.MeshBasicMaterial({color:0x22421f,fog:false})),0,EYE+PANO*(HORIZON-.5)-PANO/2+.05,0,g);under.rotation.x=-Math.PI/2;under.raycast=()=>{};
-      // The sail, far out to the south-south-east, hidden until the bell has been rung.
+      // The sail, far out to the south-south-east (east is +x), hidden until the bell has been rung.
       const sailTex=own(canvasTexture((c,W,H)=>{c.clearRect(0,0,W,H);c.fillStyle='#f6efe0';c.beginPath();c.moveTo(W*.5,H*.05);c.lineTo(W*.8,H*.75);c.lineTo(W*.2,H*.75);c.fill();c.fillStyle='#3a2a1e';c.fillRect(W*.15,H*.75,W*.7,H*.12)},64,64));
-      sail=add(own(new THREE.PlaneGeometry(.9,.9)),own(new THREE.MeshBasicMaterial({map:sailTex,transparent:true,depthWrite:false,fog:false})),0,EYE+.25,R-.8,g);sail.position.x=-3.5;sail.rotation.y=Math.PI;sail.raycast=()=>{};sail.visible=false;sail.userData.rise=0;
+      sail=add(own(new THREE.PlaneGeometry(.9,.9)),own(new THREE.MeshBasicMaterial({map:sailTex,transparent:true,depthWrite:false,fog:false})),0,EYE+.25,R-.8,g);sail.position.x=3.5;sail.rotation.y=Math.PI;sail.raycast=()=>{};sail.visible=false;sail.userData.rise=0;
     }
 
     // ---------- walking ----------
