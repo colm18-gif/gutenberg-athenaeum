@@ -2867,6 +2867,38 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 10669,
    "words": 154623
   },
+  "Mutiny of the Bounty and Story of Pitcairn Island, 1790-1894": {
+   "id": 69363,
+   "words": 55920
+  },
+  "The Eventful History of the Mutiny and Piratical Seizure of H.M.S. Bounty": {
+   "id": 14424,
+   "words": 98723
+  },
+  "The Lonely Island": {
+   "id": 21747,
+   "words": 88879
+  },
+  "A Narrative of the Mutiny, on Board His Majesty’s Ship Bounty": {
+   "id": 20337,
+   "words": 28286
+  },
+  "A Voyage to the South Sea": {
+   "id": 15411,
+   "words": 80167
+  },
+  "Voyage of H.M.S. Pandora": {
+   "id": 22834,
+   "words": 56681
+  },
+  "Mystic Isles of the South Seas": {
+   "id": 11400,
+   "words": 152136
+  },
+  "The Stolen White Elephant": {
+   "id": 3181,
+   "words": 6829
+  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633
@@ -4238,6 +4270,7 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Benito Cereno",
   "History of the Expedition under the Command of Captains Lewis and Clark, Vol. 1.",
   "The Necessity of Atheism",
+  "Faery Lands of the South Seas",
   "María [es]",
   "Poesías [es]"
  ]
