@@ -1,43 +1,4 @@
-# Ships in bottles: the second bottle, Pitcairn Island. Found already: Barrow (14424), Bligh's Narrative (20337) and
-# Voyage (15411), the Pandora (22834), Rosalind Amelia Young (69363), Ballantyne's Lonely Island (21747).
-subject? Pitcairn
-subject? Bounty \(Ship\)|Bounty Mutiny
-Pitcairn ; ;
-Bounty ; ; en
- ; Young, Rosalind ;
-Island ; Byron ; en
-subject? Byron.*Island|Christian, Fletcher
- ; Christian, Fletcher|Christian, Thursday|Adams, John, 1767|Heywood, Peter ;
-Stolen White Elephant|Great Revolution ; Twain ; en
-subject? Twain.*Short stories
- ; Shillibeer ;
- ; Beechey, F|Beechey, Frederick ;
-Narrative of a Voyage to the Pacific ; ; en
- ; Belcher ; en
- ; Brodie, Walter ;
- ; Delano, Amasa ;
- ; Murray, Thomas Boyles ;
- ; Mitford, Mary Russell ; en
-Mutineers|Mutiny ; ; en
- ; Morrison, James ;
- ; Bligh ;
- ; Nordhoff|Hall, James Norman ; en
-Norfolk Island ; ; en
-Tahiti|Otaheite ; ; en
-subject? Tahiti
- ; Ellis, William, 1794 ; en
- ; Cook, James ; en
- ; Hawkesworth ; en
-Breadfruit|Bread-fruit ; ; en
-commons? Pitcairn Island Bounty Bible
-commons? Mutineers turning Bligh adrift Dodd 1790
-commons? Pitcairn Island 1825 Beechey drawing
-commons? John Adams mutineer Pitcairn portrait
-commons? Thursday October Christian
-commons? Pitcairn Island engraving
-commons? Bounty Bay Pitcairn
-commons? Adamstown Pitcairn
-commons? Pitcairn Island chart Admiralty
-commons? HMS Bounty plan 1787
-commons? Bounty anchor Pitcairn
-commons? Pitcairn Island 19th century lithograph
+# Pitcairn: which Twain book holds The Great Revolution in Pitcairn? (3181, The Stolen White Elephant, is the title story alone.)
+Great Revolution|Revolution in Pitcairn ; ; 
+Stolen White Elephant|Merry Tales|Sketches|Short Stories|Collected Tales|Complete ; Twain ; en
+subject? Pitcairn Island -- Fiction|Twain.*Pitcairn
