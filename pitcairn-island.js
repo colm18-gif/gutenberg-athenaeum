@@ -160,7 +160,13 @@
       const plate=own(canvasTexture((c,W,H)=>{c.fillStyle='#caa15a';c.fillRect(0,0,W,H);c.strokeStyle='#6b4d22';c.lineWidth=4;c.strokeRect(5,5,W-10,H-10);c.fillStyle='#2b1d0e';c.textAlign='center';
         c.font='bold 26px Georgia';c.fillText('THE LONG CORRIDOR',W/2,40);c.font='italic 18px Georgia';c.fillText('towards the Grand Hall',W/2,68)},400,86));
       const label=add(own(new THREE.PlaneGeometry(.34,.075)),std({map:plate,roughness:.5,metalness:.3}),0,-.1,.065,b);
-      for(const part of [body,neck,hull,label])mark(part,exit);
+      // And standing behind it, a brass sign that can be read from across the room, so the way home is not missed.
+      const signTex=own(canvasTexture((c,W,H)=>{c.fillStyle='#c9a057';c.fillRect(0,0,W,H);c.strokeStyle='#6b4d22';c.lineWidth=6;c.strokeRect(8,8,W-16,H-16);c.fillStyle='#2b1d0e';c.textAlign='center';
+        c.font='bold 40px Georgia';c.fillText('THE WAY HOME',W/2,66);c.font='italic 32px Georgia';c.fillText('look into the bottle',W/2,112);c.font='bold 28px Georgia';c.fillText('THE LONG CORRIDOR',W/2,150)},420,180));
+      const signMat=std({map:signTex,roughness:.45,metalness:.35}),brassMat=std({color:0xb08d3a,metalness:.6,roughness:.4}),sign=[];
+      for(const side of [1,-1]){const face=add(own(new THREE.PlaneGeometry(.36,.155)),signMat,0,.12,-.13+side*.004,b);if(side<0)face.rotation.y=Math.PI;sign.push(face)}
+      sign.push(box(.37,.165,.006,brassMat,0,.12,-.13,b),box(.012,.14,.012,brassMat,0,-.03,-.13,b),box(.09,.012,.05,brassMat,0,-.1,-.13,b));
+      for(const part of [body,neck,hull,label,...sign])mark(part,exit);
     }
     // The church on the east side of the square: a white front with a red gable, its doors open, and just inside, the
     // Bounty's Bible open under glass on a small table.
