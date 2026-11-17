@@ -1,4 +1,15 @@
-# Pitcairn: which Twain book holds The Great Revolution in Pitcairn? (3181, The Stolen White Elephant, is the title story alone.)
-Great Revolution|Revolution in Pitcairn ; ; 
-Stolen White Elephant|Merry Tales|Sketches|Short Stories|Collected Tales|Complete ; Twain ; en
-subject? Pitcairn Island -- Fiction|Twain.*Pitcairn
+# Tristan da Cunha: books for a third bottle.
+subject? Tristan da Cunha|Tristan d.Acunha|St\.? Helena|Saint Helena|Ascension Island|Inaccessible Island|South Atlantic
+Tristan|Acunha ; ; 
+Residence in New Zealand|Nine Months|Tristan d ; Earle ; 
+Arthur Gordon Pym ; Poe ; en
+Shackleton.s Last Voyage|Quest ; Wild ; en
+Notes by a Naturalist|Challenger ; Moseley ; en
+Voyage of the Challenger|Challenger ; ; en
+Three Years in Tristan|Lonely Island ; ; en
+Atlantic|Islands ; Thomson ; en
+Cruise of the Cachalot|Log of a Sea-Waif ; Bullen ; en
+Napoleon.*St\.? Helena|St\.? Helena ; ; en
+Petrel|Albatross|Penguin ; ; en
+Sailing Alone Around the World ; Slocum ; en
+Voyage of the Beagle|Journal of Researches ; Darwin ; en
