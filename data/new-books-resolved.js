@@ -2895,10 +2895,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 11400,
    "words": 152136
   },
-  "The Stolen White Elephant": {
-   "id": 3181,
-   "words": 6829
-  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633
@@ -4270,7 +4266,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Benito Cereno",
   "History of the Expedition under the Command of Captains Lewis and Clark, Vol. 1.",
   "The Necessity of Atheism",
-  "Faery Lands of the South Seas",
   "María [es]",
   "Poesías [es]"
  ]
