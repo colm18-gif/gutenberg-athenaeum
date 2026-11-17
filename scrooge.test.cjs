@@ -75,10 +75,10 @@ test('the shelves hold the Christmas books, tales for a winter’s night and Dic
   assert.deepEqual([...chimes].map(b=>b.id),[653],'The Chimes is kept for the bell');
   for(const id of Object.values(h.r.own).flat())assert.ok(game.includes(`[${id},'`)||arrivals.some(e=>e[0]===id),`${id} is in the catalogue`);
   for(const g of groups){assert.ok(g.books.length>=3,g.key);assert.ok(listed('scrooge-'+g.key).length+g.ids.length<=g.max,`${g.key} fits its shelf`)}
-  const mine=arrivals.filter(e=>String(e[4]).startsWith('scrooge-'));assert.equal(mine.length,9);
+  const mine=arrivals.filter(e=>String(e[4]).startsWith('scrooge-'));assert.equal(mine.length,6);
   for(const e of mine){assert.ok(e[5].split(/[.!?]”?\s/).length>=3,`${e[1]} has a note`);
     // Once the New books workflow has resolved a book, its text is bundled.
-    if(resolved[e[1]]?.id)assert.ok(fs.existsSync(`texts/bundled-gzip/pg${resolved[e[1]].id}.txt.gz`)||fs.existsSync(`texts/pg${resolved[e[1]].id}.txt`),`${e[1]} bundled`)}
+    assert.ok(resolved[e[1]]?.id===e[0],`${e[1]} resolved`);assert.ok(fs.existsSync(`texts/bundled-gzip/pg${resolved[e[1]].id}.txt.gz`)||fs.existsSync(`texts/pg${resolved[e[1]].id}.txt`),`${e[1]} bundled`)}
   assert.equal(h.r.books.length,groups.reduce((n,g)=>n+g.books.length,0),'every shelf book is in the room, and The Chimes is not out yet');
   assert.equal(h.seats.length,1);assert.equal(h.seats[0].yaw,0,'the armchair faces the fire, north');assert.ok(Array.isArray(h.seats[0].bookIds)&&h.seats[0].bookIds.length>=12,'it opens one of the room’s books');
   // Open floor in front of the shelves, the fire, the bell and the window.

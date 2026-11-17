@@ -28,7 +28,7 @@
   const GROUPS=[
     {key:'christmas',name:'THE CHRISTMAS BOOKS',sub:'Charles Dickens, 1843 to 1848',wall:'east',along:-1.3,length:3.2,max:6,ids:OWN.christmas},
     {key:'winter',name:'FOR A WINTER’S NIGHT',sub:'Tales told by the fire',wall:'west',along:1.6,length:3,max:8,ids:OWN.winter},
-    {key:'london',name:'DICKENS’S LONDON',sub:'His city, and his life',wall:'south',along:-2.75,length:2.7,max:8,ids:OWN.london}
+    {key:'london',name:'DICKENS’S LONDON',sub:'His city, and his novels of it',wall:'south',along:-2.75,length:2.7,max:8,ids:OWN.london}
   ];
   // Dickens's own words, as the library's text of the Carol has them.
   const QUOTES={
