@@ -174,6 +174,8 @@
       'celsus-crypt':{beds:[['air',.025],['rumble',.02]],events:[['drip',4,.03]]},
       // Emily Dickinson's room: a quiet upstairs bedroom, a clock somewhere in the house, a bird in the garden.
       // Montserrat at night: the whistling frogs, insects, the sea far below, and now and then the mountain chicken's whoop.
+      // Pitcairn at dawn: the sea far below, the wind over the height, birds waking, gulls over the bay.
+      pitcairn:{beds:[['waves',.035],['wind',.03]],events:[['bird',1.2,.035],['gull',.3,.025],['rustle',.5,.02]]},
       montserrat:{beds:[['insects',.045],['waves',.02],['wind',.015]],events:[['treefrog',14,.03],['whoop',.15,.03],['creak',.2,.02]]},
       'dickinson-room':{beds:[['air',.02]],ticks:[[1,'tock',.014]],events:[['bird',.5,.03],['creak',.3,.025]]},
       // Scrooge's chambers: a very low fire, a clock on the stairs, the old house creaking in the fog.

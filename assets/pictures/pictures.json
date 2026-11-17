@@ -239,16 +239,6 @@
   "licence": "Public domain",
   "description": "Bounty Bay, Pitcairn Island. Illustration from: The mutineers of the Bounty and their descendants in Pitcairn and Norfolk Islands . Published in London 1870, this illustration from the US edition 1871."
  },
- "pitcairn-stamp-2": {
-  "file": "Pitcairn 1940 02.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Pitcairn_1940_02.jpg",
-  "width": 909,
-  "height": 596,
-  "artist": "Pitcairn Post",
-  "date": "1940-01-01",
-  "licence": "Public domain",
-  "description": "Pitcairn 1940 02"
- },
  "pitcairn-stamp-3": {
   "file": "Pitcairn 1940 03.jpg",
   "page": "https://commons.wikimedia.org/wiki/File:Pitcairn_1940_03.jpg",
@@ -258,35 +248,5 @@
   "date": "1940-01-01",
   "licence": "Public domain",
   "description": "Pitcairn 1940 03"
- },
- "pitcairn-stamp-5": {
-  "file": "Pitcairn 1940 05.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Pitcairn_1940_05.jpg",
-  "width": 913,
-  "height": 598,
-  "artist": "Pitcairn Post",
-  "date": "1940-01-01",
-  "licence": "Public domain",
-  "description": "Pitcairn 1940 05"
- },
- "pitcairn-stamp-7": {
-  "file": "Pitcairn 1940 07.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Pitcairn_1940_07.jpg",
-  "width": 942,
-  "height": 626,
-  "artist": "Pitcairn Post",
-  "date": "1940-01-01",
-  "licence": "Public domain",
-  "description": "Pitcairn 1940 07"
- },
- "pitcairn-stamp-8": {
-  "file": "Pitcairn 1940 08.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Pitcairn_1940_08.jpg",
-  "width": 911,
-  "height": 601,
-  "artist": "Pitcairn Post",
-  "date": "1940-01-01",
-  "licence": "Public domain",
-  "description": "Pitcairn 1940 08"
  }
 }
