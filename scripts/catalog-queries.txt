@@ -1,4 +1,14 @@
-# Pitcairn: which Twain book holds The Great Revolution in Pitcairn? (3181, The Stolen White Elephant, is the title story alone.)
-Great Revolution|Revolution in Pitcairn ; ; 
-Stolen White Elephant|Merry Tales|Sketches|Short Stories|Collected Tales|Complete ; Twain ; en
-subject? Pitcairn Island -- Fiction|Twain.*Pitcairn
+# Tristan da Cunha: pictures on Commons for the third bottle.
+commons? Tristan da Cunha Earle
+commons? Tristan da Cunha chart Admiralty
+commons? Tristan da Cunha stamp 1946 potato
+commons? Tristan da Cunha 1952 stamp
+commons? Edinburgh of the Seven Seas
+commons? Tristan da Cunha 1961 eruption
+commons? Tristan da Cunha longboat
+commons? Inaccessible Island rail Atlantisia
+commons? Tristan da Cunha Challenger 1873
+commons? Tristan da Cunha Queen Mary's Peak
+commons? William Glass Tristan
+commons? Tristan da Cunha Quest 1922
+= 8213 58973 44480 15246

@@ -248,5 +248,65 @@
   "date": "1940-01-01",
   "licence": "Public domain",
   "description": "Pitcairn 1940 03"
+ },
+ "tristan-solitude": {
+  "file": "Augustus Earle, (Self Portrait) Solitude, Tristan da Cunha, 1824.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Augustus_Earle,_(Self_Portrait)_Solitude,_Tristan_da_Cunha,_1824.jpg",
+  "width": 600,
+  "height": 428,
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": "Augustus Earle, Solitude, watching the horizon at sun set, in the hopes of seeing a vessel, Tristan de Acunha (i.e. da Cunha) in the South Atlantic, 1824: 1 watercolour ; 17.5 x 25.7 cm, http://nla.gov.au/nla.pic-an2818137-v"
+ },
+ "tristan-glass": {
+  "file": "William Glass Tristan da Cunha.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:William_Glass_Tristan_da_Cunha.jpg",
+  "width": 385,
+  "height": 262,
+  "artist": "Augustus Earle",
+  "date": "1818",
+  "licence": "Public domain",
+  "description": "William Glass outside his house at Tristan da Cunha"
+ },
+ "tristan-thrush": {
+  "file": "Nesocichla eremita Smit.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Nesocichla_eremita_Smit.jpg",
+  "width": 2048,
+  "height": 1992,
+  "artist": "Joseph Smit",
+  "date": "1881",
+  "licence": "Public domain",
+  "description": "« Nesocichla eremita » = Nesocichla eremita ( Tristan Thrush )"
+ },
+ "tristan-bunting": {
+  "file": "Nesospiza acunhae.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Nesospiza_acunhae.jpg",
+  "width": 1941,
+  "height": 2048,
+  "artist": "Joseph Smit",
+  "date": "1881",
+  "licence": "Public domain",
+  "description": "« Nesospiza acunhae » = Nesospiza acunhae ( Inaccessible Island Finch )"
+ },
+ "tristan-space": {
+  "file": "ISS-34 Tristan da Cunha.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:ISS-34_Tristan_da_Cunha.jpg",
+  "width": 2048,
+  "height": 1363,
+  "artist": "NASA",
+  "date": "2013-02-06",
+  "licence": "Public domain",
+  "description": "Tristan da Cunha is featured in this image photographed by an Expedition 34 crew member on the International Space Station. The island is located in the southern Atlantic Ocean; more than 3,700 kilometers from the northern coastline of Antarctica, approximately 2,800 kilometers to the southern tip of Africa, and more than 3,000 kilometers from the eastern coastline of South America. The island for"
+ },
+ "tristan-stamp": {
+  "file": "Tristan da Cunha 1952 5 shilling stamp.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Tristan_da_Cunha_1952_5_shilling_stamp.jpg",
+  "width": 772,
+  "height": 553,
+  "artist": "British Government.",
+  "date": "1952",
+  "licence": "Public domain",
+  "description": "1952 overprint on stamps of St Helena for Tristan da Cunha."
  }
 }

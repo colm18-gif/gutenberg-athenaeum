@@ -78,7 +78,17 @@ export const PICTURES = [
   { key: 'pitcairn-adams', file: 'John Adams (BM 1861,1109.519).jpg' },
   { key: 'pitcairn-house', file: "Edward Gennys Fanshawe, John Adams house and grave Pitcairn's Island, Augt 12th 1849.jpg" },
   { key: 'pitcairn-bay', file: 'Bounty Bay mutineersofbount00belcuoft 0006.jpg' },
-  { key: 'pitcairn-stamp-3', file: 'Pitcairn 1940 03.jpg', minSize: 590 }
+  { key: 'pitcairn-stamp-3', file: 'Pitcairn 1940 03.jpg', minSize: 590 },
+  // Tristan da Cunha (tristan-island.js), the third bottle: Augustus Earle's Solitude (1824), the painter stranded there
+  // watching the horizon for a ship; a drawing of the settlement of 1818, Glass's time; the Tristan thrush and the
+  // Tristan bunting, from plates of 1881 (Darwin's "only two land-birds, a thrush and a bunting"); the island from the
+  // International Space Station in 2013; and the 1952 five-shilling stamp. All public domain, to be looked at.
+  { key: 'tristan-solitude', files: ['Augustus Earle, (Self Portrait) Solitude, Tristan da Cunha, 1824.jpg', 'Augustus Earle - Solitude.jpg'], minSize: 590 },
+  { key: 'tristan-glass', file: 'William Glass Tristan da Cunha.jpg', minSize: 380 },
+  { key: 'tristan-thrush', file: 'Nesocichla eremita Smit.jpg' },
+  { key: 'tristan-bunting', file: 'Nesospiza acunhae.jpg' },
+  { key: 'tristan-space', file: 'ISS-34 Tristan da Cunha.jpg' },
+  { key: 'tristan-stamp', file: 'Tristan da Cunha 1952 5 shilling stamp.jpg', minSize: 760 }
 ];
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');

@@ -2895,6 +2895,26 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 11400,
    "words": 152136
   },
+  "Three Years in Tristan da Cunha": {
+   "id": 8213,
+   "words": 82682
+  },
+  "Shackleton’s Last Voyage": {
+   "id": 58973,
+   "words": 116495
+  },
+  "The Tragedy of St. Helena": {
+   "id": 15246,
+   "words": 66393
+  },
+  "Sailing Alone Around the World": {
+   "id": 6317,
+   "words": 71936
+  },
+  "The Loss of the Australia": {
+   "id": 44480,
+   "words": 16626
+  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633
