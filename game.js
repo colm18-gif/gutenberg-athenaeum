@@ -1999,9 +1999,9 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     }
     const openRoomVisitorsBook=()=>{if(visitorsBook)visitorsBook.open();else showNotice("The visitors' book is unavailable just now.",5)};
     // The Boathouse and Crusoe's island (crusoe-island.js): a door in the hall, a sunrise crossing, an island.
-    const crusoeIsland=window.createCrusoeIsland?.({placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook,doorKit:getDoorKit(),THREE,scene,MAT,player,camera,interactables,canvasTexture,bookMaterial,renderer,ambient,moon,showNotice,playSample,sound,
+    const crusoeIsland=window.createCrusoeIsland?.({doorKit:getDoorKit(),THREE,scene,MAT,player,camera,interactables,canvasTexture,bookMaterial,renderer,ambient,moon,showNotice,playSample,sound,
       findBook:id=>books.find(b=>b.id===id),noise:(d,v,f)=>paperNoise(d,v,f),fade:o=>{returnFade.style.opacity=String(o)},analytics:window.libraryAnalytics,
-      isReducedMotion:()=>reducedMotion,isHolding:()=>!!selected,storage:(()=>{try{return localStorage}catch(e){return null}})(),
+      isReducedMotion:()=>reducedMotion,isHolding:()=>!!selected,storage:(()=>{try{return localStorage}catch(e){return null}})(),placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook,
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
     });
     if(crusoeIsland){
@@ -2356,7 +2356,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     document.addEventListener('keydown',e=>{if(e.code==='Escape'&&!$('#pictureCard').classList.contains('hidden')){e.preventDefault();e.stopImmediatePropagation();$('#pictureCard').classList.add('hidden')}},true);
     var dickinsonRoom=window.createDickinsonRoom?.({doorKit:getDoorKit(),corridor:longCorridor,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,showPicture:showRoomPicture,
       findBook:id=>books.find(b=>b.id===id),arrivals:{poems:arrivalIds('dickinson-poems'),read:arrivalIds('dickinson-read'),circle:arrivalIds('dickinson-circle'),garden:arrivalIds('dickinson-garden'),drawer:arrivalIds('dickinson-drawer')},
-      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search})||null;
+      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search,placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook})||null;
     if(dickinsonRoom){
       const preDickinsonFloor=floorHeight;floorHeight=function(x,z){return dickinsonRoom.floorAt(x,z)??preDickinsonFloor(x,z)};
       const preDickinsonAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return dickinsonRoom.contains(x,z)?dickinsonRoom.allowed(x,z):preDickinsonAllowed(x,z,y)};
@@ -2367,7 +2367,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // with the four virtues' cases and Celsus's own vault under the apse.
     var celsusRoom=window.createCelsusRoom?.({doorKit:getDoorKit(),corridor:longCorridor,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,
       findBook:id=>books.find(b=>b.id===id),arrivals:{'celsus-sophia':arrivalIds('celsus-sophia'),'celsus-episteme':arrivalIds('celsus-episteme'),'celsus-ennoia':arrivalIds('celsus-ennoia'),'celsus-arete':arrivalIds('celsus-arete'),'celsus-crypt':arrivalIds('celsus-crypt')},
-      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search})||null;
+      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search,placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook})||null;
     if(celsusRoom){
       const preCelsusFloor=floorHeight;floorHeight=function(x,z){return celsusRoom.floorAt(x,z)??preCelsusFloor(x,z)};
       const preCelsusAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return celsusRoom.contains(x,z)?celsusRoom.allowed(x,z):preCelsusAllowed(x,z,y)};
@@ -2379,7 +2379,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // Corridor with a knocker that is, once, Marley's face. The disused bell rings with every bell in the house.
     var scroogeRoom=window.createScroogeRoom?.({doorKit:getDoorKit(),corridor:longCorridor,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,sound,tone:pianoTone,
       findBook:id=>books.find(b=>b.id===id),arrivals:{christmas:arrivalIds('scrooge-christmas'),winter:arrivalIds('scrooge-winter'),london:arrivalIds('scrooge-london'),chimes:arrivalIds('scrooge-chimes')},
-      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search})||null;
+      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search,placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook})||null;
     if(scroogeRoom){
       const preScroogeFloor=floorHeight;floorHeight=function(x,z){return scroogeRoom.floorAt(x,z)??preScroogeFloor(x,z)};
       const preScroogeAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return scroogeRoom.contains(x,z)?scroogeRoom.allowed(x,z):preScroogeAllowed(x,z,y)};
@@ -2391,9 +2391,9 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // verandah on the Soufrière Hills, Equiano's freedom on the wall, and the mountain chicken among the ferns.
     var shipsInBottles=window.createShipsInBottles?.({corridor:longCorridor,THREE,scene,MAT,interactables,canvasTexture,showNotice,playSample,analytics:window.libraryAnalytics,isHolding:()=>!!selected})||null;
     if(shipsInBottles){const preBottlesInteract=interact;interact=function(){if(focus&&!selected&&shipsInBottles.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preBottlesInteract()}}
-    var montserratRoom=window.createMontserratRoom?.({placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook,bottles:shipsInBottles,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,tone:pianoTone,showPicture:showRoomPicture,
+    var montserratRoom=window.createMontserratRoom?.({bottles:shipsInBottles,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,tone:pianoTone,showPicture:showRoomPicture,
       findBook:id=>books.find(b=>b.id===id),arrivals:{voices:arrivalIds('montserrat-voices'),islands:arrivalIds('montserrat-islands'),travellers:arrivalIds('montserrat-travellers')},
-      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search})||null;
+      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search,placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook})||null;
     if(montserratRoom){
       const preMontserratFloor=floorHeight;floorHeight=function(x,z){return montserratRoom.floorAt(x,z)??preMontserratFloor(x,z)};
       const preMontserratAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return montserratRoom.contains(x,z)?montserratRoom.allowed(x,z):preMontserratAllowed(x,z,y)};
@@ -2402,9 +2402,9 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     }
     // Pitcairn Island (pitcairn-island.js), the second bottle: the square at Adamstown at dawn, the public hall with the
     // island's books, the church with the Bounty's Bible, and the bell that, rung, brings a sail up out of the sea.
-    var pitcairnIsland=window.createPitcairnIsland?.({placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook,bottles:shipsInBottles,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,tone:pianoTone,showPicture:showRoomPicture,
+    var pitcairnIsland=window.createPitcairnIsland?.({bottles:shipsInBottles,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,tone:pianoTone,showPicture:showRoomPicture,
       findBook:id=>books.find(b=>b.id===id),arrivals:{island:arrivalIds('pitcairn-island'),bounty:arrivalIds('pitcairn-bounty'),seas:arrivalIds('pitcairn-seas'),bell:arrivalIds('pitcairn-bell')},
-      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search})||null;
+      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search,placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook})||null;
     if(pitcairnIsland){
       const prePitcairnFloor=floorHeight;floorHeight=function(x,z){return pitcairnIsland.floorAt(x,z)??prePitcairnFloor(x,z)};
       const prePitcairnAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return pitcairnIsland.contains(x,z)?pitcairnIsland.allowed(x,z):prePitcairnAllowed(x,z,y)};
@@ -2413,9 +2413,9 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     }
     // Tristan da Cunha (tristan-island.js), the third bottle: a stone cottage in the Settlement on an evening after a
     // gale, its yard and longboat, and a telescope at the window that finds the ships of the library's books.
-    var tristanIsland=window.createTristanIsland?.({placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook,bottles:shipsInBottles,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,tone:pianoTone,showPicture:showRoomPicture,
+    var tristanIsland=window.createTristanIsland?.({bottles:shipsInBottles,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,tone:pianoTone,showPicture:showRoomPicture,
       findBook:id=>books.find(b=>b.id===id),arrivals:{island:arrivalIds('tristan-island'),ships:arrivalIds('tristan-ships'),atlantic:arrivalIds('tristan-atlantic')},
-      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search})||null;
+      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search,placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook})||null;
     if(tristanIsland){
       const preTristanFloor=floorHeight;floorHeight=function(x,z){return tristanIsland.floorAt(x,z)??preTristanFloor(x,z)};
       const preTristanAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return tristanIsland.contains(x,z)?tristanIsland.allowed(x,z):preTristanAllowed(x,z,y)};
@@ -2425,7 +2425,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // The library that was never built (boullee-library.js): Boullée's drawing of 1785 for the King's Library hangs in the
     // Long Corridor; step into it, and the hall he drew is there to be walked, tier above tier under its vault.
     var boulleeLibrary=window.createBoulleeLibrary?.({corridor:longCorridor,THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,playSample,registerSeat,findBook:id=>books.find(b=>b.id===id),
-      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search})||null;
+      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search,placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook})||null;
     if(boulleeLibrary){
       const preBoulleeFloor=floorHeight;floorHeight=function(x,z){return boulleeLibrary.floorAt(x,z)??preBoulleeFloor(x,z)};
       const preBoulleeAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return boulleeLibrary.contains(x,z)?boulleeLibrary.allowed(x,z):preBoulleeAllowed(x,z,y)};
@@ -2636,10 +2636,10 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     }
     // The International Wing (international-wing.js), behind a door on the Grand Hall's south wall beside the visitors'
     // book: the Spanish Reading Room and, through its green door, the Portuguese Reading Room; Chinese to follow.
-    const internationalWing=window.createInternationalWing?.({placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook,doorKit:getDoorKit(),tone:pianoTone,gospel:peresopnytsiaBook,forestSong:forestSong&&(()=>forestSong.enter('sopilka')),carpathians:carpathians&&(()=>carpathians.enter('trembita')),THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,openLink:openLinkCard,playSample,purr:(d,v)=>purr(d,v),
+    const internationalWing=window.createInternationalWing?.({doorKit:getDoorKit(),tone:pianoTone,gospel:peresopnytsiaBook,forestSong:forestSong&&(()=>forestSong.enter('sopilka')),carpathians:carpathians&&(()=>carpathians.enter('trembita')),THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,openLink:openLinkCard,playSample,purr:(d,v)=>purr(d,v),
       findBook:id=>books.find(b=>b.id===id),arrivals:room=>newArrivals.list(room).map(book=>book.id),analytics:window.libraryAnalytics,isHolding:()=>!!selected,registerSeat,
       wallMaterial:wallFinish?photoWall('sandstone_blocks_08',[2.4,2.4],0xb07a50,2):null,
-      finishWalls:wallFinish&&(walls=>{for(const [mesh,w,h,d] of walls)wallFinish.finishBox(mesh,w,h,d);wallFinish.settle(walls.map(([mesh])=>mesh),{ceiling:true})}),
+      finishWalls:wallFinish&&(walls=>{for(const [mesh,w,h,d] of walls)wallFinish.finishBox(mesh,w,h,d);wallFinish.settle(walls.map(([mesh])=>mesh),{ceiling:true})}),placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook,
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
     });
     // The Kipling bookcase (kipling-shelf.js): his books in the order he published them, in the Grand Hall's south-west corner.
@@ -2712,7 +2712,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       mars:window.createMars?{arrive:()=>marsWorld?.arrive(),stepOut:()=>marsWorld?.stepOut()}:null});
     marsWorld=window.createMars?.({THREE,scene,MAT,player,camera,interactables,canvasTexture,bookMaterial,renderer,ambient,moon,showNotice,playSample,sound,
       findBook:id=>books.find(b=>b.id===id),arrivals:()=>newArrivals.list('mars').map(book=>book.id),boardHome:()=>highStaircase.board('summit-mars'),analytics:window.libraryAnalytics,
-      isReducedMotion:()=>reducedMotion,isHolding:()=>!!selected,storage:(()=>{try{return localStorage}catch(e){return null}})(),
+      isReducedMotion:()=>reducedMotion,isHolding:()=>!!selected,storage:(()=>{try{return localStorage}catch(e){return null}})(),placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook,
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
     });
     if(marsWorld){
