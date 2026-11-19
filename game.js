@@ -1977,8 +1977,29 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const preCinderAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return cinderArchive.contains(x,z)?cinderArchive.allowed(x,z):preCinderAllowed(x,z,y)};
       const preCinderInteract=interact;interact=function(){if(focus&&!selected&&cinderArchive.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preCinderInteract()};
     }
+    // A small, room-local lectern that opens the one shared visitors' book.
+    // Each room owns its geometry and textures so lazy unloading remains safe.
+    function placeVisitorsBook({parent,x,z,mark,own,rotation=0}){
+      const group=new THREE.Group();group.position.set(x,0,z);group.rotation.y=rotation;parent.add(group);
+      const wood=MAT.darkWood,brass=MAT.brass;
+      const add=(geo,mat,px,py,pz)=>{const mesh=new THREE.Mesh(own(geo),mat);mesh.position.set(px,py,pz);group.add(mesh);return mesh};
+      add(new THREE.BoxGeometry(.94,.09,.63),wood,0,.95,0);
+      for(const dx of [-.39,.39])for(const dz of [-.24,.24])add(new THREE.BoxGeometry(.055,.9,.055),wood,dx,.46,dz);
+      const cover=own(new THREE.MeshStandardMaterial({color:0x5e2730,roughness:.82}));
+      const paper=own(new THREE.MeshStandardMaterial({color:0xf3e7cc,roughness:.92}));
+      const pages=add(new THREE.BoxGeometry(.68,.035,.47),paper,0,1.025,0);pages.rotation.x=-.1;
+      const book=add(new THREE.BoxGeometry(.73,.035,.52),cover,0,1.055,.015);book.rotation.x=-.1;
+      add(new THREE.BoxGeometry(.045,.02,.5),brass,0,1.081,.015);
+      const plaque=own(canvasTexture((c,W,H)=>{c.fillStyle='#281b17';c.fillRect(0,0,W,H);c.strokeStyle='#ba965d';c.lineWidth=8;c.strokeRect(7,7,W-14,H-14);c.textAlign='center';c.fillStyle='#f3e2b9';c.font='bold 33px Georgia';c.fillText("VISITORS' BOOK",W/2,H*.56);c.font='italic 20px Georgia';c.fillText('Read & sign',W/2,H*.82)},512,128));
+      const signMat=own(new THREE.MeshStandardMaterial({map:plaque,roughness:.9,side:THREE.DoubleSide}));
+      const sign=add(new THREE.PlaneGeometry(.92,.23),signMat,0,1.48,-.27);
+      const data={type:'room-guestbook',title:"The visitors' book",author:'Read messages from travellers across the library, or leave your own.',action:'OPEN'};
+      mark(book,data);mark(pages,data);mark(sign,data);
+      return group;
+    }
+    const openRoomVisitorsBook=()=>{if(visitorsBook)visitorsBook.open();else showNotice("The visitors' book is unavailable just now.",5)};
     // The Boathouse and Crusoe's island (crusoe-island.js): a door in the hall, a sunrise crossing, an island.
-    const crusoeIsland=window.createCrusoeIsland?.({doorKit:getDoorKit(),THREE,scene,MAT,player,camera,interactables,canvasTexture,bookMaterial,renderer,ambient,moon,showNotice,playSample,sound,
+    const crusoeIsland=window.createCrusoeIsland?.({placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook,doorKit:getDoorKit(),THREE,scene,MAT,player,camera,interactables,canvasTexture,bookMaterial,renderer,ambient,moon,showNotice,playSample,sound,
       findBook:id=>books.find(b=>b.id===id),noise:(d,v,f)=>paperNoise(d,v,f),fade:o=>{returnFade.style.opacity=String(o)},analytics:window.libraryAnalytics,
       isReducedMotion:()=>reducedMotion,isHolding:()=>!!selected,storage:(()=>{try{return localStorage}catch(e){return null}})(),
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
@@ -2370,7 +2391,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // verandah on the Soufrière Hills, Equiano's freedom on the wall, and the mountain chicken among the ferns.
     var shipsInBottles=window.createShipsInBottles?.({corridor:longCorridor,THREE,scene,MAT,interactables,canvasTexture,showNotice,playSample,analytics:window.libraryAnalytics,isHolding:()=>!!selected})||null;
     if(shipsInBottles){const preBottlesInteract=interact;interact=function(){if(focus&&!selected&&shipsInBottles.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preBottlesInteract()}}
-    var montserratRoom=window.createMontserratRoom?.({bottles:shipsInBottles,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,tone:pianoTone,showPicture:showRoomPicture,
+    var montserratRoom=window.createMontserratRoom?.({placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook,bottles:shipsInBottles,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,tone:pianoTone,showPicture:showRoomPicture,
       findBook:id=>books.find(b=>b.id===id),arrivals:{voices:arrivalIds('montserrat-voices'),islands:arrivalIds('montserrat-islands'),travellers:arrivalIds('montserrat-travellers')},
       analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search})||null;
     if(montserratRoom){
@@ -2381,7 +2402,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     }
     // Pitcairn Island (pitcairn-island.js), the second bottle: the square at Adamstown at dawn, the public hall with the
     // island's books, the church with the Bounty's Bible, and the bell that, rung, brings a sail up out of the sea.
-    var pitcairnIsland=window.createPitcairnIsland?.({bottles:shipsInBottles,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,tone:pianoTone,showPicture:showRoomPicture,
+    var pitcairnIsland=window.createPitcairnIsland?.({placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook,bottles:shipsInBottles,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,tone:pianoTone,showPicture:showRoomPicture,
       findBook:id=>books.find(b=>b.id===id),arrivals:{island:arrivalIds('pitcairn-island'),bounty:arrivalIds('pitcairn-bounty'),seas:arrivalIds('pitcairn-seas'),bell:arrivalIds('pitcairn-bell')},
       analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search})||null;
     if(pitcairnIsland){
@@ -2392,7 +2413,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     }
     // Tristan da Cunha (tristan-island.js), the third bottle: a stone cottage in the Settlement on an evening after a
     // gale, its yard and longboat, and a telescope at the window that finds the ships of the library's books.
-    var tristanIsland=window.createTristanIsland?.({bottles:shipsInBottles,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,tone:pianoTone,showPicture:showRoomPicture,
+    var tristanIsland=window.createTristanIsland?.({placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook,bottles:shipsInBottles,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,tone:pianoTone,showPicture:showRoomPicture,
       findBook:id=>books.find(b=>b.id===id),arrivals:{island:arrivalIds('tristan-island'),ships:arrivalIds('tristan-ships'),atlantic:arrivalIds('tristan-atlantic')},
       analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search})||null;
     if(tristanIsland){
@@ -2615,7 +2636,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     }
     // The International Wing (international-wing.js), behind a door on the Grand Hall's south wall beside the visitors'
     // book: the Spanish Reading Room and, through its green door, the Portuguese Reading Room; Chinese to follow.
-    const internationalWing=window.createInternationalWing?.({doorKit:getDoorKit(),tone:pianoTone,gospel:peresopnytsiaBook,forestSong:forestSong&&(()=>forestSong.enter('sopilka')),carpathians:carpathians&&(()=>carpathians.enter('trembita')),THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,openLink:openLinkCard,playSample,purr:(d,v)=>purr(d,v),
+    const internationalWing=window.createInternationalWing?.({placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook,doorKit:getDoorKit(),tone:pianoTone,gospel:peresopnytsiaBook,forestSong:forestSong&&(()=>forestSong.enter('sopilka')),carpathians:carpathians&&(()=>carpathians.enter('trembita')),THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,openLink:openLinkCard,playSample,purr:(d,v)=>purr(d,v),
       findBook:id=>books.find(b=>b.id===id),arrivals:room=>newArrivals.list(room).map(book=>book.id),analytics:window.libraryAnalytics,isHolding:()=>!!selected,registerSeat,
       wallMaterial:wallFinish?photoWall('sandstone_blocks_08',[2.4,2.4],0xb07a50,2):null,
       finishWalls:wallFinish&&(walls=>{for(const [mesh,w,h,d] of walls)wallFinish.finishBox(mesh,w,h,d);wallFinish.settle(walls.map(([mesh])=>mesh),{ceiling:true})}),
@@ -2662,6 +2683,8 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       onOpen:()=>{dragging=false;for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;player.vel.set(0,0,0);ui.prompt.style.opacity=0;document.exitPointerLock?.()},
       onClose:()=>{ui.pause.classList.add('hidden');requestLookLock()}});
     if(correspondenceDesk){const preLetterInteract=interact;interact=function(){if(focus&&correspondenceDesk.interact(focus)){focus=null;return}return preLetterInteract()};const preLetterActive=gameActive;gameActive=function(){return !correspondenceDesk.isOpen&&preLetterActive()};const preLetterCovered=worldIsCovered;worldIsCovered=function(){return correspondenceDesk.isOpen||preLetterCovered()}}
+    // Room-local books reuse the same dialog and signing restrictions as the entrance lectern.
+    {const previousInteract=interact;interact=function(){if(focus?.userData?.type==='room-guestbook'&&!selected){openRoomVisitorsBook();focus=null;ui.prompt.style.opacity=0;return}return previousInteract()}}
     // The real visitors' book (visitors-book.js), once its small service is set up (data/visitors-book-config.js).
     const visitorsBook=window.ATHENAEUM_VISITORS_BOOK?.endpoint?window.createVisitorsBook?.({endpoint:window.ATHENAEUM_VISITORS_BOOK.endpoint,books:()=>books,
       language:()=>navigator.language||'en',storage:(()=>{try{return localStorage}catch(e){return null}})(),
