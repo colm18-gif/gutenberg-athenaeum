@@ -2356,7 +2356,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     document.addEventListener('keydown',e=>{if(e.code==='Escape'&&!$('#pictureCard').classList.contains('hidden')){e.preventDefault();e.stopImmediatePropagation();$('#pictureCard').classList.add('hidden')}},true);
     var dickinsonRoom=window.createDickinsonRoom?.({doorKit:getDoorKit(),corridor:longCorridor,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,showPicture:showRoomPicture,
       findBook:id=>books.find(b=>b.id===id),arrivals:{poems:arrivalIds('dickinson-poems'),read:arrivalIds('dickinson-read'),circle:arrivalIds('dickinson-circle'),garden:arrivalIds('dickinson-garden'),drawer:arrivalIds('dickinson-drawer')},
-      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search,placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook})||null;
+      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search})||null;
     if(dickinsonRoom){
       const preDickinsonFloor=floorHeight;floorHeight=function(x,z){return dickinsonRoom.floorAt(x,z)??preDickinsonFloor(x,z)};
       const preDickinsonAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return dickinsonRoom.contains(x,z)?dickinsonRoom.allowed(x,z):preDickinsonAllowed(x,z,y)};
@@ -2367,7 +2367,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // with the four virtues' cases and Celsus's own vault under the apse.
     var celsusRoom=window.createCelsusRoom?.({doorKit:getDoorKit(),corridor:longCorridor,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,
       findBook:id=>books.find(b=>b.id===id),arrivals:{'celsus-sophia':arrivalIds('celsus-sophia'),'celsus-episteme':arrivalIds('celsus-episteme'),'celsus-ennoia':arrivalIds('celsus-ennoia'),'celsus-arete':arrivalIds('celsus-arete'),'celsus-crypt':arrivalIds('celsus-crypt')},
-      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search,placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook})||null;
+      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search})||null;
     if(celsusRoom){
       const preCelsusFloor=floorHeight;floorHeight=function(x,z){return celsusRoom.floorAt(x,z)??preCelsusFloor(x,z)};
       const preCelsusAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return celsusRoom.contains(x,z)?celsusRoom.allowed(x,z):preCelsusAllowed(x,z,y)};
@@ -2379,7 +2379,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // Corridor with a knocker that is, once, Marley's face. The disused bell rings with every bell in the house.
     var scroogeRoom=window.createScroogeRoom?.({doorKit:getDoorKit(),corridor:longCorridor,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,sound,tone:pianoTone,
       findBook:id=>books.find(b=>b.id===id),arrivals:{christmas:arrivalIds('scrooge-christmas'),winter:arrivalIds('scrooge-winter'),london:arrivalIds('scrooge-london'),chimes:arrivalIds('scrooge-chimes')},
-      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search,placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook})||null;
+      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search})||null;
     if(scroogeRoom){
       const preScroogeFloor=floorHeight;floorHeight=function(x,z){return scroogeRoom.floorAt(x,z)??preScroogeFloor(x,z)};
       const preScroogeAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return scroogeRoom.contains(x,z)?scroogeRoom.allowed(x,z):preScroogeAllowed(x,z,y)};
@@ -2425,7 +2425,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // The library that was never built (boullee-library.js): Boullée's drawing of 1785 for the King's Library hangs in the
     // Long Corridor; step into it, and the hall he drew is there to be walked, tier above tier under its vault.
     var boulleeLibrary=window.createBoulleeLibrary?.({corridor:longCorridor,THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,playSample,registerSeat,findBook:id=>books.find(b=>b.id===id),
-      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search,placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook})||null;
+      analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search})||null;
     if(boulleeLibrary){
       const preBoulleeFloor=floorHeight;floorHeight=function(x,z){return boulleeLibrary.floorAt(x,z)??preBoulleeFloor(x,z)};
       const preBoulleeAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return boulleeLibrary.contains(x,z)?boulleeLibrary.allowed(x,z):preBoulleeAllowed(x,z,y)};
@@ -2712,7 +2712,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       mars:window.createMars?{arrive:()=>marsWorld?.arrive(),stepOut:()=>marsWorld?.stepOut()}:null});
     marsWorld=window.createMars?.({THREE,scene,MAT,player,camera,interactables,canvasTexture,bookMaterial,renderer,ambient,moon,showNotice,playSample,sound,
       findBook:id=>books.find(b=>b.id===id),arrivals:()=>newArrivals.list('mars').map(book=>book.id),boardHome:()=>highStaircase.board('summit-mars'),analytics:window.libraryAnalytics,
-      isReducedMotion:()=>reducedMotion,isHolding:()=>!!selected,storage:(()=>{try{return localStorage}catch(e){return null}})(),placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook,
+      isReducedMotion:()=>reducedMotion,isHolding:()=>!!selected,storage:(()=>{try{return localStorage}catch(e){return null}})(),
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
     });
     if(marsWorld){
