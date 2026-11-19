@@ -64,7 +64,7 @@
   const FOUND_KEY='athenaeum-montserrat-mountain-chicken';
 
   window.createMontserratRoom=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,move,analytics,isHolding=()=>false,registerSeat=null,
+    const {placeVisitorsBook=null,THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,move,analytics,isHolding=()=>false,registerSeat=null,
       bottles=null,showPicture=null,tone=null,storage=null,search='',pictures='assets/pictures/'}=options;
     const ROOM={cx:2600,cz:600,w:10,d:7,h:3.3},VERANDAH=3;
     const x0=ROOM.cx-ROOM.w/2,x1=ROOM.cx+ROOM.w/2,z0=ROOM.cz-ROOM.d/2,z1=ROOM.cz+ROOM.d/2,zEnd=z1+VERANDAH;
@@ -132,6 +132,7 @@
       buildVerandah(wood);
       // The lamp on the table is the house's one light.
       const lamp=new THREE.PointLight(0xffd29a,4.2,16,2);lamp.position.set(cx+.4,1.55,cz+.1);root.add(lamp);
+      placeVisitorsBook?.({parent:root,x:cx-3.3,z:cz+1.5,mark,own});
       scene.add(root);
     }
     function shelfSpot(group,offset,inset=.3){const side=group.wall==='west'?-1:1;return {x:ROOM.cx+side*(ROOM.w/2-inset),z:ROOM.cz+group.along-side*offset,yaw:-side*Math.PI/2}}
