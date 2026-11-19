@@ -110,7 +110,7 @@
   const FOUND_KEY='athenaeum-tristan-ships';
 
   window.createTristanIsland=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,move,analytics,isHolding=()=>false,registerSeat=null,
+    const {placeVisitorsBook=null,THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,move,analytics,isHolding=()=>false,registerSeat=null,
       bottles=null,showPicture=null,tone=null,storage=null,search='',pictures='assets/pictures/'}=options;
     const ROOM={cx:2600,cz:1200,w:8,d:5.5,h:2.8},YARD=4.5;
     const x0=ROOM.cx-ROOM.w/2,x1=ROOM.cx+ROOM.w/2,z0=ROOM.cz-ROOM.d/2,z1=ROOM.cz+ROOM.d/2,zy=z0-YARD;
@@ -196,6 +196,7 @@
       const sun=new THREE.DirectionalLight(0xffcf9a,1.25);sun.position.set(cx-30,9,cz-26);sun.target.position.set(cx,0,cz);root.add(sun);root.add(sun.target);
       fireLight=new THREE.PointLight(0xff9a4a,2.2,9,2);fireLight.position.set(x1-.75,.7,cz);root.add(fireLight);
       if(wasFound())leaveBook();
+      placeVisitorsBook?.({parent:root,x:cx-2.65,z:cz+1.5,mark,own});
       scene.add(root);
     }
     function shelfSpot(group,offset,inset=.3){

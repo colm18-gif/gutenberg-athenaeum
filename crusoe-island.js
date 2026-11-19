@@ -10,7 +10,7 @@
   'use strict';
 
   window.createCrusoeIsland=function(options){
-    const {THREE,scene,MAT,player,camera,interactables,canvasTexture,bookMaterial,findBook,showNotice,playSample,sound,noise,move,fade,renderer,ambient,moon,analytics,isReducedMotion=()=>false,isHolding=()=>false,storage=null,doorKit=null}=options;
+    const {placeVisitorsBook=null,THREE,scene,MAT,player,camera,interactables,canvasTexture,bookMaterial,findBook,showNotice,playSample,sound,noise,move,fade,renderer,ambient,moon,analytics,isReducedMotion=()=>false,isHolding=()=>false,storage=null,doorKit=null}=options;
     const DOOR={x:-4.5,z:30.45,yaw:Math.PI};
     // Where the reader stands on coming back through the door: just in front of it, facing into the hall.
     const HALL_SPOT={x:DOOR.x+Math.sin(DOOR.yaw)*1.9,z:DOOR.z+Math.cos(DOOR.yaw)*1.9,yaw:DOOR.yaw+Math.PI};
@@ -261,6 +261,7 @@
       // A green hill with rocks behind the camp, to the north, where the sun comes up.
       const hill=add(new THREE.SphereGeometry(1,24,12),std({color:0x5f7f36,roughness:1}),ix-2,-.8,iz-19,isle);hill.scale.set(14,5.5,7.5);
       const rock=std({color:0x7d7468,roughness:1,flatShading:true});for(const [x,y,z,s] of [[ix-10,.6,iz-15,1.6],[ix+8,.8,iz-16,2],[ix+13,.3,iz-11,1.2],[ix-15,.2,iz-9,1.1]]){const r=add(new THREE.DodecahedronGeometry(s,0),rock,x,y,z,isle);r.scale.y=.7}
+      placeVisitorsBook?.({parent:isle,x:ix+5.5,z:iz+3.4,mark,own});
       buildPalms(ix,iz);
       // Crusoe's camp: a stockade of stakes, a hut inside, and a fire at the gate.
       const cx=ix-4,cz=iz-6,stakes=[],R=4.2;for(let a=0;a<Math.PI*2;a+=.16){if(Math.abs(Math.atan2(Math.sin(a),Math.cos(a))-Math.PI/2)<.42)continue;stakes.push([cx+Math.cos(a)*R,cz+Math.sin(a)*R])}

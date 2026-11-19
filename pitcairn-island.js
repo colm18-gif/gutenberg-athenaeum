@@ -64,7 +64,7 @@
   const FOUND_KEY='athenaeum-pitcairn-sail';
 
   window.createPitcairnIsland=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,move,analytics,isHolding=()=>false,registerSeat=null,
+    const {placeVisitorsBook=null,THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,move,analytics,isHolding=()=>false,registerSeat=null,
       bottles=null,showPicture=null,tone=null,storage=null,search='',pictures='assets/pictures/'}=options;
     const SQ={cx:2600,cz:900,w:16,d:12},HALL={depth:5,w:10,h:3.4};
     const x0=SQ.cx-SQ.w/2,x1=SQ.cx+SQ.w/2,z0=SQ.cz-SQ.d/2,z1=SQ.cz+SQ.d/2,hz=z0+HALL.depth,hx0=SQ.cx-HALL.w/2,hx1=SQ.cx+HALL.w/2;
@@ -104,6 +104,7 @@
       buildHall(white,roof,wood);buildChurch(white,roof);buildBell(wood,roof);buildAnchor(stone);buildTrees();buildView();
       // The sun, low over the sea to the east, while the square is built: its one light.
       const sun=new THREE.DirectionalLight(0xffd2a0,1.3);sun.position.set(cx+30,8,cz+10);sun.target.position.set(cx,0,cz);root.add(sun);root.add(sun.target);
+      placeVisitorsBook?.({parent:root,x:cx+2.4,z:z0+2.6,mark,own});
       scene.add(root);
     }
     // The public hall: open to the square on its south side, with the shelves, the pictures and a table with the bottle home.

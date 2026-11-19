@@ -163,7 +163,7 @@
   };
 
   window.createInternationalWing=Object.assign(function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),
+    const {placeVisitorsBook=null,THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),
       wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null,tone=null,gospel=null,forestSong=null,carpathians=null,openLink=null,purr=null,storage=window.localStorage}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
     const DOOR={x:8.6,z:30.45,yaw:Math.PI};
     // The doors in the lobby's walls, one to each reading room, and a second door to the Italian in the Latin room's east
@@ -1096,6 +1096,8 @@
         const t=own(tiles.clone());t.repeat.set(Math.round(len/.55),2);box(sw,1.1,sd,own(new THREE.MeshStandardMaterial({map:t,roughness:.45})),x,.55,z);box(sw,.07,sd+.06,MAT.darkWood,x,1.13,z)}
       const sign=add(own(new THREE.PlaneGeometry(def.hub?9.5:6,def.hub?1.1:.86)),own(new THREE.MeshStandardMaterial({map:own(plaque(def.sign,def.sub,def.hub?1500:1100,def.hub?174:158,'#1d2a3d',def.font)),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.3})),cx,def.hub?h-.8:5.28,cz-d/2+.24,root);
       mark(sign,{type:'intl-card',title:def.card[0],author:def.card[1],action:'READ'});
+      // Every national-language room, and the central lobby, shares the library's visitors' book.
+      placeVisitorsBook?.({parent:root,x:cx+(def.hub?8:8),z:cz+d/2-3.5,mark,own});
       if(def.hub){buildHub({cx,cz,w,d,h,box,own,mark,root,block,room});scene.add(root);return}
       // Books face-out on sloping racks: three tiers along the north wall, three along the west wall.
       // A room with a window in its west wall (def.window) has racks on the north wall only, so they are set closer: twelve
