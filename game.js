@@ -1979,7 +1979,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     }
     // A small, room-local lectern that opens the one shared visitors' book.
     // Each room owns its geometry and textures so lazy unloading remains safe.
-    function placeVisitorsBook({parent,x,z,mark,own,rotation=0}){
+    function placeVisitorsBook({parent,x,z,mark,own,rotation=0,language='en'}){
       const group=new THREE.Group();group.position.set(x,0,z);group.rotation.y=rotation;parent.add(group);
       const wood=MAT.darkWood,brass=MAT.brass;
       const add=(geo,mat,px,py,pz)=>{const mesh=new THREE.Mesh(own(geo),mat);mesh.position.set(px,py,pz);group.add(mesh);return mesh};
@@ -1990,14 +1990,15 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const pages=add(new THREE.BoxGeometry(.68,.035,.47),paper,0,1.025,0);pages.rotation.x=-.1;
       const book=add(new THREE.BoxGeometry(.73,.035,.52),cover,0,1.055,.015);book.rotation.x=-.1;
       add(new THREE.BoxGeometry(.045,.02,.5),brass,0,1.081,.015);
-      const plaque=own(canvasTexture((c,W,H)=>{c.fillStyle='#281b17';c.fillRect(0,0,W,H);c.strokeStyle='#ba965d';c.lineWidth=8;c.strokeRect(7,7,W-14,H-14);c.textAlign='center';c.fillStyle='#f3e2b9';c.font='bold 33px Georgia';c.fillText("VISITORS' BOOK",W/2,H*.56);c.font='italic 20px Georgia';c.fillText('Read & sign',W/2,H*.82)},512,128));
+      const bookLabels={es:['LIBRO DE VISITAS','Leer y firmar'],pt:['LIVRO DE VISITAS','Ler e assinar'],fr:['LIVRE D’OR','Lire et signer'],zh:['訪客留言簿','閱讀與簽名'],la:['LIBER HOSPITVM','Lege et scribe'],it:['LIBRO DEGLI OSPITI','Leggi e firma'],uk:['КНИГА ВІДГУКІВ','Читати й підписати']};const [bookTitle,bookSub]=bookLabels[language]||["VISITORS' BOOK",'Read & sign'];
+      const plaque=own(canvasTexture((c,W,H)=>{c.fillStyle='#281b17';c.fillRect(0,0,W,H);c.strokeStyle='#ba965d';c.lineWidth=8;c.strokeRect(7,7,W-14,H-14);c.textAlign='center';c.fillStyle='#f3e2b9';c.font='bold 33px Georgia';c.fillText(bookTitle,W/2,H*.56);c.font='italic 20px Georgia';c.fillText(bookSub,W/2,H*.82)},512,128));
       const signMat=own(new THREE.MeshStandardMaterial({map:plaque,roughness:.9,side:THREE.DoubleSide}));
       const sign=add(new THREE.PlaneGeometry(.92,.23),signMat,0,1.48,-.27);
-      const data={type:'room-guestbook',title:"The visitors' book",author:'Read messages from travellers across the library, or leave your own.',action:'OPEN'};
+      const data={type:'room-guestbook',locale:language,title:bookTitle,author:bookSub,action:'OPEN'};
       mark(book,data);mark(pages,data);mark(sign,data);
       return group;
     }
-    const openRoomVisitorsBook=()=>{if(visitorsBook)visitorsBook.open();else showNotice("The visitors' book is unavailable just now.",5)};
+    const openRoomVisitorsBook=(locale='en')=>{if(visitorsBook)visitorsBook.open(locale);else showNotice("The visitors' book is unavailable just now.",5)};
     // The Boathouse and Crusoe's island (crusoe-island.js): a door in the hall, a sunrise crossing, an island.
     const crusoeIsland=window.createCrusoeIsland?.({doorKit:getDoorKit(),THREE,scene,MAT,player,camera,interactables,canvasTexture,bookMaterial,renderer,ambient,moon,showNotice,playSample,sound,
       findBook:id=>books.find(b=>b.id===id),noise:(d,v,f)=>paperNoise(d,v,f),fade:o=>{returnFade.style.opacity=String(o)},analytics:window.libraryAnalytics,
@@ -2684,7 +2685,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       onClose:()=>{ui.pause.classList.add('hidden');requestLookLock()}});
     if(correspondenceDesk){const preLetterInteract=interact;interact=function(){if(focus&&correspondenceDesk.interact(focus)){focus=null;return}return preLetterInteract()};const preLetterActive=gameActive;gameActive=function(){return !correspondenceDesk.isOpen&&preLetterActive()};const preLetterCovered=worldIsCovered;worldIsCovered=function(){return correspondenceDesk.isOpen||preLetterCovered()}}
     // Room-local books reuse the same dialog and signing restrictions as the entrance lectern.
-    {const previousInteract=interact;interact=function(){if(focus?.userData?.type==='room-guestbook'&&!selected){openRoomVisitorsBook();focus=null;ui.prompt.style.opacity=0;return}return previousInteract()}}
+    {const previousInteract=interact;interact=function(){if(focus?.userData?.type==='room-guestbook'&&!selected){openRoomVisitorsBook(focus.userData.locale);focus=null;ui.prompt.style.opacity=0;return}return previousInteract()}}
     // The real visitors' book (visitors-book.js), once its small service is set up (data/visitors-book-config.js).
     const visitorsBook=window.ATHENAEUM_VISITORS_BOOK?.endpoint?window.createVisitorsBook?.({endpoint:window.ATHENAEUM_VISITORS_BOOK.endpoint,books:()=>books,
       language:()=>navigator.language||'en',storage:(()=>{try{return localStorage}catch(e){return null}})(),
