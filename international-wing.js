@@ -1005,11 +1005,15 @@
         const face=add(own(new THREE.PlaneGeometry(.66,.93)),own(new THREE.MeshStandardMaterial({map:clipping('Просвіта','ПРОСВІТА ЦИФРОВА · PROSVITA.DIGITAL','«Слово Просвіти»: цифровий архів від 1995 року'),roughness:.9})),WW+.03,py,pz,root);face.rotation.y=Math.PI/2;
         const frame=add(own(new THREE.BoxGeometry(.04,1.07,.8)),MAT.darkWood,WW,py,pz,root);
         mark(face,link);mark(frame,{...link})}
-      // The four retellings, smaller, north of the window (its rushnyk ends at cz−3.57; the north racks stand out to cz−6.9).
-      RETOLD.forEach((r,i)=>{const WW=cx-w/2+.19,py=2.35,pz=cz-4.15-i*.75,link={type:'intl-link',title:r.title,author:r.card,url:r.url,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:r.label,action:'READ'};
-        const face=add(own(new THREE.PlaneGeometry(.5,.7)),own(new THREE.MeshStandardMaterial({map:clipping(r.name,r.kicker,r.title),roughness:.9})),WW+.03,py,pz,root);face.rotation.y=Math.PI/2;
-        const frame=add(own(new THREE.BoxGeometry(.04,.82,.6)),MAT.darkWood,WW,py,pz,root);
-        mark(face,link);mark(frame,{...link})});
+      // The four retellings, two by two in one frame north of the window (its rushnyk ends at cz−3.57; the north racks
+      // stand out to cz−6.9): each cutting opens its own article; the frame's card names all four.
+      {const WW=cx-w/2+.19,py=2.35,pz=cz-5.1;
+        const frame=add(own(new THREE.BoxGeometry(.04,1.66,1.3)),MAT.darkWood,WW,py,pz,root);
+        const mount=add(own(new THREE.PlaneGeometry(1.2,1.56)),own(new THREE.MeshStandardMaterial({color:0x2b2620,roughness:.95})),WW+.025,py,pz,root);mount.rotation.y=Math.PI/2;
+        mark(frame,{type:'intl-card',title:'Про цю читальню писали · Also written about this room',author:'Ще чотири сайти розповіли про цю читальню в листопаді 2026 року: «ТиКиїв» і «Шотам» українською, Inkorr англійською, Foro3D іспанською. Торкніться вирізки, щоб її прочитати. (Four more sites told the story of this room in November 2026: TyKyiv and Shotam in Ukrainian, Inkorr in English, Foro3D in Spanish. Touch a cutting to read it.)',action:'READ'});
+        RETOLD.forEach((r,i)=>{const link={type:'intl-link',title:r.title,author:r.card,url:r.url,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:r.label,action:'READ'};
+          const face=add(own(new THREE.PlaneGeometry(.5,.7)),own(new THREE.MeshStandardMaterial({map:clipping(r.name,r.kicker,r.title),roughness:.9})),WW+.03,py+(i<2?.38:-.38),pz+(i%2?-.29:.29),root);face.rotation.y=Math.PI/2;
+          mark(face,link)})}
 
       // A trembita, the Hutsuls' long wooden horn bound in birch bark, standing in the north-east corner between the racks'
       // end and Kateryna, under a small plaque: blow it, and the reader is on the polonyna of Kotsiubynsky's Shadows of
