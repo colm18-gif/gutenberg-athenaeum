@@ -551,7 +551,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   in `international-wing.js`, its card linking the Ukrainian and, as `en`, the English version: the link card shows a
   second button for `also`) hangs framed on that room's east wall between Kateryna and the arch; across the arch, between it and the drawing of Raim,
   the Lviv paper Vysokyi Zamok's own article (18 November 2026; `ZAMOK`), which took the place of Ukrinform's piece (the
-  same story as Chytomo's, taken down at the owner's wish on 20 November 2026: don't put it back); and NATE's blog piece,
+  same story as Chytomo's, taken down at the owner's wish on 20 November 2026: don't put it back); four smaller cuttings north of
+  the west window (`RETOLD`: TyKyiv, Shotam, Inkorr in English, Foro3D in Spanish; November 2026, mostly retelling Chytomo,
+  added at the owner's wish; Foro3D's headline is shown without the owner's name); and NATE's blog piece,
   A library made for exploration (29 October 2026; `NATE` in `set-texts-room.js`), on the Set Texts Room's east wall north
   of the board for teachers. Each card opens its article in game.js's `openLinkCard` (`intl-link`, `settexts-nate`). Cards
   name the publication, never the journalist (a correspondent). PROSVITA DIGITAL (`PROSVITA`, prosvita.digital, which

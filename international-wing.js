@@ -59,6 +59,22 @@
   const ZAMOK={title:'«Ірландець за тисячі кілометрів від України відчинив двері в Українську читальню»',date:'18.11.2026',
     card:'Львівська газета «Високий Замок» написала про цю читальню 18 листопада 2026 року. (Vysokyi Zamok, the Lviv newspaper, wrote about this room on 18 November 2026: “An Irishman thousands of kilometres from Ukraine has opened the door to a Ukrainian Reading Room”.)',
     url:'https://wz.lviv.ua/statti/562164-irlandets-za-tysiachi-kilometriv-vid-ukrainy-vidchynyv-dveri-v-ukrainsku-chytalniu'};
+  // Four more sites told the story in November 2026, mostly retelling Chytomo's: smaller cuttings framed on the west wall,
+  // north of the window, as PROSVITA's sheet is south of it. Their exact dates could not be read from here, so the cards
+  // give the month.
+  const RETOLD=[
+    {name:'ТиКиїв',kicker:'КИЇВ · ЛИСТОПАД 2026',title:'«Ірландський розробник створив віртуальну Українську читальню з інтерактивними книжками»',
+      card:'Київське видання «ТиКиїв» розповіло про цю читальню в листопаді 2026 року, за Читомо. (TyKyiv, the Kyiv news site, told the story of this room in November 2026, after Chytomo: “An Irish developer has created a virtual Ukrainian Reading Room with interactive books”.)',
+      url:'https://tykyiv.com/news/v-irlandiyi-ziavilasia-virtualna-ukrayinska-chitalnia/',label:'Читати на «ТиКиїв» · Read it on TyKyiv'},
+    {name:'Шотам',kicker:'ЛИСТОПАД 2026 · ФОТО',title:'«Ірландський бібліотекар відкрив віртуальну українську читальню»',
+      card:'Сайт «Шотам» розповів про цю читальню в листопаді 2026 року, зі світлинами, за Читомо. (Shotam told the story of this room in November 2026, with pictures, after Chytomo: “An Irish librarian has opened a virtual Ukrainian reading room”.)',
+      url:'https://shotam.info/irlandskyy-bibliotekar-vidkryv-virtualnu-ukrainsku-chytalniu-foto/',label:'Читати на «Шотам» · Read it on Shotam'},
+    {name:'Inkorr',kicker:'IN ENGLISH · NOVEMBER 2026',title:'Irish Librarian Launches Virtual Ukrainian Reading Room Featuring Classics',
+      card:'Inkorr розповів про цю читальню англійською в листопаді 2026 року. (Inkorr told the story of this room in English in November 2026: “Irish Librarian Launches Virtual Ukrainian Reading Room Featuring Classics”.)',
+      url:'https://inkorr.com/en/irlandskij-bibliotekar-stvoriv-virtualnu-ukrainsku-citalnu-z-klasikou-ta-memorialnimi-policami-355563',label:'Read it on Inkorr · Читати на Inkorr'},
+    {name:'Foro3D',kicker:'EN ESPAÑOL · NOVIEMBRE 2026',title:'«Crea una sala de lectura ucraniana virtual en The Library After Dark»',
+      card:'Іспаномовний сайт Foro3D, про тривимірну графіку, написав про цю читальню в листопаді 2026 року. (Foro3D, a Spanish-language site about 3D graphics, wrote about this room in November 2026: “… creates a virtual Ukrainian reading room in The Library After Dark”.)',
+      url:'https://foro3d.com/2026/noviembre/colm-o-connor-crea-una-sala-de-lectura-ucraniana-virtual-en-the-librar.html',label:'Leer en Foro3D · Read it on Foro3D'}];
   // PROSVITA DIGITAL (ПРОСВІТА ЦИФРОВА), which carries on the Prosvita society's work and keeps the digital archive of the
   // newspaper Slovo Prosvity, links to this room; the room links back (November 2026). Framed on the west wall, south of
   // the window, where the wall is clear; its card opens the site, in Ukrainian or in English.
@@ -989,6 +1005,11 @@
         const face=add(own(new THREE.PlaneGeometry(.66,.93)),own(new THREE.MeshStandardMaterial({map:clipping('Просвіта','ПРОСВІТА ЦИФРОВА · PROSVITA.DIGITAL','«Слово Просвіти»: цифровий архів від 1995 року'),roughness:.9})),WW+.03,py,pz,root);face.rotation.y=Math.PI/2;
         const frame=add(own(new THREE.BoxGeometry(.04,1.07,.8)),MAT.darkWood,WW,py,pz,root);
         mark(face,link);mark(frame,{...link})}
+      // The four retellings, smaller, north of the window (its rushnyk ends at cz−3.57; the north racks stand out to cz−6.9).
+      RETOLD.forEach((r,i)=>{const WW=cx-w/2+.19,py=2.35,pz=cz-4.15-i*.75,link={type:'intl-link',title:r.title,author:r.card,url:r.url,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:r.label,action:'READ'};
+        const face=add(own(new THREE.PlaneGeometry(.5,.7)),own(new THREE.MeshStandardMaterial({map:clipping(r.name,r.kicker,r.title),roughness:.9})),WW+.03,py,pz,root);face.rotation.y=Math.PI/2;
+        const frame=add(own(new THREE.BoxGeometry(.04,.82,.6)),MAT.darkWood,WW,py,pz,root);
+        mark(face,link);mark(frame,{...link})});
 
       // A trembita, the Hutsuls' long wooden horn bound in birch bark, standing in the north-east corner between the racks'
       // end and Kateryna, under a small plaque: blow it, and the reader is on the polonyna of Kotsiubynsky's Shadows of
