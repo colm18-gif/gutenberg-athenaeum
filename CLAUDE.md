@@ -286,9 +286,10 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   fourth east bay (`corridor.bottleBay`, between Boullée's drawing and Celsus), built at startup and kept, under a brass
   plate, SHIPS IN BOTTLES. Each bottle lies in a cradle with a ship under sail for an island; looking in goes to that
   island, and a bottle there brings the reader back to stand before the shelf (`standBefore(key)`). Islands hand the
-  shelf their bottle with `add` (four slots); only bottles that lead somewhere are on it. The owner's choice of a way in
+  shelf their bottle with `add` (five slots, since 20 November 2026); only bottles that lead somewhere are on it. The owner's choice of a way in
   for small places nobody expects to find (17 November 2026). Montserrat is the first bottle, Pitcairn the second, Tristan da
-  Cunha the third; Samoa has the strongest books for the fourth (the last slot).
+  Cunha the third, St Helena the fourth and Norfolk Island the fifth (the owner's choices, 20 November 2026: places whose
+  people would be surprised to find themselves there). Samoa has the strongest books if a sixth is ever wanted.
 - Montserrat (`montserrat-room.js`, the house x 2600, z 600, a verandah to the south; `?room=montserrat`, `emerald-isle`,
   `plymouth`, `soufriere`): the first bottle. A timber house in the north of the island at night; the verandah looks south
   over the Centre Hills to the Soufrière Hills, the dome glowing and its plume drifting west, the ash fan running down
