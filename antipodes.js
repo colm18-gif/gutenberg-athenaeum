@@ -15,7 +15,7 @@
     {key:'voyages',name:'THE WAY HERE',sub:'Voyages to the far side of the world',ids:[11],max:6},
     {key:'australian',name:'AUSTRALIA',sub:'The Australian Room',ids:[213],max:16},
     {key:'nz',name:'AOTEAROA NEW ZEALAND',sub:'The New Zealand Room',ids:[1429,1906],max:15},
-    {key:'antarctic',name:'THE POLAR SHELF',sub:'Voyages into the southern ice',ids:[5199,14363,11579,10339],max:12}
+    {key:'antarctic',name:'THE POLAR SHELF',sub:'Voyages into the southern ice',ids:[5199,14363,11579,10339,58973],max:12}
   ];
   const RECORDS={11:['Alice’s Adventures in Wonderland','Lewis Carroll'],213:['The Man from Snowy River','A. B. Paterson'],1429:['The Garden Party, and Other Stories','Katherine Mansfield'],1906:['Erewhon','Samuel Butler'],5199:['South: The Story of Shackleton’s Last Expedition','Ernest Shackleton'],14363:['The Worst Journey in the World','Apsley Cherry-Garrard'],11579:['Scott’s Last Expedition','Robert Falcon Scott'],10339:['An Antarctic Mystery','Jules Verne']};
   // Ukraine's Antarctic station, from the National Antarctic Scientific Center of Ukraine's own history of it (uac.gov.ua).
@@ -25,6 +25,13 @@
     flag:['Прапор України · Ukraine’s flag','Синій і жовтий. Україна має свою станцію в Антарктиці з 1996 року. (Blue and yellow. Ukraine has kept its own station in the Antarctic since 1996.)'],
     pound:['Фунт · A pound coin','A pound coin, set into the top of the crate. At Akademik Vernadsky, one is said to be set into the wood of the bar between the taps, for the story that Britain handed the station to Ukraine for a symbolic pound. Tellings differ on whether any coin ever changed hands. (Кажуть, що Британія передала станцію Україні за символічний фунт; чи справді хтось заплатив, переказують по-різному.)']
   };
+  // The Endurance, painted on the hut's east window: beset in the Weddell Sea pack. Every word in quotation marks is
+  // South's own (pg5199), checked by a test.
+  const ENDURANCE=['The Endurance in the pack · drawn for the library','Shackleton’s ship, beset in the Weddell Sea on 19 January 1915, drifted with the ice through the winter. On 27 October the pressure crushed her and the men camped on the floe: “To a sailor his ship is more than a floating home,” Shackleton wrote that day. On 21 November, as the entry in South has it, “she went down bows first, her stern raised in the air.” All twenty-eight men came home. Her wreck was found in 2022, about three thousand metres down, upright and little changed.'];
+  // The Belgica's calendar, hung by the hut's door: the days of the first Antarctic winter, as Frederick Cook kept them
+  // in Through the First Antarctic Night (pg72211). Every quoted word is his, checked by a test.
+  const BELGICA=['The Belgica’s calendar, 1898–99 · drawn for the library','The Belgica, a Belgian ship under Adrien de Gerlache, was beset in the pack west of the Antarctic Peninsula late in February 1898 and drifted with it for thirteen months: the first ship to winter in the Antarctic. Her first mate was Roald Amundsen; her doctor, Frederick Cook. On 16 May the captain announced “no more sun for seventy days.” On 5 June Emile Danco died: “the darkest page in our log.” On 23 July “a gleam of fire burst through a large purple cloud on the horizon northward.” And on 14 March 1899 they “were released from the icy fetters which had held us so long.”'];
+  const BELGICA_DAYS=[['16 May 1898','the last of the sun'],['5 June','Danco'],['23 July','the sun again'],['14 March 1899','free']];
   const CARDS={
     antarcticSign:['THE ANTARCTIC EXPEDITION','Shackleton, Scott and the southern ice'],
     globe:['The great globe','An old terrestrial globe, a little faded at Europe from being turned so often. A brass plate on its stand reads: TURN TO THE ANTIPODES. MIND THE DROP.'],
@@ -442,6 +449,50 @@
       const pane=add(own(new THREE.PlaneGeometry(.2,.2)),own(new THREE.MeshBasicMaterial({visible:false})),crate.x+.38,crate.y+.01,crate.z+.12,root);pane.rotation.x=-Math.PI/2;
       for(const part of [coin,pane])mark(part,{type:'antipodes-pound',title:VERNADSKY.pound[0],author:VERNADSKY.pound[1],action:'LOOK'});
     }
+    function buildEndurance(cx,cz){
+      // A window in the east wall, with a painted pane: no light, only the picture and its frame.
+      const wx=cx+4.5-.14,z=cz-7.1;
+      picture(root,drawEndurance,1.5,1.0,wx,1.95,z,-Math.PI/2,{type:'antipodes-card',title:ENDURANCE[0],author:ENDURANCE[1],action:'READ'});
+      box(.08,.06,1.62,timber,wx-.03,1.42,z,root);
+    }
+    function buildBelgica(cx,cz){
+      // A wall calendar beside the door, its four days ringed in red: paper only, no light.
+      const wx=cx-4.5+.14;
+      picture(root,drawBelgica,.75,1.0,wx,1.75,cz-3.95,Math.PI/2,{type:'antipodes-card',title:BELGICA[0],author:BELGICA[1],action:'READ'});
+    }
+    function drawBelgica(c,W,H){
+      c.fillStyle='#efe6cf';c.fillRect(0,0,W,H);
+      c.fillStyle='#2a3b52';c.font=`bold ${Math.round(H*.05)}px Georgia`;c.textAlign='center';c.fillText('BELGICA',W/2,H*.08);
+      c.font=`italic ${Math.round(H*.028)}px Georgia`;c.fillText('In the pack · 1898–1899',W/2,H*.12);
+      // A month grid, faintly printed, with the long night shaded.
+      c.strokeStyle='rgba(42,59,82,.35)';c.lineWidth=1;const gx=W*.08,gy=H*.16,gw=W*.84,gh=H*.4;
+      for(let i=0;i<=7;i++){c.beginPath();c.moveTo(gx+gw*i/7,gy);c.lineTo(gx+gw*i/7,gy+gh);c.stroke()}
+      for(let j=0;j<=5;j++){c.beginPath();c.moveTo(gx,gy+gh*j/5);c.lineTo(gx+gw,gy+gh*j/5);c.stroke()}
+      c.fillStyle='rgba(30,40,70,.18)';c.fillRect(gx+gw*2/7,gy+gh*2/5,gw*5/7,gh*3/5);
+      c.fillStyle='rgba(42,59,82,.6)';c.font=`${Math.round(H*.022)}px Georgia`;for(let d=1;d<=31;d++){const k=d+1,col=k%7,row=Math.floor(k/7);c.fillText(String(d),gx+gw*(col+.5)/7,gy+gh*(row+.7)/5)}
+      c.strokeStyle='#b0281f';c.lineWidth=3;c.beginPath();c.ellipse(gx+gw*(3.5)/7,gy+gh*2.55/5,gw*.06,gh*.08,0,0,7);c.stroke();
+      // The four days, written in below.
+      c.textAlign='left';BELGICA_DAYS.forEach(([day,what],i)=>{const y=H*(.64+i*.08);c.fillStyle='#b0281f';c.font=`bold ${Math.round(H*.032)}px Georgia`;c.fillText(day,W*.08,y);c.fillStyle='#2a3b52';c.font=`italic ${Math.round(H*.03)}px Georgia`;c.fillText(what,W*.55,y)});
+      c.fillStyle='rgba(42,59,82,.6)';c.font=`italic ${Math.round(H*.022)}px Georgia`;c.textAlign='center';c.fillText('drawn for the library',W/2,H*.97);
+    }
+    function drawEndurance(c,W,H){
+      // Night in the pack: a low moon, pressure ridges, and the ship held fast with her rigging rimed white.
+      const sky=c.createLinearGradient(0,0,0,H*.6);sky.addColorStop(0,'#0b1426');sky.addColorStop(1,'#33496a');c.fillStyle=sky;c.fillRect(0,0,W,H*.6);
+      c.fillStyle='rgba(255,255,255,.8)';for(let i=0;i<40;i++)c.fillRect((i*131)%W,((i*71)%Math.round(H*.4)),1.5,1.5);
+      c.fillStyle='#f4eedc';c.beginPath();c.arc(W*.82,H*.18,H*.05,0,7);c.fill();
+      c.fillStyle='#c9d6e2';c.fillRect(0,H*.6,W,H*.4);
+      c.fillStyle='#9fb3c6';for(let i=0;i<9;i++){const x=W*i/8;c.beginPath();c.moveTo(x-W*.09,H*.66+((i*13)%9));c.lineTo(x,H*(.56+((i*7)%5)/100));c.lineTo(x+W*.1,H*.67);c.fill()}
+      c.strokeStyle='rgba(60,80,105,.5)';c.lineWidth=2;for(let i=0;i<7;i++){c.beginPath();c.moveTo(0,H*(.72+i*.04));c.lineTo(W,H*(.7+i*.045));c.stroke()}
+      // The ship: a black hull heeled a little, three masts, yards, and the rigging.
+      c.save();c.translate(W*.42,H*.68);c.rotate(-.05);
+      c.fillStyle='#14161a';c.beginPath();c.moveTo(-W*.22,0);c.lineTo(W*.2,0);c.lineTo(W*.25,-H*.06);c.lineTo(-W*.24,-H*.07);c.closePath();c.fill();
+      c.strokeStyle='#e9eef3';c.lineWidth=2.5;const masts=[[-W*.13,H*.38],[0,H*.45],[W*.13,H*.36]];
+      for(const [x,h] of masts){c.beginPath();c.moveTo(x,-H*.06);c.lineTo(x,-h);c.stroke();for(let k=1;k<4;k++){const y=-h+k*H*.08,yw=W*(.07-k*.008);c.beginPath();c.moveTo(x-yw,y);c.lineTo(x+yw,y);c.stroke()}}
+      c.lineWidth=1;c.strokeStyle='rgba(233,238,243,.7)';for(const [x,h] of masts)for(const s of [-1,1]){c.beginPath();c.moveTo(x,-h);c.lineTo(x+s*W*.09,-H*.06);c.stroke()}
+      c.beginPath();c.moveTo(-W*.13,-H*.38);c.lineTo(-W*.3,-H*.05);c.moveTo(W*.13,-H*.36);c.lineTo(W*.31,-H*.04);c.stroke();c.restore();
+      c.fillStyle='#e3ebf2';c.beginPath();c.moveTo(W*.1,H*.7);c.lineTo(W*.22,H*.62);c.lineTo(W*.3,H*.71);c.fill();c.beginPath();c.moveTo(W*.58,H*.71);c.lineTo(W*.68,H*.6);c.lineTo(W*.8,H*.72);c.fill();
+      c.fillStyle='rgba(20,30,45,.8)';c.font=`italic ${Math.round(H*.045)}px Georgia`;c.textAlign='right';c.fillText('Endurance, Weddell Sea, 1915 · drawn for the library',W*.97,H*.96);
+    }
     function drawVernadsky(c,W,H){
       // An evening in the Argentine Islands: the peninsula's mountains across the water, sea ice, the station's low
       // buildings on the rocks, masts and aerials, and Ukraine's flag. Drawn for the library.
@@ -481,12 +532,13 @@
       const glowMat=own(new THREE.MeshBasicMaterial({color:0xffd79c}));
       for(const s of [-1,1]){add(own(new THREE.SphereGeometry(.15,8,6)),glowMat,cx+s*1.65,2.2,front+.27,root);box(.36,.48,.3,MAT.brass,cx+s*1.65,2.2,front+.08,root);}
       // All polar books are inside the hut, clear of glaciers and within reading reach.
-      const polarBooks=shelfBooks('antarctic'),spots=[];for(let i=0;i<polarBooks.length;i++){const row=Math.floor(i/4),col=i%4;spots.push({x:cx-2.7+col*1.8,y:1.45+row*1.3,z:back+.5,yaw:0,lean:.03})}
-      wallBooks('antarctic',polarBooks,spots);shelfBoards(cx,back+.5,7.8,'x',[1.45,2.75,4.05]);block(cx,back+.5,8,.7);
+      // Two rows of six, low enough to read under the eaves.
+      const polarBooks=shelfBooks('antarctic'),spots=[];for(let i=0;i<polarBooks.length;i++){const row=Math.floor(i/6),col=i%6;spots.push({x:cx-3.5+col*1.4,y:1.35+row*1.2,z:back+.5,yaw:0,lean:.03})}
+      wallBooks('antarctic',polarBooks,spots);shelfBoards(cx,back+.5,7.8,'x',[1.35,2.55]);block(cx,back+.5,8,.7);
       box(1.3,.65,.6,timber,cx+3, .325,cz-5.3,root);block(cx+3,cz-5.3,1.4,.7);
       for(let i=0;i<4;i++){const stone=add(own(new THREE.SphereGeometry(.48-i*.06,5,3)),dark,cx+5.8,.35+i*.48,cz+1,root);stone.rotation.set(i*.2,i*.7,i*.13)}
       block(cx+5.8,cz+1,1.2,1.2);box(.07,3,.07,MAT.brass,cx+5.8,2,cz+1,root);box(1.15,.62,.04,own(new THREE.MeshStandardMaterial({color:0x8a2825,roughness:.9})),cx+6.35,2.7,cz+1,root);
-      buildVernadsky(cx,cz,front,back);
+      buildVernadsky(cx,cz,front,back);buildEndurance(cx,cz);buildBelgica(cx,cz);
       // Lantern stakes mark the clear path from the gangway to the open hut.
       for(let i=0;i<5;i++)for(const s of [-1,1]){const z=cz+7-i*2.3;box(.055,.6,.055,timber,cx+s*1.5,.3,z,root);add(own(new THREE.SphereGeometry(.08,6,4)),glowMat,cx+s*1.5,.62,z,root);}
       const quay=box(3,.18,2,timber,cx-3.4,-.08,cz+7,root);quay.name='antarctic-landing-quay';
@@ -925,7 +977,7 @@
     }
     buildHall();
     return {contains,floorAt,allowed,blocksHall,interact,update,reset,enter,unload,startFall,zoneAt,shelfBooks,clockWords,
-      globe:GLOBE,hatch:HATCH,hall:HALL,vernadsky:VERNADSKY,rooms:{australian:AUS,nz:NZ,antarctic:ANTARCTIC,quay:QUAY},shelves:SHELVES,records:RECORDS,cards:CARDS,
+      globe:GLOBE,hatch:HATCH,hall:HALL,vernadsky:VERNADSKY,endurance:ENDURANCE,belgica:BELGICA,rooms:{australian:AUS,nz:NZ,antarctic:ANTARCTIC,quay:QUAY},shelves:SHELVES,records:RECORDS,cards:CARDS,
       get travelling(){return !!fall||!!voyage},get aboard(){return aboard},get voyageStage(){return voyage?.stage||null},get shipLocation(){return shipLocation},get passageOpen(){return (polarEntrance?.open||0)>=.9},
       get built(){return !!root},get shaftBuilt(){return !!shaft},get books(){return books.slice()},get hatchOpen(){return hall.hatch.target>0}};
   };

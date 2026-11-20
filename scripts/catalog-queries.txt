@@ -1,73 +1,66 @@
-# St Helena: the fourth bottle. What does Gutenberg hold about the island, Napoleon's exile, its people and its tortoise?
-Helena ; ;
-Helena ; ; en
-subject? Saint Helena|St\. Helena|Helena \(Island\)
-subject? Napoleon I.*(Exile|Captivity|Saint Helena)|Longwood
-Napoleon in Exile|Voice from St|Voice from Saint ; O'Meara ;
-Memorial|Journal ; Las Cases ;
- ; Montholon ;
- ; Gourgaud ;
- ; Antommarchi ;
- ; Forsyth, William ;
- ; Melliss ;
- ; Beatson ;
- ; Brooke, T. H. ;
- ; Gosse, Philip ; en
-Last Phase|Napoleon.*Last ; Rosebery ; en
-Napoleon.*(Saint|St\.) Helena|Captivity of Napoleon|Exile of Napoleon|Napoleon's Last ; ; en
-Napoleon.*Helena ; ; fr
- ; Lowe, Hudson ;
- ; Balcombe|Abell ;
- ; Fanny Burney|Burney ;
-Boer prisoners|Prisoner of War|Boer.*Helena ; ; en
-Voyage of the Beagle|Journal of Researches ; Darwin ; en
- ; Halley ;
- ; Jackson, E. L. ; en
-Ascension ; ; en
-Spray|Sailing Alone ; Slocum ; en
-Cruise of the Cachalot ; Bullen ; en
-Two Years Before the Mast ; Dana ; en
-Treasure Island|Ebb-Tide ; Stevenson ; en
-tortoise|Tortoise ; ; en
-subject? Testudinidae|Tortoises
-commons? St Helena island Jamestown
-commons? Longwood House St Helena
-commons? Jonathan tortoise St Helena
-commons? Napoleon St Helena 1820
-commons? St Helena map 18th century OR chart
-commons? Jacob's Ladder St Helena
-commons? St Helena stamp 1922 OR 1934
-commons? St Helena plover wirebird
-commons? Napoleon tomb St Helena Geranium Valley
-commons? Halley Saint Helena observatory
-commons? Plantation House St Helena
-commons? Diana's Peak St Helena
-= 15246 6317 944
-# Norfolk Island: the fifth bottle. The Bounty's descendants moved there from Pitcairn in 1856; before that, the convict settlement.
-Norfolk Island ; ;
-Norfolk Island ; ; en
-subject? Norfolk Island
-Mutineers of the Bounty|Descendants in Pitcairn and Norfolk ; Belcher ; en
-For the Term of His Natural Life|His Natural Life ; Clarke, Marcus ; en
- ; Clarke, Marcus ; en
-Pitcairn ; ; en
- ; Maconochie ; en
- ; Ullathorne ; en
- ; Becke, Louis ; en
- ; Melville, Herman ; en
-Norfolk Island Pine|Araucaria ; ; en
-Convict|Transportation|Botany Bay|Port Arthur|Van Diemen ; ; en
- ; Tench, Watkin ; en
- ; Collins, David ; en
- ; King, Philip Gidley ; en
- ; Hunter, John ; en
-Bounty ; ; en
- ; Barrow, John ; en
-commons? Norfolk Island Kingston
-commons? Norfolk Island 1856 Pitcairners Morayshire
-commons? Norfolk Island convict settlement painting
-commons? Norfolk Island pine Araucaria heterophylla 19th century
-commons? Norfolk Island map 1790 OR chart
-commons? Norfolk Island stamp 1947
-commons? Norfolk Island kaka OR parakeet OR pigeon Nestor productus
-commons? Norfolk Island Government House Kingston
+# The two poles: checking every candidate for the Antarctic hut and a new Arctic room against Gutenberg's own catalogue.
+# Each number proposed, with its type and the texts that share its title.
+= 79056 60258 43608 6594 39108 47857 38404 3482 13512 14350 26509 3701 28932 46972 64549 68177 52435
+= 72123 61398 50976 72211 6721 5199 4229 11579 6137 14363 13518 52631 18975 65193 36802 71127 69138 30197 34120 37669 10339 18979
+# Antarctic: the Heroic Age, the Belgica, and books that may be missing.
+Scott's Last Expedition ; ; en
+Voyage of the .?Discovery ; Scott ; en
+Heart of the Antarctic ; Shackleton ; en
+Shackleton ; ; en
+Home of the Blizzard ; ; en
+South Pole ; Amundsen ; en
+North.?West Passage ; Amundsen ; en
+First Antarctic Night ; ; en
+Belgica|Antarctic ; Cook, Frederick ; en
+Antarctic ; ; en
+Endurance ; ; en
+Great White South ; Ponting ; en
+ ; Worsley ; en
+ ; Mawson ; en
+# Arctic: the North-West Passage, Franklin and his searchers, the North Pole.
+ ; Franklin, John ; en
+Franklin ; ; en
+ ; Parry, William Edward ; en
+ ; M'Clintock|McClintock ; en
+Voyage of the .?Fox ; ; en
+ ; Rae, John ; en
+ ; Ross, John ; en
+ ; Ross, James Clark ; en
+ ; Back, George ; en
+ ; Kane, Elisha Kent ; en
+ ; Hall, Charles Francis ; en
+ ; Gilder, William ; en
+ ; Hayes, Isaac ; en
+ ; Greely ; en
+ ; Payer ; en
+ ; Koldewey ; en
+ ; Markham ; en
+ ; Hakluyt ; en
+North.?West Passage ; ; en
+Arctic ; ; en
+Polar ; ; en
+North Pole ; ; en
+ ; Nansen ; en
+ ; Peary ; en
+ ; Henson ; en
+ ; Dufferin ; en
+ ; Conway, William Martin ; en
+ ; Hartwig ; en
+ ; Bryce, George ; en
+ ; Turley ; en
+ ; Horton, Edith ; en
+ ; Firth Scott|Scott, G\. Firth ; en
+# Greenland and Inuit voices.
+ ; Rasmussen ; en
+Eskimo|Esquimaux|Inuit ; ; en
+Greenland ; ; en
+ ; Bilby ; en
+ ; Peary, Josephine ; en
+subject? Arctic regions|Northwest Passage|Franklin, John|Inuit|Eskimos|Greenland
+subject? Antarctica|Antarctic regions|South Pole|Scientific expeditions
+# Pictures that might be public domain on Commons, for the displays.
+commons? Endurance pack ice Hurley 1915
+commons? Belgica 1898 Antarctic
+commons? Franklin expedition Erebus Terror 1845 engraving
+commons? Arctic chart 1855 Franklin search
+commons? Schwatka Franklin search 1880

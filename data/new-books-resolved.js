@@ -2947,6 +2947,34 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 3534,
    "words": 66579
   },
+  "The South Pole": {
+   "id": 4229,
+   "words": 222480
+  },
+  "Shackleton in the Antarctic": {
+   "id": 69138,
+   "words": 60240
+  },
+  "Through the First Antarctic Night": {
+   "id": 72211,
+   "words": 130188
+  },
+  "The Home of the Blizzard": {
+   "id": 6137,
+   "words": 229440
+  },
+  "The Voyages of Captain Scott": {
+   "id": 6721,
+   "words": 112237
+  },
+  "Antarctic Penguins": {
+   "id": 36922,
+   "words": 29920
+  },
+  "The Romance of Polar Exploration": {
+   "id": 36802,
+   "words": 86131
+  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633

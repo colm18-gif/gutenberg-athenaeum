@@ -673,6 +673,11 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `travelling` locks walking only while sailing; aboard a moored ship, `floorAt` supplies the deck's 0.91 m floor.
   Reset cancels the voyage synchronously, so R cannot trigger a late arrival; a new Antipodes visit remooring in
   Australia keeps the boat available. Sea, wind and timber sounds use existing generated ambience recipes.
+  The hut's back wall holds THE POLAR SHELF in two rows of six (`SHELVES` ids, then the shelf `antarctic` in
+  `data/new-books.js`, passed in as `arrivals.antarctic`): the Antarctic only, the Heroic Age and the Belgica; the Arctic
+  is to have a room of its own. Two painted displays, no lights: the Endurance in the pack on the east wall (`ENDURANCE`,
+  quoting South, pg5199) and the Belgica's calendar by the door (`BELGICA`, quoting Cook's Through the First Antarctic
+  Night, pg72211); `polar-hut.test.cjs` checks every quotation.
   Snow is a `THREE.Points` object: using the mesh helper would connect the flakes into huge triangles across the hut.
   Both moorings have walkable 1.8 m gangways rising continuously from shore to deck height. `GANGWAYS` supplies the
   visible ramps, floor heights and walking bounds; the boat rail has matching gaps. Walking on/off the deck updates
