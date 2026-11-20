@@ -2919,6 +2919,10 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 53967,
    "words": 146484
   },
+  "Napoleon’s Appeal to the British Nation": {
+   "id": 50118,
+   "words": 4097
+  },
   "The Surrender of Napoleon": {
    "id": 28934,
    "words": 55968
@@ -4314,7 +4318,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Benito Cereno",
   "History of the Expedition under the Command of Captains Lewis and Clark, Vol. 1.",
   "The Necessity of Atheism",
-  "Napoleon’s Appeal to the British Nation",
   "María [es]",
   "Poesías [es]"
  ]
