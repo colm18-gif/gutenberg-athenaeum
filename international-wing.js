@@ -59,6 +59,13 @@
   const UKRINFORM={title:'«В Ірландії бібліотекар створив віртуальну Українську читальню»',date:'ЛИСТОПАД 2026',
     card:'Національне інформаційне агентство України «Укрінформ» написало про цю читальню в листопаді 2026 року. (Ukrinform, Ukraine’s national news agency, wrote about this room in November 2026: “In Ireland, a librarian has created a virtual Ukrainian Reading Room”.)',
     url:'https://ukrinform.ua/rubric-diaspora/4185152-v-irlandii-bibliotekar-stvoriv-virtualnu-ukrainsku-citalnu.html'};
+  // PROSVITA DIGITAL (ПРОСВІТА ЦИФРОВА), which carries on the Prosvita society's work and keeps the digital archive of the
+  // newspaper Slovo Prosvity, links to this room; the room links back (November 2026). Framed on the west wall, south of
+  // the window, where the wall is clear; its card opens the site, in Ukrainian or in English.
+  const PROSVITA={title:'ПРОСВІТА ЦИФРОВА · PROSVITA DIGITAL',
+    card:'Товариство «Просвіта» від 1868 року відкривало для українців читальні й бібліотеки. ПРОСВІТА ЦИФРОВА продовжує його справу: тут цифровий архів газети «Слово Просвіти» від 1995 року з повнотекстовим пошуком, українською та в машинному перекладі англійською, іспанською, німецькою й польською; Світлиця, сторінки видатних українців і їхньої спадщини; і Толока, покажчик українських організацій світу. (From 1868 the Prosvita society opened reading rooms and libraries for Ukrainians. PROSVITA DIGITAL carries on its work: the digital archive of the newspaper Slovo Prosvity since 1995, searchable in full, with machine translations into English, Spanish, German and Polish; Svitlytsia, pages on notable Ukrainians and their heritage; and Toloka, an index of Ukrainian organisations around the world.)',
+    url:'https://prosvita.digital/',
+    en:{url:'https://prosvita.digital/en',label:'In English · Англійською'}};
   // The children's room, Дитяча кімната: through a painted arch in the Ukrainian Reading Room's east wall, the two rooms
   // sharing that wall, so the room beyond, lit warmly, is seen from anywhere in the reading room. Its two low shelves:
   // the youngest readers' tales (CHILDREN, kept off the main racks) and, for older readers, stories from the room's own
@@ -976,6 +983,11 @@
         framed(clipping('Читомо','ЕКСКЛЮЗИВ · '+CHYTOMO.date,CHYTOMO.title),cz-3.25,link)}
       {const link={type:'intl-link',title:UKRINFORM.title,author:UKRINFORM.card,url:UKRINFORM.url,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:'Читати в Укрінформі · Read it on Ukrinform',action:'READ'};
         framed(clipping('Укрінформ','ДІАСПОРА · '+UKRINFORM.date,UKRINFORM.title),cz+3.25,link)}
+      // PROSVITA DIGITAL's sheet, on the west wall south of the window (its rushnyk ends at cz+3.57), facing into the room.
+      {const WW=cx-w/2+.19,py=2.35,pz=cz+5.3,link={type:'intl-link',title:PROSVITA.title,author:PROSVITA.card,url:PROSVITA.url,also:PROSVITA.en,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:'Відвідати · Visit prosvita.digital',action:'VISIT'};
+        const face=add(own(new THREE.PlaneGeometry(.66,.93)),own(new THREE.MeshStandardMaterial({map:clipping('Просвіта','ПРОСВІТА ЦИФРОВА · PROSVITA.DIGITAL','«Слово Просвіти»: цифровий архів від 1995 року'),roughness:.9})),WW+.03,py,pz,root);face.rotation.y=Math.PI/2;
+        const frame=add(own(new THREE.BoxGeometry(.04,1.07,.8)),MAT.darkWood,WW,py,pz,root);
+        mark(face,link);mark(frame,{...link})}
 
       // A trembita, the Hutsuls' long wooden horn bound in birch bark, standing in the north-east corner between the racks'
       // end and Kateryna, under a small plaque: blow it, and the reader is on the polonyna of Kotsiubynsky's Shadows of
