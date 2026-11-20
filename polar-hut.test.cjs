@@ -8,6 +8,13 @@ test('every word given to South on the Endurance window is in South',()=>{
   assert.ok(quotes.length>=2);
   for(const q of quotes)assert.ok(south.includes(plain(q)),q);
 });
+test('every word given to Cook on the Belgica calendar is in his book',()=>{
+  const card=antipodes.match(/const BELGICA=\[([\s\S]*?)\];/)[1];
+  const cook=plain(zlib.gunzipSync(fs.readFileSync(__dirname+'/texts/bundled-gzip/pg72211.txt.gz')).toString('utf8'));
+  const quotes=[...card.matchAll(/“([^”]+)”/g)].map(m=>m[1]);assert.ok(quotes.length>=4);
+  for(const q of quotes)assert.ok(cook.includes(plain(q)),q);
+  for(const fact of ['amundsen','1st mate','march 14','1899','thirteen long months'])assert.ok(cook.includes(plain(fact)),fact);
+});
 test('the hut keeps its books low, in two rows of six, and the window adds no light',()=>{
   assert.match(antipodes,/key:'antarctic'[^}]*ids:\[[^\]]*58973[^\]]*\][^}]*max:12/);
   assert.match(antipodes,/Math\.floor\(i\/6\)/);assert.match(antipodes,/shelfBoards\(cx,back\+\.5,7\.8,'x',\[1\.35,2\.55\]\)/);

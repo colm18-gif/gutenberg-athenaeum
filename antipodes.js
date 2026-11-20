@@ -28,6 +28,10 @@
   // The Endurance, painted on the hut's east window: beset in the Weddell Sea pack. Every word in quotation marks is
   // South's own (pg5199), checked by a test.
   const ENDURANCE=['The Endurance in the pack · drawn for the library','Shackleton’s ship, beset in the Weddell Sea on 19 January 1915, drifted with the ice through the winter. On 27 October the pressure crushed her and the men camped on the floe: “To a sailor his ship is more than a floating home,” Shackleton wrote that day. On 21 November, as the entry in South has it, “she went down bows first, her stern raised in the air.” All twenty-eight men came home. Her wreck was found in 2022, about three thousand metres down, upright and little changed.'];
+  // The Belgica's calendar, hung by the hut's door: the days of the first Antarctic winter, as Frederick Cook kept them
+  // in Through the First Antarctic Night (pg72211). Every quoted word is his, checked by a test.
+  const BELGICA=['The Belgica’s calendar, 1898–99 · drawn for the library','The Belgica, a Belgian ship under Adrien de Gerlache, was beset in the pack west of the Antarctic Peninsula late in February 1898 and drifted with it for thirteen months: the first ship to winter in the Antarctic. Her first mate was Roald Amundsen; her doctor, Frederick Cook. On 16 May the captain announced “no more sun for seventy days.” On 5 June Emile Danco died: “the darkest page in our log.” On 23 July “a gleam of fire burst through a large purple cloud on the horizon northward.” And on 14 March 1899 they “were released from the icy fetters which had held us so long.”'];
+  const BELGICA_DAYS=[['16 May 1898','the last of the sun'],['5 June','Danco'],['23 July','the sun again'],['14 March 1899','free']];
   const CARDS={
     antarcticSign:['THE ANTARCTIC EXPEDITION','Shackleton, Scott and the southern ice'],
     globe:['The great globe','An old terrestrial globe, a little faded at Europe from being turned so often. A brass plate on its stand reads: TURN TO THE ANTIPODES. MIND THE DROP.'],
@@ -451,6 +455,26 @@
       picture(root,drawEndurance,1.5,1.0,wx,1.95,z,-Math.PI/2,{type:'antipodes-card',title:ENDURANCE[0],author:ENDURANCE[1],action:'READ'});
       box(.08,.06,1.62,timber,wx-.03,1.42,z,root);
     }
+    function buildBelgica(cx,cz){
+      // A wall calendar beside the door, its four days ringed in red: paper only, no light.
+      const wx=cx-4.5+.14;
+      picture(root,drawBelgica,.75,1.0,wx,1.75,cz-3.95,Math.PI/2,{type:'antipodes-card',title:BELGICA[0],author:BELGICA[1],action:'READ'});
+    }
+    function drawBelgica(c,W,H){
+      c.fillStyle='#efe6cf';c.fillRect(0,0,W,H);
+      c.fillStyle='#2a3b52';c.font=`bold ${Math.round(H*.05)}px Georgia`;c.textAlign='center';c.fillText('BELGICA',W/2,H*.08);
+      c.font=`italic ${Math.round(H*.028)}px Georgia`;c.fillText('In the pack · 1898–1899',W/2,H*.12);
+      // A month grid, faintly printed, with the long night shaded.
+      c.strokeStyle='rgba(42,59,82,.35)';c.lineWidth=1;const gx=W*.08,gy=H*.16,gw=W*.84,gh=H*.4;
+      for(let i=0;i<=7;i++){c.beginPath();c.moveTo(gx+gw*i/7,gy);c.lineTo(gx+gw*i/7,gy+gh);c.stroke()}
+      for(let j=0;j<=5;j++){c.beginPath();c.moveTo(gx,gy+gh*j/5);c.lineTo(gx+gw,gy+gh*j/5);c.stroke()}
+      c.fillStyle='rgba(30,40,70,.18)';c.fillRect(gx+gw*2/7,gy+gh*2/5,gw*5/7,gh*3/5);
+      c.fillStyle='rgba(42,59,82,.6)';c.font=`${Math.round(H*.022)}px Georgia`;for(let d=1;d<=31;d++){const k=d+1,col=k%7,row=Math.floor(k/7);c.fillText(String(d),gx+gw*(col+.5)/7,gy+gh*(row+.7)/5)}
+      c.strokeStyle='#b0281f';c.lineWidth=3;c.beginPath();c.ellipse(gx+gw*(3.5)/7,gy+gh*2.55/5,gw*.06,gh*.08,0,0,7);c.stroke();
+      // The four days, written in below.
+      c.textAlign='left';BELGICA_DAYS.forEach(([day,what],i)=>{const y=H*(.64+i*.08);c.fillStyle='#b0281f';c.font=`bold ${Math.round(H*.032)}px Georgia`;c.fillText(day,W*.08,y);c.fillStyle='#2a3b52';c.font=`italic ${Math.round(H*.03)}px Georgia`;c.fillText(what,W*.55,y)});
+      c.fillStyle='rgba(42,59,82,.6)';c.font=`italic ${Math.round(H*.022)}px Georgia`;c.textAlign='center';c.fillText('drawn for the library',W/2,H*.97);
+    }
     function drawEndurance(c,W,H){
       // Night in the pack: a low moon, pressure ridges, and the ship held fast with her rigging rimed white.
       const sky=c.createLinearGradient(0,0,0,H*.6);sky.addColorStop(0,'#0b1426');sky.addColorStop(1,'#33496a');c.fillStyle=sky;c.fillRect(0,0,W,H*.6);
@@ -514,7 +538,7 @@
       box(1.3,.65,.6,timber,cx+3, .325,cz-5.3,root);block(cx+3,cz-5.3,1.4,.7);
       for(let i=0;i<4;i++){const stone=add(own(new THREE.SphereGeometry(.48-i*.06,5,3)),dark,cx+5.8,.35+i*.48,cz+1,root);stone.rotation.set(i*.2,i*.7,i*.13)}
       block(cx+5.8,cz+1,1.2,1.2);box(.07,3,.07,MAT.brass,cx+5.8,2,cz+1,root);box(1.15,.62,.04,own(new THREE.MeshStandardMaterial({color:0x8a2825,roughness:.9})),cx+6.35,2.7,cz+1,root);
-      buildVernadsky(cx,cz,front,back);buildEndurance(cx,cz);
+      buildVernadsky(cx,cz,front,back);buildEndurance(cx,cz);buildBelgica(cx,cz);
       // Lantern stakes mark the clear path from the gangway to the open hut.
       for(let i=0;i<5;i++)for(const s of [-1,1]){const z=cz+7-i*2.3;box(.055,.6,.055,timber,cx+s*1.5,.3,z,root);add(own(new THREE.SphereGeometry(.08,6,4)),glowMat,cx+s*1.5,.62,z,root);}
       const quay=box(3,.18,2,timber,cx-3.4,-.08,cz+7,root);quay.name='antarctic-landing-quay';
@@ -953,7 +977,7 @@
     }
     buildHall();
     return {contains,floorAt,allowed,blocksHall,interact,update,reset,enter,unload,startFall,zoneAt,shelfBooks,clockWords,
-      globe:GLOBE,hatch:HATCH,hall:HALL,vernadsky:VERNADSKY,endurance:ENDURANCE,rooms:{australian:AUS,nz:NZ,antarctic:ANTARCTIC,quay:QUAY},shelves:SHELVES,records:RECORDS,cards:CARDS,
+      globe:GLOBE,hatch:HATCH,hall:HALL,vernadsky:VERNADSKY,endurance:ENDURANCE,belgica:BELGICA,rooms:{australian:AUS,nz:NZ,antarctic:ANTARCTIC,quay:QUAY},shelves:SHELVES,records:RECORDS,cards:CARDS,
       get travelling(){return !!fall||!!voyage},get aboard(){return aboard},get voyageStage(){return voyage?.stage||null},get shipLocation(){return shipLocation},get passageOpen(){return (polarEntrance?.open||0)>=.9},
       get built(){return !!root},get shaftBuilt(){return !!shaft},get books(){return books.slice()},get hatchOpen(){return hall.hatch.target>0}};
   };
