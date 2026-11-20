@@ -120,7 +120,7 @@ test('the polar hut has an open approach and every book can be reached inside it
   const {a,scene}=world();a.enter('australian-room');const r=a.rooms.antarctic;
   assert(scene.children.find(o=>o.name==='antipodes').userData.antarcticSnow.isPoints,'snow is particles, not random triangles stretched across the hut');
   for(let z=r.cz+7;z>r.cz-7;z-=.15)assert(a.allowed(r.cx,z),`clear path to the hut at ${z}`);
-  const polar=a.books.filter(b=>b.userData.shelf==='antarctic');assert.equal(polar.length,4);
+  const polar=a.books.filter(b=>b.userData.shelf==='antarctic');assert(polar.length>=5,'the four first books and Wild');
   for(const b of polar){assert(b.position.z<r.cz-3&&b.position.z>r.cz-9,'books inside the hut');assert(a.allowed(b.position.x,b.position.z+1.5),'standing in front of the book');}
   assert(!a.allowed(r.cx+4.5,r.cz-6),'hut side walls are solid');
 });

@@ -2534,7 +2534,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // the reader falls through the Earth, as Alice expected to, and comes up at the far side of the world, between the
     // Australian Room and the New Zealand Room.
     const antipodes=window.createAntipodes?.({THREE,scene,MAT,player,camera,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,sound,
-      findBook:id=>books.find(b=>b.id===id),arrivals:{voyages:arrivalIds('antipodes'),australian:arrivalIds('australian'),nz:arrivalIds('new-zealand')},
+      findBook:id=>books.find(b=>b.id===id),arrivals:{voyages:arrivalIds('antipodes'),australian:arrivalIds('australian'),nz:arrivalIds('new-zealand'),antarctic:arrivalIds('antarctic')},
       fade:o=>{returnFade.style.opacity=String(o)},analytics:window.libraryAnalytics,isHolding:()=>!!selected,isReducedMotion:()=>reducedMotion,
       canUseVoyageControls:()=>!chatOpen&&!settingsOpen&&!supportOpen&&(!selected||carryingBook)&&ui.reader.classList.contains('hidden')&&ui.journal.classList.contains('hidden'),
       getFocusedObject:()=>focus,
