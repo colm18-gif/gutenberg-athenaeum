@@ -152,6 +152,8 @@
       'map-room':{beds:[['air',.035]],ticks:[[1.6,'tock',.025]],events:[['rustle',1.4,.04]]},
       // The explorers' anteroom: a store room with the wind outside it, and the timbers of a ship's locker creaking.
       'explorers-anteroom':{beds:[['wind',.035],['air',.04]],events:[['creak',.7,.03]]},
+      // The Arctic Room: a ship's cabin in the ice, the wind over the housing, the timbers working, the stove ticking.
+      'arctic-room':{beds:[['wind',.04],['fire',.02],['air',.03]],events:[['creak',.9,.045],['crackle',16,.03]]},
       // The Medicine Room: a still room, a clock, and the heavy leaves of the Fabrica being turned.
       'medicine-room':{beds:[['air',.03]],ticks:[[1.2,'tock',.022]],events:[['rustle',1,.04],['creak',.4,.03]]},
       // The Naturalist's Cabinet: a study at dusk, a clock, a page turned, and now and then a bird beyond the window.

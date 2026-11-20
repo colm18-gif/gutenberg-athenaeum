@@ -794,6 +794,21 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   north-west corner: kit on its pegs, a sledge, a chart left blank (Conrad, checked against pg219), the map-voyages shelf,
   a camp chair, and a ledger of departures the reader can sign (`DEPARTURES`, `athenaeum-departures`). A book trolley stands
   somewhere new on each visit with three books from rooms not yet found, each with a return slip.
+- The Arctic Room (`arctic-room.js`, x 1320, z 262; `?room=arctic`, `franklin`, `north-west-passage`, `victory-point`,
+  `erebus`): the great cabin of a ship wintering in the ice, through a planked door at the east end of the explorers'
+  anteroom's north wall, past the kit pegs (hung only while the anteroom is built; `exploration.anteroom.build` builds it
+  for the way back). The Antarctic is the polar hut's; this is the north (the owner's choice, 20 November 2026: split
+  the two poles). Painted panelling under deck beams, stern windows on the frozen sea, a sister ship housed over and the
+  aurora (painted, no light), a settee under them and a captain's chair at the chart table (seats), the chart of the
+  archipelago with The Frozen Deep open on it (`arctic-table`), the box stove (its glow flickers), one hanging lamp (the
+  room's one light). Shelves `arctic-passage` (west: after the library's Franklin and Hearne, `OWN`), `arctic-inuit` (east)
+  and `arctic-pole` (south, either side of the door, after its Henson and Farthest North II) in `data/new-books.js`. The
+  Franklin card keeps the Inuit at the heart of the story (Rae 1854, Schwatka, Erebus 2014 and Terror 2016 found with
+  Inuit knowledge, Kamookak, Kogvik). The secret is the cairn on the sea chest: lifting its stones finds the tin and the
+  Victory Point record, Gore's form of May 1847 and Crozier's margin of April 1848 (`RECORD`, checked against M'Clintock's
+  text, pg37669, by a test; every “quotation” on a card or notice must be one of them), and leaves In the Arctic Seas
+  (`arctic-record`) on the chest, found for good (`athenaeum-arctic-victory-point`; `?victorypoint`). Notes call the
+  people Inuit; old titles keep the word of their day.
 - The doors between the Grand Hall and each wing (x ±19) are a two-volume set of giant books (`wingVolume` in `game.js`):
   THE WEST WING (or EAST WING), Volume the First and Volume the Second, spines at the jambs, gilt fore-edges meeting in the
   middle. As the reader comes near, each block of pages gathers into its spine and each cover swings into the wing like a
@@ -906,7 +921,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
-  daily-room, long-corridor, ships-in-bottles, montserrat, pitcairn, tristan, st-helena, norfolk, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
+  daily-room, long-corridor, arctic, ships-in-bottles, montserrat, pitcairn, tristan, st-helena, norfolk, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.
