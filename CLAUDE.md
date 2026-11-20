@@ -10,7 +10,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - Startup scripts are listed in `index.html` via `startupScript(...)`; `game.js` runs last and wires everything
   together by wrapping functions (`floorHeight`, `allowed`, `interact`, `selectBook`, `updateWorld`…). A new
   startup script means updating the script count in `experience.test.cjs` and bumping `BUILD` in `index.html`.
-  Files the jobs rewrite without a new build are listed in `LIVE_DATA` there.
+  Files the jobs rewrite without a new build are listed in `LIVE_DATA` there. `styles.css` has its own version
+  (`styles.css?v=` in `index.html`): bump it whenever the stylesheet changes, or readers keep the old one from their cache.
 - Rooms behind doors (`evening-room.js`, `learners-room.js`, `periodicals-room.js`, `international-wing.js`,
   `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`, `map-room.js`, `medicine-room.js`, `set-texts-room.js`,
   `austen-room.js`, `burns-room.js`, `canada-room.js`, `long-corridor.js`, `dickinson-room.js`, `gulliver-room.js`, `nemo-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`, `walden.js`, `uncatalogued-room.js`)
