@@ -25,6 +25,12 @@
   // The Ukrainian room's shelf of the Executed Renaissance, and the little book in Shevchenko's boot: these stand apart
   // from its main shelves (data/new-books-wing.js gives them, with the room's other books).
   // The children's shelf: tales and verse for the youngest readers, on a low bookcase under the Petrykivka painting.
+  // Two freestanding double-sided cases in the Ukrainian room's north-east quarter, set end-on to the north wall as a
+  // library's stacks are, for the books from Wikisource's proofread and validated indexes (20 November 2026, on
+  // Wikimedia Ukraine's advice) that the north racks could not hold: x and z from the room's centre, `len` along z,
+  // `cols` columns a face, three tiers, both faces. They end north of the reading table and the way to the arch.
+  const STACKS=[{x:5.4,z:-3,len:4,cols:4},{x:8.9,z:-3,len:4,cols:4}];
+  const STACKS_CARD=['З Вікіджерел · From Wikisource','Ці книжки вичитали й перевірили, сторінку за сторінкою, волонтери Українських Вікіджерел: кожна — окрема надрукована книжка, від першого «Кобзаря» 1840 року до Антонича й Ольжича. Бібліотека знайшла їх за порадою Вікімедіа Україна. (These books were proofread and checked page by page by the volunteers of Ukrainian Wikisource, each one a printed book of its own, from the first Kobzar of 1840 to Antonych and Olzhych. The library found them on Wikimedia Ukraine’s advice.)'];
   const CHILDREN=['Рукавичка','Пан Коцький','Котигорошко','Кирило Кожум\'яка','Українські народні казки','Коли ще звірі говорили','Лис Микита','Байки','Біда навчить','Харитя','Ялинка','Грицева шкільна наука'];
   // The letter hunt: six wooden letter blocks hidden about the Ukrainian room spell КАЛИНА, each with a word for children.
   const LETTERS=[['К','кіт','a cat'],['А','аїст','a stork'],['Л','лисичка','a little fox'],['И','индик','a turkey'],['Н','небо','the sky'],['А','абетка','the alphabet']];
@@ -184,7 +190,7 @@
       note:'La nota della bibliotecaria',seat:['Una sedia accanto al tavolo','Si sieda e legga un libro di questa sala. (Sit and read a book from this room.)']},
     ukrainian:{cx:-530,cz:100,w:24,d:15,h:6,language:'uk',sign:'УКРАЇНСЬКА ЧИТАЛЬНЯ',sub:'The Ukrainian Reading Room · Міжнародне крило',
       card:['Українська читальня','Класика українською мовою, від Котляревського й Шевченка до Лесі Українки, Франка й Коцюбинського, кожна книжка з приміткою бібліотекарки. Тексти з Вікіджерел, суспільне надбання. (The Ukrainian Reading Room.)'],
-      lectern:'КНИЖКА ВЕЧОРА',lecternSub:'Tonight’s book',shade:0x2b5aa8,tiles:'vyshyvanka',memorial:MEMORIAL,boot:'Княжна',children:CHILDREN,older:OLDER,annex:CHILDREN_ROOM,window:true,
+      lectern:'КНИЖКА ВЕЧОРА',lecternSub:'Tonight’s book',shade:0x2b5aa8,tiles:'vyshyvanka',memorial:MEMORIAL,boot:'Княжна',children:CHILDREN,older:OLDER,annex:CHILDREN_ROOM,window:true,stacks:STACKS,
       welcome:pick=>`Українська читальня. Ласкаво просимо: класика українською мовою, кожна книжка з приміткою бібліотекарки.${writingDay()?' Сьогодні День української писемності та мови.':''}${isHolodomorDay()?' Сьогодні День пам’яті жертв голодоморів.':''}${pick?` На пюпітрі сьогодні: ${pick.title}.`:''} (The Ukrainian Reading Room: Ukrainian classics, each with a librarian’s note in Ukrainian and English.${writingDay()?' Today is the Day of Ukrainian Writing and Language.':''}${isHolodomorDay()?' Today is the Day of Remembrance of the Victims of the Holodomor.':''}${pick?' Tonight’s book is on the lectern.':''})`,
       note:'Примітка бібліотекарки',seat:['Стілець біля столу','Сідайте й читайте книжку з цієї читальні. (Sit and read a book from this room.)']}
   };
@@ -1174,7 +1180,22 @@
         mesh.userData={type:'book',book,loaded:false,international:true,wingRoom:key,home:{position:mesh.position.clone(),quaternion:mesh.quaternion.clone(),parent:root}};
         interactables.push(mesh);room.ours.push(mesh);room.books.push(mesh);return mesh};
       const corner=def.corner,inCorner=book=>!!corner&&corner.ids.includes(book.id);
-      list.filter(book=>!inCorner(book)&&!apart(def,book)).slice(0,spots.length).forEach((book,i)=>placeBook(book,spots[i]));
+      const racked=list.filter(book=>!inCorner(book)&&!apart(def,book));
+      racked.slice(0,spots.length).forEach((book,i)=>placeBook(book,spots[i]));
+      // The stacks (def.stacks): freestanding double-sided cases for the books beyond the wall racks, each face of
+      // `cols` columns and three tiers, books facing out on both sides, under a sign on top.
+      if(def.stacks){const more=racked.slice(spots.length),stackSpots=[],ROWS=[.82,1.94,3.06];
+        for(const st of def.stacks){const x=cx+st.x,z=cz+st.z,z0=z-st.len/2,pitch=st.len/st.cols;
+          box(.06,3.66,st.len,MAT.darkWood,x,1.83,z);box(.66,.12,st.len+.12,MAT.darkWood,x,3.72,z);box(.62,.1,st.len+.06,MAT.darkWood,x,.05,z);
+          for(const y of ROWS)box(.6,.04,st.len,MAT.darkWood,x,y-.56,z);
+          for(let i=0;i<=st.cols;i++)box(.6,3.66,.06,MAT.darkWood,x,1.83,z0+i*pitch);
+          const sign=own(plaque('З ВІКІДЖЕРЕЛ','From Wikisource · перевірені книжки',1100,158,'#1d2a3d',def.font));
+          for(const side of [-1,1]){const p=add(own(new THREE.PlaneGeometry(st.len-.2,.56)),own(new THREE.MeshStandardMaterial({map:sign,roughness:.8,emissive:0x5a3a18,emissiveIntensity:.3})),x+side*.04,4.08,z,root);
+            p.rotation.y=side*Math.PI/2;mark(p,{type:'intl-card',title:STACKS_CARD[0],author:STACKS_CARD[1],action:'READ'})}
+          box(.06,.6,st.len-.1,MAT.darkWood,x,4.08,z);
+          block(x,z,.8,st.len+.2);
+          for(const side of [1,-1])for(const y of ROWS)for(let i=0;i<st.cols;i++)stackSpots.push({x:x+side*.2,z:z0+pitch/2+i*pitch,y,yaw:side*Math.PI/2})}
+        more.slice(0,stackSpots.length).forEach((book,i)=>placeBook(book,stackSpots[i]))}
       // A room's own corner shelf (the French room's Rayon suisse): a short case of two tiers on the east wall.
       if(corner){const ex=cx+w/2,held=corner.ids.map(id=>list.find(book=>book.id===id)).filter(Boolean);
         box(.06,2.4,8.8,MAT.darkWood,ex-.2,2.3,cz);box(.46,.14,9,MAT.darkWood,ex-.36,3.52,cz);for(let i=0;i<=4;i++)box(.4,2.4,.07,MAT.darkWood,ex-.38,2.3,cz-4.4+i*2.2);

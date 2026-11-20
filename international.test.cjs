@@ -233,20 +233,22 @@ test('every chair in the rooms can be sat in',()=>{
   assert.doesNotMatch(game,/note\(chair,'Watson’s chair'/);
 });
 
-test('the Ukrainian room’s north racks have a place for every book that stands on them',()=>{
+test('the Ukrainian room’s north racks and stacks have a place for every book that stands on them',()=>{
   // Its west wall is a window, so it has the north racks only: three tiers of twelve. The children's books, the
   // Executed Renaissance and the book in Shevchenko's boot stand elsewhere (apart); the rest must all find a place.
   const wing=fs.readFileSync('international-wing.js','utf8'),list=load('data/new-books-wing.js','ATHENAEUM_NEW_BOOKS_WING').filter(e=>e[4]==='ukrainian').map(e=>e[1]);
   const titles=name=>[...wing.match(new RegExp(`const ${name}=\\[([^\\]]*)\\]`))[1].matchAll(/'((?:[^'\\]|\\.)*)'/g)].map(m=>m[1].replace(/\\'/g,"'"));
   const apart=new Set([...titles('CHILDREN'),...titles('MEMORIAL'),'Княжна']),racked=list.filter(t=>!apart.has(t));
-  assert.ok(racked.length<=36,`${racked.length} books for 36 places on the north racks`);
+  // Beyond the racks' 36, the freestanding stacks: two faces of cols×3 each.
+  const stacks=[...wing.match(/const STACKS=\[([^\]]*)\]/)[1].matchAll(/cols:(\d+)/g)].reduce((n,m)=>n+2*3*Number(m[1]),0);
+  assert.ok(racked.length<=36+stacks,`${racked.length} books for ${36+stacks} places on the north racks and the stacks`);
 });
 
 test('the Ukrainian Reading Room: classics from Wikisource behind a blue door with a rushnyk',async()=>{
   const wingList=load('data/new-books-wing.js','ATHENAEUM_NEW_BOOKS_WING'),ukrainian=wingList.filter(entry=>entry[4]==='ukrainian');
   const {ROOMS,ROOM_LANGUAGES,validate}=await import('./scripts/new-books.mjs'),ws=await import('./scripts/wikisource.mjs');
   assert.ok(ROOMS.includes('ukrainian'));assert.equal(ROOM_LANGUAGES.ukrainian,'uk');
-  assert.ok(ukrainian.length>=20&&ukrainian.length<=64,`${ukrainian.length} Ukrainian books`);// the children's room holds some of them
+  assert.ok(ukrainian.length>=20&&ukrainian.length<=120,`${ukrainian.length} Ukrainian books`);// the children's room holds some of them
   for(const [id,title,author,,,note] of ukrainian){
     assert.ok(ws.isWikisource(id),`${title}: from Wikisource, as Gutenberg has no Ukrainian texts`);
     assert.ok(/[а-щьюяєіїґ]/i.test(title)||/^[A-Z]/.test(title),`${title}: in the spelling of its edition`);
