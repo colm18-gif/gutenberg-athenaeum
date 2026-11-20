@@ -2632,11 +2632,11 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       // Taking a magazine down: the librarian's note about it.
       const prePeriodicalsSelect=selectBook;selectBook=function(bm){const result=prePeriodicalsSelect(bm);if(bm?.userData?.periodical){const note=librarianNotes[bm.userData.book.id]||window.ATHENAEUM_EXTRA_NOTES?.[bm.userData.book.id];if(note)showNotice(`“${note}”`,12)}return result};
     }
-    // Island bottles (island-bottles.js): Montserrat and the Irish Room, Norfolk Island and the Australian Room, joined
-    // both ways by ships in bottles, so the islands on the Long Corridor's shelf are not a dead end.
+    // Island bottles (island-bottles.js): Montserrat and the Irish Room, Norfolk Island and the Australian Room, Pitcairn
+    // and Norfolk, St Helena and Tristan da Cunha, joined both ways by ships in bottles, so the islands are not a dead end.
     const islandBottles=window.createIslandBottles?.({THREE,scene,MAT,interactables,canvasTexture,showNotice,playSample,analytics:window.libraryAnalytics,isHolding:()=>!!selected,
       storage:(()=>{try{return localStorage}catch(e){return null}})(),
-      places:{irish:irishRoom,montserrat:montserratRoom,norfolk:norfolkIsland,australian:antipodes&&{get built(){return antipodes.built},go:()=>antipodes.enter('australian-room')}},
+      places:{irish:irishRoom,montserrat:montserratRoom,norfolk:norfolkIsland,australian:antipodes&&{get built(){return antipodes.built},go:()=>antipodes.enter('australian-room')},pitcairn:pitcairnIsland,sthelena:stHelena,tristan:tristanIsland},
       move:(x,z,yaw,y=0)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,y,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,y+1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
     });
     if(islandBottles){
