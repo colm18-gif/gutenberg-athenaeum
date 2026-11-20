@@ -1201,8 +1201,12 @@
             p.rotation.y=side*Math.PI/2;mark(p,{type:'intl-card',title:STACKS_CARD[0],author:STACKS_CARD[1],action:'READ'})}
           box(.06,.6,st.len-.1,MAT.darkWood,x,4.08,z);
           block(x,z,.8,st.len+.2);
-          for(const side of [1,-1])for(const y of ROWS)for(let i=0;i<st.cols;i++)stackSpots.push({x:x+side*.2,z:z0+pitch/2+i*pitch,y,yaw:side*Math.PI/2})}
-        more.slice(0,stackSpots.length).forEach((book,i)=>placeBook(book,stackSpots[i]))}
+          // Tier by tier from the bottom, the two faces taking turns, so a case that is not yet full is filled evenly on
+          // both sides rather than one face full and the other bare.
+          for(const y of ROWS)for(let i=0;i<st.cols;i++)for(const side of [-1,1])stackSpots.push({x:x+side*.2,z:z0+pitch/2+i*pitch,y,yaw:side*Math.PI/2,side})}
+        // Each book remembers which way its cover faces (game.js's focus skips a book whose back is to the reader), so
+        // the one on the far side of a case's back panel is not offered through it.
+        more.slice(0,stackSpots.length).forEach((book,i)=>{const mesh=placeBook(book,stackSpots[i]);mesh.userData.facing=[stackSpots[i].side,0]})}
       // A room's own corner shelf (the French room's Rayon suisse): a short case of two tiers on the east wall.
       if(corner){const ex=cx+w/2,held=corner.ids.map(id=>list.find(book=>book.id===id)).filter(Boolean);
         box(.06,2.4,8.8,MAT.darkWood,ex-.2,2.3,cz);box(.46,.14,9,MAT.darkWood,ex-.36,3.52,cz);for(let i=0;i<=4;i++)box(.4,2.4,.07,MAT.darkWood,ex-.38,2.3,cz-4.4+i*2.2);

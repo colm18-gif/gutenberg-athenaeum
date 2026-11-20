@@ -595,7 +595,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - The Ukrainian Reading Room's stacks (`STACKS` in `international-wing.js`, `def.stacks`): its north racks hold 36 and
   were full, so two freestanding double-sided cases stand end-on to the north wall in the room's north-east quarter
   (four columns a face, three tiers, 48 places), clear of the reading table, the way to the arch, the trembita and the
-  didukh, under a sign, З ВІКІДЖЕРЕЛ (`STACKS_CARD`). Books beyond the racks' 36 go there in list order. They hold the
+  didukh, under a sign, З ВІКІДЖЕРЕЛ (`STACKS_CARD`). Books beyond the racks' 36 go there in list order, tier by tier from the bottom with the two faces taking turns (so a case not yet full is not bare on one side); each remembers its facing (`userData.facing`), and game.js's focus skips a book whose back is to the reader, so the one behind a case's back panel is not offered through it. They hold the
   books added on Wikimedia Ukraine's advice (20 November 2026), found with the Catalogue lookup's `ws-index <category
   or w.wiki link>` from Wikisource's proofread and validated indexes (one physical book each, checked page by page by
   its volunteers): the first Kobzar (1840), Shevchenko's primer, the first Eneida (1798), Franko, Kobylianska, Khvylovy,

@@ -368,3 +368,10 @@ test('the Unwritten: blank spines beside the Executed Renaissance, a card true t
   assert.match(game,/showNotice,openLink:openLinkCard,playSample/);assert.match(game,/function openLinkCard\(/);
   assert.match(html,/<a class="primary" id="linkCardGo" href="#" target="_blank" rel="noopener noreferrer">/);
 });
+
+test('the Ukrainian room’s stacks fill both faces evenly, and a book behind a case’s back panel is never offered',()=>{
+  const wing=fs.readFileSync('international-wing.js','utf8'),game=fs.readFileSync('game.js','utf8');
+  assert.match(wing,/for\(const y of ROWS\)for\(let i=0;i<st\.cols;i\+\+\)for\(const side of \[-1,1\]\)/,'tier by tier, the faces taking turns');
+  assert.match(wing,/mesh\.userData\.facing=\[stackSpots\[i\]\.side,0\]/);
+  assert.match(game,/const fc=object\.userData\?\.facing;if\(fc&&\(camera\.position\.x-focusWorldPosition\.x\)\*fc\[0\]\+\(camera\.position\.z-focusWorldPosition\.z\)\*fc\[1\]<0\)continue/,'focus skips a book whose back is to the reader');
+});
