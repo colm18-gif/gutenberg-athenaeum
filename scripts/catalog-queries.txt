@@ -43,3 +43,31 @@ commons? Halley Saint Helena observatory
 commons? Plantation House St Helena
 commons? Diana's Peak St Helena
 = 15246 6317 944
+# Norfolk Island: the fifth bottle. The Bounty's descendants moved there from Pitcairn in 1856; before that, the convict settlement.
+Norfolk Island ; ;
+Norfolk Island ; ; en
+subject? Norfolk Island
+Mutineers of the Bounty|Descendants in Pitcairn and Norfolk ; Belcher ; en
+For the Term of His Natural Life|His Natural Life ; Clarke, Marcus ; en
+ ; Clarke, Marcus ; en
+Pitcairn ; ; en
+ ; Maconochie ; en
+ ; Ullathorne ; en
+ ; Becke, Louis ; en
+ ; Melville, Herman ; en
+Norfolk Island Pine|Araucaria ; ; en
+Convict|Transportation|Botany Bay|Port Arthur|Van Diemen ; ; en
+ ; Tench, Watkin ; en
+ ; Collins, David ; en
+ ; King, Philip Gidley ; en
+ ; Hunter, John ; en
+Bounty ; ; en
+ ; Barrow, John ; en
+commons? Norfolk Island Kingston
+commons? Norfolk Island 1856 Pitcairners Morayshire
+commons? Norfolk Island convict settlement painting
+commons? Norfolk Island pine Araucaria heterophylla 19th century
+commons? Norfolk Island map 1790 OR chart
+commons? Norfolk Island stamp 1947
+commons? Norfolk Island kaka OR parakeet OR pigeon Nestor productus
+commons? Norfolk Island Government House Kingston
