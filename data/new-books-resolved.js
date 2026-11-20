@@ -4464,6 +4464,240 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "words": 31039,
    "source": "wikisource",
    "page": "https://uk.wikisource.org/wiki/%D0%A2%D0%B2%D0%BE%D1%80%D0%B8_(%D0%A4%D1%80%D0%B0%D0%BD%D0%BA%D0%BE%2C_1956%E2%80%931962)/7/%D0%9A%D0%BE%D0%BB%D0%B8_%D1%89%D0%B5_%D0%B7%D0%B2%D1%96%D1%80%D1%96_%D0%B3%D0%BE%D0%B2%D0%BE%D1%80%D0%B8%D0%BB%D0%B8"
+  },
+  "Кобзар (1840) [uk]": {
+   "id": 960925,
+   "words": 5019,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9A%D0%BE%D0%B1%D0%B7%D0%B0%D1%80%D1%8C_(1840)"
+  },
+  "Гамалія [uk]": {
+   "id": 969602,
+   "words": 754,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%93%D0%B0%D0%BC%D0%B0%D0%BB%D1%96%D1%8F_(1844)"
+  },
+  "Буквар південноруський [uk]": {
+   "id": 995721,
+   "words": 2762,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%91%D1%83%D0%BA%D0%B2%D0%B0%D1%80%D1%8C_%D1%8E%D0%B6%D0%BD%D0%BE%D1%80%D1%83%D1%81%D1%81%D0%BA%D1%96%D0%B9"
+  },
+  "Енеїда (1798) [uk]": {
+   "id": 962900,
+   "words": 12839,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%95%D0%BD%D0%B5%D1%97%D0%B4%D0%B0_(1798)"
+  },
+  "Перехресні стежки [uk]": {
+   "id": 971432,
+   "words": 99144,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9F%D0%B5%D1%80%D0%B5%D1%85%D1%80%D0%B5%D1%81%D0%BD%D1%96_%D1%81%D1%82%D0%B5%D0%B6%D0%BA%D0%B8_(19%3F%3F)"
+  },
+  "Boa Constrictor [uk]": {
+   "id": 989511,
+   "words": 35717,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/Boa_Constrictor_(1907)"
+  },
+  "Борислав сміється [uk]": {
+   "id": 958483,
+   "words": 78662,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%91%D0%BE%D1%80%D0%B8%D1%81%D0%BB%D0%B0%D0%B2_%D1%81%D0%BC%D1%96%D1%94%D1%82%D1%8C%D1%81%D1%8F_(1922)"
+  },
+  "Зів’яле листя [uk]": {
+   "id": 956040,
+   "words": 9252,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%97%D1%96%D0%B2%D1%8F%D0%BB%D0%B5_%D0%BB%D0%B8%D1%81%D1%82%D1%8F"
+  },
+  "Сон князя Святослава [uk]": {
+   "id": 967880,
+   "words": 15706,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%A1%D0%BE%D0%BD_%D0%BA%D0%BD%D1%8F%D0%B7%D1%8F_%D0%A1%D0%B2%D1%8F%D1%82%D0%BE%D1%81%D0%BB%D0%B0%D0%B2%D0%B0_(1929)"
+  },
+  "Баба Параска та баба Палажка [uk]": {
+   "id": 983881,
+   "words": 9314,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%91%D0%B0%D0%B1%D0%B0_%D0%9F%D0%B0%D1%80%D0%B0%D1%81%D0%BA%D0%B0_%D1%82%D0%B0_%D0%B1%D0%B0%D0%B1%D0%B0_%D0%9F%D0%B0%D0%BB%D0%B0%D0%B6%D0%BA%D0%B0_(1940)"
+  },
+  "Запорожці [uk]": {
+   "id": 983364,
+   "words": 7608,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%97%D0%B0%D0%BF%D0%BE%D1%80%D0%BE%D0%B6%D1%86%D1%96_(%D0%9D%D0%B5%D1%87%D1%83%D0%B9-%D0%9B%D0%B5%D0%B2%D0%B8%D1%86%D1%8C%D0%BA%D0%B8%D0%B9%2C_1940)"
+  },
+  "Людина [uk]": {
+   "id": 997637,
+   "words": 18911,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9B%D1%8E%D0%B4%D0%B8%D0%BD%D0%B0_(%D0%9A%D0%BE%D0%B1%D0%B8%D0%BB%D1%8F%D0%BD%D1%81%D1%8C%D0%BA%D0%B0_%D0%9E%D0%BB%D1%8C%D0%B3%D0%B0)"
+  },
+  "Апостол черні [uk]": {
+   "id": 978195,
+   "words": 79021,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%90%D0%BF%D0%BE%D1%81%D1%82%D0%BE%D0%BB_%D1%87%D0%B5%D1%80%D0%BD%D1%96"
+  },
+  "Ніоба [uk]": {
+   "id": 961455,
+   "words": 42193,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9D%D1%96%D0%BE%D0%B1%D0%B0_(1929)"
+  },
+  "Відьма та інші оповідання [uk]": {
+   "id": 973512,
+   "words": 12088,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%92%D1%96%D0%B4%D1%8C%D0%BC%D0%B0_%D1%82%D0%B0_%D1%96%D0%BD%D1%88%D1%96_%D0%BE%D0%BF%D0%BE%D0%B2%D1%96%D0%B4%D0%B0%D0%BD%D0%BD%D1%8F"
+  },
+  "Новина та инші оповідання [uk]": {
+   "id": 966231,
+   "words": 3351,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9D%D0%BE%D0%B2%D0%B8%D0%BD%D0%B0_%D1%82%D0%B0_%D0%B8%D0%BD%D1%88%D1%96_%D0%BE%D0%BF%D0%BE%D0%B2%D1%96%D0%B4%D0%B0%D0%BD%D0%BD%D1%8F"
+  },
+  "Не-читальник [uk]": {
+   "id": 998166,
+   "words": 20187,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9D%D0%B5-%D1%87%D0%B8%D1%82%D0%B0%D0%BB%D1%8C%D0%BD%D0%B8%D0%BA._%D0%9E%D0%BF%D0%BE%D0%B2%D1%96%D0%B4%D0%B0%D0%BD%D0%BD%D1%8F"
+  },
+  "Лови [uk]": {
+   "id": 989861,
+   "words": 2238,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9B%D0%BE%D0%B2%D0%B8_(1901)"
+  },
+  "Орися [uk]": {
+   "id": 971155,
+   "words": 2557,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9E%D1%80%D0%B8%D1%81%D1%8F_(1940)"
+  },
+  "Листи з хутора [uk]": {
+   "id": 992331,
+   "words": 6704,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9B%D0%B8%D1%81%D1%82%D0%B8_%D1%81%D1%8A_%D1%85%D1%83%D1%82%D0%BE%D1%80%D0%B0_(1861)"
+  },
+  "Золотий лев [uk]": {
+   "id": 987839,
+   "words": 14679,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%97%D0%BE%D0%BB%D0%BE%D1%82%D0%B8%D0%B9_%D0%BB%D0%B5%D0%B2_(%D0%9E%D0%BF%D1%96%D0%BB%D1%8C%D1%81%D1%8C%D0%BA%D0%B8%D0%B9)"
+  },
+  "Іду на вас [uk]": {
+   "id": 980717,
+   "words": 48874,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%86%D0%B4%D1%83_%D0%BD%D0%B0_%D0%B2%D0%B0%D1%81"
+  },
+  "Сині етюди [uk]": {
+   "id": 980710,
+   "words": 34073,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%A1%D0%B8%D0%BD%D1%96_%D0%B5%D1%82%D1%8E%D0%B4%D0%B8_(1923)"
+  },
+  "Повстанці й инші оповідання [uk]": {
+   "id": 954955,
+   "words": 10618,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9F%D0%BE%D0%B2%D1%81%D1%82%D0%B0%D0%BD%D1%86%D1%96_%D0%B9_%D0%B8%D0%BD%D1%88%D1%96_%D0%BE%D0%BF%D0%BE%D0%B2%D1%96%D0%B4%D0%B0%D0%BD%D0%BD%D1%8F"
+  },
+  "Проблема хліба [uk]": {
+   "id": 956326,
+   "words": 45198,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9F%D1%80%D0%BE%D0%B1%D0%BB%D0%B5%D0%BC%D0%B0_%D1%85%D0%BB%D1%96%D0%B1%D0%B0_(%D0%B7%D0%B1%D1%96%D1%80%D0%BA%D0%B0)"
+  },
+  "Рання осінь [uk]": {
+   "id": 964393,
+   "words": 3141,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%A0%D0%B0%D0%BD%D0%BD%D1%8F_%D0%BE%D1%81%D1%96%D0%BD%D1%8C"
+  },
+  "Подорож у Даґестан [uk]": {
+   "id": 990972,
+   "words": 30792,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9F%D0%BE%D0%B4%D0%BE%D1%80%D0%BE%D0%B6_%D1%83_%D0%94%D0%B0%D2%91%D0%B5%D1%81%D1%82%D0%B0%D0%BD"
+  },
+  "Під парусом на дубі [uk]": {
+   "id": 989446,
+   "words": 18167,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9F%D1%96%D0%B4_%D0%BF%D0%B0%D1%80%D1%83%D1%81%D0%BE%D0%BC_%D0%BD%D0%B0_%D0%B4%D1%83%D0%B1%D1%96"
+  },
+  "Привітання життя [uk]": {
+   "id": 995541,
+   "words": 9228,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%9F%D1%80%D0%B8%D0%B2%D1%96%D1%82%D0%B0%D0%BD%D0%BD%D1%8F_%D0%B6%D0%B8%D1%82%D1%82%D1%8F_(%D0%B7%D0%B1%D1%96%D1%80%D0%BA%D0%B0)"
+  },
+  "Три перстені [uk]": {
+   "id": 952353,
+   "words": 4875,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%A2%D1%80%D0%B8_%D0%BF%D0%B5%D1%80%D1%81%D1%82%D0%B5%D0%BD%D1%96"
+  },
+  "Ротації [uk]": {
+   "id": 951542,
+   "words": 1855,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%A0%D0%BE%D1%82%D0%B0%D1%86%D1%96%D1%97"
+  },
+  "Рінь [uk]": {
+   "id": 979607,
+   "words": 2724,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%A0%D1%96%D0%BD%D1%8C_(%D0%B7%D0%B1%D1%96%D1%80%D0%BA%D0%B0)"
+  },
+  "Вежі [uk]": {
+   "id": 976930,
+   "words": 2198,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%92%D0%B5%D0%B6%D1%96"
+  },
+  "Бондарівна [uk]": {
+   "id": 957026,
+   "words": 12149,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%91%D0%BE%D0%BD%D0%B4%D0%B0%D1%80%D1%96%D0%B2%D0%BD%D0%B0_(%D0%9A%D0%B0%D1%80%D0%BF%D0%B5%D0%BD%D0%BA%D0%BE-%D0%9A%D0%B0%D1%80%D0%B8%D0%B9%2C_1916)"
+  },
+  "Глитай, або ж Павук [uk]": {
+   "id": 966683,
+   "words": 13562,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%93%D0%BB%D0%B8%D1%82%D0%B0%D0%B9_%D0%B0%D0%B1%D0%BE_%D0%B6_%D0%9F%D0%B0%D0%B2%D1%83%D0%BA"
+  },
+  "До української дитини [uk]": {
+   "id": 950242,
+   "words": 5911,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%94%D0%BE_%D1%83%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D1%81%D1%8C%D0%BA%D0%BE%D1%97_%D0%B4%D0%B8%D1%82%D0%B8%D0%BD%D0%B8"
+  },
+  "Зіля-королевич [uk]": {
+   "id": 988316,
+   "words": 4484,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%97%D1%96%D0%BB%D1%8F_%D0%BA%D0%BE%D1%80%D0%BE%D0%BB%D0%B5%D0%B2%D0%B8%D1%87_(1925)"
+  },
+  "За сестрою [uk]": {
+   "id": 951393,
+   "words": 22177,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%97%D0%B0_%D1%81%D0%B5%D1%81%D1%82%D1%80%D0%BE%D1%8E_(1941)"
+  },
+  "Славні побратими [uk]": {
+   "id": 999246,
+   "words": 8497,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%A1%D0%BB%D0%B0%D0%B2%D0%BD%D1%96_%D0%BF%D0%BE%D0%B1%D1%80%D0%B0%D1%82%D0%B8%D0%BC%D0%B8_(1919)"
   }
  },
  "missing": [

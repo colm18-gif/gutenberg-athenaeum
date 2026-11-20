@@ -9,6 +9,11 @@
 #   ws? <words>     a search of Ukrainian Wikisource's texts
 #   ws! <page>      every link on a Ukrainian Wikisource page, in every namespace (author pages too), and its categories
 #   commons? <words>  a search of Wikimedia Commons's files, with each file's size and licence
+#   ws-index <category or link>  every page in a Ukrainian Wikisource category (a w.wiki short link is followed): for
+#                   an index (Індекс:…, one physical book, proofread or validated by Wikisource's volunteers) the page
+#                   where its text is read and its author; for a version page, the editions it lists. A book the
+#                   library already has (a ws: page in data/new-books*.js) is marked *. Wikimedia Ukraine's advice,
+#                   20 November 2026: whole books are found more reliably from the index categories than from titles.
 import csv, io, json, re, sys, urllib.parse, urllib.request
 # gutenberg.org sometimes refuses GitHub's runners (503) for a while; its mirrors carry the same file.
 def fetch_catalogue():
@@ -20,10 +25,53 @@ def fetch_catalogue():
 UA = {'User-Agent': 'LibraryAfterDark/1.0 (https://libraryafterdark.space; catalogue lookup)'}
 def api(host, **params):
     params.update(format='json', formatversion='2')
-    req = urllib.request.Request(f'https://{host}/w/api.php?' + urllib.parse.urlencode(params), headers=UA)
+    # Sent as a POST: fifty long Cyrillic page names are too long for an address (414).
+    req = urllib.request.Request(f'https://{host}/w/api.php', data=urllib.parse.urlencode(params).encode(), headers=UA)
     return json.loads(urllib.request.urlopen(req, timeout=60).read().decode('utf-8'))
+def category_title(arg):
+    arg = arg.strip()
+    if arg.startswith('http'):
+        final = urllib.request.urlopen(urllib.request.Request(arg, headers=UA), timeout=60).geturl()
+        parsed = urllib.parse.urlparse(final)
+        arg = urllib.parse.unquote(parsed.path.split('/wiki/', 1)[1]) if '/wiki/' in parsed.path else urllib.parse.parse_qs(parsed.query).get('title', [''])[0]
+    return arg.replace('_', ' ')
+def query_all(host, key, **params):
+    out, cont = [], {}
+    while True:
+        data = api(host, action='query', **params, **cont)
+        q = data.get('query', {})
+        out.append(q)
+        if 'continue' not in data: return out
+        cont = {k: v for k, v in data['continue'].items()}
+def library_pages():
+    pages = set()
+    for name in ['data/new-books.js', 'data/new-books-wing.js']:
+        try: pages |= {m.replace('_', ' ') for m in re.findall(r"'ws:([^']+)'", open(name, encoding='utf-8').read())}
+        except OSError: pass
+    return pages
+def ws_index(arg):
+    cat = category_title(arg)
+    members = []
+    for q in query_all('uk.wikisource.org', 'categorymembers', list='categorymembers', cmtitle=cat, cmlimit='max'):
+        members += q.get('categorymembers', [])
+        if len(members) >= 4000: break
+    have = library_pages()
+    print(f'\n== ws-index {cat}  ({len(members)} pages)')
+    titles = [m['title'] for m in members]
+    for i in range(0, len(titles), 50):
+        batch = titles[i:i + 50]; links = {t: [] for t in batch}
+        for q in query_all('uk.wikisource.org', 'pages', prop='links', titles='|'.join(batch), pllimit='max'):
+            for page in q.get('pages', []):
+                links.setdefault(page['title'], []).extend(l['title'] for l in page.get('links', []))
+        for t in batch:
+            got = links.get(t, [])
+            texts = [l for l in got if ':' not in l.split('/')[0]][:4]
+            authors = sorted({l.split(':', 1)[1] for l in got if l.startswith('Автор:')})[:3]
+            mark = '*' if any(x in have for x in texts) or t in have else ' '
+            print(f"  {mark} {t}  ->  {' | '.join(texts) or '(no text page linked)'}  ||  {', '.join(authors) or '?'}")
 def wikimedia(line):
     try:
+        if line.startswith('ws-index '): ws_index(line[9:]); return
         if line.startswith('ws! '):
             page = line[4:].strip()
             data = api('uk.wikisource.org', action='parse', page=page, prop='links|categories', redirects=1).get('parse', {})
@@ -58,7 +106,7 @@ print(f'{len(rows)} texts in the catalogue')
 for line in open('scripts/catalog-queries.txt', encoding='utf-8'):
     line = line.strip()
     if not line or line.startswith('#'): continue
-    if line.startswith(('ws ', 'ws? ', 'ws! ', 'commons? ')): wikimedia(line); continue
+    if line.startswith(('ws-index ', 'ws ', 'ws? ', 'ws! ', 'commons? ')): wikimedia(line); continue
     if line.startswith('subject? '):
         # Gutenberg's own subject headings and bookshelves, for books about a place whose titles don't name it
         pattern = line[9:].strip()
