@@ -54,11 +54,6 @@
     card:'Читомо, видання про книжки й читання, написало про цю читальню 10 листопада 2026 року. (Chytomo, the Ukrainian magazine about books and reading, wrote about this room on 10 November 2026: “In Ireland, a librarian has created a virtual Ukrainian Reading Room”.)',
     url:'https://chytomo.com/v-irlandii-bibliotekar-stvoryv-virtualnu-ukrainsku-chytalniu/',
     en:{url:'https://chytomo.com/en/irish-librarian-creates-virtual-ukrainian-reading-room-with-literary-classics-and-memorial-shelves/',label:'In English · Англійською'}};
-  // Ukrinform, Ukraine's national news agency, took up the story in its Diaspora pages in November 2026: framed on the east
-  // wall as Chytomo's is, on the other side of the arch, between the rushnyk and Shevchenko's drawing of Raim.
-  const UKRINFORM={title:'«В Ірландії бібліотекар створив віртуальну Українську читальню»',date:'ЛИСТОПАД 2026',
-    card:'Національне інформаційне агентство України «Укрінформ» написало про цю читальню в листопаді 2026 року. (Ukrinform, Ukraine’s national news agency, wrote about this room in November 2026: “In Ireland, a librarian has created a virtual Ukrainian Reading Room”.)',
-    url:'https://ukrinform.ua/rubric-diaspora/4185152-v-irlandii-bibliotekar-stvoriv-virtualnu-ukrainsku-citalnu.html'};
   // PROSVITA DIGITAL (ПРОСВІТА ЦИФРОВА), which carries on the Prosvita society's work and keeps the digital archive of the
   // newspaper Slovo Prosvity, links to this room; the room links back (November 2026). Framed on the west wall, south of
   // the window, where the wall is clear; its card opens the site, in Ukrainian or in English.
@@ -965,9 +960,9 @@
         const data={type:'intl-sopilka',title:'Сопілка',author:'Сопілка Лукаша з «Лісової пісні» Лесі Українки (1911). Заграйте на ній, і почнеться весна в старому лісі на Волині. (Lukash’s reed pipe from Lesia Ukrainka’s Forest Song. Play it, and spring begins in an old forest in Volyn.)',action:'PLAY'};
         for(const part of [pipe,linen,sign])mark(part,data)}
 
-      // The press about the room, cut out and framed on the east wall either side of the arch, clear of the mitten's
-      // cut-outs below: Chytomo's between Kateryna and the arch's painted jamb, Ukrinform's between the jamb and the drawing
-      // of Raim. Each card opens its article (Chytomo's in Ukrainian or in English).
+      // The press about the room, cut out and framed on the east wall, clear of the mitten's cut-outs below: Chytomo's
+      // between Kateryna and the arch's painted jamb. Its card opens the article in Ukrainian or in English. (Ukrinform's
+      // retelling of the same story hung across the arch until 20 November 2026, when the owner took it down.)
       const clipping=(name,kicker,title)=>own(canvasTexture((c,W,H)=>{c.fillStyle='#f1ead8';c.fillRect(0,0,W,H);c.fillStyle='#1b1b1b';c.textAlign='left';
           c.font=`bold ${Math.round(W*.13)}px Georgia`;c.fillText(name,W*.08,H*.13);c.fillRect(W*.08,H*.16,W*.84,3);
           c.font=`${Math.round(W*.045)}px Georgia`;c.fillStyle='#b3202a';c.fillText(kicker,W*.08,H*.215);
@@ -981,8 +976,6 @@
         mark(face,link);mark(frame,{...link})};
       {const link={type:'intl-link',title:CHYTOMO.title,author:CHYTOMO.card,url:CHYTOMO.url,also:CHYTOMO.en,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:'Читати на Читомо · Read it on Chytomo',action:'READ'};
         framed(clipping('Читомо','ЕКСКЛЮЗИВ · '+CHYTOMO.date,CHYTOMO.title),cz-3.25,link)}
-      {const link={type:'intl-link',title:UKRINFORM.title,author:UKRINFORM.card,url:UKRINFORM.url,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:'Читати в Укрінформі · Read it on Ukrinform',action:'READ'};
-        framed(clipping('Укрінформ','ДІАСПОРА · '+UKRINFORM.date,UKRINFORM.title),cz+3.25,link)}
       // PROSVITA DIGITAL's sheet, on the west wall south of the window (its rushnyk ends at cz+3.57), facing into the room.
       {const WW=cx-w/2+.19,py=2.35,pz=cz+5.3,link={type:'intl-link',title:PROSVITA.title,author:PROSVITA.card,url:PROSVITA.url,also:PROSVITA.en,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:'Відвідати · Visit prosvita.digital',action:'VISIT'};
         const face=add(own(new THREE.PlaneGeometry(.66,.93)),own(new THREE.MeshStandardMaterial({map:clipping('Просвіта','ПРОСВІТА ЦИФРОВА · PROSVITA.DIGITAL','«Слово Просвіти»: цифровий архів від 1995 року'),roughness:.9})),WW+.03,py,pz,root);face.rotation.y=Math.PI/2;

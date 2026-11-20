@@ -521,8 +521,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   each is the library's own plain rendering.
 - The press on the walls: Chytomo's article about the Ukrainian Reading Room (10 November 2026; `CHYTOMO`
   in `international-wing.js`, its card linking the Ukrainian and, as `en`, the English version: the link card shows a
-  second button for `also`) hangs framed on that room's east wall between Kateryna and the arch; Ukrinform's (`UKRINFORM`,
-  its Diaspora pages, November 2026) mirrors it between the arch and the drawing of Raim; and NATE's blog piece,
+  second button for `also`) hangs framed on that room's east wall between Kateryna and the arch (Ukrinform's piece, the same story, hung across the
+  arch until the owner took it down on 20 November 2026: don't put it back); and NATE's blog piece,
   A library made for exploration (29 October 2026; `NATE` in `set-texts-room.js`), on the Set Texts Room's east wall north
   of the board for teachers. Each card opens its article in game.js's `openLinkCard` (`intl-link`, `settexts-nate`). Cards
   name the publication, never the journalist (a correspondent). PROSVITA DIGITAL (`PROSVITA`, prosvita.digital, which
