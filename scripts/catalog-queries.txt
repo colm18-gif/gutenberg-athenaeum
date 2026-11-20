@@ -1,14 +1,45 @@
-# Tristan da Cunha: pictures on Commons for the third bottle.
-commons? Tristan da Cunha Earle
-commons? Tristan da Cunha chart Admiralty
-commons? Tristan da Cunha stamp 1946 potato
-commons? Tristan da Cunha 1952 stamp
-commons? Edinburgh of the Seven Seas
-commons? Tristan da Cunha 1961 eruption
-commons? Tristan da Cunha longboat
-commons? Inaccessible Island rail Atlantisia
-commons? Tristan da Cunha Challenger 1873
-commons? Tristan da Cunha Queen Mary's Peak
-commons? William Glass Tristan
-commons? Tristan da Cunha Quest 1922
-= 8213 58973 44480 15246
+# St Helena: the fourth bottle. What does Gutenberg hold about the island, Napoleon's exile, its people and its tortoise?
+Helena ; ;
+Helena ; ; en
+subject? Saint Helena|St\. Helena|Helena \(Island\)
+subject? Napoleon I.*(Exile|Captivity|Saint Helena)|Longwood
+Napoleon in Exile|Voice from St|Voice from Saint ; O'Meara ;
+Memorial|Journal ; Las Cases ;
+ ; Montholon ;
+ ; Gourgaud ;
+ ; Antommarchi ;
+ ; Forsyth, William ;
+ ; Melliss ;
+ ; Beatson ;
+ ; Brooke, T. H. ;
+ ; Gosse, Philip ; en
+Last Phase|Napoleon.*Last ; Rosebery ; en
+Napoleon.*(Saint|St\.) Helena|Captivity of Napoleon|Exile of Napoleon|Napoleon's Last ; ; en
+Napoleon.*Helena ; ; fr
+ ; Lowe, Hudson ;
+ ; Balcombe|Abell ;
+ ; Fanny Burney|Burney ;
+Boer prisoners|Prisoner of War|Boer.*Helena ; ; en
+Voyage of the Beagle|Journal of Researches ; Darwin ; en
+ ; Halley ;
+ ; Jackson, E. L. ; en
+Ascension ; ; en
+Spray|Sailing Alone ; Slocum ; en
+Cruise of the Cachalot ; Bullen ; en
+Two Years Before the Mast ; Dana ; en
+Treasure Island|Ebb-Tide ; Stevenson ; en
+tortoise|Tortoise ; ; en
+subject? Testudinidae|Tortoises
+commons? St Helena island Jamestown
+commons? Longwood House St Helena
+commons? Jonathan tortoise St Helena
+commons? Napoleon St Helena 1820
+commons? St Helena map 18th century OR chart
+commons? Jacob's Ladder St Helena
+commons? St Helena stamp 1922 OR 1934
+commons? St Helena plover wirebird
+commons? Napoleon tomb St Helena Geranium Valley
+commons? Halley Saint Helena observatory
+commons? Plantation House St Helena
+commons? Diana's Peak St Helena
+= 15246 6317 944
