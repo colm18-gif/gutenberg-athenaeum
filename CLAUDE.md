@@ -678,6 +678,14 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   visible ramps, floor heights and walking bounds; the boat rail has matching gaps. Walking on/off the deck updates
   boarding automatically, with E/G and the voyage card retained as alternatives. Keep these paths available before
   `aboard` is set: making deck or gangway collision depend on boarding first prevents walking aboard.
+  In the hut, Ukraine's Antarctic station (`VERNADSKY`, `buildVernadsky`): on the west wall a picture of Akademik Vernadsky
+  (drawn for the library and saying so: Commons has no public-domain photograph), its card in Ukrainian and English (Base F
+  from 1947, Faraday from 1977, Ukraine's flag raised on 6 February 1996, Vernadsky the Academy's first president, ozone
+  and the ionosphere still measured), and a little flag; in the top of the crate by the books, a pound coin, as one is said
+  to be set into the station's bar (found for good, `athenaeum-vernadsky-pound`; its card keeps the symbolic pound a story).
+  A postcard from the station (`POSTCARD` in international-wing.js), pinned on the Ukrainian Reading Room's west wall
+  between the window's rushnyk and the cuttings, tells the way there. Made before writing to the National Antarctic
+  Scientific Center of Ukraine (20 November 2026).
 - The African Reading Room (`african-room.js`, courtyard x −600, z −294; room north of it) is reached by balloon: a
   balloon moored in the roof garden's south-west corner (x −13, z 51.5) rises over the town, crosses a cloud sea (built at
   x −900 for the flight, inside the camera's 130 m) and sinks into a walled courtyard with a baobab. The room is in the
