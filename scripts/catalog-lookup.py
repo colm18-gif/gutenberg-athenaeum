@@ -25,7 +25,8 @@ def fetch_catalogue():
 UA = {'User-Agent': 'LibraryAfterDark/1.0 (https://libraryafterdark.space; catalogue lookup)'}
 def api(host, **params):
     params.update(format='json', formatversion='2')
-    req = urllib.request.Request(f'https://{host}/w/api.php?' + urllib.parse.urlencode(params), headers=UA)
+    # Sent as a POST: fifty long Cyrillic page names are too long for an address (414).
+    req = urllib.request.Request(f'https://{host}/w/api.php', data=urllib.parse.urlencode(params).encode(), headers=UA)
     return json.loads(urllib.request.urlopen(req, timeout=60).read().decode('utf-8'))
 def category_title(arg):
     arg = arg.strip()

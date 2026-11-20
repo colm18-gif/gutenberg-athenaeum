@@ -1,5 +1,4 @@
 # Wikimedia Ukraine's advice (20 November 2026): find whole Ukrainian books from Wikisource's index categories.
-# Validated indexes (every page checked by two people), proofread indexes (by one), and version pages.
+# Validated indexes (every page checked by two people) and proofread indexes (by one). (Version pages were read on 20 November.)
 ws-index https://w.wiki/m89V
 ws-index https://w.wiki/m84s
-ws-index https://w.wiki/m8Dy
