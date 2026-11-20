@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>The librarian's inbox</title>
+<!-- The owner's private page: letters readers have written to the librarian from the visitors' book, and the book's
+     latest signatures, each of which can be removed. It needs the visitors' book service's admin password (the
+     VISITORS_BOOK_ADMIN_TOKEN secret); nothing here is shown to anyone without it. Not linked from the library. -->
+<style>
+  :root{--ink:#2a1d10;--paper:#f3ead3;--edge:#b18b51;--muted:#7a5a38;--bg:#141a17}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:#e8dcc2;font:16px/1.5 Georgia,serif;padding:24px 16px 60px}
+  main{max-width:760px;margin:0 auto}
+  h1{font-weight:normal;color:#f0dfbd;margin:0 0 4px;font-size:30px}h2{font-weight:normal;color:#f0dfbd;font-size:22px;margin:28px 0 10px}
+  .sub{color:#bfae8e;font-style:italic;margin:0 0 18px}
+  form{display:flex;gap:8px;flex-wrap:wrap}input{font:inherit;padding:9px 10px;border:1px solid var(--edge);border-radius:6px;background:var(--paper);color:var(--ink);flex:1;min-width:200px}
+  button{font:inherit;padding:8px 14px;border-radius:6px;border:1px solid var(--edge);background:#3a2a18;color:#f0dfbd;cursor:pointer}button.quiet{background:transparent}
+  ol{list-style:none;margin:0;padding:0}li{background:var(--paper);color:var(--ink);border-radius:6px;padding:12px 14px;margin:0 0 10px}
+  .meta{color:var(--muted);font-size:14px}.text{white-space:pre-wrap;word-break:break-word;margin:6px 0}.row{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap}
+  li button{background:#efe0c0;color:var(--ink);font-size:14px;padding:4px 10px}a{color:#2c3e66}
+  .status{color:#f0c27a;min-height:1.4em}.hidden{display:none}
+</style>
+</head>
+<body>
+<main>
+  <h1>The librarian's inbox</h1>
+  <p class="sub">Letters readers have written to you from the visitors' book, and the book's latest signatures.</p>
+  <form id="unlock"><input id="token" type="password" autocomplete="current-password" placeholder="The visitors' book admin password" required><button type="submit">Open</button></form>
+  <p class="status" id="status" role="status"></p>
+  <section id="inbox" class="hidden">
+    <div class="row"><h2>Letters</h2><button class="quiet" id="forget" type="button">Forget the password on this device</button></div>
+    <ol id="letters"></ol>
+    <h2>The visitors' book</h2>
+    <p class="sub">The latest signatures as readers see them. Remove one that should not be there.</p>
+    <ol id="entries"></ol>
+  </section>
+</main>
+<script src="data/visitors-book-config.js"></script>
+<script src="visitors-book.js"></script>
+<script>
+(function(){
+  'use strict';
+  const endpoint=String(window.ATHENAEUM_VISITORS_BOOK?.endpoint||'').replace(/\/+$/,'');
+  const rules=window.ATHENAEUM_VISITORS_BOOK_RULES||{PHRASES:[]};
+  const KEY='athenaeum-librarian-token',$=id=>document.getElementById(id),status=t=>{$('status').textContent=t};
+  let token='';try{token=localStorage.getItem(KEY)||''}catch(e){}
+  const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e};
+  const when=iso=>{const d=new Date(iso);return isNaN(d)?String(iso||''):d.toLocaleString('en-GB',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})};
+  const call=(path,method='GET')=>fetch(endpoint+path,{method,headers:{Authorization:'Bearer '+token}}).then(async r=>{const data=await r.json().catch(()=>({}));if(!r.ok)throw Object.assign(new Error(data.error||String(r.status)),{status:r.status});return data});
+  async function remove(path,item,what){if(!confirm(`Remove this ${what}? It cannot be undone.`))return;try{await call(path,'DELETE');item.remove();status(`The ${what} has been removed.`)}catch(e){status(`Could not remove it: ${e.message}`)}}
+  function letter(m){
+    const li=el('li'),top=el('div','row');top.append(el('strong',null,m.n||'A reader'),el('span','meta',when(m.d)));
+    const text=el('p','text',m.t),foot=el('div','row'),reply=el('span','meta');
+    if(m.r){const a=el('a',null,m.r);a.href='mailto:'+encodeURIComponent(m.r).replace(/%40/g,'@')+'?subject='+encodeURIComponent('Your message to The Library After Dark');reply.append('Reply to ',a)}else reply.textContent='No address given for a reply.';
+    const del=el('button',null,'Remove');del.type='button';del.onclick=()=>remove('/messages/'+encodeURIComponent(m.id),li,'letter');foot.append(reply,del);li.append(top,text,foot);return li}
+  function signature(e){
+    const li=el('li'),top=el('div','row');top.append(el('strong',null,`${e.n} · ${e.c}`),el('span','meta',e.d));
+    const line=el('p','text',e.t?`“${e.t}”`:`“${rules.PHRASES[e.p]||''}” (a line from the list)`),foot=el('div','row');
+    const del=el('button',null,'Remove');del.type='button';del.onclick=()=>remove('/entries/'+encodeURIComponent(e.id),li,'signature');foot.append(el('span','meta',e.t?'In their own words.':''),del);li.append(top,line,foot);return li}
+  async function load(){
+    if(!endpoint){status('The visitors’ book service is not set up yet.');return}
+    if(!token){status('');return}
+    status('Opening…');
+    try{
+      const [{messages},{entries}]=await Promise.all([call('/messages'),fetch(endpoint+'/entries').then(r=>r.json())]);
+      $('letters').replaceChildren(...(messages.length?messages.map(letter):[el('li','meta','No letters yet.')]));
+      $('entries').replaceChildren(...(entries||[]).map(signature));
+      $('inbox').classList.remove('hidden');$('unlock').classList.add('hidden');
+      status(`${messages.length} ${messages.length===1?'letter':'letters'}.`);
+    }catch(e){$('inbox').classList.add('hidden');$('unlock').classList.remove('hidden');status(e.status===401?'That password was not right.':`The inbox could not be opened: ${e.message}`)}
+  }
+  $('unlock').addEventListener('submit',e=>{e.preventDefault();token=$('token').value.trim();try{localStorage.setItem(KEY,token)}catch(err){}load()});
+  $('forget').addEventListener('click',()=>{try{localStorage.removeItem(KEY)}catch(e){}token='';$('inbox').classList.add('hidden');$('unlock').classList.remove('hidden');$('token').value='';status('Forgotten on this device.')});
+  load();
+})();
+</script>
+</body>
+</html>

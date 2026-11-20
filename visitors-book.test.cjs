@@ -109,3 +109,48 @@ test('the library and the plain reader keep their bookmarks on the card',async()
   assert.match(page,/startupScript\('reading-card\.js'\)/);assert.match(page,/<section class="card-sync" id="cardSync" hidden>/);
   assert.match(game,/e\.code==='KeyO'&&e\.target\?\.type!=='text'/,'typing an o in the code does not close the settings');
 });
+
+test('a reader’s own words are shown when they pass the filter, and refused with a reason when not',async()=>{
+  const {validate,cleanWords}=await worker();
+  assert.deepEqual(validate({name:'Aoife',country:'IE',book:11,phrase:0,words:'  Lovely place,\n thank you!  '}).entry,{n:'Aoife',c:'IE',b:11,p:0,t:'Lovely place, thank you!'});
+  assert.deepEqual(validate({name:'Aoife',country:'IE',book:11,phrase:0,words:''}).entry,{n:'Aoife',c:'IE',b:11,p:0},'no words, no field');
+  for(const ok of ['Read it 1999-2005 twice','Mr. Darcy says hi','Dickens, Fanny and Dick','Я читаю Шевченка','我喜歡這裡','Merci pour la bibliothèque !'])assert.equal(cleanWords(ok).words,ok,ok);
+  for(const bad of ['see www.example.com','visit https://spam','mail me at a@b.ie','call 0871 234 5678','what the fuck','sh1t','A'.repeat(201),'buy now at shop.example.shop'])assert.ok(cleanWords(bad).error,bad);
+});
+
+test('a letter to the librarian is private, kept for the inbox, emailed when set up, and only the owner can read it',async()=>{
+  const {handle,validateMessage,emailText}=await worker(),kv=new Map(),sent=[];
+  class EmailMessage{constructor(from,to,raw){Object.assign(this,{from,to,raw})}}
+  const env={BOOK:{get:async k=>kv.get(k)??null,put:async(k,v)=>{kv.set(k,v)}},ADMIN_TOKEN:'secret',MAIL:{send:async m=>sent.push(m)},MAIL_TO:'owner@example.org',MAIL_FROM:'librarian@libraryafterdark.space',EmailMessage};
+  const req=(method,path,body,headers={})=>new Request('https://vb.test'+path,{method,headers:{Origin:'https://libraryafterdark.space','CF-Connecting-IP':'1.1.1.1',...headers},body:body&&JSON.stringify(body)});
+  assert.match(validateMessage({text:'  '}).error,/write a message/);assert.match(validateMessage({text:'Hi',reply:'not an address'}).error,/email/);
+  const r=await handle(req('POST','/message',{name:'Aoife',reply:'aoife@example.ie',text:'Could you add the Táin?\nThank you.'}),env);assert.equal(r.status,201);assert.equal((await r.json()).mailed,true);
+  assert.equal(sent.length,1);assert.equal(sent[0].to,'owner@example.org');assert.match(sent[0].raw,/Reply-To: aoife@example\.ie/);assert.match(sent[0].raw,/Subject: A message for the librarian from Aoife/);
+  assert.equal((await handle(req('POST','/message',{text:'again'}),env)).status,429,'one every few minutes from one place');
+  assert.equal((await handle(req('POST','/message',{text:'spam'},{Origin:'https://elsewhere.example','CF-Connecting-IP':'5.5.5.5'}),env)).status,403);
+  // Never in the public book.
+  assert.ok(!JSON.stringify(await (await handle(req('GET','/entries'),env)).json()).includes('Táin'));
+  assert.equal((await handle(req('GET','/messages'),env)).status,401);
+  const inbox=await (await handle(req('GET','/messages',null,{Authorization:'Bearer secret'}),env)).json();
+  assert.equal(inbox.messages.length,1);assert.equal(inbox.messages[0].t,'Could you add the Táin?\nThank you.');assert.equal(inbox.messages[0].r,'aoife@example.ie');
+  assert.equal((await handle(req('DELETE','/messages/'+inbox.messages[0].id),env)).status,401);
+  assert.equal((await handle(req('DELETE','/messages/'+inbox.messages[0].id,null,{Authorization:'Bearer secret'}),env)).status,200);
+  // Without email set up, the letter is still kept; no header can be smuggled in through a name.
+  const quiet={...env,MAIL:undefined};const q=await handle(req('POST','/message',{name:'X',text:'Kept only'},{'CF-Connecting-IP':'7.7.7.7'}),quiet);assert.equal((await q.json()).mailed,false);
+  const raw=emailText({id:'abc',d:'2026-11-20T21:00:00Z',n:'Eve\r\nBcc: x@y.z',r:'',t:'hello'},{from:'a@b.c',to:'d@e.f'});assert.ok(!/\r\nBcc:/.test(raw),'no injected header');
+});
+
+test('the library sends a reader’s own words and letters, shows their words in the book, and the inbox page stays private',async()=>{
+  const sent=[];const fetchImpl=async(url,init)=>{if(init?.method==='POST'){const body=JSON.parse(init.body);sent.push({url,body});
+      if(url.endsWith('/message'))return {ok:true,json:async()=>({sent:true})};return {ok:true,json:async()=>({entry:{id:'abc12345',n:body.name,c:body.country,b:body.book,p:body.phrase,t:body.words,d:'2026-09-27'}})}}
+    return {ok:true,json:async()=>({entries:[{id:'x1',n:'Kofi',c:'GH',b:46,p:5,t:'A wonderful place to get lost.',d:'2026-09-26'}]})}};
+  const {vb,rules}=client(fetchImpl);
+  const listed=await vb.refresh();assert.equal(listed[0].note,'A wonderful place to get lost.');assert.equal(listed[0].words,'A wonderful place to get lost.');
+  await vb.sign({name:'Aoife',country:'IE',phrase:'1',words:' Thank you '});assert.deepEqual(sent[0].body,{name:'Aoife',country:'IE',book:0,phrase:1,words:'Thank you'});
+  assert.match((await vb.write({text:''})).error,/message/);assert.match((await vb.write({text:'Hi',reply:'nope'})).error,/email/);
+  assert.ok((await vb.write({name:'Aoife',reply:'a@b.ie',text:'Hello'})).sent);assert.deepEqual(sent.at(-1),{url:'https://vb.test/message',body:{name:'Aoife',reply:'a@b.ie',text:'Hello'}});
+  for(const [lang,list] of Object.entries(rules.EXTRA_UI))assert.equal(list.length,rules.EXTRA_UI.en.length,lang);
+  const page=fs.readFileSync('librarian.html','utf8');assert.match(page,/noindex/);assert.match(page,/Authorization:'Bearer '\+token/);assert.ok(!/innerHTML/.test(page),'letters are written as text');
+  assert.ok(!html.includes('librarian.html')&&!game.includes('librarian.html'),'not linked from the library');
+  assert.match(workflow,/LIBRARIAN_EMAIL/);assert.ok(!/@[a-z0-9-]+\.[a-z]/i.test(fs.readFileSync('worker/visitors-book/wrangler.toml','utf8')),'no address in the config');
+});

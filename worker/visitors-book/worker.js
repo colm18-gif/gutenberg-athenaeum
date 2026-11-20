@@ -1,11 +1,22 @@
 // The visitors' book: a very small Cloudflare Worker that keeps the signatures readers leave by the entrance of
-// The Library After Dark. A signature is only ever a first name (or initials), a country, a book from the library
-// and one line chosen from a fixed list, so there is no free text to moderate. Nothing else is stored: the
-// reader's address is only used, hashed, to stop the same person signing more than once every ten minutes.
+// The Library After Dark. A signature is a first name (or initials), a country, a book from the library, one line
+// chosen from a fixed list and, if the reader likes, a few words of their own (at most 200 characters). Their own
+// words are shown at once (the owner's choice, 20 November 2026), after a filter: no unsuitable words, no links, no
+// email addresses and no long numbers; the owner can remove any signature from the librarian's inbox page. Nothing
+// else is stored: the reader's address is only used, hashed, to stop the same person signing more than once every
+// ten minutes.
 //
 //   GET    /entries          the latest signatures, newest first
-//   POST   /sign             {name, country, book, phrase}   (book: a Project Gutenberg number, or 0)
+//   POST   /sign             {name, country, book, phrase, words}   (book: a Project Gutenberg number, or 0)
 //   DELETE /entries/:id      remove one signature (needs the ADMIN_TOKEN secret as a Bearer token)
+//
+// Readers can also write to the librarian. A message is private: it is never shown in the book. It is kept here
+// for the owner's inbox page (librarian.html) and, when email is set up (the MAIL binding with MAIL_TO and
+// MAIL_FROM, see README.md), emailed to the owner as well.
+//
+//   POST   /message          {name, reply, text}   (reply: an email address for an answer, or empty)
+//   GET    /messages         the messages, newest first (needs ADMIN_TOKEN)
+//   DELETE /messages/:id     remove one message (needs ADMIN_TOKEN)
 //
 // It also keeps reading cards, so a reader can carry their place in each book to another device. A card is only a
 // code of four words and two digits (no account, no email) and, for each book, how far through it the reader is and
@@ -36,6 +47,7 @@ const BLOCKED_WORDS=('arse arsehole ass asshole bastard bitch bollocks bugger bu
 const BLOCKED_ANYWHERE=['fuck','cunt','nigg','fagg','wank','twat','whore'];// not 'shit' (Yoshitaka) or 'rape' (Draper)
 const LEET={'0':'o','1':'i','3':'e','4':'a','5':'s','7':'t','@':'a','$':'s','!':'i'};
 const KEEP=400,SHOW=60,DAILY_LIMIT=500,WAIT_SECONDS=600;
+const WORDS_MAX=200,MESSAGE_MAX=2000,MESSAGES_KEEP=300,MESSAGE_DAILY_LIMIT=60,MESSAGE_WAIT_SECONDS=180;
 // The words reading-card codes are made of: easy to read aloud and type on a phone.
 export const CARD_WORDS=('amber anchor apple arch atlas attic autumn badger barley beacon birch bishop bramble brass bridge brook '+
   'candle canvas castle cedar chapel cherry cider clover comet copper coral cottage crane crow daisy delta dove dune '+
@@ -64,17 +76,67 @@ export function cleanName(raw){
   if(words.some(w=>BLOCKED_WORDS.includes(w))||BLOCKED_ANYWHERE.some(b=>joined.includes(b)))return null;
   return name;
 }
+// Text as a reader typed it, tidied: one line, no control characters, at most `max` characters; or null.
+export function cleanText(raw,max){
+  const text=String(raw??'').normalize('NFC').replace(/[\u0000-\u001f\u007f-\u009f\u200b-\u200f\u2028-\u202e\u2066-\u2069]+/g,' ').replace(/\s+/g,' ').trim();
+  return text&&[...text].length<=max?text:null;
+}
+function unsuitable(text){
+  const words=text.toLowerCase().replace(/[’']/g,'').split(/[^\p{L}\p{N}@$!]+/u).filter(Boolean).map(w=>[...w].map(c=>LEET[c]||c).join(''));
+  const joined=words.join('');
+  return words.some(w=>BLOCKED_WORDS.includes(w))||BLOCKED_ANYWHERE.some(b=>joined.includes(b));
+}
+// Links, email addresses, handles and long numbers (telephones) are kept out of the public book.
+const LINKISH=/(https?:|www\.|\b[\w-]+\.(com|net|org|info|biz|io|co|uk|ru|cn|xyz|top|ly|me|app|site|online|link|click|shop)\b|@|(?:\d[\s().-]?){9,})/i;
+// A reader's own words for the book: shown to everyone, so filtered. Returns {words} (or {words:''}) or {error}.
+export function cleanWords(raw){
+  if(raw==null||String(raw).trim()==='')return {words:''};
+  const words=cleanText(raw,WORDS_MAX);if(!words)return {error:`Please keep your own words to ${WORDS_MAX} characters.`};
+  if(LINKISH.test(words))return {error:'Please leave out links, email addresses and telephone numbers: the book is read by everyone.'};
+  if(unsuitable(words))return {error:'Please keep your words friendly: the book is read by everyone, young readers too.'};
+  return {words};
+}
+const EMAIL=/^[^\s@<>()",;:]{1,64}@[^\s@<>()",;:]{1,190}\.[a-z]{2,24}$/i;
+// A message to the librarian: private, so only tidied, never filtered. Returns {message} or {error}.
+export function validateMessage(body){
+  const text=String(body?.text??'').normalize('NFC').replace(/\r\n?/g,'\n').replace(/[\u0000-\u0009\u000b-\u001f\u007f]/g,' ').replace(/\n{3,}/g,'\n\n').trim();
+  if(!text)return {error:'Please write a message.'};
+  if([...text].length>MESSAGE_MAX)return {error:`Please keep your message to ${MESSAGE_MAX} characters.`};
+  const name=body?.name?cleanText(body.name,60):'';if(name===null)return {error:'Please keep your name to 60 characters.'};
+  const reply=String(body?.reply??'').trim();if(reply&&!EMAIL.test(reply))return {error:'That email address does not look right.'};
+  return {message:{n:name,r:reply,t:text}};
+}
 // Returns a clean signature, or a short reason it cannot be accepted.
 export function validate(body){
   const name=cleanName(body?.name);if(!name)return {error:'Please give a first name or initials (letters only).'};
   const country=String(body?.country||'').toUpperCase();if(!COUNTRIES.includes(country))return {error:'Please choose a country.'};
   const book=Number(body?.book||0);if(!Number.isInteger(book)||book<0||book>999999)return {error:'That book is not in the library.'};
   const phrase=Number(body?.phrase);if(!Number.isInteger(phrase)||phrase<0||phrase>=PHRASES.length)return {error:'Please choose a line to write.'};
-  return {entry:{n:name,c:country,b:book,p:phrase}};
+  const own=cleanWords(body?.words);if(own.error)return {error:own.error};
+  return {entry:own.words?{n:name,c:country,b:book,p:phrase,t:own.words}:{n:name,c:country,b:book,p:phrase}};
 }
 
 async function hash(text){const bytes=new TextEncoder().encode(text);const digest=await crypto.subtle.digest('SHA-256',bytes);return [...new Uint8Array(digest)].slice(0,12).map(b=>b.toString(16).padStart(2,'0')).join('')}
 async function read(env){try{return JSON.parse(await env.BOOK.get('entries')||'[]')}catch(e){return []}}
+async function readMessages(env){try{return JSON.parse(await env.BOOK.get('messages')||'[]')}catch(e){return []}}
+// One header value: no line breaks (so nothing can be added to the headers), plain ASCII or RFC 2047 encoded.
+const header=v=>{const one=String(v??'').replace(/[\r\n]+/g,' ').trim();return /^[\x20-\x7e]*$/.test(one)?one:'=?UTF-8?B?'+btoa(String.fromCharCode(...new TextEncoder().encode(one)))+'?='};
+// The email to the owner, as plain text. Replies go to the reader when they gave an address.
+export function emailText(message,{from,to}){
+  const who=message.n||'A reader',lines=[`From: The Library After Dark <${header(from)}>`,`To: ${header(to)}`,`Subject: ${header(`A message for the librarian from ${who}`)}`,
+    `Message-ID: <${message.id}.${Date.parse(message.d)||0}@${header(from).split('@')[1]||'libraryafterdark.space'}>`,`Date: ${new Date(message.d).toUTCString()}`];
+  if(message.r)lines.push(`Reply-To: ${header(message.r)}`);
+  lines.push('MIME-Version: 1.0','Content-Type: text/plain; charset=utf-8','Content-Transfer-Encoding: base64','');
+  const body=`${message.t}\n\n-- \n${who}${message.r?` <${message.r}>`:' (no address given for a reply)'}\nSent from the visitors' book, ${message.d}`;
+  const bytes=new TextEncoder().encode(body.replace(/\n/g,'\r\n'));let bin='';for(const b of bytes)bin+=String.fromCharCode(b);
+  return lines.join('\r\n')+'\r\n'+(btoa(bin).match(/.{1,76}/g)||[]).join('\r\n')+'\r\n';
+}
+// Sends it through Cloudflare Email Routing when the MAIL binding and the two addresses are set; otherwise does nothing.
+async function mailLibrarian(env,message){
+  if(!env.MAIL||!env.MAIL_TO||!env.MAIL_FROM)return false;
+  const EmailMessage=env.EmailMessage||(await import('cloudflare:email')).EmailMessage;
+  await env.MAIL.send(new EmailMessage(env.MAIL_FROM,env.MAIL_TO,emailText(message,{from:env.MAIL_FROM,to:env.MAIL_TO})));return true;
+}
 function cors(request){const origin=request.headers.get('Origin')||'';const allowed=ORIGINS.some(r=>r.test(origin));
   return {'Access-Control-Allow-Origin':allowed?origin:'https://libraryafterdark.space','Access-Control-Allow-Methods':'GET, POST, PUT, DELETE, OPTIONS','Access-Control-Allow-Headers':'Content-Type, Authorization','Vary':'Origin'}}
 const json=(request,data,status=200,extra={})=>new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store',...cors(request),...extra}});
@@ -95,6 +157,29 @@ export async function handle(request,env,now=new Date()){
     entries.unshift(entry);await env.BOOK.put('entries',JSON.stringify(entries.slice(0,KEEP)));
     await env.BOOK.put(who,'1',{expirationTtl:WAIT_SECONDS});await env.BOOK.put(countKey,String(count+1),{expirationTtl:172800});
     return json(request,{entry},201);
+  }
+  // Letters to the librarian: kept for the inbox page, and emailed when email is set up.
+  if(request.method==='POST'&&url.pathname==='/message'){
+    if(!ORIGINS.some(r=>r.test(request.headers.get('Origin')||'')))return json(request,{error:'Messages are only taken inside the library.'},403);
+    let body;try{body=await request.json()}catch(e){return json(request,{error:'Something went wrong with that message.'},400)}
+    const checked=validateMessage(body);if(checked.error)return json(request,{error:checked.error},400);
+    const who='msgwait:'+await hash((request.headers.get('CF-Connecting-IP')||'')+'|librarian');
+    if(await env.BOOK.get(who))return json(request,{error:'Your last message has only just gone. Please try again in a few minutes.'},429);
+    const day=now.toISOString().slice(0,10),countKey='msgcount:'+day,count=Number(await env.BOOK.get(countKey)||0);
+    if(count>=MESSAGE_DAILY_LIMIT)return json(request,{error:'The librarian’s tray is full for tonight. Please write again tomorrow.'},429);
+    const message={id:crypto.randomUUID().slice(0,8),d:now.toISOString(),...checked.message},list=await readMessages(env);
+    list.unshift(message);await env.BOOK.put('messages',JSON.stringify(list.slice(0,MESSAGES_KEEP)));
+    await env.BOOK.put(who,'1',{expirationTtl:MESSAGE_WAIT_SECONDS});await env.BOOK.put(countKey,String(count+1),{expirationTtl:172800});
+    let mailed=false;try{mailed=await mailLibrarian(env,message)}catch(e){mailed=false}
+    return json(request,{sent:true,id:message.id,mailed},201);
+  }
+  const admin=()=>!!env.ADMIN_TOKEN&&request.headers.get('Authorization')===`Bearer ${env.ADMIN_TOKEN}`;
+  if(request.method==='GET'&&url.pathname==='/messages'){if(!admin())return json(request,{error:'Not allowed.'},401);return json(request,{messages:await readMessages(env)})}
+  const dropMessage=url.pathname.match(/^\/messages\/([a-z0-9-]{4,40})$/);
+  if(request.method==='DELETE'&&dropMessage){
+    if(!admin())return json(request,{error:'Not allowed.'},401);
+    const list=await readMessages(env),kept=list.filter(m=>m.id!==dropMessage[1]);if(kept.length===list.length)return json(request,{error:'No such message.'},404);
+    await env.BOOK.put('messages',JSON.stringify(kept));return json(request,{removed:dropMessage[1]});
   }
   // Reading cards.
   const fromLibrary=ORIGINS.some(r=>r.test(request.headers.get('Origin')||''));
