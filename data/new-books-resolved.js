@@ -4705,7 +4705,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "History of the Expedition under the Command of Captains Lewis and Clark, Vol. 1.",
   "The Necessity of Atheism",
   "María [es]",
-  "Poesías [es]",
-  "Перша читанка [uk]"
+  "Poesías [es]"
  ]
 };
