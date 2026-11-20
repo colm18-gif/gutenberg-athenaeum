@@ -2975,6 +2975,130 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 36802,
    "words": 86131
   },
+  "Voyages in Search of the North-West Passage": {
+   "id": 3482,
+   "words": 50141
+  },
+  "Three Voyages for the Discovery of a Northwest Passage": {
+   "id": 13512,
+   "words": 91421
+  },
+  "Journal of the Third Voyage for the Discovery of a North-West Passage": {
+   "id": 26509,
+   "words": 57998
+  },
+  "Narrative of a Second Expedition to the Shores of the Polar Sea": {
+   "id": 33467,
+   "words": 136695
+  },
+  "Narrative of an Expedition to the Shores of the Arctic Sea in 1846 and 1847": {
+   "id": 39917,
+   "words": 63351
+  },
+  "Stray Leaves from an Arctic Journal": {
+   "id": 24891,
+   "words": 66486
+  },
+  "Schwatka’s Search": {
+   "id": 6594,
+   "words": 79539
+  },
+  "Eskimo Folk-Tales": {
+   "id": 28932,
+   "words": 46526
+  },
+  "Eskimo Life": {
+   "id": 46972,
+   "words": 96090
+  },
+  "A Description of Greenland": {
+   "id": 58308,
+   "words": 52496
+  },
+  "The Central Eskimo": {
+   "id": 42084,
+   "words": 108130
+  },
+  "Among Unknown Eskimo": {
+   "id": 68177,
+   "words": 63463
+  },
+  "My Arctic Journal": {
+   "id": 64549,
+   "words": 60520
+  },
+  "Children of the Arctic": {
+   "id": 59527,
+   "words": 16797
+  },
+  "The Land of Desolation": {
+   "id": 59217,
+   "words": 87518
+  },
+  "Letters from High Latitudes": {
+   "id": 3701,
+   "words": 79432
+  },
+  "With Ski & Sledge over Arctic Glaciers": {
+   "id": 52435,
+   "words": 58720
+  },
+  "Adrift in the Arctic Ice Pack": {
+   "id": 47857,
+   "words": 70354
+  },
+  "The Far North": {
+   "id": 52631,
+   "words": 70926
+  },
+  "The German Arctic Expedition of 1869-70": {
+   "id": 79056,
+   "words": 165422
+  },
+  "New Lands within the Arctic Circle": {
+   "id": 60258,
+   "words": 134650
+  },
+  "The Great Frozen Sea": {
+   "id": 43608,
+   "words": 103454
+  },
+  "Farthest North": {
+   "id": 30197,
+   "words": 126990
+  },
+  "The North Pole": {
+   "id": 18975,
+   "words": 104153
+  },
+  "True Tales of Arctic Heroism in the New World": {
+   "id": 39108,
+   "words": 84918
+  },
+  "The Siege and Conquest of the North Pole": {
+   "id": 50976,
+   "words": 108451
+  },
+  "The Lands of Silence": {
+   "id": 71127,
+   "words": 183153
+  },
+  "In Northern Mists": {
+   "id": 40633,
+   "words": 145875
+  },
+  "The Polar World": {
+   "id": 61398,
+   "words": 228708
+  },
+  "The Frozen Deep": {
+   "id": 1625,
+   "words": 28531
+  },
+  "In the Arctic Seas": {
+   "id": 37669,
+   "words": 95122
+  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633

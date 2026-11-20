@@ -61,7 +61,8 @@
     brobdingnag:['Through Lilliput: the door at the far end of the Emperor’s library.','lilliput'],
     'set-texts-room':['The blue door in the English Reading Room’s east wall.','learners-room'],
     'crusoe-island':['Through the Boathouse, and out to sea.','boathouse'],
-    'explorers-anteroom':['The kit locker in the Map Room’s north-west corner. Push past the oilskins.','map-room']
+    'explorers-anteroom':['The kit locker in the Map Room’s north-west corner. Push past the oilskins.','map-room'],
+    'arctic-room':['At the end of the kit pegs in the explorers’ anteroom, a planked door with the cold coming under it.','explorers-anteroom']
   };
   // A book’s shelf (its `room` in data/new-books.js), and the room it stands in.
   const SHELF_PLACES=[[/^irish-/,'irish-room'],[/^burns-(works|lives|scotland)$/,'burns-room'],[/^canada-(stories|north|poets)$/,'canada-room'],[/^lilliput-(swift|small)$/,'lilliput'],[/^brob-/,'brobdingnag'],[/^austen-(writings|lives|read|novels)$/,'austen-room'],
@@ -387,7 +388,7 @@
       return false}
     const timeTitle=()=>`Tonight, ${moonName()}.`;
     return {update,interact,onSelect,doorLeak,planOverlay,blocks,timeTitle,dimFor,moonPhase,moonName,
-      anteroom:{contains:anteContains,allowed:anteAllowed,floorAt:(x,z)=>anteContains(x,z)?0:null,enter:enterAnteroom,leave:leaveAnteroom,room:ANTE,locker:LOCKER,get built(){return !!ante}},
+      anteroom:{contains:anteContains,allowed:anteAllowed,floorAt:(x,z)=>anteContains(x,z)?0:null,enter:enterAnteroom,leave:leaveAnteroom,build:buildAnteroom,room:ANTE,locker:LOCKER,get built(){return !!ante}},
       doors:DOORS,hints:HINTS,margins:MARGINS,clocks:CLOCKS,departures:DEPARTURES,draughts:DRAUGHTS,tube:TUBE,get route(){return route.slice()},get porter(){return {...walk,group:porter}},get floorGrid(){return floorGrid},grid:GRID,startPorter:()=>startPorter(0),capsule,buildTrolley,openCapsule,mapLocker};
   };
   Object.assign(window.createExploration,{gridPath,smoothPath,TROLLEY_SHELVES,SHELF_PLACES,CLOCKS,CONRAD,DOORS,HINTS,MARGINS,TREASURES,DEPARTURES,DRAUGHTS,dimFor,moonPhase});
