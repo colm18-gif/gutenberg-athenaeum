@@ -107,6 +107,8 @@ test('the press on the walls: NATE’s piece in the Set Texts Room and Chytomo�
   assert.match(wing,/en:\{url:'https:\/\/chytomo\.com\/en\/irish-librarian-creates-virtual-ukrainian-reading-room/,'and Chytomo’s English version is linked too');
   assert.match(wing,/url:'https:\/\/ukrinform\.ua\/rubric-diaspora\/4185152-/,'Ukrinform’s piece hangs beside it');
   assert.match(wing,/type:'intl-link',title:UKRINFORM\.title,author:UKRINFORM\.card,url:UKRINFORM\.url/);
+  assert.match(wing,/url:'https:\/\/prosvita\.digital\/'/,'PROSVITA DIGITAL, which links to the room, is linked back');
+  assert.match(wing,/type:'intl-link',title:PROSVITA\.title,author:PROSVITA\.card,url:PROSVITA\.url,also:PROSVITA\.en/);
   assert.match(wing,/also:data\.also/,'the wing passes a second link to the card');
   assert.match(game,/also\$\.classList\.toggle\('hidden',!also\?\.url\)/,'which the link card shows only when there is one');
 });

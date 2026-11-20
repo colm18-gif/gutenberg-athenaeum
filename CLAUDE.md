@@ -525,7 +525,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   its Diaspora pages, November 2026) mirrors it between the arch and the drawing of Raim; and NATE's blog piece,
   A library made for exploration (29 October 2026; `NATE` in `set-texts-room.js`), on the Set Texts Room's east wall north
   of the board for teachers. Each card opens its article in game.js's `openLinkCard` (`intl-link`, `settexts-nate`). Cards
-  name the publication, never the journalist (a correspondent).
+  name the publication, never the journalist (a correspondent). PROSVITA DIGITAL (`PROSVITA`, prosvita.digital, which
+  carries on the Prosvita society's work and keeps the Slovo Prosvity archive) links to the room, and the room links back
+  (November 2026): a framed sheet on its west wall south of the window, opening the site in Ukrainian or, as `en`, English.
 - The polonyna (`carpathians.js`, centre x 200, z 1300; walkable within 30 m): the high summer pasture under Chornohora in
   Kotsiubynsky's Shadows of Forgotten Ancestors (book 988269, in the wing's list), on a summer night. Two ways in: a
   trembita standing in the Ukrainian Reading Room's north-east corner, between the racks' end and Kateryna, under a plaque
