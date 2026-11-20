@@ -212,7 +212,7 @@ test('the wing’s books load only on the way there, or on a link that may lead 
   // In the library: fetched within 9 m of the door (the reader starts 10.7 m away), at one of the wing's doors, or before a link enters a room.
   assert.match(game,/add\(window\.ATHENAEUM_NEW_BOOKS\);add\(window\.ATHENAEUM_NEW_BOOKS_WING\);/);
   assert.match(game,/script\.onload=\(\)=>\{newArrivals\.add\(window\.ATHENAEUM_NEW_BOOKS_WING\);this\.ready=true;done\(\)\}/);
-  assert.match(game,/<9\)this\.load\(\)/);assert.match(game,/function enterWing\(key\)\{wingBooks\.load\(\)\.then\(\(\)=>internationalWing\.enter\(key\)\)\}/);
+  assert.match(game,/<9(\|\|[^;]*)?\)+this\.load\(\)/);assert.match(game,/function enterWing\(key\)\{wingBooks\.load\(\)\.then\(\(\)=>internationalWing\.enter\(key\)\)\}/);
   assert.match(game,/\(wingBooks\.ready\?internationalWing\?\.update\(t\):wingBooks\.near\(\)\)/);
   assert.match(game,/!wingBooks\.ready&&String\(focus\.userData\?\.type\)\.startsWith\('intl-'\)/);
   assert.match(fs.readFileSync('.github/workflows/new-books.yml','utf8'),/'data\/new-books-wing\.js'/);

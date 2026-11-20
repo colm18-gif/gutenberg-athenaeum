@@ -64,6 +64,9 @@
     // The court before the facade (south of it), the hall behind it, and the vault under the apse. The facade is on z=0.
     const COURT={cx:2500,cz:12,w:22,d:22,y:0};
     const HALL={cx:2500,cz:-6,w:17,d:12,h:11,y:.5};
+    // The door to the Stoa (passages.js), the back way to the Latin Reading Room: in the court's west wall, between the
+    // second and third cypresses, facing east into the court.
+    const STOA={x:COURT.cx-COURT.w/2+.22,z:COURT.cz+.1,yaw:Math.PI/2};
     const CRYPT={cx:2501.4,cz:-10.6,w:3.6,d:3.8,h:2.4,y:-2.9};
     // The three steps up to the platform, the thresholds through the front's one-metre thickness, and the stair down
     // to the vault (a real opening in the hall floor).
@@ -551,7 +554,7 @@
       if(inside||near&&(root||window.libraryMayBuild?.()!==false))activate();
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==b.userData.home.parent))unload()}
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,leave,activate,unload,catalogue,door:DOOR,court:COURT,hall:HALL,vault:CRYPT,
+    return {contains,floorAt,allowed,interact,update,enter,leave,activate,unload,catalogue,door:DOOR,stoa:STOA,court:COURT,hall:HALL,vault:CRYPT,
       steps:STEPS,threshold:THRESHOLD,stair:STAIR,doorways:DOORWAYS,groups:GROUPS,statues:STATUES,cards:CARDS,inDoorway,
       get built(){return !!root},get books(){return books.slice()},get found(){return !!crypt?.found||wasFound()},
       zoneAt:(x,z)=>inBox(x,z,CRYPT)||onStair(x,z)?'celsus-crypt':inBox(x,z,HALL)||onThreshold(x,z)?'celsus-hall':onSteps(x,z)||inBox(x,z,COURT)?'celsus-court':null};

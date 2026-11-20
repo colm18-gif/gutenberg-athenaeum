@@ -4,8 +4,9 @@
 // Room), the Long Gallery (Medicine Room to English Reading Room), the Back Stair (Austen Room to Burns Room), the Stacks
 // Stair (Burns Room to the Room of Books Within Books), the Servants' Passage (Evening Room, Set Texts Room and
 // Periodicals Room), the Sorting Corridor (Room of Chance to Lost Property Office) and the Portage (Walden Pond to the
-// Canadian Room: Thoreau's own week in Canada, in September 1850, walked in a few steps from summer to snow). The rooms
-// reached by air, by boat and by rocket are left that way on purpose.
+// Canadian Room: Thoreau's own week in Canada, in September 1850, walked in a few steps from summer to snow), the
+// Homestead Stair (Emily Dickinson's room down to Walden Pond) and the Stoa (the Latin Reading Room to the Library of
+// Celsus). The rooms reached by air, by boat and by rocket are left that way on purpose.
 // Nothing here is built at startup. A passage's door appears in a room only while that room is built, the passage
 // itself is built when the reader steps in and freed a little while after they leave, and one lamp, the module's own,
 // moves to whichever passage is in use, so no passage adds a light. Each stands far out to the east (x 1200), beyond
@@ -65,14 +66,33 @@
       posts:[{side:1,at:4.6,head:'CONCORD',sub:'September 25th, 1850',title:'A milepost',text:'Thoreau set out for Canada from here, with his friend Ellery Channing: “I left Concord, Massachusetts, Wednesday morning, September 25th, 1850, for Quebec.”'},
         {side:-1,at:9.2,head:'NORTH-WEST',sub:'up the country',title:'The trees',text:'“As we travel northwest up the country, sugar-maples, beeches, birches, hemlocks, spruce, butternuts, and ash trees prevail more and more.” It was the end of September, and the leaves were turning: “I was also struck by the bright yellow tints of the yellow-birch.”'},
         {side:1,at:13.8,head:'',sub:'',hat:true,title:'A palm-leaf hat',text:'Hung on a post where the snow begins, and much too thin for it: “I had for all head-covering a thin palm-leaf hat without lining, that cost twenty-five cents.” He began his account: “I fear that I have not got much to say about Canada, not having seen much; what I got by going to Canada was a cold.”'},
-        {side:-1,at:18.3,head:'QUEBEC',sub:'510 miles from Boston',title:'A milepost',text:'“Fare, seven dollars there and back; distance from Boston, five hundred and ten miles.” And on his return: “The whole expense of this journey, including two guide-books and a map, which cost one dollar twelve and a half cents, was twelve dollars seventy-five cents.” The house by the pond had cost him $28.12½.'}]}
+        {side:-1,at:18.3,head:'QUEBEC',sub:'510 miles from Boston',title:'A milepost',text:'“Fare, seven dollars there and back; distance from Boston, five hundred and ten miles.” And on his return: “The whole expense of this journey, including two guide-books and a map, which cost one dollar twelve and a half cents, was twelve dollars seventy-five cents.” The house by the pond had cost him $28.12½.'}]},
+    // Two Massachusetts rooms, Amherst and Concord: a back stair down from Emily Dickinson's bedroom (it was upstairs at
+    // the Homestead) to a white door standing by the road on the far side of Thoreau's clearing (walden.js, `homestead`).
+    // It joins the Long Corridor's rooms to the western ones, and through the Portage to Canada.
+    {key:'homestead-stair',name:'The Homestead Stair',kind:'stair',length:14,width:2.2,rise:2.8,walls:0xc9c0aa,
+      ends:[{room:'dickinson',label:'EMILY DICKINSON',wall:'west',at:2.3,high:true},{room:'walden',label:'WALDEN POND',spot:'homestead'}],
+      look:{style:'painted',color:0xe9e4d6,fanColor:0xfff0cf},
+      windows:[{scene:'garden',side:1,at:7}],
+      prints:[{motif:'leaf',side:-1,at:3.4,title:'A pressed leaf',text:'A leaf pressed and framed, in the way of a herbarium. As a girl in Amherst, Emily Dickinson pressed more than four hundred plants into one, each with its label.'},
+        {motif:'quill',side:-1,at:10.8,title:'A pen and ink',text:'Amherst and Concord are both in Massachusetts, less than a hundred miles apart. Her room is at the top of this stair; Walden Pond is through the door at the bottom.'}]},
+    // From the Latin Reading Room in the International Wing to the court of the Library of Celsus at Ephesus: the Romans'
+    // own words at one end, a library of the Roman province of Asia at the other. Its door at Ephesus stands in the court's
+    // west wall, between the cypresses (celsus-room.js, `stoa`).
+    {key:'stoa',name:'The Stoa',kind:'hall',length:20,width:3,walls:0xbfb39a,stone:true,
+      ends:[{room:'latin',label:'CONCLAVE LATINVM',wall:'east',at:-4.4},{room:'celsus',label:'THE LIBRARY OF CELSUS',spot:'stoa'}],
+      look:{style:'painted',color:0x8c8272,plain:true,fanColor:0xffd59a},
+      windows:[{scene:'garden',side:-1,at:6},{scene:'garden',side:-1,at:14}],
+      prints:[{motif:'scroll',side:1,at:5,title:'A scroll',text:'A papyrus roll, drawn as the Romans kept their books: wound on a rod, with a tag at its end naming the work. The Library of Celsus is said to have held twelve thousand of them.'},
+        {motif:'inscription',side:1,at:10,title:'An inscription',text:'The Library of Celsus was built for Tiberius Julius Celsus Polemaeanus, consul in 92, and its inscriptions were cut in Greek and in Latin, the two languages of the Roman East.'},
+        {motif:'column',side:1,at:15,title:'A column',text:'A fluted column with an acanthus capital, of the kind that stands two storeys high on the library’s front at Ephesus.'}]}
   ];
   const BASE={x:1200,z:-600,step:40},KEEP=25,DOOR={width:1.5,height:2.8,fanlight:false,pediment:false};
   // The inside face of each room's walls: most are 0.3 m thick, the Room of Chance's and the Lost Property Office's 0.4 m.
   const INSET={chance:.2,lostProperty:.2};
   const TITLES={poe:'The Poe Room',irish:'The Irish Room',learners:'The English Reading Room',medicine:'The Medicine Room',austen:'The Austen Room',burns:'The Burns Room',
     within:'The Room of Books Within Books',evening:'The Evening Room',setTexts:'The Set Texts Room',periodicals:'The Periodicals Room',chance:'The Room of Chance',lostProperty:'The Lost Property Office',
-    walden:'Walden Pond',canada:'The Canadian Room'};
+    walden:'Walden Pond',canada:'The Canadian Room',dickinson:'Emily Dickinson’s room',latin:'The Latin Reading Room',celsus:'The Library of Celsus'};
 
   window.createPassages=function(options){
     const {THREE,scene,MAT,player,interactables,canvasTexture,showNotice,playSample,move,analytics,doorKit=null,rooms={},storage=window.localStorage}=options;
@@ -144,6 +164,13 @@
         c.fillStyle='#555';c.beginPath();c.arc(w*.5,h*.1,w*.03,0,7);c.fill()},
       hooks(c,w,h){c.fillStyle='#5a3a22';c.fillRect(w*.05,h*.3,w*.9,h*.08);c.fillStyle='#b8943a';for(let i=0;i<5;i++){c.beginPath();c.arc(w*(.15+i*.175),h*.42,w*.025,0,7);c.fill()}
         c.fillStyle='#7a2a2a';c.beginPath();c.moveTo(w*.5,h*.42);c.lineTo(w*.44,h*.9);c.lineTo(w*.5,h*.88);c.lineTo(w*.56,h*.92);c.closePath();c.fill()},
+      scroll(c,w,h){c.fillStyle='#d9c79a';c.fillRect(w*.26,h*.3,w*.48,h*.4);c.fillStyle='#8a6a3a';for(const y of [.3,.7]){c.beginPath();c.ellipse(w*.5,h*y,w*.25,h*.035,0,0,7);c.fill()}
+        c.fillStyle='#5a3a1e';for(const y of [.3,.7]){c.fillRect(w*.2,h*y-2,w*.06,4);c.fillRect(w*.74,h*y-2,w*.06,4)}c.strokeStyle='rgba(60,40,20,.5)';c.lineWidth=1.5;
+        for(let y=.36;y<.66;y+=.04){c.beginPath();c.moveTo(w*.3,h*y);c.lineTo(w*(.7-(y*7%1)*.08),h*y);c.stroke()}c.fillStyle='#b8432a';c.fillRect(w*.72,h*.7,w*.08,h*.09)},
+      inscription(c,w,h){c.fillStyle='#cfc4ac';c.fillRect(w*.12,h*.25,w*.76,h*.5);c.strokeStyle='#8a7e66';c.lineWidth=3;c.strokeRect(w*.15,h*.28,w*.7,h*.44);c.fillStyle='#4a3e2c';c.textAlign='center';
+        c.font=`bold ${Math.round(h*.05)}px Georgia`;c.fillText('ΒΙΒΛΙΟΘΗΚΗ',w/2,h*.4);c.fillText('ΚΕΛΣΟΥ',w/2,h*.47);c.font=`${Math.round(h*.045)}px Georgia`;c.fillText('TI · IVLIO · CELSO',w/2,h*.58);c.fillText('COS',w/2,h*.65)},
+      column(c,w,h){c.fillStyle='#d8cdb6';c.fillRect(w*.38,h*.24,w*.24,h*.6);c.strokeStyle='rgba(90,80,60,.6)';c.lineWidth=2;for(let x=.41;x<.62;x+=.04){c.beginPath();c.moveTo(w*x,h*.25);c.lineTo(w*x,h*.83);c.stroke()}
+        c.fillStyle='#c8bc9e';c.fillRect(w*.3,h*.84,w*.4,h*.05);c.fillRect(w*.32,h*.2,w*.36,h*.05);c.fillStyle='#7a8a52';for(const s of [-1,0,1]){c.beginPath();c.ellipse(w*(.5+s*.11),h*.19,w*.07,h*.05,0,0,7);c.fill()}c.fillStyle='#c8bc9e';c.fillRect(w*.28,h*.12,w*.44,h*.04)},
       tag(c,w,h){c.fillStyle='#c8a878';c.beginPath();c.moveTo(w*.2,h*.25);c.lineTo(w*.7,h*.25);c.lineTo(w*.82,h*.4);c.lineTo(w*.82,h*.75);c.lineTo(w*.2,h*.75);c.closePath();c.fill();c.fillStyle='#f4ecd8';c.beginPath();c.arc(w*.72,h*.36,w*.03,0,7);c.fill();
         c.fillStyle=ink;c.font=`italic ${Math.round(h*.07)}px Georgia`;c.fillText('Found between',w*.26,h*.48);c.fillText('two shelves.',w*.26,h*.57);c.fillText('Owner unknown.',w*.26,h*.66)}
     };
