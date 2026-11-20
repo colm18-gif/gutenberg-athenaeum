@@ -308,5 +308,125 @@
   "date": "1952",
   "licence": "Public domain",
   "description": "1952 overprint on stamps of St Helena for Tristan da Cunha."
+ },
+ "sthelena-jonathan": {
+  "file": "Jonathan and another tortoise, St Helena.png",
+  "page": "https://commons.wikimedia.org/wiki/File:Jonathan_and_another_tortoise,_St_Helena.png",
+  "width": 732,
+  "height": 548,
+  "artist": "Unknown photographer",
+  "date": "1886",
+  "licence": "Public domain",
+  "description": "Two giant tortoises photographed in the grounds of Government House, St. Helena. The tortoise on the left is ' Jonathan ', estimated to have hatched in 1832 and still living as of 2019. [1]"
+ },
+ "sthelena-governor": {
+  "file": "Thomas Daniell, View of the Governor's House in St. Helena, 1794, NGA 69395.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Thomas_Daniell,_View_of_the_Governor%27s_House_in_St._Helena,_1794,_NGA_69395.jpg",
+  "width": 2048,
+  "height": 1409,
+  "artist": "Thomas Daniell",
+  "date": "1794 date QS:P571,+1794-00-00T00:00:00Z/9",
+  "licence": "CC0",
+  "description": ""
+ },
+ "sthelena-ladder": {
+  "file": "Jamestown Jacobs Ladder.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Jamestown_Jacobs_Ladder.jpg",
+  "width": 874,
+  "height": 1000,
+  "artist": "Deusdixital",
+  "date": "",
+  "licence": "Public domain",
+  "description": "Jacob's Ladder escaleira de man de 699 escalos sita na cidade de Jamestown en St. Helena"
+ },
+ "sthelena-longwood": {
+  "file": "Louis-Joseph Marchand (1791-1876) Longwood op Sint-Helena (aquarel).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Louis-Joseph_Marchand_(1791-1876)_Longwood_op_Sint-Helena_(aquarel).jpg",
+  "width": 2048,
+  "height": 1487,
+  "artist": "Creator:Louis Joseph Marchand",
+  "date": "2021-07-05 10:39:21",
+  "licence": "Public domain",
+  "description": "Louis-Joseph Marchand (1791-1876) Longwood op Sint-Helena (aquarel)"
+ },
+ "sthelena-dwelling": {
+  "file": "Napoleons boning på St Helena.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Napoleons_boning_p%C3%A5_St_Helena.jpg",
+  "width": 2048,
+  "height": 1257,
+  "artist": "Johan Gustaf Thun",
+  "date": "1830s date QS:P,+1830-00-00T00:00:00Z/8 ?",
+  "licence": "Public domain",
+  "description": "Laverad tuschteckning av de byggnader där Napoleon hölls fängslad på ön S:ta Helena, utan datering Under bilden finns beskrivningen: (1 Bilj. Sal, 2 Matsal, 3 Stud. & Sofrum, 4 Las Cases boning), vilka syftar på numreringen på husen ovan Källa: Stifts- och landsbiblioteket i Skara: MS Geografi Västergötland 1, bild 25"
+ },
+ "sthelena-space": {
+  "file": "ISS019E014918 Saint Helena Island.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:ISS019E014918_Saint_Helena_Island.jpg",
+  "width": 2048,
+  "height": 1360,
+  "artist": "ISS Crew Expedition 19 Image Science & Analysis Laboratory, NASA Johnson Space Center Derivative work including removal of noise, grading.: Julian Herzog",
+  "date": "2009-05-07 08:37:05",
+  "licence": "Public domain",
+  "description": "This astronaut photograph shows the island’s sharp peaks and deep ravines; the rugged topography results from erosion of the volcanic rocks that make up the island. The change in elevation from the coast to the interior creates a climate gradient. The higher, wetter centre is covered with green vegetation, whereas the lower coastal areas are drier and hotter, with little vegetation cover."
+ },
+ "norfolk-sirius": {
+  "file": "The melancholy loss of HMS Sirius off Norfolk Island March 19th 1790 - George Raper.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:The_melancholy_loss_of_HMS_Sirius_off_Norfolk_Island_March_19th_1790_-_George_Raper.jpg",
+  "width": 2048,
+  "height": 1613,
+  "artist": "George Raper",
+  "date": "27 January 2012, 10:48:07",
+  "licence": "Public domain",
+  "description": "The melancholy loss of HMS Sirius off Norfolk Island March 19th 1790 - George Raper, National Library of Australia, Canberra, Australia. George Raper, 1769-1796"
+ },
+ "norfolk-convicts": {
+  "file": "Convict Establishment Norfolk Island 1848.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Convict_Establishment_Norfolk_Island_1848.jpg",
+  "width": 2048,
+  "height": 1489,
+  "artist": "Unknown author Unknown author",
+  "date": "1848-01-01",
+  "licence": "Public domain",
+  "description": "Painting - Norfolk Island - Kingston convict establishment 1848 (Beattie copy)"
+ },
+ "norfolk-government": {
+  "file": "Government House, Norfolk Island Wilson AUTAS001125294850.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Government_House,_Norfolk_Island_Wilson_AUTAS001125294850.jpg",
+  "width": 1540,
+  "height": 987,
+  "artist": "James Glen Wilson (1827-1863)",
+  "date": "1855-12-31",
+  "licence": "Public domain",
+  "description": "Government House, Norfolk Island"
+ },
+ "norfolk-kingston": {
+  "file": "Kingston, Norfolk Island (9014731556).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Kingston,_Norfolk_Island_(9014731556).jpg",
+  "width": 1024,
+  "height": 789,
+  "artist": "Powerhouse Museum from Sydney, Australia",
+  "date": "1898",
+  "licence": "Public domain",
+  "description": "Format: Glass plate negative. Rights Info: No known restrictions on publication. Repository: Tyrrell Photographic Collection, Powerhouse Museum www.powerhousemuseum.com/collection/database/collection=Tyrrell_Photographic Part Of: Powerhouse Museum Collection General information about the Powerhouse Museum Collection is available at www.powerhousemuseum.com/collection/database Persistent URL: www.p"
+ },
+ "norfolk-beach": {
+  "file": "The Beach, Kingston, Norfolk Island (9014730082).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:The_Beach,_Kingston,_Norfolk_Island_(9014730082).jpg",
+  "width": 1024,
+  "height": 782,
+  "artist": "Powerhouse Museum from Sydney, Australia",
+  "date": "1898",
+  "licence": "Public domain",
+  "description": "Format: Glass plate negative. Rights Info: No known restrictions on publication. Repository: Tyrrell Photographic Collection, Powerhouse Museum www.powerhousemuseum.com/collection/database/collection=Tyrrell_Photographic Part Of: Powerhouse Museum Collection General information about the Powerhouse Museum Collection is available at www.powerhousemuseum.com/collection/database Persistent URL: www.p"
+ },
+ "norfolk-gaol": {
+  "file": "The Old Gaol, Kingston, Norfolk Island (9013543011).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:The_Old_Gaol,_Kingston,_Norfolk_Island_(9013543011).jpg",
+  "width": 1024,
+  "height": 786,
+  "artist": "Powerhouse Museum from Sydney, Australia",
+  "date": "1898",
+  "licence": "Public domain",
+  "description": "Format: Glass plate negative. Rights Info: No known restrictions on publication. Repository: Tyrrell Photographic Collection, Powerhouse Museum www.powerhousemuseum.com/collection/database/collection=Tyrrell_Photographic Part Of: Powerhouse Museum Collection General information about the Powerhouse Museum Collection is available at www.powerhousemuseum.com/collection/database Persistent URL: www.p"
  }
 }

@@ -7,12 +7,12 @@
 // bottles that lead somewhere are on the shelf: an empty cradle is a cradle, not a bottle that opens on nothing.
 (function(){
   'use strict';
-  const SLOTS=4;
+  const SLOTS=5;
   window.createShipsInBottles=function(options){
     const {THREE,scene,MAT,interactables,canvasTexture,showNotice,playSample,analytics,corridor=null,isHolding=()=>false}=options;
     const room=corridor?.room||{cx:1700,cz:0,w:5,d:24,h:5.2};
     const BAY={side:'east',bay:corridor?.bottleBay?.bay??3,x:room.cx+room.w/2-.32,z:corridor?.bayZ?.(corridor?.bottleBay?.bay??3)??-2,yaw:-Math.PI/2};
-    const SHELF={y:1.32,length:2.5,depth:.3};
+    const SHELF={y:1.32,length:3.1,depth:.3};
     const bottles=[],owned=[];
     const own=thing=>{owned.push(thing);return thing};
     const std=params=>own(new THREE.MeshStandardMaterial(params));

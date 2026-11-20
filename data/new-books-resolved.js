@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-11-17",
+ "updated": "2026-11-20",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -2914,6 +2914,38 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "The Loss of the Australia": {
    "id": 44480,
    "words": 16626
+  },
+  "Memoirs of the Life, Exile, and Conversations of the Emperor Napoleon": {
+   "id": 53967,
+   "words": 146484
+  },
+  "Napoleon’s Appeal to the British Nation": {
+   "id": 50118,
+   "words": 4097
+  },
+  "The Surrender of Napoleon": {
+   "id": 28934,
+   "words": 55968
+  },
+  "Napoleon’s Young Neighbor": {
+   "id": 35037,
+   "words": 48853
+  },
+  "Tortoises": {
+   "id": 22475,
+   "words": 2958
+  },
+  "An Historical Journal of the Transactions at Port Jackson and Norfolk Island": {
+   "id": 15662,
+   "words": 180085
+  },
+  "Address to the Inhabitants of the Colonies, Established in New South Wales and Norfolk Island": {
+   "id": 4052,
+   "words": 12646
+  },
+  "A Complete Account of the Settlement at Port Jackson": {
+   "id": 3534,
+   "words": 66579
   },
   "Don Quijote [es]": {
    "id": 2000,

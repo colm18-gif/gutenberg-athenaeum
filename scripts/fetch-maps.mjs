@@ -88,7 +88,26 @@ export const PICTURES = [
   { key: 'tristan-thrush', file: 'Nesocichla eremita Smit.jpg' },
   { key: 'tristan-bunting', file: 'Nesospiza acunhae.jpg' },
   { key: 'tristan-space', file: 'ISS-34 Tristan da Cunha.jpg' },
-  { key: 'tristan-stamp', file: 'Tristan da Cunha 1952 5 shilling stamp.jpg', minSize: 760 }
+  { key: 'tristan-stamp', file: 'Tristan da Cunha 1952 5 shilling stamp.jpg', minSize: 760 },
+  // St Helena (st-helena.js), the fourth bottle: Jonathan photographed with another tortoise about 1886, a few years after
+  // he came from the Seychelles; Thomas Daniell's Governor's House of 1794 (Plantation House, on whose lawn he lives);
+  // Jacob's Ladder up from Jamestown; Longwood in a watercolour by Marchand, Napoleon's valet, and in an ink drawing of its
+  // buildings by a Swedish visitor of the 1830s, numbered for its rooms; and the island from the International Space Station. All public domain or CC0, to be looked at.
+  { key: 'sthelena-jonathan', file: 'Jonathan and another tortoise, St Helena.png', minSize: 540 },
+  { key: 'sthelena-governor', file: "Thomas Daniell, View of the Governor's House in St. Helena, 1794, NGA 69395.jpg" },
+  { key: 'sthelena-ladder', file: 'Jamestown Jacobs Ladder.jpg' },
+  { key: 'sthelena-longwood', file: 'Louis-Joseph Marchand (1791-1876) Longwood op Sint-Helena (aquarel).jpg' },
+  { key: 'sthelena-dwelling', file: 'Napoleons boning på St Helena.jpg' },
+  { key: 'sthelena-space', file: 'ISS019E014918 Saint Helena Island.jpg' },
+  // Norfolk Island (norfolk-island.js), the fifth bottle: George Raper's loss of the Sirius on the reef in 1790; the convict
+  // establishment at Kingston in 1848; Government House about 1855, the year before the Pitcairners came; and Kingston,
+  // its beach and the old gaol in 1898. All public domain, to be looked at.
+  { key: 'norfolk-sirius', file: 'The melancholy loss of HMS Sirius off Norfolk Island March 19th 1790 - George Raper.jpg' },
+  { key: 'norfolk-convicts', file: 'Convict Establishment Norfolk Island 1848.jpg' },
+  { key: 'norfolk-government', file: 'Government House, Norfolk Island Wilson AUTAS001125294850.jpg' },
+  { key: 'norfolk-kingston', file: 'Kingston, Norfolk Island (9014731556).jpg' },
+  { key: 'norfolk-beach', file: 'The Beach, Kingston, Norfolk Island (9014730082).jpg' },
+  { key: 'norfolk-gaol', file: 'The Old Gaol, Kingston, Norfolk Island (9013543011).jpg' }
 ];
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
