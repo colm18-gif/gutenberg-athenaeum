@@ -16,17 +16,26 @@ const THREE={Group:O,Mesh,InstancedMesh:Instanced,Vector3:V,Quaternion:class{},M
   PointLight:class extends O{constructor(c,i){super();this.isPointLight=true;this.isLight=true;this.intensity=i}}};
 // The rooms the passages join, as their modules define them.
 const ROOMS={poe:'poe-room.js',irish:'irish-room.js',learners:'learners-room.js',medicine:'medicine-room.js',austen:'austen-room.js',burns:'burns-room.js',within:'within-room.js',
-  evening:'evening-room.js',setTexts:'set-texts-room.js',periodicals:'periodicals-room.js',chance:'chance-room.js',lostProperty:'book-lift.js',canada:'canada-room.js',walden:'walden.js'};
+  evening:'evening-room.js',setTexts:'set-texts-room.js',periodicals:'periodicals-room.js',chance:'chance-room.js',lostProperty:'book-lift.js',canada:'canada-room.js',walden:'walden.js',
+  dickinson:'dickinson-room.js',celsus:'celsus-room.js',latin:'international-wing.js'};
 // Walden is a clearing with no walls: its door stands at a place it keeps for it, facing east.
 const waldenSource=fs.readFileSync('walden.js','utf8');
 const CLEARING=(()=>{const c=waldenSource.match(/const CENTRE=\{x:(-?[\d.]+),z:(-?[\d.]+)\}/),t=waldenSource.match(/trail:\{x:(-?[\d.]+),z:(-?[\d.]+)\}/);
-  return {centre:{x:+c[1],z:+c[2]},trail:{x:+c[1]+ +t[1],z:+c[2]+ +t[2],yaw:Math.PI/2}}})();
-const roomOf=file=>{const m=fs.readFileSync(file,'utf8').match(/const ROOM=\{cx:(-?[\d.]+),cz:(-?[\d.]+),w:([\d.]+),d:([\d.]+)/);return {cx:+m[1],cz:+m[2],w:+m[3],d:+m[4]}};
+  const h=waldenSource.match(/homestead:\{x:(-?[\d.]+),z:(-?[\d.]+)\}/);
+  return {centre:{x:+c[1],z:+c[2]},trail:{x:+c[1]+ +t[1],z:+c[2]+ +t[2],yaw:Math.PI/2},homestead:{x:+c[1]+ +h[1],z:+c[2]+ +h[2],yaw:Math.atan2(-h[1],-h[2])}}})();
+// The Library of Celsus keeps the Stoa's door in its court's west wall, facing east.
+const celsusSource=fs.readFileSync('celsus-room.js','utf8');
+const COURT=(()=>{const m=celsusSource.match(/const COURT=\{cx:(-?[\d.]+),cz:(-?[\d.]+),w:([\d.]+),d:([\d.]+)/);return {cx:+m[1],cz:+m[2],w:+m[3],d:+m[4]}})();
+const roomOf=file=>{
+  // The Latin Reading Room is one of the International Wing's rooms.
+  if(file==='international-wing.js'){const m=fs.readFileSync(file,'utf8').match(/latin:\{cx:(-?[\d.]+),cz:(-?[\d.]+),w:([\d.]+),d:([\d.]+)/);return {cx:+m[1],cz:+m[2],w:+m[3],d:+m[4]}}
+  const m=fs.readFileSync(file,'utf8').match(/const ROOM=\{cx:(-?[\d.]+),cz:(-?[\d.]+),w:([\d.]+),d:([\d.]+)/);return {cx:+m[1],cz:+m[2],w:+m[3],d:+m[4]}};
 function world(){
   const context={window:{},Math,JSON};vm.runInNewContext(source,context);
   const scene=new O(),interactables=[],notices=[],player={pos:new V(),radius:.42},tracked=[],store=new Map();
   const rooms={};for(const [key,file] of Object.entries(ROOMS)){
-    if(key==='walden'){const {centre,trail}=CLEARING;rooms.walden={trail,built:false,activate(){this.built=true},contains:(x,z)=>Math.hypot(x-centre.x,z-centre.z)<33.5};continue}
+    if(key==='walden'){const {centre,trail,homestead}=CLEARING;rooms.walden={trail,homestead,built:false,activate(){this.built=true},contains:(x,z)=>Math.hypot(x-centre.x,z-centre.z)<33.5};continue}
+    if(key==='celsus'){rooms.celsus={stoa:{x:COURT.cx-COURT.w/2+.22,z:COURT.cz+.1,yaw:Math.PI/2},built:false,activate(){this.built=true},contains:(x,z)=>Math.abs(x-COURT.cx)<COURT.w/2&&Math.abs(z-COURT.cz)<COURT.d/2};continue}
     const room=roomOf(file);rooms[key]={room,built:false,activate(){this.built=true},contains:(x,z)=>Math.abs(x-room.cx)<room.w/2&&Math.abs(z-room.cz)<room.d/2}}
   const passages=context.window.createPassages({THREE,scene,MAT:{wood:new M({}),darkWood:new M({}),brass:new M({}),stone:new M({})},player,interactables,
     canvasTexture:()=>({repeat:{set(){}},dispose(){}}),showNotice:t=>notices.push(t),playSample:()=>{},analytics:{track:(n,p)=>tracked.push([n,p])},rooms,
@@ -39,22 +48,27 @@ test('the back ways load before the game, after the rooms they join, and are wir
   for(const file of Object.values(ROOMS))assert(order.indexOf(file)<order.indexOf('passages.js'),`${file} loads first`);
   assert.equal(order.indexOf('passages.js'),order.indexOf('game.js')-1);
   assert.match(game,/const passages=window\.createPassages\?\.\(/);
-  assert.match(game,/rooms:\{poe:poeRoom,irish:irishRoom,learners:learnersRoom,medicine:medicineRoom,austen:austenRoom,burns:burnsRoom,within:withinRoom,evening:eveningRoom,setTexts:setTextsRoom,periodicals:periodicalsRoom,chance:chanceRoom,lostProperty:bookLift,canada:canadaRoom,walden\}/);
-  for(const name of ['poeRoom','irishRoom','learnersRoom','medicineRoom','austenRoom','burnsRoom','withinRoom','eveningRoom','setTextsRoom','periodicalsRoom','chanceRoom','bookLift','canadaRoom','walden'])
-    assert(game.indexOf(`const ${name}=`)<game.indexOf('const passages='),`${name} is made before the passages`);
+  assert.match(game,/rooms:\{poe:poeRoom,irish:irishRoom,learners:learnersRoom,medicine:medicineRoom,austen:austenRoom,burns:burnsRoom,within:withinRoom,evening:eveningRoom,setTexts:setTextsRoom,periodicals:periodicalsRoom,chance:chanceRoom,lostProperty:bookLift,canada:canadaRoom,walden,dickinson:dickinsonRoom,celsus:celsusRoom,/);
+  for(const name of ['poeRoom','irishRoom','learnersRoom','medicineRoom','austenRoom','burnsRoom','withinRoom','eveningRoom','setTextsRoom','periodicalsRoom','chanceRoom','bookLift','canadaRoom','walden','dickinsonRoom','celsusRoom']){
+    const made=Math.max(game.indexOf(`const ${name}=`),game.indexOf(`var ${name}=`));assert(made>0&&made<game.indexOf('const passages='),`${name} is made before the passages`)}
+  // The Latin Reading Room is built through the International Wing, once the wing's books are here.
+  assert.match(game,/latin:\{get room\(\)\{return internationalWing\?\.rooms\?\.latin\},get built\(\)\{return !!internationalWing\?\.isBuilt\('latin'\)\}/);
+  assert.match(game,/passages\?\.zoneAt\(x,z\)==='stoa'\|\|celsusRoom\?\.contains\?\.\(x,z\)\)\)this\.load\(\)/,'the wing’s books are fetched on the way through the Stoa');
+  assert.match(fs.readFileSync('international-wing.js','utf8'),/activateRoom:key=>\{if\(!ROOMS\[key\]\)return;activate\(key\);placeLamps\(key\)\}/);
   assert.match(game,/passages\.floorAt\(x,z\)\?\?prePassageFloor/);assert.match(game,/passages\.contains\(x,z\)\?passages\.allowed\(x,z\)/);assert.match(game,/passages\.interact\(focus\)/);
   assert.match(game,/passages\?\.update\(t\)/);assert.match(game,/const backWay=passages\?\.zoneAt\(x,z\);if\(backWay\)return backWay;/);
   const ambience=fs.readFileSync('room-ambience.js','utf8'),{passages}=world();
   for(const p of passages.passages){assert(game.includes(`['${p.key}','`),`${p.key} is in the journal`);assert(ambience.includes(`'${p.key}':{`),`${p.key} has an ambience`)}
   // Each room can be built by a passage before the reader steps in.
-  for(const file of Object.values(ROOMS))assert.match(fs.readFileSync(file,'utf8'),/return \{contains,floorAt,allowed,interact,update,enter,(leave,unload,)?activate(:buildRoom)?,/,`${file} exports activate`);
-  assert.match(waldenSource,/\btrail:TRAIL,centre:CENTRE,/,'Walden says where the Portage’s door stands');
+  for(const file of Object.values(ROOMS))if(file!=='international-wing.js')assert.match(fs.readFileSync(file,'utf8'),/return \{contains,floorAt,allowed,interact,update,enter,(leave,)?(unload,)?activate(:buildRoom)?,/,`${file} exports activate`);
+  assert.match(waldenSource,/\btrail:TRAIL,homestead:HOMESTEAD,centre:CENTRE,/,'Walden says where the Portage’s and the Homestead Stair’s doors stand');
+  assert.match(celsusSource,/door:DOOR,stoa:STOA,/,'the Library of Celsus says where the Stoa’s door stands');
 });
 
 test('the rooms reached by air, by boat and by rocket stay that way',()=>{
   const {passages}=world(),joined=new Set(passages.passages.flatMap(p=>p.ends.map(e=>e.room)));
   for(const room of ['nights','african','crusoe','boathouse','moon','mars','rocket','antipodes','forest'])assert(!joined.has(room),`${room} has no back way`);
-  assert.equal(passages.passages.length,8);
+  assert.equal(passages.passages.length,10);
 });
 
 test('each door stands on its wall, clear of the corners and of the other doors there',()=>{
@@ -148,4 +162,22 @@ test('every word given to Thoreau on the Portage is in A Yankee in Canada',()=>{
   const {passages}=world(),p=passages.passages.find(x=>x.key==='portage');let quoted=0;
   for(const m of p.posts)for(const [,words] of m.text.matchAll(/“([^”]+)”/g)){quoted++;assert(text.includes(letters(words)),`“${words.slice(0,50)}…” is in the book`)}
   assert(quoted>=6);
+});
+
+test('the Homestead Stair goes down from Emily Dickinson’s room to Walden, and the Stoa from the Latin Reading Room to Ephesus',()=>{
+  const {passages,rooms,player}=world(),stair=passages.passages.find(x=>x.key==='homestead-stair'),stoa=passages.passages.find(x=>x.key==='stoa');
+  assert.equal(stair.ends.map(e=>e.room).join(),'dickinson,walden');assert.equal(stair.kind,'stair');assert(stair.ends[0].high,'her room was upstairs at the Homestead');
+  // In her room: the west wall, south of the window (its pane spans cz−0.45 to cz+1.05) and north of the bureau.
+  const room=roomOf('dickinson-room.js'),d=passages.roomDoor(stair.ends[0]);assert.equal(d.x,room.cx-room.w/2+.15);assert(d.z-.75>room.cz+1.1&&d.z+.75<room.cz+room.d/2-.3);
+  assert(d.out.z<room.cz+3.65-.42,'the reader steps out clear of the bureau');
+  // At Walden: a door by the road, turned to the clearing, opening onto ground within it.
+  const w=passages.roomDoor(stair.ends[1]),{centre}=CLEARING;assert(Math.hypot(w.out.x-centre.x,w.out.z-centre.z)<Math.hypot(w.x-centre.x,w.z-centre.z),'it faces into the clearing');
+  assert(Math.hypot(w.out.x-centre.x,w.out.z-centre.z)<30);assert(Math.hypot(w.x-CLEARING.trail.x,w.z-CLEARING.trail.z)>8,'well apart from the Portage’s door');
+  passages.enterPassage(stair,0);assert.equal(passages.zoneAt(player.pos.x,player.pos.z),'homestead-stair');passages.leavePassage(stair,1);assert(rooms.walden.built);assert(rooms.walden.contains(player.pos.x,player.pos.z));
+  // The Stoa: the Latin room's east wall, north of its door to the Italian room; at Ephesus the court's west wall, between the cypresses.
+  assert.equal(stoa.ends.map(e=>e.room).join(),'latin,celsus');const latin=roomOf('international-wing.js'),l=passages.roomDoor(stoa.ends[0]);
+  assert.equal(l.x,latin.cx+latin.w/2-.15);assert(Math.abs(l.z-latin.cz)>2.6,'clear of the door to the Italian room');
+  const c=passages.roomDoor(stoa.ends[1]);assert(c.out.x>c.x&&rooms.celsus.contains(c.out.x,c.out.z));
+  for(const i of [1,2])assert(Math.abs(c.z-(COURT.cz-COURT.d/2+4.5+i*4.4))>.6+.75,'clear of the cypresses either side');
+  passages.enterPassage(stoa,0);assert.equal(passages.zoneAt(player.pos.x,player.pos.z),'stoa');passages.leavePassage(stoa,1);assert(rooms.celsus.built);
 });

@@ -1309,6 +1309,8 @@
     }
     buildDoor();
     return {contains,floorAt,allowed,interact,update,enter,unload:()=>{for(const key of Object.keys(built))unload(key)},featured,roomAt,door:DOOR,room:ROOM,rooms:ROOMS,children:CHILDREN_ROOM,get kitten(){return built.ukrainian?.kitten},
-      get built(){return !!built.hub},isBuilt:key=>!!built[key],get books(){return Object.values(built).flatMap(room=>room.books)},zoneAt:(x,z)=>contains(x,z)?'international-wing':null};
+      get built(){return !!built.hub},isBuilt:key=>!!built[key],
+      // A back way (passages.js, the Stoa) builds a room and brings the wing's lamps to it before the reader steps in.
+      activateRoom:key=>{if(!ROOMS[key])return;activate(key);placeLamps(key)},get books(){return Object.values(built).flatMap(room=>room.books)},zoneAt:(x,z)=>contains(x,z)?'international-wing':null};
   },{BOOK_PICTURES,TRANSLATIONS});
 })();

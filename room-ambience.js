@@ -141,6 +141,9 @@
       'sorting-corridor':{beds:[['air',.03]],events:[['rustle',1.2,.04],['thump',.4,.03]]},
       // The Portage: a night wind in the trees, leaves stirring, an owl, and a loon from the frozen lake ahead.
       'portage':{beds:[['wind',.05],['air',.02]],events:[['rustle',1.3,.04],['owl',.3,.03],['loon',.15,.03]]},
+      // The Homestead Stair: old painted treads and a clock somewhere in the house; the Stoa: stone, and a breeze from the court.
+      'homestead-stair':{beds:[['air',.03]],ticks:[[1,'tock',.012]],events:[['creak',1.1,.04]]},
+      'stoa':{beds:[['air',.03],['wind',.02]],events:[['bird',.4,.025]]},
       'chance-room':{beds:[['air',.03]],events:[['rustle',1.3,.05],['creak',.9,.04]]},
       // The Uncatalogued: a store room full of books, pages stirring, a heap settling, the boards creaking underfoot.
       'uncatalogued':{beds:[['air',.035]],events:[['rustle',1.5,.05],['thump',.35,.03],['creak',.7,.04]]},

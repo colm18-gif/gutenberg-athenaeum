@@ -725,7 +725,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   its little door, Clio only as far as the threshold (`CHASE_STOP`), where she sits with her tail lashing. She never
   catches it. The midnight rabbit comes first; showing the reader something comes before a chase; `?rabbit` brings
   one within seconds.
-- Back ways (`passages.js`): eight short passages join neighbouring rooms behind doors, so a reader can wander without
+- Back ways (`passages.js`): ten short passages join neighbouring rooms behind doors, so a reader can wander without
   going back to the Grand Hall: the Cellar Stair (Poe Room ↔ Irish Room, down), the Night Corridor (English Reading Room
   ↔ Poe Room), the Long Gallery (Medicine Room ↔ English Reading Room; the Map Room's walls are hung edge to edge, so it
   is reached through the Medicine Room), the Back Stair (Burns Room ↔ Austen Room, up), the Stacks Stair (Burns Room ↔
@@ -735,13 +735,27 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   to Canada in 1850; mileposts and his palm-leaf hat carry his words from A Yankee in Canada, pg70123, checked by a test;
   footsteps are soft there). Walden has no walls, so its end is a door standing in the pines west of the clearing at
   `SPOTS.trail` (an end with `spot:'trail'` takes its place from the room's `trail`); the Canadian end is at the east end
-  of that room's south wall. The rooms reached by air (the Nights, the
+  of that room's south wall. The Homestead Stair (Emily Dickinson's room ↔ Walden, down: her bedroom was upstairs at the
+  Homestead; its door in her west wall south of the window, its Walden end a white door by the road north-west of the
+  clearing, `SPOTS.homestead`) joins the Long Corridor's rooms to the western ones; the Stoa (the Latin Reading Room's
+  east wall, north of its door to the Italian room ↔ the court at Ephesus, `stoa` in celsus-room.js, between the
+  cypresses on the west wall) joins the International Wing to them. The Latin room is reached through the wing
+  (`activateRoom`), and the wing's books are fetched while the reader is in the Stoa or the court (`wingBooks.near`).
+  These two came from a plan of every room's ways in and out (20 November 2026): 30 of 68 places were dead ends. The rooms reached by air (the Nights, the
   African room), by boat (Crusoe's island) and by rocket (Moon, Mars) stay that way, at the owner's wish (a test checks).
   Each door is a wall and a distance along it (`ends`), measured clear of the rooms' shelves and pictures; a door is hung
   only while its room is built, and a passage is built when entered and freed 25 s after. Passages stand at x 1200
   (z −600, 40 m apart), floors between y 0 and 3 (below 0 wakes the basement). One lamp, the module's own, moves to the
   passage in use. Rooms export `activate` so a passage can build the room before the reader steps in. New back ways:
   add them to `PASSAGES`, the journal's "Back ways" group and `room-ambience.js`.
+- Island bottles (`island-bottles.js`, `LINKS`): ships in bottles that join an island to a room, both ways, so the bottle
+  shelf is not a dead end: Montserrat ↔ the Irish Room (a bottle on the mantel, right of the St Brigid's cross; in the
+  house, a little shelf in the north-west corner, past the deed) and Norfolk Island ↔ the Australian Room (a little shelf on
+  each north wall; the Antipodes are entered through their own `enter('australian-room')`). Each bottle stands only while
+  its room is built (as the back ways' doors do), no light; looking in builds the other end and stands the reader before
+  its bottle, facing it (`stand`). A test keeps each in its room, against a wall, and the reader facing it. Their cards
+  say only what is so (St Patrick's Day a public holiday on Montserrat; Norfolk settled from Sydney in 1788, Australian
+  since 1914). More are planned (Pitcairn → Norfolk, St Helena ↔ Tristan da Cunha).
 - Exploration (`exploration.js`, loaded just before `passages.js`; wired at the end of game.js as `exploration`): small
   things that make wandering worth it, none with a light of its own. A room not yet found is heard through its closed door
   (`DOORS`, room-ambience.js `leak`: muffled, quieter, one at a time). Now and then the night porter's lantern (no light,
