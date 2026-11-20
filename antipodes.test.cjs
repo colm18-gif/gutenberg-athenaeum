@@ -158,3 +158,19 @@ test('reduced motion keeps the deck steady, and resetting cancels travel without
   a.reset();assert(!a.travelling&&!a.aboard);player.pos.set(0,0,24);run(a,40);
   assert.equal(player.pos.z,24,'no lingering arrival callback');assert(!a.built);assert(!interactables.some(o=>o.userData.type==='antipodes-antarctic-castoff'),'ship controls freed');
 });
+
+test('the polar night sky is drawn only out on the ice, never as a blue wall across the Australian Room',()=>{
+  const {a,scene,player}=world();a.enter('australian-room');a.update(clock+=.05,.05);
+  const root=scene.children.find(o=>o.name==='antipodes'),dome=root.userData.polarDome;
+  assert.equal(dome.name,'polar-night-sky');assert.equal(dome.visible,false,'hidden in the Australian Room');
+  const r=a.rooms.antarctic;player.pos.set(r.cx,0,r.cz);a.update(clock+=.05,.05);assert.equal(dome.visible,true,'shown at the hut');
+  player.pos.set(r.cx,0,a.rooms.australian.cz);a.update(clock+=.05,.05);assert.equal(dome.visible,false,'hidden again on the way back');
+});
+
+test('the polar sky stops short of the Antipodes rooms, so it hides them from the ice and never stands in the Australian Room',()=>{
+  const {a,scene}=world();a.enter('australian-room');const dome=scene.children.find(o=>o.name==='antipodes').userData.polarDome;
+  const southmost=dome.position.z+30*dome.scale.z,r=a.rooms.antarctic,aus=a.rooms.australian;
+  assert(southmost<aus.cz-aus.d/2-.5,`the dome reaches ${southmost}, into the rooms`);
+  assert(dome.position.z-30*dome.scale.z<r.cz-r.d/2-10,'the hut and its mountains stay inside the dome');
+  assert(southmost>r.cz+r.d/2+3,'the landing stays inside it');
+});

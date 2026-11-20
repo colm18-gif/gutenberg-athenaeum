@@ -516,7 +516,10 @@
       const {cx,cz,w,d,h}=ANTARCTIC;
       const ice=own(new THREE.MeshStandardMaterial({color:0xb9d5df,emissive:0x254555,emissiveIntensity:.45,roughness:.96})),snow=own(new THREE.MeshBasicMaterial({color:0xc4dfe8})),dark=own(new THREE.MeshStandardMaterial({color:0x33434d,roughness:.92}));
       box(w,.3,d,ice,cx,-.15,cz,root);
-      polarSky(root,cx,cz,30);
+      // The dome stops short of the Antipodes rooms just south of the ice (a sphere round the hut reached into the
+      // Australian Room as a blue wall, and left the rooms' backs showing in the sky from the hut), so it is set north
+      // and drawn shallower that way; and it is drawn only while the reader is out on the ice or sailing to it.
+      const dome=root.userData.polarDome=polarSky(root,cx,cz-6,30);dome.scale.z=((HALL.cz-HALL.d/2)-(cz-6)-1.5)/30;dome.visible=false;
       const mountains=[];for(let i=0;i<12;i++){const x=cx-22+i*4,z=cz-19-Math.sin(i*2)*4;mountains.push([new THREE.ConeGeometry(3+(i%3),6+(i%4)*2,5),x,2.5,z,0,i*.7,(i%2?-.1:.1)])}
       add(own(merged(mountains)),snow,0,0,0,root);
       // A real hut: walls surround an open doorway and its books, rather than a solid cube.
@@ -957,6 +960,7 @@
     function update(t,dt=0){
       time=t;const reduced=isReducedMotion(),x=player.pos.x,z=player.pos.z,inside=contains(x,z);
       updateGlobe(hall.globe,dt);updateHatch(hall.hatch,dt);
+      if(root?.userData.polarDome)root.userData.polarDome.visible=!!voyage||z<HALL.cz-HALL.d/2-.2;
       if(fall){lastNeeded=t;updateFall(dt,reduced);return}
       if(voyage){lastNeeded=t;updatePolarVoyage(dt,reduced);return}
       // Stepping onto an open trapdoor.

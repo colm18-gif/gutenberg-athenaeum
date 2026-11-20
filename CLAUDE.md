@@ -678,6 +678,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is to have a room of its own. Two painted displays, no lights: the Endurance in the pack on the east wall (`ENDURANCE`,
   quoting South, pg5199) and the Belgica's calendar by the door (`BELGICA`, quoting Cook's Through the First Antarctic
   Night, pg72211); `polar-hut.test.cjs` checks every quotation.
+  The hut's night-sky dome (`polarDome`) is set north of the hut and drawn shallower southward so it stops short of the
+  Antipodes rooms (a sphere round the hut stood in the Australian Room as a blue wall), and it is drawn only on the ice.
   Snow is a `THREE.Points` object: using the mesh helper would connect the flakes into huge triangles across the hut.
   Both moorings have walkable 1.8 m gangways rising continuously from shore to deck height. `GANGWAYS` supplies the
   visible ramps, floor heights and walking bounds; the boat rail has matching gaps. Walking on/off the deck updates
