@@ -533,7 +533,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   wing as `gospel`) lies open at Mark's portrait facing leaf 129, the first page of his Gospel: three colour photographs
   from Commons and seven plates of Gruzinsky's printed facsimile of 1911 (pages of its PDF on Commons, `trimScan` cuts away
   the bare page round each plate), with drawn notes on the word оукраины on leaf 82 and on the presidents' oath. Commons
-  has no other usable photographs of it. The Catalogue lookup also searches Ukrainian Wikisource (`ws <page>`, `ws? <words>`) and Commons
+  has no other usable photographs of it. The Catalogue lookup also searches Ukrainian Wikisource (`ws <page>`, `ws? <words>`, `ws-index <category>`) and Commons
   (`commons? <words>`). A Wikisource page that only lists editions has too little text: give the edition's own page.
 - The Forest Song (`forest-song.js`, centre x 600, z 900; walkable within 32 m): the world of Lesia Ukrainka's Лісова пісня
   (book 999793, in the wing's list), on a spring night. Two ways in: Lukash's reed pipe on two pegs across a linen towel in
@@ -592,6 +592,18 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   a rushnyk; its card (`WINDOW`) quotes «Садок вишневий коло хати…» from the room's own Kobzar (book 962510, Кобзарь 1876,
   in place of «В казематі»), checked by a test. Keep `WINDOW` above `MITTEN`: the mitten's test reads every «quotation»
   between `MITTEN` and `MEMORIAL` against Рукавичка.
+- The Ukrainian Reading Room's stacks (`STACKS` in `international-wing.js`, `def.stacks`): its north racks hold 36 and
+  were full, so two freestanding double-sided cases stand end-on to the north wall in the room's north-east quarter
+  (four columns a face, three tiers, 48 places), clear of the reading table, the way to the arch, the trembita and the
+  didukh, under a sign, З ВІКІДЖЕРЕЛ (`STACKS_CARD`). Books beyond the racks' 36 go there in list order. They hold the
+  books added on Wikimedia Ukraine's advice (20 November 2026), found with the Catalogue lookup's `ws-index <category
+  or w.wiki link>` from Wikisource's proofread and validated indexes (one physical book each, checked page by page by
+  its volunteers): the first Kobzar (1840), Shevchenko's primer, the first Eneida (1798), Franko, Kobylianska, Khvylovy,
+  Pidmohylny, Antonych, Olzhych and more. A book compiled by someone with no author's page on Wikisource cannot pass the
+  author check (the 1921 Перша читанка). Of the younger readers' books, До української дитини is on the youngest
+  shelf and За сестрою on the older; Славні побратими (it tells the killing of Poles and Jews with approval, and its
+  note says so) and Зіля-королевич (a village drama, not a children's book) stay on the stacks. Keep `STACKS` and its
+  card above `MITTEN`.
 - English for English speakers: every Ukrainian book has an English rendering of its librarian's note in
   `ATHENAEUM_NOTES_EN` (end of `data/new-books-wing.js`, keyed by title; a test wants one for each book, three sentences
   or more), shown after the Ukrainian when a book is picked and on its book page (`noteEn`). The welcome, the lectern
