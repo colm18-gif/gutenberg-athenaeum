@@ -41,7 +41,7 @@
     function buildDoor(){
       const g=new THREE.Group();g.name='long-corridor-door';g.position.set(DOOR.x,0,DOOR.z);g.rotation.y=DOOR.yaw;scene.add(g);
       const data={type:'corridor-door',title:'The Long Corridor',author:'A panelled corridor, and the library’s newer rooms along it: the Gastronomic Athenaeum, Scrooge’s chambers, Emily Dickinson’s room, the Library of Celsus, Boullée’s library that was never built, and a shelf of ships in bottles bound for five small islands.',action:'ENTER'};
-      if(!doorKit?.hang(g,{data,mark:markDoor,...LOOK,...doorKit.readingRoom?.('THE LONG\nCORRIDOR','Dickens · Dickinson · Ephesus · islands')}))
+      if(!doorKit?.hang(g,{data,mark:markDoor,...LOOK,...doorKit.readingRoom?.('THE LONG\nCORRIDOR','Rooms, a lost library and islands')}))
         markDoor(add(new THREE.BoxGeometry(1.9,3.1,.14),MAT.darkWood,0,1.55,.08,g),data);
     }
 
