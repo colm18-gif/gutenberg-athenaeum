@@ -309,6 +309,16 @@
   "licence": "Public domain",
   "description": "1952 overprint on stamps of St Helena for Tristan da Cunha."
  },
+ "sthelena-jonathan": {
+  "file": "Jonathan and another tortoise, St Helena.png",
+  "page": "https://commons.wikimedia.org/wiki/File:Jonathan_and_another_tortoise,_St_Helena.png",
+  "width": 732,
+  "height": 548,
+  "artist": "Unknown photographer",
+  "date": "1886",
+  "licence": "Public domain",
+  "description": "Two giant tortoises photographed in the grounds of Government House, St. Helena. The tortoise on the left is ' Jonathan ', estimated to have hatched in 1832 and still living as of 2019. [1]"
+ },
  "sthelena-governor": {
   "file": "Thomas Daniell, View of the Governor's House in St. Helena, 1794, NGA 69395.jpg",
   "page": "https://commons.wikimedia.org/wiki/File:Thomas_Daniell,_View_of_the_Governor%27s_House_in_St._Helena,_1794,_NGA_69395.jpg",
@@ -338,6 +348,16 @@
   "date": "2021-07-05 10:39:21",
   "licence": "Public domain",
   "description": "Louis-Joseph Marchand (1791-1876) Longwood op Sint-Helena (aquarel)"
+ },
+ "sthelena-dwelling": {
+  "file": "Napoleons boning på St Helena.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Napoleons_boning_p%C3%A5_St_Helena.jpg",
+  "width": 2048,
+  "height": 1257,
+  "artist": "Johan Gustaf Thun",
+  "date": "1830s date QS:P,+1830-00-00T00:00:00Z/8 ?",
+  "licence": "Public domain",
+  "description": "Laverad tuschteckning av de byggnader där Napoleon hölls fängslad på ön S:ta Helena, utan datering Under bilden finns beskrivningen: (1 Bilj. Sal, 2 Matsal, 3 Stud. & Sofrum, 4 Las Cases boning), vilka syftar på numreringen på husen ovan Källa: Stifts- och landsbiblioteket i Skara: MS Geografi Västergötland 1, bild 25"
  },
  "sthelena-space": {
   "file": "ISS019E014918 Saint Helena Island.jpg",
