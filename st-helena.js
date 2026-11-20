@@ -124,7 +124,7 @@
       grassTex.wrapS=grassTex.wrapT=THREE.RepeatWrapping;grassTex.repeat?.set?.(8,6);
       const stoneTex=own(canvasTexture((c,W,H)=>{c.fillStyle='#b9b3a4';c.fillRect(0,0,W,H);let y=0;while(y<H){const sh=26+r()*14;let x=-r()*40;while(x<W){const sw=44+r()*40,v=176+r()*30;c.fillStyle=`rgb(${v},${v-4},${v-14})`;c.fillRect(x+2,y+2,sw-4,sh-4);x+=sw}y+=sh}},256,256));
       stoneTex.wrapS=stoneTex.wrapT=THREE.RepeatWrapping;stoneTex.repeat?.set?.(3,1.2);
-      const grass=std({color:0x7a9a60,map:grassTex,roughness:1}),stone=std({color:0xd8d2c2,map:stoneTex,roughness:.95}),plaster=std({color:0xeae4d2,roughness:.95}),
+      const grass=std({color:0x7a9a60,map:grassTex,roughness:1}),stone=std({color:0xd8d2c2,map:stoneTex,roughness:.95}),plaster=std({color:0xcfc6b0,roughness:.95}),
         flags=std({color:0x8a8478,roughness:.9}),wood=MAT.darkWood||std({color:0x3a2416,roughness:.7}),white=std({color:0xf0ece0,roughness:.8});
       // Ground: the lawn, a little wider than the walking, and the garden room's flagstones.
       box(LAWN.w+6,.3,LAWN.d+6,grass,cx,-.15,z0-LAWN.d/2,root);box(w,.3,d,flags,cx,-.149,cz,root);
@@ -152,7 +152,7 @@
       buildTable(cx,cz+.55,wood);buildLawn(wood,white,r);buildView();
       // The hazy sun, low in the west, and the lamp in the garden room.
       const sun=new THREE.DirectionalLight(0xfff0d8,1.05);sun.position.set(cx-30,14,cz-10);sun.target.position.set(cx,0,cz-4);root.add(sun);root.add(sun.target);
-      lamp=new THREE.PointLight(0xffd9a0,1.4,9,2);lamp.position.set(cx,2.4,cz+.4);root.add(lamp);
+      lamp=new THREE.PointLight(0xffd9a0,.7,9,2);lamp.position.set(cx,2.4,cz+.4);root.add(lamp);
       if(wasFound())leaveBook();
       placeVisitorsBook?.({parent:root,x:cx+2.2,z:cz+1.4,mark,own});
       scene.add(root);
@@ -237,9 +237,9 @@
         hills(.06,'#6a8a5a',.015,31);hills(.02,'#4e7442',.012,53);
         c.fillStyle='rgba(235,236,236,.9)';for(let i=0;i<16;i++){c.beginPath();c.ellipse(W*(.38+r()*.24),hz-H*(.18+r()*.1),W*(.03+r()*.05),H*(.03+r()*.02),0,0,7);c.fill()}
         // Norfolk pines: tall, with level tiers of branches, here and there.
-        for(let i=0;i<22;i++){const x=W*r(),base=hz+H*(.02+r()*.06),ht=H*(.18+r()*.14);c.fillStyle='#24402a';c.fillRect(x-1,base-ht,2.5,ht);for(let j=0;j<9;j++){const y=base-ht+j*ht/9,w=4+j*2.2;c.fillRect(x-w,y,w*2,3)}}
+        for(let i=0;i<22;i++){const x=W*r(),base=hz+H*(.02+r()*.06),ht=H*(.18+r()*.14);c.fillStyle='#24402a';c.fillRect(x-1,base-ht,2.5,ht);for(let j=0;j<9;j++){const y=base-ht+j*ht/9,w=6+j*3.4;c.fillRect(x-w,y,w*2,4);c.fillRect(x-w,y+4,4,3);c.fillRect(x+w-4,y+4,4,3)}}
         // Plantation House to the east: white, two storeys, a row of windows, among dark trees.
-        const hx=W*.25,hy=hz+H*.03;c.fillStyle='#2e4a30';for(let i=0;i<10;i++){c.beginPath();c.ellipse(hx-W*.06+r()*W*.12,hy-H*.1-r()*H*.06,W*.012,H*.06,0,0,7);c.fill()}
+        const hx=W*.25,hy=hz+H*.03;c.fillStyle='#5f8a4a';c.beginPath();c.ellipse(hx,hy+H*.01,W*.08,H*.03,0,0,7);c.fill();c.fillStyle='#2e4a30';for(let i=0;i<10;i++){c.beginPath();c.ellipse(hx-W*.06+r()*W*.12,hy-H*.1-r()*H*.06,W*.012,H*.06,0,0,7);c.fill()}
         c.fillStyle='#f2efe6';c.fillRect(hx-W*.035,hy-H*.11,W*.07,H*.11);c.fillStyle='#8a8a86';c.beginPath();c.moveTo(hx-W*.038,hy-H*.11);c.lineTo(hx,hy-H*.15);c.lineTo(hx+W*.038,hy-H*.11);c.fill();
         c.fillStyle='#3a4a52';for(let row=0;row<2;row++)for(let i=0;i<7;i++)c.fillRect(hx-W*.03+i*W*.0095,hy-H*(.095-row*.05),W*.004,H*.03);
         // The near grass of the paddock, all round.
