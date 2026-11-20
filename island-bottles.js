@@ -1,7 +1,9 @@
 // Island bottles: ships in bottles that join an island to a room of the library, both ways, so the islands on the Long
 // Corridor's shelf are not a dead end. Montserrat, the Emerald Isle of the Caribbean, has a bottle on the Irish Room's
 // mantel, and one in its house that sails back to Ireland; Norfolk Island, an Australian territory since 1914 and settled
-// from Sydney in 1788, has a bottle in the Australian Room at the Antipodes, and one in its house that sails back.
+// from Sydney in 1788, has a bottle in the Australian Room at the Antipodes, and one in its house that sails back. The
+// islands also sail to one another, from bottles on their tables: Pitcairn and Norfolk (the voyage of 1856), and St
+// Helena and Tristan da Cunha, neighbours in one South Atlantic territory.
 //
 // Each bottle stands only while its room is built (as the back ways' doors do in passages.js), costs no light, and is
 // freed with its room. Looking in builds the other end first and sets the reader down in front of its bottle, facing it.
@@ -27,7 +29,26 @@
       {place:'australian',name:'The Australian Room',bottle:{x:-351.6,y:1.3,z:-296.66,yaw:0,shelf:true},stand:{x:-351.6,z:-295.5,yaw:0},
         label:'NORFOLK ISLAND',sub:'Kingston',land:0x2f5a34,island:[[.08,.04,.04],[.1,.012,.09],[.13,.012,.08]],
         author:'A ship under sail for Norfolk Island, out in the Pacific east of the Australian coast, with its pines on the skyline. Look in, and you are in a house at Kingston.',
-        arrive:'The Australian Room, at the Antipodes. The bottle by the north wall sails back to Norfolk Island; the globe in the hall goes home.'}]}
+        arrive:'The Australian Room, at the Antipodes. The bottle by the north wall sails back to Norfolk Island; the globe in the hall goes home.'}]},
+    // On the islands' own tables, beside each bottle home (`table`): the voyage of 1856, and the South Atlantic.
+    {key:'pitcairn-norfolk',ends:[
+      {place:'pitcairn',name:'Pitcairn Island',bottle:{x:2598.85,y:.79,z:896.62,yaw:0,table:true},stand:{x:2598.85,z:898.6,yaw:0},
+        label:'NORFOLK ISLAND',sub:'the voyage of 1856',land:0x2f5a34,island:[[.08,.04,.04],[.1,.012,.09],[.13,.012,.08]],
+        author:'The Morayshire under sail for Norfolk Island, as she sailed in 1856 with all of Pitcairn’s people aboard. Look in, and you are at Kingston, where she brought them.',
+        arrive:'Pitcairn Island, at dawn: the square at Adamstown. The bottle at the west end of the hall table sails for Norfolk Island, as the islanders did in 1856; the one at the east end, to the Long Corridor.'},
+      {place:'norfolk',name:'Norfolk Island',bottle:{x:2599.9,y:.785,z:1799.84,yaw:0,table:true},stand:{x:2599.9,z:1801.0,yaw:0},
+        label:'PITCAIRN ISLAND',sub:'whence they came',land:0x3f6b35,island:[[.1,.05,.07],[.13,.035,.05]],
+        author:'A ship under sail back to Pitcairn, the island the Morayshire’s people left in 1856; within a few years some of their families had sailed home again. Look in, and you are in the square at Adamstown.',
+        arrive:'Norfolk Island: a house on Quality Row at Kingston, where the Morayshire brought the Pitcairners in 1856. The bottle at the near side of the table sails back to Pitcairn.'}]},
+    {key:'sthelena-tristan',ends:[
+      {place:'sthelena',name:'St Helena',bottle:{x:2599.9,y:.785,z:1500.41,yaw:Math.PI,table:true},stand:{x:2599.9,z:1499.25,yaw:Math.PI},
+        label:'TRISTAN DA CUNHA',sub:'far to the south',land:0x4a5a3a,island:[[.1,.07,.09]],
+        author:'A ship under sail for Tristan da Cunha, far to the south: St Helena, Ascension and Tristan da Cunha are one British overseas territory, and women from St Helena went out to make their lives there in 1827. Look in, and you are in a cottage in the Settlement.',
+        arrive:'St Helena: the lawn of Plantation House on a misty afternoon. The bottle at the front of the table sails for Tristan da Cunha; the one behind it, to the Long Corridor.'},
+      {place:'tristan',name:'Tristan da Cunha',bottle:{x:2599.55,y:.796,z:1199.96,yaw:Math.PI,table:true},stand:{x:2599.55,z:1198.8,yaw:Math.PI},
+        label:'ST HELENA',sub:'the nearest neighbour',land:0x3f6b35,island:[[.09,.05,.06],[.13,.04,.045]],
+        author:'A ship under sail north for St Helena, the island’s nearest inhabited neighbour, about 2,400 kilometres away. Look in, and you are on the lawn of Plantation House.',
+        arrive:'Tristan da Cunha: a cottage in the Settlement on an evening after a gale. The bottle at the front of the table, by the cup, sails north for St Helena; the one by the sign, to the Long Corridor.'}]}
   ];
   const KEY='athenaeum-island-bottles';
 
@@ -52,7 +73,7 @@
       const add=(geometry,material,x,y,z,parent=g)=>{const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);parent.add(m);return m};
       const data={type:'island-bottle',link:e.link.key,end:e.i,title:`A ship in a bottle · ${end.label}`,author:end.author,action:'LOOK IN'};
       const mark=o=>{o.userData=data;interactables.push(o);e.hits.push(o);return o};
-      if(b.shelf){mark(add(own(new THREE.BoxGeometry(.62,.04,.26)),mat.wood,0,-.02,.13));for(const x of [-.24,.24])add(own(new THREE.BoxGeometry(.04,.2,.16)),mat.wood,x,-.13,.08)}
+      if(b.shelf&&!b.table){mark(add(own(new THREE.BoxGeometry(.62,.04,.26)),mat.wood,0,-.02,.13));for(const x of [-.24,.24])add(own(new THREE.BoxGeometry(.04,.2,.16)),mat.wood,x,-.13,.08)}
       add(own(new THREE.BoxGeometry(.46,.03,.12)),mat.wood,0,.015,.13);for(const dx of [-.14,.14])add(own(new THREE.BoxGeometry(.04,.07,.1)),mat.wood,dx,.06,.13);
       const bottle=new THREE.Group();bottle.position.set(0,.115,.13);g.add(bottle);
       const body=mark(add(geo.body,mat.glass,0,0,0,bottle));body.rotation.z=Math.PI/2;const shoulder=mark(add(geo.shoulder,mat.glass,-.19,0,0,bottle));shoulder.rotation.z=Math.PI/2;

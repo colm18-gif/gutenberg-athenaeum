@@ -755,7 +755,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   its room is built (as the back ways' doors do), no light; looking in builds the other end and stands the reader before
   its bottle, facing it (`stand`). A test keeps each in its room, against a wall, and the reader facing it. Their cards
   say only what is so (St Patrick's Day a public holiday on Montserrat; Norfolk settled from Sydney in 1788, Australian
-  since 1914). More are planned (Pitcairn → Norfolk, St Helena ↔ Tristan da Cunha).
+  since 1914). The islands also sail to one another from bottles on their tables, beside each bottle home (`table:true`):
+  Pitcairn ↔ Norfolk Island (the Morayshire's voyage of 1856) and St Helena ↔ Tristan da Cunha (one South Atlantic
+  territory; women from St Helena went out to Tristan in 1827). Every island now has at least two ways out.
 - Exploration (`exploration.js`, loaded just before `passages.js`; wired at the end of game.js as `exploration`): small
   things that make wandering worth it, none with a light of its own. A room not yet found is heard through its closed door
   (`DOORS`, room-ambience.js `leak`: muffled, quieter, one at a time). Now and then the night porter's lantern (no light,

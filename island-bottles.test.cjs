@@ -14,7 +14,8 @@ const G=class{dispose(){}},M=class{constructor(p){Object.assign(this,p)}dispose(
 const THREE={Group:O,Mesh,BoxGeometry:G,PlaneGeometry:G,SphereGeometry:G,CylinderGeometry:G,CircleGeometry:G,ConeGeometry:G,MeshStandardMaterial:M,DoubleSide:2};
 // Each place as its module defines it.
 const box=(file,re=/const ROOM=\{cx:(-?[\d.]+),cz:(-?[\d.]+),w:([\d.]+),d:([\d.]+)/)=>{const m=fs.readFileSync(file,'utf8').match(re);return {cx:+m[1],cz:+m[2],w:+m[3],d:+m[4]}};
-const PLACES={irish:box('irish-room.js'),montserrat:box('montserrat-room.js'),norfolk:box('norfolk-island.js'),australian:box('antipodes.js',/AUS=\{cx:(-?[\d.]+),cz:(-?[\d.]+),w:([\d.]+),d:([\d.]+)/)};
+const PLACES={irish:box('irish-room.js'),montserrat:box('montserrat-room.js'),norfolk:box('norfolk-island.js'),australian:box('antipodes.js',/AUS=\{cx:(-?[\d.]+),cz:(-?[\d.]+),w:([\d.]+),d:([\d.]+)/),
+  pitcairn:box('pitcairn-island.js',/SQ=\{cx:(-?[\d.]+),cz:(-?[\d.]+),w:([\d.]+),d:([\d.]+)/),sthelena:box('st-helena.js'),tristan:box('tristan-island.js')};
 const inside=(b,x,z,m=0)=>Math.abs(x-b.cx)<b.w/2-m&&Math.abs(z-b.cz)<b.d/2-m;
 
 function world(){
@@ -29,23 +30,25 @@ function world(){
 
 test('the island bottles load before the game and are wired in',()=>{
   const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(m=>m[1]);
-  for(const file of ['irish-room.js','montserrat-room.js','norfolk-island.js','antipodes.js'])assert(order.indexOf(file)<order.indexOf('island-bottles.js'),`${file} loads first`);
+  for(const file of ['irish-room.js','montserrat-room.js','norfolk-island.js','antipodes.js','pitcairn-island.js','st-helena.js','tristan-island.js'])assert(order.indexOf(file)<order.indexOf('island-bottles.js'),`${file} loads first`);
   assert(order.indexOf('island-bottles.js')<order.indexOf('game.js'));
-  assert.match(game,/places:\{irish:irishRoom,montserrat:montserratRoom,norfolk:norfolkIsland,australian:antipodes&&\{get built\(\)\{return antipodes\.built\},go:\(\)=>antipodes\.enter\('australian-room'\)\}\}/);
+  assert.match(game,/places:\{irish:irishRoom,montserrat:montserratRoom,norfolk:norfolkIsland,australian:antipodes&&\{get built\(\)\{return antipodes\.built\},go:\(\)=>antipodes\.enter\('australian-room'\)\},pitcairn:pitcairnIsland,sthelena:stHelena,tristan:tristanIsland\}/);
   assert.match(game,/islandBottles\.interact\(focus\)/);assert.match(game,/islandBottles\.update\(t\)/);
-  for(const name of ['irishRoom','montserratRoom','norfolkIsland','antipodes'])assert(Math.max(game.indexOf(`const ${name}=`),game.indexOf(`var ${name}=`))<game.indexOf('const islandBottles='),`${name} is made first`);
+  for(const name of ['irishRoom','montserratRoom','norfolkIsland','antipodes','pitcairnIsland','stHelena','tristanIsland'])assert(Math.max(game.indexOf(`const ${name}=`),game.indexOf(`var ${name}=`))<game.indexOf('const islandBottles='),`${name} is made first`);
 });
 
-test('each bottle stands in its own room, against a wall, with the reader’s arrival in front of it and facing it',()=>{
+test('each bottle stands in its own room, against a wall or on its table, with the reader’s arrival in front of it and facing it',()=>{
   const {bottles}=world();
   for(const link of bottles.links)for(const end of link.ends){const room=PLACES[end.place],{bottle:b,stand:s}=end;
     assert(inside(room,b.x,b.z),`${link.key}: the bottle is in ${end.place}`);
-    const wall=Math.min(Math.abs(b.z-(room.cz-room.d/2)),Math.abs(b.x-(room.cx-room.w/2)),Math.abs(b.x-(room.cx+room.w/2)));assert(wall<.9,`${link.key}: against a wall of ${end.place}`);
+    const wall=Math.min(Math.abs(b.z-(room.cz-room.d/2)),Math.abs(b.x-(room.cx-room.w/2)),Math.abs(b.x-(room.cx+room.w/2)));
+    // A bottle on a table lies beside the island's own bottle home, at the table's height.
+    if(b.table)assert(Math.abs(b.y-.79)<.03,`${link.key}: on the table in ${end.place}`);else assert(wall<.9,`${link.key}: against a wall of ${end.place}`);
     // Its plate faces out from the wall it stands against, into the room.
     assert(inside(room,b.x+Math.sin(b.yaw)*1.2,b.z+Math.cos(b.yaw)*1.2),`${link.key}: it faces into ${end.place}`);
     assert(inside(room,s.x,s.z,.85),`${link.key}: the reader arrives within ${end.place}, clear of its walls`);
     const dist=Math.hypot(s.x-b.x,s.z-b.z),ahead=(-Math.sin(s.yaw)*(b.x-s.x)-Math.cos(s.yaw)*(b.z-s.z))/dist;
-    assert(dist>.9&&dist<3.2,'a step or two from the bottle');assert(ahead>.9,`${link.key}: the reader faces the bottle`);assert(b.y>.9&&b.y<3,'within reach of the eye')}
+    assert(dist>.9&&dist<3.2,'a step or two from the bottle');assert(ahead>.9,`${link.key}: the reader faces the bottle`);assert(b.y>.75&&b.y<3,'within reach of the eye')}
 });
 
 test('a bottle appears only while its room is built, and looking in takes the reader to the other end, builds it first and stands them before its bottle',()=>{
