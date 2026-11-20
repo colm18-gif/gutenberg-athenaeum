@@ -936,6 +936,13 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - The visitors' book's lectern (`other-readers.js`, `LECTERN`) stands on the rug's west side a few steps ahead of where
   readers arrive (x 0, z 24, facing north), turned to them; its plaque stays on the south wall. The ✒ button and the pause
   menu open it from anywhere, and a reader who has never signed is reminded once, six minutes in.
+- Readers may add a few words of their own to a signature (`words`, at most 200 characters, shown at once after the
+  worker's filter: unsuitable words, links, email addresses and long numbers are refused; the owner's choice, 20
+  November 2026), and can write privately to the librarian from the same dialog ("Write to the librarian", `/message`):
+  a letter is never shown in the book; it is kept for the owner's inbox page, `librarian.html` (unlinked, `noindex`,
+  opened with the `VISITORS_BOOK_ADMIN_TOKEN` password; it can also remove signatures), and emailed through Cloudflare
+  Email Routing when the `LIBRARIAN_EMAIL` and `LIBRARIAN_EMAIL_FROM` secrets are set (never put the owner's address
+  in the repository). The dialog's new strings are in `EXTRA_UI`, one list per language.
 - The visitors' book is a Cloudflare Worker (`worker/visitors-book`, workflow `visitors-book.yml`) at
   library-visitors-book.colm18.workers.dev with KV storage. Never touch the owner's other worker, `theaijournal-mcp`.
   Secrets live in GitHub (`CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, optionally `VISITORS_BOOK_ADMIN_TOKEN`);

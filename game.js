@@ -2727,7 +2727,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     const visitorsBook=window.ATHENAEUM_VISITORS_BOOK?.endpoint?window.createVisitorsBook?.({endpoint:window.ATHENAEUM_VISITORS_BOOK.endpoint,books:()=>books,
       language:()=>navigator.language||'en',storage:(()=>{try{return localStorage}catch(e){return null}})(),
       onOpen:()=>{dragging=false;for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;player.vel.set(0,0,0);document.exitPointerLock?.()},
-      onClose:()=>requestLookLock(),onSigned:()=>{window.libraryAnalytics?.track('Visitors Book Signed');showNotice('Your name is in the visitors’ book. Thank you for coming in.',5)}}):null;
+      onClose:()=>requestLookLock(),onSigned:()=>{window.libraryAnalytics?.track('Visitors Book Signed');showNotice('Your name is in the visitors’ book. Thank you for coming in.',5)},onWrote:()=>window.libraryAnalytics?.track('Librarian Written To')}):null;
     if(visitorsBook){const preBookActive=gameActive;gameActive=function(){return !visitorsBook.isOpen&&preBookActive()}}
     // Readers come in facing north, with the book's lectern behind them, so it can also be opened from anywhere: the quill
     // by the settings, and the pause menu. A reader who has never signed is reminded of it once, a few minutes in.

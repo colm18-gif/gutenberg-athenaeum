@@ -124,7 +124,7 @@
       c.fillStyle='#3a2a1a';c.textAlign='center';c.font='bold 22px Georgia';c.fillText('VISITORS',W/4,40);c.fillText(visitorsBook?'— sign the book —':'— tonight —',W*.75,40);
       if(!shown.length){c.font='italic 22px Georgia';c.fillStyle='#4a3a28';c.fillText('Be the first to sign.',W/4,190);return}
       c.textAlign='left';shown.slice(0,6).forEach((entry,i)=>{const x=i<3?26:W/2+22,y=86+(i%3)*104;c.font='italic 20px Georgia';c.fillStyle='#2c3e66';c.fillText(`${entry.name}, ${entry.place}`.slice(0,30),x,y);c.font='16px Georgia';c.fillStyle='#4a3a28';
-        const words=`“${entry.note}”`.split(' ');let line='',row=0;for(const w of words){if(c.measureText(line+w).width>W/2-54){c.fillText(line,x,y+24+row*20);line='';row++}line+=w+' '}c.fillText(line,x,y+24+row*20);
+        const note=entry.note.length>88?entry.note.slice(0,86).replace(/\s+\S*$/,'')+'…':entry.note,words=`“${note}”`.split(' ');let line='',row=0;for(const w of words){if(c.measureText(line+w).width>W/2-54){c.fillText(line,x,y+24+row*20);line='';row++}line+=w+' '}c.fillText(line,x,y+24+row*20);
         if(entry.book){c.font='italic 14px Georgia';c.fillStyle='#7a5a38';c.fillText(entry.book.length>34?entry.book.slice(0,33)+'…':entry.book,x,y+70)}});
     }
     const pageMap=canvasTexture(drawPage,640,400);

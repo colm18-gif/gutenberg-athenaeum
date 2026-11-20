@@ -289,6 +289,11 @@ body.reader-open .now-playing button{height:26px;min-width:32px;font-size:12px}
 .vb-form input,.vb-form select{font:inherit;font-size:16px;padding:9px 10px;border:1px solid #8a6a3e;border-radius:6px;background:#f6ecd4;color:#2a1d10;max-width:100%}
 .vb-privacy{font-size:13px;color:#a8987a;margin:8px 0 0}.vb-status{min-height:1.3em;color:#f0c27a;margin:8px 0 0}
 .vb-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.vb-signed p{font-style:italic;color:#e6c98f}.vb-signed.hidden,.vb-form.hidden{display:none}
+/* The reader's own words, and the letter to the librarian (never shown in the book). */
+.vb-letter label{display:grid;gap:4px;margin:10px 0;font-size:15px;color:#e6d6b6}.vb-letter em{color:#a8987a;font-size:13px}
+.vb-letter input,.vb-form textarea,.vb-letter textarea{font:inherit;font-size:16px;padding:9px 10px;border:1px solid #8a6a3e;border-radius:6px;background:#f6ecd4;color:#2a1d10;max-width:100%;resize:vertical}
+.vb-letter-intro{margin:0 0 6px;color:#bfae8e;font-style:italic}.vb-write-open{margin:14px 0 0;text-align:right}
+.vb-letter.hidden,.vb-write-open.hidden,.vb-list.hidden,.vb-intro.hidden{display:none}
 @media(max-width:560px){.vb-card{padding:24px 18px 18px}.vb-card h2{font-size:25px}}
 
 

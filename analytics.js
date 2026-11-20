@@ -38,7 +38,7 @@ const CLOUDFLARE_BEACON_TOKEN = '10c90b1abbfe4fe9a38a09f48adbfc7b';
     'Journey Taken', 'Stair Slide', 'Librarian Talked To', 'Cat Petted', 'Cat Treat', 'Clio Chases Rabbit', 'Rabbit Door Entered',
     'Quote Opened', 'Quote Shared', 'Audiobook Played', 'Audiobook Link Opened',
     'Engaged 5 Minutes', 'Engaged 10 Minutes', 'Support Box Opened', 'Stripe Support Opened',
-    'Visitors Book Signed', 'Map Viewed', 'Whole Book Opened'];
+    'Visitors Book Signed', 'Librarian Written To', 'Map Viewed', 'Whole Book Opened'];
   const rooms = new Set(['main-library', 'upper-floor', 'roof-garden', 'west-wing', 'east-wing',
     'restricted-stacks', 'below-catalogue', 'portrait-room', 'tunnel', 'archive',
     'rabbit-room', 'returning', 'quiet', 'unread', 'repository', 'gothic', 'inquiry',
