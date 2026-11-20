@@ -176,6 +176,8 @@
       // Montserrat at night: the whistling frogs, insects, the sea far below, and now and then the mountain chicken's whoop.
       // Pitcairn at dawn: the sea far below, the wind over the height, birds waking, gulls over the bay.
       // Tristan da Cunha after a gale: the surf on the shore below the plain, the wind still up, gulls and seabirds.
+      // St Helena: the lawn of Plantation House on a misty afternoon, the wind in the pines, birds, the hills quiet.
+      'st-helena':{beds:[['wind',.035],['air',.03]],events:[['bird',.5,.035],['rustle',.3,.02]]},
       tristan:{beds:[['waves',.05],['wind',.045]],events:[['gull',.4,.03],['bird',.4,.025],['creak',.3,.02]]},
       pitcairn:{beds:[['waves',.035],['wind',.03]],events:[['bird',1.2,.035],['gull',.3,.025],['rustle',.5,.02]]},
       montserrat:{beds:[['insects',.045],['waves',.02],['wind',.015]],events:[['treefrog',14,.03],['whoop',.15,.03],['creak',.2,.02]]},

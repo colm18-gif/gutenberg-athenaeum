@@ -91,13 +91,13 @@ export const PICTURES = [
   { key: 'tristan-stamp', file: 'Tristan da Cunha 1952 5 shilling stamp.jpg', minSize: 760 },
   // St Helena (st-helena.js), the fourth bottle: Jonathan photographed with another tortoise about 1886, a few years after
   // he came from the Seychelles; Thomas Daniell's Governor's House of 1794 (Plantation House, on whose lawn he lives);
-  // Jacob's Ladder up from Jamestown; Longwood in a watercolour by Marchand, Napoleon's valet; the empty tomb in the valley
-  // below Longwood; and the island from the International Space Station. All public domain or CC0, to be looked at.
-  { key: 'sthelena-jonathan', file: 'Jonathan and another tortoise, St Helena.png' },
+  // Jacob's Ladder up from Jamestown; Longwood in a watercolour by Marchand, Napoleon's valet, and in an ink drawing of its
+  // buildings by a Swedish visitor of the 1830s, numbered for its rooms; and the island from the International Space Station. All public domain or CC0, to be looked at.
+  { key: 'sthelena-jonathan', file: 'Jonathan and another tortoise, St Helena.png', minSize: 540 },
   { key: 'sthelena-governor', file: "Thomas Daniell, View of the Governor's House in St. Helena, 1794, NGA 69395.jpg" },
   { key: 'sthelena-ladder', file: 'Jamestown Jacobs Ladder.jpg' },
   { key: 'sthelena-longwood', file: 'Louis-Joseph Marchand (1791-1876) Longwood op Sint-Helena (aquarel).jpg' },
-  { key: 'sthelena-tomb', file: 'Napoleons boning på St Helena.jpg' },
+  { key: 'sthelena-dwelling', file: 'Napoleons boning på St Helena.jpg' },
   { key: 'sthelena-space', file: 'ISS019E014918 Saint Helena Island.jpg' },
   // Norfolk Island (norfolk-island.js), the fifth bottle: George Raper's loss of the Sirius on the reef in 1790; the convict
   // establishment at Kingston in 1848; Government House about 1855, the year before the Pitcairners came; and Kingston,
