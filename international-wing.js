@@ -75,6 +75,10 @@
     {name:'Foro3D',kicker:'EN ESPAÑOL · NOVIEMBRE 2026',title:'«Crea una sala de lectura ucraniana virtual en The Library After Dark»',
       card:'Іспаномовний сайт Foro3D, про тривимірну графіку, написав про цю читальню в листопаді 2026 року. (Foro3D, a Spanish-language site about 3D graphics, wrote about this room in November 2026: “… creates a virtual Ukrainian reading room in The Library After Dark”.)',
       url:'https://foro3d.com/2026/noviembre/colm-o-connor-crea-una-sala-de-lectura-ucraniana-virtual-en-the-librar.html',label:'Leer en Foro3D · Read it on Foro3D'}];
+  // A postcard from Ukraine's Antarctic station, pinned on the west wall between the window's rushnyk and the cuttings: it
+  // tells the way to the polar hut, where the station's picture hangs (antipodes.js, VERNADSKY).
+  const POSTCARD={title:'Листівка з Антарктиди · A postcard from Antarctica',
+    card:'Вітання з української антарктичної станції «Академік Вернадський» на острові Галіндез. Її картина висить у полярній хатині бібліотеки: пройдіть крізь великий глобус у Великій залі до Антиподів, а в Австралійській кімнаті поверніть компас на шафі з морськими картами — корабель відпливе до криги. (Greetings from Ukraine’s Antarctic station, Akademik Vernadsky, on Galindez Island. Its picture hangs in the library’s polar hut: go through the great globe in the Grand Hall to the Antipodes, and in the Australian Room turn the compass on the sea-chart cabinet; the ship sails for the ice.)'};
   // PROSVITA DIGITAL (ПРОСВІТА ЦИФРОВА), which carries on the Prosvita society's work and keeps the digital archive of the
   // newspaper Slovo Prosvity, links to this room; the room links back (November 2026). Framed on the west wall, south of
   // the window, where the wall is clear; its card opens the site, in Ukrainian or in English.
@@ -1014,6 +1018,19 @@
         RETOLD.forEach((r,i)=>{const link={type:'intl-link',title:r.title,author:r.card,url:r.url,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:r.label,action:'READ'};
           const face=add(own(new THREE.PlaneGeometry(.5,.7)),own(new THREE.MeshStandardMaterial({map:clipping(r.name,r.kicker,r.title),roughness:.9})),WW+.03,py+(i<2?.38:-.38),pz+(i%2?-.29:.29),root);face.rotation.y=Math.PI/2;
           mark(face,link)})}
+
+      // The postcard from Akademik Vernadsky, pinned to the west wall north of the window's rushnyk.
+      {const WW=cx-w/2+.19,face=own(canvasTexture((c,W,H)=>{c.fillStyle='#f4eedc';c.fillRect(0,0,W,H);
+          const sky=c.createLinearGradient(0,0,0,H*.62);sky.addColorStop(0,'#2b4a7a');sky.addColorStop(1,'#e7b98f');c.fillStyle=sky;c.fillRect(10,10,W-20,H*.62-10);
+          c.fillStyle='#eef3f6';c.beginPath();c.moveTo(10,H*.5);for(let x=10;x<=W-10;x+=W/10)c.lineTo(x,H*(.3+.1*Math.abs(Math.sin(x*.03))));c.lineTo(W-10,H*.62);c.lineTo(10,H*.62);c.fill();
+          c.fillStyle='#c9c2b4';c.fillRect(W*.36,H*.44,W*.3,H*.1);c.fillStyle='#5a6a7a';c.fillRect(W*.35,H*.42,W*.32,H*.025);
+          c.strokeStyle='#222';c.lineWidth=2;c.beginPath();c.moveTo(W*.7,H*.54);c.lineTo(W*.7,H*.3);c.stroke();c.fillStyle='#1f5fbf';c.fillRect(W*.7,H*.3,W*.1,H*.04);c.fillStyle='#f2c230';c.fillRect(W*.7,H*.34,W*.1,H*.04);
+          for(const x of [.16,.22,.86]){c.fillStyle='#1a1a1a';c.beginPath();c.ellipse(W*x,H*.56,W*.018,H*.04,0,0,7);c.fill();c.fillStyle='#fff';c.beginPath();c.ellipse(W*x+2,H*.565,W*.009,H*.026,0,0,7);c.fill()}
+          c.fillStyle='#1d2a44';c.textAlign='center';c.font=`bold ${Math.round(H*.085)}px Georgia`;c.fillText('ВІТАННЯ З АНТАРКТИДИ',W/2,H*.76);
+          c.font=`italic ${Math.round(H*.06)}px Georgia`;c.fillText('«Академік Вернадський» · Greetings from Antarctica',W/2,H*.87)},384,256)),
+        data={type:'intl-card',title:POSTCARD.title,author:POSTCARD.card,action:'READ'};
+        const card=add(own(new THREE.PlaneGeometry(.36,.24)),own(new THREE.MeshStandardMaterial({map:face,roughness:.85})),WW+.03,1.7,cz-4.0,root);card.rotation.y=Math.PI/2;card.rotation.z=.04;mark(card,data);
+        add(own(new THREE.SphereGeometry(.012,6,4)),MAT.brass,WW+.04,1.81,cz-4.0,root)}
 
       // A trembita, the Hutsuls' long wooden horn bound in birch bark, standing in the north-east corner between the racks'
       // end and Kateryna, under a small plaque: blow it, and the reader is on the polonyna of Kotsiubynsky's Shadows of

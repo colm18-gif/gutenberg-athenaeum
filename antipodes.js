@@ -18,6 +18,13 @@
     {key:'antarctic',name:'THE POLAR SHELF',sub:'Voyages into the southern ice',ids:[5199,14363,11579,10339],max:12}
   ];
   const RECORDS={11:['Alice’s Adventures in Wonderland','Lewis Carroll'],213:['The Man from Snowy River','A. B. Paterson'],1429:['The Garden Party, and Other Stories','Katherine Mansfield'],1906:['Erewhon','Samuel Butler'],5199:['South: The Story of Shackleton’s Last Expedition','Ernest Shackleton'],14363:['The Worst Journey in the World','Apsley Cherry-Garrard'],11579:['Scott’s Last Expedition','Robert Falcon Scott'],10339:['An Antarctic Mystery','Jules Verne']};
+  // Ukraine's Antarctic station, from the National Antarctic Scientific Center of Ukraine's own history of it (uac.gov.ua).
+  // The pound is a story told of the station, and its card says so.
+  const VERNADSKY={
+    station:['Станція «Академік Вернадський» · Akademik Vernadsky Station','Українська антарктична станція на острові Галіндез в Аргентинських островах, біля Антарктичного півострова. Тут була британська база F, заснована 1947 року, з 1977 року — «Фарадей»; 6 лютого 1996 року британський прапор спустили й уперше підняли прапор України. Станцію названо на честь Володимира Вернадського, першого президента Академії наук України (1918). Тут і далі вимірюють озон, іоносферу й магнітне поле Землі. Намальовано для бібліотеки. (Ukraine’s Antarctic station, on Galindez Island in the Argentine Islands, off the Antarctic Peninsula. It was Britain’s Base F, begun in 1947 and named Faraday in 1977; on 6 February 1996 the British flag was lowered and Ukraine’s raised for the first time. It is named for Volodymyr Vernadsky, first President of the Academy of Sciences of Ukraine (1918). Ozone, the ionosphere and the Earth’s magnetic field are still measured here. Drawn for the library.)'],
+    flag:['Прапор України · Ukraine’s flag','Синій і жовтий. Україна має свою станцію в Антарктиці з 1996 року. (Blue and yellow. Ukraine has kept its own station in the Antarctic since 1996.)'],
+    pound:['Фунт · A pound coin','A pound coin, set into the top of the crate. At Akademik Vernadsky, one is said to be set into the wood of the bar between the taps, for the story that Britain handed the station to Ukraine for a symbolic pound. Tellings differ on whether any coin ever changed hands. (Кажуть, що Британія передала станцію Україні за символічний фунт; чи справді хтось заплатив, переказують по-різному.)']
+  };
   const CARDS={
     antarcticSign:['THE ANTARCTIC EXPEDITION','Shackleton, Scott and the southern ice'],
     globe:['The great globe','An old terrestrial globe, a little faded at Europe from being turned so often. A brass plate on its stand reads: TURN TO THE ANTIPODES. MIND THE DROP.'],
@@ -417,6 +424,43 @@
       if(laughing>time)return;laughing=time+3;const notes=[[0,520],[90,560],[180,620],[260,700],[340,760],[420,820],[500,880],[600,820],[700,900],[800,860],[900,940],[1050,700],[1180,620],[1320,540],[1480,460]];
       for(const [at,f] of notes)setTimeout(()=>sound?.(f+Math.random()*60,.11,'sawtooth',.035),at);
     }
+    // Ukraine's station in the Antarctic, on the hut's west wall: a picture of it (drawn for the library: Commons has no
+    // public-domain photograph), its card in Ukrainian and English, and a little flag. The Ukrainian Reading Room has a
+    // postcard from it that tells the way here. In the top of the crate by the books, a pound coin, as one is said to be
+    // set into the station's bar (VERNADSKY; found for good, `athenaeum-vernadsky-pound`).
+    function buildVernadsky(cx,cz,front,back){
+      const wx=cx-4.5+.14;
+      picture(root,drawVernadsky,1.5,.95,wx,1.95,cz-6.4,Math.PI/2,{type:'antipodes-card',title:VERNADSKY.station[0],author:VERNADSKY.station[1],action:'READ'});
+      // The flag: blue over yellow, on a short staff pinned to the wall beside the picture.
+      const blue=own(new THREE.MeshStandardMaterial({color:0x1f5fbf,roughness:.8,side:THREE.DoubleSide})),yellow=own(new THREE.MeshStandardMaterial({color:0xf2c230,roughness:.8,side:THREE.DoubleSide}));
+      const flag={type:'antipodes-card',title:VERNADSKY.flag[0],author:VERNADSKY.flag[1],action:'READ'};
+      box(.03,.75,.03,timber,wx+.02,2.0,cz-4.75,root);
+      for(const [m,y] of [[blue,2.22],[yellow,2.08]]){const p=add(own(new THREE.PlaneGeometry(.42,.14)),m,wx+.05,y,cz-4.97,root);p.rotation.y=Math.PI/2;mark(p,flag)}
+      // The coin: small and gold in the top of the crate, with a clear pane over it so it can be picked out.
+      const crate={x:cx+3,y:.655,z:cz-5.3};
+      const coin=add(own(new THREE.CylinderGeometry(.03,.03,.006,18)),own(new THREE.MeshStandardMaterial({color:0xd9b44a,metalness:.8,roughness:.3,emissive:0x5a4410,emissiveIntensity:.35})),crate.x+.38,crate.y+.002,crate.z+.12,root);
+      const pane=add(own(new THREE.PlaneGeometry(.2,.2)),own(new THREE.MeshBasicMaterial({visible:false})),crate.x+.38,crate.y+.01,crate.z+.12,root);pane.rotation.x=-Math.PI/2;
+      for(const part of [coin,pane])mark(part,{type:'antipodes-pound',title:VERNADSKY.pound[0],author:VERNADSKY.pound[1],action:'LOOK'});
+    }
+    function drawVernadsky(c,W,H){
+      // An evening in the Argentine Islands: the peninsula's mountains across the water, sea ice, the station's low
+      // buildings on the rocks, masts and aerials, and Ukraine's flag. Drawn for the library.
+      const sky=c.createLinearGradient(0,0,0,H*.55);sky.addColorStop(0,'#2b3d63');sky.addColorStop(.6,'#c98e7a');sky.addColorStop(1,'#f0c9a0');c.fillStyle=sky;c.fillRect(0,0,W,H*.55);
+      c.fillStyle='#e8eef4';c.beginPath();c.moveTo(0,H*.5);for(let x=0;x<=W;x+=W/14)c.lineTo(x,H*(.26+.12*Math.abs(Math.sin(x*.021))+.05*Math.sin(x*.07)));c.lineTo(W,H*.55);c.lineTo(0,H*.55);c.fill();
+      c.fillStyle='rgba(120,140,170,.45)';for(let x=0;x<W;x+=W/9){c.beginPath();c.moveTo(x,H*.55);c.lineTo(x+W*.05,H*.36);c.lineTo(x+W*.09,H*.55);c.fill()}
+      c.fillStyle='#29425e';c.fillRect(0,H*.55,W,H*.45);c.fillStyle='rgba(240,245,250,.85)';for(let i=0;i<18;i++){const x=(i*97)%W,y=H*(.58+((i*37)%30)/100);c.beginPath();c.ellipse(x,y,W*.03+(i%3)*6,H*.012,0,0,7);c.fill()}
+      // The rocks and snow of the island.
+      c.fillStyle='#e6ecef';c.beginPath();c.moveTo(0,H);c.lineTo(0,H*.74);c.quadraticCurveTo(W*.3,H*.66,W*.6,H*.7);c.quadraticCurveTo(W*.85,H*.73,W,H*.78);c.lineTo(W,H);c.fill();
+      c.fillStyle='#4a4a4e';for(const [x,y,r] of [[.12,.8,.05],[.78,.84,.06],[.5,.9,.04]]){c.beginPath();c.ellipse(W*x,H*y,W*r,H*r*.6,0,0,7);c.fill()}
+      // The buildings: a long two-storey main block, smaller huts, masts.
+      const house=(x,y,w,h,wall,roof)=>{c.fillStyle=wall;c.fillRect(W*x,H*y,W*w,H*h);c.fillStyle=roof;c.fillRect(W*x-3,H*y-H*.025,W*w+6,H*.03);c.fillStyle='#ffd48a';for(let k=0;k<Math.floor(w*40);k+=3)c.fillRect(W*x+W*.012+k*W*.025/3*3,H*(y+h*.35),W*.012,H*.04)};
+      house(.3,.6,.32,.12,'#c9c2b4','#5a6a7a');house(.66,.65,.12,.07,'#b8452f','#4a3a32');house(.16,.66,.1,.06,'#d8d0c0','#5a6a7a');
+      c.strokeStyle='#2a2a2e';c.lineWidth=3;for(const [x,top] of [[.25,.3],[.7,.36],[.86,.42]]){c.beginPath();c.moveTo(W*x,H*.66);c.lineTo(W*x,H*top);c.stroke()}
+      c.lineWidth=1.2;for(const [x,top] of [[.25,.3],[.7,.36]])for(const s of [-1,1]){c.beginPath();c.moveTo(W*x,H*top);c.lineTo(W*(x+s*.05),H*.66);c.stroke()}
+      // Ukraine's flag on its pole.
+      c.lineWidth=2.5;c.beginPath();c.moveTo(W*.52,H*.6);c.lineTo(W*.52,H*.4);c.stroke();c.fillStyle='#1f5fbf';c.fillRect(W*.52,H*.4,W*.08,H*.035);c.fillStyle='#f2c230';c.fillRect(W*.52,H*.435,W*.08,H*.035);
+      c.fillStyle='rgba(30,20,10,.75)';c.font=`italic ${Math.round(H*.045)}px Georgia`;c.textAlign='right';c.fillText('Akademik Vernadsky · drawn for the library',W*.97,H*.96);
+    }
     function buildAntarctica(){
       const {cx,cz,w,d,h}=ANTARCTIC;
       const ice=own(new THREE.MeshStandardMaterial({color:0xb9d5df,emissive:0x254555,emissiveIntensity:.45,roughness:.96})),snow=own(new THREE.MeshBasicMaterial({color:0xc4dfe8})),dark=own(new THREE.MeshStandardMaterial({color:0x33434d,roughness:.92}));
@@ -442,6 +486,7 @@
       box(1.3,.65,.6,timber,cx+3, .325,cz-5.3,root);block(cx+3,cz-5.3,1.4,.7);
       for(let i=0;i<4;i++){const stone=add(own(new THREE.SphereGeometry(.48-i*.06,5,3)),dark,cx+5.8,.35+i*.48,cz+1,root);stone.rotation.set(i*.2,i*.7,i*.13)}
       block(cx+5.8,cz+1,1.2,1.2);box(.07,3,.07,MAT.brass,cx+5.8,2,cz+1,root);box(1.15,.62,.04,own(new THREE.MeshStandardMaterial({color:0x8a2825,roughness:.9})),cx+6.35,2.7,cz+1,root);
+      buildVernadsky(cx,cz,front,back);
       // Lantern stakes mark the clear path from the gangway to the open hut.
       for(let i=0;i<5;i++)for(const s of [-1,1]){const z=cz+7-i*2.3;box(.055,.6,.055,timber,cx+s*1.5,.3,z,root);add(own(new THREE.SphereGeometry(.08,6,4)),glowMat,cx+s*1.5,.62,z,root);}
       const quay=box(3,.18,2,timber,cx-3.4,-.08,cz+7,root);quay.name='antarctic-landing-quay';
@@ -838,6 +883,9 @@
           return true;
         case 'antipodes-hatch-home':
           if(far.hatch.target>0)startFall(-1);else showNotice('The trapdoor you came up through. Turn the globe to open it again.',5);return true;
+        case 'antipodes-pound':{
+          let first=false;try{first=localStorage.getItem('athenaeum-vernadsky-pound')!=='1';localStorage.setItem('athenaeum-vernadsky-pound','1')}catch(e){}
+          playSample?.('pageTurn',.4,1.6);showNotice(`${data.title}: ${data.author}`,14);if(first)analytics?.track('Secret Found',{room:'antarctica',secret:'vernadsky-pound'});return true}
         case 'antipodes-card':
           if(data.title===CARDS.kookaburra[0])laugh();
           if(data.clocks){showNotice(`Three clocks keep the time on this side of the world. ${clockWords()}`,10);return true}
@@ -877,7 +925,7 @@
     }
     buildHall();
     return {contains,floorAt,allowed,blocksHall,interact,update,reset,enter,unload,startFall,zoneAt,shelfBooks,clockWords,
-      globe:GLOBE,hatch:HATCH,hall:HALL,rooms:{australian:AUS,nz:NZ,antarctic:ANTARCTIC,quay:QUAY},shelves:SHELVES,records:RECORDS,cards:CARDS,
+      globe:GLOBE,hatch:HATCH,hall:HALL,vernadsky:VERNADSKY,rooms:{australian:AUS,nz:NZ,antarctic:ANTARCTIC,quay:QUAY},shelves:SHELVES,records:RECORDS,cards:CARDS,
       get travelling(){return !!fall||!!voyage},get aboard(){return aboard},get voyageStage(){return voyage?.stage||null},get shipLocation(){return shipLocation},get passageOpen(){return (polarEntrance?.open||0)>=.9},
       get built(){return !!root},get shaftBuilt(){return !!shaft},get books(){return books.slice()},get hatchOpen(){return hall.hatch.target>0}};
   };
