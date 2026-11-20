@@ -120,7 +120,7 @@
         wood=MAT.darkWood||std({color:0x3a2416,roughness:.7}),white=std({color:0xeeeae0,roughness:.8}),roof=std({color:0x5a5e60,roughness:.8});
       // Floors: the room's boards, the verandah's flags, and grass below the rail.
       box(w,.3,d,floor,cx,-.149,cz,root);box(w+1,.3,VER,std({color:0x9a9488,roughness:.95}),cx,-.15,z1+VER/2,root);
-      box(w+20,.3,20,std({color:0x5f8a46,roughness:1}),cx,-.5,zv+10,root);
+      box(w+6,.3,5,std({color:0x3e6a34,roughness:1}),cx,-.5,zv+2.5,root);
       // Walls: north, west and east of stone, plastered inside; the south wall with a wide doorway onto the verandah and a
       // sash window either side.
       const T=.4;

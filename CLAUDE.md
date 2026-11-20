@@ -351,6 +351,33 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   telescope: "Do many ships put in to Tristan d'Acunha?" "As many as we require" (Verne's Glass). Each look brings a ship
   from a book (`SHIPS`: Poe's Jane, Verne's Duncan, Verne's Halbrane) fading in on the sea; after the third, An Antarctic
   Mystery (10339) is on the window sill, found for good (`athenaeum-tristan-ships`; `?glass`).
+- St Helena (`st-helena.js`, the garden room x 2600, z 1500, the lawn to its north; `?room=st-helena`, `sthelena`,
+  `jonathan`, `tortoise`, `longwood`, `saints`): the fourth bottle (the owner's choice, 20 November 2026: a place whose
+  people would be surprised to be in the library). The lawn of Plantation House, the governor's house, on a misty
+  afternoon: a small stone garden room the library has put at the lawn's edge, open to the grass on four pillars, with the
+  shelves `captive` (Napoleon's exile: the library's Runciman, then `st-helena-captive`: Las Cases, Montholon's appeal,
+  Maitland, Betsy Balcombe) and `callers` (the library's own Cook, Darwin and Slocum, who called), six pictures (Jonathan
+  about 1886, Daniell's Governor's House of 1794, Marchand's Longwood, Thun's drawing of the Longwood buildings, Jacob's
+  Ladder, the island from the ISS), brass plates (1502 and 1659, Napoleon, Rupert's Valley, the Boer prisoners), the table
+  with the bottle home; the lawn with a bench (a seat), two younger tortoises and Jonathan; a painted ring (the house among
+  its trees, Norfolk pines, the hills into cloud, the sea far below in the west). Two lights, the sun and the lamp. Cards
+  keep to what is attested (Jonathan came from the Seychelles in 1882, full grown; "thought to be" the oldest living land
+  animal, never more). The secret is Jonathan: a reader who stands still on the lawn within reach brings him over at a
+  tortoise's pace (`PACE`); the first time he arrives Lawrence's Tortoises (`st-helena-jonathan`) is on the bench, found
+  for good (`athenaeum-sthelena-jonathan`; `?jonathan`). Slocum slept in Plantation House's haunted west room in 1898.
+  Every quotation (`QUOTES`, `SOURCES`) is checked by a test.
+- Norfolk Island (`norfolk-island.js`, the house x 2600, z 1800, its verandah to the south; `?room=norfolk`,
+  `norfolk-island`, `kingston`, `sirius`, `morayshire`): the fifth bottle, Pitcairn's sequel. A room in a stone house of
+  Quality Row at Kingston on an autumn evening, its south wall a doorway between two sash windows onto a verandah (posts,
+  rail, a table and a cane chair, a seat) over the lawns and pines to Slaughter Bay, its reef, and Nepean and Phillip
+  Islands (a painted ring). Shelves `pitcairners` (the library's Rosalind Young, Barrow and Bligh) and `first` (`norfolk-first`:
+  Hunter's journal with King's, Chaplain Johnson's address, and the library's Clarke); six pictures (Raper's loss of the
+  Sirius, the convict establishment of 1848, Government House about 1855, Kingston, its beach and gaol in 1898). Two
+  lights. Cards keep to what is attested (Cook 1774; King, 6 March 1788; the Sirius, 19 March 1790; the second settlement
+  1825 to 1855; the Morayshire, 8 June 1856, Bounty Day; World Heritage 2010). The secret is the reef: the tide turns every
+  `TIDE` seconds, and looked at while it is out the Sirius is there as Raper painted her; Tench's Complete Account
+  (`norfolk-sirius`) is then on the verandah table, found for good (`athenaeum-norfolk-sirius`; `?sirius`). Every quotation
+  is checked by a test.
 - The Library of Celsus (`celsus-room.js`; the court x 2500, z 9, the hall x 2500, z −6, the vault under its apse;
   `?room=celsus`, `ephesus`, `library-of-celsus`): the library at Ephesus, through a plain marble door in the Long
   Corridor's fifth east bay (`corridor.celsusDoor`); its way out is THE LONG CORRIDOR. The reader arrives in the court
@@ -846,7 +873,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
-  daily-room, long-corridor, ships-in-bottles, montserrat, pitcairn, tristan, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
+  daily-room, long-corridor, ships-in-bottles, montserrat, pitcairn, tristan, st-helena, norfolk, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.
