@@ -39,7 +39,7 @@ test('the corridor loads before game.js and is wired into the library',()=>{
 
 test('its door in the hall is the library’s walnut with the name gilded on the glass, and stays when the corridor is freed',()=>{
   const {c,interactables}=corridor();
-  assert.match(source,/doorKit\.readingRoom\?\.\('THE LONG\\nCORRIDOR','The Gastronomic Athenaeum'\)/);
+  assert.match(source,/doorKit\.readingRoom\?\.\('THE LONG\\nCORRIDOR','Dickens · Dickinson · Ephesus · islands'\)/,'its glass names what lies along it, not the first room alone');
   const door=interactables.find(o=>o.userData.type==='corridor-door');assert.ok(door,'the hall door is built at startup');
   c.activate();assert.ok(c.built);c.unload();assert.ok(!c.built);
   assert.ok(interactables.includes(door),'the hall door still answers once the corridor is freed');
