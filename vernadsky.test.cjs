@@ -17,7 +17,7 @@ test('Akademik Vernadsky in the polar hut: its picture, card and flag, in Ukrain
 
 test('a postcard in the Ukrainian Reading Room tells the way to the polar hut, and the way it tells is there',()=>{
   const card=block(wing,'POSTCARD');
-  for(const words of ['«Академік Вернадський»','Akademik Vernadsky','great globe in the Grand Hall','Antipodes','compass on the sea-chart cabinet','polar hut'])assert(card.includes(words),words);
+  for(const words of ['«Академік Вернадський»','Akademik Vernadsky','great globe in the Grand Hall','Antipodes','New Zealand Room','compass on the sea-chart cabinet','polar hut'])assert(card.includes(words),words);
   assert.match(wing,/title:POSTCARD\.title,author:POSTCARD\.card/);
   // The way it describes: the globe, the sea-chart cabinet's compass and the ship are all in antipodes.js.
   assert.match(antipodes,/TURN TO THE ANTIPODES/);assert.match(antipodes,/sea-chart|SOUTHERN PASSAGE/);assert.match(antipodes,/THE POLAR READING ROOM/);

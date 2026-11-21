@@ -673,8 +673,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   and comes up in a hall under a skylight of southern stars, with live clocks for Perth, Sydney and Wellington. The
   Australian Room is to the west, the New Zealand Room to the east (rooms `antipodes`, `australian`, `new-zealand` in
   `data/new-books.js`); a second globe there falls back home. `?room=antipodes`, `australia` or `nz` go straight there.
-- The southern passage (`antipodes.js`) starts at the sea-chart cabinet in the Australian Room's south-east corner
-  (x −338.5, z −283). Turn the compass: the panel swings aside over a real cut-out in the wall and dado, revealing a
+- The southern passage (`antipodes.js`) starts at the sea-chart cabinet in the New Zealand Room's south-west corner
+  (x −321.8, z −283; moved from the Australian Room on 21 November 2026, at the owner's wish: Lyttelton was the last
+  port of Scott's Discovery and Terra Nova and Shackleton's Nimrod, and the New Zealand Room had no other way on). Turn the compass: the panel swings aside over a real cut-out in the wall and dado, revealing a
   walkable lantern-lit quay. Board the expedition ship, then turn its brass wheel to cast off. The outward voyage is
   30 seconds (return 24; reduced motion 14 with no roll), with departure, ocean/icebergs and approach stages. The
   voyage card offers cast-off, an optional continue-to-landing control and explicit disembarkation (E casts off or
@@ -685,7 +686,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   the Antipodes. Moving boat controls use `performanceDynamic` for the focus index and batching exclusions.
   `travelling` locks walking only while sailing; aboard a moored ship, `floorAt` supplies the deck's 0.91 m floor.
   Reset cancels the voyage synchronously, so R cannot trigger a late arrival; a new Antipodes visit remooring in
-  Australia keeps the boat available. Sea, wind and timber sounds use existing generated ambience recipes.
+  New Zealand keeps the boat available. Sea, wind and timber sounds use existing generated ambience recipes.
   The hut's back wall holds THE POLAR SHELF in two rows of six (`SHELVES` ids, then the shelf `antarctic` in
   `data/new-books.js`, passed in as `arrivals.antarctic`): the Antarctic only, the Heroic Age and the Belgica; the Arctic
   is to have a room of its own. Two painted displays, no lights: the Endurance in the pack on the east wall (`ENDURANCE`,

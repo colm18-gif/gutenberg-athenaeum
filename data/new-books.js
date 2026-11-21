@@ -51,7 +51,7 @@
 //   arctic-passage, arctic-inuit, arctic-pole   the Arctic Room off the explorers' anteroom (arctic-room.js): the
 //              North-West Passage and Franklin's searchers; Greenland and the Inuit; the way to the Pole
 //   arctic-table   the play-turned-story on the cabin table;  arctic-record   left by the Victory Point record (the secret)
-//   antarctic  the polar shelf in the hut on the ice, at the end of the southern passage from the Australian Room
+//   antarctic  the polar shelf in the hut on the ice, at the end of the southern passage from the New Zealand Room
 //              (antipodes.js): the Antarctic only, the Heroic Age and the Belgica; the Arctic is to have a room of its own
 //   kipling    the Kipling bookcase in the Grand Hall's south-west corner (kipling-shelf.js): the books of Rudyard
 //              Kipling's the library did not yet have, in the order he published them
