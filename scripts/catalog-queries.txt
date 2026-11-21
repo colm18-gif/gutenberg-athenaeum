@@ -1,4 +1,11 @@
-# Wikimedia Ukraine's advice (20 November 2026): find whole Ukrainian books from Wikisource's index categories.
-# Validated indexes (every page checked by two people) and proofread indexes (by one). (Version pages were read on 20 November.)
-ws-index https://w.wiki/m89V
-ws-index https://w.wiki/m84s
+# The Faroe Islands, round two: the seal woman, and other books that call there.
+subject? Seals (Animals) -- Folklore
+subject? Folklore -- Scotland
+Seal|Selkie|Silkie ; ; en
+subject? Folklore -- Shetland
+subject? Folklore -- Orkney
+subject? Folklore -- Iceland
+subject? Ballads, Faroese
+subject? Faroese
+ ; Chadwick, Nora ; en
+ ; Kershaw ; en

@@ -3099,6 +3099,38 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 37669,
    "words": 95122
   },
+  "Pen and Pencil Sketches of Faröe and Iceland": {
+   "id": 71936,
+   "words": 84771
+  },
+  "Across Iceland": {
+   "id": 46772,
+   "words": 61741
+  },
+  "The Sagas of Olaf Tryggvason and of Harald the Tyrant": {
+   "id": 22093,
+   "words": 70496
+  },
+  "The Orkneyinga Saga": {
+   "id": 57723,
+   "words": 139301
+  },
+  "Stories and Ballads of the Far Past": {
+   "id": 33471,
+   "words": 66963
+  },
+  "Orkney and Shetland Folk 872-1350": {
+   "id": 50249,
+   "words": 9877
+  },
+  "The Bird Watcher in the Shetlands": {
+   "id": 51429,
+   "words": 104848
+  },
+  "British Sea Birds": {
+   "id": 47115,
+   "words": 65070
+  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633

@@ -287,10 +287,12 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   fourth east bay (`corridor.bottleBay`, between Boullée's drawing and Celsus), built at startup and kept, under a brass
   plate, SHIPS IN BOTTLES. Each bottle lies in a cradle with a ship under sail for an island; looking in goes to that
   island, and a bottle there brings the reader back to stand before the shelf (`standBefore(key)`). Islands hand the
-  shelf their bottle with `add` (five slots, since 20 November 2026); only bottles that lead somewhere are on it. The owner's choice of a way in
+  shelf their bottle with `add` (six slots since 21 November 2026: the bay is 3.58 m between pilasters, so the shelf is
+  3.5 m and its bottles and cradles are drawn at `SCALE` 0.9; a seventh would need a second tier); only bottles that lead somewhere are on it. The owner's choice of a way in
   for small places nobody expects to find (17 November 2026). Montserrat is the first bottle, Pitcairn the second, Tristan da
   Cunha the third, St Helena the fourth and Norfolk Island the fifth (the owner's choices, 20 November 2026: places whose
-  people would be surprised to find themselves there). Samoa has the strongest books if a sixth is ever wanted.
+  people would be surprised to find themselves there), and the Faroe Islands the sixth (the owner's suggestion, 21 November
+  2026). Samoa has the strongest books if a seventh is ever wanted.
 - Montserrat (`montserrat-room.js`, the house x 2600, z 600, a verandah to the south; `?room=montserrat`, `emerald-isle`,
   `plymouth`, `soufriere`): the first bottle. A timber house in the north of the island at night; the verandah looks south
   over the Centre Hills to the Soufrière Hills, the dome glowing and its plume drifting west, the ash fan running down
@@ -379,6 +381,25 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `TIDE` seconds, and looked at while it is out the Sirius is there as Raper painted her; Tench's Complete Account
   (`norfolk-sirius`) is then on the verandah table, found for good (`athenaeum-norfolk-sirius`; `?sirius`). Every quotation
   is checked by a test.
+- The Faroe Islands (`faroe-islands.js`, the house x 2600, z 2100, its yard to the south; `?room=faroe`, `faroes`,
+  `foroyar`, `kirkjubour`, `torshavn`, `roykstova`, `sealwoman`, `kopakonan`): the sixth bottle (a ship for steep green islands
+  with cloud on their tops). The roykstova, the smoke-room of an old farmhouse at Kirkjubøur, on a light night at midsummer,
+  built after Johannes Klein's photograph of 1898 (which hangs there): the turf fire on a hearth boxed in planks, the kettle
+  on a wooden arm, a smoke-hole in the ceiling (no chimney), a turf roof; its door opens on a walled yard with a hjallur, a
+  bench (a seat) and Merkið on its pole, and a painted ring of the fjord, Hestur and Koltur, Sandoy, the roofless cathedral of
+  St Magnus and St Olaf's church. Two lights: the fire (it breathes) and the pale night. Shelves `islands` (the library's
+  Nansen, for Dicuil's hermits, Verne and Markham, then `faroe-islands`: Symington's Pen and Pencil Sketches of 1862, the one
+  English book of the century with the islands at length, and Bisiker), `sagas` (Heimskringla, then `faroe-sagas`: Olaf
+  Tryggvason, Chadwick's Faroese ballads) and `neighbours` (`faroe-neighbours`: the Orkneyinga saga, Johnston, Dixon's sea-birds).
+  Six pictures (looked at): Klein's roykstova at Skipanes, milkmaids at Haraldsund and fishermen (1898), Tórshavn from the
+  harbour (1898), Sophie Petersen's chain dance (about 1930), Debes's map of 1673. Cards keep to what is attested (Dicuil
+  about 825; the Norse; Sigmund Brestisson and Thrand of Gata; the bishops at Kirkjubøur and the cathedral begun about 1300;
+  Hammershaimb 1846; Merkið, 25 April 1940). The grind is left alone. The secret is the sea chest in the north-west corner
+  with its key in the lock, after the seal woman of Mikladalur (told without quotation marks: Gutenberg has no book of it):
+  opened, it is empty, a seal looks back from the fjord, and Selous's Bird Watcher in the Shetlands, with its notes on seals
+  (`faroe-seal`), is left on the lid, found for good (`athenaeum-faroe-seal`; `?sealwoman`). Every quotation (`QUOTES`,
+  `SOURCES`: Symington, Nansen's Dicuil, Heimskringla, Verne, Selous, Chadwick) is checked by a test. A second bottle joins it
+  to the Burns Room (see Island bottles).
 - The Library of Celsus (`celsus-room.js`; the court x 2500, z 9, the hall x 2500, z −6, the vault under its apse;
   `?room=celsus`, `ephesus`, `library-of-celsus`): the library at Ephesus, through a plain marble door in the Long
   Corridor's fifth east bay (`corridor.celsusDoor`); its way out is THE LONG CORRIDOR. The reader arrives in the court
@@ -784,7 +805,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   its room is built (as the back ways' doors do), no light; looking in builds the other end and stands the reader before
   its bottle, facing it (`stand`). A test keeps each in its room, against a wall, and the reader facing it. Their cards
   say only what is so (St Patrick's Day a public holiday on Montserrat; Norfolk settled from Sydney in 1788, Australian
-  since 1914). The islands also sail to one another from bottles on their tables, beside each bottle home (`table:true`):
+  since 1914), and the Faroe Islands ↔ the Burns Room (the bottle on the left of the Burns mantel, under the sampler; in the
+  roykstova, a little shelf on the south wall east of the door: the steamers for the Faroes sailed from Leith, and Symington
+  found Thorshavn's scenery like Loch Long's; the owner's suggestion, 21 November 2026). The islands also sail to one another from bottles on their tables, beside each bottle home (`table:true`):
   Pitcairn ↔ Norfolk Island (the Morayshire's voyage of 1856) and St Helena ↔ Tristan da Cunha (one South Atlantic
   territory; women from St Helena went out to Tristan in 1827). Every island now has at least two ways out.
 - Exploration (`exploration.js`, loaded just before `passages.js`; wired at the end of game.js as `exploration`): small
@@ -935,7 +958,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
-  daily-room, long-corridor, arctic, ships-in-bottles, montserrat, pitcairn, tristan, st-helena, norfolk, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
+  daily-room, long-corridor, arctic, ships-in-bottles, montserrat, pitcairn, tristan, st-helena, norfolk, faroe, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.

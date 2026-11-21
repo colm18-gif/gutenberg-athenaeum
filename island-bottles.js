@@ -3,7 +3,8 @@
 // mantel, and one in its house that sails back to Ireland; Norfolk Island, an Australian territory since 1914 and settled
 // from Sydney in 1788, has a bottle in the Australian Room at the Antipodes, and one in its house that sails back. The
 // islands also sail to one another, from bottles on their tables: Pitcairn and Norfolk (the voyage of 1856), and St
-// Helena and Tristan da Cunha, neighbours in one South Atlantic territory.
+// Helena and Tristan da Cunha, neighbours in one South Atlantic territory. The Faroe Islands have a bottle on the Burns
+// Room's mantel: Scotland is their neighbour to the south, and the steamers to the Faroes sailed from Leith.
 //
 // Each bottle stands only while its room is built (as the back ways' doors do in passages.js), costs no light, and is
 // freed with its room. Looking in builds the other end first and sets the reader down in front of its bottle, facing it.
@@ -12,6 +13,15 @@
   // Every place is in world coordinates. `bottle` is where the bottle lies (its cradle's foot, on a mantel or on a little
   // wall shelf of its own), `yaw` the way its plate faces (0 south, out from a north wall; π/2 east, out from a west wall); `stand` is where a reader arrives, facing the bottle.
   const LINKS=[
+    {key:'faroe-burns',ends:[
+      {place:'burns',name:'The Burns Room',bottle:{x:499.0,y:1.68,z:-305.86,yaw:0},stand:{x:499.0,z:-304.2,yaw:0},
+        label:'THE FAROE ISLANDS',sub:'by way of Leith',land:0x4c7a44,island:[[.06,.035,.06],[.1,.04,.075],[.14,.03,.05]],
+        author:'A ship under sail for the Faroe Islands, north of Scotland between Shetland and Iceland. For a century the ships for the Faroes sailed from Leith, and Andrew Symington, who went that way in 1859, thought the scenery round Thorshavn “not unlike that of Loch Long in Scotland”. Look in, and you are in a farmhouse at Kirkjubøur.',
+        arrive:'The Burns Room, by the coal fire. The bottle on the mantel sails back to the Faroe Islands.'},
+      {place:'faroe',name:'The Faroe Islands',bottle:{x:2601.7,y:1.25,z:2102.59,yaw:Math.PI,shelf:true},stand:{x:2601.7,z:2101.4,yaw:Math.PI},
+        label:'THE BURNS ROOM',sub:'south to Scotland',land:0x3f6b35,island:[[.08,.05,.04],[.12,.04,.035]],
+        author:'A little ship under sail south for Scotland, whose Shetland is the Faroes’ nearest neighbour. Look in, and you are in the Burns Room, in an Ayrshire cottage by the fire.',
+        arrive:'The Faroe Islands, on a light night at midsummer: the roykstova of a farmhouse at Kirkjubøur. The bottle on the little shelf by the door sails to Scotland; the one on the table, to the Long Corridor.'}]},
     {key:'montserrat-irish',ends:[
       {place:'irish',name:'The Irish Room',bottle:{x:-328.65,y:2.74,z:-211.13,yaw:0},stand:{x:-328.65,z:-208.2,yaw:0},
         label:'MONTSERRAT',sub:'the Emerald Isle',land:0x3d7040,island:[[.07,.045,.045],[.11,.04,.06],[.14,.03,.04]],smoke:[.11,.075],

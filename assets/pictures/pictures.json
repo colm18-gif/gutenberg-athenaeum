@@ -428,5 +428,65 @@
   "date": "1898",
   "licence": "Public domain",
   "description": "Format: Glass plate negative. Rights Info: No known restrictions on publication. Repository: Tyrrell Photographic Collection, Powerhouse Museum www.powerhousemuseum.com/collection/database/collection=Tyrrell_Photographic Part Of: Powerhouse Museum Collection General information about the Powerhouse Museum Collection is available at www.powerhousemuseum.com/collection/database Persistent URL: www.p"
+ },
+ "faroe-roykstova": {
+  "file": "Røgstue i Skibenæs i Færøerne (DNT-118887).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:R%C3%B8gstue_i_Skiben%C3%A6s_i_F%C3%A6r%C3%B8erne_(DNT-118887).jpg",
+  "width": 2048,
+  "height": 1460,
+  "artist": "Johannes Klein",
+  "date": "1898",
+  "licence": "Public domain",
+  "description": "Fyrsted i røgstuen i hus fra Skibenæs. Vandkedlen hænger over tørvebålet i en skerdingur af træ. Konen til venstre bager drylar i emmerne; to brød ligger i den varme aske. Døren står åben til glasstuen."
+ },
+ "faroe-thorshavn": {
+  "file": "FARÖE(1898) THORSHAVN FROM THE HARBOUR.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:FAR%C3%96E(1898)_THORSHAVN_FROM_THE_HARBOUR.jpg",
+  "width": 1571,
+  "height": 1240,
+  "artist": "",
+  "date": "1898 date QS:P571,+1898-00-00T00:00:00Z/9",
+  "licence": "Public domain",
+  "description": ""
+ },
+ "faroe-milkmaids": {
+  "file": "Malkepiger (neytakonur) ved Haraldsund i Færøerne, 1898 (DNT-25802).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Malkepiger_(neytakonur)_ved_Haraldsund_i_F%C3%A6r%C3%B8erne,_1898_(DNT-25802).jpg",
+  "width": 2048,
+  "height": 1415,
+  "artist": "Johannes Klein",
+  "date": "1898",
+  "licence": "Public domain",
+  "description": "Malkepiger på vej til malkepladsen i udmarken. Spandene bæres i uldne brystbånd og støttes forneden af en udstoppet tøjvalk, der hviler på lænden."
+ },
+ "faroe-fishermen": {
+  "file": "Færøske fiskere. 1898.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:F%C3%A6r%C3%B8ske_fiskere._1898.jpg",
+  "width": 1280,
+  "height": 891,
+  "artist": "Johannes Klein",
+  "date": "1898",
+  "licence": "Public domain",
+  "description": "Fishermen in the Faroe Islands. 1898."
+ },
+ "faroe-dance": {
+  "file": "Kædedans på Færøerne (ES-164677).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:K%C3%A6dedans_p%C3%A5_F%C3%A6r%C3%B8erne_(ES-164677).jpg",
+  "width": 2048,
+  "height": 1311,
+  "artist": "Sophie Petersen",
+  "date": "circa 1930 date QS:P,+1930-00-00T00:00:00Z/9,P1480,Q5727902",
+  "licence": "Public domain",
+  "description": "Fotografiet sidder i et fotoalbum lavet af Sophie Petersen med titlen \"Færøerne\". Fotoalbummet har nummer F5, og indgår i Det Kongelige Danske Geografiske Selskabs arkiv som af resultat af samarbejde mellem Etnografisk Samling og selskabet siden 2010 har været opstillet på Nationalmuseet som et selvstændigt arkiv. Arkivet er administreret af Etnografisk Samling. Det Kongelige Danske Geografiske Se"
+ },
+ "faroe-map": {
+  "file": "Faroe map 1673 by lucas debes.png",
+  "page": "https://commons.wikimedia.org/wiki/File:Faroe_map_1673_by_lucas_debes.png",
+  "width": 1141,
+  "height": 1477,
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
  }
 }

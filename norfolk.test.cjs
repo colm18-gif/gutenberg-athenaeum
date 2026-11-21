@@ -46,7 +46,7 @@ test('it loads after St Helena, before game.js, and is wired into the library',(
   assert.equal((source.match(/new THREE\.(Point|Directional|Spot)Light/g)||[]).length,2,'two lights, the sun and the lamp');
 });
 
-test('its bottle is the fifth and last on the shelf, and looking in goes to the house and back',()=>{
+test('its bottle is the fifth on the shelf, and looking in goes to the house and back',()=>{
   const h=island();assert.deepEqual(Array.from(h.bottles.bottles,b=>b.key),['montserrat','pitcairn','tristan','st-helena','norfolk']);
   const bottle=h.find('bottle','norfolk');assert.ok(bottle);h.bottles.interact(bottle);
   assert.ok(h.r.built);assert.equal(h.r.zoneAt(h.player.pos.x,h.player.pos.z),'norfolk');assert.ok(h.r.allowed(h.player.pos.x,h.player.pos.z),'the reader arrives on open floor');

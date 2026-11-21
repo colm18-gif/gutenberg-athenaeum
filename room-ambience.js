@@ -183,6 +183,8 @@
       // Tristan da Cunha after a gale: the surf on the shore below the plain, the wind still up, gulls and seabirds.
       // St Helena: the lawn of Plantation House on a misty afternoon, the wind in the pines, birds, the hills quiet.
       // Norfolk Island at Kingston in the evening: the surf on the reef below, the wind in the pines, seabirds.
+      // The Faroe Islands on a light night: the sea in the fjord below, the wind off the hills, gulls, oystercatchers and the turf fire.
+      faroe:{beds:[['waves',.04],['wind',.045],['fire',.03]],events:[['gull',.5,.03],['bird',.5,.025],['creak',.2,.02]]},
       norfolk:{beds:[['waves',.045],['wind',.035]],events:[['gull',.4,.03],['bird',.4,.025],['rustle',.3,.02]]},
       'st-helena':{beds:[['wind',.035],['air',.03]],events:[['bird',.5,.035],['rustle',.3,.02]]},
       tristan:{beds:[['waves',.05],['wind',.045]],events:[['gull',.4,.03],['bird',.4,.025],['creak',.3,.02]]},
