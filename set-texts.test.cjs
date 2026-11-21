@@ -105,10 +105,10 @@ test('the press on the walls: NATE’s piece in the Set Texts Room and Chytomo�
   assert.match(wing,/const link=\{type:'intl-link',title:CHYTOMO\.title,author:CHYTOMO\.card,url:CHYTOMO\.url/,'Chytomo’s opens the same way as the Unwritten');
   assert.match(wing,/card:'Читомо[^']*\(Chytomo[^']*\)'/,'its card in Ukrainian, then English');
   assert.match(wing,/en:\{url:'https:\/\/chytomo\.com\/en\/irish-librarian-creates-virtual-ukrainian-reading-room/,'and Chytomo’s English version is linked too');
-  assert.doesNotMatch(wing,/ukrinform\.ua|UKRINFORM/,'Ukrinform’s retelling of the same story was taken down (20 November 2026)');
+  assert.doesNotMatch(wing,/UKRINFORM/,'Ukrinform’s no longer has a frame of its own across the arch (20 November 2026)');
   assert.match(wing,/url:'https:\/\/wz\.lviv\.ua\/statti\/562164-/,'Vysokyi Zamok’s article hangs across the arch from Chytomo’s');
   assert.match(wing,/type:'intl-link',title:ZAMOK\.title,author:ZAMOK\.card,url:ZAMOK\.url/);
-  for(const site of ['tykyiv\\.com','shotam\\.info','inkorr\\.com','foro3d\\.com'])
+  for(const site of ['ukrinform\\.ua','tykyiv\\.com','shotam\\.info','inkorr\\.com','foro3d\\.com'])
     assert.match(wing,new RegExp(`url:'https://${site}/`),`the retelling on ${site} is framed`);
   assert.match(wing,/RETOLD\.forEach\([\s\S]{0,400}type:'intl-link',title:r\.title,author:r\.card,url:r\.url/);
   assert.match(wing,/url:'https:\/\/prosvita\.digital\/'/,'PROSVITA DIGITAL, which links to the room, is linked back');
