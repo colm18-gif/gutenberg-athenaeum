@@ -3115,6 +3115,10 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 57723,
    "words": 139301
   },
+  "Stories and Ballads of the Far Past": {
+   "id": 33471,
+   "words": 66963
+  },
   "Orkney and Shetland Folk 872-1350": {
    "id": 50249,
    "words": 9877
@@ -4732,8 +4736,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Benito Cereno",
   "History of the Expedition under the Command of Captains Lewis and Clark, Vol. 1.",
   "The Necessity of Atheism",
-  "The North Atlantic Telegraph via the Færöe Isles, Iceland, and Greenland",
-  "Stories and Ballads of the Far Past",
   "María [es]",
   "Poesías [es]"
  ]
