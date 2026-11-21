@@ -1,4 +1,39 @@
-# Wikimedia Ukraine's advice (20 November 2026): find whole Ukrainian books from Wikisource's index categories.
-# Validated indexes (every page checked by two people) and proofread indexes (by one). (Version pages were read on 20 November.)
-ws-index https://w.wiki/m89V
-ws-index https://w.wiki/m84s
+# The Faroe Islands: a sixth bottle for the Long Corridor's shelf.
+Faroe|Faeroe|Færoe|Feroe|Færø|Faröe|Föroya|Føroya|Færeyinga|Faereyinga ; ;
+subject? Faroe
+subject? Faeroe
+subject? Iceland
+ ; ; fo
+Thrond|Sigmund|Faereyinga|Færeyinga|Gate ; ; en
+Orkneyinga|Orkney ; ; en
+Heimskringla|Olaf Trygg ; ; en
+ ; Annandale ; en
+ ; Landt ; en
+ ; Debes ; en
+ ; Morris, William ; en
+Iceland ; ; en
+Shetland|Zetland ; ; en
+ ; Dicuil ;
+Brendan|Navigatio ; ;
+ ; Powell, F|Powell, Frederick York ; en
+ ; Dasent ; en
+Burnt Njal|Njal ; ; en
+Grettir|Egil|Laxdaela|Volsung|Eyrbyggja|Gisli ; ; en
+Viking|Norsemen|Northmen ; ; en
+Puffin|Sea-bird|Sea bird|Gannet|Fowling ; ; en
+Stack|Kilda ; ; en
+ ; Baring-Gould ; en
+ ; Hammershaimb ;
+commons? Tórshavn 19th century
+commons? Faroe Islands painting
+commons? Faroe Islands 1800s engraving
+commons? Kirkjubøur
+commons? Faroe Islands map old
+commons? Faroese chain dance
+commons? Faroe Islands stamp
+commons? Tinganes Tórshavn
+commons? Faroe puffin Fratercula arctica illustration
+commons? Faroe Islands photograph 1898
+commons? Gásadalur
+commons? Saksun turf church
+commons? Færeyinga saga manuscript
