@@ -65,10 +65,14 @@
   const ZAMOK={title:'«Ірландець за тисячі кілометрів від України відчинив двері в Українську читальню»',date:'18.11.2026',
     card:'Львівська газета «Високий Замок» написала про цю читальню 18 листопада 2026 року. (Vysokyi Zamok, the Lviv newspaper, wrote about this room on 18 November 2026: “An Irishman thousands of kilometres from Ukraine has opened the door to a Ukrainian Reading Room”.)',
     url:'https://wz.lviv.ua/statti/562164-irlandets-za-tysiachi-kilometriv-vid-ukrainy-vidchynyv-dveri-v-ukrainsku-chytalniu'};
-  // Four more sites told the story in November 2026, mostly retelling Chytomo's: smaller cuttings framed on the west wall,
-  // north of the window, as PROSVITA's sheet is south of it. Their exact dates could not be read from here, so the cards
-  // give the month.
+  // Five more told the story in November 2026, mostly retelling Chytomo's: smaller cuttings framed on the west wall,
+  // north of the window, as PROSVITA's sheet is south of it. Ukrinform's framed on its own across the arch until 20
+  // November 2026; the owner wanted it kept, so it heads the cuttings (21 November). Their exact dates could not be read
+  // from here, so the cards give the month.
   const RETOLD=[
+    {name:'Укрінформ',kicker:'ДІАСПОРА · ЛИСТОПАД 2026',title:'«В Ірландії бібліотекар створив віртуальну Українську читальню»',
+      card:'Національне інформаційне агентство України «Укрінформ» написало про цю читальню в листопаді 2026 року. (Ukrinform, Ukraine’s national news agency, wrote about this room in November 2026: “In Ireland, a librarian has created a virtual Ukrainian Reading Room”.)',
+      url:'https://ukrinform.ua/rubric-diaspora/4185152-v-irlandii-bibliotekar-stvoriv-virtualnu-ukrainsku-citalnu.html',label:'Читати в Укрінформі · Read it on Ukrinform'},
     {name:'ТиКиїв',kicker:'КИЇВ · ЛИСТОПАД 2026',title:'«Ірландський розробник створив віртуальну Українську читальню з інтерактивними книжками»',
       card:'Київське видання «ТиКиїв» розповіло про цю читальню в листопаді 2026 року, за Читомо. (TyKyiv, the Kyiv news site, told the story of this room in November 2026, after Chytomo: “An Irish developer has created a virtual Ukrainian Reading Room with interactive books”.)',
       url:'https://tykyiv.com/news/v-irlandiyi-ziavilasia-virtualna-ukrayinska-chitalnia/',label:'Читати на «ТиКиїв» · Read it on TyKyiv'},
@@ -1000,8 +1004,8 @@
 
       // The press about the room, cut out and framed on the east wall either side of the arch, clear of the mitten's
       // cut-outs below: Chytomo's between Kateryna and the arch's painted jamb (its card opens the article in Ukrainian or
-      // in English), Vysokyi Zamok's between the jamb and the drawing of Raim. (Ukrinform's retelling of Chytomo's story
-      // hung there until 20 November 2026, when the owner took it down.)
+      // in English), Vysokyi Zamok's between the jamb and the drawing of Raim. (Ukrinform's piece hung there until 20
+      // November 2026; since 21 November it heads the cuttings on the west wall.)
       const clipping=(name,kicker,title)=>own(canvasTexture((c,W,H)=>{c.fillStyle='#f1ead8';c.fillRect(0,0,W,H);c.fillStyle='#1b1b1b';c.textAlign='left';
           c.font=`bold ${Math.round(W*.13)}px Georgia`;c.fillText(name,W*.08,H*.13);c.fillRect(W*.08,H*.16,W*.84,3);
           c.font=`${Math.round(W*.045)}px Georgia`;c.fillStyle='#b3202a';c.fillText(kicker,W*.08,H*.215);
@@ -1022,14 +1026,14 @@
         const face=add(own(new THREE.PlaneGeometry(.66,.93)),own(new THREE.MeshStandardMaterial({map:clipping('Просвіта','ПРОСВІТА ЦИФРОВА · PROSVITA.DIGITAL','«Слово Просвіти»: цифровий архів від 1995 року'),roughness:.9})),WW+.03,py,pz,root);face.rotation.y=Math.PI/2;
         const frame=add(own(new THREE.BoxGeometry(.04,1.07,.8)),MAT.darkWood,WW,py,pz,root);
         mark(face,link);mark(frame,{...link})}
-      // The four retellings, two by two in one frame north of the window (its rushnyk ends at cz−3.57; the north racks
-      // stand out to cz−6.9): each cutting opens its own article; the frame's card names all four.
+      // The five retellings in one frame north of the window, three over two (its rushnyk ends at cz−3.57; the north racks
+      // stand out to cz−6.9): each cutting opens its own article; the frame's card names all five.
       {const WW=cx-w/2+.19,py=2.35,pz=cz-5.1;
         const frame=add(own(new THREE.BoxGeometry(.04,1.66,1.3)),MAT.darkWood,WW,py,pz,root);
         const mount=add(own(new THREE.PlaneGeometry(1.2,1.56)),own(new THREE.MeshStandardMaterial({color:0x2b2620,roughness:.95})),WW+.025,py,pz,root);mount.rotation.y=Math.PI/2;
-        mark(frame,{type:'intl-card',title:'Про цю читальню писали · Also written about this room',author:'Ще чотири сайти розповіли про цю читальню в листопаді 2026 року: «ТиКиїв» і «Шотам» українською, Inkorr англійською, Foro3D іспанською. Торкніться вирізки, щоб її прочитати. (Four more sites told the story of this room in November 2026: TyKyiv and Shotam in Ukrainian, Inkorr in English, Foro3D in Spanish. Touch a cutting to read it.)',action:'READ'});
+        mark(frame,{type:'intl-card',title:'Про цю читальню писали · Also written about this room',author:'Про цю читальню розповіли в листопаді 2026 року ще «Укрінформ», «ТиКиїв» і «Шотам» українською, Inkorr англійською, Foro3D іспанською. Торкніться вирізки, щоб її прочитати. (Ukrinform, TyKyiv and Shotam in Ukrainian, Inkorr in English and Foro3D in Spanish also told the story of this room in November 2026. Touch a cutting to read it.)',action:'READ'});
         RETOLD.forEach((r,i)=>{const link={type:'intl-link',title:r.title,author:r.card,url:r.url,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:r.label,action:'READ'};
-          const face=add(own(new THREE.PlaneGeometry(.5,.7)),own(new THREE.MeshStandardMaterial({map:clipping(r.name,r.kicker,r.title),roughness:.9})),WW+.03,py+(i<2?.38:-.38),pz+(i%2?-.29:.29),root);face.rotation.y=Math.PI/2;
+          const face=add(own(new THREE.PlaneGeometry(.37,.52)),own(new THREE.MeshStandardMaterial({map:clipping(r.name,r.kicker,r.title),roughness:.9})),WW+.03,py+(i<3?.3:-.3),pz+(i<3?[.4,0,-.4][i]:[.2,-.2][i-3]),root);face.rotation.y=Math.PI/2;
           mark(face,link)})}
 
       // The postcard from Akademik Vernadsky, pinned to the west wall north of the window's rushnyk.
