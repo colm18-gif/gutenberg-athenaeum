@@ -94,17 +94,19 @@ test('a link goes straight to either room, and the clocks keep Perth, Sydney and
 });
 
 test('the compass opens a walkable passage to a quay, and books do not block the entrance',()=>{
-  const {a,interactables}=world();a.enter('australian-room');const q=a.rooms.quay,z=a.rooms.australian.cz+7;
+  const {a,interactables}=world();a.enter('new-zealand-room');const q=a.rooms.quay,z=a.rooms.nz.cz+7;
   assert(!a.allowed(q.cx,z),'the closed chart is solid');
   a.interact(interactables.find(o=>o.userData.type==='antipodes-polar-chart'));run(a,1);
   assert(a.passageOpen);
   for(let dz=-2;dz<7;dz+=.15)assert(a.allowed(q.cx,z+dz),`clear passage and quay at ${dz}`);
+  assert.equal(a.zoneAt(q.cx,a.rooms.nz.cz+5),'new-zealand-room','the passage opens from the New Zealand Room');
+  for(const x of [a.rooms.australian.cx-6,a.rooms.australian.cx,a.rooms.australian.cx+6.5])assert(!a.allowed(x,z),'the Australian Room’s south wall is whole');
   assert(!a.allowed(q.cx+2,z),'the wall beside the opening remains solid');
   assert(!a.allowed(q.cx+1.2,q.cz),'cannot walk off the edge of the quay');
 });
 
 test('boarding waits for cast-off, the ship crosses visible ocean, and both shores require disembarking',()=>{
-  const {a,interactables,player,notices}=world({reduced:false});a.enter('australian-room');
+  const {a,interactables,player,notices}=world({reduced:false});a.enter('new-zealand-room');
   const use=type=>a.interact(interactables.find(o=>o.userData.type===type));
   use('antipodes-antarctic-boat');assert(a.aboard);assert(!a.travelling,'boarding does not start sailing');
   assert.equal(a.zoneAt(player.pos.x,player.pos.z),'antarctic-deck');assert.equal(a.floorAt(player.pos.x,player.pos.z),.91);assert(a.allowed(player.pos.x,player.pos.z));
@@ -112,12 +114,12 @@ test('boarding waits for cast-off, the ship crosses visible ocean, and both shor
   use('antipodes-antarctic-disembark');assert(a.aboard&&a.travelling,'cannot jump overboard');run(a,24);
   assert(!a.travelling&&a.aboard);assert.equal(a.shipLocation,'antarctica');assert(notices.some(n=>/first icebergs/.test(n)));assert(a.allowed(player.pos.x,player.pos.z));
   use('antipodes-antarctic-disembark');assert(!a.aboard);assert.equal(a.zoneAt(player.pos.x,player.pos.z),'antarctica');assert(a.allowed(player.pos.x,player.pos.z));
-  use('antipodes-antarctic-return');use('antipodes-antarctic-castoff');run(a,25);assert.equal(a.shipLocation,'australia');assert(a.aboard&&!a.travelling);
+  use('antipodes-antarctic-return');use('antipodes-antarctic-castoff');run(a,25);assert.equal(a.shipLocation,'new-zealand');assert(a.aboard&&!a.travelling);
   use('antipodes-antarctic-disembark');assert.equal(a.zoneAt(player.pos.x,player.pos.z),'antarctic-quay');assert(a.allowed(player.pos.x,player.pos.z));
 });
 
 test('the polar hut has an open approach and every book can be reached inside it',()=>{
-  const {a,scene}=world();a.enter('australian-room');const r=a.rooms.antarctic;
+  const {a,scene}=world();a.enter('new-zealand-room');const r=a.rooms.antarctic;
   assert(scene.children.find(o=>o.name==='antipodes').userData.antarcticSnow.isPoints,'snow is particles, not random triangles stretched across the hut');
   for(let z=r.cz+7;z>r.cz-7;z-=.15)assert(a.allowed(r.cx,z),`clear path to the hut at ${z}`);
   const polar=a.books.filter(b=>b.userData.shelf==='antarctic');assert(polar.length>=5,'the four first books and Wild');
@@ -126,7 +128,7 @@ test('the polar hut has an open approach and every book can be reached inside it
 });
 
 test('the quay gangway can be walked up to board and down to disembark without pressing E',()=>{
-  const {a,player,interactables}=world();a.enter('australian-room');
+  const {a,player,interactables}=world();a.enter('new-zealand-room');
   a.interact(interactables.find(o=>o.userData.type==='antipodes-polar-chart'));run(a,1);
   const q=a.rooms.quay;let lastHeight=0;
   for(let offset=0;offset<=3.4;offset+=.05){const x=q.cx+offset,z=q.cz+1;
@@ -141,7 +143,7 @@ test('the quay gangway can be walked up to board and down to disembark without p
 });
 
 test('the Antarctic gangway also connects the moored ship and landing in both directions',()=>{
-  const {a,player,interactables}=world();a.enter('australian-room');
+  const {a,player,interactables}=world();a.enter('new-zealand-room');
   a.interact(interactables.find(o=>o.userData.type==='antipodes-antarctic-boat'));
   a.interact(interactables.find(o=>o.userData.type==='antipodes-antarctic-castoff'));run(a,15);
   const r=a.rooms.antarctic;
@@ -152,7 +154,7 @@ test('the Antarctic gangway also connects the moored ship and landing in both di
 });
 
 test('reduced motion keeps the deck steady, and resetting cancels travel without a delayed teleport',()=>{
-  const {a,interactables,player,scene}=world();a.enter('australian-room');
+  const {a,interactables,player,scene}=world();a.enter('new-zealand-room');
   a.interact(interactables.find(o=>o.userData.type==='antipodes-antarctic-boat'));a.interact(interactables.find(o=>o.userData.type==='antipodes-antarctic-castoff'));
   run(a,5);const ship=scene.children.find(o=>o.name==='antipodes').children.find(o=>o.name==='polar-expedition-ship');assert.equal(ship.rotation.z,0);assert.equal(ship.position.y,0);
   a.reset();assert(!a.travelling&&!a.aboard);player.pos.set(0,0,24);run(a,40);

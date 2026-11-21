@@ -44,12 +44,12 @@
     swag:['A swag','A blanket rolled round a few belongings and carried on the shoulder by men who walked from station to station looking for work. Carrying it was “humping the bluey”, or, as in the song, “waltzing Matilda”.'],
     kookaburra:['A kookaburra','The laughing kookaburra, a big kingfisher of eastern Australia, calls in a chorus that sounds like laughter, most of all at dawn and dusk; bushmen called it the bushman’s clock. It eats insects, lizards and small snakes.'],
     bush:['The bush at night','Grey-green gum trees under the stars. There are more than seven hundred kinds of eucalyptus, and almost all of them grow wild only in Australia.'],
-    ausSign:['The Australian Room','Bush ballads and bush stories, convicts and bushrangers, the novels of the towns and the stations, and a few books for children. Pull up the bench by the fire. The sea-chart cabinet in the south-east corner opens onto a quay: turn its compass for a voyage to the southern ice.'],
+    ausSign:['The Australian Room','Bush ballads and bush stories, convicts and bushrangers, the novels of the towns and the stations, and a few books for children. Pull up the bench by the fire.'],
     alps:['The Southern Alps by night','Aoraki / Mount Cook, at 3,724 metres the highest mountain in New Zealand, above the snowfields. Samuel Butler ran sheep in the high country of Canterbury in the 1860s, and the mountains and the passes behind his station became the way into Erewhon.'],
     fern:['A silver fern','The ponga, or silver fern, whose fronds are silver-white underneath. Turned over, they catch the moonlight, and it is said they were used to mark a path through the bush at night. It is the emblem of many New Zealand teams.'],
     kiwi:['A kiwi','New Zealand’s flightless bird, about the size of a hen and out and about at night. Its nostrils are at the very tip of its long bill, which it pushes into the ground to smell out worms, and the female lays an egg up to a fifth of her own weight.'],
     desk:['Katherine Mansfield’s desk','Katherine Mansfield was born in Wellington in 1888 and left for London at nineteen. Many of her finest stories, written in Europe in the last years of a short life, go back to the Wellington of her childhood.'],
-    nzSign:['Aotearoa New Zealand','Nau mai, haere mai: welcome. Katherine Mansfield, the settlers and the high country, and accounts of the Māori world by those who lived in it. Aotearoa, the Māori name for the country, is often translated “the land of the long white cloud”.'],
+    nzSign:['Aotearoa New Zealand','Nau mai, haere mai: welcome. Katherine Mansfield, the settlers and the high country, and accounts of the Māori world by those who lived in it. Aotearoa, the Māori name for the country, is often translated “the land of the long white cloud”. The sea-chart cabinet in the south-west corner opens onto a quay: turn its compass for a voyage to the southern ice, as Scott’s Discovery and Terra Nova and Shackleton’s Nimrod sailed for the Antarctic from Lyttelton.'],
     hallSign:['The Antipodes','You fell through the Earth to get here. The Australian Room is through the arch to the west, the New Zealand Room through the arch to the east, and the globe will take you home.']
   };
   // What the reader hears on the way down (and up), at fractions of the fall.
@@ -98,7 +98,7 @@
     const ARCH=3,KEEP=25,SHAFT={x:-330,z:-420,r:2.6,top:62};
     const TAU=Math.PI*2,clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),smooth=p=>p*p*(3-2*p);
     let timber=null,root=null,shaft=null,time=0,lastNeeded=-1e9,fall=null,fire=null,laughing=0;
-    let polarEntrance=null,polarShip=null,polarSea=null,polarGangways=null,voyage=null,aboard=false,shipLocation='australia',voyageUI=null;
+    let polarEntrance=null,polarShip=null,polarSea=null,polarGangways=null,voyage=null,aboard=false,shipLocation='new-zealand',voyageUI=null;
     const owned=[],ours=[],books=[],blockers=[];
     const own=thing=>{owned.push(thing);return thing};
     function add(geometry,material,x,y,z,parent){const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);parent.add(m);return m}
@@ -276,9 +276,11 @@
       ridge(H*.78,4,'#232c38',[[.1,.6,.6],[.8,.58,.5]]);ridge(H*.9,2,'#10151a',[[.5,.84,.3]]);
     }
     const ANTARCTIC={cx:-345,cz:-321,w:18,d:24,h:6};
-    const QUAY={cx:AUS.cx+6.5,cz:AUS.cz+AUS.d/2+4,w:6,d:8},PASSAGE={x:QUAY.cx,z:AUS.cz+AUS.d/2,w:2.8,h:3.5};
+    // The southern passage leaves from the New Zealand Room, at the west end of its south wall (Lyttelton was the last
+    // port of Scott's Discovery and Terra Nova and Shackleton's Nimrod), clear of the shelves either side of the desk.
+    const QUAY={cx:NZ.cx-6.8,cz:NZ.cz+NZ.d/2+4,w:6,d:8},PASSAGE={x:QUAY.cx,z:NZ.cz+NZ.d/2,w:2.8,h:3.5};
     const DECK_Y=.91,GANGWAYS={
-      australia:{shoreX:QUAY.cx+.6,deckX:QUAY.cx+2.75,z:QUAY.cz+1,w:1.8},
+      'new-zealand':{shoreX:QUAY.cx+.6,deckX:QUAY.cx+2.75,z:QUAY.cz+1,w:1.8},
       antarctica:{shoreX:ANTARCTIC.cx-3.4,deckX:ANTARCTIC.cx-5.35,z:ANTARCTIC.cz+7,w:1.8}
     };
     const OCEAN={x:-820,z:-620};
@@ -296,7 +298,7 @@
       box(length,.3,HALL.d,floor,(west+east)/2,-.15,HALL.cz,root);
       box(AUS.w,.25,AUS.d,timber,AUS.cx,AUS.h+.12,AUS.cz,root);box(NZ.w,.25,NZ.d,timber,NZ.cx,NZ.h+.12,NZ.cz,root);
       for(const [room,wall] of [[AUS,ochre],[HALL,HALL_W(HALL.w)],[NZ,kauri]]){box(room.w,room.h,.3,wall,room.cx,room.h/2,north,root);
-        if(room===AUS){const left=room.cx-room.w/2,right=room.cx+room.w/2;
+        if(room===NZ){const left=room.cx-room.w/2,right=room.cx+room.w/2;
           for(const [a,b] of [[left,PASSAGE.x-PASSAGE.w/2],[PASSAGE.x+PASSAGE.w/2,right]])box(b-a,room.h,.3,wall,(a+b)/2,room.h/2,south,root);
           box(PASSAGE.w,room.h-PASSAGE.h,.3,wall,PASSAGE.x,(room.h+PASSAGE.h)/2,south,root);
         }else box(room.w,room.h,.3,wall,room.cx,room.h/2,south,root)}
@@ -375,8 +377,7 @@
       const {cx,cz,w,d,h}=AUS,west=cx-w/2,north=cz-d/2,south=cz+d/2;
       // Slab walls: a dado of rough boards round the room.
       const slab=own(new THREE.MeshStandardMaterial({color:0x5a3a22,roughness:1}));
-      for(const [x,z,sw,sd] of [[cx,north+.17,w-.4,.05],[west+.17,cz,.05,d-.4]])box(sw,1.05,sd,slab,x,.52,z,root);
-      for(const [a,b] of [[west+.2,PASSAGE.x-PASSAGE.w/2],[PASSAGE.x+PASSAGE.w/2,cx+w/2-.2]])box(b-a,1.05,.05,slab,(a+b)/2,.52,south-.17,root);
+      for(const [x,z,sw,sd] of [[cx,north+.17,w-.4,.05],[cx,south-.17,w-.4,.05],[west+.17,cz,.05,d-.4]])box(sw,1.05,sd,slab,x,.52,z,root);
       for(let i=0;i<5;i++)box(.2,.18,d-.3,timber,west+1.8+i*3.6,h-.05,cz,root);// rafters
       // A bush fireplace of stone in the west wall, with a billy hung over the fire.
       const stone=own(new THREE.MeshStandardMaterial({roughness:1,map:own(canvasTexture(stoneWork,256,256))})),fz=cz,fx=west+.55;
@@ -564,7 +565,7 @@
       c.fillStyle='#667769';c.beginPath();for(const [x,y] of [[.15,.13],[.52,.08],[.63,.21],[.55,.32],[.39,.35],[.22,.29]])c.lineTo(W*x,H*y);c.closePath();c.fill();
       c.fillStyle='#f1e7cc';c.beginPath();c.moveTo(0,H*.84);for(let i=0;i<=W;i+=16)c.lineTo(i,H*(.77+Math.sin(i*.04)*.035));c.lineTo(W,H);c.lineTo(0,H);c.closePath();c.fill();
       c.strokeStyle='#883f33';c.lineWidth=3;c.setLineDash([8,6]);c.beginPath();c.moveTo(W*.45,H*.32);c.bezierCurveTo(W*.8,H*.48,W*.2,H*.58,W*.48,H*.81);c.stroke();c.setLineDash([]);
-      c.fillStyle='#394c49';c.textAlign='center';c.font='bold 28px Georgia';c.fillText('THE SOUTHERN PASSAGE',W/2,H*.06);c.font='19px Georgia';c.fillText('AUSTRALIA',W*.4,H*.23);c.fillText('ANTARCTICA',W*.5,H*.9);c.font='italic 20px Georgia';c.fillText('Turn the compass. Follow the sea.',W/2,H*.63);
+      c.fillStyle='#394c49';c.textAlign='center';c.font='bold 28px Georgia';c.fillText('THE SOUTHERN PASSAGE',W/2,H*.06);c.font='19px Georgia';c.fillText('NEW ZEALAND',W*.4,H*.23);c.fillText('ANTARCTICA',W*.5,H*.9);c.font='italic 20px Georgia';c.fillText('Turn the compass. Follow the sea.',W/2,H*.63);
       const x=W*.78,y=H*.42;c.strokeStyle='#756035';for(let i=0;i<8;i++){const a=i*Math.PI/4;c.beginPath();c.moveTo(x,y);c.lineTo(x+Math.sin(a)*35,y-Math.cos(a)*35);c.stroke();}
       c.beginPath();c.arc(x,y,28,0,TAU);c.stroke();c.fillText('S',x,y+52);
     }
@@ -591,14 +592,14 @@
       polarGangways={};
       for(const [where,bounds] of Object.entries(GANGWAYS)){
         const {shoreX,deckX,z,w}=bounds,dx=deckX-shoreX,angle=Math.atan(DECK_Y/dx);
-        const data={type:where==='australia'?'antipodes-antarctic-boat':'antipodes-antarctic-return',title:'The ship’s gangway',author:'Walk up the ramp to board. The wheel starts the crossing.',action:'BOARD THE SHIP',performanceDynamic:true};
+        const data={type:where==='new-zealand'?'antipodes-antarctic-boat':'antipodes-antarctic-return',title:'The ship’s gangway',author:'Walk up the ramp to board. The wheel starts the crossing.',action:'BOARD THE SHIP',performanceDynamic:true};
         const ramp=mark(box(Math.hypot(dx,DECK_Y),.09,w,timber,(shoreX+deckX)/2,DECK_Y/2-.045*Math.cos(angle),z,root),data);ramp.rotation.z=angle;ramp.name='polar-'+where+'-gangway';
         polarGangways[where]={ramp,data};
       }
-      const board=polarGangways.australia.data;
+      const board=polarGangways['new-zealand'].data;
       box(.07,1.4,.07,timber,QUAY.cx+.7,.7,QUAY.cz+2.2,root);
       mark(sign(root,'BOARD THE SHIP','Walk up the gangway · E also boards',1.85,.5,QUAY.cx+.65,1.45,QUAY.cz+2.2),board).rotation.y=-Math.PI/2;
-      polarShip=buildPolarShip();shipLocation='australia';moorPolarShip('australia');
+      polarShip=buildPolarShip();shipLocation='new-zealand';moorPolarShip('new-zealand');
     }
     function buildPolarShip(){
       const group=new THREE.Group();group.name='polar-expedition-ship';root.add(group);
@@ -634,19 +635,19 @@
     }
     function moorPolarShip(where){
       shipLocation=where;const g=polarShip.group;
-      if(where==='australia'){g.position.set(QUAY.cx+3.4,0,QUAY.cz);g.rotation.set(0,Math.PI,0);}
+      if(where==='new-zealand'){g.position.set(QUAY.cx+3.4,0,QUAY.cz);g.rotation.set(0,Math.PI,0);}
       else{g.position.set(ANTARCTIC.cx-6,0,ANTARCTIC.cz+6);g.rotation.set(0,0,0);}
-      Object.assign(polarShip.boarding,{type:where==='australia'?'antipodes-antarctic-boat':'antipodes-antarctic-return',author:where==='australia'?'Board, then cast off at the wheel for Antarctica.':'Board, then cast off at the wheel for the Australian Room.'});
-      polarShip.wheelData.author=where==='australia'?'Cast off for the southern ice.':'Cast off for the Australian Room.';
-      polarShip.exitData.author=where==='australia'?'Step onto the lantern-lit quay.':'Step onto the ice. Follow the lanterns to the open hut and polar shelves.';
+      Object.assign(polarShip.boarding,{type:where==='new-zealand'?'antipodes-antarctic-boat':'antipodes-antarctic-return',author:where==='new-zealand'?'Board, then cast off at the wheel for Antarctica.':'Board, then cast off at the wheel for the New Zealand Room.'});
+      polarShip.wheelData.author=where==='new-zealand'?'Cast off for the southern ice.':'Cast off for the New Zealand Room.';
+      polarShip.exitData.author=where==='new-zealand'?'Step onto the lantern-lit quay.':'Step onto the ice. Follow the lanterns to the open hut and polar shelves.';
       syncPolarGangways();
     }
     function syncPolarGangways(){
       if(!polarGangways)return;
-      if(polarShip)Object.assign(polarShip.boarding,{type:aboard?'antipodes-antarctic-castoff':shipLocation==='australia'?'antipodes-antarctic-boat':'antipodes-antarctic-return',action:aboard?'CAST OFF':'BOARD THE SHIP',author:aboard?'Cast off at the wheel or use the voyage card.':'Walk up the gangway to board. E also boards.'});
+      if(polarShip)Object.assign(polarShip.boarding,{type:aboard?'antipodes-antarctic-castoff':shipLocation==='new-zealand'?'antipodes-antarctic-boat':'antipodes-antarctic-return',action:aboard?'CAST OFF':'BOARD THE SHIP',author:aboard?'Cast off at the wheel or use the voyage card.':'Walk up the gangway to board. E also boards.'});
       for(const [where,entry] of Object.entries(polarGangways)){
         entry.ramp.visible=!voyage&&shipLocation===where;
-        Object.assign(entry.data,{type:aboard?'antipodes-antarctic-disembark':where==='australia'?'antipodes-antarctic-boat':'antipodes-antarctic-return',action:aboard?'STEP ASHORE':'BOARD THE SHIP',author:aboard?'Walk down the gangway to the shore. G also steps ashore.':'Walk up the ramp to board. E also boards; cast off at the wheel once aboard.'});
+        Object.assign(entry.data,{type:aboard?'antipodes-antarctic-disembark':where==='new-zealand'?'antipodes-antarctic-boat':'antipodes-antarctic-return',action:aboard?'STEP ASHORE':'BOARD THE SHIP',author:aboard?'Walk down the gangway to the shore. G also steps ashore.':'Walk up the ramp to board. E also boards; cast off at the wheel once aboard.'});
       }
     }
     function gangwayAt(x,z){
@@ -662,9 +663,9 @@
     function disembarkPolarShip(){
       if(voyage||!aboard)return;aboard=false;
       syncPolarGangways();
-      if(shipLocation==='australia')move(QUAY.cx,QUAY.cz+1,Math.PI);
+      if(shipLocation==='new-zealand')move(QUAY.cx,QUAY.cz+1,Math.PI);
       else{move(ANTARCTIC.cx-2.7,ANTARCTIC.cz+7,0);analytics?.track('Room Explored',{room:'antarctica-expedition'});}
-      showNotice(shipLocation==='australia'?'The Australian quay. Walk back through the sea-chart cabinet to the reading room.':'Antarctica. Follow the lanterns to the open hut; the books are on its back shelves. The ship waits here for your return.',8);updateVoyageUI();
+      showNotice(shipLocation==='new-zealand'?'The New Zealand quay. Walk back through the sea-chart cabinet to the reading room.':'Antarctica. Follow the lanterns to the open hut; the books are on its back shelves. The ship waits here for your return.',8);updateVoyageUI();
     }
     function buildPolarSea(){
       if(polarSea)return;const group=new THREE.Group();group.name='polar-crossing';group.position.set(OCEAN.x,0,OCEAN.z);root.add(group);
@@ -678,7 +679,7 @@
     }
     function startPolarVoyage(){
       if(voyage)return;if(!aboard){boardPolarShip();return;}buildPolarSea();
-      const reduced=isReducedMotion();voyage={from:shipLocation,t:0,duration:reduced?14:shipLocation==='australia'?30:24,said:-1,stage:'castoff'};
+      const reduced=isReducedMotion();voyage={from:shipLocation,t:0,duration:reduced?14:shipLocation==='new-zealand'?30:24,said:-1,stage:'castoff'};
       syncPolarGangways();
       player.pitch=-.08;
       playSample?.('doorOpen',.4,.8);sound?.(110,.8,'triangle',.035);updateVoyageUI();
@@ -687,11 +688,11 @@
       const v=voyage;if(!v)return;v.t+=dt;const p=clamp(v.t/v.duration,0,1),g=polarShip.group,oldYaw=g.rotation.y;
       const stage=p<.12?'castoff':p<.82?'ocean':'approach';
       if(stage!==v.stage){v.stage=stage;updateVoyageUI();}
-      const from=v.from==='australia'?{x:QUAY.cx+3.4,z:QUAY.cz,yaw:Math.PI}:{x:ANTARCTIC.cx-6,z:ANTARCTIC.cz+6,yaw:0};
-      const to=v.from==='australia'?{x:ANTARCTIC.cx-6,z:ANTARCTIC.cz+6,yaw:0}:{x:QUAY.cx+3.4,z:QUAY.cz,yaw:Math.PI};
+      const from=v.from==='new-zealand'?{x:QUAY.cx+3.4,z:QUAY.cz,yaw:Math.PI}:{x:ANTARCTIC.cx-6,z:ANTARCTIC.cz+6,yaw:0};
+      const to=v.from==='new-zealand'?{x:ANTARCTIC.cx-6,z:ANTARCTIC.cz+6,yaw:0}:{x:QUAY.cx+3.4,z:QUAY.cz,yaw:Math.PI};
       if(stage==='castoff'){const k=smooth(p/.12);g.position.set(from.x,0,from.z-Math.cos(from.yaw)*k*8);g.rotation.y=from.yaw;}
       else if(stage==='ocean'){g.position.set(OCEAN.x,0,OCEAN.z);g.rotation.y=0;const k=(p-.12)/.7;
-        polarSea.texture.offset.y=-v.t*.014;polarSea.bergs.forEach((b,i)=>{b.mesh.visible=v.from==='australia'?k>.22:k<.75;b.mesh.position.z=((b.z+v.t*4+90)%180)-90;});}
+        polarSea.texture.offset.y=-v.t*.014;polarSea.bergs.forEach((b,i)=>{b.mesh.visible=v.from==='new-zealand'?k>.22:k<.75;b.mesh.position.z=((b.z+v.t*4+90)%180)-90;});}
       else{const k=smooth((p-.82)/.18);g.position.set(to.x,0,to.z+Math.cos(to.yaw)*(1-k)*12);g.rotation.y=to.yaw;}
       player.yaw+=g.rotation.y-oldYaw;
       const cover=Math.max(0,1-Math.abs(p-.12)/.025,1-Math.abs(p-.82)/.025);fade?.(cover);
@@ -701,13 +702,13 @@
       camera.position.set(eye.x,2.63+g.position.y,eye.z);camera.rotation.set(player.pitch||0,player.yaw,g.rotation.z,'YXZ');camera.updateMatrixWorld();
       if(stage==='ocean'){scene.background.setRGB(.08,.14,.21);scene.fog.color.copy(scene.background);scene.fog.density=.003;}
       const beat=p<.12?0:p<.42?1:p<.65?2:p<.82?3:4;
-      if(beat!==v.said){v.said=beat;const lines=v.from==='australia'?['The ropes fall free. The lantern-lit quay slips behind the stern.','Open water. The Southern Ocean stretches beneath the stars.','The first icebergs. The ship follows a dark channel between them.','Beyond the pack ice, a lantern shines on the shore.','Antarctica ahead. The sails slacken as the ship draws alongside the landing.']:['Casting off from the ice. The expedition hut’s lanterns grow smaller.','Through the pack ice. The ship turns north for warmer waters.','The last iceberg falls behind. Open sea again.','The Australian quay comes into view beneath the stars.','The ship draws alongside. The sea-chart cabinet is your way back into the library.'];showNotice(lines[beat],6);}
+      if(beat!==v.said){v.said=beat;const lines=v.from==='new-zealand'?['The ropes fall free. The lantern-lit quay slips behind the stern.','Open water. The Southern Ocean stretches beneath the stars.','The first icebergs. The ship follows a dark channel between them.','Beyond the pack ice, a lantern shines on the shore.','Antarctica ahead. The sails slacken as the ship draws alongside the landing.']:['Casting off from the ice. The expedition hut’s lanterns grow smaller.','Through the pack ice. The ship turns north for warmer waters.','The last iceberg falls behind. Open sea again.','The New Zealand quay comes into view beneath the stars.','The ship draws alongside. The sea-chart cabinet is your way back into the library.'];showNotice(lines[beat],6);}
       if(p>=1)finishPolarVoyage();
     }
     function finishPolarVoyage(){
-      if(!voyage)return;const to=voyage.from==='australia'?'antarctica':'australia';voyage=null;moorPolarShip(to);fade?.(0);
+      if(!voyage)return;const to=voyage.from==='new-zealand'?'antarctica':'new-zealand';voyage=null;moorPolarShip(to);fade?.(0);
       const p=shipPoint(0,.1);move(p.x,p.z,polarShip.group.rotation.y);player.pos.y=.91;
-      showNotice(to==='antarctica'?'Moored in Antarctica. Use the gangway to STEP ASHORE, then follow the lanterns to the hut.':'Moored at the Australian quay. STEP ASHORE, then walk through the chart cabinet.',8);updateVoyageUI();
+      showNotice(to==='antarctica'?'Moored in Antarctica. Use the gangway to STEP ASHORE, then follow the lanterns to the hut.':'Moored at the New Zealand quay. STEP ASHORE, then walk through the chart cabinet.',8);updateVoyageUI();
     }
     function updateVoyageUI(){
       if(typeof document==='undefined')return;
@@ -725,15 +726,16 @@
         },true);
       }
       voyageUI.el.hidden=!aboard;voyageUI.ashore.hidden=!!voyage;
-      voyageUI.status.textContent=voyage?({castoff:'Casting off · the quay falls behind',ocean:voyage.from==='australia'?'Crossing the Southern Ocean · towards the ice':'Crossing the Southern Ocean · towards Australia',approach:'Drawing alongside · prepare to step ashore'}[voyage.stage]):shipLocation==='australia'?'Aboard at the Australian quay · ready to sail':'Moored in Antarctica · the lanterns lead to the hut';
-      voyageUI.action.textContent=voyage?'Continue to landing · E':shipLocation==='australia'?'Cast off for Antarctica · E':'Cast off for Australia · E';
+      voyageUI.status.textContent=voyage?({castoff:'Casting off · the quay falls behind',ocean:voyage.from==='new-zealand'?'Crossing the Southern Ocean · towards the ice':'Crossing the Southern Ocean · towards New Zealand',approach:'Drawing alongside · prepare to step ashore'}[voyage.stage]):shipLocation==='new-zealand'?'Aboard at the New Zealand quay · ready to sail':'Moored in Antarctica · the lanterns lead to the hut';
+      voyageUI.action.textContent=voyage?'Continue to landing · E':shipLocation==='new-zealand'?'Cast off for Antarctica · E':'Cast off for New Zealand · E';
       voyageUI.ashore.textContent='Step ashore · G';
     }
 
     function buildNewZealand(){
       const {cx,cz,w,d,h}=NZ,east=cx+w/2,north=cz-d/2,south=cz+d/2;
       const panel=own(new THREE.MeshStandardMaterial({color:0x5e4428,roughness:.7}));
-      for(const [x,z,sw,sd] of [[cx,north+.17,w-.4,.05],[cx,south-.17,w-.4,.05],[east-.17,cz,.05,d-.4]])box(sw,1.05,sd,panel,x,.52,z,root);
+      for(const [x,z,sw,sd] of [[cx,north+.17,w-.4,.05],[east-.17,cz,.05,d-.4]])box(sw,1.05,sd,panel,x,.52,z,root);
+      for(const [a,b] of [[cx-w/2+.2,PASSAGE.x-PASSAGE.w/2],[PASSAGE.x+PASSAGE.w/2,east-.2]])box(b-a,1.05,.05,panel,(a+b)/2,.52,south-.17,root);
       for(let i=0;i<5;i++)box(.2,.18,d-.3,timber,east-1.8-i*3.6,h-.05,cz,root);
       // A wide window on the Southern Alps under the stars, in the east wall.
       picture(root,alpsNight,5.2,2.3,east-.2,2.45,cz,-Math.PI/2,card('alps'),own(new THREE.MeshStandardMaterial({color:0xe8e2d2,roughness:.8})));
@@ -872,7 +874,7 @@
     // Arriving: on the trapdoor, which closes under you, facing north (Australia to the left, as on a map).
     function enterFar(fromWell){
       activate();far.hatch.open=fromWell?1:0;far.hatch.target=0;Object.assign(farHatchData,{title:'A trapdoor',author:'The one you came up through, closed again behind you.',action:'LOOK'});
-      if(!aboard&&!voyage)moorPolarShip('australia');
+      if(!aboard&&!voyage)moorPolarShip('new-zealand');
       move(FAR_HATCH.x,FAR_HATCH.z+.9,0);analytics?.track('Room Explored',{room:'antipodes'});
     }
     // A link (/?room=antipodes, australia, new-zealand) goes straight there, the fall saved for the way home.
@@ -900,7 +902,7 @@
       const gangway=gangwayAt(x,z);if(gangway)return Math.abs(z-gangway.z)<gangway.w/2-r;
       if(zoneAt(x,z)==='antarctic-deck'){const g=polarShip.group;return Math.abs(x-g.position.x)<1.23-r&&z>g.position.z-2.6+r&&z<g.position.z+2.4-r;}
       // Only the cut-out aperture joins the room and quay; the shut chart remains solid.
-      if(Math.abs(z-PASSAGE.z)<.32+r&&x>AUS.cx-AUS.w/2&&x<AUS.cx+AUS.w/2){if(!polarEntrance||polarEntrance.open<.9||Math.abs(x-PASSAGE.x)>PASSAGE.w/2-r)return false;}
+      if(Math.abs(z-PASSAGE.z)<.32+r&&x>NZ.cx-NZ.w/2&&x<NZ.cx+NZ.w/2){if(!polarEntrance||polarEntrance.open<.9||Math.abs(x-PASSAGE.x)>PASSAGE.w/2-r)return false;}
       if(zoneAt(x,z)==='antarctic-quay')return Math.abs(x-QUAY.cx)<1.3-r&&z<QUAY.cz+QUAY.d/2-.2-r;
       if(zoneAt(x,z)==='antarctica'){if(x-r<ANTARCTIC.cx-ANTARCTIC.w/2+.45||x+r>ANTARCTIC.cx+ANTARCTIC.w/2-.45||z-r<ANTARCTIC.cz-ANTARCTIC.d/2+.45||z+r>ANTARCTIC.cz+ANTARCTIC.d/2-.45)return false;return !blockers.some(b=>x+r>b.minX&&x-r<b.maxX&&z+r>b.minZ&&z-r<b.maxZ)}
       const west=AUS.cx-AUS.w/2,east=NZ.cx+NZ.w/2;
