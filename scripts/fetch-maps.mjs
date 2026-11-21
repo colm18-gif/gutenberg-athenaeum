@@ -107,7 +107,15 @@ export const PICTURES = [
   { key: 'norfolk-government', file: 'Government House, Norfolk Island Wilson AUTAS001125294850.jpg' },
   { key: 'norfolk-kingston', file: 'Kingston, Norfolk Island (9014731556).jpg' },
   { key: 'norfolk-beach', file: 'The Beach, Kingston, Norfolk Island (9014730082).jpg' },
-  { key: 'norfolk-gaol', file: 'The Old Gaol, Kingston, Norfolk Island (9013543011).jpg' }
+  { key: 'norfolk-gaol', file: 'The Old Gaol, Kingston, Norfolk Island (9013543011).jpg' },
+  // The Faroe Islands (faroe-islands.js), the sixth bottle: a roykstova, the old smoke-room of a Faroese house, and the
+  // islands in 1898; Tórshavn from its harbour; milkmaids at Haraldsund; fishermen; the chain dance; Debes's map of 1673.
+  { key: 'faroe-roykstova', file: 'Røgstue i Skibenæs i Færøerne (DNT-118887).jpg' },
+  { key: 'faroe-thorshavn', file: 'FARÖE(1898) THORSHAVN FROM THE HARBOUR.jpg' },
+  { key: 'faroe-milkmaids', file: 'Malkepiger (neytakonur) ved Haraldsund i Færøerne, 1898 (DNT-25802).jpg' },
+  { key: 'faroe-fishermen', file: 'Færøske fiskere. 1898.jpg' },
+  { key: 'faroe-dance', file: 'Kædedans på Færøerne (ES-164677).jpg' },
+  { key: 'faroe-map', file: 'Faroe map 1673 by lucas debes.png' }
 ];
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
