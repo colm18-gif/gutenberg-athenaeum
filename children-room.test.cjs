@@ -302,3 +302,13 @@ test('the chronicle frieze: its panels run in order along the top of the south w
     assert.equal(p.userData.title,`${H[i].name} · ${H[i].years}`,'in order');if(i)assert(x<world(panels[i-1]).x,'read left to right from inside the room')});
   for(const h of H)assert.match(h.card,/[А-Яа-яІіЇїЄєҐґ].*\. \([A-Z].*\)$/,`${h.name}: Ukrainian, then English in brackets`);
 });
+
+test('the chronicle frieze’s documents: every panel that opens one has its picture and a caption, and is read from the floor',()=>{
+  const docs=vm.runInNewContext(`(()=>{${source.slice(source.indexOf('const HISTORY_DOCS='),source.indexOf('}};',source.indexOf('const HISTORY_DOCS='))+3)};return HISTORY_DOCS})()`);
+  const H=vm.runInNewContext(`(()=>{${source.slice(source.indexOf('const HISTORY='),source.indexOf('}];',source.indexOf('const HISTORY='))+3)};return HISTORY})()`);
+  const used=H.filter(h=>h.doc);assert(used.length>=5);
+  for(const h of used){assert(docs[h.doc],`${h.doc} has a caption`);assert(fs.existsSync(`assets/pictures/${h.doc}.jpg`),`${h.doc}.jpg is there`);
+    assert.match(docs[h.doc].caption,/[А-Яа-яІіЇїЄє].*\(.*\)/);assert.match(docs[h.doc].credit,/public domain/)}
+  assert.match(source,/type:h\.doc\?'intl-history':'intl-card',reach:7\.4/);assert.match(game,/\(h\.object\.userData\|\|\{\}\)\.reach\|\|/,'game.js honours a longer reach');
+  assert.match(game,/showPicture:showRoomPicture,playSample/);
+});

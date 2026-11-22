@@ -681,6 +681,20 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   rest of the year (`?winter`, `?summer`; no light). The secret: a pea rolls along the south skirting; picked up, Kotyhoroshko's
   mace and his tale are in the south-east corner, found for good (`athenaeum-kotyhoroshko-pea`; `?pea`); its words
   (`KOTYHOROSHKO`) are checked against the library's Котигорошко. `children-room.test.cjs` builds the wing for real.
+- The chronicle frieze (22 November 2026, at the owner's wish, to show Ukraine's long history): thirteen painted panels in
+  a band along the top of the Ukrainian Reading Room's south wall (y 4.75–5.75, over the door, the bay's lintel and the
+  cases), between two embroidered borders, read left to right from inside the room: Trypillia, the Scythians' pectoral,
+  Yaroslav's Kyiv and St Sophia, the Peresopnytsia Gospel, the Ostroh Bible, Orlyk's Constitution, the Eneida, the
+  Kobzar, the Valuev circular and the Ems decree, the Fourth Universal and the Act of Unity, the Holodomor and the
+  Executed Renaissance, 1991, and the Revolution of Dignity and the war (`HISTORY`, each panel drawn by `drawHistory`
+  on one texture, one material, each its own mesh with its own card, Ukrainian then English; keep the cards to what is
+  firmly attested). Six panels open a public-domain document large in the picture card (`HISTORY_DOCS`, `intl-history`,
+  game.js's `showRoomPicture` passed as `showPicture`; fetched by `scripts/fetch-maps.mjs` into `assets/pictures` as
+  `ua-*` and looked at: the Ostroh Bible's title page, Orlyk's original front page, the Valuev circular as sent to the
+  Kyiv censors on 18 July 1863, the printed Fourth Universal, the signed Act of 1991, the pectoral; Commons's only
+  Trypillia photograph was sherds of no stated source, so that panel opens none). The panels are high, so they carry
+  `reach` (7.4 m), which game.js's focus honours for any object. Hrushevsky's Illustrated History of Ukraine
+  (`ws:Ілюстрована історія України`) was added to the room's list as the frieze's companion.
 - The Holodomor candle: in the Ukrainian Reading Room, from the Sunday before the fourth Saturday of November (the Day of
   Remembrance of the Victims of the Holodomor) to the day itself, a candle in a glass with ears of wheat stands where the
   didukh stands at Christmas; the reader lights it (`intl-holodomor`). On the day, the room's welcome names it.

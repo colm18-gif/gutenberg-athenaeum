@@ -367,7 +367,7 @@ test('the Unwritten: blank spines beside the Executed Renaissance, a card true t
   assert.ok(body.indexOf("'НЕДОПИСАНІ'")>body.indexOf("'РОЗСТРІЛЯНЕ ВІДРОДЖЕННЯ'"),'beside the Executed Renaissance');assert.doesNotMatch(body,/Light\(/);
   // The link is a real one the reader clicks in a dialog: a tab opened from the game loop is often blocked.
   assert.match(src,/if\(data\.type==='intl-link'\)\{if\(openLink\)openLink\(\{/);assert.doesNotMatch(src,/window\.open/);
-  assert.match(game,/showNotice,openLink:openLinkCard,playSample/);assert.match(game,/function openLinkCard\(/);
+  assert.match(game,/showNotice,openLink:openLinkCard,showPicture:showRoomPicture,playSample/);assert.match(game,/function openLinkCard\(/);
   assert.match(html,/<a class="primary" id="linkCardGo" href="#" target="_blank" rel="noopener noreferrer">/);
 });
 
