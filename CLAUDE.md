@@ -545,8 +545,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   It keeps apart from the main racks (`apart`) the shelf of the Executed Renaissance on the bay's west wall (`MEMORIAL`:
   eight titles from the room's list, under a plaque), the candle on its back wall between the two memorials (its flame
   flickers in `room.ticks`, a drawn glow behind it, no light), a bench before it (a seat, opening one of the eight), and on
-  the bay's east wall, at eye level, The Unwritten, `UNWRITTEN`: fifteen blank spines, one InstancedMesh, on the upper of
-  two shelves left otherwise empty, for the books Ukraine's writers killed by Russia since 2014 did not
+  the bay's east wall, at eye level, The Unwritten, `UNWRITTEN`: fifteen dark blank spines, one InstancedMesh, on the upper of
+  two shelves left otherwise empty (their back panel stands clear of the dado: in its plane, the two flickered), for the books Ukraine's writers killed by Russia since 2014 did not
   live to write, beside a plaque whose card (from Chytomo's report of 6 November 2026; "more than three hundred", so it
   does not date) opens that report, `intl-link`: the spines and the plaque both open the card in a dialog with a real link,
   `openLinkCard` in game.js, since a tab opened from the game loop is often blocked; keep `UNWRITTEN` below `MEMORIAL`.
@@ -579,14 +579,14 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   in `international-wing.js`, its card linking the Ukrainian and, as `en`, the English version: the link card shows a
   second button for `also`) hangs framed on that room's east wall between Kateryna and the arch; across the arch, between it and the drawing of Raim,
   the Lviv paper Vysokyi Zamok's own article (18 November 2026; `ZAMOK`), which took the place of Ukrinform's piece (taken off
-  that spot on 20 November 2026; the owner wanted it kept, so on 21 November it went into the cuttings); five cuttings in one frame north of
-  the west window, three over two (`RETOLD`: Ukrinform, TyKyiv, Shotam, Inkorr in English, Foro3D in Spanish; November 2026, mostly retelling Chytomo,
+  that spot on 20 November 2026; the owner wanted it kept, so on 21 November it went into the cuttings); five cuttings in one frame on the
+  east wall south of Raim, between the Prosvita sheet and the Vernadsky postcard (moved from beside the west window on 22 November 2026), three over two (`RETOLD`: Ukrinform, TyKyiv, Shotam, Inkorr in English, Foro3D in Spanish; November 2026, mostly retelling Chytomo,
   added at the owner's wish; Foro3D's headline is shown without the owner's name); and NATE's blog piece,
   A library made for exploration (29 October 2026; `NATE` in `set-texts-room.js`), on the Set Texts Room's east wall north
   of the board for teachers. Each card opens its article in game.js's `openLinkCard` (`intl-link`, `settexts-nate`). Cards
   name the publication, never the journalist (a correspondent). PROSVITA DIGITAL (`PROSVITA`, prosvita.digital, which
   carries on the Prosvita society's work and keeps the Slovo Prosvity archive) links to the room, and the room links back
-  (November 2026): a framed sheet on its west wall south of the window, opening the site in Ukrainian or, as `en`, English.
+  (November 2026): a framed sheet on its east wall south of the drawing of Raim, opening the site in Ukrainian or, as `en`, English.
 - The polonyna (`carpathians.js`, centre x 200, z 1300; walkable within 30 m): the high summer pasture under Chornohora in
   Kotsiubynsky's Shadows of Forgotten Ancestors (book 988269, in the wing's list), on a summer night. Two ways in: a
   trembita standing in the Ukrainian Reading Room's north-east corner, between the racks' end and Kateryna, under a plaque
@@ -619,11 +619,12 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   a rushnyk; its card (`WINDOW`) quotes «Садок вишневий коло хати…» from the room's own Kobzar (book 962510, Кобзарь 1876,
   in place of «В казематі»), checked by a test. Keep `WINDOW` above `MITTEN`: the mitten's test reads every «quotation»
   between `MITTEN` and `MEMORIAL` against Рукавичка.
-- The Ukrainian Reading Room's stacks (`STACKS` in `international-wing.js`, `def.stacks`, placed from the room's middle,
-  so they moved with it on 22 November to stay where they were): its north racks hold 36 and
-  were full, so two freestanding double-sided cases stand end-on to the north wall in the room's north-east quarter
-  (four columns a face, three tiers, 48 places), clear of the reading table, the way to the arch, the trembita and the
-  didukh, under a sign, З ВІКІДЖЕРЕЛ (`STACKS_CARD`). Books beyond the racks' 36 go there in list order, tier by tier from the bottom with the two faces taking turns (so a case not yet full is not bare on one side); each remembers its facing (`userData.facing`), and game.js's focus skips a book whose back is to the reader, so the one behind a case's back panel is not offered through it. They hold the
+- The Ukrainian Reading Room's stacks (`STACKS` in `international-wing.js`, `def.stacks`): its north racks hold 36 and
+  were full, so wall cases stand on the west wall either side of the window (five columns north of it, six south, four
+  tiers, 44 places; until 22 November 2026 they were two freestanding cases in the middle of the room, and the owner
+  wanted them on a wall), under a sign, З ВІКІДЖЕРЕЛ (`STACKS_CARD`). Books beyond the racks' 36 go there in list order,
+  tier by tier from the bottom, the two cases taking turns (a test keeps them on the wall and none in the middle). game.js's
+  focus still skips a book whose `userData.facing` is away from the reader, though no book here sets it now. They hold the
   books added on Wikimedia Ukraine's advice (20 November 2026), found with the Catalogue lookup's `ws-index <category
   or w.wiki link>` from Wikisource's proofread and validated indexes (one physical book each, checked page by page by
   its volunteers): the first Kobzar (1840), Shevchenko's primer, the first Eneida (1798), Franko, Kobylianska, Khvylovy,
@@ -732,8 +733,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   from 1947, Faraday from 1977, Ukraine's flag raised on 6 February 1996, Vernadsky the Academy's first president, ozone
   and the ionosphere still measured), and a little flag; in the top of the crate by the books, a pound coin, as one is said
   to be set into the station's bar (found for good, `athenaeum-vernadsky-pound`; its card keeps the symbolic pound a story).
-  A postcard from the station (`POSTCARD` in international-wing.js), pinned on the Ukrainian Reading Room's west wall
-  between the window's rushnyk and the cuttings, tells the way there. Made before writing to the National Antarctic
+  A postcard from the station (`POSTCARD` in international-wing.js), pinned on the Ukrainian Reading Room's east wall
+  south of the cuttings, tells the way there. Made before writing to the National Antarctic
   Scientific Center of Ukraine (20 November 2026).
 - The African Reading Room (`african-room.js`, courtyard x −600, z −294; room north of it) is reached by balloon: a
   balloon moored in the roof garden's south-west corner (x −13, z 51.5) rises over the town, crosses a cloud sea (built at

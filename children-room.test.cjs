@@ -279,3 +279,15 @@ test('the memorial bay: a reader walks in from the room through its opening, not
   // The bay must not reach the Italian room to the south.
   const I=a.w.rooms.italian;assert(S+B.depth+2<I.cz-I.d/2);
 });
+
+test('the Wikisource books stand on the west wall either side of the window, facing into the room, and none in the middle of it',()=>{
+  const a=wing();a.w.enter('ukrainian');const U=a.w.rooms.ukrainian,W=U.cx-U.w/2,N=U.cz-U.d/2;
+  const books=a.interactables.filter(o=>o.userData?.type==='book'&&o.userData.wingRoom==='ukrainian'&&!o.userData.childrenRoom&&!o.userData.featured);
+  const west=books.filter(o=>Math.abs(world(o).x-(W+.52))<.01),north=books.filter(o=>Math.abs(world(o).z-(N+.42))<.01);
+  assert.equal(north.length,36,'the north racks are full');assert(west.length>0,'the rest are on the west wall');
+  for(const o of west){const {z}=world(o);assert.equal(o.rotation.y,Math.PI/2,'facing into the room');
+    assert(Math.abs(z-U.cz)>3.6,'clear of the window and its rushnyk');assert(z>N+.9&&z<U.cz+U.d/2-.3,'between the north racks and the south wall')}
+  const placed=new Set([...west,...north]);
+  for(const o of books.filter(o=>!placed.has(o))){const {x,z}=world(o);
+    assert(Math.abs(x-U.cx)>U.w/2-1.2||Math.abs(z-U.cz)>U.d/2-1.2||z>U.cz+U.d/2,`${o.userData.book.title} stands against a wall or in the bay, not in the middle of the room`)}
+});

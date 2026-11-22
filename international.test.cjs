@@ -241,8 +241,8 @@ test('the Ukrainian room’s north racks and stacks have a place for every book 
   const wing=fs.readFileSync('international-wing.js','utf8'),list=load('data/new-books-wing.js','ATHENAEUM_NEW_BOOKS_WING').filter(e=>e[4]==='ukrainian').map(e=>e[1]);
   const titles=name=>[...wing.match(new RegExp(`const ${name}=\\[([^\\]]*)\\]`))[1].matchAll(/'((?:[^'\\]|\\.)*)'/g)].map(m=>m[1].replace(/\\'/g,"'"));
   const apart=new Set([...titles('CHILDREN'),...titles('MEMORIAL'),'Княжна']),racked=list.filter(t=>!apart.has(t));
-  // Beyond the racks' 36, the freestanding stacks: two faces of cols×3 each.
-  const stacks=[...wing.match(/const STACKS=\[([^\]]*)\]/)[1].matchAll(/cols:(\d+)/g)].reduce((n,m)=>n+2*3*Number(m[1]),0);
+  // Beyond the racks' 36, the wall cases either side of the west window: cols×4 each.
+  const stacks=[...wing.match(/const STACKS=\[([^\]]*)\]/)[1].matchAll(/cols:(\d+)/g)].reduce((n,m)=>n+4*Number(m[1]),0);
   assert.ok(racked.length<=36+stacks,`${racked.length} books for ${36+stacks} places on the north racks and the stacks`);
 });
 
@@ -371,9 +371,3 @@ test('the Unwritten: blank spines beside the Executed Renaissance, a card true t
   assert.match(html,/<a class="primary" id="linkCardGo" href="#" target="_blank" rel="noopener noreferrer">/);
 });
 
-test('the Ukrainian room’s stacks fill both faces evenly, and a book behind a case’s back panel is never offered',()=>{
-  const wing=fs.readFileSync('international-wing.js','utf8'),game=fs.readFileSync('game.js','utf8');
-  assert.match(wing,/for\(const y of ROWS\)for\(let i=0;i<st\.cols;i\+\+\)for\(const side of \[-1,1\]\)/,'tier by tier, the faces taking turns');
-  assert.match(wing,/mesh\.userData\.facing=\[stackSpots\[i\]\.side,0\]/);
-  assert.match(game,/const fc=object\.userData\?\.facing;if\(fc&&\(camera\.position\.x-focusWorldPosition\.x\)\*fc\[0\]\+\(camera\.position\.z-focusWorldPosition\.z\)\*fc\[1\]<0\)continue/,'focus skips a book whose back is to the reader');
-});
