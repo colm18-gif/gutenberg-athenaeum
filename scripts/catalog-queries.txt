@@ -9,3 +9,20 @@ subject? Ballads, Faroese
 subject? Faroese
  ; Chadwick, Nora ; en
  ; Kershaw ; en
+# The Ukrainian Reading Room's history frieze (22 November 2026): Hrushevsky, and documents for the walls.
+ws? Ілюстрована історія України Грушевський
+ws? Грушевський Історія України
+ws? Конституція Пилипа Орлика
+ws? Емський указ
+ws? Валуєвський циркуляр
+ws? Акт проголошення незалежності України
+ws? Четвертий Універсал
+commons? Constitution of Pylyp Orlyk 1710
+commons? Pacta et Constitutiones Orlyk
+commons? Ems Ukaz 1876
+commons? Valuev circular 1863
+commons? Act of Declaration of Independence of Ukraine 1991
+commons? Fourth Universal Central Rada
+commons? Scythian pectoral Tovsta Mohyla
+commons? Trypillia pottery
+commons? Ostroh Bible 1581
