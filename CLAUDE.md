@@ -537,11 +537,17 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Names in the Dust, The Longer Silence, St—ll W—ting and What Was Kept) are stocked from the shelves `returning`,
   `quiet`, `unread` and `repository` in `data/new-books.js`. The Repository's
   four racks hold 36 distinct books and its request desk one more.
-- The Ukrainian Reading Room (`international-wing.js`, `dressUkrainian` and `furnishUkrainian`) keeps apart from its main
-  racks (`apart`) the shelf of the Executed Renaissance by its door (`MEMORIAL`: eight titles from the room's list, under a
-  plaque and a candle whose flame flickers in `room.ticks`, no light; on the case's east end, past the candle, The Unwritten,
-  `UNWRITTEN`: fifteen blank spines, one InstancedMesh, for the books Ukraine's writers killed by Russia since 2014 did not
-  live to write, under a plaque whose card (from Chytomo's report of 6 November 2026; "more than three hundred", so it
+- The Ukrainian Reading Room (`international-wing.js`, `dressUkrainian` and `furnishUkrainian`) is 24 m by 20 m (made 5 m
+  deeper to the south on 22 November 2026, at the owner's wish: it had grown cramped; its north wall, the arch and
+  everything on its east wall stayed put, so the arch is at the children's room's middle, `CHILDREN_ROOM.cz`, not the
+  room's, and east-wall things are placed from `AZ`). In its south wall east of the door, under a lintel and a lower
+  ceiling, is the memorial bay (`BAY`, `bayBox`; `allowed` lets the reader in only through its opening; a test walks in).
+  It keeps apart from the main racks (`apart`) the shelf of the Executed Renaissance on the bay's west wall (`MEMORIAL`:
+  eight titles from the room's list, under a plaque), the candle on its back wall between the two memorials (its flame
+  flickers in `room.ticks`, a drawn glow behind it, no light), a bench before it (a seat, opening one of the eight), and on
+  the bay's east wall, at eye level, The Unwritten, `UNWRITTEN`: fifteen blank spines, one InstancedMesh, on the upper of
+  two shelves left otherwise empty, for the books Ukraine's writers killed by Russia since 2014 did not
+  live to write, beside a plaque whose card (from Chytomo's report of 6 November 2026; "more than three hundred", so it
   does not date) opens that report, `intl-link`: the spines and the plaque both open the card in a dialog with a real link,
   `openLinkCard` in game.js, since a tab opened from the game loop is often blocked; keep `UNWRITTEN` below `MEMORIAL`.
   An InstancedMesh must stand where its instances are: focus is found by each object's own position) and the book in Shevchenko's boot (`boot:'Княжна'`):
@@ -613,7 +619,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   a rushnyk; its card (`WINDOW`) quotes «Садок вишневий коло хати…» from the room's own Kobzar (book 962510, Кобзарь 1876,
   in place of «В казематі»), checked by a test. Keep `WINDOW` above `MITTEN`: the mitten's test reads every «quotation»
   between `MITTEN` and `MEMORIAL` against Рукавичка.
-- The Ukrainian Reading Room's stacks (`STACKS` in `international-wing.js`, `def.stacks`): its north racks hold 36 and
+- The Ukrainian Reading Room's stacks (`STACKS` in `international-wing.js`, `def.stacks`, placed from the room's middle,
+  so they moved with it on 22 November to stay where they were): its north racks hold 36 and
   were full, so two freestanding double-sided cases stand end-on to the north wall in the room's north-east quarter
   (four columns a face, three tiers, 48 places), clear of the reading table, the way to the arch, the trembita and the
   didukh, under a sign, З ВІКІДЖЕРЕЛ (`STACKS_CARD`). Books beyond the racks' 36 go there in list order, tier by tier from the bottom with the two faces taking turns (so a case not yet full is not bare on one side); each remembers its facing (`userData.facing`), and game.js's focus skips a book whose back is to the reader, so the one behind a case's back panel is not offered through it. They hold the
