@@ -25,11 +25,11 @@
   // The Ukrainian room's shelf of the Executed Renaissance, and the little book in Shevchenko's boot: these stand apart
   // from its main shelves (data/new-books-wing.js gives them, with the room's other books).
   // The children's shelf: tales and verse for the youngest readers, on a low bookcase under the Petrykivka painting.
-  // Two freestanding double-sided cases in the Ukrainian room's north-east quarter, set end-on to the north wall as a
-  // library's stacks are, for the books from Wikisource's proofread and validated indexes (20 November 2026, on
-  // Wikimedia Ukraine's advice) that the north racks could not hold: x and z from the room's centre, `len` along z,
-  // `cols` columns a face, three tiers, both faces. They end north of the reading table and the way to the arch.
-  const STACKS=[{x:5.4,z:-5.5,len:4,cols:4},{x:8.9,z:-5.5,len:4,cols:4}];
+  // The Ukrainian room's stacks: wall cases on its west wall either side of the window, for the books from Wikisource's
+  // proofread and validated indexes (20 November 2026, on Wikimedia Ukraine's advice) that the north racks could not
+  // hold: z from the room's centre, `len` along the wall, `cols` columns, four tiers. North of the window they start past
+  // the north racks; south of it they end short of the south wall.
+  const STACKS=[{z:-6.45,len:5.3,cols:5},{z:6.78,len:5.9,cols:6}];
   const STACKS_CARD=['З Вікіджерел · From Wikisource','Ці книжки вичитали й перевірили, сторінку за сторінкою, волонтери Українських Вікіджерел: кожна — окрема надрукована книжка, від першого «Кобзаря» 1840 року до Антонича й Ольжича. Бібліотека знайшла їх за порадою Вікімедіа Україна. (These books were proofread and checked page by page by the volunteers of Ukrainian Wikisource, each one a printed book of its own, from the first Kobzar of 1840 to Antonych and Olzhych. The library found them on Wikimedia Ukraine’s advice.)'];
   const CHILDREN=['Рукавичка','Пан Коцький','Котигорошко','Кирило Кожум\'яка','Українські народні казки','Коли ще звірі говорили','Лис Микита','Байки','Біда навчить','До української дитини','Харитя','Ялинка','Грицева шкільна наука'];
   // The letter hunt: six wooden letter blocks hidden about the Ukrainian room spell КАЛИНА, each with a word for children.
@@ -200,7 +200,7 @@
       note:'La nota della bibliotecaria',seat:['Una sedia accanto al tavolo','Si sieda e legga un libro di questa sala. (Sit and read a book from this room.)']},
     ukrainian:{cx:-530,cz:102.5,w:24,d:20,h:6,language:'uk',sign:'УКРАЇНСЬКА ЧИТАЛЬНЯ',sub:'The Ukrainian Reading Room · Міжнародне крило',
       card:['Українська читальня','Класика українською мовою, від Котляревського й Шевченка до Лесі Українки, Франка й Коцюбинського, кожна книжка з приміткою бібліотекарки. Тексти з Вікіджерел, суспільне надбання. (The Ukrainian Reading Room.)'],
-      lectern:'КНИЖКА ВЕЧОРА',lecternSub:'Tonight’s book',shade:0x2b5aa8,tiles:'vyshyvanka',memorial:MEMORIAL,boot:'Княжна',children:CHILDREN,older:OLDER,annex:CHILDREN_ROOM,bay:BAY,visitors:[11,3.5],window:true,stacks:STACKS,
+      lectern:'КНИЖКА ВЕЧОРА',lecternSub:'Tonight’s book',shade:0x2b5aa8,tiles:'vyshyvanka',memorial:MEMORIAL,boot:'Княжна',children:CHILDREN,older:OLDER,annex:CHILDREN_ROOM,bay:BAY,visitors:[11,1],window:true,stacks:STACKS,
       welcome:pick=>`Українська читальня. Ласкаво просимо: класика українською мовою, кожна книжка з приміткою бібліотекарки.${writingDay()?' Сьогодні День української писемності та мови.':''}${isHolodomorDay()?' Сьогодні День пам’яті жертв голодоморів.':''}${pick?` На пюпітрі сьогодні: ${pick.title}.`:''} (The Ukrainian Reading Room: Ukrainian classics, each with a librarian’s note in Ukrainian and English.${writingDay()?' Today is the Day of Ukrainian Writing and Language.':''}${isHolodomorDay()?' Today is the Day of Remembrance of the Victims of the Holodomor.':''}${pick?' Tonight’s book is on the lectern.':''})`,
       note:'Примітка бібліотекарки',seat:['Стілець біля столу','Сідайте й читайте книжку з цієї читальні. (Sit and read a book from this room.)']}
   };
@@ -590,7 +590,7 @@
       const memorialCard={type:'intl-card',title:'Розстріляне відродження',author:'Письменники 1920-х років, яких у 1930-х розстріляли, замучили в таборах чи довели до смерті: Підмогильний, Хвильовий, Зеров, Куліш, Косинка, Плужник, Драй-Хмара, Йогансен. Восени 1937 року в урочищі Сандармох у Карелії розстріляли Зерова, Підмогильного, Куліша й Леся Курбаса разом із сотнями інших в’язнів Соловків. Назву «Розстріляне відродження» дала їм антологія Юрія Лавріненка 1959 року. (The Executed Renaissance: Ukrainian writers of the 1920s, shot or worked to death in the camps in the 1930s.)',action:'READ'};
       // The Executed Renaissance: two tiers of four on the bay's west wall, facing east across it, under its board.
       {const len=3.6,zc=S+.3+len/2,pitch=len/4,z0=zc-len/2;
-        box(.06,2.5,len-.1,MAT.darkWood,B0+.2,2.3,zc);box(.46,.14,len+.1,MAT.darkWood,B0+.36,3.55,zc);
+        box(.06,2.5,len-.1,MAT.darkWood,B0+.24,2.3,zc);box(.46,.14,len+.1,MAT.darkWood,B0+.36,3.55,zc);
         for(let i=0;i<=4;i++)box(.4,2.5,.07,MAT.darkWood,B0+.38,2.3,z0+i*pitch);
         for(let row=0;row<2;row++)box(.36,.05,len-.1,MAT.darkWood,B0+.36,1.1+row*1.12,zc);block(B0+.4,zc,.8,len+.1);
         held.slice(0,8).forEach((book,i)=>placeBook(book,{x:B0+.42,y:1.62+Math.floor(i/4)*1.12,z:z0+pitch/2+(i%4)*pitch,yaw:Math.PI/2}));
@@ -610,14 +610,14 @@
       // The Unwritten, on the bay's east wall at eye level: its plaque, and two shelves with fifteen blank spines on the
       // upper one and the rest of the shelves left empty, for the books Ukraine's writers killed by Russia since 2014 did
       // not live to write (more than three hundred: the empty shelf says so without a number).
-      {const n=15,len=2.2,zc=BS-.25-len/2,sx=B1-.3;
-        box(.05,1.3,len,MAT.darkWood,B1-.17,1.15,zc);for(const y of [.72,1.32])box(.3,.04,len,MAT.darkWood,sx,y,zc);for(const e of [-1,1])box(.3,1.3,.05,MAT.darkWood,sx,1.15,zc+e*len/2);block(sx,zc,.6,len+.1);
-        const spine=own(new THREE.BoxGeometry(.24,1,.07)),spines=new THREE.InstancedMesh(spine,own(new THREE.MeshStandardMaterial({color:0xffffff,roughness:.85})),n),m=new THREE.Matrix4(),tint=new THREE.Color();
+      {const n=15,len=2.2,zc=BS-.25-len/2,sx=B1-.42;
+        box(.05,1.3,len,MAT.darkWood,B1-.24,1.15,zc);for(const y of [.72,1.32])box(.3,.04,len,MAT.darkWood,sx,y,zc);for(const e of [-1,1])box(.3,1.3,.05,MAT.darkWood,sx,1.15,zc+e*len/2);block(sx,zc,.6,len+.1);
+        const spine=own(new THREE.BoxGeometry(.22,1,.07)),spines=new THREE.InstancedMesh(spine,own(new THREE.MeshStandardMaterial({color:0xffffff,roughness:.9})),n),m=new THREE.Matrix4(),tint=new THREE.Color();
         // The mesh stands where the spines do (its instances are placed from there): the game looks for things to pick by
         // each object's own position, and one left at the origin would never be found.
         const run=(n-1)*.08,s0=zc-len/2+.12+run/2;
         spines.position.set(sx,1.34,s0);
-        for(let i=0;i<n;i++){const h=.3+((i*7)%5)*.022;m.makeScale(1,h,1);m.setPosition(0,h/2,-run/2+i*.08);spines.setMatrixAt(i,m);spines.setColorAt?.(i,tint.setHex([0x5a4e42,0x6a5b4c,0x4d443b,0x625446,0x564a3f][(i*3)%5]))}
+        for(let i=0;i<n;i++){const h=.3+((i*7)%5)*.022;m.makeScale(1,h,1);m.setPosition(0,h/2,-run/2+i*.08);spines.setMatrixAt(i,m);spines.setColorAt?.(i,tint.setHex([0x15100c,0x1c1611,0x120e0b,0x19130f,0x17110d][(i*3)%5]))}
         root.add(spines);own(spines);
         const tag=add(own(new THREE.PlaneGeometry(1.1,.42)),own(new THREE.MeshStandardMaterial({map:own(plaque('НЕДОПИСАНІ','The Unwritten · since 2014',520,200,'#151515')),roughness:.8,emissive:0x5a3a18,emissiveIntensity:.2})),B1-.16,1.95,S+.95,root);
         // The spines and the plaque are one memorial: either opens its card, with the link to the report.
@@ -1044,23 +1044,23 @@
         framed(clipping('Читомо','ЕКСКЛЮЗИВ · '+CHYTOMO.date,CHYTOMO.title),AZ-3.25,link)}
       {const link={type:'intl-link',title:ZAMOK.title,author:ZAMOK.card,url:ZAMOK.url,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:'Читати у «Високому Замку» · Read it in Vysokyi Zamok',action:'READ'};
         framed(clipping('Високий Замок','ЛЬВІВ · '+ZAMOK.date,ZAMOK.title),AZ+3.25,link)}
-      // PROSVITA DIGITAL's sheet, on the west wall south of the window (its rushnyk ends at cz+3.57), facing into the room.
-      {const WW=cx-w/2+.19,py=2.35,pz=cz+5.3,link={type:'intl-link',title:PROSVITA.title,author:PROSVITA.card,url:PROSVITA.url,also:PROSVITA.en,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:'Відвідати · Visit prosvita.digital',action:'VISIT'};
-        const face=add(own(new THREE.PlaneGeometry(.66,.93)),own(new THREE.MeshStandardMaterial({map:clipping('Просвіта','ПРОСВІТА ЦИФРОВА · PROSVITA.DIGITAL','«Слово Просвіти»: цифровий архів від 1995 року'),roughness:.9})),WW+.03,py,pz,root);face.rotation.y=Math.PI/2;
+      // The press, the Prosvita sheet and the postcard hang on the east wall south of the drawing of Raim (until 22 November
+      // 2026 they were either side of the window, where the Wikisource cases now stand): PROSVITA DIGITAL's sheet first.
+      {const WW=EX,py=2.35,pz=AZ+7,link={type:'intl-link',title:PROSVITA.title,author:PROSVITA.card,url:PROSVITA.url,also:PROSVITA.en,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:'Відвідати · Visit prosvita.digital',action:'VISIT'};
+        const face=add(own(new THREE.PlaneGeometry(.66,.93)),own(new THREE.MeshStandardMaterial({map:clipping('Просвіта','ПРОСВІТА ЦИФРОВА · PROSVITA.DIGITAL','«Слово Просвіти»: цифровий архів від 1995 року'),roughness:.9})),WW-.03,py,pz,root);face.rotation.y=-Math.PI/2;
         const frame=add(own(new THREE.BoxGeometry(.04,1.07,.8)),MAT.darkWood,WW,py,pz,root);
         mark(face,link);mark(frame,{...link})}
-      // The five retellings in one frame north of the window, three over two (its rushnyk ends at cz−3.57; the north racks
-      // stand out 0.8 m from the north wall): each cutting opens its own article; the frame's card names all five.
-      {const WW=cx-w/2+.19,py=2.35,pz=cz-5.1;
+      // The five retellings in one frame, three over two: each cutting opens its own article; the frame's card names all five.
+      {const WW=EX,py=2.35,pz=AZ+8.7;
         const frame=add(own(new THREE.BoxGeometry(.04,1.66,1.3)),MAT.darkWood,WW,py,pz,root);
-        const mount=add(own(new THREE.PlaneGeometry(1.2,1.56)),own(new THREE.MeshStandardMaterial({color:0x2b2620,roughness:.95})),WW+.025,py,pz,root);mount.rotation.y=Math.PI/2;
+        const mount=add(own(new THREE.PlaneGeometry(1.2,1.56)),own(new THREE.MeshStandardMaterial({color:0x2b2620,roughness:.95})),WW-.025,py,pz,root);mount.rotation.y=-Math.PI/2;
         mark(frame,{type:'intl-card',title:'Про цю читальню писали · Also written about this room',author:'Про цю читальню розповіли в листопаді 2026 року ще «Укрінформ», «ТиКиїв» і «Шотам» українською, Inkorr англійською, Foro3D іспанською. Торкніться вирізки, щоб її прочитати. (Ukrinform, TyKyiv and Shotam in Ukrainian, Inkorr in English and Foro3D in Spanish also told the story of this room in November 2026. Touch a cutting to read it.)',action:'READ'});
         RETOLD.forEach((r,i)=>{const link={type:'intl-link',title:r.title,author:r.card,url:r.url,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:r.label,action:'READ'};
-          const face=add(own(new THREE.PlaneGeometry(.37,.52)),own(new THREE.MeshStandardMaterial({map:clipping(r.name,r.kicker,r.title),roughness:.9})),WW+.03,py+(i<3?.3:-.3),pz+(i<3?[.4,0,-.4][i]:[.2,-.2][i-3]),root);face.rotation.y=Math.PI/2;
+          const face=add(own(new THREE.PlaneGeometry(.37,.52)),own(new THREE.MeshStandardMaterial({map:clipping(r.name,r.kicker,r.title),roughness:.9})),WW-.03,py+(i<3?.3:-.3),pz+(i<3?[-.4,0,.4][i]:[-.2,.2][i-3]),root);face.rotation.y=-Math.PI/2;
           mark(face,link)})}
 
-      // The postcard from Akademik Vernadsky, pinned to the west wall north of the window's rushnyk.
-      {const WW=cx-w/2+.19,face=own(canvasTexture((c,W,H)=>{c.fillStyle='#f4eedc';c.fillRect(0,0,W,H);
+      // The postcard from Akademik Vernadsky, pinned to the east wall south of the cuttings.
+      {const WW=EX,face=own(canvasTexture((c,W,H)=>{c.fillStyle='#f4eedc';c.fillRect(0,0,W,H);
           const sky=c.createLinearGradient(0,0,0,H*.62);sky.addColorStop(0,'#2b4a7a');sky.addColorStop(1,'#e7b98f');c.fillStyle=sky;c.fillRect(10,10,W-20,H*.62-10);
           c.fillStyle='#eef3f6';c.beginPath();c.moveTo(10,H*.5);for(let x=10;x<=W-10;x+=W/10)c.lineTo(x,H*(.3+.1*Math.abs(Math.sin(x*.03))));c.lineTo(W-10,H*.62);c.lineTo(10,H*.62);c.fill();
           c.fillStyle='#c9c2b4';c.fillRect(W*.36,H*.44,W*.3,H*.1);c.fillStyle='#5a6a7a';c.fillRect(W*.35,H*.42,W*.32,H*.025);
@@ -1069,8 +1069,8 @@
           c.fillStyle='#1d2a44';c.textAlign='center';c.font=`bold ${Math.round(H*.085)}px Georgia`;c.fillText('ВІТАННЯ З АНТАРКТИДИ',W/2,H*.76);
           c.font=`italic ${Math.round(H*.06)}px Georgia`;c.fillText('«Академік Вернадський» · Greetings from Antarctica',W/2,H*.87)},384,256)),
         data={type:'intl-card',title:POSTCARD.title,author:POSTCARD.card,action:'READ'};
-        const card=add(own(new THREE.PlaneGeometry(.36,.24)),own(new THREE.MeshStandardMaterial({map:face,roughness:.85})),WW+.03,1.7,cz-4.0,root);card.rotation.y=Math.PI/2;card.rotation.z=.04;mark(card,data);
-        add(own(new THREE.SphereGeometry(.012,6,4)),MAT.brass,WW+.04,1.81,cz-4.0,root)}
+        const card=add(own(new THREE.PlaneGeometry(.36,.24)),own(new THREE.MeshStandardMaterial({map:face,roughness:.85})),WW-.03,1.7,AZ+10.2,root);card.rotation.y=-Math.PI/2;card.rotation.z=.04;mark(card,data);
+        add(own(new THREE.SphereGeometry(.012,6,4)),MAT.brass,WW-.04,1.81,AZ+10.2,root)}
 
       // A trembita, the Hutsuls' long wooden horn bound in birch bark, standing in the north-east corner between the racks'
       // end and Kateryna, under a small plaque: blow it, and the reader is on the polonyna of Kotsiubynsky's Shadows of
@@ -1227,24 +1227,21 @@
       const corner=def.corner,inCorner=book=>!!corner&&corner.ids.includes(book.id);
       const racked=list.filter(book=>!inCorner(book)&&!apart(def,book));
       racked.slice(0,spots.length).forEach((book,i)=>placeBook(book,spots[i]));
-      // The stacks (def.stacks): freestanding double-sided cases for the books beyond the wall racks, each face of
-      // `cols` columns and three tiers, books facing out on both sides, under a sign on top.
-      if(def.stacks){const more=racked.slice(spots.length),stackSpots=[],ROWS=[.82,1.94,3.06];
-        for(const st of def.stacks){const x=cx+st.x,z=cz+st.z,z0=z-st.len/2,pitch=st.len/st.cols;
-          box(.06,3.66,st.len,MAT.darkWood,x,1.83,z);box(.66,.12,st.len+.12,MAT.darkWood,x,3.72,z);box(.62,.1,st.len+.06,MAT.darkWood,x,.05,z);
-          for(const y of ROWS)box(.6,.04,st.len,MAT.darkWood,x,y-.56,z);
-          for(let i=0;i<=st.cols;i++)box(.6,3.66,.06,MAT.darkWood,x,1.83,z0+i*pitch);
-          const sign=own(plaque('З ВІКІДЖЕРЕЛ','From Wikisource · перевірені книжки',1100,158,'#1d2a3d',def.font));
-          for(const side of [-1,1]){const p=add(own(new THREE.PlaneGeometry(st.len-.2,.56)),own(new THREE.MeshStandardMaterial({map:sign,roughness:.8,emissive:0x5a3a18,emissiveIntensity:.3})),x+side*.04,4.08,z,root);
-            p.rotation.y=side*Math.PI/2;mark(p,{type:'intl-card',title:STACKS_CARD[0],author:STACKS_CARD[1],action:'READ'})}
-          box(.06,.6,st.len-.1,MAT.darkWood,x,4.08,z);
-          block(x,z,.8,st.len+.2);
-          // Tier by tier from the bottom, the two faces taking turns, so a case that is not yet full is filled evenly on
-          // both sides rather than one face full and the other bare.
-          for(const y of ROWS)for(let i=0;i<st.cols;i++)for(const side of [-1,1])stackSpots.push({x:x+side*.2,z:z0+pitch/2+i*pitch,y,yaw:side*Math.PI/2,side})}
-        // Each book remembers which way its cover faces (game.js's focus skips a book whose back is to the reader), so
-        // the one on the far side of a case's back panel is not offered through it.
-        more.slice(0,stackSpots.length).forEach((book,i)=>{const mesh=placeBook(book,stackSpots[i]);mesh.userData.facing=[stackSpots[i].side,0]})}
+      // The stacks (def.stacks): wall cases on the west wall either side of the window (until 22 November 2026 they were
+      // two freestanding double-sided cases in the middle of the room; the owner wanted them on a wall) for the books
+      // beyond the north racks: each `cols` columns and four tiers, books facing into the room, under a sign.
+      if(def.stacks){const more=racked.slice(spots.length),stackSpots=[],ROWS=[.82,1.94,3.06,4.18],WX=cx-w/2,H=4.8;
+        const sign=own(plaque('З ВІКІДЖЕРЕЛ','From Wikisource · перевірені книжки',1100,158,'#1d2a3d',def.font));
+        for(const st of def.stacks){const z=cz+st.z,z0=z-st.len/2,pitch=st.len/st.cols;
+          box(.06,H,st.len,MAT.darkWood,WX+.27,H/2,z);box(.5,.14,st.len+.1,MAT.darkWood,WX+.45,H+.07,z);box(.46,.1,st.len,MAT.darkWood,WX+.45,.05,z);
+          for(const y of ROWS)box(.36,.05,st.len,MAT.darkWood,WX+.47,y-.52,z);
+          for(let i=0;i<=st.cols;i++)box(.4,H,.07,MAT.darkWood,WX+.46,H/2,z0+i*pitch);
+          const p=add(own(new THREE.PlaneGeometry(st.len-.4,.5)),own(new THREE.MeshStandardMaterial({map:sign,roughness:.8,emissive:0x5a3a18,emissiveIntensity:.3})),WX+.31,H+.45,z,root);
+          p.rotation.y=Math.PI/2;mark(p,{type:'intl-card',title:STACKS_CARD[0],author:STACKS_CARD[1],action:'READ'});
+          block(WX+.45,z,.9,st.len+.1);
+          for(const y of ROWS)for(let i=0;i<st.cols;i++)stackSpots.push({x:WX+.52,z:z0+pitch/2+i*pitch,y,yaw:Math.PI/2})}
+        // Tier by tier from the bottom, the cases taking turns, so neither is bare while the other is full.
+        stackSpots.sort((s,t)=>s.y-t.y);more.slice(0,stackSpots.length).forEach((book,i)=>placeBook(book,stackSpots[i]))}
       // A room's own corner shelf (the French room's Rayon suisse): a short case of two tiers on the east wall.
       if(corner){const ex=cx+w/2,held=corner.ids.map(id=>list.find(book=>book.id===id)).filter(Boolean);
         box(.06,2.4,8.8,MAT.darkWood,ex-.2,2.3,cz);box(.46,.14,9,MAT.darkWood,ex-.36,3.52,cz);for(let i=0;i<=4;i++)box(.4,2.4,.07,MAT.darkWood,ex-.38,2.3,cz-4.4+i*2.2);
