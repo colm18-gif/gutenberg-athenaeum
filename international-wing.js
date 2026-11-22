@@ -57,6 +57,9 @@
   // The chronicle frieze along the top of the Ukrainian room's south wall (22 November 2026): Ukraine's long history in
   // thirteen painted panels, read left to right from inside the room (east to west), each with a card. Keep every card
   // to what is firmly attested; Ukrainian first, English after.
+  // The documents a panel opens large (HISTORY's `doc`, assets/pictures/<key>.jpg, fetched by scripts/fetch-maps.mjs and
+  // looked at before use), with a caption and the credit.
+  const HISTORY_DOCS={};
   const HISTORY=[
     {kind:'pot',years:'бл. 5400–2700 до н. е.',name:'Трипілля',card:'Трипільська культура: хлібороби, що розписували глиняний посуд спіралями й будували поселення, одні з найбільших у тогочасній Європі. (The Trypillia culture: farmers who painted their pottery with spirals and built some of the largest settlements in Europe of their time.)'},
     {kind:'pectoral',years:'IV ст. до н. е.',name:'Скіфи',card:'Золота пектораль, нагрудна прикраса скіфського царя, з тваринами й людьми у три яруси. Її знайшов археолог Борис Мозолевський 1971 року в кургані Товста Могила; тепер вона в Музеї історичних коштовностей України в Києві. (The gold pectoral, a Scythian king’s breast ornament with animals and people in three tiers, found by the archaeologist Borys Mozolevsky in 1971 in the Tovsta Mohyla barrow; it is now in the Museum of Historical Treasures of Ukraine in Kyiv.)'},
@@ -224,7 +227,7 @@
 
   window.createInternationalWing=Object.assign(function(options){
     const {placeVisitorsBook=null,THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals=()=>[],showNotice,playSample,move,analytics,isHolding=()=>false,today=()=>new Date(),
-      wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null,tone=null,gospel=null,forestSong=null,carpathians=null,openLink=null,purr=null,storage=window.localStorage}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
+      wallMaterial=null,finishWalls=null,registerSeat=null,doorKit=null,tone=null,gospel=null,forestSong=null,carpathians=null,openLink=null,showPicture=null,purr=null,storage=window.localStorage}=options;   // the library's own stone walls and contact shadows (wall-finish.js), when game.js offers them
     const DOOR={x:8.6,z:30.45,yaw:Math.PI};
     // The doors in the lobby's walls, one to each reading room, and a second door to the Italian in the Latin room's east
     // wall (room: the room a door opens on, when it is not its key; from: the room a door is in, when it is not the lobby).
@@ -692,7 +695,7 @@
         HISTORY.forEach((h,i)=>{const geo=own(new THREE.PlaneGeometry(fw,fh)),uv=geo.attributes.uv;
           for(let k=0;k<uv.count;k++)uv.setX(k,(i+uv.getX(k))/n);
           const x=cx+len/2-(i+.5)*pitch,panel=add(geo,mat,x,fy,S-.16,root);panel.rotation.y=Math.PI;
-          mark(panel,{type:'intl-card',title:`${h.name} · ${h.years}`,author:h.card,action:'READ'})});
+          mark(panel,{type:h.doc?'intl-history':'intl-card',index:i,title:`${h.name} · ${h.years}`,author:h.card,action:h.doc?'LOOK CLOSELY':'READ'})});
         // The embroidered borders above and below, as a rushnyk.
         const band=own(canvasTexture((c,W,H)=>stitchMotif(c,W,H),512,64));band.wrapS=THREE.RepeatWrapping;band.repeat.set(24,1);
         const linen=own(new THREE.MeshStandardMaterial({map:band,roughness:.9}));
@@ -1431,6 +1434,7 @@
         showNotice(`Горошина! ${KOTYHOROSHKO.pea} А в кутку тепер стоїть його булава. (And in the corner now stands his mace.)`,16);
         analytics?.track('Secret Found',{secret:'kotyhoroshko-pea'});return true}
       // A card that opens a page elsewhere: in a new tab, leaving the library where it was.
+      if(data.type==='intl-history'){const h=HISTORY[data.index],doc=h&&HISTORY_DOCS[h.doc];if(doc&&showPicture){showPicture({kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',title:data.title,src:`assets/pictures/${h.doc}.jpg`,caption:`${doc.caption} ${h.card}`,credit:doc.credit});return true}showNotice(`${data.title}: ${data.author}`,14);return true}
       if(data.type==='intl-link'){if(openLink)openLink({kicker:data.kicker||'',title:data.title,text:data.author,url:data.url,label:data.label||'Read more',also:data.also});else showNotice(`${data.title}: ${data.author}`,12);return true}
       if(data.type==='intl-mitten'){const room=built.ukrainian;if(!room?.mittenNext)return true;const {kind,words}=room.mittenNext();
         if(tone){if(kind==='dog')for(const [i,f] of [196,196,174.6].entries())tone(f,i*.22,.18,.08,'piano');else tone(880+Math.random()*220,0,.12,.03,'bandura')}

@@ -2685,7 +2685,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     }
     // The International Wing (international-wing.js), behind a door on the Grand Hall's south wall beside the visitors'
     // book: the Spanish Reading Room and, through its green door, the Portuguese Reading Room; Chinese to follow.
-    const internationalWing=window.createInternationalWing?.({doorKit:getDoorKit(),tone:pianoTone,gospel:peresopnytsiaBook,forestSong:forestSong&&(()=>forestSong.enter('sopilka')),carpathians:carpathians&&(()=>carpathians.enter('trembita')),THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,openLink:openLinkCard,playSample,purr:(d,v)=>purr(d,v),
+    const internationalWing=window.createInternationalWing?.({doorKit:getDoorKit(),tone:pianoTone,gospel:peresopnytsiaBook,forestSong:forestSong&&(()=>forestSong.enter('sopilka')),carpathians:carpathians&&(()=>carpathians.enter('trembita')),THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,showNotice,openLink:openLinkCard,showPicture:showRoomPicture,playSample,purr:(d,v)=>purr(d,v),
       findBook:id=>books.find(b=>b.id===id),arrivals:room=>newArrivals.list(room).map(book=>book.id),analytics:window.libraryAnalytics,isHolding:()=>!!selected,registerSeat,
       wallMaterial:wallFinish?photoWall('sandstone_blocks_08',[2.4,2.4],0xb07a50,2):null,
       finishWalls:wallFinish&&(walls=>{for(const [mesh,w,h,d] of walls)wallFinish.finishBox(mesh,w,h,d);wallFinish.settle(walls.map(([mesh])=>mesh),{ceiling:true})}),placeVisitorsBook,openVisitorsBook:openRoomVisitorsBook,
