@@ -291,3 +291,24 @@ test('the Wikisource books stand on the west wall either side of the window, fac
   for(const o of books.filter(o=>!placed.has(o))){const {x,z}=world(o);
     assert(Math.abs(x-U.cx)>U.w/2-1.2||Math.abs(z-U.cz)>U.d/2-1.2||z>U.cz+U.d/2,`${o.userData.book.title} stands against a wall or in the bay, not in the middle of the room`)}
 });
+
+test('the chronicle frieze: its panels run in order along the top of the south wall, clear of everything below, each with a card in Ukrainian and English',()=>{
+  const a=wing();a.w.enter('ukrainian');const U=a.w.rooms.ukrainian,S=U.cz+U.d/2;
+  const H=vm.runInNewContext(`(()=>{${source.slice(source.indexOf('const HISTORY='),source.indexOf('}];',source.indexOf('const HISTORY='))+3)};return HISTORY})()`);
+  assert(H.length>=12,'a long history');
+  const panels=a.interactables.filter(o=>H.some(h=>o.userData?.title===`${h.name} · ${h.years}`));
+  assert.equal(panels.length,H.length,'one panel for each moment');
+  panels.forEach((p,i)=>{const {x,z}=world(p);assert(Math.abs(z-(S-.16))<.01,'on the south wall');assert(p.position.y-.5>=4.7,'above the door, the cases and the bay’s lintel');
+    assert.equal(p.userData.title,`${H[i].name} · ${H[i].years}`,'in order');if(i)assert(x<world(panels[i-1]).x,'read left to right from inside the room')});
+  for(const h of H)assert.match(h.card,/[А-Яа-яІіЇїЄєҐґ].*\. \([A-Z].*\)$/,`${h.name}: Ukrainian, then English in brackets`);
+});
+
+test('the chronicle frieze’s documents: every panel that opens one has its picture and a caption, and is read from the floor',()=>{
+  const docs=vm.runInNewContext(`(()=>{${source.slice(source.indexOf('const HISTORY_DOCS='),source.indexOf('}};',source.indexOf('const HISTORY_DOCS='))+3)};return HISTORY_DOCS})()`);
+  const H=vm.runInNewContext(`(()=>{${source.slice(source.indexOf('const HISTORY='),source.indexOf('}];',source.indexOf('const HISTORY='))+3)};return HISTORY})()`);
+  const used=H.filter(h=>h.doc);assert(used.length>=5);
+  for(const h of used){assert(docs[h.doc],`${h.doc} has a caption`);assert(fs.existsSync(`assets/pictures/${h.doc}.jpg`),`${h.doc}.jpg is there`);
+    assert.match(docs[h.doc].caption,/[А-Яа-яІіЇїЄє].*\(.*\)/);assert.match(docs[h.doc].credit,/public domain/)}
+  assert.match(source,/type:h\.doc\?'intl-history':'intl-card',reach:7\.4/);assert.match(game,/\(h\.object\.userData\|\|\{\}\)\.reach\|\|/,'game.js honours a longer reach');
+  assert.match(game,/showPicture:showRoomPicture,playSample/);
+});

@@ -44,6 +44,14 @@ export const PICTURES = [
   { key: 'shevchenko-kateryna', files: ['Шевченко Т. Г. Катерина. 1842.jpg', 'Image-Shevchenko Kateryna Olia 1842 large.jpg', 'Kateryna (Taras Shevchenko).jpg'], search: 'Shevchenko Kateryna 1842 painting' },
   { key: 'shevchenko-1848', file: '1848 - 201 - Self-portrait at the Syr Darya bank. Rayim, June 1848, Taras Shevchenko.jpg', search: 'Shevchenko self-portrait 1848' },
   { key: 'pymonenko-night', file: 'Mykola Pymonenko-Ukrayinska nich.jpg', search: 'Pymonenko Ukrainian night 1905' },
+  // For the Ukrainian Reading Room's chronicle frieze (HISTORY in international-wing.js): the documents its panels open
+  // large. Public domain on Commons; each looked at before use.
+  { key: 'ua-ostroh-bible-1581', file: 'Ostrog Bible, title page, 1581.jpg', minSize: 900 },
+  { key: 'ua-orlyk-1710', file: 'Philipp Orlik Constitution Original Front Page.jpg', minSize: 700 },
+  { key: 'ua-valuev-1863', file: 'Валуєвський циркуляр. Valuev Circular.jpg', minSize: 500 },
+  { key: 'ua-universal-1918', file: 'IV Універсал УЦР.jpg', minSize: 900 },
+  { key: 'ua-independence-1991', file: 'Declaration of Independence of Ukraine, 1991.jpg', minSize: 900 },
+  { key: 'ua-pectoral', file: 'Pektoral111.JPG', minSize: 700 },
   // For the Ukrainian children's room: the 1922 Yiddish edition of Ukrainian folk tales (Ukraynishe Folkmayses), its
   // picture for «Пан Коцький», and three letters of Heorhiy Narbut's Ukrainian alphabet (1917–19; Narbut died in 1920).
   { key: 'kids-pan-kotsky-1922', file: 'Ukraynishe Folkmayses 11.jpg', minSize: 500 },
