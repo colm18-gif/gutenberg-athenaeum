@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-11-21",
+ "updated": "2026-11-22",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -4502,6 +4502,12 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "words": 5019,
    "source": "wikisource",
    "page": "https://uk.wikisource.org/wiki/%D0%9A%D0%BE%D0%B1%D0%B7%D0%B0%D1%80%D1%8C_(1840)"
+  },
+  "Ілюстрована історія України [uk]": {
+   "id": 994647,
+   "words": 172611,
+   "source": "wikisource",
+   "page": "https://uk.wikisource.org/wiki/%D0%86%D0%BB%D1%8E%D1%81%D1%82%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B0_%D1%96%D1%81%D1%82%D0%BE%D1%80%D1%96%D1%8F_%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B8"
   },
   "Гамалія [uk]": {
    "id": 969602,
