@@ -291,3 +291,14 @@ test('the Wikisource books stand on the west wall either side of the window, fac
   for(const o of books.filter(o=>!placed.has(o))){const {x,z}=world(o);
     assert(Math.abs(x-U.cx)>U.w/2-1.2||Math.abs(z-U.cz)>U.d/2-1.2||z>U.cz+U.d/2,`${o.userData.book.title} stands against a wall or in the bay, not in the middle of the room`)}
 });
+
+test('the chronicle frieze: its panels run in order along the top of the south wall, clear of everything below, each with a card in Ukrainian and English',()=>{
+  const a=wing();a.w.enter('ukrainian');const U=a.w.rooms.ukrainian,S=U.cz+U.d/2;
+  const H=vm.runInNewContext(`(()=>{${source.slice(source.indexOf('const HISTORY='),source.indexOf('}];',source.indexOf('const HISTORY='))+3)};return HISTORY})()`);
+  assert(H.length>=12,'a long history');
+  const panels=a.interactables.filter(o=>H.some(h=>o.userData?.title===`${h.name} · ${h.years}`));
+  assert.equal(panels.length,H.length,'one panel for each moment');
+  panels.forEach((p,i)=>{const {x,z}=world(p);assert(Math.abs(z-(S-.16))<.01,'on the south wall');assert(p.position.y-.5>=4.7,'above the door, the cases and the bay’s lintel');
+    assert.equal(p.userData.title,`${H[i].name} · ${H[i].years}`,'in order');if(i)assert(x<world(panels[i-1]).x,'read left to right from inside the room')});
+  for(const h of H)assert.match(h.card,/[А-Яа-яІіЇїЄєҐґ].*\. \([A-Z].*\)$/,`${h.name}: Ukrainian, then English in brackets`);
+});

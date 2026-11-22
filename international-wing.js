@@ -54,6 +54,23 @@
     card:'«Розстріляне відродження» не закінчилося в 1937 році. (The Executed Renaissance did not end in 1937.) Since Russia began its war against Ukraine in 2014, the Unwritten Project, Недописані, has recorded more than three hundred members of Ukraine’s literary community killed by Russia: poets, prose writers, translators, editors. Among them are Victoria Amelina and Maksym Kryvtsov. Its volunteers, under its founders, the poet and paramedic Olena Herasymiuk and the soldier and writer Yevhen Lir, look for manuscripts, piece together lives, and keep the work that was left unfinished.',
     spines:'Книжки, яких уже ніхто не допише. (Books that no one will now finish writing.)',
     url:'https://chytomo.com/en/ukraine-s-unwritten-memorial-project-adds-20-names-to-list-of-literary-figures-killed-by-russia/'};
+  // The chronicle frieze along the top of the Ukrainian room's south wall (22 November 2026): Ukraine's long history in
+  // thirteen painted panels, read left to right from inside the room (east to west), each with a card. Keep every card
+  // to what is firmly attested; Ukrainian first, English after.
+  const HISTORY=[
+    {kind:'pot',years:'бл. 5400–2700 до н. е.',name:'Трипілля',card:'Трипільська культура: хлібороби, що розписували глиняний посуд спіралями й будували поселення, одні з найбільших у тогочасній Європі. (The Trypillia culture: farmers who painted their pottery with spirals and built some of the largest settlements in Europe of their time.)'},
+    {kind:'pectoral',years:'IV ст. до н. е.',name:'Скіфи',card:'Золота пектораль, нагрудна прикраса скіфського царя, з тваринами й людьми у три яруси. Її знайшов археолог Борис Мозолевський 1971 року в кургані Товста Могила; тепер вона в Музеї історичних коштовностей України в Києві. (The gold pectoral, a Scythian king’s breast ornament with animals and people in three tiers, found by the archaeologist Borys Mozolevsky in 1971 in the Tovsta Mohyla barrow; it is now in the Museum of Historical Treasures of Ukraine in Kyiv.)'},
+    {kind:'sophia',years:'XI ст.',name:'Київ',card:'За Ярослава Мудрого в Києві постав Софійський собор. Літопис розповідає, що Ярослав зібрав багато писарів, які перекладали й переписували книжки, і поклав ті книжки в Софії. (Under Yaroslav the Wise, St Sophia’s Cathedral rose in Kyiv. The chronicle tells that Yaroslav gathered many scribes who translated and copied books, and placed the books in St Sophia.)'},
+    {kind:'gospel',years:'1556–1561',name:'Пересопницьке Євангеліє',card:'Євангеліє, перекладене тогочасною українською книжною мовою; на ньому складають присягу президенти України. Його факсиміле лежить у цій читальні під склом. (A Gospel translated into the Ukrainian book language of its day; the presidents of Ukraine take their oath on it. Its facsimile lies under glass in this room.)'},
+    {kind:'bible',years:'1581',name:'Острозька Біблія',card:'Перша повна друкована Біблія церковнослов’янською мовою, видана в Острозі Іваном Федоровичем під опікою князя Костянтина Острозького. (The first complete printed Bible in Church Slavonic, printed at Ostroh by Ivan Fedorovych under the patronage of Prince Kostiantyn Ostrozkyi.)'},
+    {kind:'scroll',years:'1710',name:'Конституція Пилипа Орлика',card:'5 квітня 1710 року в Бендерах гетьман Пилип Орлик і козацька старшина уклали «Пакти й Конституції прав і вольностей Війська Запорозького», що обмежували владу гетьмана. Їх часто називають однією з перших конституцій Європи. (On 5 April 1710 at Bendery, Hetman Pylyp Orlyk and the Cossack officers agreed the Pacts and Constitutions of the Rights and Freedoms of the Zaporozhian Host, which limited the hetman’s power. They are often called one of the first constitutions in Europe.)'},
+    {kind:'quill',years:'1798',name:'«Енеїда»',card:'Іван Котляревський переказав Вергілієву «Енеїду» живою українською мовою, і з неї починається нова українська література. Її перше видання стоїть на полицях цієї читальні. (Ivan Kotliarevsky retold Virgil’s Aeneid in living Ukrainian, and modern Ukrainian literature begins with it. Its first edition is on this room’s shelves.)'},
+    {kind:'kobza',years:'1840',name:'«Кобзар»',card:'Перший «Кобзар» Тараса Шевченка, вісім поезій, вийшов у Петербурзі. Він теж стоїть на полицях цієї читальні. (Taras Shevchenko’s first Kobzar, eight poems, came out in St Petersburg. It too is on this room’s shelves.)'},
+    {kind:'chain',years:'1863 · 1876',name:'Заборони',card:'Валуєвський циркуляр 1863 року заборонив друкувати українською шкільні й релігійні книжки, а Емський указ 1876 року — майже все, навіть ввозити українські книжки з-за кордону. Українська книжка жила попри це. (The Valuev circular of 1863 banned school and religious books in Ukrainian; the Ems decree of 1876 banned almost all of it, even bringing Ukrainian books in from abroad. Ukrainian books lived on regardless.)'},
+    {kind:'universal',years:'1918',name:'Українська Народна Республіка',card:'22 січня 1918 року Четвертим Універсалом Центральна Рада проголосила Українську Народну Республіку незалежною. Рівно за рік, 22 січня 1919 року, Акт Злуки об’єднав її із Західноукраїнською Народною Республікою. (On 22 January 1918 the Central Rada’s Fourth Universal declared the Ukrainian People’s Republic independent. A year later to the day, the Act of Unity joined it with the West Ukrainian People’s Republic.)'},
+    {kind:'wheat',years:'1932–1937',name:'Голодомор · Розстріляне відродження',card:'1932–1933 року радянська влада заморила голодом мільйони українців: це Голодомор. У 1930-х розстріляли й замучили покоління письменників, Розстріляне відродження; їхні книжки стоять у ніші біля дверей. (In 1932–1933 the Soviet regime starved millions of Ukrainians to death: the Holodomor. In the 1930s a generation of writers was shot or worked to death, the Executed Renaissance; their books stand in the bay by the door.)'},
+    {kind:'flag',years:'1991',name:'Незалежність',card:'24 серпня 1991 року Верховна Рада ухвалила Акт проголошення незалежності України, а 1 грудня його підтримали на референдумі понад 90 відсотків тих, хто голосував. (On 24 August 1991 the Verkhovna Rada adopted the Act of Declaration of Independence of Ukraine; on 1 December it was approved in a referendum by more than 90 per cent of those who voted.)'},
+    {kind:'sunflower',years:'з 2013',name:'Гідність і війна',card:'Узимку 2013–2014 року на Майдані відбулася Революція гідності. 2014 року Росія окупувала Крим і почала війну на сході України, а 24 лютого 2022 року — повномасштабне вторгнення. Україна боронить себе, свою мову й свої книжки; у ніші біля дверей — «Недописані». (In the winter of 2013–2014 came the Revolution of Dignity on the Maidan. In 2014 Russia occupied Crimea and began the war in the east of Ukraine; on 24 February 2022, the full-scale invasion. Ukraine defends itself, its language and its books; in the bay by the door are the Unwritten.)'}];
   // Chytomo, the Ukrainian magazine about books and reading, wrote about this room on 10 November 2026: its article hangs
   // framed on the east wall, between Kateryna and the arch, and opens in a dialog with a real link (as the Unwritten does).
   const CHYTOMO={title:'«В Ірландії бібліотекар створив віртуальну Українську читальню»',date:'10.11.2026',
@@ -569,6 +586,42 @@
     const lettersFound=()=>{try{return new Set(JSON.parse(storage?.getItem(LETTERS_KEY)||'[]'))}catch(e){return new Set()}};
     const slavaFound=()=>{try{return storage?.getItem(SLAVA_KEY)==='1'}catch(e){return false}};
     let shchedrykUntil=0;
+    // The pictures on the chronicle frieze's panels, drawn in a flat, folk-painted manner round the origin (about
+    // 100 px across): one small drawing for each kind in HISTORY.
+    function drawHistory(c,kind){
+      const gold='#e2bf5c',cream='#f3e6c0',red='#c0392b',ink='#1a120c',blue='#2a6bd1',yellow='#f2c230';
+      const circle=(x,y,r,f)=>{c.fillStyle=f;c.beginPath();c.arc(x,y,r,0,7);c.fill()};
+      c.lineCap='round';c.lineJoin='round';
+      if(kind==='pot'){c.fillStyle='#c98a4b';c.beginPath();c.moveTo(-22,-40);c.quadraticCurveTo(-55,-5,-30,35);c.lineTo(30,35);c.quadraticCurveTo(55,-5,22,-40);c.closePath();c.fill();
+        c.strokeStyle=ink;c.lineWidth=4;for(const sx of [-16,16]){c.beginPath();for(let a=0;a<12;a+=.3){const r=a*1.4;c.lineTo(sx+Math.cos(a)*r,Math.sin(a)*r)}c.stroke()}
+        c.strokeStyle=red;c.lineWidth=3;c.beginPath();c.moveTo(-36,-22);c.lineTo(36,-22);c.moveTo(-34,24);c.lineTo(34,24);c.stroke()}
+      else if(kind==='pectoral'){c.strokeStyle=gold;for(const [r,lw] of [[46,5],[36,3],[26,3],[16,5]]){c.lineWidth=lw;c.beginPath();c.arc(0,-18,r,.15*Math.PI,.85*Math.PI);c.stroke()}
+        for(let k=0;k<7;k++){const a=(.2+k*.1)*Math.PI;circle(Math.cos(a)*41,-18+Math.sin(a)*41,3.5,gold);circle(Math.cos(a)*21,-18+Math.sin(a)*21,3,gold)}
+        for(let k=0;k<5;k++){const a=(.25+k*.125)*Math.PI;c.fillStyle=gold;c.beginPath();c.ellipse(Math.cos(a)*31,-18+Math.sin(a)*31,6,3,a,0,7);c.fill()}}
+      else if(kind==='sophia'){c.fillStyle=cream;c.fillRect(-46,0,92,36);c.fillStyle='#9fb7c9';c.fillRect(-30,-14,60,16);
+        for(const [x,y,r] of [[0,-30,13],[-24,-16,8],[24,-16,8],[-40,-4,6],[40,-4,6]]){c.fillStyle=cream;c.fillRect(x-r*.7,y,r*1.4,16);c.fillStyle=gold;c.beginPath();c.moveTo(x-r,y);c.quadraticCurveTo(x-r,y-r*1.2,x,y-r*1.7);c.quadraticCurveTo(x+r,y-r*1.2,x+r,y);c.fill();c.fillRect(x-1,y-r*2.3,2,r*.7)}
+        c.fillStyle=ink;for(const x of [-30,-10,10,30])c.fillRect(x-4,12,8,14)}
+      else if(kind==='gospel'||kind==='bible'||kind==='quill'||kind==='kobza'){
+        c.fillStyle=cream;c.beginPath();c.moveTo(-50,-30);c.quadraticCurveTo(-25,-38,0,-30);c.lineTo(0,34);c.quadraticCurveTo(-25,26,-50,34);c.fill();c.beginPath();c.moveTo(50,-30);c.quadraticCurveTo(25,-38,0,-30);c.lineTo(0,34);c.quadraticCurveTo(25,26,50,34);c.fill();
+        c.strokeStyle='rgba(26,18,12,.55)';c.lineWidth=2;for(let y=-18;y<26;y+=7)for(const s of [-1,1]){c.beginPath();c.moveTo(s*8,y);c.lineTo(s*44,y);c.stroke()}
+        if(kind==='gospel'){c.fillStyle=red;c.fillRect(-44,-24,12,14);c.fillStyle=gold;c.fillRect(12,-24,30,10)}
+        if(kind==='bible'){c.fillStyle=ink;c.font='bold 13px Georgia';c.textAlign='center';c.fillText('1581',-25,-14);c.fillStyle=red;c.fillRect(12,-24,30,6)}
+        if(kind==='quill'){c.strokeStyle=cream;c.lineWidth=3;c.beginPath();c.moveTo(18,30);c.lineTo(52,-44);c.stroke();c.fillStyle=cream;c.beginPath();c.moveTo(52,-44);c.quadraticCurveTo(30,-30,26,8);c.quadraticCurveTo(44,-10,52,-44);c.fill()}
+        if(kind==='kobza'){c.fillStyle='#8a5426';c.beginPath();c.ellipse(0,6,20,26,0,0,7);c.fill();c.fillRect(-4,-46,8,30);c.strokeStyle=cream;c.lineWidth=1.2;for(let k=-3;k<=3;k++){c.beginPath();c.moveTo(k*2.5,-44);c.lineTo(k*4,26);c.stroke()}}}
+      else if(kind==='scroll'){c.fillStyle=cream;c.fillRect(-36,-36,72,66);c.fillStyle='#d9c79a';for(const y of [-40,30]){c.beginPath();c.ellipse(0,y+3,40,7,0,0,7);c.fill()}
+        c.strokeStyle='rgba(26,18,12,.6)';c.lineWidth=2;for(let y=-26;y<16;y+=7){c.beginPath();c.moveTo(-28,y);c.lineTo(28,y);c.stroke()}circle(22,18,9,red);
+        c.strokeStyle=gold;c.lineWidth=4;c.beginPath();c.moveTo(-52,40);c.lineTo(-30,-30);c.stroke();circle(-28,-34,8,gold)}
+      else if(kind==='chain'){c.fillStyle='#6b4a2a';c.fillRect(-30,-36,60,72);c.fillStyle=gold;c.fillRect(-22,-26,44,6);
+        c.strokeStyle='#9aa0a6';c.lineWidth=5;for(let k=-3;k<=3;k++){c.beginPath();c.ellipse(k*14,4+(k%2)*3,8,5,0,0,7);c.stroke()}
+        c.strokeStyle=red;c.lineWidth=7;c.beginPath();c.moveTo(-44,-44);c.lineTo(44,44);c.moveTo(44,-44);c.lineTo(-44,44);c.stroke()}
+      else if(kind==='universal'||kind==='flag'){c.fillStyle='#6b4a2a';c.fillRect(-40,-46,5,92);c.fillStyle=blue;c.fillRect(-35,-44,74,24);c.fillStyle=yellow;c.fillRect(-35,-20,74,24);
+        if(kind==='universal'){c.fillStyle=cream;c.fillRect(-6,10,52,34);c.strokeStyle='rgba(26,18,12,.6)';c.lineWidth=2;for(let y=17;y<40;y+=6){c.beginPath();c.moveTo(0,y);c.lineTo(40,y);c.stroke()}c.fillStyle=ink;c.font='bold 11px Georgia';c.textAlign='center';c.fillText('IV',20,24)}}
+      else if(kind==='wheat'){c.fillStyle=cream;c.fillRect(-7,-12,14,40);c.fillStyle='#ffc060';c.beginPath();c.moveTo(0,-34);c.quadraticCurveTo(9,-20,0,-14);c.quadraticCurveTo(-9,-20,0,-34);c.fill();
+        c.strokeStyle=gold;c.lineWidth=2.5;for(const s of [-1,1]){c.beginPath();c.moveTo(s*14,36);c.quadraticCurveTo(s*22,0,s*30,-30);c.stroke();for(let k=0;k<6;k++){const y=-26+k*8;c.fillStyle=gold;c.beginPath();c.ellipse(s*(29-k*1.4)-3,y,3,6,-s*.5,0,7);c.fill();c.beginPath();c.ellipse(s*(29-k*1.4)+3,y,3,6,s*.5,0,7);c.fill()}}}
+      else if(kind==='sunflower'){c.strokeStyle='#3f6a2a';c.lineWidth=5;c.beginPath();c.moveTo(0,46);c.lineTo(0,0);c.stroke();
+        for(let k=0;k<18;k++){c.save();c.rotate(k/18*Math.PI*2);c.fillStyle=yellow;c.beginPath();c.ellipse(0,-30,6,14,0,0,7);c.fill();c.restore()}circle(0,0,18,'#4a2c12');
+        c.fillStyle=blue;c.fillRect(-52,30,26,10);c.fillStyle=yellow;c.fillRect(-52,40,26,10)}
+    }
     function furnishUkrainian({cx,cz,w,d,box,own,mark,root,block,placeBook,list,room,def}){
       const S=cz+d/2,EX=cx+w/2-.19,AZ=def.annex.cz,byTitle=title=>list.find(book=>book.title===title);
       const frameMat=own(new THREE.MeshStandardMaterial({color:0x6b4a22,roughness:.55,metalness:.25}));
@@ -623,6 +676,27 @@
         // The spines and the plaque are one memorial: either opens its card, with the link to the report.
         const link={type:'intl-link',title:UNWRITTEN.title,author:`${UNWRITTEN.spines} ${UNWRITTEN.card}`,url:UNWRITTEN.url,kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',label:'Read Chytomo’s report',action:'READ'};
         tag.rotation.y=-Math.PI/2;mark(tag,link);mark(spines,{...link})}
+      // The chronicle frieze (HISTORY): thirteen painted panels in a band along the top of the south wall, over the door,
+      // the bay's lintel and the cases, between two embroidered borders. One texture for all of them and one material, so
+      // the batcher can draw them together; each panel is its own mesh (its own part of the texture) with its own card.
+      {const n=HISTORY.length,PW=300,PH=188,len=w-.8,pitch=len/n,fy=5.25,fh=1,fw=pitch-.12;
+        const atlas=own(canvasTexture((c,W,H)=>{c.fillStyle='#1a120c';c.fillRect(0,0,W,H);
+          const grounds=['#1f3a6b','#6b2a1f','#2f4f2a'];
+          HISTORY.forEach((h,i)=>{const x0=i*PW,ground=grounds[i%3];c.save();c.translate(x0,0);
+            c.fillStyle=ground;c.fillRect(4,4,PW-8,PH-8);c.strokeStyle='#d9b048';c.lineWidth=3;c.strokeRect(9,9,PW-18,PH-18);
+            c.save();c.translate(PW/2,58);c.scale(.9,.9);drawHistory(c,h.kind);c.restore();
+            c.textAlign='center';c.fillStyle='#f3e6c0';c.font='bold 26px Georgia';c.fillText(h.years,PW/2,134);
+            let size=24;c.font=`${size}px Georgia`;while(c.measureText(h.name).width>PW-24&&size>12){size--;c.font=`${size}px Georgia`}
+            c.fillStyle='#e8c860';c.fillText(h.name,PW/2,166);c.restore()})},n*PW,PH));
+        const mat=own(new THREE.MeshStandardMaterial({map:atlas,roughness:.8,emissive:0xffffff,emissiveMap:atlas,emissiveIntensity:.28}));
+        HISTORY.forEach((h,i)=>{const geo=own(new THREE.PlaneGeometry(fw,fh)),uv=geo.attributes.uv;
+          for(let k=0;k<uv.count;k++)uv.setX(k,(i+uv.getX(k))/n);
+          const x=cx+len/2-(i+.5)*pitch,panel=add(geo,mat,x,fy,S-.16,root);panel.rotation.y=Math.PI;
+          mark(panel,{type:'intl-card',title:`${h.name} · ${h.years}`,author:h.card,action:'READ'})});
+        // The embroidered borders above and below, as a rushnyk.
+        const band=own(canvasTexture((c,W,H)=>stitchMotif(c,W,H),512,64));band.wrapS=THREE.RepeatWrapping;band.repeat.set(24,1);
+        const linen=own(new THREE.MeshStandardMaterial({map:band,roughness:.9}));
+        for(const y of [fy+fh/2+.1,fy-fh/2-.1]){const b=add(own(new THREE.PlaneGeometry(len+.2,.16)),linen,cx,y,S-.165,root);b.rotation.y=Math.PI}}
 
       // Україна англійською (Ukraine in English): a small case on the south wall, west of the door, of Ukrainian books in
       // English translation and English books about them (the shelf ukrainian-english in data/new-books.js). Each one
