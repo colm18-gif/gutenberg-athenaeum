@@ -168,7 +168,9 @@ test('the French Reading Room: classics in French behind the blue door, kept apa
 });
 
 test('the wing’s rooms stand clear of every other place, Crusoe’s island included',()=>{
-  const rooms=[...wing.matchAll(/(\w+):\{cx:(-?\d+),cz:(-?\d+),w:(\d+),d:(\d+)/g)].map(m=>({key:m[1],cx:+m[2],cz:+m[3],w:+m[4],d:+m[5]}));
+  const rooms=[...wing.matchAll(/(\w+):\{cx:(-?\d+),cz:(-?[\d.]+),w:(\d+),d:(\d+)/g)].map(m=>({key:m[1],cx:+m[2],cz:+m[3],w:+m[4],d:+m[5]}));
+  // The Ukrainian room's memorial bay reaches south of its south wall: count it in.
+  const bay=+wing.match(/const BAY=\{[^}]*depth:([\d.]+)/)[1],U=rooms.find(r=>r.key==='ukrainian');U.cz+=bay/2;U.d+=bay;
   assert.equal(rooms.length,8,'the lobby and seven reading rooms');
   const isle=fs.readFileSync('crusoe-island.js','utf8'),[,ix,iz]=isle.match(/ISLE=\{x:(-?\d+),z:(-?\d+)/),[,rx,rz]=isle.match(/SAND=\{rx:(\d+),rz:(\d+)\}/);
   for(const a of rooms){
@@ -271,7 +273,7 @@ test('the Ukrainian Reading Room: classics from Wikisource behind a blue door wi
   assert.match(game,/START OF \(THE\|THIS\) \(PROJECT GUTENBERG EBOOK\|WIKISOURCE TEXT\)/);
   const {countWords}=await import('./scripts/new-books.mjs');assert.equal(countWords(kept),1,'the credit line is not counted');
   // The room: at the far end of the wing, reached through the Spanish room's south wall, and signed in Ukrainian.
-  assert.match(wing,/ukrainian:\{cx:-530,cz:100,w:24,d:15,h:6,language:'uk',sign:'УКРАЇНСЬКА ЧИТАЛЬНЯ'/);
+  assert.match(wing,/ukrainian:\{cx:-530,cz:102\.5,w:24,d:20,h:6,language:'uk',sign:'УКРАЇНСЬКА ЧИТАЛЬНЯ'/);
   assert.match(wing,/ukrainian:\{x:HUB\.cx,z:NORTH,yaw:Math\.PI,wall:'north'\}/,'straight ahead of the way into the lobby');assert.match(wing,/ukrainian:\['УКРАЇНСЬКА ЧИТАЛЬНЯ'/);
   assert.match(wing,/if\(key==='ukrainian'\)\{\/\/ A rushnyk/);assert.match(wing,/if\(kind==='vyshyvanka'\)/);
   assert.match(game,/uk:'ukrainian-room'/);assert.match(game,/'ukrainian-room':internationalWing&&\(\(\)=>enterWing\('ukrainian'\)\)/);
@@ -361,7 +363,7 @@ test('the Unwritten: blank spines beside the Executed Renaissance, a card true t
   const i=src.indexOf('function furnishUkrainian('),body=src.slice(i,src.indexOf('\n    }\n',i));
   assert.match(body,/new THREE\.InstancedMesh\(spine,/,'the blank spines are one mesh');assert.match(body,/const link=\{type:'intl-link',title:UNWRITTEN\.title,author:`\$\{UNWRITTEN\.spines\} \$\{UNWRITTEN\.card\}`,url:UNWRITTEN\.url/);assert.match(body,/mark\(tag,link\);mark\(spines,\{\.\.\.link\}\)/,'either opens it');
   // The game finds things to pick by each object's own position: the spines' mesh must stand where they do, not at the origin.
-  assert.match(body,/spines\.position\.set\(mx\+2\.8,3\.62,S-\.38\)/);
+  assert.match(body,/spines\.position\.set\(sx,1\.34,s0\)/);
   assert.ok(body.indexOf("'НЕДОПИСАНІ'")>body.indexOf("'РОЗСТРІЛЯНЕ ВІДРОДЖЕННЯ'"),'beside the Executed Renaissance');assert.doesNotMatch(body,/Light\(/);
   // The link is a real one the reader clicks in a dialog: a tab opened from the game loop is often blocked.
   assert.match(src,/if\(data\.type==='intl-link'\)\{if\(openLink\)openLink\(\{/);assert.doesNotMatch(src,/window\.open/);

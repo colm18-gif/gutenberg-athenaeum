@@ -48,7 +48,7 @@ function walk(allowed,from,to,reach=.3){
 
 test('the children’s room shares the Ukrainian room’s east wall, through an open arch, and stands clear of every other room',()=>{
   const {w}=wing(),U=w.rooms.ukrainian;
-  assert.equal(U.annex.cx-U.annex.w/2,U.cx+U.w/2,'the two rooms meet at the east wall');assert.equal(U.annex.cz,U.cz,'the arch is in the middle of the wall');
+  assert.equal(U.annex.cx-U.annex.w/2,U.cx+U.w/2,'the two rooms meet at the east wall');assert(U.annex.cz-U.annex.d/2>=U.cz-U.d/2&&U.annex.cz+U.annex.d/2<=U.cz+U.d/2,'the children’s room’s west wall is part of the reading room’s east wall');
   for(const [key,r] of Object.entries(w.rooms))if(key!=='ukrainian')
     assert(Math.abs(r.cx-K.cx)>=(r.w+K.w)/2+2||Math.abs(r.cz-K.cz)>=(r.d+K.d)/2+2,`clear of the ${key} room`);
   // Crusoe's island (x -420, z 165-199) is far to the south-east.
@@ -60,8 +60,9 @@ test('a reader walks from the reading room through the arch, but not through the
   const a=wing();a.w.enter('ukrainian');const U=a.w.rooms.ukrainian;
   assert(walk(a.w.allowed,{x:U.cx+1.5,z:U.cz-2.8},{x:K.cx,z:K.cz-1.5}),'into the children’s room');
   const wallX=U.cx+U.w/2;
-  for(const dx of [-.1,.1])assert.equal(a.w.allowed(wallX+dx,U.cz),true,'through the arch');
-  for(const dx of [-.1,.1])for(const z of [U.cz-4,U.cz+4])assert.equal(a.w.allowed(wallX+dx,z),false,'but not past the wall beside it');
+  // The arch is in the middle of the children’s room’s wall (K.cz), not of the deeper reading room’s.
+  for(const dx of [-.1,.1])assert.equal(a.w.allowed(wallX+dx,K.cz),true,'through the arch');
+  for(const dx of [-.1,.1])for(const z of [K.cz-4,K.cz+4,U.cz+U.d/2-1])assert.equal(a.w.allowed(wallX+dx,z),false,'but not past the wall beside it');
 });
 
 test('its shelves: the youngest readers’ tales and, for older readers, stories that also stand on the main racks',()=>{
@@ -90,7 +91,7 @@ test('the mitten, the letters and the procession: the mitten and all six letters
   const letters=a.interactables.filter(o=>o.userData?.type==='intl-letter');assert.equal(letters.length,6);
   for(const l of letters)assert(inK(world(l).x,world(l).z),`${l.userData.title} is hidden in the children’s room`);
   const U=a.w.rooms.ukrainian,walkers=a.interactables.filter(o=>o.userData?.title==='До рукавички');assert.equal(walkers.length,4);
-  for(const f of walkers){const p=world(f);assert(Math.abs(p.x-(U.cx+U.w/2))<1&&Math.abs(p.z-U.cz)<3.2,'beside the arch, in the reading room')}
+  for(const f of walkers){const p=world(f);assert(Math.abs(p.x-(U.cx+U.w/2))<1&&Math.abs(p.z-K.cz)<3.2,'beside the arch, in the reading room')}
   assert(a.interactables.some(o=>o.userData?.title==='Дитяча кімната'),'its name, over the arch and inside');
 });
 
@@ -258,4 +259,23 @@ test('a Ukrainian book and its English translation link to each other, both ways
   assert.match(flat(bain),/THE FOX AND THE CAT In a certain forest there once lived a fox/);
   assert.match(game,/button.id=i\?'bookTranslation2':'bookTranslation'/);assert.match(game,/createInternationalWing\?\.TRANSLATIONS/);
   assert.match(game,/wingBooks\.load\(\)\.then\(\(\)=>\{const book=books\.find\(b=>b\.id===link\.id\)/,'the wing’s books are fetched before a Ukrainian original is opened');
+});
+
+test('the memorial bay: a reader walks in from the room through its opening, not through the wall either side of it, and finds both memorials there',()=>{
+  const a=wing();a.w.enter('ukrainian');const U=a.w.rooms.ukrainian,S=U.cz+U.d/2,B=U.bay,b0=U.cx+B.x0,b1=U.cx+B.x1,mid=(b0+b1)/2;
+  assert.equal(U.cz-U.d/2,92.5,'the north wall stayed where it was');
+  assert(walk(a.w.allowed,{x:a.player.pos.x,z:a.player.pos.z},{x:mid,z:S+1}),'from the door into the bay');
+  assert.equal(a.w.roomAt(mid,S+2),'ukrainian','the bay is part of the room');
+  for(const x of [b0-1,b1+1])assert.equal(a.w.allowed(x,S+.3),false,'not through the south wall beside the opening');
+  assert.equal(a.w.allowed(mid,S+B.depth-.1),false,'nor through the bay’s back wall');assert.equal(a.w.allowed(b0+.1,S+2),false);assert.equal(a.w.allowed(b1-.1,S+2),false);
+  const inBay=o=>{const p=world(o);return p.x>b0&&p.x<b1&&p.z>S&&p.z<S+B.depth};
+  const memorial=a.interactables.filter(o=>o.userData?.type==='book'&&!o.userData.wingRoom?.includes('english')&&inBay(o));
+  assert.equal(memorial.length,8,'the Executed Renaissance’s eight books are in the bay');
+  for(const o of memorial)assert(world(o).x<mid,'on its west side');
+  const unwritten=a.interactables.filter(o=>o.userData?.title==='Недописані · The Unwritten');assert.equal(unwritten.length,2,'the spines and their plaque');
+  for(const o of unwritten){assert(inBay(o),'the Unwritten is in the bay');assert(world(o).x>mid,'on its east side');assert(o.position.y>1&&o.position.y<2.2,'at eye level')}
+  const candle=a.interactables.filter(o=>o.userData?.title==='Розстріляне відродження'&&inBay(o));assert(candle.length>=3,'the candle and the board');
+  assert(a.seats.some(s=>s.title==='Лава · A bench'&&s.bookIds.length===8),'the bench is a seat, opening one of the eight');
+  // The bay must not reach the Italian room to the south.
+  const I=a.w.rooms.italian;assert(S+B.depth+2<I.cz-I.d/2);
 });
