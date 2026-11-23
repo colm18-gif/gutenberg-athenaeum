@@ -52,6 +52,10 @@ export const PICTURES = [
   { key: 'ua-universal-1918', file: 'IV Універсал УЦР.jpg', minSize: 900 },
   { key: 'ua-independence-1991', file: 'Declaration of Independence of Ukraine, 1991.jpg', minSize: 900 },
   { key: 'ua-pectoral', file: 'Pektoral111.JPG', minSize: 700 },
+  // Beauplan's general map of Ukraine (Delineatio Generalis Camporum Desertorum vulgo Ukraina, Gdańsk 1648, engraved by
+  // Willem Hondius), drawn with the south at the top: framed on the Ukrainian Reading Room's wall (BEAUPLAN in
+  // international-wing.js), the writers' places marked on it by the library.
+  { key: 'ua-beauplan-1648', files: ['Delineatio Generalis Camporum Desertorum vulgo Ukraina.jpg', 'Beauplan Ukraine 1648.jpg', 'Guillaume Le Vasseur de Beauplan. Delineatio Generalis Camporum Desertorum vulgo Ukraina. 1648.jpg'], search: 'Beauplan Delineatio Generalis Camporum Desertorum Ukraina', exclude: /detail|fragment|part|crop|\bof \d/i, minSize: 1500 },
   // For the Ukrainian children's room: the 1922 Yiddish edition of Ukrainian folk tales (Ukraynishe Folkmayses), its
   // picture for «Пан Коцький», and three letters of Heorhiy Narbut's Ukrainian alphabet (1917–19; Narbut died in 1920).
   { key: 'kids-pan-kotsky-1922', file: 'Ukraynishe Folkmayses 11.jpg', minSize: 500 },

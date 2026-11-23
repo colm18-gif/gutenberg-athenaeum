@@ -312,3 +312,21 @@ test('the chronicle frieze’s documents: every panel that opens one has its pic
   assert.match(source,/type:h\.doc\?'intl-history':'intl-card',reach:7\.4/);assert.match(game,/\(h\.object\.userData\|\|\{\}\)\.reach\|\|/,'game.js honours a longer reach');
   assert.match(game,/showPicture:showRoomPicture,playSample/);
 });
+
+test('Beauplan’s map: a table in front of the north racks, south at the top, and every pin lights books that are in the room',()=>{
+  const B=vm.runInNewContext(`(()=>{${source.slice(source.indexOf('const BEAUPLAN='),source.indexOf('}]};',source.indexOf('const BEAUPLAN='))+4)};return BEAUPLAN})()`);
+  assert(fs.existsSync('assets/pictures/ua-beauplan-1648.jpg'),'the map is there');
+  assert.match(fs.readFileSync('scripts/fetch-maps.mjs','utf8'),/key: 'ua-beauplan-1648'/,'fetched from Commons');
+  const [W,H]=B.size;assert(B.places.length>=6);
+  for(const p of B.places){const [x,y]=p.at;assert(x>40&&x<W-40&&y>40&&y<H-40,`${p.name} is on the map`);
+    assert.match(p.card,/^[А-ЯІЇЄҐ][^()]*\. \([A-Z].*\)$/,`${p.name}: Ukrainian, then English in brackets`);assert(p.card.startsWith(p.name),`${p.name}: its card begins with its name`)}
+  assert.match(B.card[1],/[А-Яа-яІіЇїЄє].*\(.*\)$/);assert.match(B.credit,/public domain/);
+  const a=wing();a.w.enter('ukrainian');const U=a.w.rooms.ukrainian,MZ=U.cz-4.9;
+  assert.equal(a.w.allowed(U.cx,MZ),false,'the table is solid');assert.equal(a.w.allowed(U.cx,MZ+1.4),true,'a reader stands at its south side');
+  assert(walk(a.w.allowed,{x:U.cx,z:U.cz+6},{x:U.cx,z:MZ+1.4}),'and can walk up to it from the door');
+  const pins=a.interactables.filter(o=>o.userData?.type==='intl-beauplan'&&o.userData.index!=null);
+  assert.equal(new Set(pins.map(p=>p.userData.index)).size,B.places.length,'a pin for every place');
+  for(const [i,p] of B.places.entries()){a.notices.length=0;a.w.interact(pins.find(o=>o.userData.index===i));
+    const n=Number(/засвітилося книжок: (\d+)/.exec(a.notices.at(-1))?.[1]||0);assert(n>0,`${p.name} lights some of the room’s books`)}
+  const map=a.interactables.find(o=>o.userData?.type==='intl-beauplan'&&o.userData.index==null);assert(map,'the map itself can be looked at');
+});

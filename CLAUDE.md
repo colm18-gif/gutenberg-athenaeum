@@ -695,6 +695,16 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Trypillia photograph was sherds of no stated source, so that panel opens none). The panels are high, so they carry
   `reach` (7.4 m), which game.js's focus honours for any object. Hrushevsky's Illustrated History of Ukraine
   (`ws:Ілюстрована історія України`) was added to the room's list as the frieze's companion.
+- Beauplan's map (23 November 2026, the owner's choice of a way into the shelves): a sloping map table in the
+  Ukrainian Reading Room in front of the north racks (x cx, z cz−4.9), with Beauplan's general map of Ukraine on it
+  (Delineatio Generalis Camporum Desertorum vulgo Ukraina, engraved by Hondius at Gdańsk in 1648, the Library of
+  Congress's copy on Commons, `ua-beauplan-1648` in `scripts/fetch-maps.mjs`), south at the top. The library has drawn
+  red rings and names on it at towns Beauplan names (`BEAUPLAN.places`, `at` found by eye on the 2048-pixel image):
+  Kaniv, Kyiv, Stebliv, Vinnytsia, Chernihiv, Poltava, Myrhorod, Zviahel and Lviv. A brass pin in each (`intl-beauplan`)
+  gives its card and lights that place's writers' books (`authors`, any word of a book's author) wherever they stand in
+  the room for 16 s: a pale glow behind each, one shared material, no light. The map itself opens large in the picture
+  card. A test wants every pin to light at least one book: a new place needs a writer who is on the shelves. Cards say
+  only what is well attested.
 - The Holodomor candle: in the Ukrainian Reading Room, from the Sunday before the fourth Saturday of November (the Day of
   Remembrance of the Victims of the Holodomor) to the day itself, a candle in a glass with ears of wheat stands where the
   didukh stands at Christmas; the reader lights it (`intl-holodomor`). On the day, the room's welcome names it.

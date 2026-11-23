@@ -115,6 +115,34 @@
   // tells the way to the polar hut, where the station's picture hangs (antipodes.js, VERNADSKY).
   const POSTCARD={title:'Листівка з Антарктиди · A postcard from Antarctica',
     card:'Вітання з української антарктичної станції «Академік Вернадський» на острові Галіндез. Її картина висить у полярній хатині бібліотеки: пройдіть крізь великий глобус у Великій залі до Антиподів, а в Новозеландській кімнаті поверніть компас на шафі з морськими картами — корабель відпливе до криги. (Greetings from Ukraine’s Antarctic station, Akademik Vernadsky, on Galindez Island. Its picture hangs in the library’s polar hut: go through the great globe in the Grand Hall to the Antipodes, and in the New Zealand Room turn the compass on the sea-chart cabinet; the ship sails for the ice.)'};
+  // Beauplan's general map of Ukraine (Delineatio Generalis Camporum Desertorum vulgo Ukraina, engraved by Willem
+  // Hondius at Gdańsk in 1648; the Library of Congress's copy on Commons, `ua-beauplan-1648` in scripts/fetch-maps.mjs),
+  // laid on a sloping map table in front of the north racks. It is drawn with the south at the top. The library has
+  // marked on it, in red ink, towns Beauplan names where writers on these shelves were born, lived or lie (`at`: the
+  // place on the 2048-pixel image, found by eye on Beauplan's own spelling); a brass pin in each lights their books
+  // (`authors`: any word of a book's author) wherever they stand in the room. Cards say only what is well attested.
+  const BEAUPLAN={size:[2048,1593],
+    card:['Карта Боплана · Beauplan’s map, 1648','Гійом Левассер де Боплан, французький військовий інженер, багато років служив польській короні в Україні й склав першу докладну її карту; цей генеральний аркуш вигравіював Віллем Гондіус у Ґданську 1648 року. Південь на ній угорі: Чорне море вгорі, Київ унизу. Червоні кола й латунні шпильки додала бібліотека: це міста, де народилися, жили чи спочивають письменники з цих полиць. Торкніться шпильки, і їхні книжки засвітяться. (Guillaume Le Vasseur de Beauplan, a French military engineer, served the Polish crown in Ukraine for many years and made the first detailed map of it; Willem Hondius engraved this general sheet at Gdańsk in 1648. South is at the top: the Black Sea above, Kyiv below. The red rings and brass pins are the library’s: towns where writers on these shelves were born, lived or lie. Touch a pin and their books light up.)'],
+    credit:'Library of Congress, via Wikimedia Commons; public domain.',
+    places:[
+      {name:'Канів',at:[892,852],label:[-1,0],authors:['Шевченко','Shevchenko'],
+        card:'Канів. Тараса Шевченка поховано 1861 року на Чернечій горі над Дніпром біля Канева. (Kaniv: Taras Shevchenko was buried in 1861 on Chernecha Hill above the Dnipro, by Kaniv.)'},
+      {name:'Київ',at:[1043,1070],label:[1,0],authors:['Грушевський','Зеров','Драй-Хмара','Плужник','Косинка','Підмогильний'],
+        card:'Київ. Тут Михайло Грушевський очолював Центральну Раду 1917–1918 років, а в 1920-х писали неокласики Микола Зеров і Михайло Драй-Хмара та письменники «Ланки» Валер’ян Підмогильний, Григорій Косинка й Євген Плужник. (Kyiv: Mykhailo Hrushevsky led the Central Rada here in 1917–1918; in the 1920s the Neoclassicists Zerov and Drai-Khmara and the Lanka writers Pidmohylny, Kosynka and Pluzhnyk wrote here.)'},
+      {name:'Стеблів',at:[1015,766],label:[1,-1],authors:['Нечуй'],
+        card:'Стеблів, над Россю. Тут 1838 року народився Іван Нечуй-Левицький. (Stebliv, on the Ros, where Ivan Nechui-Levytsky was born in 1838.)'},
+      {name:'Вінниця',at:[1398,820],label:[1,0],authors:['Коцюбинський'],
+        card:'Вінниця. Тут 1864 року народився Михайло Коцюбинський. (Vinnytsia, where Mykhailo Kotsiubynsky was born in 1864.)'},
+      {name:'Чернігів',at:[836,1305],label:[-1,0],authors:['Коцюбинський','Глібов'],
+        card:'Чернігів. Коцюбинський прожив тут останні п’ятнадцять років життя, тут його й поховано; тут жив і помер байкар Леонід Глібов. (Chernihiv: Kotsiubynsky’s home for the last fifteen years of his life, and his grave; the fabulist Leonid Hlibov lived and died here too.)'},
+      {name:'Полтава',at:[517,750],label:[-1,0],authors:['Котляревський','Мирний'],
+        card:'Полтава. Тут народився, жив і помер Іван Котляревський, автор «Енеїди»; тут жив і помер Панас Мирний. (Poltava: Ivan Kotliarevsky, who wrote the Eneida, was born, lived and died here; so did Panas Myrny live and die here.)'},
+      {name:'Миргород',at:[645,857],label:[1,1],authors:['Мирний'],
+        card:'Миргород. Тут 1849 року народився Панас Мирний. (Myrhorod, where Panas Myrny was born in 1849.)'},
+      {name:'Звягель',at:[1445,1190],label:[-1,0],authors:['Українка'],
+        card:'Звягель, тобто Новоград-Волинський. Тут 1871 року народилася Леся Українка. 2022 року місту повернули давню назву, ту, що на карті Боплана. (Zviahel, long called Novohrad-Volynskyi, where Lesia Ukrainka was born in 1871. In 2022 the town took back its old name, the one on Beauplan’s map.)'},
+      {name:'Львів',at:[1968,968],label:[-1,0],authors:['Франко','Антонич'],
+        card:'Львів. Іван Франко вчився у Львівському університеті, прожив у Львові більшу частину життя й помер тут 1916 року; тут учився й помер 1937 року Богдан-Ігор Антонич. На карті Боплана Львів ледве вмістився, на самому краю. (Lviv: Ivan Franko studied at its university, lived here most of his life and died here in 1916; Bohdan-Ihor Antonych studied and died here in 1937. On Beauplan’s map Lviv only just fits, at the very edge.)'}]};
   // PROSVITA DIGITAL (ПРОСВІТА ЦИФРОВА), which carries on the Prosvita society's work and keeps the digital archive of the
   // newspaper Slovo Prosvity, links to this room; the room links back (November 2026). Framed on the west wall, south of
   // the window, where the wall is clear; its card opens the site, in Ukrainian or in English.
@@ -1189,6 +1217,42 @@
         const label=add(own(new THREE.PlaneGeometry(1.05,.3)),own(new THREE.MeshStandardMaterial({map:own(plaque('ПЕРЕСОПНИЦЬКЕ ЄВАНГЕЛІЄ','The Peresopnytsia Gospel · 1556–1561 · a facsimile',560,160,'#1d2a3d')),roughness:.85,emissive:0x3a2a12,emissiveIntensity:.3})),0,.7,.53,g);
         for(const part of [plinth,pane,left,right,label])mark(part,data);block(gx,gz,1.8,1.4)}
 
+      // Beauplan's map (BEAUPLAN) on a sloping map table in front of the north racks, south at the top, the library's red
+      // rings drawn on it and a brass pin in each; a pin lights its writers' books in the room for a while (a pale glow
+      // behind each, one shared material; no light), and the map itself opens large in the picture card.
+      {const MX=cx,MZ=cz-4.9,MW=1.6,MH=MW*BEAUPLAN.size[1]/BEAUPLAN.size[0],tilt=.44,cy=1.05,g=new THREE.Group();
+        g.position.set(MX,cy,MZ);g.rotation.x=-(Math.PI/2-tilt);root.add(g);
+        const mapMat=own(new THREE.MeshStandardMaterial({color:0xd8cdb6,roughness:.85,emissive:0xffffff,emissiveIntensity:.03}));
+        const map=add(own(new THREE.PlaneGeometry(MW,MH)),mapMat,0,0,.035,g);
+        const [IW,IH]=BEAUPLAN.size,local=([px,py])=>[(px/IW-.5)*MW,(.5-py/IH)*MH];
+        new THREE.TextureLoader().load('assets/pictures/ua-beauplan-1648.jpg',photo=>{const img=photo.image;photo.dispose();if(!built.ukrainian)return;
+          const tex=own(canvasTexture((c,W,H)=>{c.drawImage(img,0,0,W,H);c.lineWidth=7;c.font='italic bold 46px Georgia, serif';c.textBaseline='middle';
+            for(const p of BEAUPLAN.places){const [x,y]=p.at,[lx,ly]=p.label;c.strokeStyle='rgba(160,20,10,.95)';c.beginPath();c.arc(x,y,26,0,Math.PI*2);c.stroke();
+              c.textAlign=lx<0?'right':'left';const tx=x+lx*38,ty=y+ly*38;c.lineWidth=10;c.strokeStyle='rgba(240,228,200,.92)';c.strokeText(p.name,tx,ty);c.fillStyle='#9a1508';c.fillText(p.name,tx,ty);c.lineWidth=7}},IW,IH));
+          mapMat.map=tex;mapMat.emissiveMap=tex;mapMat.color.set(0xcfc2a6);mapMat.needsUpdate=true});
+        const top=add(own(new THREE.BoxGeometry(MW+.16,MH+.16,.06)),MAT.darkWood,0,0,-.01,g);
+        // Legs to the floor under each corner of the sloping top.
+        const rise=Math.sin(tilt)*MH/2,run=Math.cos(tilt)*MH/2;
+        for(const sx of [-1,1])for(const sz of [-1,1]){const hgt=cy-sz*rise-.06;box(.07,hgt,.07,MAT.darkWood,MX+sx*(MW/2-.02),hgt/2,MZ+sz*run*.9)}
+        box(MW,.05,.05,MAT.darkWood,MX,.22,MZ);block(MX,MZ,MW+.3,run*2+.3);
+        const label=add(own(new THREE.PlaneGeometry(.9,.24)),own(new THREE.MeshStandardMaterial({map:own(plaque('УКРАЇНА БОПЛАНА','Beauplan’s Ukraine · 1648 · south at the top',560,150,'#1d2a3d')),roughness:.85,emissive:0x3a2a12,emissiveIntensity:.3})),MX,cy-rise-.17,MZ+run+.05,root);
+        const card={type:'intl-beauplan',title:BEAUPLAN.card[0],author:BEAUPLAN.card[1],action:'LOOK CLOSELY'};
+        for(const part of [map,top,label])mark(part,card);
+        // The pins: a brass head on each ring, and a clear disc round it to touch.
+        const head=own(new THREE.SphereGeometry(.016,10,8)),disc=own(new THREE.CircleGeometry(.06,16)),clear=own(new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false,colorWrite:false}));
+        BEAUPLAN.places.forEach((p,index)=>{const [x,y]=local(p.at),data={type:'intl-beauplan',index,title:p.name,author:p.card,action:'TOUCH THE PIN'};
+          add(own(new THREE.CylinderGeometry(.003,.003,.04,4)),MAT.brass,x,y,.055,g).rotation.x=Math.PI/2;
+          mark(add(head,MAT.brass,x,y,.075,g),data);mark(add(disc,clear,x,y,.08,g),data)});
+        // The glow behind a lit book, faded in and out over GLOW seconds.
+        const GLOW=16,glowGeo=own(new THREE.PlaneGeometry(1.04,1.32)),glowMat=own(new THREE.MeshBasicMaterial({color:0xffd27a,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false}));
+        let glows=[],since=-1e9;
+        room.beauplan=index=>{for(const m of glows)m.removeFromParent();glows=[];const words=BEAUPLAN.places[index].authors;
+          for(const mesh of room.books){const author=mesh.userData.book?.author||'',home=mesh.userData.home;if(!home||!words.some(w=>author.includes(w)))continue;
+            const glow=new THREE.Mesh(glowGeo,glowMat);glow.position.copy(home.position);glow.quaternion.copy(home.quaternion);glow.translateZ(-.04);root.add(glow);glows.push(glow)}
+          since=time;return glows.length};
+        room.ticks.push(t=>{if(!glows.length)return;const age=t-since;if(age>GLOW){for(const m of glows)m.removeFromParent();glows=[];glowMat.opacity=0;return}
+          glowMat.opacity=Math.min(1,age*2,(GLOW-age)/3)*(.6+.25*Math.sin(age*3))})}
+
       // A didukh, the sheaf of the Christmas table, from Christmas Eve (24 December) to Vodokhreshche (19 January, by the old calendar).
       const now=today(),md=now.getMonth()*100+now.getDate();
       if(md>=1124||md<=19){const dx=EX-.45,dz=AZ-3.05,dummy=new THREE.Object3D();
@@ -1458,6 +1522,10 @@
         if(room){const card=room.bootCard();for(const part of room.bootParts)part.userData=card;room.showBootBook()}
         showNotice('За халявою — маленька саморобна книжечка, списана дрібним почерком. На засланні Шевченкові заборонили писати й малювати, і він ховав вірші в чоботі. (Tucked in the boot: a tiny handmade notebook of poems, as Shevchenko hid his in exile. It lies on the trunk now.)',10);
         playSample?.('pageTurn',.7,.9);analytics?.track('Secret Found',{secret:'shevchenko-boot'});return true}
+      if(data.type==='intl-beauplan'){
+        if(data.index==null){if(showPicture)showPicture({kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',title:data.title,src:'assets/pictures/ua-beauplan-1648.jpg',caption:data.author,credit:BEAUPLAN.credit});else showNotice(`${data.title}: ${data.author}`,16);return true}
+        const n=built.ukrainian?.beauplan?.(data.index)||0;playSample?.('pageTurn',.35,1.6);
+        showNotice(`${data.author} ${n?`На полицях засвітилося книжок: ${n}. (${n} book${n===1?'':'s'} light${n===1?'s':''} up on the shelves.)`:''}`,14);return true}
       if(data.type==='intl-gospel'){if(gospel)gospel.open();return true}
       if(data.type==='intl-trembita'){if(carpathians){if(tone)for(const [i,f] of [392,490,588,784].entries())tone(f,i*.5,.9,.06,'trembita');setTimeout(()=>carpathians(),1900)}return true}
       if(data.type==='intl-sopilka'){if(forestSong){if(tone)for(const [i,f] of [587.33,659.25,698.46,880].entries())tone(f,i*.3,.5,.05,'flute');setTimeout(()=>forestSong(),1100)}return true}
