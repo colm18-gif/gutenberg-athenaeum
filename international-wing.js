@@ -1523,7 +1523,7 @@
         showNotice('За халявою — маленька саморобна книжечка, списана дрібним почерком. На засланні Шевченкові заборонили писати й малювати, і він ховав вірші в чоботі. (Tucked in the boot: a tiny handmade notebook of poems, as Shevchenko hid his in exile. It lies on the trunk now.)',10);
         playSample?.('pageTurn',.7,.9);analytics?.track('Secret Found',{secret:'shevchenko-boot'});return true}
       if(data.type==='intl-beauplan'){
-        if(data.index==null){if(showPicture)showPicture({kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',title:data.title,src:'assets/pictures/ua-beauplan-1648.jpg',caption:data.author,credit:BEAUPLAN.credit});else showNotice(`${data.title}: ${data.author}`,16);return true}
+        if(data.index==null){if(showPicture)showPicture({kicker:'УКРАЇНСЬКА ЧИТАЛЬНЯ · THE UKRAINIAN READING ROOM',title:data.title,src:'assets/pictures/ua-beauplan-1648.jpg',large:'assets/pictures/ua-beauplan-1648-large.jpg',caption:data.author,credit:BEAUPLAN.credit});else showNotice(`${data.title}: ${data.author}`,16);return true}
         const n=built.ukrainian?.beauplan?.(data.index)||0;playSample?.('pageTurn',.35,1.6);
         showNotice(`${data.author} ${n?`На полицях засвітилося книжок: ${n}. (${n} book${n===1?'':'s'} light${n===1?'s':''} up on the shelves.)`:''}`,14);return true}
       if(data.type==='intl-gospel'){if(gospel)gospel.open();return true}

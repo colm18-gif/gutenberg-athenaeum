@@ -2317,7 +2317,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       // Pictures from old public-domain editions, for books that have them (the children's room's): a button in the reader
       // opens each with its caption and credit. Listed in international-wing.js (BOOK_PICTURES), by title.
       {const pictures=()=>window.createInternationalWing?.BOOK_PICTURES||{};let list=[],at=0,open=false;
-        const show=()=>{const p=list[at];$('#pictureCardKicker').textContent=p.kicker||'';$('#pictureCardTitle').textContent=p.title;const img=$('#pictureCardImg');img.src=p.src;img.alt=p.title;
+        const show=()=>{const p=list[at];$('#pictureCardKicker').textContent=p.kicker||'';$('#pictureCardTitle').textContent=p.title;const img=$('#pictureCardImg');img.src=p.src;img.dataset.large=p.large||'';img.alt=p.title;
           $('#pictureCardCaption').textContent=p.caption;$('#pictureCardCredit').textContent=p.credit;$('#pictureCardNext').classList.toggle('hidden',list.length<2)};
         const close=()=>{open=false;$('#pictureCard').classList.add('hidden')};
         const button=document.createElement('button');button.id='bookPictures';button.type='button';button.className='ghost book-pictures hidden';button.textContent='Малюнки · Pictures';
@@ -2352,13 +2352,13 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     }
     // Emily Dickinson's room (dickinson-room.js): her bedroom in Amherst, through a white door in the Long Corridor.
     // A picture looked at closely (her daguerreotype, a poem in her hand) opens in the picture card.
-    const showRoomPicture=p=>{document.exitPointerLock?.();$('#pictureCardKicker').textContent=p.kicker||'';$('#pictureCardTitle').textContent=p.title;const img=$('#pictureCardImg');img.src=p.src;img.alt=p.title;
+    const showRoomPicture=p=>{document.exitPointerLock?.();$('#pictureCardKicker').textContent=p.kicker||'';$('#pictureCardTitle').textContent=p.title;const img=$('#pictureCardImg');img.src=p.src;img.dataset.large=p.large||'';img.alt=p.title;
       $('#pictureCardCaption').textContent=p.caption;$('#pictureCardCredit').textContent=p.credit;$('#pictureCardNext').classList.add('hidden');$('#pictureCard').classList.remove('hidden');$('#closePictureCard').focus()};
     document.addEventListener('keydown',e=>{if(e.code==='Escape'&&!$('#pictureCard').classList.contains('hidden')){e.preventDefault();e.stopImmediatePropagation();$('#pictureCard').classList.add('hidden')}},true);
     // Looking closer: the picture card's picture opens over the whole screen, to be zoomed (wheel, pinch, + and −, a double
     // click or tap) and dragged; Escape or the button puts it back to the card. For Beauplan's map and every other picture
     // the card shows.
-    {let root=null,img=null,stage=null,open=false,scale=1,x=0,y=0,fitScale=1,pinch=null,drag=null;const pointers=new Map();
+    {let root=null,img=null,stage=null,open=false,scale=1,x=0,y=0,fitScale=1,pinch=null,drag=null,swap=null,swapping=false;const pointers=new Map();
       const apply=()=>{if(!img.naturalWidth)return;const r=stage.getBoundingClientRect(),w=img.naturalWidth*scale,h=img.naturalHeight*scale,m=60;
         x=Math.min(r.width-m,Math.max(m-w,x));y=Math.min(r.height-m,Math.max(m-h,y));img.style.transform=`translate(${x}px,${y}px) scale(${scale})`};
       const fit=()=>{if(!img.naturalWidth)return;const r=stage.getBoundingClientRect();fitScale=Math.min((r.width-24)/img.naturalWidth,(r.height-24)/img.naturalHeight);scale=fitScale;
@@ -2377,7 +2377,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
         root.innerHTML=`<div class="pz-stage" aria-label="The picture. Drag to move it, scroll or pinch to zoom."><img alt=""></div><div class="pz-tools"><button type="button" data-act="out" aria-label="Zoom out">−</button><button type="button" data-act="in" aria-label="Zoom in">+</button><button type="button" data-act="fit">Увесь · Whole</button><button type="button" data-act="close">Назад · Back · Esc</button></div><p class="pz-hint">Тягніть, щоб рухати; прокрутіть, зведіть пальці чи двічі торкніться, щоб наблизити. · Drag to move; scroll, pinch or double-tap to look closer.</p>`;
         document.body.appendChild(root);stage=root.querySelector('.pz-stage');img=root.querySelector('img');
         root.addEventListener('click',e=>{const act=e.target.closest('[data-act]')?.dataset.act;if(act==='close')close();else if(act==='in')zoomTo(scale*1.6);else if(act==='out')zoomTo(scale/1.6);else if(act==='fit')fit()});
-        img.addEventListener('load',fit);
+        img.addEventListener('load',()=>{if(swapping){swapping=false;apply()}else fit()});
         stage.addEventListener('wheel',e=>{e.preventDefault();const r=stage.getBoundingClientRect();zoomTo(scale*Math.exp(-e.deltaY*.0015),e.clientX-r.left,e.clientY-r.top)},{passive:false});
         stage.addEventListener('dblclick',e=>{const r=stage.getBoundingClientRect();if(scale>fitScale*1.5)fit();else zoomTo(scale*2.5,e.clientX-r.left,e.clientY-r.top)});
         stage.addEventListener('pointerdown',e=>{stage.setPointerCapture?.(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
@@ -2392,8 +2392,12 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
         window.addEventListener('keydown',e=>{if(!open)return;e.stopImmediatePropagation();const k=e.key;
           if(k==='Escape'){e.preventDefault();close()}else if(k==='+'||k==='='){zoomTo(scale*1.4)}else if(k==='-'||k==='_'){zoomTo(scale/1.4)}else if(k==='0')fit()},true);
         window.addEventListener('keyup',e=>{if(open)e.stopImmediatePropagation()},true)};
-      const lookCloser=()=>{const src=$('#pictureCardImg').getAttribute('src');if(!src)return;if(!root)build();open=true;root.classList.remove('hidden');img.alt=$('#pictureCardImg').alt;
-        if(img.getAttribute('src')!==src)img.src=src;else fit();setTimeout(()=>root.querySelector('[data-act="close"]').focus(),30)};
+      // A picture may have a larger copy for this (`large`): fetched only when the reader looks closer.
+      const lookCloser=()=>{const card=$('#pictureCardImg'),src=card.getAttribute('src'),large=card.dataset.large;if(!src)return;if(!root)build();open=true;root.classList.remove('hidden');img.alt=card.alt;
+        const want=large||src;if(img.dataset.want!==want){img.dataset.want=want;swap=null;img.src=src;
+          // The larger copy comes in behind: the same view, at its finer grain, once it has loaded.
+          if(large){const next=new Image();swap=next;next.onload=()=>{if(swap!==next)return;if(!open||!img.complete||!img.naturalWidth){img.src=large;return}const k=img.naturalWidth/next.naturalWidth;swapping=true;scale*=k;fitScale*=k;img.src=large}}else swap=null;
+          if(swap)swap.src=large}else fit();setTimeout(()=>root.querySelector('[data-act="close"]').focus(),30)};
       $('#pictureCardImg').addEventListener('click',lookCloser);
       const button=document.createElement('button');button.className='ghost';button.type='button';button.id='pictureCardZoom';button.textContent='Роздивитися ближче · Look closer';button.addEventListener('click',lookCloser);
       $('#pictureCardNext').before(button);

@@ -212,7 +212,7 @@ async function fetchAll(MAPS, dir, manifestName, what) {
   for (const map of MAPS) {
     const full = path.join(OUT, `${map.key}.jpg`), wall = path.join(OUT, `${map.key}-wall.jpg`);
     const large = path.join(OUT, `${map.key}-large.jpg`);
-    if (manifest[map.key] && await exists(full) && await exists(wall) && (!map.large || await exists(large))) { console.log(`${map.key}: kept (${manifest[map.key].file})`); continue }
+    if (manifest[map.key] && await exists(full) && await exists(wall) && (!map.large || (await exists(large) && manifest[map.key].large >= Math.min(map.large, manifest[map.key].original || Infinity)))) { console.log(`${map.key}: kept (${manifest[map.key].file})`); continue }
     try {
       if (map.drawn) { manifest[map.key] = await drawSnark(full, wall); console.log(`${map.key}: drawn after the poem`); continue }
       const page = await choose(map);
@@ -227,15 +227,16 @@ async function fetchAll(MAPS, dir, manifestName, what) {
       const small = await image.clone().resize({ width: WALL, height: WALL, fit: 'inside', withoutEnlargement: true }).jpeg({ quality: 74, mozjpeg: true }).toBuffer();
       await writeFile(full, big.data); await writeFile(wall, small);
       // A larger copy for zooming, from Commons at that width (or the original, if it is smaller).
-      let largeWidth;
+      let largeWidth, originalWidth;
       if (map.large) {
         const data = await api({ ...INFO, iiurlwidth: String(map.large), titles: page.title });
-        const li = data.query?.pages?.[0]?.imageinfo?.[0], from = li?.thumburl || li?.url;
+        // Commons serves thumbnails no wider than 3840: past that, take the original and resize it here.
+        const li = data.query?.pages?.[0]?.imageinfo?.[0], from = li?.thumburl && (li.thumbwidth >= map.large || li.width <= li.thumbwidth) ? li.thumburl : li?.url;
         const got = await fetch(from, { headers: HEADERS });
         if (!got.ok) throw new Error(`${got.status} downloading ${from}`);
         const out = await sharp(Buffer.from(await got.arrayBuffer()), { limitInputPixels: false }).rotate(map.rotate || 0).flatten({ background: '#e8dcc0' })
           .resize({ width: map.large, height: map.large, fit: 'inside', withoutEnlargement: true }).jpeg({ quality: 72, mozjpeg: true }).toBuffer({ resolveWithObject: true });
-        await writeFile(large, out.data); largeWidth = out.info.width;
+        await writeFile(large, out.data); largeWidth = out.info.width; originalWidth = li?.width;
         console.log(`    large: ${out.info.width}x${out.info.height}, ${Math.round(out.data.length / 1024)} KB (original ${li?.width}x${li?.height})`);
       }
       manifest[map.key] = {
@@ -244,7 +245,7 @@ async function fetchAll(MAPS, dir, manifestName, what) {
         artist: strip(meta.Artist?.value).slice(0, 160), date: strip(meta.DateTimeOriginal?.value).slice(0, 80),
         licence: strip(meta.LicenseShortName?.value) || 'Public domain',
         description: strip(meta.ImageDescription?.value).slice(0, 400),
-        ...(largeWidth ? { large: largeWidth } : {})
+        ...(largeWidth ? { large: largeWidth, original: originalWidth } : {})
       };
       console.log(`${map.key}: ${page.title} -> ${big.info.width}x${big.info.height}, ${Math.round(big.data.length / 1024)} KB (wall ${Math.round(small.length / 1024)} KB) · ${manifest[map.key].licence} · ${manifest[map.key].artist} · ${manifest[map.key].date}`);
       console.log(`    ${manifest[map.key].description}`);
