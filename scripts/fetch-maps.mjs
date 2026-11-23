@@ -230,8 +230,8 @@ async function fetchAll(MAPS, dir, manifestName, what) {
       let largeWidth, originalWidth;
       if (map.large) {
         const data = await api({ ...INFO, iiurlwidth: String(map.large), titles: page.title });
-        // Commons serves thumbnails no wider than 3840: past that, take the original and resize it here.
-        const li = data.query?.pages?.[0]?.imageinfo?.[0], from = li?.thumburl && (li.thumbwidth >= map.large || li.width <= li.thumbwidth) ? li.thumburl : li?.url;
+        // Commons serves thumbnails no wider than 3840 (whatever width it reports): past that, take the original and resize it here.
+        const li = data.query?.pages?.[0]?.imageinfo?.[0], from = map.large > 3840 && li?.width > 3840 ? li.url : li?.thumburl || li?.url;
         const got = await fetch(from, { headers: HEADERS });
         if (!got.ok) throw new Error(`${got.status} downloading ${from}`);
         const out = await sharp(Buffer.from(await got.arrayBuffer()), { limitInputPixels: false }).rotate(map.rotate || 0).flatten({ background: '#e8dcc0' })
