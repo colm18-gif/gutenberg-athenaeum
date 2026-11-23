@@ -54,8 +54,9 @@ export const PICTURES = [
   { key: 'ua-pectoral', file: 'Pektoral111.JPG', minSize: 700 },
   // Beauplan's general map of Ukraine (Delineatio Generalis Camporum Desertorum vulgo Ukraina, Gdańsk 1648, engraved by
   // Willem Hondius), drawn with the south at the top: framed on the Ukrainian Reading Room's wall (BEAUPLAN in
-  // international-wing.js), the writers' places marked on it by the library.
-  { key: 'ua-beauplan-1648', files: ['Delineatio Generalis Camporum Desertorum vulgo Ukraina.jpg', 'Beauplan Ukraine 1648.jpg', 'Guillaume Le Vasseur de Beauplan. Delineatio Generalis Camporum Desertorum vulgo Ukraina. 1648.jpg'], search: 'Beauplan Delineatio Generalis Camporum Desertorum Ukraina', exclude: /detail|fragment|part|crop|\bof \d/i, minSize: 1500 },
+  // international-wing.js), the writers' places marked on it by the library. `large`: a bigger copy as well,
+  // `<key>-large.jpg`, for the picture card's zoom only (the table and the card keep the 2048-pixel one).
+  { key: 'ua-beauplan-1648', files: ['Delineatio Generalis Camporum Desertorum vulgo Ukraina.jpg', 'Beauplan Ukraine 1648.jpg', 'Guillaume Le Vasseur de Beauplan. Delineatio Generalis Camporum Desertorum vulgo Ukraina. 1648.jpg'], search: 'Beauplan Delineatio Generalis Camporum Desertorum Ukraina', exclude: /detail|fragment|part|crop|\bof \d/i, minSize: 1500, large: 6000 },
   // For the Ukrainian children's room: the 1922 Yiddish edition of Ukrainian folk tales (Ukraynishe Folkmayses), its
   // picture for «Пан Коцький», and three letters of Heorhiy Narbut's Ukrainian alphabet (1917–19; Narbut died in 1920).
   { key: 'kids-pan-kotsky-1922', file: 'Ukraynishe Folkmayses 11.jpg', minSize: 500 },
@@ -210,7 +211,8 @@ async function fetchAll(MAPS, dir, manifestName, what) {
   let failed = 0;
   for (const map of MAPS) {
     const full = path.join(OUT, `${map.key}.jpg`), wall = path.join(OUT, `${map.key}-wall.jpg`);
-    if (manifest[map.key] && await exists(full) && await exists(wall)) { console.log(`${map.key}: kept (${manifest[map.key].file})`); continue }
+    const large = path.join(OUT, `${map.key}-large.jpg`);
+    if (manifest[map.key] && await exists(full) && await exists(wall) && (!map.large || await exists(large))) { console.log(`${map.key}: kept (${manifest[map.key].file})`); continue }
     try {
       if (map.drawn) { manifest[map.key] = await drawSnark(full, wall); console.log(`${map.key}: drawn after the poem`); continue }
       const page = await choose(map);
@@ -224,12 +226,25 @@ async function fetchAll(MAPS, dir, manifestName, what) {
       const big = await image.clone().resize({ width: FULL, height: FULL, fit: 'inside', withoutEnlargement: true }).jpeg({ quality: 74, mozjpeg: true }).toBuffer({ resolveWithObject: true });
       const small = await image.clone().resize({ width: WALL, height: WALL, fit: 'inside', withoutEnlargement: true }).jpeg({ quality: 74, mozjpeg: true }).toBuffer();
       await writeFile(full, big.data); await writeFile(wall, small);
+      // A larger copy for zooming, from Commons at that width (or the original, if it is smaller).
+      let largeWidth;
+      if (map.large) {
+        const data = await api({ ...INFO, iiurlwidth: String(map.large), titles: page.title });
+        const li = data.query?.pages?.[0]?.imageinfo?.[0], from = li?.thumburl || li?.url;
+        const got = await fetch(from, { headers: HEADERS });
+        if (!got.ok) throw new Error(`${got.status} downloading ${from}`);
+        const out = await sharp(Buffer.from(await got.arrayBuffer()), { limitInputPixels: false }).rotate(map.rotate || 0).flatten({ background: '#e8dcc0' })
+          .resize({ width: map.large, height: map.large, fit: 'inside', withoutEnlargement: true }).jpeg({ quality: 72, mozjpeg: true }).toBuffer({ resolveWithObject: true });
+        await writeFile(large, out.data); largeWidth = out.info.width;
+        console.log(`    large: ${out.info.width}x${out.info.height}, ${Math.round(out.data.length / 1024)} KB (original ${li?.width}x${li?.height})`);
+      }
       manifest[map.key] = {
         file: page.title.replace(/^File:/, ''), page: info.descriptionurl,
         width: big.info.width, height: big.info.height,
         artist: strip(meta.Artist?.value).slice(0, 160), date: strip(meta.DateTimeOriginal?.value).slice(0, 80),
         licence: strip(meta.LicenseShortName?.value) || 'Public domain',
-        description: strip(meta.ImageDescription?.value).slice(0, 400)
+        description: strip(meta.ImageDescription?.value).slice(0, 400),
+        ...(largeWidth ? { large: largeWidth } : {})
       };
       console.log(`${map.key}: ${page.title} -> ${big.info.width}x${big.info.height}, ${Math.round(big.data.length / 1024)} KB (wall ${Math.round(small.length / 1024)} KB) · ${manifest[map.key].licence} · ${manifest[map.key].artist} · ${manifest[map.key].date}`);
       console.log(`    ${manifest[map.key].description}`);
