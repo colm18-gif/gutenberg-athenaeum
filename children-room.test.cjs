@@ -316,6 +316,7 @@ test('the chronicle frieze’s documents: every panel that opens one has its pic
 test('Beauplan’s map: a table in front of the north racks, south at the top, and every pin lights books that are in the room',()=>{
   const B=vm.runInNewContext(`(()=>{${source.slice(source.indexOf('const BEAUPLAN='),source.indexOf('}]};',source.indexOf('const BEAUPLAN='))+4)};return BEAUPLAN})()`);
   assert(fs.existsSync('assets/pictures/ua-beauplan-1648.jpg'),'the map is there');
+  assert(fs.existsSync('assets/pictures/ua-beauplan-1648-large.jpg'),'and its larger copy, for zooming');assert.match(source,/large:'assets\/pictures\/ua-beauplan-1648-large\.jpg'/);
   assert.match(fs.readFileSync('scripts/fetch-maps.mjs','utf8'),/key: 'ua-beauplan-1648'/,'fetched from Commons');
   const [W,H]=B.size;assert(B.places.length>=6);
   for(const p of B.places){const [x,y]=p.at;assert(x>40&&x<W-40&&y>40&&y<H-40,`${p.name} is on the map`);

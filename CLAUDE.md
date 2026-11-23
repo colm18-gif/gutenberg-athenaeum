@@ -704,7 +704,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   gives its card and lights that place's writers' books (`authors`, any word of a book's author) wherever they stand in
   the room for 16 s: a pale glow behind each, one shared material, no light. The map itself opens large in the picture
   card, where a click on the picture or Look closer opens it full screen to zoom and drag (`lookCloser` in game.js, for
-  every picture the card shows; Escape goes back to the card). A test wants every pin to light at least one book: a new place needs a writer who is on the shelves. Cards say
+  every picture the card shows; Escape goes back to the card). A picture with `large` (Beauplan's: `large: 6000` in
+  `scripts/fetch-maps.mjs` writes `<key>-large.jpg`) opens at the card's copy and swaps to the large one, keeping the
+  view, once it has loaded; only the zoom fetches it. A test wants every pin to light at least one book: a new place needs a writer who is on the shelves. Cards say
   only what is well attested.
 - The Holodomor candle: in the Ukrainian Reading Room, from the Sunday before the fourth Saturday of November (the Day of
   Remembrance of the Victims of the Holodomor) to the day itself, a candle in a glass with ears of wheat stands where the
