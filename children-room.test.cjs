@@ -329,4 +329,5 @@ test('Beauplan’s map: a table in front of the north racks, south at the top, a
   for(const [i,p] of B.places.entries()){a.notices.length=0;a.w.interact(pins.find(o=>o.userData.index===i));
     const n=Number(/засвітилося книжок: (\d+)/.exec(a.notices.at(-1))?.[1]||0);assert(n>0,`${p.name} lights some of the room’s books`)}
   const map=a.interactables.find(o=>o.userData?.type==='intl-beauplan'&&o.userData.index==null);assert(map,'the map itself can be looked at');
+  assert.match(game,/\$\('#pictureCardImg'\)\.addEventListener\('click',lookCloser\)/,'and in the picture card it can be zoomed');
 });

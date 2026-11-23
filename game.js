@@ -2355,6 +2355,49 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     const showRoomPicture=p=>{document.exitPointerLock?.();$('#pictureCardKicker').textContent=p.kicker||'';$('#pictureCardTitle').textContent=p.title;const img=$('#pictureCardImg');img.src=p.src;img.alt=p.title;
       $('#pictureCardCaption').textContent=p.caption;$('#pictureCardCredit').textContent=p.credit;$('#pictureCardNext').classList.add('hidden');$('#pictureCard').classList.remove('hidden');$('#closePictureCard').focus()};
     document.addEventListener('keydown',e=>{if(e.code==='Escape'&&!$('#pictureCard').classList.contains('hidden')){e.preventDefault();e.stopImmediatePropagation();$('#pictureCard').classList.add('hidden')}},true);
+    // Looking closer: the picture card's picture opens over the whole screen, to be zoomed (wheel, pinch, + and −, a double
+    // click or tap) and dragged; Escape or the button puts it back to the card. For Beauplan's map and every other picture
+    // the card shows.
+    {let root=null,img=null,stage=null,open=false,scale=1,x=0,y=0,fitScale=1,pinch=null,drag=null;const pointers=new Map();
+      const apply=()=>{if(!img.naturalWidth)return;const r=stage.getBoundingClientRect(),w=img.naturalWidth*scale,h=img.naturalHeight*scale,m=60;
+        x=Math.min(r.width-m,Math.max(m-w,x));y=Math.min(r.height-m,Math.max(m-h,y));img.style.transform=`translate(${x}px,${y}px) scale(${scale})`};
+      const fit=()=>{if(!img.naturalWidth)return;const r=stage.getBoundingClientRect();fitScale=Math.min((r.width-24)/img.naturalWidth,(r.height-24)/img.naturalHeight);scale=fitScale;
+        x=(r.width-img.naturalWidth*scale)/2;y=(r.height-img.naturalHeight*scale)/2;apply()};
+      const zoomTo=(next,cx,cy)=>{const r=stage.getBoundingClientRect();if(cx==null){cx=r.width/2;cy=r.height/2}next=Math.max(fitScale*.8,Math.min(fitScale*12,next));
+        x=cx-(cx-x)*next/scale;y=cy-(cy-y)*next/scale;scale=next;apply()};
+      const close=()=>{if(!open)return;open=false;root.classList.add('hidden');$('#pictureCardImg').focus?.()};
+      const build=()=>{const style=document.createElement('style');style.textContent=`#pictureZoom{position:fixed;inset:0;z-index:60;background:rgba(8,9,8,.96);color:#e8dcc0;font-family:Georgia,serif}#pictureZoom.hidden{display:none}
+#pictureZoom .pz-stage{position:absolute;inset:0;overflow:hidden;touch-action:none;cursor:grab}#pictureZoom .pz-stage.dragging{cursor:grabbing}
+#pictureZoom img{position:absolute;left:0;top:0;transform-origin:0 0;max-width:none;user-select:none;-webkit-user-drag:none;box-shadow:0 10px 60px #000}
+#pictureZoom .pz-tools{position:absolute;top:10px;right:12px;display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+#pictureZoom button{font:inherit;font-size:15px;color:#f0dfbd;background:#2c2014;border:1px solid #9a7a48;border-radius:3px;padding:7px 12px;cursor:pointer}#pictureZoom button:hover,#pictureZoom button:focus-visible{background:#4a3520;outline:none}
+#pictureZoom .pz-hint{position:absolute;left:12px;bottom:10px;right:12px;font-size:13px;font-style:italic;color:#9f9278;pointer-events:none}
+#pictureCardImg{cursor:zoom-in}`;document.head.appendChild(style);
+        root=document.createElement('div');root.id='pictureZoom';root.className='hidden';root.setAttribute('role','dialog');root.setAttribute('aria-modal','true');root.setAttribute('aria-label','The picture, close up');
+        root.innerHTML=`<div class="pz-stage" aria-label="The picture. Drag to move it, scroll or pinch to zoom."><img alt=""></div><div class="pz-tools"><button type="button" data-act="out" aria-label="Zoom out">−</button><button type="button" data-act="in" aria-label="Zoom in">+</button><button type="button" data-act="fit">Увесь · Whole</button><button type="button" data-act="close">Назад · Back · Esc</button></div><p class="pz-hint">Тягніть, щоб рухати; прокрутіть, зведіть пальці чи двічі торкніться, щоб наблизити. · Drag to move; scroll, pinch or double-tap to look closer.</p>`;
+        document.body.appendChild(root);stage=root.querySelector('.pz-stage');img=root.querySelector('img');
+        root.addEventListener('click',e=>{const act=e.target.closest('[data-act]')?.dataset.act;if(act==='close')close();else if(act==='in')zoomTo(scale*1.6);else if(act==='out')zoomTo(scale/1.6);else if(act==='fit')fit()});
+        img.addEventListener('load',fit);
+        stage.addEventListener('wheel',e=>{e.preventDefault();const r=stage.getBoundingClientRect();zoomTo(scale*Math.exp(-e.deltaY*.0015),e.clientX-r.left,e.clientY-r.top)},{passive:false});
+        stage.addEventListener('dblclick',e=>{const r=stage.getBoundingClientRect();if(scale>fitScale*1.5)fit();else zoomTo(scale*2.5,e.clientX-r.left,e.clientY-r.top)});
+        stage.addEventListener('pointerdown',e=>{stage.setPointerCapture?.(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+          if(pointers.size===1)drag={x:e.clientX-x,y:e.clientY-y};else if(pointers.size===2){const [a,b]=[...pointers.values()];pinch={d:Math.hypot(a.x-b.x,a.y-b.y),scale};drag=null}stage.classList.add('dragging')});
+        stage.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId))return;pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+          if(pinch&&pointers.size===2){const [a,b]=[...pointers.values()],r=stage.getBoundingClientRect();zoomTo(pinch.scale*Math.hypot(a.x-b.x,a.y-b.y)/pinch.d,(a.x+b.x)/2-r.left,(a.y+b.y)/2-r.top)}
+          else if(drag){x=e.clientX-drag.x;y=e.clientY-drag.y;apply()}});
+        const up=e=>{pointers.delete(e.pointerId);if(pointers.size<2)pinch=null;if(pointers.size===1){const p=[...pointers.values()][0];drag={x:p.x-x,y:p.y-y}}else if(!pointers.size){drag=null;stage.classList.remove('dragging')}};
+        stage.addEventListener('pointerup',up);stage.addEventListener('pointercancel',up);
+        window.addEventListener('resize',()=>{if(open)fit()});
+        // While it is open, keys belong to it: Escape goes back to the card, not out of it.
+        window.addEventListener('keydown',e=>{if(!open)return;e.stopImmediatePropagation();const k=e.key;
+          if(k==='Escape'){e.preventDefault();close()}else if(k==='+'||k==='='){zoomTo(scale*1.4)}else if(k==='-'||k==='_'){zoomTo(scale/1.4)}else if(k==='0')fit()},true);
+        window.addEventListener('keyup',e=>{if(open)e.stopImmediatePropagation()},true)};
+      const lookCloser=()=>{const src=$('#pictureCardImg').getAttribute('src');if(!src)return;if(!root)build();open=true;root.classList.remove('hidden');img.alt=$('#pictureCardImg').alt;
+        if(img.getAttribute('src')!==src)img.src=src;else fit();setTimeout(()=>root.querySelector('[data-act="close"]').focus(),30)};
+      $('#pictureCardImg').addEventListener('click',lookCloser);
+      const button=document.createElement('button');button.className='ghost';button.type='button';button.id='pictureCardZoom';button.textContent='Роздивитися ближче · Look closer';button.addEventListener('click',lookCloser);
+      $('#pictureCardNext').before(button);
+      if(new URLSearchParams(location.search).has('debug'))window.__pictureZoom={open:lookCloser,close,get scale(){return scale},get fitScale(){return fitScale}}}
     var dickinsonRoom=window.createDickinsonRoom?.({doorKit:getDoorKit(),corridor:longCorridor,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,showPicture:showRoomPicture,
       findBook:id=>books.find(b=>b.id===id),arrivals:{poems:arrivalIds('dickinson-poems'),read:arrivalIds('dickinson-read'),circle:arrivalIds('dickinson-circle'),garden:arrivalIds('dickinson-garden'),drawer:arrivalIds('dickinson-drawer')},
       analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search})||null;
