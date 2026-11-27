@@ -24,8 +24,15 @@ const BUNDLED=path.join(root,'texts/bundled-gzip'),AHEAD=2,DAY_MS=86400000,PAUSE
 const KINDS=['mood','journeys','curiosities','seasons','on-this-day','short-reads','deep-dive','firsts'];
 const USER_AGENT='LibraryAfterDark-RoomOfTheDay/1.0 (+https://libraryafterdark.space)';
 
-const NEW_BOOKS_RESOLVED=path.join(root,'data/new-books-resolved.js');
-function keptForGood(){try{return Object.values(loadScript(NEW_BOOKS_RESOLVED,'ATHENAEUM_NEW_BOOKS_RESOLVED')?.books||{}).map(book=>book.id)}catch(error){return []}}
+const NEW_BOOKS_RESOLVED=path.join(root,'data/new-books-resolved.js'),CURIOUS_BOOKS=path.join(root,'data/curious-rooms-books.js');
+// Texts the rest of the library needs for good, which this job must never remove: the new arrivals, and
+// the books of the rooms behind the curious doors (the Children's Attic and its neighbours), which are
+// listed by id in data/curious-rooms-books.js and are not among the new arrivals.
+function ids(read){try{return (read()||[]).filter(Boolean)}catch(error){return []}}
+export function keptForGood(){return [
+  ...ids(()=>Object.values(loadScript(NEW_BOOKS_RESOLVED,'ATHENAEUM_NEW_BOOKS_RESOLVED')?.books||{}).map(book=>book.id)),
+  ...ids(()=>(loadScript(CURIOUS_BOOKS,'ATHENAEUM_CURIOUS_BOOKS')||[]).map(book=>book.id)),
+]}
 export function loadScript(file,name){const context={window:{}};vm.runInNewContext(fs.readFileSync(file,'utf8'),context,{filename:file});return context.window[name]}
 const utc=key=>{const [y,m,d]=key.split('-').map(Number);return Date.UTC(y,m-1,d)};
 const addDays=(key,n)=>new Date(utc(key)+n*DAY_MS).toISOString().slice(0,10);

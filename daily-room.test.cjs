@@ -133,3 +133,14 @@ test('unloading daily dressing preserves a book taken out by the reader',()=>{
   assert.equal(traveller.userData.singleCopyMoved,true);assert.equal(traveller.userData.home.parent,scene);assert.equal(traveller.userData.home.position.world,true);
   assert.equal(context.dressing,null);assert.equal(context.dayBooks.length,0);
 });
+
+
+test('the nightly job keeps the curious rooms\' own books for good',async()=>{
+  const {keptForGood}=await import('./scripts/daily-room.mjs');
+  const kept=new Set(keptForGood());
+  const curious=vm.runInNewContext(fs.readFileSync(path.join(__dirname,'data/curious-rooms-books.js'),'utf8')+';window',{window:{}}).ATHENAEUM_CURIOUS_BOOKS;
+  const ids=[...new Set(curious.map(book=>book.id).filter(Boolean))];
+  assert(ids.length,'the curious rooms have books');
+  const dropped=ids.filter(id=>!kept.has(id));
+  assert.deepEqual(dropped,[],'a curious room\'s book must never be swept up when it leaves the Room of the Day window');
+});
