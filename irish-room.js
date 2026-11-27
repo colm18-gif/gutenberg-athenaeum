@@ -29,7 +29,7 @@
     sign:['Seomra na hÉireann','The Irish Room: the old stories, the writers of the Revival and the novelists, and a small shelf of books in Irish. Fáilte romhat, you are welcome.']};
 
   window.createIrishRoom=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,move,analytics,isHolding=()=>false,registerSeat=null,doorKit=null,kells=null,durrow=null,storage=window.localStorage}=options;
+    const {THREE,scene,MAT,player,interactables,canvasTexture,bookMaterial,findBook,arrivals={},showNotice,playSample,move,analytics,isHolding=()=>false,openLink=null,registerSeat=null,doorKit=null,kells=null,durrow=null,storage=window.localStorage}=options;
     // In the Grand Hall's south wall, between the Boathouse door and the pillar.
     const DOOR={x:-8.3,z:30.45,yaw:Math.PI};
     const ROOM={cx:-330,cz:-205,w:16,d:14,h:5};
@@ -38,6 +38,11 @@
     const DOOR_LOOK={style:'painted',color:0x1d5a3c,fanColor:0xffb35c,width:1.9,height:3.1};
     const through=(data,go)=>doorKit&&data.kit?doorKit.pass(data.kit,data,go):go();
     let root=null,time=0,lastNeeded=-1e9,fire=null,secret=null;
+    // Library Ireland Week (the Library Association of Ireland and CILIP Ireland) runs from the Sunday on or after 29
+    // November to the Saturday after: a poster by the door for that week, by the reader's own date (?liw shows it).
+    const LIW={url:'https://libraryirelandweek.ie/',theme:'Culture, Connection and Community'};
+    const liwWeek=(date=new Date())=>{const y=date.getFullYear(),start=new Date(y,10,29);start.setDate(29+(7-start.getDay())%7);const end=new Date(start);end.setDate(start.getDate()+7);const d=new Date(y,date.getMonth(),date.getDate());return d>=start&&d<end};
+    const liwOut=()=>{try{return /[?&]liw\b/.test(location.search)||liwWeek()}catch(e){return false}};
     const FOUND_KEY='athenaeum-durrow-found';
     const wasFound=()=>{try{return storage?.getItem(FOUND_KEY)==='1'||/[?&]durrow\b/.test(location.search)}catch(e){return false}};
     const owned=[],ours=[],books=[],blockers=[];
@@ -99,6 +104,8 @@
       if(durrow)buildSecret(cx,fz);
       // The room's sign above the hearth.
       mark(sign(root,'SEOMRA NA hÉIREANN','The Irish Room',3.2,.6,cx,4.3,fz+.24),card('sign'));
+      // Library Ireland Week: a poster on the south wall, east of the door, for that week only.
+      if(liwOut()){const poster=sign(root,'LIBRARY IRELAND WEEK','Culture, Connection and Community',2.3,.62,cx+3.5,2.7,cz+d/2-.2);poster.rotation.y=Math.PI;mark(poster,{type:'irish-liw',title:'Library Ireland Week',author:'The Library Association of Ireland and CILIP Ireland celebrate libraries and the people who work in them: this year\u2019s theme is \u2018Culture, Connection and Community\u2019. Open libraryirelandweek.ie to see how libraries across the island are taking part.',action:'READ'})}
       // Two chairs by the fire, the library's own seats, each opening one of the room's books.
       const fabric=own(new THREE.MeshStandardMaterial({color:0x2e4a33,roughness:.9}));
       for(const [x,z,yaw] of [[cx-2.1,cz-3.2,.6],[cx+2.1,cz-3.2,-.6]]){
@@ -227,13 +234,14 @@
     // ---------- doing things ----------
     function enter(){
       activate();move(ROOM.cx,ROOM.cz+ROOM.d/2-1.4,0);playSample?.('doorOpen',.8,.96);
-      showNotice('Seomra na hÉireann, the Irish Room. A turf fire, the old stories and the writers of Ireland, a shelf of books in Irish, and under glass, the Book of Kells, open for you to turn. The door at the far end of this wall leads on to Scotland and the Burns Room. Fáilte romhat.',12);
+      showNotice('Seomra na hÉireann, the Irish Room. A turf fire, the old stories and the writers of Ireland, a shelf of books in Irish, and under glass, the Book of Kells, open for you to turn. The door at the far end of this wall leads on to Scotland and the Burns Room. Fáilte romhat.'+(liwOut()?' This week is Library Ireland Week: the poster by the door tells you more.':''),12);
       analytics?.track('Room Explored',{room:'irish-room'});
     }
     function interact(object){
       const data=object?.userData;if(!data||typeof data.type!=='string'||!data.type.startsWith('irish-'))return false;
       if(data.type==='irish-door'){through(data,enter);return true}
       if(data.type==='irish-exit'){through(data,()=>{move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again.',3)});return true}
+      if(data.type==='irish-liw'){if(openLink)openLink({kicker:'LIBRARY IRELAND WEEK',title:data.title,text:data.author,url:LIW.url,label:'Visit libraryirelandweek.ie'});else showNotice(`${data.title}: ${data.author}`,9);return true}
       if(data.type==='irish-card'){showNotice(`${data.title}: ${data.author}`,9);return true}
       if(data.type==='irish-sod'){liftSod();return true}
       if(data.type==='irish-kells'){kells?.open();return true}
@@ -258,6 +266,6 @@
       if(fire&&inside&&!reduced){for(const f of fire.flames)f.mesh.scale.y=1+Math.sin(t*8+f.phase)*.16;fire.light.intensity=6+Math.sin(t*5)*.7+Math.sin(t*11.3)*.3}
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,activate,unload,catalogue,door:DOOR,room:ROOM,groups:GROUPS,records:RECORDS,get built(){return !!root},get books(){return books.slice()},get durrowFound(){return !!secret&&secret.lift>0},zoneAt:(x,z)=>contains(x,z)?'irish-room':null};
+    return {contains,floorAt,allowed,interact,update,enter,activate,unload,catalogue,door:DOOR,room:ROOM,groups:GROUPS,records:RECORDS,get built(){return !!root},get books(){return books.slice()},get liwWeek(){return liwOut()},get durrowFound(){return !!secret&&secret.lift>0},zoneAt:(x,z)=>contains(x,z)?'irish-room':null};
   };
 })();
