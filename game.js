@@ -2103,7 +2103,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const preVoynichInteract=interact;interact=function(){if(focus&&!selected&&focus.userData?.type==='restricted-voynich'){focus=null;ui.prompt.style.opacity=0;voynichBook.open();return}return preVoynichInteract()};
     }
     {const preFineCovered=worldIsCovered;worldIsCovered=function(){return fineBookOpen()||preFineCovered()};const preFineActive=gameActive;gameActive=function(){return !fineBookOpen()&&preFineActive()}}
-    const irishRoom=window.createIrishRoom?.({doorKit:getDoorKit(),THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,kells:kellsBook,durrow:durrowBook,
+    const irishRoom=window.createIrishRoom?.({doorKit:getDoorKit(),openLink:openLinkCard,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,kells:kellsBook,durrow:durrowBook,
       findBook:id=>books.find(b=>b.id===id),arrivals:{myth:arrivalIds('irish-myth'),revival:arrivalIds('irish-revival'),writers:arrivalIds('irish-writers'),gaeilge:arrivalIds('irish-gaeilge')},
       analytics:window.libraryAnalytics,isHolding:()=>!!selected,
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
