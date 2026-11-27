@@ -2425,7 +2425,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     }
     // The Indian room (india-room.js): a haveli reading room off the Long Corridor, Tagore to Gandhi in English, and the goblin
     // in the banyan at its window.
-    var indiaRoom=window.createIndiaRoom?.({doorKit:getDoorKit(),corridor:longCorridor,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,
+    var indiaRoom=window.createIndiaRoom?.({doorKit:getDoorKit(),corridor:longCorridor,THREE,scene,MAT,player,interactables,registerSeat,canvasTexture,bookMaterial,showNotice,playSample,tone:pianoTone,
       findBook:id=>books.find(b=>b.id===id),arrivals:{tagore:arrivalIds('india-tagore'),poets:arrivalIds('india-poets'),epics:arrivalIds('india-epics'),tales:arrivalIds('india-tales'),history:arrivalIds('india-history'),vampire:arrivalIds('india-vampire')},
       analytics:window.libraryAnalytics,isHolding:()=>!!selected,move:forestMove,storage:localStorage,search:location.search})||null;
     if(indiaRoom){
