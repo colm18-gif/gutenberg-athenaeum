@@ -14,7 +14,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   (`styles.css?v=` in `index.html`): bump it whenever the stylesheet changes, or readers keep the old one from their cache.
 - Rooms behind doors (`evening-room.js`, `learners-room.js`, `periodicals-room.js`, `international-wing.js`,
   `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`, `map-room.js`, `medicine-room.js`, `set-texts-room.js`,
-  `austen-room.js`, `burns-room.js`, `canada-room.js`, `long-corridor.js`, `dickinson-room.js`, `gulliver-room.js`, `nemo-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`, `walden.js`, `uncatalogued-room.js`, `bindery-room.js`)
+  `austen-room.js`, `burns-room.js`, `canada-room.js`, `long-corridor.js`, `dickinson-room.js`, `gulliver-room.js`, `nemo-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`, `walden.js`, `uncatalogued-room.js`, `bindery-room.js`, `camera-obscura.js`)
   are built only when the reader approaches and freed ~25 s after they leave. So are the Room of Chance (its portrait
   stays), the Lost Property Office (its hatch stays) and the high staircase, Rocket Hall, Moon and rocket cabin (`high-staircase.js`: only its door in the west wing
   is built at startup; a stair book carried away keeps it). The basement and the roof garden, built in `game.js` on a first visit, are
@@ -76,6 +76,17 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Dibdin's Bibliomania (`bindery-fore-edge`) is left beside it, found for good (`athenaeum-bindery-fore-edge`; `?foreedge`).
   Cards keep to what is attested (Doves Bindery 1893, Edwards of Halifax). A case of famous bindings is still to come,
   from Commons photographs fetched and looked at first.
+- The Camera Obscura (`camera-obscura.js`, x 3300, z 300; `?room=camera-obscura`, `obscura`, `camera`, `turret`): a
+  turret on the roof garden's east parapet (door at x 16.66, z 58.3, south of the lavender bed; the turret's few meshes
+  are built at startup and kept), a small dark round room with a lens in its roof. On the white table the game draws the
+  Grand Hall live into a render target (`DRAW_EVERY` 0.2 s, 256 px, 192 on low bandwidth; exposure raised for that
+  render, since the budget lights only the reader's nearest lamps), only while the reader is inside. The brass wheel turns
+  between four `VIEWS`, all in the Grand Hall: the wings and rooms are not drawn from far away (a test keeps every eye in
+  the hall). `snapshot(i)` (via `?debug`) returns a view as an image, for checking by eye. One dim lamp by the shelf
+  (`obscura-books`: Brewster, Newton, Huygens, Tyndall, Luckiesh, Spectropia…), a bench (a seat). The secret: watching the
+  hall, a tiny figure with a lantern crosses it to a door not yet opened (exploration.js's `doors`) and is gone, seen only
+  on the table; the first time, O'Brien's The Diamond Lens (`obscura-figure`) is left on the table's rim, found for good
+  (`athenaeum-obscura-figure`; `?figure`). Its card names Edinburgh's camera obscura on Castlehill (since 1853).
 - The Medicine Room (`medicine-room.js`, x −420, z −140) is behind a door at the south end of the Map Room's east wall
   (`?room=medicine`), a few steps from Snow's cholera map; `map-room.js` stops its east shelf short (`EAST_SHELF`) to leave
   that end of the wall clear. A history of medicine on three shelves, `medicine-physic`, `medicine-discovery` and
@@ -1026,7 +1037,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
-  daily-room, long-corridor, bindery, arctic, ships-in-bottles, montserrat, pitcairn, tristan, st-helena, norfolk, faroe, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
+  daily-room, long-corridor, bindery, camera-obscura, arctic, ships-in-bottles, montserrat, pitcairn, tristan, st-helena, norfolk, faroe, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.
