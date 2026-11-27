@@ -3315,6 +3315,46 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 2400,
    "words": 77839
   },
+  "The Art of Bookbinding": {
+   "id": 51213,
+   "words": 56560
+  },
+  "A Manual of the Art of Bookbinding": {
+   "id": 55056,
+   "words": 70886
+  },
+  "Practical Bookbinding": {
+   "id": 39318,
+   "words": 49238
+  },
+  "Modern Bookbindings": {
+   "id": 68786,
+   "words": 21187
+  },
+  "Royal English Bookbindings": {
+   "id": 40028,
+   "words": 24920
+  },
+  "The Book: Its History and Development": {
+   "id": 52932,
+   "words": 61895
+  },
+  "The Progress of the Marbling Art": {
+   "id": 41241,
+   "words": 27977
+  },
+  "The Ideal Book or Book Beautiful": {
+   "id": 72320,
+   "words": 2276
+  },
+  "The Enemies of Books": {
+   "id": 1302,
+   "words": 23578
+  },
+  "Bibliomania": {
+   "id": 28540,
+   "words": 291466
+  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633
