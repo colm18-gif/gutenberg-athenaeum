@@ -1,884 +1,884 @@
 // Written by scripts/daily-room.mjs (the nightly "Room of the Day" workflow): the checked book lists for the
 // days around today, keyed by the schedule date in data/daily-rooms.js. Do not edit by hand.
 window.ATHENAEUM_DAILY_RESOLVED={
- "updated": "2026-11-08",
+ "updated": "2026-11-27",
  "days": {
-  "2026-09-25": {
+  "2026-10-05": {
    "books": [
     {
-     "id": 583,
-     "title": "The Woman in White",
-     "author": "Wilkie Collins"
+     "id": 10136,
+     "title": "The Book of Household Management",
+     "author": "Isabella Beeton"
     },
     {
-     "id": 8486,
-     "title": "Ghost Stories of an Antiquary",
-     "author": "M. R. James"
+     "id": 72482,
+     "title": "Modern Cookery for Private Families",
+     "author": "Eliza Acton"
     },
     {
-     "id": 2852,
-     "title": "The Hound of the Baskervilles",
-     "author": "Arthur Conan Doyle"
+     "id": 69519,
+     "title": "A New System of Domestic Cookery",
+     "author": "Maria Eliza Ketelby Rundell"
     },
     {
-     "id": 1023,
-     "title": "Bleak House",
+     "id": 5434,
+     "title": "The Physiology of Taste",
+     "author": "Jean Anthelme Brillat-Savarin"
+    },
+    {
+     "id": 65061,
+     "title": "The Boston Cooking-School Cook Book",
+     "author": "Fannie Merritt Farmer"
+    },
+    {
+     "id": 46,
+     "title": "A Christmas Carol",
      "author": "Charles Dickens"
     },
     {
-     "id": 121,
-     "title": "Northanger Abbey",
-     "author": "Jane Austen"
-    },
-    {
-     "id": 932,
-     "title": "The Fall of the House of Usher",
-     "author": "Edgar Allan Poe"
-    },
-    {
-     "id": 564,
-     "title": "The Mystery of Edwin Drood",
+     "id": 730,
+     "title": "Oliver Twist",
      "author": "Charles Dickens"
     },
     {
-     "id": 14851,
-     "title": "Uncle Silas",
-     "author": "J. Sheridan Le Fanu"
+     "id": 8102,
+     "title": "The Forme of Cury",
+     "author": "Samuel Pegge"
     },
     {
-     "id": 2014,
-     "title": "The Lodger",
-     "author": "Marie Belloc Lowndes"
+     "id": 1400,
+     "title": "Great Expectations",
+     "author": "Charles Dickens"
     },
     {
-     "id": 974,
-     "title": "The Secret Agent",
-     "author": "Joseph Conrad"
+     "id": 24407,
+     "title": "The Italian Cook Book",
+     "author": "Maria Gentile"
     }
    ],
    "missing": []
   },
-  "2026-09-26": {
+  "2026-10-06": {
    "books": [
     {
-     "id": 103,
-     "title": "Around the World in Eighty Days",
-     "author": "Jules Verne"
+     "id": 1463,
+     "title": "The Private Papers of Henry Ryecroft",
+     "author": "George Gissing"
     },
     {
-     "id": 46597,
-     "title": "In Search of the Castaways",
-     "author": "Jules Verne"
+     "id": 9846,
+     "title": "Excursions",
+     "author": "Henry David Thoreau"
     },
     {
-     "id": 2895,
-     "title": "Following the Equator",
-     "author": "Mark Twain"
+     "id": 2048,
+     "title": "The Sketch Book of Geoffrey Crayon",
+     "author": "Washington Irving"
     },
     {
-     "id": 3176,
-     "title": "The Innocents Abroad",
-     "author": "Mark Twain"
+     "id": 45,
+     "title": "Anne of Green Gables",
+     "author": "L. M. Montgomery"
     },
     {
-     "id": 944,
-     "title": "The Voyage of the Beagle",
-     "author": "Charles Darwin"
+     "id": 36949,
+     "title": "Wild Life in a Southern County",
+     "author": "Richard Jefferies"
     },
     {
-     "id": 6317,
-     "title": "Sailing Alone Around the World",
-     "author": "Joshua Slocum"
+     "id": 4232,
+     "title": "A Week on the Concord and Merrimack Rivers",
+     "author": "Henry David Thoreau"
     },
     {
-     "id": 282,
-     "title": "Eothen",
-     "author": "A. W. Kinglake"
-    },
-    {
-     "id": 535,
-     "title": "Travels with a Donkey in the Cevennes",
+     "id": 534,
+     "title": "An Inland Voyage",
      "author": "Robert Louis Stevenson"
     },
     {
-     "id": 10636,
-     "title": "The Travels of Marco Polo",
-     "author": "Marco Polo"
+     "id": 2496,
+     "title": "Our Village",
+     "author": "Mary Russell Mitford"
     },
     {
-     "id": 829,
-     "title": "Gulliver's Travels",
-     "author": "Jonathan Swift"
+     "id": 122,
+     "title": "The Return of the Native",
+     "author": "Thomas Hardy"
+    },
+    {
+     "id": 289,
+     "title": "The Wind in the Willows",
+     "author": "Kenneth Grahame"
     }
    ],
    "missing": []
   },
-  "2026-09-27": {
+  "2026-10-07": {
    "books": [
     {
-     "id": 1342,
-     "title": "Pride and Prejudice",
+     "id": 1065,
+     "title": "The Raven",
+     "author": "Edgar Allan Poe"
+    },
+    {
+     "id": 51060,
+     "title": "The Narrative of Arthur Gordon Pym of Nantucket",
+     "author": "Edgar Allan Poe"
+    },
+    {
+     "id": 2148,
+     "title": "The Works of Edgar Allan Poe — Volume 2",
+     "author": "Edgar Allan Poe"
+    },
+    {
+     "id": 1064,
+     "title": "The Masque of the Red Death",
+     "author": "Edgar Allan Poe"
+    },
+    {
+     "id": 1063,
+     "title": "The Cask of Amontillado",
+     "author": "Edgar Allan Poe"
+    },
+    {
+     "id": 32037,
+     "title": "Eureka: A Prose Poem",
+     "author": "Edgar Allan Poe"
+    },
+    {
+     "id": 2097,
+     "title": "The Sign of the Four",
+     "author": "Arthur Conan Doyle"
+    },
+    {
+     "id": 10002,
+     "title": "The House on the Borderland",
+     "author": "William Hope Hodgson"
+    },
+    {
+     "id": 14471,
+     "title": "The Empty House and Other Ghost Stories",
+     "author": "Algernon Blackwood"
+    },
+    {
+     "id": 15862,
+     "title": "Afterwhiles",
+     "author": "James Whitcomb Riley"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-08": {
+   "books": [
+    {
+     "id": 21,
+     "title": "Aesop's Fables",
+     "author": "Aesop"
+    },
+    {
+     "id": 50316,
+     "title": "The Fables of La Fontaine",
+     "author": "Jean de La Fontaine"
+    },
+    {
+     "id": 2781,
+     "title": "Just So Stories",
+     "author": "Rudyard Kipling"
+    },
+    {
+     "id": 6438,
+     "title": "Fables for the Frivolous",
+     "author": "Guy Wetmore Carryl"
+    },
+    {
+     "id": 58585,
+     "title": "The Prophet",
+     "author": "Kahlil Gibran"
+    },
+    {
+     "id": 1597,
+     "title": "Hans Andersen's Fairy Tales",
+     "author": "H. C. Andersen"
+    },
+    {
+     "id": 25322,
+     "title": "Fables in Slang",
+     "author": "George Ade"
+    },
+    {
+     "id": 2591,
+     "title": "Grimms' Fairy Tales",
+     "author": "Jacob Grimm"
+    },
+    {
+     "id": 374,
+     "title": "Fantastic Fables",
+     "author": "Ambrose Bierce"
+    },
+    {
+     "id": 5616,
+     "title": "The Madman: His Parables and Poems",
+     "author": "Kahlil Gibran"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-09": {
+   "books": [
+    {
+     "id": 205,
+     "title": "Walden, and On The Duty Of Civil Disobedience",
+     "author": "Henry David Thoreau"
+    },
+    {
+     "id": 2944,
+     "title": "Essays — First Series",
+     "author": "Ralph Waldo Emerson"
+    },
+    {
+     "id": 29433,
+     "title": "Nature",
+     "author": "Ralph Waldo Emerson"
+    },
+    {
+     "id": 33,
+     "title": "The Scarlet Letter",
+     "author": "Nathaniel Hawthorne"
+    },
+    {
+     "id": 1322,
+     "title": "Leaves of Grass",
+     "author": "Walt Whitman"
+    },
+    {
+     "id": 2945,
+     "title": "Essays — Second Series",
+     "author": "Ralph Waldo Emerson"
+    },
+    {
+     "id": 514,
+     "title": "Little Women",
+     "author": "Louisa May Alcott"
+    },
+    {
+     "id": 46209,
+     "title": "Concord Days",
+     "author": "Amos Bronson Alcott"
+    },
+    {
+     "id": 42500,
+     "title": "The Maine Woods",
+     "author": "Henry David Thoreau"
+    },
+    {
+     "id": 6312,
+     "title": "Representative Men",
+     "author": "Ralph Waldo Emerson"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-10": {
+   "books": [
+    {
+     "id": 580,
+     "title": "The Pickwick Papers",
+     "author": "Charles Dickens"
+    },
+    {
+     "id": 720,
+     "title": "Almayer's Folly",
+     "author": "Joseph Conrad"
+    },
+    {
+     "id": 863,
+     "title": "The Mysterious Affair at Styles",
+     "author": "Agatha Christie"
+    },
+    {
+     "id": 805,
+     "title": "This Side of Paradise",
+     "author": "F. Scott Fitzgerald"
+    },
+    {
+     "id": 144,
+     "title": "The Voyage Out",
+     "author": "Virginia Woolf"
+    },
+    {
+     "id": 3044,
+     "title": "Desperate Remedies",
+     "author": "Thomas Hardy"
+    },
+    {
+     "id": 161,
+     "title": "Sense and Sensibility",
      "author": "Jane Austen"
     },
     {
-     "id": 14314,
-     "title": "Etiquette",
-     "author": "Emily Post"
+     "id": 5998,
+     "title": "Waverley",
+     "author": "Walter Scott"
     },
     {
-     "id": 208,
-     "title": "Daisy Miller: A Study",
-     "author": "Henry James"
+     "id": 62,
+     "title": "A Princess of Mars",
+     "author": "Edgar Rice Burroughs"
     },
     {
-     "id": 8399,
-     "title": "Manners and Social Usages",
-     "author": "Mrs. John Sherwood"
-    },
-    {
-     "id": 2641,
-     "title": "A Room with a View",
-     "author": "E. M. Forster"
-    },
-    {
-     "id": 67799,
-     "title": "The Book of the Courtier",
-     "author": "Baldassare Castiglione"
-    },
-    {
-     "id": 10766,
-     "title": "Enquire Within Upon Everything",
-     "author": "Anonymous"
-    },
-    {
-     "id": 35123,
-     "title": "The Ladies' Book of Etiquette, and Manual of Politeness",
-     "author": "Florence Hartley"
-    },
-    {
-     "id": 39293,
-     "title": "The Gentlemen's Book of Etiquette and Manual of Politeness",
-     "author": "Cecil B. Hartley"
-    },
-    {
-     "id": 17609,
-     "title": "Our Deportment",
-     "author": "John H. Young"
+     "id": 1900,
+     "title": "Typee",
+     "author": "Herman Melville"
     }
    ],
    "missing": []
   },
-  "2026-09-28": {
+  "2026-10-11": {
    "books": [
     {
-     "id": 107,
-     "title": "Far from the Madding Crowd",
-     "author": "Thomas Hardy"
+     "id": 139,
+     "title": "The Lost World",
+     "author": "Arthur Conan Doyle"
     },
     {
-     "id": 507,
-     "title": "Adam Bede",
-     "author": "George Eliot"
+     "id": 2166,
+     "title": "King Solomon's Mines",
+     "author": "H. Rider Haggard"
     },
     {
-     "id": 1408,
-     "title": "The Natural History of Selborne",
-     "author": "Gilbert White"
+     "id": 3155,
+     "title": "She",
+     "author": "H. Rider Haggard"
     },
     {
-     "id": 34238,
-     "title": "Rural Rides",
-     "author": "William Cobbett"
+     "id": 551,
+     "title": "The Land That Time Forgot",
+     "author": "Edgar Rice Burroughs"
     },
     {
-     "id": 232,
-     "title": "The Georgics",
-     "author": "Virgil"
+     "id": 18857,
+     "title": "A Journey to the Centre of the Earth",
+     "author": "Jules Verne"
     },
     {
-     "id": 9092,
-     "title": "The Farmer's Boy",
-     "author": "Robert Bloomfield"
+     "id": 123,
+     "title": "At the Earth's Core",
+     "author": "Edgar Rice Burroughs"
     },
     {
-     "id": 110,
-     "title": "Tess of the d'Urbervilles",
-     "author": "Thomas Hardy"
+     "id": 1906,
+     "title": "Erewhon",
+     "author": "Samuel Butler"
     },
     {
-     "id": 482,
-     "title": "The Woodlanders",
-     "author": "Thomas Hardy"
+     "id": 1951,
+     "title": "The Coming Race",
+     "author": "Edward Bulwer-Lytton"
     },
     {
-     "id": 349,
-     "title": "The Harvester",
-     "author": "Gene Stratton-Porter"
+     "id": 765,
+     "title": "The Moon Pool",
+     "author": "A. Merritt"
     },
     {
-     "id": 242,
-     "title": "My Antonia",
+     "id": 14301,
+     "title": "Atlantida",
+     "author": "Pierre Benoit"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-12": {
+   "books": [
+    {
+     "id": 20203,
+     "title": "Autobiography of Benjamin Franklin",
+     "author": "Benjamin Franklin"
+    },
+    {
+     "id": 20321,
+     "title": "A Short Account of the Destruction of the Indies",
+     "author": "Bartolomé de las Casas"
+    },
+    {
+     "id": 147,
+     "title": "Common Sense",
+     "author": "Thomas Paine"
+    },
+    {
+     "id": 15399,
+     "title": "The Interesting Narrative of the Life of Olaudah Equiano",
+     "author": "Olaudah Equiano"
+    },
+    {
+     "id": 4666,
+     "title": "Letters from an American Farmer",
+     "author": "J. Hector St. John de Crèvecoeur"
+    },
+    {
+     "id": 675,
+     "title": "American Notes",
+     "author": "Charles Dickens"
+    },
+    {
+     "id": 10345,
+     "title": "Domestic Manners of the Americans",
+     "author": "Frances Milton Trollope"
+    },
+    {
+     "id": 940,
+     "title": "The Last of the Mohicans",
+     "author": "James Fenimore Cooper"
+    },
+    {
+     "id": 815,
+     "title": "Democracy in America",
+     "author": "Alexis de Tocqueville"
+    },
+    {
+     "id": 24,
+     "title": "O Pioneers!",
      "author": "Willa Cather"
     }
    ],
    "missing": []
   },
-  "2026-09-29": {
+  "2026-10-13": {
    "books": [
     {
-     "id": 394,
-     "title": "Cranford",
-     "author": "Elizabeth Cleghorn Gaskell"
+     "id": 24518,
+     "title": "Memoirs of Extraordinary Popular Delusions and the Madness of Crowds",
+     "author": "Charles Mackay"
     },
     {
-     "id": 4276,
-     "title": "North and South",
-     "author": "Elizabeth Cleghorn Gaskell"
+     "id": 7116,
+     "title": "Vestiges of the Natural History of Creation",
+     "author": "Robert Chambers"
     },
     {
-     "id": 2153,
-     "title": "Mary Barton",
-     "author": "Elizabeth Cleghorn Gaskell"
+     "id": 54329,
+     "title": "Symmes's Theory of Concentric Spheres",
+     "author": "James McBride"
     },
     {
-     "id": 4274,
-     "title": "Wives and Daughters",
-     "author": "Elizabeth Cleghorn Gaskell"
+     "id": 19553,
+     "title": "The Private Diary of Dr. John Dee",
+     "author": "John Dee"
     },
     {
-     "id": 4275,
-     "title": "Ruth",
-     "author": "Elizabeth Cleghorn Gaskell"
+     "id": 19229,
+     "title": "Anticipations",
+     "author": "H. G. Wells"
     },
     {
-     "id": 4268,
-     "title": "Cousin Phillis",
-     "author": "Elizabeth Cleghorn Gaskell"
+     "id": 39910,
+     "title": "Omphalos",
+     "author": "Philip Henry Gosse"
     },
     {
-     "id": 4537,
-     "title": "Sylvia's Lovers",
-     "author": "Elizabeth Cleghorn Gaskell"
+     "id": 1638,
+     "title": "The New Revelation",
+     "author": "Arthur Conan Doyle"
     },
     {
-     "id": 996,
-     "title": "Don Quixote",
-     "author": "Miguel de Cervantes Saavedra"
+     "id": 22472,
+     "title": "The Book of the Damned",
+     "author": "Charles Fort"
     },
     {
-     "id": 14420,
-     "title": "Exemplary Novels",
-     "author": "Miguel de Cervantes Saavedra"
+     "id": 47015,
+     "title": "Mars",
+     "author": "Percival Lowell"
     },
     {
-     "id": 61561,
-     "title": "The Wanderings of Persiles and Sigismunda",
-     "author": "Miguel de Cervantes Saavedra"
+     "id": 285,
+     "title": "The Lost Continent",
+     "author": "C. J. Cutcliffe Hyne"
     }
    ],
    "missing": []
   },
-  "2026-09-30": {
+  "2026-10-14": {
    "books": [
     {
-     "id": 1952,
-     "title": "The Yellow Wallpaper",
-     "author": "Charlotte Perkins Gilman"
+     "id": 678,
+     "title": "The Cricket on the Hearth",
+     "author": "Charles Dickens"
     },
     {
-     "id": 11231,
-     "title": "Bartleby, the Scrivener",
-     "author": "Herman Melville"
+     "id": 20226,
+     "title": "Snow-Bound",
+     "author": "John Greenleaf Whittier"
     },
     {
-     "id": 5200,
-     "title": "Metamorphosis",
-     "author": "Franz Kafka"
+     "id": 27924,
+     "title": "Mugby Junction",
+     "author": "Charles Dickens"
     },
     {
-     "id": 7256,
-     "title": "The Gift of the Magi",
-     "author": "O. Henry"
+     "id": 503,
+     "title": "The Blue Fairy Book",
+     "author": "Andrew Lang"
     },
     {
-     "id": 1080,
-     "title": "A Modest Proposal",
-     "author": "Jonathan Swift"
+     "id": 25153,
+     "title": "Tales of a Wayside Inn",
+     "author": "Henry Wadsworth Longfellow"
     },
     {
-     "id": 11757,
-     "title": "The Velveteen Rabbit",
-     "author": "Margery Williams"
+     "id": 2383,
+     "title": "The Canterbury Tales",
+     "author": "Geoffrey Chaucer"
     },
     {
-     "id": 12122,
-     "title": "The Monkey's Paw",
-     "author": "W. W. Jacobs"
-    },
-    {
-     "id": 375,
-     "title": "An Occurrence at Owl Creek Bridge",
-     "author": "Ambrose Bierce"
-    },
-    {
-     "id": 60976,
-     "title": "Rip Van Winkle",
-     "author": "Washington Irving"
-    },
-    {
-     "id": 6373,
-     "title": "The Luck of Roaring Camp",
-     "author": "Bret Harte"
-    }
-   ],
-   "missing": []
-  },
-  "2026-10-01": {
-   "books": [
-    {
-     "id": 1260,
-     "title": "Jane Eyre",
-     "author": "Charlotte Brontë"
-    },
-    {
-     "id": 768,
-     "title": "Wuthering Heights",
-     "author": "Emily Brontë"
-    },
-    {
-     "id": 767,
-     "title": "Agnes Grey",
-     "author": "Anne Brontë"
-    },
-    {
-     "id": 969,
-     "title": "The Tenant of Wildfell Hall",
-     "author": "Anne Brontë"
-    },
-    {
-     "id": 9182,
-     "title": "Villette",
-     "author": "Charlotte Brontë"
-    },
-    {
-     "id": 30486,
-     "title": "Shirley",
-     "author": "Charlotte Brontë"
-    },
-    {
-     "id": 1028,
-     "title": "The Professor",
-     "author": "Charlotte Brontë"
-    },
-    {
-     "id": 1019,
-     "title": "Poems by Currer, Ellis, and Acton Bell",
-     "author": "Charlotte, Emily and Anne Brontë"
-    },
-    {
-     "id": 1827,
-     "title": "The Life of Charlotte Bronte",
-     "author": "Elizabeth Cleghorn Gaskell"
-    },
-    {
-     "id": 3011,
-     "title": "The Lady of the Lake",
-     "author": "Walter Scott"
-    }
-   ],
-   "missing": []
-  },
-  "2026-10-26": {
-   "books": [
-    {
-     "id": 11,
-     "title": "Alice's Adventures in Wonderland",
-     "author": "Lewis Carroll"
-    },
-    {
-     "id": 14838,
-     "title": "The Tale of Peter Rabbit",
-     "author": "Beatrix Potter"
-    },
-    {
-     "id": 1154,
-     "title": "The Voyages of Doctor Dolittle",
-     "author": "Hugh Lofting"
-    },
-    {
-     "id": 28299,
-     "title": "Orbis Pictus",
-     "author": "John Amos Comenius"
-    },
-    {
-     "id": 1018,
-     "title": "The Water-Babies",
-     "author": "Charles Kingsley"
-    },
-    {
-     "id": 1480,
-     "title": "Tom Brown's School Days",
-     "author": "Thomas Hughes"
-    },
-    {
-     "id": 55,
-     "title": "The Wonderful Wizard of Oz",
-     "author": "L. Frank Baum"
-    },
-    {
-     "id": 12116,
-     "title": "Struwwelpeter",
-     "author": "Heinrich Hoffmann"
-    },
-    {
-     "id": 10607,
-     "title": "The Real Mother Goose",
+     "id": 128,
+     "title": "The Arabian Nights' Entertainments",
      "author": "Anonymous"
     },
     {
-     "id": 3836,
-     "title": "The Swiss Family Robinson",
-     "author": "Johann David Wyss"
+     "id": 23700,
+     "title": "The Decameron",
+     "author": "Giovanni Boccaccio"
+    },
+    {
+     "id": 14107,
+     "title": "The Lost Stradivarius",
+     "author": "John Meade Falkner"
+    },
+    {
+     "id": 751,
+     "title": "The Autocrat of the Breakfast-Table",
+     "author": "Oliver Wendell Holmes"
     }
    ],
    "missing": []
   },
-  "2026-10-27": {
+  "2026-10-15": {
    "books": [
     {
-     "id": 308,
-     "title": "Three Men in a Boat",
-     "author": "Jerome K. Jerome"
+     "id": 8164,
+     "title": "My Man Jeeves",
+     "author": "P. G. Wodehouse"
     },
     {
-     "id": 1257,
-     "title": "The Three Musketeers",
-     "author": "Alexandre Dumas"
+     "id": 2042,
+     "title": "Something New",
+     "author": "P. G. Wodehouse"
     },
     {
-     "id": 76,
-     "title": "Adventures of Huckleberry Finn",
-     "author": "Mark Twain"
+     "id": 6753,
+     "title": "Psmith in the City",
+     "author": "P. G. Wodehouse"
     },
     {
-     "id": 2808,
-     "title": "Treatises on Friendship and Old Age",
-     "author": "Marcus Tullius Cicero"
+     "id": 2005,
+     "title": "Piccadilly Jim",
+     "author": "P. G. Wodehouse"
     },
     {
-     "id": 74,
-     "title": "The Adventures of Tom Sawyer",
-     "author": "Mark Twain"
+     "id": 2233,
+     "title": "A Damsel in Distress",
+     "author": "P. G. Wodehouse"
     },
     {
-     "id": 236,
-     "title": "The Jungle Book",
-     "author": "Rudyard Kipling"
+     "id": 1998,
+     "title": "Thus Spake Zarathustra",
+     "author": "Friedrich Wilhelm Nietzsche"
     },
     {
-     "id": 3600,
-     "title": "Essays of Michel de Montaigne — Complete",
-     "author": "Michel de Montaigne"
+     "id": 4363,
+     "title": "Beyond Good and Evil",
+     "author": "Friedrich Wilhelm Nietzsche"
     },
     {
-     "id": 2397,
-     "title": "The Story of My Life",
-     "author": "Helen Keller"
+     "id": 228,
+     "title": "The Aeneid",
+     "author": "Virgil"
     },
     {
-     "id": 1874,
-     "title": "The Railway Children",
-     "author": "E. Nesbit"
+     "id": 230,
+     "title": "The Bucolics and Eclogues",
+     "author": "Virgil"
     },
     {
-     "id": 158,
-     "title": "Emma",
-     "author": "Jane Austen"
+     "id": 52881,
+     "title": "The Joyful Wisdom",
+     "author": "Friedrich Wilhelm Nietzsche"
     }
    ],
    "missing": []
   },
-  "2026-10-28": {
+  "2026-10-16": {
    "books": [
     {
-     "id": 83,
-     "title": "From the Earth to the Moon",
-     "author": "Jules Verne"
+     "id": 902,
+     "title": "The Happy Prince, and Other Tales",
+     "author": "Oscar Wilde"
     },
     {
-     "id": 16457,
-     "title": "Around the Moon",
-     "author": "Jules Verne"
+     "id": 873,
+     "title": "A House of Pomegranates",
+     "author": "Oscar Wilde"
     },
     {
-     "id": 1013,
-     "title": "The First Men in the Moon",
-     "author": "H. G. Wells"
+     "id": 14522,
+     "title": "The Canterville Ghost",
+     "author": "Oscar Wilde"
     },
     {
-     "id": 1633,
-     "title": "The Brick Moon, and Other Stories",
-     "author": "Edward Everett Hale"
+     "id": 773,
+     "title": "Lord Arthur Savile's Crime; The Portrait of Mr. W. H., and Other Stories",
+     "author": "Oscar Wilde"
     },
     {
-     "id": 1607,
-     "title": "A Journey in Other Worlds",
-     "author": "John Jacob Astor"
+     "id": 844,
+     "title": "The Importance of Being Earnest",
+     "author": "Oscar Wilde"
     },
     {
-     "id": 19103,
-     "title": "The Discovery of a World in the Moone",
-     "author": "John Wilkins"
+     "id": 301,
+     "title": "The Ballad of Reading Gaol",
+     "author": "Oscar Wilde"
     },
     {
-     "id": 46547,
-     "title": "A Voyage to the Moon",
-     "author": "Cyrano de Bergerac"
+     "id": 921,
+     "title": "De Profundis",
+     "author": "Oscar Wilde"
     },
     {
-     "id": 19141,
-     "title": "Edison's Conquest of Mars",
-     "author": "Garrett Putman Serviss"
+     "id": 887,
+     "title": "Intentions",
+     "author": "Oscar Wilde"
     },
     {
-     "id": 10165,
-     "title": "Across the Zodiac",
-     "author": "Percy Greg"
+     "id": 790,
+     "title": "Lady Windermere's Fan",
+     "author": "Oscar Wilde"
     },
     {
-     "id": 43835,
-     "title": "Lumen",
-     "author": "Camille Flammarion"
+     "id": 1017,
+     "title": "The Soul of Man under Socialism",
+     "author": "Oscar Wilde"
     }
    ],
    "missing": []
   },
-  "2026-10-29": {
+  "2026-10-17": {
    "books": [
     {
-     "id": 66451,
-     "title": "A Magician Among the Spirits",
-     "author": "Harry Houdini"
-    },
-    {
-     "id": 6133,
-     "title": "The Extraordinary Adventures of Arsène Lupin, Gentleman-Burglar",
-     "author": "Maurice Leblanc"
-    },
-    {
-     "id": 439,
-     "title": "The Vital Message",
-     "author": "Arthur Conan Doyle"
-    },
-    {
-     "id": 47506,
-     "title": "The Coming of the Fairies",
-     "author": "Arthur Conan Doyle"
-    },
-    {
-     "id": 58057,
-     "title": "Modern Magic",
-     "author": "Professor Hoffmann"
-    },
-    {
-     "id": 14275,
-     "title": "The Necromancers",
-     "author": "Robert Hugh Benson"
-    },
-    {
-     "id": 62779,
-     "title": "The Moon Hoax",
-     "author": "Richard Adams Locke"
-    },
-    {
-     "id": 60766,
-     "title": "The Discoverie of Witchcraft",
-     "author": "Reginald Scot"
-    },
-    {
-     "id": 14317,
-     "title": "The Sorcery Club",
-     "author": "Elliott O'Donnell"
-    },
-    {
-     "id": 10430,
-     "title": "Trips to the Moon",
-     "author": "Lucian of Samosata"
-    }
-   ],
-   "missing": []
-  },
-  "2026-10-30": {
-   "books": [
-    {
-     "id": 345,
-     "title": "Dracula",
-     "author": "Bram Stoker"
-    },
-    {
-     "id": 10007,
-     "title": "Carmilla",
-     "author": "J. Sheridan Le Fanu"
-    },
-    {
-     "id": 209,
-     "title": "The Turn of the Screw",
-     "author": "Henry James"
-    },
-    {
-     "id": 41,
-     "title": "The Legend of Sleepy Hollow",
-     "author": "Washington Irving"
-    },
-    {
-     "id": 43,
-     "title": "The Strange Case of Dr. Jekyll and Mr. Hyde",
-     "author": "Robert Louis Stevenson"
-    },
-    {
-     "id": 175,
-     "title": "The Phantom of the Opera",
-     "author": "Gaston Leroux"
-    },
-    {
-     "id": 389,
-     "title": "The Great God Pan",
-     "author": "Arthur Machen"
-    },
-    {
-     "id": 8492,
-     "title": "The King in Yellow",
-     "author": "Robert W. Chambers"
-    },
-    {
-     "id": 601,
-     "title": "The Monk: A Romance",
-     "author": "M. G. Lewis"
-    },
-    {
-     "id": 170,
-     "title": "The Haunted Hotel",
-     "author": "Wilkie Collins"
-    }
-   ],
-   "missing": []
-  },
-  "2026-10-31": {
-   "books": [
-    {
-     "id": 23684,
-     "title": "Poems Published in 1820",
-     "author": "John Keats"
-    },
-    {
-     "id": 24280,
-     "title": "Endymion",
-     "author": "John Keats"
-    },
-    {
-     "id": 60433,
-     "title": "Letters of John Keats to Fanny Brawne",
-     "author": "John Keats"
-    },
-    {
-     "id": 6130,
-     "title": "The Iliad",
-     "author": "Homer"
-    },
-    {
-     "id": 1524,
-     "title": "Hamlet",
-     "author": "William Shakespeare"
-    },
-    {
-     "id": 10119,
-     "title": "Adonais",
-     "author": "Percy Bysshe Shelley"
-    },
-    {
-     "id": 41688,
-     "title": "Keats",
-     "author": "Sidney Colvin"
-    },
-    {
-     "id": 35698,
-     "title": "Letters of John Keats to His Family and Friends",
-     "author": "John Keats"
-    },
-    {
-     "id": 8209,
-     "title": "Poems 1817",
-     "author": "John Keats"
-    },
-    {
-     "id": 14244,
-     "title": "The Romance of Tristan and Iseult",
-     "author": "Joseph Bédier"
-    }
-   ],
-   "missing": []
-  },
-  "2026-11-01": {
-   "books": [
-    {
-     "id": 614,
-     "title": "Across the Plains, with Other Memories and Essays",
-     "author": "Robert Louis Stevenson"
-    },
-    {
-     "id": 3020,
-     "title": "Table-Talk",
-     "author": "William Hazlitt"
-    },
-    {
-     "id": 1022,
-     "title": "Walking",
-     "author": "Henry David Thoreau"
-    },
-    {
-     "id": 29220,
-     "title": "Monday or Tuesday",
-     "author": "Virginia Woolf"
-    },
-    {
-     "id": 7952,
-     "title": "The Pleasures of Life",
-     "author": "John Lubbock"
-    },
-    {
-     "id": 470,
-     "title": "Heretics",
+     "id": 204,
+     "title": "The Innocence of Father Brown",
      "author": "G. K. Chesterton"
     },
     {
-     "id": 1293,
-     "title": "Sesame and Lilies",
-     "author": "John Ruskin"
+     "id": 1155,
+     "title": "The Secret Adversary",
+     "author": "Agatha Christie"
     },
     {
-     "id": 443,
-     "title": "The Love Affairs of a Bibliomaniac",
-     "author": "Eugene Field"
+     "id": 2568,
+     "title": "Trent's Last Case",
+     "author": "E. C. Bentley"
     },
     {
-     "id": 386,
-     "title": "Virginibus Puerisque, and Other Papers",
+     "id": 1872,
+     "title": "The Red House Mystery",
+     "author": "A. A. Milne"
+    },
+    {
+     "id": 1685,
+     "title": "The Mystery of the Yellow Room",
+     "author": "Gaston Leroux"
+    },
+    {
+     "id": 434,
+     "title": "The Circular Staircase",
+     "author": "Mary Roberts Rinehart"
+    },
+    {
+     "id": 10556,
+     "title": "The Old Man in the Corner",
+     "author": "Baroness Orczy"
+    },
+    {
+     "id": 558,
+     "title": "The Thirty-Nine Steps",
+     "author": "John Buchan"
+    },
+    {
+     "id": 4047,
+     "title": "The Leavenworth Case",
+     "author": "Anna Katharine Green"
+    },
+    {
+     "id": 28164,
+     "title": "The Big Bow Mystery",
+     "author": "Israel Zangwill"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-18": {
+   "books": [
+    {
+     "id": 1228,
+     "title": "On the Origin of Species",
+     "author": "Charles Darwin"
+    },
+    {
+     "id": 46036,
+     "title": "The Sidereal Messenger",
+     "author": "Galileo Galilei"
+    },
+    {
+     "id": 33504,
+     "title": "Opticks",
+     "author": "Isaac Newton"
+    },
+    {
+     "id": 14474,
+     "title": "The Chemical History of a Candle",
+     "author": "Michael Faraday"
+    },
+    {
+     "id": 15491,
+     "title": "Micrographia",
+     "author": "Robert Hooke"
+    },
+    {
+     "id": 30155,
+     "title": "Relativity: The Special and General Theory",
+     "author": "Albert Einstein"
+    },
+    {
+     "id": 45515,
+     "title": "Experiments and Observations on Electricity",
+     "author": "Benjamin Franklin"
+    },
+    {
+     "id": 29414,
+     "title": "An Inquiry into the Causes and Effects of the Variolae Vaccinae",
+     "author": "Edward Jenner"
+    },
+    {
+     "id": 33224,
+     "title": "Principles of Geology",
+     "author": "Charles Lyell"
+    },
+    {
+     "id": 3300,
+     "title": "An Inquiry into the Nature and Causes of the Wealth of Nations",
+     "author": "Adam Smith"
+    }
+   ],
+   "missing": []
+  },
+  "2026-10-19": {
+   "books": [
+    {
+     "id": 113,
+     "title": "The Secret Garden",
+     "author": "Frances Hodgson Burnett"
+    },
+    {
+     "id": 1327,
+     "title": "Elizabeth and Her German Garden",
+     "author": "Elizabeth von Arnim"
+    },
+    {
+     "id": 36279,
+     "title": "Wood and Garden",
+     "author": "Gertrude Jekyll"
+    },
+    {
+     "id": 16389,
+     "title": "The Enchanted April",
+     "author": "Elizabeth von Arnim"
+    },
+    {
+     "id": 136,
+     "title": "A Child's Garden of Verses",
      "author": "Robert Louis Stevenson"
     },
     {
-     "id": 17508,
-     "title": "Certain Personal Matters",
-     "author": "H. G. Wells"
+     "id": 125,
+     "title": "A Girl of the Limberlost",
+     "author": "Gene Stratton-Porter"
+    },
+    {
+     "id": 1429,
+     "title": "The Garden Party",
+     "author": "Katherine Mansfield"
+    },
+    {
+     "id": 47349,
+     "title": "The Wild Garden",
+     "author": "William Robinson"
+    },
+    {
+     "id": 3135,
+     "title": "My Summer in a Garden",
+     "author": "Charles Dudley Warner"
+    },
+    {
+     "id": 512,
+     "title": "Mosses from an Old Manse",
+     "author": "Nathaniel Hawthorne"
     }
    ],
    "missing": []
   },
-  "2026-11-02": {
+  "2026-10-20": {
    "books": [
     {
-     "id": 3420,
-     "title": "A Vindication of the Rights of Woman",
-     "author": "Mary Wollstonecraft"
+     "id": 213,
+     "title": "The Man from Snowy River",
+     "author": "A. B. Paterson"
     },
     {
-     "id": 27083,
-     "title": "The Subjection of Women",
-     "author": "John Stuart Mill"
+     "id": 41234,
+     "title": "Scrambles Amongst the Alps in the Years 1860-69",
+     "author": "Edward Whymper"
     },
     {
-     "id": 8642,
-     "title": "Woman in the Nineteenth Century",
-     "author": "Margaret Fuller"
+     "id": 119,
+     "title": "A Tramp Abroad",
+     "author": "Mark Twain"
     },
     {
-     "id": 32,
-     "title": "Herland",
-     "author": "Charlotte Perkins Gilman"
+     "id": 1448,
+     "title": "Heidi",
+     "author": "Johanna Spyri"
     },
     {
-     "id": 160,
-     "title": "The Awakening, and Selected Short Stories",
-     "author": "Kate Chopin"
+     "id": 10012,
+     "title": "The Mountains of California",
+     "author": "John Muir"
     },
     {
-     "id": 57913,
-     "title": "Women and Economics",
-     "author": "Charlotte Perkins Gilman"
+     "id": 32540,
+     "title": "My First Summer in the Sierra",
+     "author": "John Muir"
     },
     {
-     "id": 12352,
-     "title": "Iola Leroy",
-     "author": "Frances Ellen Watkins Harper"
+     "id": 755,
+     "title": "A Lady's Life in the Rocky Mountains",
+     "author": "Isabella L. Bird"
     },
     {
-     "id": 11030,
-     "title": "Incidents in the Life of a Slave Girl",
-     "author": "Harriet Jacobs"
+     "id": 2226,
+     "title": "Kim",
+     "author": "Rudyard Kipling"
     },
     {
-     "id": 34856,
-     "title": "My Own Story",
-     "author": "Emmeline Pankhurst"
+     "id": 61083,
+     "title": "The Assault on Mount Everest, 1922",
+     "author": "C. G. Bruce"
     },
     {
-     "id": 11982,
-     "title": "Eighty Years and More",
-     "author": "Elizabeth Cady Stanton"
-    }
-   ],
-   "missing": []
-  },
-  "2026-11-03": {
-   "books": [
-    {
-     "id": 4229,
-     "title": "The South Pole",
-     "author": "Roald Amundsen"
-    },
-    {
-     "id": 14363,
-     "title": "The Worst Journey in the World",
-     "author": "Apsley Cherry-Garrard"
-    },
-    {
-     "id": 30197,
-     "title": "Farthest North",
-     "author": "Fridtjof Nansen"
-    },
-    {
-     "id": 18975,
-     "title": "The North Pole",
-     "author": "Robert E. Peary"
-    },
-    {
-     "id": 74976,
-     "title": "Travels in the Interior of Africa",
-     "author": "Mungo Park"
-    },
-    {
-     "id": 8419,
-     "title": "The Journals of Lewis and Clark",
-     "author": "Meriwether Lewis"
-    },
-    {
-     "id": 15777,
-     "title": "A Voyage Towards the South Pole and Round the World",
-     "author": "James Cook"
-    },
-    {
-     "id": 10339,
-     "title": "An Antarctic Mystery",
-     "author": "Jules Verne"
-    },
-    {
-     "id": 4658,
-     "title": "Personal Narrative of a Pilgrimage to Al-Madinah and Meccah",
-     "author": "Richard F. Burton"
-    },
-    {
-     "id": 215,
-     "title": "The Call of the Wild",
-     "author": "Jack London"
+     "id": 47209,
+     "title": "Hours of Exercise in the Alps",
+     "author": "John Tyndall"
     }
    ],
    "missing": []
