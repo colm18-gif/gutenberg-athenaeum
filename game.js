@@ -1803,6 +1803,19 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // cycle weather unobtrusively every two minutes; begin with rain
     setInterval(()=>{weather=weather==='RAIN'?'CLEAR':weather==='CLEAR'?'STORM':'RAIN';ui.weather.textContent=weather;if(rainFilter)rainFilter.frequency.setTargetAtTime(rainCutoff(),audioCtx.currentTime,2);if(noiseGain)noiseGain.gain.setTargetAtTime(weather==='CLEAR'?.05:weather==='STORM'?.42:.28,audioCtx.currentTime,2)},120000);
     addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{if(!ui.reader.classList.contains('hidden'))repaginateSelected()},180)});
+    // Share this room: a link (?room=…) that stands a friend where the reader is, by the system's share sheet where there is
+    // one, else copied. A place no link reaches (the Grand Hall, a passage) shares the library itself.
+    function shareRoomKey(){const {x,y,z}=player.pos;let k=placeAt(x,y,z);
+      if(k==='international-wing'){const r=internationalWing?.roomAt?.(x,z);if(r&&r!=='hub')k=r+'-room'}
+      for(const c of [k,ROOM_ALIASES[k],k+'-room',k.replace(/-room$/,''),k.replace(/^curious-/,'')]){if(!c||!/^[a-z-]+$/.test(c))continue;const target=ROOM_ALIASES[c]||c;if(roomLink(target)){let best=c;for(const a in ROOM_ALIASES)if(ROOM_ALIASES[a]===target&&/^[a-z-]+$/.test(a)&&a.length<best.length)best=a;return best}}
+      return null}
+    async function shareRoom(){const key=shareRoomKey(),place=analyticsRoom(),label=key?placeLabel(place).replace(/^The /,'the '):'the Grand Hall',url=`https://libraryafterdark.space/${key?'?room='+key:''}`,
+      title='The Library After Dark',text=key&&label!=='the library'?`Come and find me in ${label}, in The Library After Dark.`:'Come and wander The Library After Dark with me.';
+      window.libraryAnalytics?.track('Room Shared',{room:key||'main-library'});
+      for(const k in keys)keys[k]=false;player.vel.set(0,0,0);
+      if(navigator.share){try{await navigator.share({title,text,url});return}catch(err){if(err?.name==='AbortError')return}}
+      try{await navigator.clipboard.writeText(url);showNotice(`A link to ${label} is copied: ${url}`,6)}catch(err){showNotice(`Share this link: ${url}`,9)}}
+    $('#pauseShare')?.addEventListener('click',()=>{ui.pause.classList.add('hidden');shareRoom()});
     // --- touch controls (mobile) ---
     (function(){
       const tMove=$('#touchMove'),tStick=$('#touchStick'),tLook=$('#touchLook'),tInteract=$('#touchInteract'),tRun=$('#touchRun'),tJournal=$('#touchJournal'),tReturn=$('#touchReturn'),tMenu=$('#touchMenu');
@@ -1827,6 +1840,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       tRun.addEventListener('pointerdown',e=>{e.preventDefault();touchSprint=true;tRun.classList.add('ready');try{tRun.setPointerCapture(e.pointerId)}catch(err){}});const stopRun=e=>{e.preventDefault();touchSprint=false;tRun.classList.remove('ready')};tRun.addEventListener('pointerup',stopRun);tRun.addEventListener('pointercancel',stopRun);
       tJournal.addEventListener('pointerdown',e=>{e.preventDefault();if(started&&gameActive())openJournal()});
       tReturn.addEventListener('pointerdown',e=>{e.preventDefault();if(started)resetPosition()});
+      $('#touchShare')?.addEventListener('click',e=>{e.preventDefault();if(started)shareRoom()});
       tMenu.addEventListener('pointerdown',e=>{e.preventDefault();if(!started||!gameActive())return;for(const k in keys)keys[k]=false;player.vel.set(0,0,0);ui.pause.classList.remove('hidden')});
       window.addEventListener('blur',()=>{moveId=null;lookId=null;touchSprint=false;stickReset()});
     })();
