@@ -37,6 +37,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Book of Durrow (`durrow-book.js`, Trinity MS 57, five pages in `assets/durrow`, and a drawn page on its older order of the
   evangelists' symbols), hidden as the great Gospel of Colum Cille was found under a sod in 1007 (found once, found for
   good: `athenaeum-durrow-found`; `?durrow` shows it at once).
+  Library Ireland Week (the Sunday on or after 29 November, seven days; 29 November to 5 December in 2026; run by the Library
+  Association of Ireland and CILIP Ireland): a poster on the south wall east of the door opens libraryirelandweek.ie (`liwWeek`; `?liw`).
 - The Restricted Catalogue (game.js, x 37–57, z −12–8, built at startup) has the Voynich Manuscript (`voynich-book.js`,
   Beinecke MS 408) lying open on its lectern at the pansy of folio 9v facing 10r, chained, its padlock open (moved aside to
   x 47.95): the one book there nobody has needed to forbid. Anything on it, or its card, opens the facsimile (`?room=voynich`
