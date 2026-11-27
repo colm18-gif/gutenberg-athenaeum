@@ -3355,6 +3355,50 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 28540,
    "words": 291466
   },
+  "Letters on Natural Magic": {
+   "id": 51645,
+   "words": 99934
+  },
+  "The Kaleidoscope": {
+   "id": 74417,
+   "words": 47307
+  },
+  "The Stereoscope": {
+   "id": 71483,
+   "words": 61112
+  },
+  "Opticks": {
+   "id": 33504,
+   "words": 99207
+  },
+  "Treatise on Light": {
+   "id": 14725,
+   "words": 37853
+  },
+  "Six Lectures on Light": {
+   "id": 14000,
+   "words": 64365
+  },
+  "The Wonders of Optics": {
+   "id": 65114,
+   "words": 62285
+  },
+  "Visual Illusions": {
+   "id": 36297,
+   "words": 56288
+  },
+  "The Magic Lantern and Its Management": {
+   "id": 75890,
+   "words": 16136
+  },
+  "Spectropia": {
+   "id": 63842,
+   "words": 3100
+  },
+  "The Diamond Lens": {
+   "id": 23169,
+   "words": 9302
+  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633
