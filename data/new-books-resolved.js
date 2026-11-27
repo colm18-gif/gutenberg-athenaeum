@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-11-22",
+ "updated": "2026-11-27",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -3131,6 +3131,86 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 47115,
    "words": 65070
   },
+  "Stray Birds": {
+   "id": 6524,
+   "words": 5615
+  },
+  "The Crescent Moon": {
+   "id": 6520,
+   "words": 8822
+  },
+  "The Gardener": {
+   "id": 6686,
+   "words": 13911
+  },
+  "Fruit-Gathering": {
+   "id": 6522,
+   "words": 10480
+  },
+  "The Post Office": {
+   "id": 6523,
+   "words": 7363
+  },
+  "Chitra": {
+   "id": 2502,
+   "words": 6404
+  },
+  "The Hungry Stones and Other Stories": {
+   "id": 2518,
+   "words": 48859
+  },
+  "The Home and the World": {
+   "id": 7166,
+   "words": 68682
+  },
+  "Glimpses of Bengal": {
+   "id": 7951,
+   "words": 24633
+  },
+  "My Reminiscences": {
+   "id": 22217,
+   "words": 61417
+  },
+  "Sadhana": {
+   "id": 6842,
+   "words": 37502
+  },
+  "Nationalism": {
+   "id": 40766,
+   "words": 26915
+  },
+  "Songs of Kabir": {
+   "id": 6519,
+   "words": 16799
+  },
+  "The Golden Threshold": {
+   "id": 680,
+   "words": 8227
+  },
+  "Ancient Ballads and Legends of Hindustan": {
+   "id": 23245,
+   "words": 22486
+  },
+  "Songs of Vidyapati": {
+   "id": 38174,
+   "words": 24374
+  },
+  "Indian Poetry": {
+   "id": 25965,
+   "words": 35674
+  },
+  "The Light of Asia": {
+   "id": 8920,
+   "words": 35312
+  },
+  "The Song Celestial": {
+   "id": 2388,
+   "words": 20602
+  },
+  "The Secrets of the Self": {
+   "id": 57317,
+   "words": 20818
+  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633
@@ -4742,6 +4822,41 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Benito Cereno",
   "History of the Expedition under the Command of Captains Lewis and Clark, Vol. 1.",
   "The Necessity of Atheism",
+  "The Ramayan of Valmiki",
+  "The Mahabharata of Krishna-Dwaipayana Vyasa",
+  "Maha-bharata: The Epic of India",
+  "Sakoontala",
+  "Shakuntala, and Other Writings",
+  "The Little Clay Cart",
+  "The Upanishads",
+  "The Yoga Sutras of Patanjali",
+  "Indian Fairy Tales",
+  "Old Deccan Days",
+  "Folk-Tales of Bengal",
+  "Tales of the Punjab",
+  "Jataka Tales",
+  "More Jataka Tales",
+  "Twenty-Two Goblins",
+  "Deccan Nursery Tales",
+  "Tales of the Sun",
+  "Simla Village Tales",
+  "The Talking Thrush",
+  "Hindoo Tales",
+  "Annals and Antiquities of Rajast’han",
+  "Alberuni’s India",
+  "Akbar, Emperor of India",
+  "The Adventures of Akbar",
+  "India Through the Ages",
+  "On the Face of the Waters",
+  "A Passage to India",
+  "Rambles and Recollections of an Indian Official",
+  "Indian Home Rule",
+  "Third Class in Indian Railways",
+  "Freedom’s Battle",
+  "Jnana Yoga",
+  "Autobiography of a Yogi",
+  "Bagh O Bahar",
+  "Vikram and the Vampire",
   "María [es]",
   "Poesías [es]"
  ]
