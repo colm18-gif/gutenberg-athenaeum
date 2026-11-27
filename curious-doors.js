@@ -504,7 +504,7 @@
       // A cold draught: pale motes creep out along the floor at the bookcase's foot.
       const motes=new THREE.BufferGeometry(),pos=new Float32Array(40*3);for(let i=0;i<40;i++)pos.set([(Math.random()-.5)*3.2,Math.random()*.5,.5+Math.random()*1.4],i*3);motes.setAttribute('position',new THREE.BufferAttribute(pos,3));const draught=new THREE.Points(motes,new THREE.PointsMaterial({color:0xc9d6e6,size:.05,transparent:true,opacity:.45,depthWrite:false}));g.add(draught);
       const glowLight=light(g,0xff9a4a,0,5,0,1.6,-.6);
-      doors[room.key]={room,group:g,swing,lever,draught,glowLight,state:'closed',t:0,kind:'bookcase',hinted:false,portal:portal(g,caseOpening,.02,swing)};
+      doors[room.key]={room,group:g,swing,lever,draught,glowLight,caseData,state:'closed',t:0,kind:'bookcase',hinted:false,portal:portal(g,caseOpening,.02,swing)};
     }
     function nurseryDoor(room){
       const g=doorGroup(room),data={type:'curious-door',room:room.key,title:'A small blue door, painted with stars',author:'It is only just tall enough for a grown-up. There is a brass knocker shaped like a hare.',action:'KNOCK'};
@@ -537,6 +537,9 @@
 
     const ARRIVALS={horologist:'A hundred clocks disagree about the hour. The orrery turns; one tiny moon is labelled “the Library”.',conservatory:'Warm, wet air and moonlight through the glass. Fireflies drift between the palms.',parlour:'The bookcase swings shut behind you. A fire is lit, two chairs are drawn up, and the dust sheets have not moved. Probably.',attic:'“Come in — but mind your head.” Nobody is there. The clockwork train is already going round.'};
     function enter(room){activate(room);move(room.cx,room.cz+room.d/2-1.8,0);showNotice(ARRIVALS[room.key],8);analytics?.track('Room Explored',{room:'curious-'+room.key});if(!store.get('athenaeum-curious-'+room.key)){store.set('athenaeum-curious-'+room.key,'1')}}
+    // The parlour's bookcase swings inward, into the passage, so it never swings at the reader; while it stands open,
+    // any part of it is also a way in (as the passage behind it is), so a reader need not aim between its shelves.
+    function bookcaseWayIn(door,open){const data=door.caseData;if(!data)return;if(open){door.caseClosed||(door.caseClosed={...data});Object.assign(data,{type:'curious-door',room:door.room.key,title:'A narrow passage behind the shelves',author:'Firelight moves at the far end, and a chair creaks.',action:'ENTER'})}else if(door.caseClosed){for(const k of Object.keys(data))delete data[k];Object.assign(data,door.caseClosed)}}
     function openDoor(door){
       if(door.state!=='closed')return;door.state='opening';door.t=0;activate(door.room);
       if(door.kind==='clock'){sound?.(1900,.05,'square',.03);for(let i=1;i<9;i++)setTimeout(()=>sound?.(1500+i*90,.05,'square',.025),i*110);showNotice('You wind the key. The hands race to midnight, the gears catch, and the whole door rolls aside.',4)}
@@ -578,10 +581,10 @@
         if(door.state==='opening'){door.t+=dt;const k=Math.min(1,door.t/1.3),e=k*k*(3-2*k);door.glowLight.intensity=e*6;
           if(door.kind==='clock'){door.disc.position.x=e*2.9;door.disc.rotation.z=-e*2.1}
           else if(door.kind==='glass')door.pivot.rotation.y=-e*1.35;
-          else if(door.kind==='bookcase')door.swing.rotation.y=-e*1.15;
+          else if(door.kind==='bookcase')door.swing.rotation.y=e*1.15;
           else if(door.kind==='nursery')door.hinge.rotation.y=-e*1.5*Math.min(1,Math.max(0,(door.t-.8)/.5));
-          if(door.kind==='nursery'?door.t>2.1:door.t>1.5){if(door.kind==='bookcase'){door.state='open';showNotice('Behind the bookcase: a narrow passage, and firelight.',5)}else{door.state='open';enter(door.room)}}
-        }else if(door.state==='closing'){door.t+=dt;const k=Math.max(0,1-door.t/1.2),e=k*k*(3-2*k);door.glowLight.intensity=e*6;if(door.kind==='clock'){door.disc.position.x=e*2.9;door.disc.rotation.z=-e*2.1}else if(door.kind==='glass')door.pivot.rotation.y=-e*1.35;else if(door.kind==='bookcase')door.swing.rotation.y=-e*1.15;else if(door.kind==='nursery')door.hinge.rotation.y=-e*1.5;if(k===0)door.state='closed'}
+          if(door.kind==='nursery'?door.t>2.1:door.t>1.5){if(door.kind==='bookcase'){door.state='open';bookcaseWayIn(door,true);showNotice('Behind the bookcase: a narrow passage, and firelight.',5)}else{door.state='open';enter(door.room)}}
+        }else if(door.state==='closing'){door.t+=dt;const k=Math.max(0,1-door.t/1.2),e=k*k*(3-2*k);door.glowLight.intensity=e*6;if(door.kind==='clock'){door.disc.position.x=e*2.9;door.disc.rotation.z=-e*2.1}else if(door.kind==='glass')door.pivot.rotation.y=-e*1.35;else if(door.kind==='bookcase')door.swing.rotation.y=e*1.15;else if(door.kind==='nursery')door.hinge.rotation.y=-e*1.5;if(k===0){door.state='closed';if(door.kind==='bookcase')bookcaseWayIn(door,false)}}
         else if(door.state==='open'&&door.kind!=='bookcase'){door.state='closing';door.t=0}
       }
       // Room life, only for the room the reader is standing in.
