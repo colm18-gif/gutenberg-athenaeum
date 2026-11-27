@@ -14,7 +14,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   (`styles.css?v=` in `index.html`): bump it whenever the stylesheet changes, or readers keep the old one from their cache.
 - Rooms behind doors (`evening-room.js`, `learners-room.js`, `periodicals-room.js`, `international-wing.js`,
   `crusoe-island.js`, `mars.js`, `poe-room.js`, `irish-room.js`, `map-room.js`, `medicine-room.js`, `set-texts-room.js`,
-  `austen-room.js`, `burns-room.js`, `canada-room.js`, `long-corridor.js`, `dickinson-room.js`, `gulliver-room.js`, `nemo-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`, `walden.js`, `uncatalogued-room.js`)
+  `austen-room.js`, `burns-room.js`, `canada-room.js`, `long-corridor.js`, `dickinson-room.js`, `gulliver-room.js`, `nemo-room.js`, `within-room.js`, `naturalist-room.js`, `forest.js`, `walden.js`, `uncatalogued-room.js`, `bindery-room.js`)
   are built only when the reader approaches and freed ~25 s after they leave. So are the Room of Chance (its portrait
   stays), the Lost Property Office (its hatch stays) and the high staircase, Rocket Hall, Moon and rocket cabin (`high-staircase.js`: only its door in the west wing
   is built at startup; a stair book carried away keeps it). The basement and the roof garden, built in `game.js` on a first visit, are
@@ -63,6 +63,19 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Albion hand press by the door and it prints the Chaucer's first page and gives up the book (`?kelmscott` shows it). Its
   pages are the woodcut title and seven facing openings from the Internet Archive's scan (a page's number is its place in
   the scan less twelve).
+- The Bindery (`bindery-room.js`, x 3300, z −300; `?room=bindery`, `bookbinding`, `marbling`, `fore-edge`): a binder's
+  workshop of about 1900 behind an oxblood door in the Periodicals Room's south wall, behind the Albion press (print the
+  sheets there, bind them here). The door is hung through the Periodicals Room's `addDoorHook` whenever that room is built,
+  so it goes when that room is freed. At the long bench the reader binds a book in five steps, in order (`STEPS`: folding,
+  sewing, rounding and backing, covering, finishing); the book in hand moves along the bench, and at the end a copy from
+  the library's own shelves (`BINDABLE`) goes on the BOUND TONIGHT shelf, readable (`athenaeum-bindery-bound` counts them).
+  The marbling tray makes a new pattern every time (drawn, no files) and hangs it on the drying line. A standing press,
+  the finishing stove (its embers flicker; no light), leather, boards, a Windsor chair (a seat), one lamp. Shelves
+  `bindery-books` (Cockerell, Zaehnsdorf, Nicholson, Adam, Prideaux, Davenport, Halfer, Cobden-Sanderson, Blades) in
+  `data/new-books.js`. The secret is a fore-edge painting: fanning a gilt-edged book shows the Grand Hall on its edge, and
+  Dibdin's Bibliomania (`bindery-fore-edge`) is left beside it, found for good (`athenaeum-bindery-fore-edge`; `?foreedge`).
+  Cards keep to what is attested (Doves Bindery 1893, Edwards of Halifax). A case of famous bindings is still to come,
+  from Commons photographs fetched and looked at first.
 - The Medicine Room (`medicine-room.js`, x −420, z −140) is behind a door at the south end of the Map Room's east wall
   (`?room=medicine`), a few steps from Snow's cholera map; `map-room.js` stops its east shelf short (`EAST_SHELF`) to leave
   that end of the wall clear. A history of medicine on three shelves, `medicine-physic`, `medicine-discovery` and
@@ -1013,7 +1026,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
-  daily-room, long-corridor, arctic, ships-in-bottles, montserrat, pitcairn, tristan, st-helena, norfolk, faroe, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
+  daily-room, long-corridor, bindery, arctic, ships-in-bottles, montserrat, pitcairn, tristan, st-helena, norfolk, faroe, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.
