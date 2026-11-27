@@ -29,3 +29,9 @@ test('the prompt says what a press or tap will do',()=>{
     assert.equal(verbFor(type),verb,type);
   assert.match(game,/\$\{touchMode\?'TAP':'E'\}&nbsp;&nbsp; \$\{action\}/);
 });
+test('the parlour bookcase swings inward, away from the reader, and is a way in while open',()=>{
+  const doors=fs.readFileSync('curious-doors.js','utf8');
+  assert.equal((doors.match(/door\.kind==='bookcase'\)door\.swing\.rotation\.y=e\*1\.15/g)||[]).length,2);
+  assert.doesNotMatch(doors,/swing\.rotation\.y=-e\*1\.15/);
+  assert.match(doors,/door\.state='open';bookcaseWayIn\(door,true\)/);
+});
