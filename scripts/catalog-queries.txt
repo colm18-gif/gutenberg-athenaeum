@@ -1,16 +1,4 @@
-# A camera obscura (27 November 2026): books on optics, light, illusions and "natural magic".
-Natural Magic ; ; en
- ; Brewster ; en
-Camera Obscura|Camera-Obscura ; ; en
-Optics|Opticks|Optical ; ; en
- ; Newton, Isaac ; en
-Kaleidoscope|Stereoscope ; ; en
-Light ; Tyndall ; en
-Wonders of Optics|Wonders of Light|Phenomena of Light ; ; en
-Magic Lantern|Phantasmagoria ; ; en
-Mirror|Looking-Glass ; ; en
-Illusion ; ; en
-Lens|Telescope|Microscope ; ; en
-subject? Optics
-subject? Optical illusions
-subject? Light
+# The book wheel under the stairs (27 November 2026): Ramelli's engraving of 1588, for a frame beside it.
+commons? Ramelli book wheel
+commons? Ramelli artificiose machine reading wheel
+commons? Ramelli 1588 bookwheel
