@@ -42,7 +42,7 @@
       #hint{display:none}
       .kb-intro{display:none}
       .touch-intro{display:block}
-      #prompt{top:44%}.prompt-key{display:none}#status{left:calc(14px + env(safe-area-inset-left,0px));bottom:calc(160px + env(safe-area-inset-bottom,0px));font-size:10px}.topmark{left:calc(14px + env(safe-area-inset-left,0px));top:calc(13px + env(safe-area-inset-top,0px))}#mute{right:auto;left:calc(15px + env(safe-area-inset-left,0px));top:calc(48px + env(safe-area-inset-top,0px))}
+      #prompt{top:44%}#status{left:calc(14px + env(safe-area-inset-left,0px));bottom:calc(160px + env(safe-area-inset-bottom,0px));font-size:10px}.topmark{left:calc(14px + env(safe-area-inset-left,0px));top:calc(13px + env(safe-area-inset-top,0px))}#mute{right:auto;left:calc(15px + env(safe-area-inset-left,0px));top:calc(48px + env(safe-area-inset-top,0px))}
       #reader{padding:0;background:#e9dfc8;overscroll-behavior:none}#reader.comfort .book-spread,#reader.immersive .book-spread{width:100vw;height:100dvh;max-width:none;max-height:none;transform:none;box-shadow:none}.reader-head{padding:8px calc(12px + env(safe-area-inset-right,0px)) 7px calc(12px + env(safe-area-inset-left,0px));min-height:49px}.reader-head>div{min-width:0}.reader-head h2{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.reader-head p{font-size:11px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pages{touch-action:none}.page{padding:10px 17px 8px;font-size:calc(14px*var(--reader-scale,1));line-height:calc(1.38*var(--reader-leading,1))}.chapter{font-size:9px;margin-bottom:7px}.reader-foot{flex-wrap:nowrap;gap:4px;padding:6px calc(8px + env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) calc(8px + env(safe-area-inset-left,0px));min-height:50px}.reader-foot button{min-height:38px;padding:5px 10px}.reader-foot #prevPage,.reader-foot #nextPage{min-width:54px;font-size:0}.reader-foot #prevPage:after{content:'← PAGE';font-size:10px}.reader-foot #nextPage:after{content:'PAGE →';font-size:10px}.reader-foot #fontDown,.reader-foot #fontUp,.reader-foot #bookmark,.reader-foot #modeToggle{display:none}.reader-foot .progress{order:0;min-width:34px;margin:0 3px}.reader-foot .percent{display:none}.reader-foot .page-count{font-size:10px}#finishReading{white-space:nowrap}
     }
     @media (hover:none) and (pointer:coarse) and (orientation:portrait){body.mobile-started #rotateDevice{display:flex}body.mobile-started:has(#reader:not(.hidden)) #rotateDevice,body.mobile-started:has(#journal:not(.hidden)) #rotateDevice,body.mobile-started:has(#conversation:not(.hidden)) #rotateDevice,body.mobile-started:has(#pause:not(.hidden)) #rotateDevice{display:none}body.mobile-controls-active .touch-ui{display:none}}
@@ -330,3 +330,19 @@ body.mobile-started:has(#correspondence:not(.hidden)) #rotateDevice{display:none
 .polar-voyage .polar-ashore{margin-left:.5rem;background:transparent;color:#eee1c4}
 .polar-voyage button:focus-visible{outline:3px solid #fff3c4;outline-offset:3px}
 @media(max-width:600px){.polar-voyage{bottom:8rem;padding:.7rem}.polar-voyage p{font-size:.84rem}.polar-voyage button{font-size:.8rem}}
+/* Going back to a room already found: from the journal's map, and from the welcome screen (27 November 2026). */
+.atlas-go{display:inline-block;margin-top:6px;padding:3px 9px;border:1px solid #6e2224;background:#6e2224;color:#f6ead2;font:12px/1.3 Georgia,serif;letter-spacing:.04em;cursor:pointer;border-radius:2px}
+.atlas-go:hover,.atlas-go:focus-visible{background:#8a2c2f;outline:2px solid #c9a35f;outline-offset:1px}
+.resume-place{display:block;margin:10px auto 0}
+#status{transition:opacity .8s}
+/* Phones: a tidier view. The sound, settings and visitors' book buttons are in the menu; the status lines fade until
+   something changes; notices sit higher, clear of the middle of the view; the prompt says what a tap will do. */
+@media (hover:none) and (pointer:coarse){
+  body.mobile-started #mute,body.mobile-started #settingsButton,body.mobile-started #visitorsButton{display:none}
+  #status.quiet{opacity:0}
+  #notice{top:calc(72px + env(safe-area-inset-top,0px));max-width:min(62vw,520px);padding:7px 12px}
+  .prompt-key{margin-top:7px;padding:4px 8px;font-size:10px}
+}
+/* The welcome screen scrolls rather than cutting off its buttons, and is compact on a phone held sideways. */
+#veil{overflow-y:auto}
+@media (max-height:540px){#veil{place-items:start center;padding:10px 0}.crest{margin:auto;padding:16px 22px}.crest h1{font-size:clamp(22px,4.2vw,34px)}.crest .rule{margin:10px auto}.crest p{margin:5px auto;font-size:14px;line-height:1.45}.resume-place{margin-top:7px}}
