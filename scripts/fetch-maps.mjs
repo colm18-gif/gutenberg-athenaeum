@@ -77,6 +77,8 @@ export const PICTURES = [
   // oriole from The Ibis of 1882, the mountain chicken, and the Soufrière Hills. All public domain.
   { key: 'montserrat-chart', file: 'Admiralty Chart No 254 Montserrat, Published 1869.jpg' },
   { key: 'montserrat-stamp', file: 'Stamp Montserrat 1929 1p.jpg', minSize: 450 },
+  // The book wheel under the stairs: Ramelli's own engraving of 1588, figure 188 of Le diverse et artificiose machine.
+  { key: 'ramelli-book-wheel', file: 'Le diverse et artificiose machine del Capitano Agostino Ramelli Figure CLXXXVIII.jpg', minSize: 900 },
   { key: 'montserrat-oriole', file: 'IcterusOberiKeulemans.jpg' },
   { key: 'montserrat-frog', files: ['Leptodactylus fallax (1).jpg', 'Leptodactylus fallax (2).jpg'] },
   { key: 'montserrat-volcano', files: ['Soufriere Hills.jpg', 'Montserrat Soufriere volcano 2.jpg'] },
