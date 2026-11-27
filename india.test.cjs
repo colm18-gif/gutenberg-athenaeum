@@ -20,14 +20,14 @@ function thing(){
   return self=new Proxy(t,{get:(o,k)=>k in o?o[k]:typeof k==='symbol'?undefined:any});
 }
 const THREE=new Proxy({},{get:()=>function(){return thing()}});
-function room({stored=[],search=''}={}){
+function room({stored=[],search='',tone}={}){
   const context={window:{},Math,Object,Array,Number,String,Set,Date};vm.runInNewContext(corridorSource,context);vm.runInNewContext(source,context);
   const player={pos:new V(),radius:.42},interactables=[],notices=[],seats=[],scene=thing(),store=new Map(stored.map(k=>[k,'1']));
   const shared={THREE,scene,MAT:new Proxy({},{get:()=>thing()}),player,interactables,canvasTexture:()=>thing(),showNotice:t=>notices.push(t),playSample(){},move:(x,z)=>player.pos.set(x,0,z)};
   const corridor=context.window.createLongCorridor(shared);
   const r=context.window.createIndiaRoom({...shared,corridor,bookMaterial:()=>thing(),findBook:id=>({id,title:'Book '+id}),registerSeat:(parts,group,at,yaw,data)=>seats.push(data),
     arrivals:{tagore:byRoom('india-tagore'),poets:byRoom('india-poets'),epics:byRoom('india-epics'),tales:byRoom('india-tales'),history:byRoom('india-history'),vampire:byRoom('india-vampire')},
-    storage:{getItem:k=>store.get(k)??null,setItem:(k,v)=>store.set(k,v)},search});
+    storage:{getItem:k=>store.get(k)??null,setItem:(k,v)=>store.set(k,v)},search,tone});
   return {r,corridor,player,interactables,notices,seats,store};
 }
 
@@ -67,4 +67,19 @@ test('the goblin at the window leaves Vikram and the Vampire, found once and kep
   assert.ok(h.r.books.some(b=>b.userData.shelf==='vampire'),'the book is on the sill');
   const again=room({stored:['athenaeum-india-vetala']});again.r.enter();assert.ok(again.r.found);assert.ok(again.r.books.some(b=>b.userData.shelf==='vampire'));
   const shown=room({search:'?vetala'});shown.r.enter();assert.ok(shown.r.found);
+});
+
+test('the room’s cultural details are there, each with a card, and the tanpura drones when plucked',()=>{
+  const played=[],h=room({tone:(f,at,dur,vol,voice)=>played.push([f,at,voice])});h.r.enter();
+  const titles=h.interactables.map(o=>o.userData?.title);
+  for(const title of ['Jootis at the door','A rangoli','A toran','Niches and diyas','A tanpura','Pachisi','Chai','A jhoola','A matka'])assert.ok(titles.includes(title),title);
+  for(const key of ['joothi','rangoli','toran','niche','tanpura','pachisi','chai','jhoola','matka'])assert.ok(h.r.cards[key]&&h.r.cards[key][1].length>80,key);
+  assert.ok(h.seats.some(s=>s.title==='The jhoola'),'the swing is a seat');
+  const tanpura=h.interactables.find(o=>o.userData?.type==='india-tanpura');assert.ok(tanpura);
+  assert.ok(h.r.interact(tanpura));assert.equal(played.length,12,'three rounds of four strings');
+  assert.deepEqual(played.slice(0,4).map(p=>p[0]),[110,146.83,146.83,73.42],'Pa, Sa, Sa, low Sa');
+  assert.ok(h.r.interact(tanpura));assert.equal(played.length,12,'not plucked again while it is still sounding');
+  assert.equal((source.match(/new THREE\.PointLight/g)||[]).length,1,'still one lamp');
+  assert.match(game,/createIndiaRoom\?\.\(\{[^]*?tone:pianoTone/,'game.js hands over the synthesiser');
+  for(const claim of [/aala/,/kolam/,/pachis/,/kulhad/,/matka/i])assert.ok(claim.test(source));
 });

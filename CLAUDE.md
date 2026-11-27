@@ -282,8 +282,12 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   (Blavatsky's Caves and Jungles was left out for that reason: the owner's wish). The secret is the window: looked at, the
   vetala of the Twenty-Two Goblins hangs from the banyan for a few seconds and Burton's Vikram and the Vampire
   (`india-vampire`) is left on the sill, found for good (`athenaeum-india-vetala`; `?vetala`). The card tells the tale in
-  the library's own words, not a quotation. Not yet looked at in a browser: walk it with `scripts/room-walkthrough.mjs
-  --only india-room`.
+  the library's own words, not a quotation. Looked at in a browser (27 November 2026). Cultural detail, all drawn
+  by the library with no new light (`furnish` in india-room.js; each has a card in `CARDS`): jootis and a rangoli at the door,
+  a toran of mango leaves over it, three diya niches east of the door (flames flicker in `update`), a tanpura against the west
+  wall that drones when plucked (`tone`, game.js's `pianoTone`, tuned to D; Pa Sa Sa low Sa), a pachisi cloth with six cowries
+  on a low table, a tray of chai with kulhads by the divan, a jhoola (a seat) in the north-east and a matka in the
+  south-east corner. Cards keep to what is well attested.
 - Scrooge's chambers (`scrooge-room.js`, x 2200, z −300; `?room=scrooge`, `marley`, `carol`, `christmas-carol`): the
   gloomy suite up a yard from A Christmas Carol, made one room (sitting-room, bedroom, closet), through a heavy door in the
   Long Corridor's second east bay (`corridor.scroogeDoor`, opposite the Gastronomic Athenaeum; SCROOGE'S CHAMBERS gilded on
@@ -1060,7 +1064,6 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   and only a handful in Irish (four are on the Irish Room's shelf); CELT (celt.ucc.ie) needs permission to republish.
 - The Spanish room's *María* (Jorge Isaacs) and Silva's *Poesías* are not on Gutenberg: es.wikisource would need
   `scripts/wikisource.mjs` to read Spanish Wikisource.
-- An Indian shelf (Tagore, Toru Dutt, Sarojini Naidu, the Panchatantra).
 - For mainland Chinese readers, host Three.js on the site: jsDelivr is unreliable there.
 - Keep the walk from the Grand Hall through the globe to the Antipodes working: it may be shown live in a talk.
 
