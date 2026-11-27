@@ -1,7 +1,7 @@
 // The Long Corridor: a panelled corridor behind a walnut door in the Grand Hall's east wall (x 18.72, z -24.25, between the
 // Night Conservatory's stained-glass door and The Long Road East), with Miss Havisham's stopped clock hung over the door.
 // The hall's own walls are full, so rooms that come after it open off this corridor instead: its bays are hung with doors
-// as rooms are built (and its east wall's third bay with Boullée's drawing, the way into boullee-library.js; Emily Dickinson's door, dickinson-room.js, in the west wall's fourth bay; the Library of Celsus's, celsus-room.js, in the east wall's fifth; Scrooge's chambers', scrooge-room.js, in the east wall's second; and the shelf of ships in bottles, ships-in-bottles.js, in the east wall's fourth, each bottle opening on an island). The first is the Gastronomic Athenaeum's (food-history-wing.js, handed `corridor`), whose door stood
+// as rooms are built (and its east wall's third bay with Boullée's drawing, the way into boullee-library.js; Emily Dickinson's door, dickinson-room.js, in the west wall's fourth bay; the Indian room's, india-room.js, in its fifth; the Library of Celsus's, celsus-room.js, in the east wall's fifth; Scrooge's chambers', scrooge-room.js, in the east wall's second; and the shelf of ships in bottles, ships-in-bottles.js, in the east wall's fourth, each bottle opening on an island). The first is the Gastronomic Athenaeum's (food-history-wing.js, handed `corridor`), whose door stood
 // squeezed between the Horologist's and the Kipling case on the west wall until 14 November 2026. The empty bays are plain
 // panelling, not doors that open on nothing. Like the other rooms behind doors it is built as the reader comes near and
 // freed ~25 s after they leave; the hall side of its door stays. Two lamps of its own, marked freed with the room.
@@ -25,6 +25,8 @@
     const SCROOGE_DOOR={x:ROOM.cx+ROOM.w/2-WALL/2-.02,z:bayZ(1),yaw:-Math.PI/2,bay:1,side:'east'};
     // The east wall's fourth bay holds the shelf of ships in bottles (ships-in-bottles.js), between Boullée's drawing and Celsus.
     const BOTTLE_BAY={side:'east',bay:3};
+    // The Indian room (india-room.js): the west wall's fifth bay.
+    const INDIA_DOOR={x:ROOM.cx-ROOM.w/2+WALL/2+.02,z:bayZ(4),yaw:Math.PI/2,bay:4,side:'west'};
     const PRELOAD=7,KEEP=25;
     const LOOK={style:'walnut',width:1.9,height:3.1};
     const through=(data,go)=>doorKit&&data.kit?doorKit.pass(data.kit,data,go):go();
@@ -40,7 +42,7 @@
     // ---------- the door, in the Grand Hall's east wall ----------
     function buildDoor(){
       const g=new THREE.Group();g.name='long-corridor-door';g.position.set(DOOR.x,0,DOOR.z);g.rotation.y=DOOR.yaw;scene.add(g);
-      const data={type:'corridor-door',title:'The Long Corridor',author:'A panelled corridor, and the library’s newer rooms along it: the Gastronomic Athenaeum, Scrooge’s chambers, Emily Dickinson’s room, the Library of Celsus, Boullée’s library that was never built, and a shelf of ships in bottles bound for five small islands.',action:'ENTER'};
+      const data={type:'corridor-door',title:'The Long Corridor',author:'A panelled corridor, and the library’s newer rooms along it: the Gastronomic Athenaeum, Scrooge’s chambers, Emily Dickinson’s room, the Indian room, the Library of Celsus, Boullée’s library that was never built, and a shelf of ships in bottles bound for five small islands.',action:'ENTER'};
       if(!doorKit?.hang(g,{data,mark:markDoor,...LOOK,...doorKit.readingRoom?.('THE LONG\nCORRIDOR','Rooms, a lost library and islands')}))
         markDoor(add(new THREE.BoxGeometry(1.9,3.1,.14),MAT.darkWood,0,1.55,.08,g),data);
     }
@@ -65,6 +67,7 @@
       for(let k=0;k<BAYS;k++)for(const [x,s,side] of [[x0,1,'west'],[x1,-1,'east']]){
         if(side===FOOD_DOOR.side&&k===FOOD_DOOR.bay)continue;if(k===0&&side==='east')continue;// the east bay by the door has the corridor's card
         if(side===DICKINSON_DOOR.side&&k===DICKINSON_DOOR.bay)continue;
+        if(side===INDIA_DOOR.side&&k===INDIA_DOOR.bay)continue;
         if(side===PICTURE_BAY.side&&k===PICTURE_BAY.bay)continue;// Boullée's drawing hangs there (boullee-library.js)
         if(side===CELSUS_DOOR.side&&k===CELSUS_DOOR.bay)continue;
         if(side===SCROOGE_DOOR.side&&k===SCROOGE_DOOR.bay)continue;
@@ -136,7 +139,7 @@
       else if(root&&t-lastNeeded>KEEP)unload();
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,activate,unload,standBefore,door:DOOR,room:ROOM,foodDoor:FOOD_DOOR,pictureBay:PICTURE_BAY,dickinsonDoor:DICKINSON_DOOR,celsusDoor:CELSUS_DOOR,scroogeDoor:SCROOGE_DOOR,bottleBay:BOTTLE_BAY,bayZ,bays:BAYS,
+    return {contains,floorAt,allowed,interact,update,enter,activate,unload,standBefore,door:DOOR,room:ROOM,foodDoor:FOOD_DOOR,pictureBay:PICTURE_BAY,dickinsonDoor:DICKINSON_DOOR,indiaDoor:INDIA_DOOR,celsusDoor:CELSUS_DOOR,scroogeDoor:SCROOGE_DOOR,bottleBay:BOTTLE_BAY,bayZ,bays:BAYS,
       get built(){return !!root},zoneAt:(x,z)=>contains(x,z)?'long-corridor':null};
   };
 })();

@@ -268,6 +268,20 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `?drawer`). Every line of hers (`LINES`, in the wording of the 1890s editions, which is what Gutenberg has) is checked
   against pg12242, and her letters (`LETTERS`) against Higginson's essay in pg68129, by a test; every “quotation” on a
   card must be one of them. Gutenberg has no Dickinson letters and no Single Hound.
+- The Indian room (`india-room.js`, x 2800, z −300, 12 m by 11 m; `?room=india`, `indian-room`, `tagore`, `vetala`, `haveli`)
+  is through a saffron door in the Long Corridor's fifth west bay (`corridor.indiaDoor`; THE INDIAN ROOM gilded on the
+  corridor side). The door is the library's painted kit plus an Indian surround hung in its own group (`indianSurround`: a
+  cusped sandstone arch with a lotus, pilasters with lotus capitals and brass finials, a chhajja, two swags of marigolds as
+  one InstancedMesh), so it stays when the room is freed. Inside, a haveli reading room: ochre plaster under a painted band,
+  a carpet, a jali screen, a divan with bolsters (a seat), a rehal with a book open, one brass lamp (the room's one light),
+  and a south window on a banyan in the moonlight. Shelves `india-tagore` (with the library's own Gitanjali), `india-poets`,
+  `india-epics`, `india-tales` (after the library's own Kim) and `india-history` in `data/new-books.js`: every book is in
+  English, because Gutenberg has no Hindi, Bengali, Urdu or Sanskrit texts, and the cards say so. No Russian authors
+  (Blavatsky's Caves and Jungles was left out for that reason: the owner's wish). The secret is the window: looked at, the
+  vetala of the Twenty-Two Goblins hangs from the banyan for a few seconds and Burton's Vikram and the Vampire
+  (`india-vampire`) is left on the sill, found for good (`athenaeum-india-vetala`; `?vetala`). The card tells the tale in
+  the library's own words, not a quotation. Not yet looked at in a browser: walk it with `scripts/room-walkthrough.mjs
+  --only india-room`.
 - Scrooge's chambers (`scrooge-room.js`, x 2200, z −300; `?room=scrooge`, `marley`, `carol`, `christmas-carol`): the
   gloomy suite up a yard from A Christmas Carol, made one room (sitting-room, bedroom, closet), through a heavy door in the
   Long Corridor's second east bay (`corridor.scroogeDoor`, opposite the Gastronomic Athenaeum; SCROOGE'S CHAMBERS gilded on
