@@ -1,54 +1,24 @@
-# An Indian room: what Gutenberg holds, in English and in India's own languages.
- ; Tagore ; en
- ; Toru Dutt|Dutt, Toru ; en
- ; Naidu ; en
- ; Dutt, Romesh|Romesh Chunder Dutt ; en
- ; Ghose, Aurobindo|Aurobindo ; en
- ; Vivekananda ; en
- ; Gandhi ; en
- ; Iqbal ; en
- ; Coomaraswamy ; en
- ; Nivedita ; en
- ; Sorabji ; en
- ; Day, Lal Behari|Behari Day ; en
- ; Ryder, Arthur ; en
- ; Cowell ; en
- ; Arnold, Edwin ; en
- ; Tod, James ; en
-Panchatantra|Pancha-tantra|Pancha Tantra|Hitopadesa ; ; en
-Sakoontala|Shakuntala|Sakuntala|Sacontala ; ; en
-Mahabharata|Mahabharata|Maha-bharata ; ; en
-Ramayana|Ramayan|Rámáyan ; ; en
-Bhagavad|Bhagavat|Song Celestial ; ; en
-Jataka ; ; en
-Upanishad|Upanishads|Veda|Vedic|Rig-Veda|Rigveda ; ; en
-Ocean of Story|Kathasaritsagara|Katha Sarit Sagara ; ; en
-Songs of Kabir|Kabir ; ; en
-Light of Asia ; ; en
-Indian Fairy Tales|Old Deccan Days|Tales of the Sun|Folk-Tales of Bengal|Tales of Ancient India|Santal ; ; en
-Alberuni|Baber|Babur|Akbar|Mogul|Mughal|Bernier ; ; en
-Gitanjali|Gardener|Crescent Moon|Sadhana|Home and the World|Hungry Stones|Fruit-Gathering|Stray Birds|Cycle of Spring|Chitra ; Tagore ; en
-Golden Threshold|Bird of Time|Broken Wing ; ; en
-Sheaf Gleaned|Ancient Ballads and Legends of Hindustan|Ballads and Legends of Hindustan ; ; en
-Kim|Jungle Book|Second Jungle Book|Naulahka ; Kipling ; en
- ; Steel, Flora|Steel, Flora Annie ; en
- ; Forster ; en
- ; Rama Rau|Rau, ; en
-subject? Folklore -- India
-subject? Sanskrit literature
-subject? Hindu
-subject? Hinduism
-subject? Buddhism -- India
-subject? India -- Description and travel
-subject? India -- History
-subject? Mogul Empire
-subject? Bengali
-subject? Indian poetry
-subject? Indic
+# Hindi and Urdu rooms (27 November 2026): what Hindi and Urdu Wikisource really hold, before promising a room.
+ws-survey@hi
+ws-survey@ur
+ws?@hi प्रेमचंद
+ws?@hi कबीर
+ws?@hi तुलसीदास
+ws?@hi सूरदास
+ws?@hi मीराबाई
+ws?@hi भारतेन्दु
+ws?@hi जयशंकर प्रसाद
+ws?@hi रामचरितमानस
+ws?@hi पंचतंत्र
+ws?@hi चंद्रकांता
+ws?@ur غالب
+ws?@ur میر تقی میر
+ws?@ur اقبال
+ws?@ur پریم چند
+ws?@ur نظیر اکبرآبادی
+ws?@ur دیوان
+ws?@ur داستان
+ws?@ur باغ و بہار
+# And Gutenberg itself, in case: anything catalogued as Hindi or Urdu.
  ; ; hi
- ; ; bn
- ; ; sa
  ; ; ur
- ; ; ta
- ; ; te
- ; ; mr
