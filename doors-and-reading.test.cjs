@@ -58,7 +58,7 @@ test('after reading in a chair the book can stay on the chair, go back, go to a 
   // While carrying, any flat surface takes the book.
   assert.match(game,/placeOnSurface\(\);return\}return carriedBookInteract\(\)/);
   assert.match(game,/if\(surfaceNormal\.y<\.72\)return false/);
-  assert.match(game,/'E&nbsp;&nbsp; SET DOWN'/);
+  assert.match(game,/\$\{touchMode\?'TAP':'E'\}&nbsp;&nbsp; SET DOWN/);
 });
 
 test('the reading carriage uses real models with licences and a proper journey picker',()=>{
