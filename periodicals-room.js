@@ -35,6 +35,8 @@
     const ROOM={cx:-330,cz:100,w:16,d:14,h:5};
     const PRELOAD=7,KEEP=25;
     let root=null,time=0,lastNeeded=-1e9,gazette=null,press=null;
+    // Other rooms that open off this one hang their doors in it while it is built (the bindery, behind the press).
+    const doorHooks=[];
     const FOUND_KEY='athenaeum-kelmscott-found';
     const wasFound=()=>{try{return storage?.getItem(FOUND_KEY)==='1'||/[?&]kelmscott\b/.test(location.search)}catch(e){return false}};
     const owned=[],ours=[],books=[],blockers=[];
@@ -154,6 +156,7 @@
       add(own(new THREE.CylinderGeometry(.14,.24,.2,14,1,true)),shade,cx+3.1,1.2,cz+4.8,root);block(cx+3.1,cz+4.8,.6,.6);
       lamp(root,0xffe0a8,7,14,cx,h-.4,cz-1);lamp(root,0xd8f0c0,2.5,5,cx+3.1,1.3,cz+4.8);
       if(kelmscott)buildPress(cx-5.6,cz+3.1);
+      for(const hook of doorHooks)hook(root,{mark,own,doorKit,room:ROOM});
       // The door back to the Grand Hall.
       const exit={type:'periodicals-exit',title:'Back to the Grand Hall',author:'The clock is on the other side.',action:'RETURN'};
       if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:cz+d/2-.2,yaw:Math.PI,label:'THE GRAND HALL',...DOOR_LOOK})){mark(box(1.9,3.1,.16,MAT.darkWood,cx,1.55,cz+d/2-.2,root),exit);for(const px of [-1.05,1.05])box(.16,3.35,.24,MAT.brass,cx+px,1.68,cz+d/2-.22,root);box(2.3,.16,.24,MAT.brass,cx,3.3,cz+d/2-.22,root)}
@@ -262,6 +265,7 @@
       else if(root&&t-lastNeeded>KEEP&&!isHolding()&&!books.some(b=>b.parent!==root))unload();
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,activate,unload,featured,gazetteText,door:DOOR,room:ROOM,notes:NOTES,get built(){return !!root},get books(){return books.slice()},get kelmscottFound(){return !!press?.found},zoneAt:(x,z)=>contains(x,z)?'periodicals-room':null};
+    function addDoorHook(hook){doorHooks.push(hook);if(root)hook(root,{mark,own,doorKit,room:ROOM})}
+    return {contains,floorAt,allowed,interact,update,enter,activate,unload,featured,gazetteText,addDoorHook,door:DOOR,room:ROOM,notes:NOTES,get built(){return !!root},get books(){return books.slice()},get kelmscottFound(){return !!press?.found},zoneAt:(x,z)=>contains(x,z)?'periodicals-room':null};
   };
 })();
