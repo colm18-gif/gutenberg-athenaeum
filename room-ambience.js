@@ -191,6 +191,8 @@
       pitcairn:{beds:[['waves',.035],['wind',.03]],events:[['bird',1.2,.035],['gull',.3,.025],['rustle',.5,.02]]},
       montserrat:{beds:[['insects',.045],['waves',.02],['wind',.015]],events:[['treefrog',14,.03],['whoop',.15,.03],['creak',.2,.02]]},
       'dickinson-room':{beds:[['air',.02]],ticks:[[1,'tock',.014]],events:[['bird',.5,.03],['creak',.3,.025]]},
+      // The Indian room: crickets in the courtyard, a lamp, the air, an old house settling.
+      'india-room':{beds:[['insects',.03],['air',.02]],events:[['rustle',.4,.025],['creak',.25,.02],['bird',.3,.02]]},
       // Scrooge's chambers: a very low fire, a clock on the stairs, the old house creaking in the fog.
       'scrooge-room':{beds:[['fire',.05],['air',.03]],ticks:[[1.2,'tock',.016]],events:[['crackle',14,.05],['creak',.5,.035]]},
       // The library that was never built: a very large stone room, air moving high up, a page turned somewhere far off.

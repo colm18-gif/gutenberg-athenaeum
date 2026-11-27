@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-11-22",
+ "updated": "2026-11-27",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -3131,6 +3131,190 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 47115,
    "words": 65070
   },
+  "Stray Birds": {
+   "id": 6524,
+   "words": 5615
+  },
+  "The Crescent Moon": {
+   "id": 6520,
+   "words": 8822
+  },
+  "The Gardener": {
+   "id": 6686,
+   "words": 13911
+  },
+  "Fruit-Gathering": {
+   "id": 6522,
+   "words": 10480
+  },
+  "The Post Office": {
+   "id": 6523,
+   "words": 7363
+  },
+  "Chitra": {
+   "id": 2502,
+   "words": 6404
+  },
+  "The Hungry Stones and Other Stories": {
+   "id": 2518,
+   "words": 48859
+  },
+  "The Home and the World": {
+   "id": 7166,
+   "words": 68682
+  },
+  "Glimpses of Bengal": {
+   "id": 7951,
+   "words": 24633
+  },
+  "My Reminiscences": {
+   "id": 22217,
+   "words": 61417
+  },
+  "Sadhana": {
+   "id": 6842,
+   "words": 37502
+  },
+  "Nationalism": {
+   "id": 40766,
+   "words": 26915
+  },
+  "Songs of Kabir": {
+   "id": 6519,
+   "words": 16799
+  },
+  "The Golden Threshold": {
+   "id": 680,
+   "words": 8227
+  },
+  "Ancient Ballads and Legends of Hindustan": {
+   "id": 23245,
+   "words": 22486
+  },
+  "Songs of Vidyapati": {
+   "id": 38174,
+   "words": 24374
+  },
+  "Indian Poetry": {
+   "id": 25965,
+   "words": 35674
+  },
+  "The Light of Asia": {
+   "id": 8920,
+   "words": 35312
+  },
+  "The Song Celestial": {
+   "id": 2388,
+   "words": 20602
+  },
+  "The Secrets of the Self": {
+   "id": 57317,
+   "words": 20818
+  },
+  "The Ramayan of Valmiki": {
+   "id": 24869,
+   "words": 396771
+  },
+  "Sakoontala": {
+   "id": 12169,
+   "words": 48847
+  },
+  "The Upanishads": {
+   "id": 3283,
+   "words": 17800
+  },
+  "The Yoga Sutras of Patanjali": {
+   "id": 2526,
+   "words": 30324
+  },
+  "Indian Fairy Tales": {
+   "id": 7128,
+   "words": 71674
+  },
+  "Old Deccan Days": {
+   "id": 36696,
+   "words": 104059
+  },
+  "Folk-Tales of Bengal": {
+   "id": 38488,
+   "words": 73987
+  },
+  "Tales of the Punjab": {
+   "id": 6145,
+   "words": 80627
+  },
+  "Jataka Tales": {
+   "id": 62514,
+   "words": 11984
+  },
+  "More Jataka Tales": {
+   "id": 7518,
+   "words": 12423
+  },
+  "Twenty-Two Goblins": {
+   "id": 2290,
+   "words": 39742
+  },
+  "Deccan Nursery Tales": {
+   "id": 11167,
+   "words": 27152
+  },
+  "Simla Village Tales": {
+   "id": 58816,
+   "words": 41399
+  },
+  "Hindoo Tales": {
+   "id": 11738,
+   "words": 52864
+  },
+  "Akbar, Emperor of India": {
+   "id": 14134,
+   "words": 13299
+  },
+  "The Adventures of Akbar": {
+   "id": 18307,
+   "words": 48287
+  },
+  "India Through the Ages": {
+   "id": 39848,
+   "words": 142297
+  },
+  "On the Face of the Waters": {
+   "id": 40140,
+   "words": 177717
+  },
+  "A Passage to India": {
+   "id": 61221,
+   "words": 102508
+  },
+  "Rambles and Recollections of an Indian Official": {
+   "id": 15483,
+   "words": 299551
+  },
+  "Indian Home Rule": {
+   "id": 40461,
+   "words": 29588
+  },
+  "Third Class in Indian Railways": {
+   "id": 24461,
+   "words": 9475
+  },
+  "Freedom’s Battle": {
+   "id": 10366,
+   "words": 79297
+  },
+  "Jnana Yoga": {
+   "id": 72368,
+   "words": 32097
+  },
+  "Autobiography of a Yogi": {
+   "id": 7452,
+   "words": 156094
+  },
+  "Vikram and the Vampire": {
+   "id": 2400,
+   "words": 77839
+  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633
@@ -4742,6 +4926,15 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Benito Cereno",
   "History of the Expedition under the Command of Captains Lewis and Clark, Vol. 1.",
   "The Necessity of Atheism",
+  "The Mahabharata of Krishna-Dwaipayana Vyasa",
+  "Maha-bharata: The Epic of India",
+  "Shakuntala, and Other Writings",
+  "The Little Clay Cart",
+  "Tales of the Sun",
+  "The Talking Thrush",
+  "Annals and Antiquities of Rajast’han",
+  "Alberuni’s India",
+  "Bagh O Bahar",
   "María [es]",
   "Poesías [es]"
  ]
