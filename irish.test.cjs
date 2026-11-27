@@ -100,3 +100,11 @@ test('the doors to the wings are a two-volume set of giant books, drawn cheaply'
   const width=Number(fn.match(/CW=([\d.]+)/)[1]),hinge=Number(fn.match(/hingeZ=direction\*([\d.]+)/)[1]);
   assert(width<=3.9&&19+width<25.5-1,'the covers clear the wing tables');assert(hinge-width>=0,'the two covers do not overlap when shut');
 });
+
+test('a Library Ireland Week poster hangs by the door in that week only and opens the week’s site',()=>{
+  assert.match(source,/libraryirelandweek\.ie/);assert.match(game,/createIrishRoom\?\.\(\{doorKit:getDoorKit\(\),openLink:openLinkCard/);
+  const week=(y,m,d)=>{const start=new Date(y,10,29);start.setDate(29+(7-start.getDay())%7);const end=new Date(start);end.setDate(start.getDate()+7);const t=new Date(y,m,d);return t>=start&&t<end};
+  assert(week(2026,10,29)&&week(2026,11,5)&&!week(2026,10,28)&&!week(2026,11,6));
+  assert(week(2025,10,30)&&week(2025,11,6)&&week(2024,11,1)&&week(2024,11,7));
+  const m=source.match(/const liwWeek=[^\n]+/)[0];assert(m.includes('start.setDate(29+(7-start.getDay())%7)'));
+});
