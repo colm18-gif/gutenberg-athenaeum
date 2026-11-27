@@ -3211,6 +3211,110 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 57317,
    "words": 20818
   },
+  "The Ramayan of Valmiki": {
+   "id": 24869,
+   "words": 396771
+  },
+  "Sakoontala": {
+   "id": 12169,
+   "words": 48847
+  },
+  "The Upanishads": {
+   "id": 3283,
+   "words": 17800
+  },
+  "The Yoga Sutras of Patanjali": {
+   "id": 2526,
+   "words": 30324
+  },
+  "Indian Fairy Tales": {
+   "id": 7128,
+   "words": 71674
+  },
+  "Old Deccan Days": {
+   "id": 36696,
+   "words": 104059
+  },
+  "Folk-Tales of Bengal": {
+   "id": 38488,
+   "words": 73987
+  },
+  "Tales of the Punjab": {
+   "id": 6145,
+   "words": 80627
+  },
+  "Jataka Tales": {
+   "id": 62514,
+   "words": 11984
+  },
+  "More Jataka Tales": {
+   "id": 7518,
+   "words": 12423
+  },
+  "Twenty-Two Goblins": {
+   "id": 2290,
+   "words": 39742
+  },
+  "Deccan Nursery Tales": {
+   "id": 11167,
+   "words": 27152
+  },
+  "Simla Village Tales": {
+   "id": 58816,
+   "words": 41399
+  },
+  "Hindoo Tales": {
+   "id": 11738,
+   "words": 52864
+  },
+  "Akbar, Emperor of India": {
+   "id": 14134,
+   "words": 13299
+  },
+  "The Adventures of Akbar": {
+   "id": 18307,
+   "words": 48287
+  },
+  "India Through the Ages": {
+   "id": 39848,
+   "words": 142297
+  },
+  "On the Face of the Waters": {
+   "id": 40140,
+   "words": 177717
+  },
+  "A Passage to India": {
+   "id": 61221,
+   "words": 102508
+  },
+  "Rambles and Recollections of an Indian Official": {
+   "id": 15483,
+   "words": 299551
+  },
+  "Indian Home Rule": {
+   "id": 40461,
+   "words": 29588
+  },
+  "Third Class in Indian Railways": {
+   "id": 24461,
+   "words": 9475
+  },
+  "Freedom’s Battle": {
+   "id": 10366,
+   "words": 79297
+  },
+  "Jnana Yoga": {
+   "id": 72368,
+   "words": 32097
+  },
+  "Autobiography of a Yogi": {
+   "id": 7452,
+   "words": 156094
+  },
+  "Vikram and the Vampire": {
+   "id": 2400,
+   "words": 77839
+  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633
@@ -4822,41 +4926,15 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Benito Cereno",
   "History of the Expedition under the Command of Captains Lewis and Clark, Vol. 1.",
   "The Necessity of Atheism",
-  "The Ramayan of Valmiki",
   "The Mahabharata of Krishna-Dwaipayana Vyasa",
   "Maha-bharata: The Epic of India",
-  "Sakoontala",
   "Shakuntala, and Other Writings",
   "The Little Clay Cart",
-  "The Upanishads",
-  "The Yoga Sutras of Patanjali",
-  "Indian Fairy Tales",
-  "Old Deccan Days",
-  "Folk-Tales of Bengal",
-  "Tales of the Punjab",
-  "Jataka Tales",
-  "More Jataka Tales",
-  "Twenty-Two Goblins",
-  "Deccan Nursery Tales",
   "Tales of the Sun",
-  "Simla Village Tales",
   "The Talking Thrush",
-  "Hindoo Tales",
   "Annals and Antiquities of Rajast’han",
   "Alberuni’s India",
-  "Akbar, Emperor of India",
-  "The Adventures of Akbar",
-  "India Through the Ages",
-  "On the Face of the Waters",
-  "A Passage to India",
-  "Rambles and Recollections of an Indian Official",
-  "Indian Home Rule",
-  "Third Class in Indian Railways",
-  "Freedom’s Battle",
-  "Jnana Yoga",
-  "Autobiography of a Yogi",
   "Bagh O Bahar",
-  "Vikram and the Vampire",
   "María [es]",
   "Poesías [es]"
  ]
