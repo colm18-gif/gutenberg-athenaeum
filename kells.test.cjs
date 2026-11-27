@@ -59,6 +59,8 @@ test('the Book of Kells is on show in the middle of the Irish Room, open in a li
   const at=shown[0].parent.position;assert(Math.abs(at.x-R.cx)<.01&&Math.abs(at.z-R.cz)<1.5,'in the middle of the room');
   assert(!a.r.allowed(at.x,at.z)&&a.r.allowed(at.x,at.z+1.4),'the reader walks round it and can stand before it');
   assert.match(shown[0].userData.author,/18 of its pages/);
+  // A correction that came back: give the folio numbers beside the page descriptions (27 November 2026).
+  assert.match(shown[0].userData.author,/Christ enthroned \(folio 32v\) facing the carpet page \(folio 33r\)/,'the card names the folios as well as the pages');
   a.r.interact(shown[0]);assert.deepEqual(a.opened,['kells']);
   assert.match(room,/page\('032v',-1\),right=page\('033r',1\)/,'it lies open at a real opening of the manuscript');
   for(const key of ['032v','033r'])assert(fs.existsSync(`assets/kells/${key}.jpg`));

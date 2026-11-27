@@ -141,7 +141,7 @@
       const g=new THREE.Group();g.position.set(x,0,z);root.add(g);
       const brass=MAT.brass||own(new THREE.MeshStandardMaterial({color:0xb08a3e,metalness:.7,roughness:.35}));
       const leaves=kells.folios?Object.keys(kells.folios).length:0;
-      const data={type:'irish-kells',title:'The Book of Kells, in facsimile',author:`Leabhar Cheanannais, open at Christ enthroned and the carpet page.${leaves?` ${leaves} of its pages, on board leaves.`:''}`,action:'OPEN'};
+      const data={type:'irish-kells',title:'The Book of Kells, in facsimile',author:`Leabhar Cheanannais, open at Christ enthroned (folio 32v) facing the carpet page (folio 33r).${leaves?` ${leaves} of its pages, on board leaves.`:''}`,action:'OPEN'};
       const plinth=box(1.5,.95,1,MAT.darkWood,0,.475,0,g);box(1.6,.06,1.1,MAT.darkWood,0,.97,0,g);box(1.6,.08,1.1,MAT.darkWood,0,.04,0,g);
       // The open book: two pages in a cradle, each sloping down from the spine.
       const loader=THREE.TextureLoader?new THREE.TextureLoader():null,pageW=.52,pageH=.68;
