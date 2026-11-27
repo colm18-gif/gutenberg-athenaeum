@@ -1,24 +1,18 @@
-# Hindi and Urdu rooms (27 November 2026): what Hindi and Urdu Wikisource really hold, before promising a room.
-ws-survey@hi
-ws-survey@ur
-ws?@hi प्रेमचंद
-ws?@hi कबीर
-ws?@hi तुलसीदास
-ws?@hi सूरदास
-ws?@hi मीराबाई
-ws?@hi भारतेन्दु
-ws?@hi जयशंकर प्रसाद
-ws?@hi रामचरितमानस
-ws?@hi पंचतंत्र
-ws?@hi चंद्रकांता
-ws?@ur غالب
-ws?@ur میر تقی میر
-ws?@ur اقبال
-ws?@ur پریم چند
-ws?@ur نظیر اکبرآبادی
-ws?@ur دیوان
-ws?@ur داستان
-ws?@ur باغ و بہار
-# And Gutenberg itself, in case: anything catalogued as Hindi or Urdu.
- ; ; hi
- ; ; ur
+# A bindery off the Periodicals Room (27 November 2026): what Gutenberg holds on binding, paper, printing and the book as an object.
+Bookbinding|Book-binding|Book binding ; ; en
+ ; Cockerell ; en
+ ; Zaehnsdorf ; en
+ ; Davenport, Cyril ; en
+Enemies of Books ; ; en
+ ; Blades, William ; en
+Marbl ; ; en
+ ; Cobden-Sanderson ; en
+Ideal Book|Book Beautiful ; ; en
+Bibliomania|Book-Lover|Book Lover|Book-Hunter|Book Hunter ; ; en
+Paper-?making|Papermaking|History of Paper ; ; en
+The Book[:,]|History of the Book|Books and Bookmen|Of Books ; ; en
+Gilding|Gold Leaf|Leather ; ; en
+subject? Bookbinding
+subject? Bookbinders
+subject? Books -- History
+subject? Paper
