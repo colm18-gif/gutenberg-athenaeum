@@ -33,7 +33,7 @@ const CLOUDFLARE_BEACON_TOKEN = '10c90b1abbfe4fe9a38a09f48adbfc7b';
   script.src = PLAUSIBLE_SCRIPT_URL;
   // Only fixed event names and finite, non-personal properties are ever sent: room and place names the
   // library itself registers, short fixed labels for journeys and secrets, and Project Gutenberg book numbers.
-  const allowed = ['Library Entered', 'Room Explored', 'Book Picked Up', 'Book Opened', 'Book Link Opened', 'Room Link Opened',
+  const allowed = ['Library Entered', 'Room Explored', 'Book Picked Up', 'Book Opened', 'Book Link Opened', 'Room Link Opened', 'Room Shared',
     'Reading Started', 'Book Returned', 'Book Left at Desk', 'Secret Discovered', 'Secret Found',
     'Journey Taken', 'Stair Slide', 'Librarian Talked To', 'Cat Petted', 'Cat Treat', 'Clio Chases Rabbit', 'Rabbit Door Entered',
     'Quote Opened', 'Quote Shared', 'Audiobook Played', 'Audiobook Link Opened',
