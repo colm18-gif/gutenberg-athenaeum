@@ -57,6 +57,7 @@
     walden:['Out through the garden door of the Naturalist’s Cabinet.','naturalist-room'],
     'burns-room':['Through the Irish Room, past the harp.','irish-room'],
     'canada-room':['Through the Burns Room, past the fiddle.','burns-room'],
+    'waterford-room':['In the Long Corridor, through the door marked BRITAIN & IRELAND, at the very end of the hall.','long-corridor'],
     lilliput:['The narrow door in the corner of the Irish Room, past the writers’ shelves.','irish-room'],
     brobdingnag:['Through Lilliput: the door at the far end of the Emperor’s library.','lilliput'],
     'set-texts-room':['The blue door in the English Reading Room’s east wall.','learners-room'],
@@ -65,7 +66,7 @@
     'arctic-room':['At the end of the kit pegs in the explorers’ anteroom, a planked door with the cold coming under it.','explorers-anteroom']
   };
   // A book’s shelf (its `room` in data/new-books.js), and the room it stands in.
-  const SHELF_PLACES=[[/^irish-/,'irish-room'],[/^burns-(works|lives|scotland)$/,'burns-room'],[/^canada-(stories|north|poets)$/,'canada-room'],[/^lilliput-(swift|small)$/,'lilliput'],[/^brob-/,'brobdingnag'],[/^austen-(writings|lives|read|novels)$/,'austen-room'],
+  const SHELF_PLACES=[[/^irish-/,'irish-room'],[/^burns-(works|lives|scotland)$/,'burns-room'],[/^canada-(stories|north|poets)$/,'canada-room'],[/^waterford-(deise|lismore|people|history)$/,'waterford-room'],[/^lilliput-(swift|small)$/,'lilliput'],[/^brob-/,'brobdingnag'],[/^austen-(writings|lives|read|novels)$/,'austen-room'],
     [/^nature-(origin|collectors|observers)$/,'naturalist-room'],[/^medicine-/,'medicine-room'],[/^map-/,'map-room'],[/^walden-(thoreau|concord)$/,'walden'],[/^nights-(tales|poets|echoes)$/,'nights-courtyard'],
     [/^african-/,'african-courtyard'],[/^within-/,'within-room'],[/^contested$/,'contested'],[/^set-texts$/,'set-texts-room'],[/^lost-property$/,'lost-property'],[/^(antipodes|australian|new-zealand)$/,'antipodes'],[/^mountain-valley$/,'mountain']];
   // The shelves the book trolley takes from: books on their way back to their rooms.

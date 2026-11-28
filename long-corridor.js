@@ -34,7 +34,7 @@
     // The quarters' names, a gilt board over each bay that belongs to one: two quarters have halls (above), and two are
     // gathered here in the corridor already (Boullée's drawing and Celsus's door; the shelf of ships in bottles).
     const QUARTER_SIGNS=[
-      {side:'east',bay:5,name:'BRITAIN & IRELAND',text:'The quarter of Britain and Ireland: through this door, a hall with doors to the Irish Room, the Burns Room, the Austen Room and Scrooge’s chambers.'},
+      {side:'east',bay:5,name:'BRITAIN & IRELAND',text:'The quarter of Britain and Ireland: through this door, a hall with doors to the Irish Room, the Burns Room, the Austen Room and Scrooge’s chambers, and at its end the Waterford room.'},
       {side:'east',bay:1,name:'BRITAIN & IRELAND',text:'Scrooge’s chambers belong to the quarter of Britain and Ireland, whose hall is through the door at the far end of this wall.'},
       {side:'west',bay:2,name:'THE AMERICAS',text:'The quarter of the Americas: through this door, a hall with doors to Emily Dickinson’s room, Walden Pond, the Canadian Room and the Poe Room.'},
       {side:'west',bay:3,name:'THE AMERICAS',text:'Emily Dickinson’s room belongs to the quarter of the Americas, whose hall is through the door beside it.'},

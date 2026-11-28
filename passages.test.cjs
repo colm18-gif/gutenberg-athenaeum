@@ -17,7 +17,7 @@ const THREE={Group:O,Mesh,InstancedMesh:Instanced,Vector3:V,Quaternion:class{},M
 // The rooms the passages join, as their modules define them.
 const ROOMS={poe:'poe-room.js',irish:'irish-room.js',learners:'learners-room.js',medicine:'medicine-room.js',austen:'austen-room.js',burns:'burns-room.js',within:'within-room.js',
   evening:'evening-room.js',setTexts:'set-texts-room.js',periodicals:'periodicals-room.js',chance:'chance-room.js',lostProperty:'book-lift.js',canada:'canada-room.js',walden:'walden.js',
-  dickinson:'dickinson-room.js',celsus:'celsus-room.js',latin:'international-wing.js',scrooge:'scrooge-room.js',corridor:'long-corridor.js',arctic:'arctic-room.js'};
+  dickinson:'dickinson-room.js',celsus:'celsus-room.js',latin:'international-wing.js',scrooge:'scrooge-room.js',corridor:'long-corridor.js',arctic:'arctic-room.js',waterford:'waterford-room.js'};
 // Walden is a clearing with no walls: its door stands at a place it keeps for it, facing east.
 const waldenSource=fs.readFileSync('walden.js','utf8');
 const CLEARING=(()=>{const c=waldenSource.match(/const CENTRE=\{x:(-?[\d.]+),z:(-?[\d.]+)\}/),t=waldenSource.match(/trail:\{x:(-?[\d.]+),z:(-?[\d.]+)\}/);
@@ -193,7 +193,7 @@ test('the Homestead Stair goes down from Emily Dickinson’s room to Walden, and
 test('the quarters: a hall off the Long Corridor for Britain and Ireland and one for the Americas, a door into each of their rooms',()=>{
   const {passages,rooms,player,interactables,notices}=world(),q=key=>passages.passages.find(p=>p.key===key);
   const britain=q('quarter-britain'),americas=q('quarter-americas');
-  assert.equal(britain.ends.map(e=>e.room).join(),'corridor,irish,burns,austen,scrooge');
+  assert.equal(britain.ends.map(e=>e.room).join(),'corridor,irish,burns,austen,scrooge,waterford');
   assert.equal(americas.ends.map(e=>e.room).join(),'corridor,dickinson,walden,canada,poe');
   for(const p of [britain,americas]){
     assert.equal(p.kind,'quarter');assert.equal(p.ends[0].room,'corridor');
@@ -201,14 +201,14 @@ test('the quarters: a hall off the Long Corridor for Britain and Ireland and one
     const c=passages.roomDoor(p.ends[0]);assert(rooms.corridor.contains(c.out.x,c.out.z),`${p.key}: out into the corridor`);
     // Its side doors stand apart on their walls, and every one opens onto the hall's floor.
     for(const side of [-1,1]){const along=p.ends.filter(e=>e.side===side).map(e=>e.along).sort((a,b)=>a-b);for(let i=1;i<along.length;i++)assert(along[i]-along[i-1]>3,`${p.key}: doors apart`)}
-    for(let i=1;i<p.ends.length;i++){const d=passages.passageDoor(p,i);assert(passages.allowed(d.out.x,d.out.z),`${p.key} door ${i} opens onto the floor`);assert(d.lz>2&&d.lz<p.length-2)}
+    for(let i=1;i<p.ends.length;i++){const d=passages.passageDoor(p,i);assert(passages.allowed(d.out.x,d.out.z),`${p.key} door ${i} opens onto the floor`);assert(p.ends[i].side?d.lz>2&&d.lz<p.length-2:d.lz>p.length-1,'side doors along the walls, the last at the end')}
     // In from the corridor, and out through each door into its room.
     for(let i=1;i<p.ends.length;i++){passages.enterPassage(p,0);assert.equal(passages.zoneAt(player.pos.x,player.pos.z),p.key);
       const room=rooms[p.ends[i].room];room.built=false;passages.leavePassage(p,i);assert(room.built,`${p.ends[i].room} is built`);assert(room.contains(player.pos.x,player.pos.z),`into ${p.ends[i].room}`)}
     // And back from the corridor.
     passages.enterPassage(p,0);passages.leavePassage(p,0);assert(rooms.corridor.contains(player.pos.x,player.pos.z));
   }
-  assert.match(notices.find(n=>n.startsWith('Britain and Ireland')),/^Britain and Ireland, a quarter of the library: The Irish Room, The Burns Room, The Austen Room, Scrooge’s chambers\.$/);
+  assert.match(notices.find(n=>n.startsWith('Britain and Ireland')),/^Britain and Ireland, a quarter of the library: The Irish Room, The Burns Room, The Austen Room, Scrooge’s chambers, The Waterford room\.$/);
   // A door is hung only where there is a wall for it: rooms that open off the corridor, or have no wall to spare, are
   // gone into as their own doors go in.
   assert.deepEqual([...britain.ends,...americas.ends].filter(e=>e.enter).map(e=>e.room).sort(),['austen','burns','dickinson','scrooge']);
