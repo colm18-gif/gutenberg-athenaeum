@@ -2679,6 +2679,10 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 71395,
    "words": 323655
   },
+  "The American Frugal Housewife": {
+   "id": 13493,
+   "words": 45105
+  },
   "The Art of Preserving All Kinds of Animal and Vegetable Substances": {
    "id": 52551,
    "words": 23477
@@ -5096,7 +5100,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Benito Cereno",
   "History of the Expedition under the Command of Captains Lewis and Clark, Vol. 1.",
   "The Necessity of Atheism",
-  "The American Frugal Housewife",
   "Miss Parloa’s New Cook Book",
   "The Mahabharata of Krishna-Dwaipayana Vyasa",
   "Maha-bharata: The Epic of India",
