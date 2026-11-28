@@ -17,7 +17,7 @@ const THREE={Group:O,Mesh,InstancedMesh:Instanced,Vector3:V,Quaternion:class{},M
 // The rooms the passages join, as their modules define them.
 const ROOMS={poe:'poe-room.js',irish:'irish-room.js',learners:'learners-room.js',medicine:'medicine-room.js',austen:'austen-room.js',burns:'burns-room.js',within:'within-room.js',
   evening:'evening-room.js',setTexts:'set-texts-room.js',periodicals:'periodicals-room.js',chance:'chance-room.js',lostProperty:'book-lift.js',canada:'canada-room.js',walden:'walden.js',
-  dickinson:'dickinson-room.js',celsus:'celsus-room.js',latin:'international-wing.js',scrooge:'scrooge-room.js',corridor:'long-corridor.js'};
+  dickinson:'dickinson-room.js',celsus:'celsus-room.js',latin:'international-wing.js',scrooge:'scrooge-room.js',corridor:'long-corridor.js',arctic:'arctic-room.js'};
 // Walden is a clearing with no walls: its door stands at a place it keeps for it, facing east.
 const waldenSource=fs.readFileSync('walden.js','utf8');
 const CLEARING=(()=>{const c=waldenSource.match(/const CENTRE=\{x:(-?[\d.]+),z:(-?[\d.]+)\}/),t=waldenSource.match(/trail:\{x:(-?[\d.]+),z:(-?[\d.]+)\}/);
@@ -74,7 +74,7 @@ test('the back ways load before the game, after the rooms they join, and are wir
 test('the rooms reached by air, by boat and by rocket stay that way',()=>{
   const {passages}=world(),joined=new Set(passages.passages.flatMap(p=>p.ends.map(e=>e.room)));
   for(const room of ['nights','african','crusoe','boathouse','moon','mars','rocket','antipodes','forest'])assert(!joined.has(room),`${room} has no back way`);
-  assert.equal(passages.passages.length,12);
+  assert.equal(passages.passages.length,13);
 });
 
 test('each door stands on its wall, clear of the corners and of the other doors there',()=>{
@@ -225,4 +225,20 @@ test('the Long Corridor names the four quarters over their bays, and keeps the i
   assert.match(corridorSource,/const BRITAIN_DOOR=\{[^}]*bay:5,side:'east'\}/);assert.match(corridorSource,/const AMERICAS_DOOR=\{[^}]*bay:2,side:'west'\}/);
   // The islands reached by boat, globe, model and ship are named with the ways that lead to them, and given no door.
   const islands=signs.find(s=>s.name==='ISLANDS & SEAS').text;for(const way of ['Boathouse','model Nautilus','great globe','New Zealand Room'])assert(islands.includes(way),way);
+});
+
+test('the Coppermine Trail goes north from the Canadian Room to the Arctic Room, clear of the stove and the stern windows',()=>{
+  const {passages,rooms,player}=world(),p=passages.passages.find(x=>x.key==='coppermine-trail');
+  assert.equal(p.ends.map(e=>e.room).join(),'canada,arctic');assert.equal(p.kind,'trail');assert.equal(p.paint,'north');
+  for(const end of p.ends)assert.equal(end.wall,'north');
+  // In the Canadian Room, east of the window and stepping out clear of the box stove (cx+4.3, two metres off the north wall).
+  const canada=roomOf('canada-room.js'),c=passages.roomDoor(p.ends[0]),stove={x:canada.cx+4.3,z:canada.cz-canada.d/2+2.1,w:1.2,d:.7};
+  assert(Math.abs(c.out.x-stove.x)>stove.w/2+.42||Math.abs(c.out.z-stove.z)>stove.d/2+.42,'the reader steps out clear of the stove');
+  // In the Arctic Room (12 m wide), between the stern windows (3.8 m across, in the middle) and the stove in the corner.
+  const arctic=roomOf('arctic-room.js'),a=passages.roomDoor(p.ends[1]);assert.equal(arctic.w,12);
+  assert(a.x-.75>arctic.cx+1.95&&a.x+.75<arctic.cx+arctic.w/2-.85-.4,'between the windows and the stove');assert(p.ends[1].look.height<2.8,'a door that fits the low cabin');
+  passages.enterPassage(p,0);assert.equal(passages.zoneAt(player.pos.x,player.pos.z),'coppermine-trail');passages.leavePassage(p,1);assert(rooms.arctic.built);assert(rooms.arctic.contains(player.pos.x,player.pos.z));
+  // Its mileposts say only what is well attested, and quote nobody.
+  assert.equal(p.posts.map(m=>m.head).join(),'FORT ENTERPRISE,AKAITCHO,COPPERMINE RIVER,THE ARCTIC OCEAN');
+  for(const m of p.posts)assert(!/[“”]/.test(m.text),`${m.head} quotes nobody`);
 });

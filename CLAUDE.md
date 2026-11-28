@@ -859,7 +859,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   ↔ Poe Room), the Long Gallery (Medicine Room ↔ English Reading Room; the Map Room's walls are hung edge to edge, so it
   is reached through the Medicine Room), the Back Stair (Burns Room ↔ Austen Room, up), the Stacks Stair (Burns Room ↔
   Room of Books Within Books, up), the Servants' Passage (Evening Room ↔ Periodicals Room, with the Set Texts Room's door
-  halfway), the Sorting Corridor (Room of Chance ↔ Lost Property Office) and the Portage (Walden ↔ Canadian Room: a trail,
+  halfway), the Sorting Corridor (Room of Chance ↔ Lost Property Office) and the Coppermine Trail (Canadian Room ↔ Arctic Room, 28 November 2026: a trail painted from spruce in the snow over the
+  tundra to the frozen sea, `paint:'north'`; mileposts for Fort Enterprise, Akaitcho, Hearne at the Coppermine and the Arctic
+  Ocean in 1821, saying only what is attested, quoting nobody; doors in both rooms' north walls), the Portage (Walden ↔ Canadian Room: a trail,
   `kind:'trail'`, its walls, floor and sky painted from Walden's summer through September's leaves to snow, as Thoreau went
   to Canada in 1850; mileposts and his palm-leaf hat carry his words from A Yankee in Canada, pg70123, checked by a test;
   footsteps are soft there). Walden has no walls, so its end is a door standing in the pines west of the clearing at
@@ -900,7 +902,10 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   roykstova, a little shelf on the south wall east of the door: the steamers for the Faroes sailed from Leith, and Symington
   found Thorshavn's scenery like Loch Long's; the owner's suggestion, 21 November 2026). The islands also sail to one another from bottles on their tables, beside each bottle home (`table:true`):
   Pitcairn ↔ Norfolk Island (the Morayshire's voyage of 1856) and St Helena ↔ Tristan da Cunha (one South Atlantic
-  territory; women from St Helena went out to Tristan in 1827). Every island now has at least two ways out.
+  territory; women from St Helena went out to Tristan in 1827). Every island now has at least two ways out. Pole to pole
+  (28 November 2026): the Arctic Room's bottle, beside Erebus and Terror, sails for the polar hut (a little shelf inside its
+  front wall, east of the doorway), and back; `antipodes.enter('antarctica')` builds the Antipodes and moors the
+  expedition ship at the landing, so the sea way home still works.
 - Exploration (`exploration.js`, loaded just before `passages.js`; wired at the end of game.js as `exploration`): small
   things that make wandering worth it, none with a light of its own. A room not yet found is heard through its closed door
   (`DOORS`, room-ambience.js `leak`: muffled, quieter, one at a time). Now and then the night porter's lantern (no light,
@@ -926,7 +931,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   `erebus`): the great cabin of a ship wintering in the ice, through a planked door at the east end of the explorers'
   anteroom's north wall, past the kit pegs (hung only while the anteroom is built; `exploration.anteroom.build` builds it
   for the way back). The Antarctic is the polar hut's; this is the north (the owner's choice, 20 November 2026: split
-  the two poles). Painted panelling under deck beams, stern windows on the frozen sea, a sister ship housed over and the
+  the two poles). 12 m wide since 28 November 2026 (it was 10, and had no wall to spare). Painted panelling under deck beams, stern windows on the frozen sea, a sister ship housed over and the
   aurora (painted, no light), a settee under them and a captain's chair at the chart table (seats), the chart of the
   archipelago with The Frozen Deep open on it (`arctic-table`), the box stove (its glow flickers), one hanging lamp (the
   room's one light). Shelves `arctic-passage` (west: after the library's Franklin and Hearne, `OWN`), `arctic-inuit` (east)
@@ -936,7 +941,11 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Victory Point record, Gore's form of May 1847 and Crozier's margin of April 1848 (`RECORD`, checked against M'Clintock's
   text, pg37669, by a test; every “quotation” on a card or notice must be one of them), and leaves In the Arctic Seas
   (`arctic-record`) on the chest, found for good (`athenaeum-arctic-victory-point`; `?victorypoint`). Notes call the
-  people Inuit; old titles keep the word of their day.
+  people Inuit; old titles keep the word of their day. Erebus and Terror (the owner's wish, 28 November 2026): models of
+  the two ships in a glazed case on a low cabinet against the north wall, west of the stern windows (`buildShips`, card
+  `ships`: bomb vessels, Ross's Antarctic voyage of 1839–43 and Mount Erebus and Mount Terror, Franklin's of 1845, the wrecks
+  found in 2014 and 2016 with Inuit knowledge); beside them the ship in a bottle that sails for the polar hut (Island
+  bottles). East of the windows, the Coppermine Trail's door to the Canadian Room (Back ways), sized for the low cabin.
 - The doors between the Grand Hall and each wing (x ±19) are a two-volume set of giant books (`wingVolume` in `game.js`):
   THE WEST WING (or EAST WING), Volume the First and Volume the Second, spines at the jambs, gilt fore-edges meeting in the
   middle. As the reader comes near, each block of pages gathers into its spine and each cover swings into the wing like a

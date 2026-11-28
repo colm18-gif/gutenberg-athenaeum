@@ -87,6 +87,17 @@
       prints:[{motif:'scroll',side:1,at:5,title:'A scroll',text:'A papyrus roll, drawn as the Romans kept their books: wound on a rod, with a tag at its end naming the work. The Library of Celsus is said to have held twelve thousand of them.'},
         {motif:'inscription',side:1,at:10,title:'An inscription',text:'The Library of Celsus was built for Tiberius Julius Celsus Polemaeanus, consul in 92, and its inscriptions were cut in Greek and in Latin, the two languages of the Roman East.'},
         {motif:'column',side:1,at:15,title:'A column',text:'A fluted column with an acanthus capital, of the kind that stands two storeys high on the library’s front at Ephesus.'}]},
+    // From the Canadian Room north to the Arctic Room (28 November 2026, at the owner's wish): John Franklin's first
+    // expedition went overland through what is now Canada to the Arctic coast in 1819–22, by the Coppermine River that
+    // Samuel Hearne had reached in 1771. A trail like the Portage, painted from spruce in the snow past the treeline and
+    // over the tundra to the frozen sea (`paint:'north'`); the cards say only what is well attested.
+    {key:'coppermine-trail',name:'The Coppermine Trail',kind:'trail',paint:'north',length:24,width:3.4,walls:0x1a2430,lamp:0xc8d6ff,
+      ends:[{room:'canada',label:'THE CANADIAN ROOM',wall:'north',at:2.9},{room:'arctic',label:'THE ARCTIC ROOM',wall:'north',at:3.3,look:{width:1.25,height:2.45,fanlight:false,cornice:false}}],
+      look:{style:'painted',color:0x2f3d45,planked:true,fanColor:0xc8e0ff},
+      posts:[{side:1,at:4.6,head:'FORT ENTERPRISE',sub:'the winter of 1820–21',title:'A milepost',text:'John Franklin’s first Arctic expedition, sent overland by the Admiralty in 1819, built a log house north of Great Slave Lake, wintered in it, and set out from it for the Coppermine River in the summer of 1821.'},
+        {side:-1,at:9.2,head:'AKAITCHO',sub:'and the Yellowknives',title:'A milepost',text:'The expedition’s guides and hunters were Yellowknife Dene under their leader Akaitcho, who knew the way and fed the party. On the way back in 1821 more than half of Franklin’s twenty men died of hunger and cold, and it was Akaitcho’s people who brought food to the survivors at Fort Enterprise.'},
+        {side:1,at:13.8,head:'COPPERMINE RIVER',sub:'Hearne, July 1771',title:'A milepost',text:'Samuel Hearne of the Hudson’s Bay Company, guided by the Chipewyan leader Matonabbee, walked to the mouth of the Coppermine River in July 1771, the first European to reach the Arctic coast of North America over land. His account is on the west shelf of the Arctic Room.'},
+        {side:-1,at:18.3,head:'THE ARCTIC OCEAN',sub:'July 1821',title:'A milepost',text:'Franklin’s party reached the sea at the Coppermine’s mouth in July 1821 and went east along the coast in canoes as far as a headland he named Point Turnagain. His last expedition came by sea, in 1845, with the Erebus and the Terror: the cabin ahead is a ship’s, wintering in the ice.'}]},
     // The quarters (28 November 2026): the library's rooms gathered by where their books come from, each quarter a hall
     // off the Long Corridor with a door into each of its rooms, so no room in it is more than two doors from the corridor.
     // The rooms keep their own ways in as well. A quarter's first end is its door in a corridor bay (long-corridor.js,
@@ -125,7 +136,7 @@
   const TITLES={poe:'The Poe Room',irish:'The Irish Room',learners:'The English Reading Room',medicine:'The Medicine Room',austen:'The Austen Room',burns:'The Burns Room',
     within:'The Room of Books Within Books',evening:'The Evening Room',setTexts:'The Set Texts Room',periodicals:'The Periodicals Room',chance:'The Room of Chance',lostProperty:'The Lost Property Office',
     walden:'Walden Pond',canada:'The Canadian Room',dickinson:'Emily Dickinson’s room',latin:'The Latin Reading Room',celsus:'The Library of Celsus',
-    scrooge:'Scrooge’s chambers',corridor:'The Long Corridor'};
+    scrooge:'Scrooge’s chambers',corridor:'The Long Corridor',arctic:'The Arctic Room'};
 
   window.createPassages=function(options){
     const {THREE,scene,MAT,player,interactables,canvasTexture,showNotice,playSample,move,analytics,doorKit=null,rooms={},storage=window.localStorage}=options;
@@ -266,6 +277,37 @@
       // Somebody's boot-prints in the snow, coming from the woods.
       c.fillStyle='rgba(120,134,150,.55)';for(let y=h*.72;y<h;y+=22){const x=w/2+((y/22)%2<1?-9:9);c.beginPath();c.ellipse(x,y,4,8,0,0,7);c.fill()}
     },256,1024)}
+    // The way north, one canvas the length of the passage: spruce in the snow by the Canadian Room, thinning to the
+    // tundra past the treeline, then the frozen sea, pressure ridges and a ship held fast by the Arctic Room; the aurora
+    // over all of it.
+    const zone=u=>u<.38?0:u<.7?1:2;
+    function northWallTexture(flip){return canvasTexture((c,w,h)=>{
+      let s=flip?23:29;const rnd=()=>{s=(s*16807)%2147483647;return s/2147483647};const X=u=>flip?(1-u)*w:u*w;
+      const sky=c.createLinearGradient(0,0,0,h);sky.addColorStop(0,'#050a16');sky.addColorStop(1,'#162434');c.fillStyle=sky;c.fillRect(0,0,w,h);
+      c.fillStyle='#dfe6f2';for(let i=0;i<300;i++){c.globalAlpha=.3+rnd()*.6;c.fillRect(rnd()*w,rnd()*h*.45,1.4,1.4)}c.globalAlpha=1;
+      for(let i=0;i<w;i+=3){const u=flip?1-i/w:i/w,a=.25+.25*Math.sin(u*9),y=h*(.12+.06*Math.sin(u*31)),g=c.createLinearGradient(0,y-h*.14,0,y+h*.05);
+        g.addColorStop(0,'rgba(80,255,160,0)');g.addColorStop(.8,`rgba(80,255,160,${a})`);g.addColorStop(1,'rgba(80,255,160,0)');c.fillStyle=g;c.fillRect(i,y-h*.14,3,h*.19)}
+      const ground=h*.8;for(let i=0;i<w;i+=2){const u=flip?1-i/w:i/w;c.fillStyle=['#c6d0da','#b9c4cc','#a9bccb'][zone(u)];c.fillRect(i,ground,2,h-ground)}
+      // The low hills of the tundra on the skyline, and the sea's pressure ridges further on.
+      c.fillStyle='#8e9daa';for(let i=0;i<w;i+=2){const u=flip?1-i/w:i/w;if(zone(u)!==1)continue;c.fillRect(i,ground-h*(.04+.03*Math.sin(u*40)),2,h*(.04+.03*Math.sin(u*40)))}
+      for(let k=0;k<40;k++){const u=.7+rnd()*.3,x=X(u),y=ground+rnd()*h*.12;c.fillStyle='#d5e0ea';c.beginPath();c.moveTo(x-14,y);c.lineTo(x-2,y-10-rnd()*10);c.lineTo(x+12,y);c.fill()}
+      // Spruce in the snow, fewer and smaller towards the treeline.
+      for(let k=0;k<170;k++){const u=rnd()*.62,x=X(u),thin=Math.max(0,(u-.3)/.32);if(rnd()<thin)continue;const tall=h*(.3+rnd()*.35)*(1-thin*.7),base=ground+rnd()*h*.05;
+        c.fillStyle='#0a1210';c.beginPath();c.moveTo(x,base-tall);c.lineTo(x-tall*.13,base);c.lineTo(x+tall*.13,base);c.fill();c.strokeStyle='rgba(225,232,240,.55)';c.lineWidth=1.5;
+        for(let t=1;t<6;t++){const y=base-tall+t*tall/6,r=tall*.13*t/6;c.beginPath();c.moveTo(x-r,y);c.lineTo(x-r*.3,y-2);c.moveTo(x+r,y);c.lineTo(x+r*.3,y-2);c.stroke()}}
+      // Far out on the ice, a ship held fast and housed over for the winter, a light at her stern.
+      const sx=X(.9),sy=ground+h*.02;c.fillStyle='#121417';c.beginPath();c.moveTo(sx-60,sy);c.lineTo(sx+60,sy);c.lineTo(sx+70,sy-14);c.lineTo(sx-70,sy-16);c.closePath();c.fill();
+      c.fillStyle='#d8d2c0';c.beginPath();c.moveTo(sx-60,sy-15);c.lineTo(sx,sy-38);c.lineTo(sx+60,sy-14);c.closePath();c.fill();
+      c.strokeStyle='#e8eef2';c.lineWidth=2;for(const mx of [-34,0,30]){c.beginPath();c.moveTo(sx+mx,sy-34);c.lineTo(sx+mx,sy-110);c.stroke()}
+      c.fillStyle='rgba(255,210,140,.9)';c.fillRect(sx+(flip?-52:46),sy-10,5,4);
+    },1536,256)}
+    function northFloorTexture(){return canvasTexture((c,w,h)=>{
+      let s=5;const rnd=()=>{s=(s*16807)%2147483647;return s/2147483647};c.fillStyle='#d4dbe2';c.fillRect(0,0,w,h);
+      for(let k=0;k<1200;k++){c.fillStyle=`rgba(${rnd()<.5?'255,255,255':'150,165,180'},.5)`;c.fillRect(rnd()*w,rnd()*h,1.5,1.5)}
+      // A sledge's runners and the dogs' trail between them, all the way north.
+      c.strokeStyle='rgba(110,125,140,.6)';c.lineWidth=3;for(const x of [w*.38,w*.62]){c.beginPath();c.moveTo(x,0);for(let y=0;y<=h;y+=32)c.lineTo(x+Math.sin(y*.02)*6,y);c.stroke()}
+      c.fillStyle='rgba(110,125,140,.5)';for(let y=8;y<h;y+=18){c.beginPath();c.arc(w/2+((y/18)%2<1?-5:5)+Math.sin(y*.02)*6,y,2.5,0,7);c.fill()}
+    },256,1024)}
     function skyTexture(){return canvasTexture((c,w,h)=>{let s=9;const rnd=()=>{s=(s*16807)%2147483647;return s/2147483647};c.fillStyle='#060b18';c.fillRect(0,0,w,h);
       c.fillStyle='#e6ecf6';for(let i=0;i<500;i++){c.globalAlpha=.25+rnd()*.7;c.fillRect(rnd()*w,rnd()*h,1.3,1.3)}c.globalAlpha=1;
       const g=c.createLinearGradient(0,h*.7,0,h);g.addColorStop(0,'rgba(80,255,160,0)');g.addColorStop(1,'rgba(80,255,160,.35)');c.fillStyle=g;c.fillRect(0,h*.7,w,h*.3)},256,1024)}
@@ -309,9 +351,9 @@
         // from within as moonlight would; lanterns on posts down the way, mileposts, and something left on one of them.
         box(W,.3,L,wall,0,-.15,L/2);
         const lit=map=>own(new THREE.MeshStandardMaterial({map,emissive:0xffffff,emissiveMap:map,emissiveIntensity:.32,roughness:.95}));
-        const floor=add(own(new THREE.PlaneGeometry(W,L)),lit(own(trailFloorTexture())),0,.012,L/2);floor.rotation.x=-Math.PI/2;
+        const north=p.paint==='north',floor=add(own(new THREE.PlaneGeometry(W,L)),lit(own(north?northFloorTexture():trailFloorTexture())),0,.012,L/2);floor.rotation.x=-Math.PI/2;
         const sky=add(own(new THREE.PlaneGeometry(W,L)),lit(own(skyTexture())),0,ceiling-.01,L/2);sky.rotation.x=Math.PI/2;
-        for(const sx of [-1,1]){const painted=add(own(new THREE.PlaneGeometry(L,ceiling)),lit(own(trailWallTexture(sx<0))),sx*(W/2-.01),ceiling/2,L/2);painted.rotation.y=-sx*Math.PI/2}
+        for(const sx of [-1,1]){const painted=add(own(new THREE.PlaneGeometry(L,ceiling)),lit(own(north?northWallTexture(sx<0):trailWallTexture(sx<0))),sx*(W/2-.01),ceiling/2,L/2);painted.rotation.y=-sx*Math.PI/2}
         const post=(x,z,h)=>{box(.1,h,.1,trim,x,h/2,z);blockers.push({minX:x-.12,maxX:x+.12,minZ:z-.12,maxZ:z+.12})};
         const flame=own(new THREE.MeshStandardMaterial({color:0xffe0a8,emissive:0xffb35c,emissiveIntensity:1.8})),flameGeo=own(new THREE.SphereGeometry(.06,8,6)),lantern=own(new THREE.BoxGeometry(.18,.24,.18));
         const glass=own(new THREE.MeshStandardMaterial({color:0x3a2a14,emissive:0xffa040,emissiveIntensity:.5,transparent:true,opacity:.6}));
@@ -383,7 +425,8 @@
       const data={type:'passage-door',passage:rd.p.key,end:rd.i,title:quarter?`${rd.p.name} (a quarter)`:rd.p.name,author,action:'ENTER'};
       const mark=(object,d)=>{object.userData=d;interactables.push(object);rd.hits.push(object);return object};
       // A quarter's door in the Long Corridor is the library's walnut with the quarter's name gilded on the glass.
-      const look=rd.end.reading&&doorKit?.readingRoom?{...DOOR,...rd.p.look,...doorKit.readingRoom(...rd.end.reading)}:{...DOOR,...rd.p.look};
+      // An end may have a door of its own size (`look`: the Arctic Room's cabin is low).
+      const look=rd.end.reading&&doorKit?.readingRoom?{...DOOR,...rd.p.look,...doorKit.readingRoom(...rd.end.reading)}:{...DOOR,...rd.p.look,...rd.end.look};
       if(!doorKit?.hang(g,{data,mark,label:rd.p.label||rd.p.name.toUpperCase().replace('THE ',''),...look})){const m=new THREE.Mesh(new THREE.BoxGeometry(DOOR.width,DOOR.height,.12),MAT.darkWood);m.position.set(0,DOOR.height/2,.08);g.add(m);mark(m,data)}
     }
     function takeDownRoomDoor(rd){if(!rd.group)return;rd.group.removeFromParent();for(const hit of rd.hits){const k=interactables.indexOf(hit);if(k>=0)interactables.splice(k,1)}rd.group=null;rd.hits=[]}

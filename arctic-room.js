@@ -46,6 +46,7 @@
     lamp:['The lamp','One lamp, burning whale oil or tallow, for the whole long winter night.'],
     cairn:['A cairn','A small cairn of limestone, built as the expedition’s men built theirs, to hold a message. Explorers left records in cairns and looked for them in other people’s.'],
     cairnFound:['The Victory Point record',`A printed Admiralty form, of the kind put in bottles and thrown overboard to learn the currents, filled in by Lieutenant Graham Gore on 28 May 1847: ${r('form')} ${r('party')} Round its margin, on 25 April 1848, Captain Crozier and Captain Fitzjames wrote: ${r('margin')} ${r('deaths')} And, squeezed in at the end, ${r('fish')} None of them reached it. William Hobson, of M’Clintock’s Fox, found the cylinder in a cairn at Victory Point on King William Island in May 1859; it is the only written record of the expedition ever found.`],
+    ships:['Erebus and Terror','Models of Her Majesty’s ships Erebus and Terror, the two ships of Franklin’s expedition. Both were built as bomb vessels, with hulls stout enough to take the recoil of heavy mortars, and that made them ships for the ice. Before the Arctic they had been to the other end of the world: from 1839 to 1843 James Clark Ross took them to the Antarctic, with Francis Crozier commanding the Terror, and named two volcanoes on Ross Island after them, Mount Erebus and Mount Terror. In 1845 they sailed with Franklin for the North-West Passage, and in April 1848 they were deserted in the ice off King William Island. Erebus was found in 2014 and Terror in 2016, both with the help of Inuit knowledge; the wrecks are a National Historic Site of Canada, looked after by Parks Canada together with the Inuit. The ship in the bottle beside them sails for the other pole, as they did.'],
     table:['The Frozen Deep','Wilkie Collins and Charles Dickens’s play of an Arctic expedition lost in the ice, written after John Rae’s news, and played in 1857 with Dickens in the lead. Collins later made it into a story, and that is what lies open here.']
   };
   const FOUND_KEY='athenaeum-arctic-victory-point';
@@ -56,7 +57,7 @@
     // The anteroom's north wall is at z 315.5 (exploration.js: ANTE {cx:1320,cz:320,w:12,d:9}); the door stands at its east
     // end, past the kit pegs (which run to x 1324.2) and the storm lantern.
     const DOOR={x:1325.05,z:315.67,yaw:0};
-    const ROOM={cx:1320,cz:262,w:10,d:7,h:2.8};
+    const ROOM={cx:1320,cz:262,w:12,d:7,h:2.8};
     const PRELOAD=6,KEEP=25;
     const DOOR_LOOK={style:'painted',color:0x2f3d45,frame:0x6b5a44,planked:true,fanlight:false,cornice:false,width:1.25,height:2.45};
     const through=(data,go)=>doorKit&&data.kit?doorKit.pass(data.kit,data,go):go();
@@ -104,7 +105,7 @@
       const wall=std({color:0xb9ae95,map:paint,roughness:.9}),dado=std({color:0x3c2a1c,roughness:.75}),oak=MAT.darkWood||std({color:0x3a2616,roughness:.7}),
         iron=std({color:0x1d1e20,roughness:.55,metalness:.55}),brass=MAT.brass||std({color:0xb08d3a,metalness:.6,roughness:.4}),beam=std({color:0x4a3524,roughness:.85});
       box(w,.3,d,MAT.wood||oak,cx,-.15,cz,root);box(w,.2,d,std({color:0x6f6352,roughness:1}),cx,h+.1,cz,root);
-      for(let i=0;i<6;i++)box(.22,.2,d,beam,x0+.9+i*1.65,h-.1,cz,root);
+      for(let i=0,n=Math.round((w-1.8)/1.65)+1;i<n;i++)box(.22,.2,d,beam,x0+.9+i*(w-1.8)/(n-1),h-.1,cz,root);
       box(w,h,.3,wall,cx,h/2,z0,root);box(w,h,.3,wall,cx,h/2,z1,root);box(.3,h,d,wall,x0,h/2,cz,root);box(.3,h,d,wall,x1,h/2,cz,root);
       for(const [bx,bz,bw,bd] of [[cx,z0+.18,w,.06],[cx,z1-.18,w,.06],[x0+.18,cz,.06,d],[x1-.18,cz,.06,d]])box(bw,.9,bd,dado,bx,.45,bz,root);
       mark(sign(root,'THE ARCTIC ROOM','The great cabin of a ship wintering in the ice',2.6,.42,cx,h-.42,z1-.17),card('sign')).rotation.y=Math.PI;
@@ -113,6 +114,7 @@
       buildChartTable(cx,cz-.25,oak,brass);
       buildChest(x0+1.15,z0+.6,oak,iron);
       buildLamp(cx,h,cz-.25,brass);
+      buildShips(cx-3.15,z0,oak,brass);
       // A framed card on the west wall, north of the shelf: what the Inuit saw, and what the searchers found.
       const franklin=mark(sign(root,'WHAT BECAME OF FRANKLIN','Read the card',1.5,.3,x0+.17,1.85,z0+.75),card('franklin'));franklin.rotation.y=Math.PI/2;
       // The shelves: dark oak, two rows, each under its label.
@@ -209,6 +211,29 @@
       const data={type:'arctic-cairn',title:CARDS.cairn[0],author:CARDS.cairn[1],action:'LIFT THE STONES'};
       for(const st of stones)mark(st,data);
       cairn={g,stones,tin,paper,data,t:-1,found:false};chest={g,book:null,copy:null};
+    }
+    // Erebus and Terror: models of the two ships in a glazed case on a low cabinet against the north wall, west of the
+    // stern windows, with room on the cabinet's east end for the ship in a bottle that sails for the Antarctic
+    // (island-bottles.js). Drawn from boxes and cylinders; no light.
+    function buildShips(x,z0,oak,brass){
+      const g=new THREE.Group();g.position.set(x,0,z0+.47);root.add(g);const data=card('ships');
+      mark(box(2.1,.8,.5,oak,0,.4,0,g),data);box(2.16,.04,.54,oak,0,.82,0,g);block(x,z0+.47,2.2,.6);
+      const hull=std({color:0x17181a,roughness:.6}),deck=std({color:0x5a4a38,roughness:.8}),spar=std({color:0x5a3d22,roughness:.7}),glass=std({color:0xd9efe6,transparent:true,opacity:.08,roughness:.05,depthWrite:false});
+      // The case: a glass box in an oak frame, its two ships side by side on little cradles.
+      const cx=-.36,w=1.3,h=.62,dd=.42;
+      mark(box(w,h,dd,glass,cx,.84+h/2,0,g),data);for(const sx of [-1,1])for(const sz of [-1,1])box(.03,h,.03,oak,cx+sx*w/2,.84+h/2,sz*dd/2,g);
+      for(const y of [.85,.84+h])box(w+.04,.03,dd+.04,oak,cx,y,0,g);
+      const mastGeo=own(new THREE.CylinderGeometry(.005,.006,1,6)),yardGeo=own(new THREE.CylinderGeometry(.003,.003,1,5));
+      [['EREBUS',cx-.33],['TERROR',cx+.33]].forEach(([name,mx])=>{
+        const ship=new THREE.Group();ship.position.set(mx,.9,0);g.add(ship);
+        for(const dx of [-.15,.15])box(.03,.04,.08,oak,dx,.02,0,ship);
+        mark(box(.52,.08,.12,hull,0,.08,0,ship),data);box(.5,.012,.1,deck,0,.125,0,ship);box(.06,.05,.1,hull,-.24,.1,0,ship);
+        const bow=add(own(new THREE.CylinderGeometry(.004,.006,.2,5)),spar,.32,.15,0,ship);bow.rotation.z=Math.PI/2-.25;
+        for(const [px,mh] of [[.15,.3],[-.02,.34],[-.17,.25]]){const m=add(mastGeo,spar,px,.13+mh/2,0,ship);m.scale.y=mh;
+          for(const f of [.45,.75]){const y=add(yardGeo,spar,px,.13+mh*f,0,ship);y.rotation.x=Math.PI/2;y.scale.y=.14-f*.05}}
+        const plate=own(canvasTexture((c,W,H)=>{c.fillStyle='#c9a24a';c.fillRect(0,0,W,H);c.strokeStyle='#5a3d16';c.lineWidth=3;c.strokeRect(3,3,W-6,H-6);c.fillStyle='#2a1a08';c.textAlign='center';
+          c.font='bold 26px Georgia';c.fillText('H.M.S. '+name,W/2,H/2+9)},256,56));
+        mark(add(own(new THREE.PlaneGeometry(.26,.055)),std({map:plate,roughness:.4,metalness:.3}),mx,.6,.255,g),data)});
     }
     function buildLamp(x,h,z,brass){
       const g=new THREE.Group();g.position.set(x,h-.55,z);root.add(g);add(own(new THREE.CylinderGeometry(.006,.006,.45,4)),brass,0,.32,0,g);

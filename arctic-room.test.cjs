@@ -86,3 +86,10 @@ test('its cards keep to the Inuit part in the story, and its books are on the sh
   for(const key of ['arctic-passage','arctic-inuit','arctic-pole','arctic-table','arctic-record'])assert.ok(arrivals.some(e=>e[4]===key),key);
   assert.ok(!/cannibal/i.test(source),'the cards leave the worst of Rae’s report to the books');
 });
+
+test('Erebus and Terror: their models stand in a glazed case on the north wall, west of the stern windows, with the card that sails them to both poles',()=>{
+  const {r,interactables}=room();r.activate();
+  const card=interactables.filter(o=>o.userData.title==='Erebus and Terror');assert(card.length>=4,'the cabinet, the case, the two hulls and their plates');
+  const text=card[0].userData.author;for(const fact of ['bomb vessels','James Clark Ross','Mount Erebus and Mount Terror','1845','2014','2016','Inuit','Parks Canada'])assert(text.includes(fact),fact);
+  assert(!/[“”]/.test(text),'it quotes nobody');assert.equal(r.room.w,12,'the cabin was widened to give them, and the Coppermine Trail’s door, a wall');
+});
