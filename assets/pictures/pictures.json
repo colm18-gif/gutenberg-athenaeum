@@ -610,5 +610,55 @@
   "date": "1660 date QS:P571,+1660-00-00T00:00:00Z/9",
   "licence": "Public domain",
   "description": "Forty-three experiments are detailed within this work, including the physical and chemical properties of air proving it has weight along with determining that a vacuum restricts the transmission of sound as well as the discovery on the permanent elasticity of air, which is necessary for supporting life and combustion. The experiments outlined in this work eventually led to the discovery of Boyle's"
+ },
+ "galapagos-chart": {
+  "file": "Admiralty Chart No 1375 Galapagos Islands, Published 1841.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Admiralty_Chart_No_1375_Galapagos_Islands,_Published_1841.jpg",
+  "width": 1516,
+  "height": 2048,
+  "artist": "United Kingdom Hydrographic Office",
+  "date": "1841-01-25",
+  "licence": "Public domain",
+  "description": "Nautical chart of the Galapagos Islands. Surveyed by Captn. Robt. Fitz Roy R.N. and the officers of H.M.S. Beagle 1836. No current - not to be used for navigation!"
+ },
+ "galapagos-finches": {
+  "file": "Darwin's finches by Gould.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Darwin%27s_finches_by_Gould.jpg",
+  "width": 1748,
+  "height": 1319,
+  "artist": "John Gould (14.Sep.1804 - 3.Feb.1881)",
+  "date": "before 1882 date QS:P,+1882-00-00T00:00:00Z/7,P1326,+1882-00-00T00:00:00Z/9",
+  "licence": "Public domain",
+  "description": "Darwin's finches or Galapagos finches. Darwin, 1845. Journal of researches into the natural history and geology of the countries visited during the voyage of H.M.S. Beagle round the world, under the Command of Capt. Fitz Roy, R.N. 2d edition. 1. ( category ) Geospiza magnirostris 2. ( category ) Geospiza fortis 3. Geospiza parvula , now ( category ) Camarhynchus parvulus 4. ( category ) Certhidea "
+ },
+ "galapagos-cactornis": {
+  "file": "Cactornis scandens1.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Cactornis_scandens1.jpg",
+  "width": 1360,
+  "height": 2048,
+  "artist": "BY JOHN GOULD (14.Sep.1804 - 3.Feb.1881) (Übersicht über die Bilder: https://darwin-online.org.uk/graphics/Zoology_Illustrations.html )",
+  "date": "1832",
+  "licence": "Public domain",
+  "description": "Kaktusfink (Cactospiza scandens oder Geospiza scandens ) (laut Bild: Cactornis scandens - Laut diesem Text ist es ein Darwinfink, deshalb kommt nur der Kaktusfink infrage)"
+ },
+ "galapagos-tortoise": {
+  "file": "Cassel's Natural History - Gigantic Land Tortoises from the Galapagos Islands.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Cassel%27s_Natural_History_-_Gigantic_Land_Tortoises_from_the_Galapagos_Islands.jpg",
+  "width": 2048,
+  "height": 1582,
+  "artist": "Duncan, P. M.; Engraving by J. Berjeau",
+  "date": "1878",
+  "licence": "Public domain",
+  "description": "Gigantic Land Tortoises from the Galapagos Islands. (1) Testudo Ephippium; (2) Testudo Microphyes; (3) Testudo Abingdoni. Illustration from \"Cassell's Natural History\" (published 1878)"
+ },
+ "galapagos-1794": {
+  "file": "Galapagos or Inchanted Islands.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Galapagos_or_Inchanted_Islands.jpg",
+  "width": 754,
+  "height": 620,
+  "artist": "Jean Baptiste Bourguignon d'Anville",
+  "date": "1794 date QS:P571,+1794-00-00T00:00:00Z/9",
+  "licence": "Public domain",
+  "description": "A detail from Thomas Kitchin's \"A Map of South America Containing Terra-Firma, Guayana, New Granada[,] Amazonia, Brasil, Peru, Paraguay, Chaco, Tucuman, Chili and Patagonia from Mr. d'Anville with Several Improvements and Additions, and the Newest Discoveries\", an English map of South America based on the earlier French map(s) of J.B. d'Anville, showing the Galapagos Archipelago."
  }
 }
