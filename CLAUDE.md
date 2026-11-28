@@ -132,6 +132,27 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   Spell of the Yukon (`canada-sourdough`) on the woodbox, found for good (`athenaeum-canada-sam-mcgee`; `?mcgee`). From 1 to
   11 November a wreath of poppies hangs inside the door with McCrae's lines (`?poppies` shows it). Service died in 1958:
   public domain in the US and Canada, not yet in Britain or Ireland (as with other Gutenberg authors here).
+- The Waterford room (`waterford-room.js`, x 3000, z 900; `?room=waterford`, `port-lairge`, `deise`, `decies`, `ardmore`,
+  `lismore`, `meagher`, `strongbow`, `reginalds-tower`): the owner's own county (28 November 2026). A first-floor room in
+  a Georgian house on the Mall at night, at the end of the Britain and Ireland quarter's hall: its only door is the
+  quarter's far end (`passages.js`, `wall:'south', at:-4`; the hall's plan moves to the left-hand wall when a door stands
+  at its end). The window looks along the Quay to Reginald's Tower (painted; no photograph, since Commons has only modern
+  ones under attribution). Shelves `waterford-deise` (Power's Lives of Declan and Mochuda), `waterford-lismore` (Boyle,
+  and Raleigh, after the library's own Guiana, `OWN`), `waterford-people` (Tyrone Power, Speeches from the Dock for
+  Meagher, Meagher's Sword Speech from English Wikisource, Doheny, Gwynn's Redmond) and `waterford-history` (Young,
+  Thackeray, Old Irish Glass, Cusack) in `data/new-books.js`. An English room may now take a book from English
+  Wikisource (`ws:<page>`; `scripts/new-books.mjs` reads a room with no language of its own as `en`). Pictures (fetched
+  by `scripts/fetch-maps.mjs`, looked at): Maclise's Marriage of Strongbow and Aoife on the south wall, Meagher (1848)
+  and Tyrone Power (as Major O'Dogherty) either side of the window, Boyle (the Shannon portrait) over the marble
+  chimneypiece, and the plate of Boyle's air pump (1660) behind the model on its pedestal; LOOK CLOSELY opens each large.
+  A case of old Waterford glass, the tricolour folded on the table (its card says the Waterford date of 7 March 1848 is
+  remembered there and doubted by some historians), an armchair by the fire and two chairs at the table (seats), a
+  crystal chandelier (one InstancedMesh of drops; the room's one light). The secret is the iron bell on the table:
+  rung, the window shows Ardmore by night for a moment, and O'Brien's Round Towers of Ireland (`waterford-tower`, wrong
+  about all of them, as its note says) is left on the table, found for good (`athenaeum-waterford-ardmore`;
+  `?ardmore`). Cards say only what is well attested and quote nobody (`waterford.test.cjs`). Not on Gutenberg or
+  Wikisource: Smith (1746), Ryland (1824) and Egan (1894), the county's histories (scanned only, at askaboutireland.ie);
+  Giraldus's Conquest of Ireland; the Irish-language poets Donncha Rua Mac Conmara and Tadhg Gaelach Ó Súilleabháin.
 - Lilliput and Brobdingnag (`gulliver-room.js`; Lilliput x −760, z 700; Brobdingnag x −760, z 880) are through a narrow
   door at the east end of the Irish Room's north wall, between the writers' shelves and the corner (Swift was Dean of St
   Patrick's; `?room=lilliput`, `gulliver`, `swift`, `brobdingnag`). Lilliput is a country at night at a twelfth of the
@@ -895,7 +916,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
 - The quarters (`passages.js`, kind `quarter`; 28 November 2026, at the owner's wish): the rooms gathered by where their
   books come from, each quarter named on gilt boards over its bays in the Long Corridor (`QUARTER_SIGNS` in
   long-corridor.js). Two have halls, built like the back ways (x 1200, z −1000 and −1040): Britain and Ireland, through the
-  corridor's east sixth bay (`britainDoor`), with doors to the Irish, Burns and Austen Rooms and Scrooge's chambers; and the
+  corridor's east sixth bay (`britainDoor`), with doors to the Irish, Burns and Austen Rooms and Scrooge's chambers, and at
+  its far end the Waterford room's; and the
   Americas, through the west third bay beside Dickinson's door (`americasDoor`), with doors to Emily Dickinson's room,
   Walden Pond (a door in the pines at `SPOTS.quarter`), the Canadian Room and the Poe Room. A side door is `side` and
   `along`; a plan of the quarter hangs on the far wall. Only the Irish, Canadian and Poe Rooms and Walden have a door back
@@ -1071,7 +1093,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
-  daily-room, long-corridor, bindery, camera-obscura, arctic, ships-in-bottles, montserrat, pitcairn, tristan, st-helena, norfolk, faroe, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic) goes to a room.
+  daily-room, long-corridor, bindery, camera-obscura, arctic, ships-in-bottles, montserrat, pitcairn, tristan, st-helena, norfolk, faroe, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic, waterford) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.
