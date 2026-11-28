@@ -1,44 +1,7 @@
-# A Galápagos island (28 November 2026): is there enough? Darwin's Beagle, Melville's Encantadas, Porter's cruise
-# of the Essex, Beebe, FitzRoy, Basil Hall, Colnett, whalers; Wikisource and Commons for pictures.
-Galapagos|Galápagos ; ;
-Encantadas|Enchanted Isles|Piazza Tales ; Melville ; en
-Journal of a Cruise ; Porter ; en
- ; Porter, David ; en
- ; Beebe, William ; en
-World's End|Arcturus Adventure ; ; en
-Narrative of the Surveying Voyages|Voyages of His Majesty's Ships Adventure and Beagle ; ; en
- ; FitzRoy ; en
- ; Fitzroy ; en
-Voyage of the Beagle|Journal of Researches|Naturalist's Voyage ; Darwin ; en
-Zoology of the Voyage ; ; en
- ; Colnett ; en
- ; Hall, Basil ; en
-Voyage Round the World ; Dampier ; en
-Voyage to the South Atlantic|Voyage Round Cape Horn ; ; en
- ; Wafer ; en
- ; Cowley ; en
-Tortoise|Tortoises ; ; en
-Iguana ; ; en
-Whale Fishery|Whaling|Whaleman|Whaler ; ; en
-Nantucket ; ; en
- ; Agassiz ; en
-Hassler ; ; en
- ; Wallace, Alfred Russel ; en
-Island Life ; ; en
-Pacific Islands|South Sea|South Seas ; ; en
-Ecuador ; ;
-Floreana|Charles Island|Albemarle ; ; en
-subject? Galapagos Islands
-subject? Tortoises
-subject? Whaling
-subject? Natural history -- Galapagos Islands
-ws?@en Galapagos Islands
-ws?@en Encantadas Melville
-ws@en The Encantadas
-ws?@en Porter Journal of a Cruise Essex 1813
-commons? Galapagos tortoise engraving
-commons? Geospiza Gould Zoology of the Voyage Beagle
-commons? Chart Galapagos Islands FitzRoy
-commons? Post Office Bay Floreana barrel
-commons? Amblyrhynchus marine iguana lithograph
-commons? Galapagos Islands 19th century map
+# Parloa's Appledore Cook Book and Abby Fisher's book, not on Gutenberg: are they on English Wikisource?
+ws?@en What Mrs. Fisher Knows About Old Southern Cooking
+ws?@en Abby Fisher cooking 1881
+ws@en Author:Abby Fisher
+ws?@en Appledore Cook Book Parloa
+ws@en Author:Maria Parloa
+ws?@en American Frugal Housewife Child

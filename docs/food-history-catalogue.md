@@ -33,6 +33,8 @@ cocoa (not Hazlitt).
 | 12815 | American Cookery | Amelia Simmons |
 | 65061 | The Boston Cooking-School Cook Book | Fannie Merritt Farmer |
 | 71395 | A Guide to Modern Cookery | Auguste Escoffier |
+| 13493 | The American Frugal Housewife | Lydia Maria Child |
+| 6745 | Miss Parloa's New Cook Book | Maria Parloa |
 | 13923 | The Whitehouse Cookbook (1887) | F. L. Gillette and Hugo Ziemann |
 | 60163 | Culinary Chemistry | Friedrich Accum |
 | 19031 | A Treatise on Adulterations of Food, and Culinary Poisons | Friedrich Accum |
@@ -86,3 +88,7 @@ cocoa (not Hazlitt).
 | 883 | Our Mutual Friend | Charles Dickens |
 | 69859 | Table Traits, with Something on Them | John Doran |
 | 53079 | Dinners and Diners | Nathaniel Newnham-Davis |
+
+Added 28 November 2026, at a food historian's suggestion, from the Catalogue lookup of that day: Child's *American Frugal
+Housewife* (13493) and Parloa's *New Cook Book* (6745). Parloa's *Appledore Cook Book* (1872) and Abby Fisher's *What Mrs.
+Fisher Knows About Old Southern Cooking* (1881) are not on Project Gutenberg.

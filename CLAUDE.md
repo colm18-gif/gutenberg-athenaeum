@@ -1076,6 +1076,13 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   The match wants three quarters of the title's words in the text's `Title:` line (so give the short title, not the
   volume and date that follow on the next line) and the author's last word among its `Author:` lines (for two authors,
   put last the one the header surely names).
+- Editions (`data/editions.js`, 28 November 2026, after a food historian pointed out that cookbooks change radically
+  between editions): for a book, the printed edition its text was transcribed from, as its own title page (or its
+  transcriber) gives it, finishing the sentence "Transcribed from …". The librarian's note ("Ask the librarian") and the
+  book pages show it. The food rooms' books have theirs; others may be added the same way. Write only what the front
+  matter says (where it gives only a year, say so); `editions.test.cjs` checks every year and publisher named against
+  the text's own front matter, and it caught a guess. The illustrated covers (`covers/books`, 211, with their shards)
+  are mostly from Open Library and many are modern publishers' covers, not the edition the text came from.
 - Librarian notes: `data/librarian-notes.json` and the notes files in `data/`. Voice: three sentences, dry, warm,
   accurate; never invent facts.
 - **Book pages**: `book/<id>-<slug>.html`, `book/index.html`, `book/authors.html`, `sitemap.xml`, `robots.txt` are

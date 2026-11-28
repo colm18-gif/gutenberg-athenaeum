@@ -51,6 +51,7 @@ export function loadCatalogue(){
   for(const book of books){
     book.note=json[book.id]||notes[book.id]||arrivalNotes[book.id]||book.note||book.depotNote?.replace(/^[A-Z &’',-]+ — /,'')||null;
     book.words=words[book.id]||levels[book.id]?.[2]||null;book.arrivalRooms=arrivalRooms[book.id]||[];book.cover=(w.ATHENAEUM_COVER_DESIGNS||{})[book.id]||null;
+    book.printed=(w.ATHENAEUM_EDITIONS||{})[book.id]||null;
   }
   return {books,whereIs:roomsFrom(books)};
 }
@@ -215,7 +216,8 @@ ${note?`<blockquote><p>${escape(note)}</p><cite>${T.librarian}</cite></blockquot
 <dl>
 ${time?`<dt>${T.time}</dt><dd>${T.about} ${time}</dd>`:''}
 ${places.length?`<dt>${T.where}</dt><dd>${places.map(place=>ROOM_LINKS[place]?`<a href="/?room=${ROOM_LINKS[place]}">${escape(T.place(place))}</a>`:escape(T.place(place))).join('; ')}</dd>`:`<dt>${T.where}</dt><dd>${escape(T.onShelves(book.category||'library'))}</dd>`}
-<dt>${T.edition}</dt><dd>${sourceLink(book)}. ${book.sourceKey&&book.licence?`${T.licence}: ${escape(book.licence)}.`:T.pd}</dd>
+<dt>${T.edition}</dt><dd>${sourceLink(book)}. ${book.sourceKey&&book.licence?`${T.licence}: ${escape(book.licence)}.`:T.pd}</dd>${book.printed&&T.lang==='en'?`
+<dt>Transcribed from</dt><dd>${escape(book.printed.charAt(0).toUpperCase()+book.printed.slice(1))}.</dd>`:''}
 </dl>
 </div>
 </main>
