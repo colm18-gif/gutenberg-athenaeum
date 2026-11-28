@@ -366,11 +366,11 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   plate, SHIPS IN BOTTLES. Each bottle lies in a cradle with a ship under sail for an island; looking in goes to that
   island, and a bottle there brings the reader back to stand before the shelf (`standBefore(key)`). Islands hand the
   shelf their bottle with `add` (six slots since 21 November 2026: the bay is 3.58 m between pilasters, so the shelf is
-  3.5 m and its bottles and cradles are drawn at `SCALE` 0.9; a seventh would need a second tier); only bottles that lead somewhere are on it. The owner's choice of a way in
+  3.5 m and its bottles and cradles are drawn at `SCALE` 0.9); a second tier below (`LOWER`, `TIERS` 2, `slotY`) takes six more, its plank and cradles put up only as its bottles come; only bottles that lead somewhere are on it. The owner's choice of a way in
   for small places nobody expects to find (17 November 2026). Montserrat is the first bottle, Pitcairn the second, Tristan da
   Cunha the third, St Helena the fourth and Norfolk Island the fifth (the owner's choices, 20 November 2026: places whose
   people would be surprised to find themselves there), and the Faroe Islands the sixth (the owner's suggestion, 21 November
-  2026). Samoa has the strongest books if a seventh is ever wanted.
+  2026), and the Galápagos the seventh, the first on the lower tier (28 November 2026). Samoa has the strongest books if an eighth is wanted.
 - Montserrat (`montserrat-room.js`, the house x 2600, z 600, a verandah to the south; `?room=montserrat`, `emerald-isle`,
   `plymouth`, `soufriere`): the first bottle. A timber house in the north of the island at night; the verandah looks south
   over the Centre Hills to the Soufrière Hills, the dome glowing and its plume drifting west, the ash fan running down
@@ -478,6 +478,27 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   (`faroe-seal`), is left on the lid, found for good (`athenaeum-faroe-seal`; `?sealwoman`). Every quotation (`QUOTES`,
   `SOURCES`: Symington, Nansen's Dicuil, Heimskringla, Verne, Selous, Chadwick) is checked by a test. A second bottle joins it
   to the Burns Room (see Island bottles).
+- The Galápagos (`galapagos-island.js`, the shelter x 2600, z 2400, its beach to the south; `?room=galapagos`, `floreana`,
+  `post-office-bay`, `encantadas`, `beagle`, `barrel`): the seventh bottle, the first on the shelf's lower tier (the owner's
+  wish, 28 November 2026). Post Office Bay on Floreana (Darwin's Charles Island) at dusk: a shelter of driftwood planks on
+  whale-ship timbers, open to the south, with three shelves (`beagle` on the west wall: the library's Voyage and Journal of
+  Researches, then `galapagos-beagle`: FitzRoy's Narrative vol. 2, the Beagle's Zoology, Gould's birds and Bell's reptiles;
+  `whalers` on the east: Moby-Dick, then Chase's Essex; `taught` on the north: the Origin and Wallace's Island Life), and on
+  the north wall FitzRoy's Admiralty chart (1841), the four finch heads after Gould (the 1845 Journal's figure, not a
+  Zoology plate), Cassell's tortoises (1878) and a map of 1794, Galapagos or Inchanted Islands (all looked at). The table
+  has the lantern and the bottle home; a sea chest and a driftwood bench on the beach are seats. On black sand among the
+  lava: the post-office barrel on its post, a giant tortoise, three prickly pears, a sea lion asleep, marine iguanas on the
+  rocks (two InstancedMeshes, picked by a clear box); a painted ring of the bay at sunset with islets and a whale-ship at
+  anchor. Two lights, the sun and the lantern. Cards keep to what is attested (the Beagle there 15 September to 20 October
+  1835; Darwin ashore on Chatham, Charles, Albemarle and James; Gould saw the finches were distinct species, in 1837, and
+  the Origin does not mention them; Ecuador's since 1832, World Heritage since 1978; the barrel's tradition told without
+  quotation). Every quotation (`QUOTES`, `SOURCES`: Darwin's Voyage pg944, Melville's Encantadas in The Piazza Tales
+  pg15859, Chase's Essex pg61931, which took "three hundred turtle" and then sixty more at Charles Island) is checked by
+  a test. The secret is the barrel: looked in, letters for all over the world and, with no address, Melville's Piazza
+  Tales (`galapagos-encantadas`) left on its lid, found for good (`athenaeum-galapagos-barrel`; `?barrel`); Melville was
+  among the islands on the whaler Acushnet in 1841. A second bottle joins it to the Naturalist's Cabinet (Island
+  bottles). Not on Gutenberg: Porter's Journal of a Cruise, Beebe's Galápagos: World's End, Colnett; Bullen's Cruise of
+  the Cachalot did not resolve.
 - The Library of Celsus (`celsus-room.js`; the court x 2500, z 9, the hall x 2500, z −6, the vault under its apse;
   `?room=celsus`, `ephesus`, `library-of-celsus`): the library at Ephesus, through a plain marble door in the Long
   Corridor's fifth east bay (`corridor.celsusDoor`); its way out is THE LONG CORRIDOR. The reader arrives in the court
@@ -940,7 +961,9 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   territory; women from St Helena went out to Tristan in 1827). Every island now has at least two ways out. Pole to pole
   (28 November 2026): the Arctic Room's bottle, beside Erebus and Terror, sails for the polar hut (a little shelf inside its
   front wall, east of the doorway), and back; `antipodes.enter('antarctica')` builds the Antipodes and moors the
-  expedition ship at the landing, so the sea way home still works.
+  expedition ship at the landing, so the sea way home still works. The Galápagos ↔ the Naturalist's Cabinet (28 November
+  2026): a little shelf on the cabinet's east wall between the specimen cabinet and the door, and one on the east wall of
+  the island's shelter south of the whalers' shelf; the Beagle sails both ways.
 - Exploration (`exploration.js`, loaded just before `passages.js`; wired at the end of game.js as `exploration`): small
   things that make wandering worth it, none with a light of its own. A room not yet found is heard through its closed door
   (`DOORS`, room-ambience.js `leak`: muffled, quieter, one at a time). Now and then the night porter's lantern (no light,
@@ -1093,7 +1116,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   is often slow; Project Gutenberg's `cache/epub/feeds/pg_catalog.csv` (fetched in a workflow) is the reliable way
   to find a book's number in a given language.
 - `/?book=ID` opens a book in the reader; `/?room=mars` (international-wing or es, portuguese-room or pt, chinese-room or zh, french-room or fr, latin-room or la, italian-room or it, ukrainian-room or uk, evening-room, periodicals-room, learners-room, subway, boathouse,
-  daily-room, long-corridor, bindery, camera-obscura, arctic, ships-in-bottles, montserrat, pitcairn, tristan, st-helena, norfolk, faroe, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic, waterford) goes to a room.
+  daily-room, long-corridor, bindery, camera-obscura, arctic, ships-in-bottles, montserrat, pitcairn, tristan, st-helena, norfolk, faroe, galapagos, boullee, dickinson, scrooge, poe, irish, maps, medicine, naturalist, walden, mountain, austen, burns, canada, nemo, forest, carpathians, within, set-texts, voynich, chance, uncatalogued, antipodes, australia, nz, africa, moon, rocket-hall, consulting-room, time-laboratory, lost-kingdoms, verne-rooms, kipling, forest-song, attic, waterford) goes to a room.
 - `scripts/repair-texts.mjs` (weekly Repair texts workflow) replaces any damaged bundled text, then bundles any catalogue
   book from Gutenberg that has no text of its own (`--missing` lists them). A book without one is fetched live from
   gutenberg.org in the reader's browser, and when that fails the reader gets an "offline shelf copy": keep them bundled.

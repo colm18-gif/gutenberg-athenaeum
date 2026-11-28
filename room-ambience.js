@@ -191,6 +191,7 @@
       // The Faroe Islands on a light night: the sea in the fjord below, the wind off the hills, gulls, oystercatchers and the turf fire.
       faroe:{beds:[['waves',.04],['wind',.045],['fire',.03]],events:[['gull',.5,.03],['bird',.5,.025],['creak',.2,.02]]},
       norfolk:{beds:[['waves',.045],['wind',.035]],events:[['gull',.4,.03],['bird',.4,.025],['rustle',.3,.02]]},
+      galapagos:{beds:[['waves',.05],['wind',.025]],events:[['gull',.5,.03],['bird',.4,.02],['creak',.15,.015]]},
       'st-helena':{beds:[['wind',.035],['air',.03]],events:[['bird',.5,.035],['rustle',.3,.02]]},
       tristan:{beds:[['waves',.05],['wind',.045]],events:[['gull',.4,.03],['bird',.4,.025],['creak',.3,.02]]},
       pitcairn:{beds:[['waves',.035],['wind',.03]],events:[['bird',1.2,.035],['gull',.3,.025],['rustle',.5,.02]]},

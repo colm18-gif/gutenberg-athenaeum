@@ -303,7 +303,7 @@
       if(drawer)drawer.slide.position.z=-.42-.3*(1-Math.pow(1-drawer.open,3));
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,unload,catalogue,door:DOOR,doorZ:DOOR_Z,room:ROOM,groups:GROUPS,sealed:SEALED,letter:LETTER,
+    return {contains,floorAt,allowed,interact,update,enter,activate,unload,catalogue,door:DOOR,doorZ:DOOR_Z,room:ROOM,groups:GROUPS,sealed:SEALED,letter:LETTER,
       get built(){return !!root},get books(){return books.slice()},get drawerOpen(){return !!drawer?.target},zoneAt:(x,z)=>contains(x,z)?'naturalist-room':null};
   };
 })();

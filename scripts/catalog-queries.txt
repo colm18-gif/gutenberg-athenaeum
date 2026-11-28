@@ -1,45 +1,44 @@
-# A Waterford room (28 November 2026), second search: Strongbow and Aoife, the Normans and the Norse, Meagher's own
-# books, Wyse, Redmond's addresses, Irish glass; English and Irish Wikisource; pictures on Commons.
-Song of Dermot|Dermot and the Earl ; ; en
-Ireland under the Normans ; ; en
-Norman Invasion of Ireland|Anglo-Norman|Normans in Ireland ; ; en
-War of the Gaedhil|Gaedhil with the Gaill|Cogadh ; ; en
-Speeches on the Legislative Independence|Last Days of the 69th|Meagher of the Sword ; ; en
- ; Lyons, W. F. ; en
- ; Wyse, Thomas ; en
-Catholic Association ; ; en
-Historical and Political Addresses ; Redmond ; en
-Irish Glass|Glass in Ireland ; ; en
- ; Westropp ; en
-Edmund Rice|Christian Brothers ; ; en
- ; Hall, S. C. ; en
- ; Hall, Mrs. S. C. ; en
- ; Smith, Charles ; en
-Expugnatio|Conquest of Ireland ; ; en
- ; Doheny ; en
- ; O'Brien, William Smith ; en
-Waterford ; ; 
-subject? Strongbow
-subject? Ireland -- History -- 1172-1603
-ws?@en Waterford city history
-ws@en Author:Thomas Francis Meagher
-ws@en Author:Robert Boyle
-ws@en Author:Tyrone Power (1797-1841)
-ws?@en Song of Dermot and the Earl
-ws?@en Strongbow Waterford 1170
-ws?@en Lismore Waterford
-ws?@en Ardmore round tower Declan
-ws?@ga Port Láirge
-ws?@ga Donnchadh Rua Mac Con Mara
-ws?@ga Tadhg Gaelach
-commons? Marriage of Strongbow and Aoife Maclise
-commons? Reginald's Tower Waterford
-commons? Waterford 1700s view engraving
-commons? Lismore Castle engraving
-commons? Ardmore round tower Lawrence
-commons? Thomas Francis Meagher portrait
-commons? Robert Boyle portrait Kerseboom
-commons? Boyle air pump 1660
-commons? Tyrone Power actor 1797
-commons? Waterford glass decanter
-commons? Speed map Waterford 1610
+# A Galápagos island (28 November 2026): is there enough? Darwin's Beagle, Melville's Encantadas, Porter's cruise
+# of the Essex, Beebe, FitzRoy, Basil Hall, Colnett, whalers; Wikisource and Commons for pictures.
+Galapagos|Galápagos ; ;
+Encantadas|Enchanted Isles|Piazza Tales ; Melville ; en
+Journal of a Cruise ; Porter ; en
+ ; Porter, David ; en
+ ; Beebe, William ; en
+World's End|Arcturus Adventure ; ; en
+Narrative of the Surveying Voyages|Voyages of His Majesty's Ships Adventure and Beagle ; ; en
+ ; FitzRoy ; en
+ ; Fitzroy ; en
+Voyage of the Beagle|Journal of Researches|Naturalist's Voyage ; Darwin ; en
+Zoology of the Voyage ; ; en
+ ; Colnett ; en
+ ; Hall, Basil ; en
+Voyage Round the World ; Dampier ; en
+Voyage to the South Atlantic|Voyage Round Cape Horn ; ; en
+ ; Wafer ; en
+ ; Cowley ; en
+Tortoise|Tortoises ; ; en
+Iguana ; ; en
+Whale Fishery|Whaling|Whaleman|Whaler ; ; en
+Nantucket ; ; en
+ ; Agassiz ; en
+Hassler ; ; en
+ ; Wallace, Alfred Russel ; en
+Island Life ; ; en
+Pacific Islands|South Sea|South Seas ; ; en
+Ecuador ; ;
+Floreana|Charles Island|Albemarle ; ; en
+subject? Galapagos Islands
+subject? Tortoises
+subject? Whaling
+subject? Natural history -- Galapagos Islands
+ws?@en Galapagos Islands
+ws?@en Encantadas Melville
+ws@en The Encantadas
+ws?@en Porter Journal of a Cruise Essex 1813
+commons? Galapagos tortoise engraving
+commons? Geospiza Gould Zoology of the Voyage Beagle
+commons? Chart Galapagos Islands FitzRoy
+commons? Post Office Bay Floreana barrel
+commons? Amblyrhynchus marine iguana lithograph
+commons? Galapagos Islands 19th century map

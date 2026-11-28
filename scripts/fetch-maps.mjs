@@ -136,7 +136,12 @@ export const PICTURES = [
   { key: 'waterford-meagher', file: 'Thomas F. Meagher LCCN90712292.jpg', search: 'Thomas Francis Meagher 1848 lithograph', minSize: 900 },
   { key: 'waterford-boyle', file: 'The Shannon Portrait of the Hon Robert Boyle.jpg', search: 'Shannon portrait Robert Boyle', minSize: 900 },
   { key: 'waterford-power', file: 'Tyrone Power 1832.jpg', search: 'Tyrone Power actor 1832', minSize: 700 },
-  { key: 'waterford-airpump', file: 'New Experiments Physico-Mechanicall, Touching the Spring of the Air, and its Effects (Made, for the Most Part, in a New Pneumatical Engine) - DPLA - ddc00871edee1017033532e70a06d130 (page 2).jpg', search: 'Boyle air pump New Experiments 1660 plate', minSize: 900 }
+  { key: 'waterford-airpump', file: 'New Experiments Physico-Mechanicall, Touching the Spring of the Air, and its Effects (Made, for the Most Part, in a New Pneumatical Engine) - DPLA - ddc00871edee1017033532e70a06d130 (page 2).jpg', search: 'Boyle air pump New Experiments 1660 plate', minSize: 900 },
+  // The Galápagos (galapagos-island.js): FitzRoy's chart, Gould's finches (the 1845 Journal's figure), a tortoise, and the 1794 map of the Enchanted Isles.
+  { key: 'galapagos-chart', file: 'Admiralty Chart No 1375 Galapagos Islands, Published 1841.jpg', search: 'Admiralty Chart 1375 Galapagos 1841', minSize: 1200 },
+  { key: 'galapagos-finches', file: "Darwin's finches by Gould.jpg", search: 'Darwin finches Gould', minSize: 900 },
+  { key: 'galapagos-tortoise', file: 'Cassel\'s Natural History - Gigantic Land Tortoises from the Galapagos Islands.jpg', search: 'Cassell Natural History Galapagos tortoises', minSize: 1200 },
+  { key: 'galapagos-1794', file: 'Galapagos or Inchanted Islands.jpg', search: 'Galapagos or Inchanted Islands 1794', minSize: 500 }
 ];
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
