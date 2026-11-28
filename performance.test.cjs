@@ -162,7 +162,9 @@ test('rooms and wings are compiled before the reader reaches them',()=>{
 test('a tap is answered before heavy work: one room built ahead of the reader per frame, none just after a tap',()=>{
   // Cloudflare's field data (November 2026): slow taps on phones, mostly waiting for the next frame to be drawn.
   assert.match(game,/function markInput\(e\)\{if\(e\.type==='keydown'&&\(e\.repeat\|\|/,'held movement keys do not count as taps');
-  assert.match(game,/window\.libraryMayBuild=\(\)=>\{if\(buildSlotTaken\|\|heavyWorkWaits\(\)\)return false;buildSlotTaken=true;return true\}/);
+  assert.match(game,/window\.libraryMayBuild=\(\)=>\{if\(buildSlotTaken\|\|heavyWorkWaits\(\)\|\|passingAlongCorridor\(\)\)return false;buildSlotTaken=true;return true\}/);
+  // Nor while the reader walks down the Long Corridor looking along it: its doors come every few metres.
+  assert.match(game,/const passingAlongCorridor=\(\)=>!!longCorridor\?\.contains\(player\.pos\.x,player\.pos\.z\)&&playerIsMoving\(\)&&Math\.abs\(Math\.cos\(player\.yaw\)\)>\.8;/);
   assert.match(game,/buildSlotTaken=false;updateWorld\(t,dt\);/,'the slot frees once a frame, even after a frame that threw');
   // Every room built ahead of the reader asks first; a room the reader is already inside is built at once.
   const ask=/if\(inside\|\|near&&\((?:root|active|room\.active)\|\|window\.libraryMayBuild\?\.\(\)!==false\)\)/;

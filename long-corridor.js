@@ -127,7 +127,7 @@
       // The way back to the hall, in the south wall.
       const exit={type:'corridor-exit',title:'The Grand Hall',author:'Back through the walnut door into the hall.',action:'RETURN'};
       if(!doorKit?.hang(root,{data:exit,mark,x:cx,z:z1-WALL/2-.02,yaw:Math.PI,label:'THE GRAND HALL',...LOOK}))mark(box(1.9,3.1,.16,panel,cx,1.55,z1-.2,root),exit);
-      scene.add(root);
+      mergeStatic();scene.add(root);
     }
 
 
@@ -174,13 +174,17 @@
     // ---------- the plan of the library ----------
     // Each group of the journal's register, its rooms found named in ink, the rest left as blank lines to fill; a secret
     // group appears only once one of its places has been found, and shows only what has been.
-    const PLAN={w:2.9,h:1.8,W:2048,H:1272};
-    let planTex=null,planDrawn=-1e9;
-    function drawPlan(c,W,H){
+    // Half the size it was at first (2048 wide), and redrawn only when the rooms found have changed: a large texture
+    // sent to the graphics card again every few seconds made the corridor stutter.
+    const PLAN={w:2.9,h:1.8,W:1024,H:636};
+    let planTex=null,planDrawn=-1e9,planSig='';
+    const planGroups=()=>{try{return plan?.()||null}catch(e){return null}};
+    const signature=groups=>groups?groups.map(g=>g.places.map(p=>p[1]?1:0).join('')).join('|'):'';
+    function drawPlan(c,W,H,groups=planGroups()){
+      c.save();c.scale(W/2048,H/1272);W=2048;H=1272;
       c.fillStyle='#ddcca4';c.fillRect(0,0,W,H);c.strokeStyle='#5a3a12';c.lineWidth=10;c.strokeRect(14,14,W-28,H-28);c.lineWidth=2;c.strokeRect(30,30,W-60,H-60);
-      let groups=null;try{groups=plan?.()}catch(e){groups=null}
       c.fillStyle='#1a1006';c.textAlign='center';c.font='bold 54px Georgia';c.fillText('A PLAN OF THE LIBRARY',W/2,98);
-      if(!groups){c.font='italic 30px Georgia';c.fillText('The rooms you find will be written in here.',W/2,160);return}
+      if(!groups){c.font='italic 30px Georgia';c.fillText('The rooms you find will be written in here.',W/2,160);c.restore();return}
       const all=groups.flatMap(g=>g.places),found=all.filter(p=>p[1]).length;
       c.font='italic 30px Georgia';c.fillText(`${found} of ${all.length} rooms found · the blank lines are rooms still to find`,W/2,146);
       const cols=5,colW=(W-120)/cols,top=200,line=28,bottom=H-56;let col=0,y=top;
@@ -196,18 +200,39 @@
           else{c.strokeStyle='rgba(90,62,24,.7)';c.lineWidth=2;c.setLineDash([4,7]);c.beginPath();c.moveTo(px+18,y-4);c.lineTo(px+colW-60,y-4);c.stroke();c.setLineDash([]);c.beginPath();c.arc(px+6,y-7,5,0,7);c.stroke()}
           y+=line}
         y+=line*.6}
-      c.fillStyle='#6b4d22';c.textAlign='right';c.font='italic 22px Georgia';c.fillText('Look closer: the journal’s map',W-60,H-44);
+      c.fillStyle='#6b4d22';c.textAlign='right';c.font='italic 22px Georgia';c.fillText('Look closer: the journal’s map',W-60,H-44);c.restore();
     }
-    function redrawPlan(){if(!planTex)return;const ctx=planTex.image?.getContext?.('2d');if(!ctx)return;drawPlan(ctx,PLAN.W,PLAN.H);planTex.needsUpdate=true;planDrawn=time}
+    function redrawPlan(){planDrawn=time;if(!planTex)return;const groups=planGroups(),sig=signature(groups);if(sig===planSig)return;planSig=sig;const ctx=planTex.image?.getContext?.('2d');if(!ctx)return;drawPlan(ctx,PLAN.W,PLAN.H,groups);planTex.needsUpdate=true}
     function buildPlan(x0,panel,brass){
       const z=bayZ(PLAN_BAY.bay),x=x0+WALL/2;
-      planTex=own(canvasTexture(drawPlan,PLAN.W,PLAN.H));planDrawn=time;
+      const groups=planGroups();planSig=signature(groups);planTex=own(canvasTexture((c,W,H)=>drawPlan(c,W,H,groups),PLAN.W,PLAN.H));planDrawn=time;
       box(.08,PLAN.h+.16,PLAN.w+.16,panel,x+.06,2.35,z,root);
       const face=add(own(new THREE.PlaneGeometry(PLAN.w,PLAN.h)),own(new THREE.MeshStandardMaterial({map:planTex,emissive:0xffffff,emissiveMap:planTex,emissiveIntensity:.04,roughness:.9})),x+.11,2.35,z,root);face.rotation.y=Math.PI/2;
       // The picture light over it: a brass hood and a warm glowing strip (no lamp; the board is lit from within).
       box(.24,.06,1.9,brass,x+.2,3.36,z,root);add(own(new THREE.BoxGeometry(.04,.03,1.8)),own(new THREE.MeshStandardMaterial({color:0xffe2b0,emissive:0xffc070,emissiveIntensity:1.6})),x+.3,3.32,z,root);
       for(const dz of [-.7,.7])box(.2,.04,.04,brass,x+.1,3.36,z+dz,root);
       mark(face,{type:'corridor-plan',title:'A plan of the library',author:'Every room you have found is written in, and every one you have not is a blank line. Look closer, and the journal opens at its map.',action:'LOOK'});
+    }
+
+    // ---------- merging ----------
+    // The corridor's fixed parts (walls, panelling, pilasters, beams, frames: a couple of hundred boxes) are merged into
+    // one mesh for each material as soon as it is built, so it is drawn in a handful of calls from its first frame rather
+    // than waiting for the library's static batcher. Anything a reader can look at or use is left as it is.
+    function mergeStatic(){
+      try{
+        const byMaterial=new Map();
+        for(const m of [...root.children]){
+          if(!m.isMesh||m.isInstancedMesh||m.children.length||ours.includes(m)||Object.keys(m.userData||{}).length||Array.isArray(m.material))continue;
+          if(!(m.geometry?.attributes?.position?.array instanceof Float32Array))continue;
+          if(!byMaterial.has(m.material))byMaterial.set(m.material,[]);byMaterial.get(m.material).push(m)}
+        for(const [material,list] of byMaterial){
+          if(list.length<2)continue;
+          const parts=list.map(m=>{m.updateMatrix();const g=m.geometry.index?m.geometry.toNonIndexed():m.geometry.clone();g.applyMatrix4(m.matrix);return g});
+          const count=parts.reduce((n,g)=>n+g.attributes.position.count,0),pos=new Float32Array(count*3),nor=new Float32Array(count*3),uv=new Float32Array(count*2);
+          let at=0;for(const g of parts){pos.set(g.attributes.position.array,at*3);if(g.attributes.normal)nor.set(g.attributes.normal.array,at*3);if(g.attributes.uv)uv.set(g.attributes.uv.array,at*2);at+=g.attributes.position.count;g.dispose()}
+          const merged=own(new THREE.BufferGeometry());merged.setAttribute('position',new THREE.BufferAttribute(pos,3));merged.setAttribute('normal',new THREE.BufferAttribute(nor,3));merged.setAttribute('uv',new THREE.BufferAttribute(uv,2));
+          merged.computeBoundingSphere();const mesh=new THREE.Mesh(merged,material);mesh.name='long-corridor-merged';root.add(mesh);for(const m of list)m.removeFromParent()}
+      }catch(e){}
     }
 
     // ---------- walking ----------
@@ -243,14 +268,14 @@
     // ---------- lifecycle ----------
     function activate(){if(!root)buildRoom();lastNeeded=time}
     function unload(){
-      if(!root)return;planTex=null;for(const l of lights)l.userData.freed=true;lights.length=0;root.removeFromParent();root=null;
+      if(!root)return;planTex=null;planSig='';for(const l of lights)l.userData.freed=true;lights.length=0;root.removeFromParent();root=null;
       for(let i=interactables.length-1;i>=0;i--)if(ours.includes(interactables[i]))interactables.splice(i,1);
       ours.length=0;for(const o of owned.splice(0))o.dispose?.();
     }
     function update(t){
       time=t;const inside=contains(player.pos.x,player.pos.z),near=Math.hypot(player.pos.x-DOOR.x,player.pos.z-DOOR.z)<PRELOAD;
       if(inside||near&&(root||window.libraryMayBuild?.()!==false))activate();
-      if(inside&&root&&t-planDrawn>20)redrawPlan();
+      if(inside&&root&&t-planDrawn>5)redrawPlan();
       else if(root&&t-lastNeeded>KEEP)unload();
     }
     buildDoor();

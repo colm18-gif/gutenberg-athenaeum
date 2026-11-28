@@ -118,3 +118,9 @@ test('the plan of the library hangs lit by the door, and looking closer opens th
   assert.match(game,/openPlan:\(\)=>\{openJournal\(\);selectJournalTab\('map'\)\}/);
   assert.match(source,/const shown=g\.secret\?g\.places\.filter\(p=>p\[1\]\):g\.places/,'a secret place is shown only once found');
 });
+
+test('the corridor stays light: its fixed parts merged when built, and its plan sent to the graphics card only when it changes',()=>{
+  assert.match(source,/mergeStatic\(\);scene\.add\(root\);/,'merged by material before it is drawn');
+  assert.match(source,/const PLAN=\{w:2\.9,h:1\.8,W:1024,H:636\}/,'a 1024-pixel plan, not 2048');
+  assert.match(source,/if\(sig===planSig\)return;/,'redrawn only when the rooms found have changed');
+});

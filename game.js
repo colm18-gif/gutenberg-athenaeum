@@ -1725,7 +1725,11 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     window.addEventListener('pointerdown',markInput,{capture:true,passive:true});window.addEventListener('keydown',markInput,{capture:true,passive:true});
     function heavyWorkWaits(){return performance.now()-lastInputAt<INPUT_GRACE_MS}
     // Rooms ask before building ahead of the reader (`window.libraryMayBuild?.()!==false`); a yes takes this frame's slot.
-    window.libraryMayBuild=()=>{if(buildSlotTaken||heavyWorkWaits())return false;buildSlotTaken=true;return true};
+    // Walking the Long Corridor, its doors come every few metres, and each room behind one used to be built as the reader
+    // passed it, six in a few seconds: so while the reader walks along it looking down its length, rooms wait. They are
+    // built as soon as the reader stops, or turns to a wall to go through a door (November 2026).
+    const passingAlongCorridor=()=>!!longCorridor?.contains(player.pos.x,player.pos.z)&&playerIsMoving()&&Math.abs(Math.cos(player.yaw))>.8;
+    window.libraryMayBuild=()=>{if(buildSlotTaken||heavyWorkWaits()||passingAlongCorridor())return false;buildSlotTaken=true;return true};
     // (Its shaders are then compiled in the background by the warm-up that follows every change to the scene.)
     function animate(now=performance.now()){requestAnimationFrame(animate);const frameMs=updatePerformanceMonitor(now),dt=Math.min(clock.getDelta(),.05),t=clock.elapsedTime;if(worldIsCovered()){stopFootsteps();return}updateAdaptiveQuality(now,frameMs);syncMobileControls();if(gameActive())movePlayer(dt);updateFootsteps(dt);updatePerformanceVisibility(dt);updateWingDoors(dt);loadNearbyCovers(t);loadNearbyPaintings(t);singleCopyLibrary.sync();updateFocus(dt);updateSelected(dt);updateGrabKick();updateDustPuffs(dt);buildSlotTaken=false;updateWorld(t,dt);updateTrainPass(t);updateSoundscape(dt);if(lightningFlash>0){moon.intensity+=lightningFlash*7;ambient.intensity+=lightningFlash*.9;lightningFlash=Math.max(0,lightningFlash-dt*5)}updateSeating(t,dt);singleCopyLibrary.sync();if(noticeTimer>0){noticeTimer-=dt;if(noticeTimer<=0)ui.notice.style.opacity=0}if(lampsAdded){lampsAdded=false;refreshBudgetLights.stamp=null;budgetRefreshTimer=0;applyLightBudget()}staticBatcher?.update(dt,heavyWorkWaits());if(visual){visual.update(dt);visual.render(dt)}else renderer.render(scene,camera)}
 

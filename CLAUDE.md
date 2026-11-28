@@ -268,6 +268,11 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   north wall, four on its south either side of the arch), plain panelling until a room is ready, a painted window at
   each end (the corridor's own far window moved there) and one lamp of its own. New rooms go there once the corridor's
   own bays are full; `allowed` lets the reader between the two only through the arch.
+  Kept light (28 November 2026, after readers felt it stutter): its fixed boxes are merged into one mesh a material as
+  it is built (`mergeStatic`; anything marked stays separate), the plan is 1024 pixels and redrawn only when the rooms
+  found change, and game.js's `libraryMayBuild` refuses to build rooms ahead while the reader walks along the corridor
+  looking down it (`passingAlongCorridor`): its doors come every few metres, and nine rooms (Dickinson, Celsus, the
+  Indian room, the six islands) used to be built in a few seconds of walking. They build when the reader stops or turns.
 - The library that was never built (`boullee-library.js`, centre x 2000, z 0; `?room=boullee`, `never-built`,
   `basilica`, `amphitheatre`): Étienne-Louis Boullée's reading room of 1785 for the King's Library in Paris, which
   exists only as drawings in the Bibliothèque nationale de France. His drawing hangs framed in the Long Corridor's third
