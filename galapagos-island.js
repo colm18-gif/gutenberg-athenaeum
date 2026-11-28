@@ -38,9 +38,10 @@
     birds:'The few dull-coloured birds cared no more for me than they did for the great tortoises.',
     cinders:'Take five-and-twenty heaps of cinders dumped here and there in an outside city lot',
     enchanted:'the Encantadas, or Enchanted Isles',
-    tortoises:'we got a supply of three hundred tortoises'
+    turtle:'obtained three hundred turtle',
+    charles:'We then visited Charles Island, where we procured sixty more.'
   };
-  const SOURCES={curious:944,mystery:944,different:944,lawson:944,raps:944,balance:944,antediluvian:944,hideous:944,whalers:944,birds:944,cinders:15859,enchanted:15859,tortoises:61931};
+  const SOURCES={curious:944,mystery:944,different:944,lawson:944,raps:944,balance:944,antediluvian:944,hideous:944,whalers:944,birds:944,cinders:15859,enchanted:15859,turtle:61931,charles:61931};
   const q=key=>`“${QUOTES[key].replace(/--/g,'—')}”`;
   const CARDS={
     sign:['The Galápagos','Volcanic islands on the equator in the Pacific, about a thousand kilometres west of the coast of South America. They have belonged to Ecuador since 1832, most of their land is a national park, and they have been a World Heritage site since 1978.'],
@@ -53,10 +54,10 @@
     iguanas:['Marine iguanas',`Lizards that feed on seaweed in the sea, and nowhere else in the world. Darwin was not taken with them: ${q('hideous')}`],
     sealion:['A sea lion','Asleep on the sand, and not about to move for anyone.'],
     cactus:['Prickly pear',`The tree-high prickly pears of the islands, which the tortoises eat. ${q('antediluvian')}`],
-    whalers:['The whalers',`${q('whalers')}, Darwin wrote. The whale-ships of Nantucket and New Bedford called for water, wood and tortoises. The Essex called in October 1820, the month before a whale sank her: ${q('tortoises')}, her mate wrote.`],
+    whalers:['The whalers',`${q('whalers')}, Darwin wrote. The whale-ships of Nantucket and New Bedford called for water, wood and tortoises. The Essex called in October 1820, the month before a whale sank her. Off Hood’s Island she ${q('turtle')}, her mate wrote; ${q('charles')} That is this island.`],
     melville:['The Encantadas',`Melville came among the islands as a young sailor on the whaler Acushnet in 1841, and wrote of them in ten sketches: ${q('cinders')}, he begins, and imagine it all magnified, and you have ${q('enchanted')}.`],
     shelf_beagle:['The Beagle, 1835','Darwin’s own account of the voyage, in its two forms; his captain’s narrative; and the birds and reptiles he brought home, as Gould and Bell described them.'],
-    shelf_whalers:['The whalers','The ships that came for tortoises: the Essex, sunk by a whale the month after she called here; a whaler’s voyage round the world; and Melville’s book of the whale.'],
+    shelf_whalers:['The whalers','The ships that came for tortoises: Melville’s book of the whale, and the Essex, sunk by a whale the month after she called here, whose story he read.'],
     shelf_taught:['What the islands taught',`What Darwin made of it twenty years on, and Wallace’s book on why islands have the animals they have. ${q('mystery')}.`],
     chart:['The chart','The Admiralty’s chart of the Galápagos, published in 1841 from the survey that FitzRoy and the Beagle’s officers made in 1835.'],
     map1794:['The Enchanted Isles','A map of 1794 with their old name. The Spanish called them las Islas Encantadas, the enchanted isles, for the currents and mists that made them hard to find.'],
