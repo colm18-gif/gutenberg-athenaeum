@@ -260,6 +260,14 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   pilasters (`bayZ`), a runner, a painted window at the far end, a card by the door, two lamps. A new room's door goes in
   an empty bay (each is plain panelling until then: no doors that open on nothing), handed the corridor as the
   Gastronomic Athenaeum is (`foodDoor`, `standBefore`). Its way out is THE GRAND HALL.
+  By the door, on the west wall's first bay (`PLAN_BAY`), hangs a lit plan of the library (28 November 2026): game.js
+  hands over the journal's register (`plan`: every place in `PLACE_GROUPS`, found or not, by `placeKnown`), found rooms
+  are written in and the rest are blank lines (a secret group shows only what has been found); it is redrawn on entering
+  and every 20 s inside, and LOOK opens the journal at its map (`openPlan`). At the far end an arch (`ARCH`) opens on
+  the north branch (`BRANCH`, x 1688–1712, z −17 to −12): a cross corridor with ten more bays (`branchBays`: six on its
+  north wall, four on its south either side of the arch), plain panelling until a room is ready, a painted window at
+  each end (the corridor's own far window moved there) and one lamp of its own. New rooms go there once the corridor's
+  own bays are full; `allowed` lets the reader between the two only through the arch.
 - The library that was never built (`boullee-library.js`, centre x 2000, z 0; `?room=boullee`, `never-built`,
   `basilica`, `amphitheatre`): Étienne-Louis Boullée's reading room of 1785 for the King's Library in Paris, which
   exists only as drawings in the Bibliothèque nationale de France. His drawing hangs framed in the Long Corridor's third
