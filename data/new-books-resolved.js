@@ -5085,7 +5085,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Annals and Antiquities of Rajast’han",
   "Alberuni’s India",
   "Bagh O Bahar",
-  "Speeches from the Dock",
   "María [es]",
   "Poesías [es]"
  ]
