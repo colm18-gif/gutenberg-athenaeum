@@ -5,7 +5,8 @@
 // islands also sail to one another, from bottles on their tables: Pitcairn and Norfolk (the voyage of 1856), and St
 // Helena and Tristan da Cunha, neighbours in one South Atlantic territory. The Faroe Islands have a bottle on the Burns
 // Room's mantel: Scotland is their neighbour to the south, and the steamers to the Faroes sailed from Leith. And the two
-// poles: the Arctic Room and the polar hut, as Erebus and Terror sailed to both.
+// poles: the Arctic Room and the polar hut, as Erebus and Terror sailed to both. And the Galápagos and Darwin's study, the
+// Naturalist's Cabinet, where what he made of the islands was written.
 //
 // Each bottle stands only while its room is built (as the back ways' doors do in passages.js), costs no light, and is
 // freed with its room. Looking in builds the other end first and sets the reader down in front of its bottle, facing it.
@@ -60,6 +61,18 @@
         label:'ST HELENA',sub:'the nearest neighbour',land:0x3f6b35,island:[[.09,.05,.06],[.13,.04,.045]],
         author:'A ship under sail north for St Helena, the island’s nearest inhabited neighbour, about 2,400 kilometres away. Look in, and you are on the lawn of Plantation House.',
         arrive:'Tristan da Cunha: a cottage in the Settlement on an evening after a gale. The bottle at the front of the table, by the cup, sails north for St Helena; the one by the sign, to the Long Corridor.'}]},
+    // The Galápagos and the Naturalist's Cabinet (28 November 2026): the Beagle's islands and Darwin's study. The cabinet's
+    // bottle is on a little shelf on its east wall, between the specimen cabinet and the door; the island's on the east
+    // wall of the shelter, south of the whalers' shelf.
+    {key:'galapagos-naturalist',ends:[
+      {place:'galapagos',name:'The Galápagos',bottle:{x:2603.92,y:1.3,z:2401.1,yaw:-Math.PI/2,shelf:true},stand:{x:2602.7,z:2401.1,yaw:-Math.PI/2},
+        label:'THE NATURALIST’S CABINET',sub:'Darwin’s study',land:0x3f6b35,island:[[.08,.05,.04],[.12,.04,.035]],
+        author:'The Beagle under sail for home, as she sailed from the islands in October 1835, a year before she reached England. Look in, and you are in the Naturalist’s Cabinet, Darwin’s study, where the Origin waits on the shelf.',
+        arrive:'The Galápagos, at dusk: Post Office Bay on Floreana. The bottle on the little shelf by the whalers sails for Darwin’s study; the one on the table, to the Long Corridor.'},
+      {place:'naturalist',name:'The Naturalist’s Cabinet',bottle:{x:-490.17,y:1.3,z:-142.6,yaw:-Math.PI/2,shelf:true},stand:{x:-491.45,z:-142.6,yaw:-Math.PI/2},
+        label:'THE GALÁPAGOS',sub:'as the Beagle sailed, 1835',land:0x3e3a34,island:[[.06,.035,.03],[.1,.045,.04],[.14,.03,.025]],
+        author:'The Beagle under sail for the Galápagos, low black islands on the equator, where Darwin landed in September 1835. Look in, and you are on the beach at Post Office Bay.',
+        arrive:'The Naturalist’s Cabinet, Darwin’s study. The bottle on the little shelf by the specimen cabinet sails back to the Galápagos.'}]},
     // Pole to pole (28 November 2026, at the owner's wish): Erebus and Terror sailed to both, to the Antarctic with James
     // Clark Ross in 1839–43 and to the Arctic with Franklin in 1845. The Arctic Room's bottle lies on the cabinet beside
     // their models; the polar hut's on a little shelf inside its front wall, east of the doorway, above the crate.

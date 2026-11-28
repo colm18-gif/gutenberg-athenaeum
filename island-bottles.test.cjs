@@ -15,7 +15,7 @@ const THREE={Group:O,Mesh,BoxGeometry:G,PlaneGeometry:G,SphereGeometry:G,Cylinde
 // Each place as its module defines it.
 const box=(file,re=/const ROOM=\{cx:(-?[\d.]+),cz:(-?[\d.]+),w:([\d.]+),d:([\d.]+)/)=>{const m=fs.readFileSync(file,'utf8').match(re);return {cx:+m[1],cz:+m[2],w:+m[3],d:+m[4]}};
 const PLACES={irish:box('irish-room.js'),burns:box('burns-room.js'),faroe:box('faroe-islands.js'),montserrat:box('montserrat-room.js'),norfolk:box('norfolk-island.js'),australian:box('antipodes.js',/AUS=\{cx:(-?[\d.]+),cz:(-?[\d.]+),w:([\d.]+),d:([\d.]+)/),
-  pitcairn:box('pitcairn-island.js',/SQ=\{cx:(-?[\d.]+),cz:(-?[\d.]+),w:([\d.]+),d:([\d.]+)/),sthelena:box('st-helena.js'),tristan:box('tristan-island.js'),arctic:box('arctic-room.js'),
+  pitcairn:box('pitcairn-island.js',/SQ=\{cx:(-?[\d.]+),cz:(-?[\d.]+),w:([\d.]+),d:([\d.]+)/),sthelena:box('st-helena.js'),tristan:box('tristan-island.js'),galapagos:box('galapagos-island.js'),naturalist:box('naturalist-room.js'),arctic:box('arctic-room.js'),
   // The polar hut, inside its walls (antipodes.js: ANTARCTIC's centre, the front wall 3 m north of it and the back 9 m).
   antarctica:(()=>{const a=box('antipodes.js',/ANTARCTIC=\{cx:(-?[\d.]+),cz:(-?[\d.]+),w:([\d.]+),d:([\d.]+)/);return {cx:a.cx,cz:a.cz-6,w:9,d:6}})()};
 const inside=(b,x,z,m=0)=>Math.abs(x-b.cx)<b.w/2-m&&Math.abs(z-b.cz)<b.d/2-m;
@@ -32,13 +32,13 @@ function world(){
 
 test('the island bottles load before the game and are wired in',()=>{
   const order=[...html.matchAll(/startupScript\('([^']+)'\)/g)].map(m=>m[1]);
-  for(const file of ['irish-room.js','burns-room.js','faroe-islands.js','montserrat-room.js','norfolk-island.js','antipodes.js','pitcairn-island.js','st-helena.js','tristan-island.js'])assert(order.indexOf(file)<order.indexOf('island-bottles.js'),`${file} loads first`);
+  for(const file of ['irish-room.js','burns-room.js','faroe-islands.js','galapagos-island.js','naturalist-room.js','montserrat-room.js','norfolk-island.js','antipodes.js','pitcairn-island.js','st-helena.js','tristan-island.js'])assert(order.indexOf(file)<order.indexOf('island-bottles.js'),`${file} loads first`);
   assert(order.indexOf('island-bottles.js')<order.indexOf('game.js'));
-  assert.match(game,/places:\{irish:irishRoom,burns:burnsRoom,faroe:faroeIslands,montserrat:montserratRoom,norfolk:norfolkIsland,australian:antipodes&&\{get built\(\)\{return antipodes\.built\},go:\(\)=>antipodes\.enter\('australian-room'\)\},pitcairn:pitcairnIsland,sthelena:stHelena,tristan:tristanIsland,/);
+  assert.match(game,/places:\{irish:irishRoom,burns:burnsRoom,faroe:faroeIslands,montserrat:montserratRoom,norfolk:norfolkIsland,australian:antipodes&&\{get built\(\)\{return antipodes\.built\},go:\(\)=>antipodes\.enter\('australian-room'\)\},pitcairn:pitcairnIsland,sthelena:stHelena,tristan:tristanIsland,galapagos:galapagosIsland,naturalist:naturalistRoom,/);
   // The poles: the Arctic Room is made after the bottles, so it is reached through getters; the polar hut through the Antipodes.
   assert.match(game,/arctic:\{get built\(\)\{return !!arcticRoom\?\.built\},activate\(\)\{arcticRoom\?\.activate\(\)\}\},antarctica:antipodes&&\{get built\(\)\{return antipodes\.built\},go:\(\)=>antipodes\.enter\('antarctica'\)\}\}/);
   assert.match(game,/islandBottles\.interact\(focus\)/);assert.match(game,/islandBottles\.update\(t\)/);
-  for(const name of ['irishRoom','burnsRoom','faroeIslands','montserratRoom','norfolkIsland','antipodes','pitcairnIsland','stHelena','tristanIsland'])assert(Math.max(game.indexOf(`const ${name}=`),game.indexOf(`var ${name}=`))<game.indexOf('const islandBottles='),`${name} is made first`);
+  for(const name of ['irishRoom','burnsRoom','faroeIslands','montserratRoom','norfolkIsland','antipodes','pitcairnIsland','stHelena','tristanIsland','galapagosIsland','naturalistRoom'])assert(Math.max(game.indexOf(`const ${name}=`),game.indexOf(`var ${name}=`))<game.indexOf('const islandBottles='),`${name} is made first`);
 });
 
 test('each bottle stands in its own room, against a wall or on its table, with the reader’s arrival in front of it and facing it',()=>{
