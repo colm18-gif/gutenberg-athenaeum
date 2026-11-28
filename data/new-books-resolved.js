@@ -5105,7 +5105,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Annals and Antiquities of Rajast’han",
   "Alberuni’s India",
   "Bagh O Bahar",
-  "The Cruise of the Cachalot",
   "María [es]",
   "Poesías [es]"
  ]
