@@ -1,6 +1,7 @@
-# Three cookbooks suggested by a food historian (28 November 2026): Child, Parloa, Fisher.
-American Frugal Housewife|Frugal Housewife ; Child ; en
-Appledore Cook Book ; Parloa ; en
- ; Parloa ; en
-What Mrs. Fisher Knows|Old Southern Cooking ; ; en
- ; Fisher, Abby ; en
+# Parloa's Appledore Cook Book and Abby Fisher's book, not on Gutenberg: are they on English Wikisource?
+ws?@en What Mrs. Fisher Knows About Old Southern Cooking
+ws?@en Abby Fisher cooking 1881
+ws@en Author:Abby Fisher
+ws?@en Appledore Cook Book Parloa
+ws@en Author:Maria Parloa
+ws?@en American Frugal Housewife Child
