@@ -141,6 +141,8 @@
       'sorting-corridor':{beds:[['air',.03]],events:[['rustle',1.2,.04],['thump',.4,.03]]},
       // The Portage: a night wind in the trees, leaves stirring, an owl, and a loon from the frozen lake ahead.
       'portage':{beds:[['wind',.05],['air',.02]],events:[['rustle',1.3,.04],['owl',.3,.03],['loon',.15,.03]]},
+      // The Coppermine Trail: wind over the snow and the tundra, the ice creaking as the way comes to the frozen sea.
+      'coppermine-trail':{beds:[['wind',.06],['air',.02]],events:[['creak',.5,.03],['owl',.15,.025]]},
       // The Homestead Stair: old painted treads and a clock somewhere in the house; the Stoa: stone, and a breeze from the court.
       'homestead-stair':{beds:[['air',.03]],ticks:[[1,'tock',.012]],events:[['creak',1.1,.04]]},
       'stoa':{beds:[['air',.03],['wind',.02]],events:[['bird',.4,.025]]},

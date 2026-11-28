@@ -2758,7 +2758,9 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // and Norfolk, St Helena and Tristan da Cunha, joined both ways by ships in bottles, so the islands are not a dead end.
     const islandBottles=window.createIslandBottles?.({THREE,scene,MAT,interactables,canvasTexture,showNotice,playSample,analytics:window.libraryAnalytics,isHolding:()=>!!selected,
       storage:(()=>{try{return localStorage}catch(e){return null}})(),
-      places:{irish:irishRoom,burns:burnsRoom,faroe:faroeIslands,montserrat:montserratRoom,norfolk:norfolkIsland,australian:antipodes&&{get built(){return antipodes.built},go:()=>antipodes.enter('australian-room')},pitcairn:pitcairnIsland,sthelena:stHelena,tristan:tristanIsland},
+      places:{irish:irishRoom,burns:burnsRoom,faroe:faroeIslands,montserrat:montserratRoom,norfolk:norfolkIsland,australian:antipodes&&{get built(){return antipodes.built},go:()=>antipodes.enter('australian-room')},pitcairn:pitcairnIsland,sthelena:stHelena,tristan:tristanIsland,
+        // The poles: the Arctic Room (made further on, so reached through getters) and the polar hut at the Antipodes.
+        arctic:{get built(){return !!arcticRoom?.built},activate(){arcticRoom?.activate()}},antarctica:antipodes&&{get built(){return antipodes.built},go:()=>antipodes.enter('antarctica')}},
       move:(x,z,yaw,y=0)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,y,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,y+1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
     });
     if(islandBottles){
@@ -2770,6 +2772,8 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // built, and a passage is built only while someone is in it.
     const passages=window.createPassages?.({doorKit:getDoorKit(),THREE,scene,MAT,player,interactables,canvasTexture,showNotice,playSample,analytics:window.libraryAnalytics,
       rooms:{poe:poeRoom,irish:irishRoom,learners:learnersRoom,medicine:medicineRoom,austen:austenRoom,burns:burnsRoom,within:withinRoom,evening:eveningRoom,setTexts:setTextsRoom,periodicals:periodicalsRoom,chance:chanceRoom,lostProperty:bookLift,canada:canadaRoom,walden,dickinson:dickinsonRoom,celsus:celsusRoom,india:indiaRoom,scrooge:scroogeRoom,corridor:longCorridor,
+        // The Arctic Room is made further on (it hangs its door in the explorers' anteroom), so it is reached through getters.
+        arctic:{get room(){return arcticRoom?.room},get built(){return !!arcticRoom?.built},activate(){arcticRoom?.activate()},enter(){arcticRoom?.enter()}},
         // The Latin Reading Room is one of the International Wing's rooms, made a little further on: built through the wing,
         // once the wing's books are here (they are fetched while the reader is in the Stoa or the court at Ephesus).
         latin:{get room(){return internationalWing?.rooms?.latin},get built(){return !!internationalWing?.isBuilt('latin')},
@@ -2781,7 +2785,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const prePassageAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return passages.contains(x,z)?passages.allowed(x,z):prePassageAllowed(x,z,y)};
       const prePassageInteract=interact;interact=function(){if(focus&&!selected&&passages.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return prePassageInteract()};
       // The Portage is a path through the woods and into the snow: soft footing, like sand.
-      const prePassageSurface=footstepSurface;footstepSurface=function(){return passages.zoneAt(player.pos.x,player.pos.z)==='portage'?'carpet':prePassageSurface()};
+      const prePassageSurface=footstepSurface;footstepSurface=function(){const zone=passages.zoneAt(player.pos.x,player.pos.z);return zone==='portage'||zone==='coppermine-trail'?'carpet':prePassageSurface()};
     }
     // The Station Subway (station-subway.js): steps down through the Grand Hall's floor in the east aisle, under an iron
     // arch signed TO THE TRAINS, to a tiled subway and the gates of the Library Platform; a way out at the platform's
@@ -2906,7 +2910,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       {title:'The Grand Hall and its wings',places:[['main-library','The Grand Hall'],['upper-floor','The upper gallery'],['roof-garden','The roof garden'],['camera-obscura','The camera obscura'],['east-wing','The east wing'],['west-wing','The west wing'],['restricted-stacks','The restricted stacks'],['librarian-office','The librarian’s office'],['daily-room','The room of the day'],['learners-room','The English reading room'],['set-texts-room','The set texts room'],['chance-room','The Room of Chance'],['cinder-archive','The Cinder Archive'],['evening-room','The evening room'],['periodicals-room','The periodicals room'],['bindery','The bindery'],['irish-room','The Irish room'],['map-room','The map room'],['medicine-room','The medicine room'],['naturalist-room','The naturalist’s cabinet'],['austen-room','The Austen room'],['burns-room','The Burns room'],['canada-room','The Canadian room'],['lilliput','Lilliput'],['brobdingnag','Brobdingnag'],['within-room','The room of books within books'],['international-wing','The International Wing']]},
       {title:'Hidden ways',secret:true,places:[['portrait-room','The hidden reading room'],['tunnel','The breathing tunnel'],['archive','The final archive'],['below-catalogue','Below the catalogue'],['rabbit-room','The rabbit room'],['poe-room','The Poe room'],['lost-property','The Lost Property Office'],['afterdark-sorting','Staff · Sorting'],['uncatalogued','The Uncatalogued'],['afterdark-departures','Departures'],['explorers-anteroom','The explorers’ anteroom'],['arctic-room','The Arctic Room']]},
       {title:'Quarters',places:[['quarter-britain','Britain and Ireland'],['quarter-americas','The Americas']]},
-      {title:'Back ways',places:[['cellar-stair','The cellar stair'],['night-corridor','The night corridor'],['long-gallery','The long gallery'],['back-stair','The back stair'],['stacks-stair','The stacks stair'],['servants-passage','The servants’ passage'],['portage','The portage'],['sorting-corridor','The sorting corridor'],['homestead-stair','The Homestead Stair'],['stoa','The Stoa']]},
+      {title:'Back ways',places:[['cellar-stair','The cellar stair'],['night-corridor','The night corridor'],['long-gallery','The long gallery'],['back-stair','The back stair'],['stacks-stair','The stacks stair'],['servants-passage','The servants’ passage'],['portage','The portage'],['sorting-corridor','The sorting corridor'],['homestead-stair','The Homestead Stair'],['stoa','The Stoa'],['coppermine-trail','The Coppermine Trail']]},
       {title:'Memory rooms',places:[['returning','Names in the Dust'],['quiet','The Longer Silence'],['unread','St—ll W—ting'],['repository','What Was Kept']]},
       {title:'Reading rooms',places:[...themeRoomDefs.map(def=>[def.key,titleCase(def.sign[0])]),['contested','The Unwelcome Spines']]},
       {title:'Curious rooms',secret:true,places:[['curious-parlour','The ghost-story parlour'],['curious-conservatory','The night conservatory'],['curious-horologist','The horologist’s study'],['curious-attic','The children’s attic']]},

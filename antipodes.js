@@ -882,6 +882,9 @@
       enterFar(false);
       if(where==='australian-room'){move(AUS.cx+4,AUS.cz+2,Math.PI/2);showNotice('The Australian Room, at the Antipodes. The fire is lit and the billy is on.',7)}
       else if(where==='new-zealand-room'){move(NZ.cx-4,NZ.cz+2,-Math.PI/2);showNotice('The New Zealand Room, at the Antipodes. Nau mai, haere mai.',7)}
+      // The polar hut, reached from the Arctic Room's ship in a bottle (island-bottles.js), which stands the reader before its
+      // bottle and says where they are: the expedition ship waits at the landing for the way back by sea.
+      else if(where==='antarctica'){if(!aboard&&!voyage)moorPolarShip('antarctica');move(ANTARCTIC.cx+3,ANTARCTIC.cz-4.4,Math.PI);analytics?.track('Room Explored',{room:'antarctica'})}
       else showNotice('The Antipodes, the far side of the world from the Grand Hall. The globe will take you home.',7);
     }
 

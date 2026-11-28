@@ -4,7 +4,8 @@
 // from Sydney in 1788, has a bottle in the Australian Room at the Antipodes, and one in its house that sails back. The
 // islands also sail to one another, from bottles on their tables: Pitcairn and Norfolk (the voyage of 1856), and St
 // Helena and Tristan da Cunha, neighbours in one South Atlantic territory. The Faroe Islands have a bottle on the Burns
-// Room's mantel: Scotland is their neighbour to the south, and the steamers to the Faroes sailed from Leith.
+// Room's mantel: Scotland is their neighbour to the south, and the steamers to the Faroes sailed from Leith. And the two
+// poles: the Arctic Room and the polar hut, as Erebus and Terror sailed to both.
 //
 // Each bottle stands only while its room is built (as the back ways' doors do in passages.js), costs no light, and is
 // freed with its room. Looking in builds the other end first and sets the reader down in front of its bottle, facing it.
@@ -58,7 +59,19 @@
       {place:'tristan',name:'Tristan da Cunha',bottle:{x:2599.55,y:.796,z:1199.96,yaw:Math.PI,table:true},stand:{x:2599.55,z:1198.8,yaw:Math.PI},
         label:'ST HELENA',sub:'the nearest neighbour',land:0x3f6b35,island:[[.09,.05,.06],[.13,.04,.045]],
         author:'A ship under sail north for St Helena, the island’s nearest inhabited neighbour, about 2,400 kilometres away. Look in, and you are on the lawn of Plantation House.',
-        arrive:'Tristan da Cunha: a cottage in the Settlement on an evening after a gale. The bottle at the front of the table, by the cup, sails north for St Helena; the one by the sign, to the Long Corridor.'}]}
+        arrive:'Tristan da Cunha: a cottage in the Settlement on an evening after a gale. The bottle at the front of the table, by the cup, sails north for St Helena; the one by the sign, to the Long Corridor.'}]},
+    // Pole to pole (28 November 2026, at the owner's wish): Erebus and Terror sailed to both, to the Antarctic with James
+    // Clark Ross in 1839–43 and to the Arctic with Franklin in 1845. The Arctic Room's bottle lies on the cabinet beside
+    // their models; the polar hut's on a little shelf inside its front wall, east of the doorway, above the crate.
+    {key:'arctic-antarctic',ends:[
+      {place:'arctic',name:'The Arctic Room',bottle:{x:1317.61,y:.84,z:258.8,yaw:0},stand:{x:1317.61,z:260.25,yaw:0},
+        label:'THE ANTARCTIC',sub:'as Erebus and Terror sailed',land:0xe6edf2,island:[[.07,.07,.045],[.12,.05,.04]],smoke:[.07,.085],
+        author:'A ship under sail for the Antarctic, as the Erebus and the Terror sailed under James Clark Ross in 1839, and a white island ahead with smoke over its peak: Ross named its two volcanoes for his ships in January 1841, Mount Erebus and Mount Terror. Look in, and you are in the polar hut, at the other end of the world.',
+        arrive:'The Arctic Room: the great cabin of a ship wintering in the ice. The bottle on the cabinet beside Erebus and Terror sails for the Antarctic.'},
+      {place:'antarctica',name:'Antarctica',bottle:{x:-342,y:1.3,z:-324.13,yaw:Math.PI,shelf:true},stand:{x:-342,z:-325.4,yaw:Math.PI},
+        label:'THE ARCTIC',sub:'the other pole',land:0xdde6ec,island:[[.1,.018,.09],[.13,.014,.06]],
+        author:'A ship under sail north for the Arctic, the whole length of the world away. Erebus and Terror made both voyages: to the Antarctic with Ross from 1839 to 1843, and to the Arctic with Franklin in 1845, from which they never came home. Look in, and you are in the Arctic Room, the great cabin of a ship wintering in the ice.',
+        arrive:'Antarctica: the polar hut under the southern sky. The bottle on the little shelf by the door sails back to the Arctic Room; the ship at the landing sails for the New Zealand Room.'}]}
   ];
   const KEY='athenaeum-island-bottles';
 
