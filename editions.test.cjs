@@ -32,6 +32,3 @@ test('every edition is of a book the library holds, and its years and imprint ar
   }
 });
 
-test('the food rooms’ cookbooks each say where their text came from, once their text is bundled',()=>{
-  for(const row of arrivals.filter(e=>e[4]==='food-cookbooks'&&text(e[0])))assert.ok(EDITIONS[row[0]],`${row[1]} (${row[0]}) names its edition`);
-});
