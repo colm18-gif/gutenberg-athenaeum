@@ -17,12 +17,17 @@ const THREE={Group:O,Mesh,InstancedMesh:Instanced,Vector3:V,Quaternion:class{},M
 // The rooms the passages join, as their modules define them.
 const ROOMS={poe:'poe-room.js',irish:'irish-room.js',learners:'learners-room.js',medicine:'medicine-room.js',austen:'austen-room.js',burns:'burns-room.js',within:'within-room.js',
   evening:'evening-room.js',setTexts:'set-texts-room.js',periodicals:'periodicals-room.js',chance:'chance-room.js',lostProperty:'book-lift.js',canada:'canada-room.js',walden:'walden.js',
-  dickinson:'dickinson-room.js',celsus:'celsus-room.js',latin:'international-wing.js'};
+  dickinson:'dickinson-room.js',celsus:'celsus-room.js',latin:'international-wing.js',scrooge:'scrooge-room.js',corridor:'long-corridor.js'};
 // Walden is a clearing with no walls: its door stands at a place it keeps for it, facing east.
 const waldenSource=fs.readFileSync('walden.js','utf8');
 const CLEARING=(()=>{const c=waldenSource.match(/const CENTRE=\{x:(-?[\d.]+),z:(-?[\d.]+)\}/),t=waldenSource.match(/trail:\{x:(-?[\d.]+),z:(-?[\d.]+)\}/);
-  const h=waldenSource.match(/homestead:\{x:(-?[\d.]+),z:(-?[\d.]+)\}/);
-  return {centre:{x:+c[1],z:+c[2]},trail:{x:+c[1]+ +t[1],z:+c[2]+ +t[2],yaw:Math.PI/2},homestead:{x:+c[1]+ +h[1],z:+c[2]+ +h[2],yaw:Math.atan2(-h[1],-h[2])}}})();
+  const h=waldenSource.match(/homestead:\{x:(-?[\d.]+),z:(-?[\d.]+)\}/),q=waldenSource.match(/quarter:\{x:(-?[\d.]+),z:(-?[\d.]+)\}/);
+  return {centre:{x:+c[1],z:+c[2]},trail:{x:+c[1]+ +t[1],z:+c[2]+ +t[2],yaw:Math.PI/2},homestead:{x:+c[1]+ +h[1],z:+c[2]+ +h[2],yaw:Math.atan2(-h[1],-h[2])},
+    quarter:{x:+c[1]+ +q[1],z:+c[2]+ +q[2],yaw:Math.atan2(-q[1],-q[2])}}})();
+// The Long Corridor keeps the quarters' doors in its bays: Britain and Ireland in the east wall's sixth, the Americas in the west wall's third.
+const corridorSource=fs.readFileSync('long-corridor.js','utf8');
+const CORRIDOR=(()=>{const m=corridorSource.match(/const ROOM=\{cx:(-?[\d.]+),cz:(-?[\d.]+),w:([\d.]+),d:([\d.]+)/),R={cx:+m[1],cz:+m[2],w:+m[3],d:+m[4]},bayZ=k=>R.cz+R.d/2-2-k*4;
+  return {room:R,britainDoor:{x:R.cx+R.w/2-.17,z:bayZ(5),yaw:-Math.PI/2},americasDoor:{x:R.cx-R.w/2+.17,z:bayZ(2),yaw:Math.PI/2}}})();
 // The Library of Celsus keeps the Stoa's door in its court's west wall, facing east.
 const celsusSource=fs.readFileSync('celsus-room.js','utf8');
 const COURT=(()=>{const m=celsusSource.match(/const COURT=\{cx:(-?[\d.]+),cz:(-?[\d.]+),w:([\d.]+),d:([\d.]+)/);return {cx:+m[1],cz:+m[2],w:+m[3],d:+m[4]}})();
@@ -34,9 +39,10 @@ function world(){
   const context={window:{},Math,JSON};vm.runInNewContext(source,context);
   const scene=new O(),interactables=[],notices=[],player={pos:new V(),radius:.42},tracked=[],store=new Map();
   const rooms={};for(const [key,file] of Object.entries(ROOMS)){
-    if(key==='walden'){const {centre,trail,homestead}=CLEARING;rooms.walden={trail,homestead,built:false,activate(){this.built=true},contains:(x,z)=>Math.hypot(x-centre.x,z-centre.z)<33.5};continue}
+    if(key==='corridor'){const {room,britainDoor,americasDoor}=CORRIDOR;rooms.corridor={room,britainDoor,americasDoor,built:false,activate(){this.built=true},contains:(x,z)=>Math.abs(x-room.cx)<room.w/2&&Math.abs(z-room.cz)<room.d/2};continue}
+    if(key==='walden'){const {centre,trail,homestead,quarter}=CLEARING;rooms.walden={trail,homestead,quarter,built:false,activate(){this.built=true},contains:(x,z)=>Math.hypot(x-centre.x,z-centre.z)<33.5};continue}
     if(key==='celsus'){rooms.celsus={stoa:{x:COURT.cx-COURT.w/2+.22,z:COURT.cz+.1,yaw:Math.PI/2},built:false,activate(){this.built=true},contains:(x,z)=>Math.abs(x-COURT.cx)<COURT.w/2&&Math.abs(z-COURT.cz)<COURT.d/2};continue}
-    const room=roomOf(file);rooms[key]={room,built:false,activate(){this.built=true},contains:(x,z)=>Math.abs(x-room.cx)<room.w/2&&Math.abs(z-room.cz)<room.d/2}}
+    const room=roomOf(file);rooms[key]={room,built:false,activate(){this.built=true},enter(){this.built=true;player.pos.set(room.cx,0,room.cz+room.d/2-1.4)},contains:(x,z)=>Math.abs(x-room.cx)<room.w/2&&Math.abs(z-room.cz)<room.d/2}}
   const passages=context.window.createPassages({THREE,scene,MAT:{wood:new M({}),darkWood:new M({}),brass:new M({}),stone:new M({})},player,interactables,
     canvasTexture:()=>({repeat:{set(){}},dispose(){}}),showNotice:t=>notices.push(t),playSample:()=>{},analytics:{track:(n,p)=>tracked.push([n,p])},rooms,
     storage:{getItem:k=>store.get(k)??null,setItem:(k,v)=>store.set(k,v)},move:(x,z,yaw,y=0)=>player.pos.set(x,y,z)});
@@ -61,20 +67,21 @@ test('the back ways load before the game, after the rooms they join, and are wir
   for(const p of passages.passages){assert(game.includes(`['${p.key}','`),`${p.key} is in the journal`);assert(ambience.includes(`'${p.key}':{`),`${p.key} has an ambience`)}
   // Each room can be built by a passage before the reader steps in.
   for(const file of Object.values(ROOMS))if(file!=='international-wing.js')assert.match(fs.readFileSync(file,'utf8'),/return \{contains,floorAt,allowed,interact,update,enter,(leave,)?(unload,)?activate(:buildRoom)?,/,`${file} exports activate`);
-  assert.match(waldenSource,/\btrail:TRAIL,homestead:HOMESTEAD,centre:CENTRE,/,'Walden says where the Portage’s and the Homestead Stair’s doors stand');
+  assert.match(waldenSource,/\btrail:TRAIL,homestead:HOMESTEAD,quarter:QUARTER,centre:CENTRE,/,'Walden says where the Portage’s, the Homestead Stair’s and the Americas quarter’s doors stand');
   assert.match(celsusSource,/door:DOOR,stoa:STOA,/,'the Library of Celsus says where the Stoa’s door stands');
 });
 
 test('the rooms reached by air, by boat and by rocket stay that way',()=>{
   const {passages}=world(),joined=new Set(passages.passages.flatMap(p=>p.ends.map(e=>e.room)));
   for(const room of ['nights','african','crusoe','boathouse','moon','mars','rocket','antipodes','forest'])assert(!joined.has(room),`${room} has no back way`);
-  assert.equal(passages.passages.length,10);
+  assert.equal(passages.passages.length,12);
 });
 
 test('each door stands on its wall, clear of the corners and of the other doors there',()=>{
   const {passages}=world();const seen={};
   for(const p of passages.passages)for(const end of p.ends){
     if(end.spot)continue;// Walden's door stands in the pines, in no wall (checked with the Portage)
+    if(end.enter)continue;// a quarter's door into a room off the corridor goes in by that room's own door
     const room=roomOf(ROOMS[end.room]),len=end.wall==='north'||end.wall==='south'?room.w:room.d;
     assert(Math.abs(end.at)+1.05<len/2-.3,`${p.key} at ${end.room} ${end.wall} ${end.at} is clear of the corner`);
     const key=end.room+end.wall;for(const other of seen[key]||[])assert(Math.abs(other-end.at)>2.6,`${p.key} keeps apart from the other door on ${key}`);(seen[key]||=[]).push(end.at);
@@ -107,7 +114,8 @@ test('a door appears only while its room is built; going through builds the pass
   const w=world(),{passages,rooms,interactables,scene,player,notices,tracked,store}=w;
   passages.update(0);assert.equal(interactables.length,0,'nothing at startup');assert.equal(scene.children.length,0);
   rooms.poe.built=true;passages.update(1);
-  const doors=interactables.filter(o=>o.userData.type==='passage-door');assert.equal(doors.length,2,'the Poe Room has two back ways');
+  const doors=interactables.filter(o=>o.userData.type==='passage-door'&&!o.userData.passage.startsWith('quarter-'));assert.equal(doors.length,2,'the Poe Room has two back ways');
+  assert(interactables.some(o=>o.userData.type==='passage-door'&&o.userData.passage==='quarter-americas'),'and a door to its quarter');
   const cellar=doors.find(o=>o.userData.passage==='cellar-stair');assert.equal(cellar.userData.end,0);assert.match(cellar.userData.author,/The Irish Room/);
   assert(passages.interact(cellar));assert.equal(passages.zoneAt(player.pos.x,player.pos.z),'cellar-stair');assert.equal(player.pos.y,2.4,'the Cellar Stair goes down from the Poe Room');
   assert.match(notices.at(-1),/The Cellar Stair: down to The Irish Room/);assert.equal(JSON.stringify(tracked.at(-1)),'["Room Explored",{"room":"cellar-stair"}]');assert.equal(store.get('athenaeum-back-ways'),'["cellar-stair"]');
@@ -124,7 +132,7 @@ test('a door appears only while its room is built; going through builds the pass
   assert(!interactables.some(o=>o.userData.type==='passage-exit'||o.userData.type==='passage-card'));
   rooms.poe.built=false;passages.update(41);assert(!interactables.some(o=>o.userData.type==='passage-door'&&o.userData.passage==='night-corridor'&&o.userData.end===1));
   assert(!scene.children.some(c=>c.name==='passage-door-night-corridor'),'its door group is gone from the scene');
-  assert.equal(scene.children.map(c=>c.name).join(),'passage-door-cellar-stair','only the Irish Room, still built, keeps its door');
+  assert.equal(scene.children.map(c=>c.name).join(),'passage-door-cellar-stair,passage-door-quarter-britain','only the Irish Room, still built, keeps its doors');
 });
 
 test('the Servants’ Passage opens into three rooms, the Set Texts Room halfway along',()=>{
@@ -180,4 +188,41 @@ test('the Homestead Stair goes down from Emily Dickinson’s room to Walden, and
   const c=passages.roomDoor(stoa.ends[1]);assert(c.out.x>c.x&&rooms.celsus.contains(c.out.x,c.out.z));
   for(const i of [1,2])assert(Math.abs(c.z-(COURT.cz-COURT.d/2+4.5+i*4.4))>.6+.75,'clear of the cypresses either side');
   passages.enterPassage(stoa,0);assert.equal(passages.zoneAt(player.pos.x,player.pos.z),'stoa');passages.leavePassage(stoa,1);assert(rooms.celsus.built);
+});
+
+test('the quarters: a hall off the Long Corridor for Britain and Ireland and one for the Americas, a door into each of their rooms',()=>{
+  const {passages,rooms,player,interactables,notices}=world(),q=key=>passages.passages.find(p=>p.key===key);
+  const britain=q('quarter-britain'),americas=q('quarter-americas');
+  assert.equal(britain.ends.map(e=>e.room).join(),'corridor,irish,burns,austen,scrooge');
+  assert.equal(americas.ends.map(e=>e.room).join(),'corridor,dickinson,walden,canada,poe');
+  for(const p of [britain,americas]){
+    assert.equal(p.kind,'quarter');assert.equal(p.ends[0].room,'corridor');
+    // The corridor's door opens onto the corridor's floor, facing across it.
+    const c=passages.roomDoor(p.ends[0]);assert(rooms.corridor.contains(c.out.x,c.out.z),`${p.key}: out into the corridor`);
+    // Its side doors stand apart on their walls, and every one opens onto the hall's floor.
+    for(const side of [-1,1]){const along=p.ends.filter(e=>e.side===side).map(e=>e.along).sort((a,b)=>a-b);for(let i=1;i<along.length;i++)assert(along[i]-along[i-1]>3,`${p.key}: doors apart`)}
+    for(let i=1;i<p.ends.length;i++){const d=passages.passageDoor(p,i);assert(passages.allowed(d.out.x,d.out.z),`${p.key} door ${i} opens onto the floor`);assert(d.lz>2&&d.lz<p.length-2)}
+    // In from the corridor, and out through each door into its room.
+    for(let i=1;i<p.ends.length;i++){passages.enterPassage(p,0);assert.equal(passages.zoneAt(player.pos.x,player.pos.z),p.key);
+      const room=rooms[p.ends[i].room];room.built=false;passages.leavePassage(p,i);assert(room.built,`${p.ends[i].room} is built`);assert(room.contains(player.pos.x,player.pos.z),`into ${p.ends[i].room}`)}
+    // And back from the corridor.
+    passages.enterPassage(p,0);passages.leavePassage(p,0);assert(rooms.corridor.contains(player.pos.x,player.pos.z));
+  }
+  assert.match(notices.find(n=>n.startsWith('Britain and Ireland')),/^Britain and Ireland, a quarter of the library: The Irish Room, The Burns Room, The Austen Room, Scrooge’s chambers\.$/);
+  // A door is hung only where there is a wall for it: rooms that open off the corridor, or have no wall to spare, are
+  // gone into as their own doors go in.
+  assert.deepEqual([...britain.ends,...americas.ends].filter(e=>e.enter).map(e=>e.room).sort(),['austen','burns','dickinson','scrooge']);
+  rooms.corridor.built=true;rooms.irish.built=true;rooms.burns.built=true;passages.update(1);
+  const hung=interactables.filter(o=>o.userData.type==='passage-door'&&o.userData.passage==='quarter-britain').map(o=>o.userData.end);
+  assert(hung.includes(0)&&hung.includes(1)&&!hung.includes(2),'the corridor and the Irish Room have doors; the Burns Room is gone into by its own');
+});
+
+test('the Long Corridor names the four quarters over their bays, and keeps the islands’ own ways in',()=>{
+  const signs=[...corridorSource.matchAll(/\{side:'(east|west)',bay:(\d),name:'([^']+)',text:'([^']+)'\}/g)].map(m=>({side:m[1],bay:+m[2],name:m[3],text:m[4]}));
+  assert.deepEqual([...new Set(signs.map(s=>s.name))].sort(),['BRITAIN & IRELAND','ISLANDS & SEAS','OLD LIBRARIES','THE AMERICAS']);
+  const at=(side,bay)=>signs.find(s=>s.side===side&&s.bay===bay)?.name;
+  assert.equal(at('east',5),'BRITAIN & IRELAND');assert.equal(at('west',2),'THE AMERICAS');assert.equal(at('east',3),'ISLANDS & SEAS');
+  assert.match(corridorSource,/const BRITAIN_DOOR=\{[^}]*bay:5,side:'east'\}/);assert.match(corridorSource,/const AMERICAS_DOOR=\{[^}]*bay:2,side:'west'\}/);
+  // The islands reached by boat, globe, model and ship are named with the ways that lead to them, and given no door.
+  const islands=signs.find(s=>s.name==='ISLANDS & SEAS').text;for(const way of ['Boathouse','model Nautilus','great globe','New Zealand Room'])assert(islands.includes(way),way);
 });

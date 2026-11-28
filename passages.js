@@ -6,7 +6,8 @@
 // Periodicals Room), the Sorting Corridor (Room of Chance to Lost Property Office) and the Portage (Walden Pond to the
 // Canadian Room: Thoreau's own week in Canada, in September 1850, walked in a few steps from summer to snow), the
 // Homestead Stair (Emily Dickinson's room down to Walden Pond) and the Stoa (the Latin Reading Room to the Library of
-// Celsus). The rooms reached by air, by boat and by rocket are left that way on purpose.
+// Celsus). The rooms reached by air, by boat and by rocket are left that way on purpose. The quarters' halls, Britain
+// and Ireland and the Americas, are built the same way, off the Long Corridor (see `quarter-britain` below).
 // Nothing here is built at startup. A passage's door appears in a room only while that room is built, the passage
 // itself is built when the reader steps in and freed a little while after they leave, and one lamp, the module's own,
 // moves to whichever passage is in use, so no passage adds a light. Each stands far out to the east (x 1200), beyond
@@ -85,14 +86,46 @@
       windows:[{scene:'garden',side:-1,at:6},{scene:'garden',side:-1,at:14}],
       prints:[{motif:'scroll',side:1,at:5,title:'A scroll',text:'A papyrus roll, drawn as the Romans kept their books: wound on a rod, with a tag at its end naming the work. The Library of Celsus is said to have held twelve thousand of them.'},
         {motif:'inscription',side:1,at:10,title:'An inscription',text:'The Library of Celsus was built for Tiberius Julius Celsus Polemaeanus, consul in 92, and its inscriptions were cut in Greek and in Latin, the two languages of the Roman East.'},
-        {motif:'column',side:1,at:15,title:'A column',text:'A fluted column with an acanthus capital, of the kind that stands two storeys high on the library’s front at Ephesus.'}]}
+        {motif:'column',side:1,at:15,title:'A column',text:'A fluted column with an acanthus capital, of the kind that stands two storeys high on the library’s front at Ephesus.'}]},
+    // The quarters (28 November 2026): the library's rooms gathered by where their books come from, each quarter a hall
+    // off the Long Corridor with a door into each of its rooms, so no room in it is more than two doors from the corridor.
+    // The rooms keep their own ways in as well. A quarter's first end is its door in a corridor bay (long-corridor.js,
+    // `quarters`); its others stand along its two side walls (`side`, `along`), and a plan of the quarter hangs at the end.
+    // A room with no wall to spare gets no second door: its quarter door (`enter`) takes the reader in as its own door
+    // does, and its own door is the way back. Scrooge's chambers and Emily Dickinson's room open off the corridor beside
+    // their quarters' doors; in the Burns and Austen Rooms a door would have stood frame to frame with the room's own (the
+    // Burns Room's walls are shelved, the Austen Room's are its novels and windows), so the way back from them is through
+    // the Irish Room's quarter door and the Grand Hall.
+    {key:'quarter-britain',name:'Britain and Ireland',label:'BRITAIN & IRELAND',kind:'quarter',length:18,width:3.6,walls:0x6a5a44,
+      blurb:'The quarter of Britain and Ireland: a hall with doors to the Irish Room, the Burns Room, the Austen Room and Scrooge’s chambers.',
+      ends:[{room:'corridor',label:'THE LONG CORRIDOR',spot:'britainDoor',reading:['BRITAIN &\nIRELAND','The Irish, Burns, Austen and Scrooge rooms']},
+        {room:'irish',label:'THE IRISH ROOM',wall:'west',at:5.6,side:-1,along:5},
+        {room:'burns',label:'THE BURNS ROOM',enter:true,side:1,along:5},
+        {room:'austen',label:'THE AUSTEN ROOM',enter:true,side:-1,along:13},
+        {room:'scrooge',label:'SCROOGE’S CHAMBERS',enter:true,side:1,along:13}],
+      look:{style:'walnut',glazed:true,fanColor:0xffd59a},
+      prints:[{motif:'harp',side:-1,at:9,title:'A harp',text:'The harp, Ireland’s emblem. The Irish Room is through the nearer door on this side.'},
+        {motif:'thistle',side:1,at:9,title:'A thistle',text:'A Scottish thistle, between the Burns Room’s door and Scrooge’s.'}],
+      plan:'BRITAIN & IRELAND'},
+    {key:'quarter-americas',name:'The Americas',label:'THE AMERICAS',kind:'quarter',length:18,width:3.6,walls:0x4e5a4a,
+      blurb:'The quarter of the Americas: a hall with doors to Emily Dickinson’s room, Walden Pond, the Canadian Room and the Poe Room.',
+      ends:[{room:'corridor',label:'THE LONG CORRIDOR',spot:'americasDoor',reading:['THE\nAMERICAS','Dickinson, Walden, Canada and Poe']},
+        {room:'dickinson',label:'EMILY DICKINSON',enter:true,side:-1,along:5},
+        {room:'walden',label:'WALDEN POND',spot:'quarter',side:1,along:5},
+        {room:'canada',label:'THE CANADIAN ROOM',wall:'south',at:-4.2,side:-1,along:13},
+        {room:'poe',label:'THE POE ROOM',wall:'west',at:-1,side:1,along:13}],
+      look:{style:'walnut',glazed:true,fanColor:0xffd59a},
+      prints:[{motif:'leaf',side:-1,at:9,title:'A pressed leaf',text:'A leaf pressed in a frame. Emily Dickinson kept a herbarium, and Thoreau a pond; their doors are the first two in this hall.'},
+        {motif:'raven',side:1,at:9,title:'A raven',text:'A small print of a raven, between Walden’s door and the Poe Room’s.'}],
+      plan:'THE AMERICAS'}
   ];
   const BASE={x:1200,z:-600,step:40},KEEP=25,DOOR={width:1.5,height:2.8,fanlight:false,pediment:false};
   // The inside face of each room's walls: most are 0.3 m thick, the Room of Chance's and the Lost Property Office's 0.4 m.
   const INSET={chance:.2,lostProperty:.2};
   const TITLES={poe:'The Poe Room',irish:'The Irish Room',learners:'The English Reading Room',medicine:'The Medicine Room',austen:'The Austen Room',burns:'The Burns Room',
     within:'The Room of Books Within Books',evening:'The Evening Room',setTexts:'The Set Texts Room',periodicals:'The Periodicals Room',chance:'The Room of Chance',lostProperty:'The Lost Property Office',
-    walden:'Walden Pond',canada:'The Canadian Room',dickinson:'Emily Dickinson’s room',latin:'The Latin Reading Room',celsus:'The Library of Celsus'};
+    walden:'Walden Pond',canada:'The Canadian Room',dickinson:'Emily Dickinson’s room',latin:'The Latin Reading Room',celsus:'The Library of Celsus',
+    scrooge:'Scrooge’s chambers',corridor:'The Long Corridor'};
 
   window.createPassages=function(options){
     const {THREE,scene,MAT,player,interactables,canvasTexture,showNotice,playSample,move,analytics,doorKit=null,rooms={},storage=window.localStorage}=options;
@@ -105,6 +138,7 @@
     const origin=index=>({x:BASE.x,z:BASE.z-index*BASE.step});
     // A door on a room's wall: its place, the way it faces (into the room) and where a reader steps out of it.
     function roomDoor(end){
+      if(end.enter)return null;
       // A door at a place the room keeps for it (Walden's clearing has no walls): its own position and facing.
       const spot=end.spot&&rooms[end.room]?.[end.spot];
       if(spot){const {x,z,yaw}=spot;return {x,z,yaw,out:{x:x+Math.sin(yaw)*1.6,z:z+Math.cos(yaw)*1.6,yaw:yaw+Math.PI}}}
@@ -117,11 +151,12 @@
     const LANDING=2.4;
     function floorY(p,lz){if(p.kind!=='stair')return 0;const f=Math.min(1,Math.max(0,(lz-LANDING)/(p.length-2*LANDING)));return p.rise*(p.ends[0].high?1-f:f)}
     // The doors inside a passage, in its own frame: the first end at the near wall, the second at the far wall, a third
-    // (the Servants' Passage's) halfway along the east side.
+    // (the Servants' Passage's) halfway along the east side,
+    // and a quarter's along either side (`side` is -1 for the west wall, 1 for the east; `along`, how far from the near end).
     function passageDoor(p,i){
       const end=p.ends[i],o=origin(PASSAGES.indexOf(p));
-      const [lx,lz,yaw]=end.middle?[p.width/2-.1,p.length/2,-Math.PI/2]:i===0?[0,.1,0]:[0,p.length-.1,Math.PI];
-      const y=floorY(p,end.middle?p.length/2:i===0?0:p.length);
+      const [lx,lz,yaw]=end.side?[end.side*(p.width/2-.1),end.along,-end.side*Math.PI/2]:end.middle?[p.width/2-.1,p.length/2,-Math.PI/2]:i===0?[0,.1,0]:[0,p.length-.1,Math.PI];
+      const y=floorY(p,end.side?end.along:end.middle?p.length/2:i===0?0:p.length);
       return {lx,lz,yaw,y,x:o.x+lx,z:o.z+lz,out:{x:o.x+lx+Math.sin(yaw)*1.4,z:o.z+lz+Math.cos(yaw)*1.4,yaw:yaw+Math.PI,y}};
     }
     function passageAt(x,z){for(const p of PASSAGES){const o=origin(PASSAGES.indexOf(p)),lx=x-o.x,lz=z-o.z;if(Math.abs(lx)<p.width/2&&lz>0&&lz<p.length)return {p,lx,lz}}return null}
@@ -312,6 +347,14 @@
         box(.1,1.6,.05,MAT.darkWood,x-win.side*.02,y,win.at);box(.1,.05,1.05,MAT.darkWood,x-win.side*.02,y,win.at);box(.3,.06,1.3,MAT.darkWood,x-win.side*.12,y-.88,win.at);
         mark(glass,{type:'passage-card',title:'A window',author:{storm:'Rain on the glass, a sea running high under the moon, and a light far out on the point.',garden:'A walled garden under the moon, its paths pale between the dark beds.',town:'Roofs and chimneys under the stars, and here and there a lit window where someone else is still up reading.'}[win.scene],action:'LOOK'})});
       if(p.candle){const y=floorY(p,p.candle.at)+1.2,x=p.candle.side*(W/2-.12);box(.24,.06,.4,MAT.stone||wall,x,y,p.candle.at);box(.05,.16,.05,own(new THREE.MeshStandardMaterial({color:0xeee4cc,roughness:.8})),x,y+.11,p.candle.at);add(flameGeo,flame,x,y+.24,p.candle.at)}
+      // A quarter's plan, framed on its far wall: the quarter's name and its rooms, with the side each door is on (a reader
+      // walking in faces along the hall, so the side-1 wall is on their left).
+      if(p.plan){const rooms=p.ends.slice(1),tex=own(canvasTexture((c,w,h)=>{c.fillStyle='#efe4cc';c.fillRect(0,0,w,h);c.strokeStyle='#6b4d22';c.lineWidth=6;c.strokeRect(8,8,w-16,h-16);
+          c.fillStyle='#2b1d0e';c.textAlign='center';c.font='bold 34px Georgia';c.fillText(p.plan,w/2,58);c.font='italic 20px Georgia';c.fillText('a quarter of the library',w/2,88);
+          c.font='22px Georgia';[...rooms].sort((a,b)=>a.along-b.along||b.side-a.side).forEach((e,k)=>{const left=e.side>0;c.textAlign=left?'left':'right';c.fillText(`${left?'← ':''}${TITLES[e.room]}${left?'':' →'}`,left?34:w-34,140+Math.floor(k/2)*40)});
+          c.textAlign='center';c.font='italic 18px Georgia';c.fillText('Behind you, the Long Corridor and the Grand Hall',w/2,h-30)},512,300));
+        const y=1.75;box(1.32,.8,.05,MAT.darkWood,0,y,L-.03);const plan=add(own(new THREE.PlaneGeometry(1.2,.7)),own(new THREE.MeshStandardMaterial({map:tex,roughness:.85})),0,y,L-.06);plan.rotation.y=Math.PI;
+        mark(plan,{type:'passage-card',title:p.name,author:p.blurb,action:'READ'})}
       // The name, by each door.
       const signMat=own(new THREE.MeshStandardMaterial({map:own(signTexture(p.name.toUpperCase(),'')),roughness:.6,emissive:0x2a1a0c,emissiveIntensity:.4})),signGeo=own(new THREE.PlaneGeometry(1.5,.3));
       for(const [z,yaw] of [[.13,0],[L-.13,Math.PI]]){const s=add(signGeo,signMat,0,floorY(p,z)+3.62,z);s.rotation.y=yaw}
@@ -335,9 +378,13 @@
     const roomDoors=[];for(const p of PASSAGES)p.ends.forEach((end,i)=>roomDoors.push({p,end,i,group:null,hits:[]}));
     function hangRoomDoor(rd){
       const at=roomDoor(rd.end);if(!at)return;const g=new THREE.Group();g.name='passage-door-'+rd.p.key;g.position.set(at.x,0,at.z);g.rotation.y=at.yaw;scene.add(g);rd.group=g;rd.hits=[];
-      const data={type:'passage-door',passage:rd.p.key,end:rd.i,title:rd.p.name,author:`A back way to ${rd.p.ends.filter((e,k)=>k!==rd.i).map(e=>TITLES[e.room]).join(' and ')}.`,action:'ENTER'};
+      const others=rd.p.ends.filter((e,k)=>k!==rd.i).map(e=>TITLES[e.room]),quarter=rd.p.kind==='quarter';
+      const author=quarter?(rd.i===0?rd.p.blurb:`Into the ${rd.p.name} quarter: a hall with doors to ${others.join(', ').replace(/, ([^,]*)$/,' and $1')}.`):`A back way to ${others.join(' and ')}.`;
+      const data={type:'passage-door',passage:rd.p.key,end:rd.i,title:quarter?`${rd.p.name} (a quarter)`:rd.p.name,author,action:'ENTER'};
       const mark=(object,d)=>{object.userData=d;interactables.push(object);rd.hits.push(object);return object};
-      if(!doorKit?.hang(g,{data,mark,label:rd.p.name.toUpperCase().replace('THE ',''),...DOOR,...rd.p.look})){const m=new THREE.Mesh(new THREE.BoxGeometry(DOOR.width,DOOR.height,.12),MAT.darkWood);m.position.set(0,DOOR.height/2,.08);g.add(m);mark(m,data)}
+      // A quarter's door in the Long Corridor is the library's walnut with the quarter's name gilded on the glass.
+      const look=rd.end.reading&&doorKit?.readingRoom?{...DOOR,...rd.p.look,...doorKit.readingRoom(...rd.end.reading)}:{...DOOR,...rd.p.look};
+      if(!doorKit?.hang(g,{data,mark,label:rd.p.label||rd.p.name.toUpperCase().replace('THE ',''),...look})){const m=new THREE.Mesh(new THREE.BoxGeometry(DOOR.width,DOOR.height,.12),MAT.darkWood);m.position.set(0,DOOR.height/2,.08);g.add(m);mark(m,data)}
     }
     function takeDownRoomDoor(rd){if(!rd.group)return;rd.group.removeFromParent();for(const hit of rd.hits){const k=interactables.indexOf(hit);if(k>=0)interactables.splice(k,1)}rd.group=null;rd.hits=[]}
 
@@ -346,12 +393,13 @@
     function enterPassage(p,i){
       const state=build(p);state.last=time;hangLamp(p,state);const d=passageDoor(p,i);move(d.out.x,d.out.z,d.out.yaw,d.out.y);playSample?.('doorOpen',.7,1.05);
       const others=p.ends.filter((e,k)=>k!==i).map(e=>TITLES[e.room]);
-      showNotice(`${p.name}: ${p.kind==='stair'?(floorY(p,i===0?0:p.length)>floorY(p,i===0?p.length:0)?'down':'up'):'through'} to ${others.join(', or ')}.`,6);
+      if(p.kind==='quarter')showNotice(`${p.name}, a quarter of the library: ${others.join(', ')}.`,7);
+      else showNotice(`${p.name}: ${p.kind==='stair'?(floorY(p,i===0?0:p.length)>floorY(p,i===0?p.length:0)?'down':'up'):'through'} to ${others.join(', or ')}.`,6);
       if(!found.has(p.key)){found.add(p.key);try{storage?.setItem(FOUND_KEY,JSON.stringify([...found]))}catch(e){}}
       analytics?.track('Room Explored',{room:p.key});
     }
     function leavePassage(p,i){
-      const end=p.ends[i],room=rooms[end.room],at=roomDoor(end);if(!room||!at)return;room.activate?.();
+      const end=p.ends[i],room=rooms[end.room];if(end.enter&&room?.enter){room.enter();return}const at=roomDoor(end);if(!room||!at)return;room.activate?.();
       move(at.out.x,at.out.z,at.out.yaw,0);playSample?.('doorOpen',.7,1);showNotice(`${TITLES[end.room]}.`,3);
     }
     function interact(object){
