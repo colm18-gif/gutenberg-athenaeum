@@ -1,7 +1,7 @@
 // Written by scripts/new-books.mjs (the "New books" workflow): the checked Gutenberg number and word count of
 // each book in data/new-books.js, keyed by title. Books listed as missing could not be found. Do not edit by hand.
 window.ATHENAEUM_NEW_BOOKS_RESOLVED={
- "updated": "2026-11-27",
+ "updated": "2026-11-28",
  "books": {
   "The Moonstone": {
    "id": 155,
@@ -3399,6 +3399,72 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 23169,
    "words": 9302
   },
+  "The Life of St. Declan of Ardmore": {
+   "id": 823,
+   "words": 15713
+  },
+  "The Life of St. Mochuda of Lismore": {
+   "id": 10937,
+   "words": 19627
+  },
+  "The Sceptical Chymist": {
+   "id": 22914,
+   "words": 88614
+  },
+  "Experiments and Considerations Touching Colours": {
+   "id": 14504,
+   "words": 96548
+  },
+  "Sir Walter Raleigh and His Time": {
+   "id": 3143,
+   "words": 35119
+  },
+  "Sir Walter Ralegh": {
+   "id": 25029,
+   "words": 147893
+  },
+  "Impressions of America, Volume 1": {
+   "id": 22796,
+   "words": 86960
+  },
+  "Impressions of America, Volume 2": {
+   "id": 23284,
+   "words": 84327
+  },
+  "The Sword Speech": {
+   "id": 979518,
+   "words": 3288,
+   "source": "wikisource",
+   "page": "https://en.wikisource.org/wiki/The_Sword_Speech"
+  },
+  "The Felon’s Track": {
+   "id": 14468,
+   "words": 94655
+  },
+  "John Redmond’s Last Years": {
+   "id": 14374,
+   "words": 114308
+  },
+  "A Tour in Ireland": {
+   "id": 22387,
+   "words": 46460
+  },
+  "The Paris Sketch Book of Mr. M. A. Titmarsh; and the Irish Sketch Book": {
+   "id": 42890,
+   "words": 258451
+  },
+  "Old Irish Glass": {
+   "id": 45570,
+   "words": 10429
+  },
+  "An Illustrated History of Ireland": {
+   "id": 14754,
+   "words": 262309
+  },
+  "The Round Towers of Ireland": {
+   "id": 42538,
+   "words": 183480
+  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633
@@ -5019,6 +5085,7 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Annals and Antiquities of Rajast’han",
   "Alberuni’s India",
   "Bagh O Bahar",
+  "Speeches from the Dock",
   "María [es]",
   "Poesías [es]"
  ]
