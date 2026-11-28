@@ -1,16 +1,34 @@
-# A camera obscura (27 November 2026): books on optics, light, illusions and "natural magic".
-Natural Magic ; ; en
- ; Brewster ; en
-Camera Obscura|Camera-Obscura ; ; en
-Optics|Opticks|Optical ; ; en
- ; Newton, Isaac ; en
-Kaleidoscope|Stereoscope ; ; en
-Light ; Tyndall ; en
-Wonders of Optics|Wonders of Light|Phenomena of Light ; ; en
-Magic Lantern|Phantasmagoria ; ; en
-Mirror|Looking-Glass ; ; en
-Illusion ; ; en
-Lens|Telescope|Microscope ; ; en
-subject? Optics
-subject? Optical illusions
-subject? Light
+# A Waterford room (28 November 2026): is there enough on Gutenberg? Writers born in the city or county, books about it,
+# and the history that passed through it (the Norse, Strongbow and Aoife, Henry II's landing, the tricolour of 1848).
+subject? Waterford
+Waterford|Lismore|Dungarvan|Ardmore|Tramore|Comeragh|Suir ; ; en
+ ; Boyle, Robert ; en
+ ; Meagher ; en
+Meagher ; ; en
+ ; Power, Tyrone ; en
+Impressions of America ; ; en
+ ; Wallace, William Vincent ; 
+Maritana ; ; 
+ ; Giraldus ; en
+Conquest of Ireland|Topography of Ireland|Historical Works ; Giraldus ; en
+Irish Sketch Book|Irish Sketch-Book ; Thackeray ; en
+Tour in Ireland ; Young ; en
+Ireland: Its Scenery|Hall's Ireland ; Hall ; en
+ ; Redmond, John ; en
+ ; Hobson ; en
+Strongbow|Strongbow's|Aoife|Eva MacMurrough ; ; en
+Norsemen in Ireland|Danes in Ireland|Vikings in Ireland|Ostmen ; ; en
+Irish Rebellion of 1848|Young Ireland|Young Irelanders ; ; en
+ ; Duffy, Charles Gavan ; en
+ ; Mitchel, John ; en
+ ; Wadding ; 
+ ; Mac Conmara|MacNamara, Donogh ; 
+ ; Ó Súilleabháin, Tadhg|O'Sullivan, Teige ; 
+Saint Declan|St. Declan|Declan ; ; en
+Irish Saints|Lives of the Irish Saints ; ; en
+Round Towers ; ; en
+ ; Edgeworth, Maria ; en
+Glass|Glass-making|Glassmaking ; ; en
+Raleigh|Ralegh ; ; en
+subject? Ireland -- Description and travel
+subject? Ireland -- History
