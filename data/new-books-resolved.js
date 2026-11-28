@@ -3465,6 +3465,26 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
    "id": 42538,
    "words": 183480
   },
+  "Narrative of the Surveying Voyages of His Majesty’s Ships Adventure and Beagle": {
+   "id": 79486,
+   "words": 258294
+  },
+  "The Zoology of the Voyage of H.M.S. Beagle: Birds": {
+   "id": 74261,
+   "words": 61404
+  },
+  "The Zoology of the Voyage of H.M.S. Beagle: Reptiles": {
+   "id": 79041,
+   "words": 19973
+  },
+  "Narrative of the Most Extraordinary and Distressing Shipwreck of the Whale-Ship Essex": {
+   "id": 61931,
+   "words": 26420
+  },
+  "The Piazza Tales": {
+   "id": 15859,
+   "words": 80576
+  },
   "Don Quijote [es]": {
    "id": 2000,
    "words": 383633
@@ -5085,6 +5105,7 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Annals and Antiquities of Rajast’han",
   "Alberuni’s India",
   "Bagh O Bahar",
+  "The Cruise of the Cachalot",
   "María [es]",
   "Poesías [es]"
  ]
