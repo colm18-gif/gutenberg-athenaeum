@@ -138,8 +138,8 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   quarter's far end (`passages.js`, `wall:'south', at:-4`; the hall's plan moves to the left-hand wall when a door stands
   at its end). The window looks along the Quay to Reginald's Tower (painted; no photograph, since Commons has only modern
   ones under attribution). Shelves `waterford-deise` (Power's Lives of Declan and Mochuda), `waterford-lismore` (Boyle,
-  and Raleigh, after the library's own Guiana, `OWN`), `waterford-people` (Tyrone Power, Speeches from the Dock for
-  Meagher, Meagher's Sword Speech from English Wikisource, Doheny, Gwynn's Redmond) and `waterford-history` (Young,
+  and Raleigh, after the library's own Guiana, `OWN`), `waterford-people` (Tyrone Power,
+  Meagher's Sword Speech from English Wikisource, Doheny, Gwynn's Redmond) and `waterford-history` (Young,
   Thackeray, Old Irish Glass, Cusack) in `data/new-books.js`. An English room may now take a book from English
   Wikisource (`ws:<page>`; `scripts/new-books.mjs` reads a room with no language of its own as `en`). Pictures (fetched
   by `scripts/fetch-maps.mjs`, looked at): Maclise's Marriage of Strongbow and Aoife on the south wall, Meagher (1848)
@@ -151,7 +151,7 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   rung, the window shows Ardmore by night for a moment, and O'Brien's Round Towers of Ireland (`waterford-tower`, wrong
   about all of them, as its note says) is left on the table, found for good (`athenaeum-waterford-ardmore`;
   `?ardmore`). Cards say only what is well attested and quote nobody (`waterford.test.cjs`). Not on Gutenberg or
-  Wikisource: Smith (1746), Ryland (1824) and Egan (1894), the county's histories (scanned only, at askaboutireland.ie);
+  Wikisource (or not matched): Speeches from the Dock (13112, its header did not match); Smith (1746), Ryland (1824) and Egan (1894), the county's histories (scanned only, at askaboutireland.ie);
   Giraldus's Conquest of Ireland; the Irish-language poets Donncha Rua Mac Conmara and Tadhg Gaelach Ó Súilleabháin.
 - Lilliput and Brobdingnag (`gulliver-room.js`; Lilliput x −760, z 700; Brobdingnag x −760, z 880) are through a narrow
   door at the east end of the Irish Room's north wall, between the writers' shelves and the corner (Swift was Dean of St

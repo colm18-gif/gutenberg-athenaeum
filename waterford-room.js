@@ -39,7 +39,7 @@
     flag:['A tricolour, folded','Green, white and orange. Waterford remembers 7 March 1848 as the day Thomas Francis Meagher flew a tricolour from the Wolfe Tone Confederate Club at 33 The Mall, and a plaque there says so; some historians now doubt it was the first. That April he brought one home from Paris and presented it in Dublin. It has been the flag of Ireland since 1937.'],
     fire:['The fire','A coal fire in a white marble chimneypiece, of the kind the Georgian houses of the Mall were built with.'],
     bell:['A small iron bell','A hand-bell of the kind the early Irish saints carried, square-sided, of riveted iron. The library cannot say whose it is.'],
-    bellFound:['Declan’s bell','Ardmore says its saint’s bell was left behind on a rock in Wales, and that the rock floated after him over the sea to Ardmore, where it lies on the strand still, and people crawl under it on his feast day, 24 July. The bell is silent now.']
+    bellFound:['Declan’s bell','His Life says a little black bell was sent him from heaven, and that coming home from St David’s in Wales his people left it on a rock by the shore; the rock floated after them over the sea with the bell on it. St Declan’s Stone lies on the beach below Ardmore still, and at his pattern people crawl under it. The bell itself has been lost for centuries.']
   };
   const FOUND_KEY='athenaeum-waterford-ardmore';
 
