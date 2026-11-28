@@ -27,6 +27,21 @@
     const BOTTLE_BAY={side:'east',bay:3};
     // The Indian room (india-room.js): the west wall's fifth bay.
     const INDIA_DOOR={x:ROOM.cx-ROOM.w/2+WALL/2+.02,z:bayZ(4),yaw:Math.PI/2,bay:4,side:'west'};
+    // The quarters' doors (passages.js): Britain and Ireland in the east wall's sixth bay, at the far end; the Americas in
+    // the west wall's third, beside Emily Dickinson's door. Each opens on a hall with a door into each of its rooms.
+    const BRITAIN_DOOR={x:ROOM.cx+ROOM.w/2-WALL/2-.02,z:bayZ(5),yaw:-Math.PI/2,bay:5,side:'east'};
+    const AMERICAS_DOOR={x:ROOM.cx-ROOM.w/2+WALL/2+.02,z:bayZ(2),yaw:Math.PI/2,bay:2,side:'west'};
+    // The quarters' names, a gilt board over each bay that belongs to one: two quarters have halls (above), and two are
+    // gathered here in the corridor already (Boullée's drawing and Celsus's door; the shelf of ships in bottles).
+    const QUARTER_SIGNS=[
+      {side:'east',bay:5,name:'BRITAIN & IRELAND',text:'The quarter of Britain and Ireland: through this door, a hall with doors to the Irish Room, the Burns Room, the Austen Room and Scrooge’s chambers.'},
+      {side:'east',bay:1,name:'BRITAIN & IRELAND',text:'Scrooge’s chambers belong to the quarter of Britain and Ireland, whose hall is through the door at the far end of this wall.'},
+      {side:'west',bay:2,name:'THE AMERICAS',text:'The quarter of the Americas: through this door, a hall with doors to Emily Dickinson’s room, Walden Pond, the Canadian Room and the Poe Room.'},
+      {side:'west',bay:3,name:'THE AMERICAS',text:'Emily Dickinson’s room belongs to the quarter of the Americas, whose hall is through the door beside it.'},
+      {side:'east',bay:2,name:'OLD LIBRARIES',text:'The quarter of old libraries: Boullée’s drawing of the library he designed for the King in 1785 and never built, and two bays along, the Library of Celsus at Ephesus. The Restricted Catalogue, in the east wing, is the third.'},
+      {side:'east',bay:4,name:'OLD LIBRARIES',text:'The quarter of old libraries: the Library of Celsus at Ephesus, and two bays back, Boullée’s library that was never built. The Restricted Catalogue, in the east wing, is the third.'},
+      {side:'east',bay:3,name:'ISLANDS & SEAS',text:'The quarter of islands and seas: each bottle on this shelf sails for a small island. The library’s other islands and seas keep their own ways in: Crusoe’s island by the boat from the Boathouse, Captain Nemo’s salon through the model Nautilus in the Extraordinary Voyages, the Antipodes through the great globe in the Grand Hall, and the polar hut by ship from the New Zealand Room.'}
+    ];
     const PRELOAD=7,KEEP=25;
     const LOOK={style:'walnut',width:1.9,height:3.1};
     const through=(data,go)=>doorKit&&data.kit?doorKit.pass(data.kit,data,go):go();
@@ -42,7 +57,7 @@
     // ---------- the door, in the Grand Hall's east wall ----------
     function buildDoor(){
       const g=new THREE.Group();g.name='long-corridor-door';g.position.set(DOOR.x,0,DOOR.z);g.rotation.y=DOOR.yaw;scene.add(g);
-      const data={type:'corridor-door',title:'The Long Corridor',author:'A panelled corridor, and the library’s newer rooms along it: the Gastronomic Athenaeum, Scrooge’s chambers, Emily Dickinson’s room, the Indian room, the Library of Celsus, Boullée’s library that was never built, and a shelf of ships in bottles bound for five small islands.',action:'ENTER'};
+      const data={type:'corridor-door',title:'The Long Corridor',author:'A panelled corridor, and the library’s newer rooms along it: the Gastronomic Athenaeum, Scrooge’s chambers, Emily Dickinson’s room, the Indian room, the Library of Celsus, Boullée’s library that was never built, a shelf of ships in bottles bound for six small islands, and the doors to two quarters of the library, Britain and Ireland and the Americas.',action:'ENTER'};
       if(!doorKit?.hang(g,{data,mark:markDoor,...LOOK,...doorKit.readingRoom?.('THE LONG\nCORRIDOR','Rooms, a lost library and islands')}))
         markDoor(add(new THREE.BoxGeometry(1.9,3.1,.14),MAT.darkWood,0,1.55,.08,g),data);
     }
@@ -72,8 +87,17 @@
         if(side===CELSUS_DOOR.side&&k===CELSUS_DOOR.bay)continue;
         if(side===SCROOGE_DOOR.side&&k===SCROOGE_DOOR.bay)continue;
         if(side===BOTTLE_BAY.side&&k===BOTTLE_BAY.bay)continue;// the ships in bottles' shelf is there
+        if(side===BRITAIN_DOOR.side&&k===BRITAIN_DOOR.bay||side===AMERICAS_DOOR.side&&k===AMERICAS_DOOR.bay)continue;// the quarters' doors (passages.js)
         const z=bayZ(k);box(.05,2.2,2.6,panel,x+s*.18,2.5,z,root);box(.03,2,2.4,plaster,x+s*.2,2.5,z,root)}
       for(let k=1;k<BAYS;k++){const z=z1-k*BAY;for(const [x,s] of [[x0,1],[x1,-1]]){box(.08,.08,.22,brass,x+s*.33,2.75,z,root);add(own(new THREE.SphereGeometry(.09,10,8)),glow,x+s*.46,2.85,z,root)}}
+      // The quarters' boards, gilt on walnut, above the bays that belong to them.
+      const signGeo=own(new THREE.PlaneGeometry(1.9,.34)),signBoard=own(new THREE.BoxGeometry(.06,.44,2.04)),signMats=new Map();
+      for(const q of QUARTER_SIGNS){
+        if(!signMats.has(q.name))signMats.set(q.name,own(new THREE.MeshStandardMaterial({roughness:.5,emissive:0x2a1a0c,emissiveIntensity:.5,map:own(canvasTexture((c,W,H)=>{c.fillStyle='#24170d';c.fillRect(0,0,W,H);
+          c.strokeStyle='#c9a24a';c.lineWidth=5;c.strokeRect(6,6,W-12,H-12);c.fillStyle='#e6c675';c.textAlign='center';c.textBaseline='middle';let size=40;c.font=`bold ${size}px Georgia`;
+          while(c.measureText(q.name).width>W-40&&size>18){size-=2;c.font=`bold ${size}px Georgia`}c.fillText(q.name,W/2,H/2+2)},512,92))})));
+        const [x,s]=q.side==='west'?[x0,1]:[x1,-1],z=bayZ(q.bay),y=3.95,data={type:'corridor-card',title:q.name.replace('&','and').toLowerCase().replace(/(^|\s)\S/g,m=>m.toUpperCase()),author:q.text,action:'READ'};
+        add(signBoard,panel,x+s*.2,y,z,root);const face=add(signGeo,signMats.get(q.name),x+s*.235,y,z,root);face.rotation.y=s*Math.PI/2;mark(face,data)}
       // A long runner down the middle of the floor.
       const runner=own(canvasTexture((c,W,H)=>{c.fillStyle='#5a1a16';c.fillRect(0,0,W,H);c.strokeStyle='#c9a24a';c.lineWidth=6;c.strokeRect(14,14,W-28,H-28);c.lineWidth=2;c.strokeRect(26,26,W-52,H-52);
         c.fillStyle='#7a2a20';for(let y=80;y<H-60;y+=120){c.beginPath();c.moveTo(W/2,y);c.lineTo(W/2+40,y+40);c.lineTo(W/2,y+80);c.lineTo(W/2-40,y+40);c.closePath();c.fill()}},160,1280));
@@ -113,7 +137,7 @@
     // ---------- doing things ----------
     function enter(){
       activate();move(ROOM.cx,ROOM.cz+ROOM.d/2-1.6,0);playSample?.('doorOpen',.8,.95);
-      showNotice('The Long Corridor. The Gastronomic Athenaeum’s door is the second on the left; the other bays wait for rooms to come.',8);
+      showNotice('The Long Corridor. The boards over the bays name the library’s quarters: the Americas on the left, Britain and Ireland at the far end on the right, old libraries and islands between.',8);
       analytics?.track('Room Explored',{room:'long-corridor'});
     }
     // Where a reader stands coming back out of a room off the corridor: in front of that room's door, facing away from it.
@@ -139,7 +163,7 @@
       else if(root&&t-lastNeeded>KEEP)unload();
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,activate,unload,standBefore,door:DOOR,room:ROOM,foodDoor:FOOD_DOOR,pictureBay:PICTURE_BAY,dickinsonDoor:DICKINSON_DOOR,indiaDoor:INDIA_DOOR,celsusDoor:CELSUS_DOOR,scroogeDoor:SCROOGE_DOOR,bottleBay:BOTTLE_BAY,bayZ,bays:BAYS,
+    return {contains,floorAt,allowed,interact,update,enter,activate,unload,standBefore,door:DOOR,room:ROOM,foodDoor:FOOD_DOOR,pictureBay:PICTURE_BAY,dickinsonDoor:DICKINSON_DOOR,indiaDoor:INDIA_DOOR,celsusDoor:CELSUS_DOOR,scroogeDoor:SCROOGE_DOOR,bottleBay:BOTTLE_BAY,britainDoor:BRITAIN_DOOR,americasDoor:AMERICAS_DOOR,quarterSigns:QUARTER_SIGNS,bayZ,bays:BAYS,
       get built(){return !!root},zoneAt:(x,z)=>contains(x,z)?'long-corridor':null};
   };
 })();

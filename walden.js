@@ -35,7 +35,10 @@
     trail:{x:-27,z:1},
     // The door to the Homestead Stair (passages.js), by the road to the village on the north-west, facing the clearing:
     // the back way up to Emily Dickinson's room, Amherst being west of Concord.
-    homestead:{x:-24,z:-9}
+    homestead:{x:-24,z:-9},
+    // The door to the Americas quarter (passages.js), north-east of the footpath's sign, facing the clearing: the quarter's
+    // hall off the Long Corridor, with doors to Emily Dickinson's room, the Canadian Room and the Poe Room.
+    quarter:{x:8,z:-27}
   };
   // The footpath, the path round to the house, and the road to the village; as chains of points.
   const PATHS=[[[-2,-29.6],[1.1,-24],[1.3,-15.2],[-2,-14.8]],[[-2,-14.8],[-3.4,-4],[-5.6,8]],[[-34,-6],[-19.5,-18.5],[-6,-33.5]],[[1.3,-15.2],[3.6,-15.1]],[[-3.4,-4],[-15,-1.6],[-25.4,1]]];
@@ -121,6 +124,8 @@
     const TRAIL={...W(SPOTS.trail.x,SPOTS.trail.z),yaw:Math.PI/2};
     // Where the Homestead Stair's door stands, turned to face the middle of the clearing.
     const HOMESTEAD={...W(SPOTS.homestead.x,SPOTS.homestead.z),yaw:Math.atan2(-SPOTS.homestead.x,-SPOTS.homestead.z)};
+    // Where the Americas quarter's door stands, turned to face the middle of the clearing.
+    const QUARTER={...W(SPOTS.quarter.x,SPOTS.quarter.z),yaw:Math.atan2(-SPOTS.quarter.x,-SPOTS.quarter.z)};
     function add(geometry,material,x,y,z,parent){const m=new THREE.Mesh(geometry,material);m.position.set(x,y,z);parent.add(m);return m}
     const box=(w,h,d,material,x,y,z,parent)=>add(own(new THREE.BoxGeometry(w,h,d)),material,x,y,z,parent);
     const cyl=(rt,rb,h,seg,material,x,y,z,parent)=>add(own(new THREE.CylinderGeometry(rt,rb,h,seg)),material,x,y,z,parent);
@@ -372,6 +377,7 @@
       // Behind the Portage's door (hung by passages.js while the clearing is built), so nobody walks round the back of it.
       block(TRAIL.x-.2,TRAIL.z,.7,2.4);
       block(HOMESTEAD.x-Math.sin(HOMESTEAD.yaw)*.45,HOMESTEAD.z-Math.cos(HOMESTEAD.yaw)*.45,1.3,1.3);
+      block(QUARTER.x-Math.sin(QUARTER.yaw)*.45,QUARTER.z-Math.cos(QUARTER.yaw)*.45,1.3,1.3);
       // A sign by the path, and the footpath's own card where it leaves the house.
       const s=sign('WALDEN POND','Concord, Massachusetts · 1845–1847',1.5,.25),post=W(1.9,-26.5);s.position.set(post.x,1.45,post.z);s.rotation.y=-.4;root.add(s);mark(s,card('woods'));
       mark(cyl(.04,.05,1.4,6,pine,post.x,.7,post.z-.03,root),card('woods'));block(post.x,post.z,.3,.3);
@@ -508,7 +514,7 @@
     buildDoor();
     return {contains,floorAt,allowed,interact,update,enter,leave,unload,activate,catalogue,inHouse,
       zoneAt:(x,z)=>contains(x,z)?(inHouse(x,z)?'walden-house':'walden'):null,
-      trail:TRAIL,homestead:HOMESTEAD,centre:CENTRE,walk:WALK,pond:POND,house:HOUSE,spots:SPOTS,lost:LOST,quotes:WALDEN,cards:CARDS,air:AIR,door:DOOR,arrival:ARRIVAL,groups:GROUPS,shoreZ:x=>CENTRE.z+shoreZ(x-CENTRE.x),
+      trail:TRAIL,homestead:HOMESTEAD,quarter:QUARTER,centre:CENTRE,walk:WALK,pond:POND,house:HOUSE,spots:SPOTS,lost:LOST,quotes:WALDEN,cards:CARDS,air:AIR,door:DOOR,arrival:ARRIVAL,groups:GROUPS,shoreZ:x=>CENTRE.z+shoreZ(x-CENTRE.x),
       get built(){return !!root},get books(){return books.slice()},get trees(){return state?.trees||null},get trunks(){return trunks.slice()},get journalFound(){return !!state?.house?.shown}};
   };
 })();

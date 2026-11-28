@@ -877,6 +877,18 @@ PR, merge it once the `test` check passes, then bring the branch up to date with
   (z −600, 40 m apart), floors between y 0 and 3 (below 0 wakes the basement). One lamp, the module's own, moves to the
   passage in use. Rooms export `activate` so a passage can build the room before the reader steps in. New back ways:
   add them to `PASSAGES`, the journal's "Back ways" group and `room-ambience.js`.
+- The quarters (`passages.js`, kind `quarter`; 28 November 2026, at the owner's wish): the rooms gathered by where their
+  books come from, each quarter named on gilt boards over its bays in the Long Corridor (`QUARTER_SIGNS` in
+  long-corridor.js). Two have halls, built like the back ways (x 1200, z −1000 and −1040): Britain and Ireland, through the
+  corridor's east sixth bay (`britainDoor`), with doors to the Irish, Burns and Austen Rooms and Scrooge's chambers; and the
+  Americas, through the west third bay beside Dickinson's door (`americasDoor`), with doors to Emily Dickinson's room,
+  Walden Pond (a door in the pines at `SPOTS.quarter`), the Canadian Room and the Poe Room. A side door is `side` and
+  `along`; a plan of the quarter hangs on the far wall. Only the Irish, Canadian and Poe Rooms and Walden have a door back
+  into the hall (their `wall`/`at` were measured clear of shelves and looked at); rooms with no wall to spare (Burns,
+  Austen) or already on the corridor (Scrooge, Dickinson) are gone into by their own `enter()` (`enter:true`). Old
+  Libraries (Boullée's drawing and Celsus) and Islands & Seas (the bottle shelf) are already together in the corridor and
+  have only boards; the islands reached by boat, globe, model or ship keep those ways only (the owner's rule), and the
+  Islands board names them. A test keeps all of this (`passages.test.cjs`).
 - Island bottles (`island-bottles.js`, `LINKS`): ships in bottles that join an island to a room, both ways, so the bottle
   shelf is not a dead end: Montserrat ↔ the Irish Room (a bottle on the mantel, right of the St Brigid's cross; in the
   house, a little shelf in the north-west corner, past the deed) and Norfolk Island ↔ the Australian Room (a little shelf on

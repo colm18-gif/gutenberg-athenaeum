@@ -144,6 +144,9 @@
       // The Homestead Stair: old painted treads and a clock somewhere in the house; the Stoa: stone, and a breeze from the court.
       'homestead-stair':{beds:[['air',.03]],ticks:[[1,'tock',.012]],events:[['creak',1.1,.04]]},
       'stoa':{beds:[['air',.03],['wind',.02]],events:[['bird',.4,.025]]},
+      // The quarters' halls (passages.js): quiet panelled halls between rooms, a clock somewhere, a door now and then.
+      'quarter-britain':{beds:[['air',.03]],ticks:[[1,'tick',.012]],events:[['creak',.7,.035]]},
+      'quarter-americas':{beds:[['air',.03]],ticks:[[1,'tock',.012]],events:[['creak',.7,.035]]},
       'chance-room':{beds:[['air',.03]],events:[['rustle',1.3,.05],['creak',.9,.04]]},
       // The Uncatalogued: a store room full of books, pages stirring, a heap settling, the boards creaking underfoot.
       'uncatalogued':{beds:[['air',.035]],events:[['rustle',1.5,.05],['thump',.35,.03],['creak',.7,.04]]},
