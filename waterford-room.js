@@ -14,6 +14,8 @@
   'use strict';
 
   const OWN={lismore:[2272]};
+  // The library's own copy of a book shelved here for the place, not its subject, carries a note saying why.
+  const OWN_NOTES={2272:'Raleigh held Lismore in the years of the Munster plantation, and sold it with the rest of his Irish lands to Richard Boyle in 1602. This is the one book of his own the library has: his account of going up the Orinoco in 1595 in search of El Dorado. It says nothing at all about Waterford, which is why this copy stands here with a note in it.'};
   const GROUPS=[
     {key:'deise',name:'THE SAINTS OF THE DÉISE',sub:'Declan of Ardmore and Mochuda of Lismore',wall:'west',along:-3.3,length:3.4,ids:[]},
     {key:'lismore',name:'LISMORE',sub:'Robert Boyle, born there, and Raleigh, who held it',wall:'west',along:3.3,length:3.4,ids:OWN.lismore},
@@ -283,7 +285,7 @@
       if(win){const ardmore=t<win.until,map=ardmore?win.ardmore:win.quay;if(win.glassMat.map!==map){win.glassMat.map=win.glassMat.emissiveMap=map;win.glassMat.needsUpdate=true}}
       if(chandelier)chandelier.rotation.y=Math.sin(t*.3)*.03;
     }
-    return {contains,floorAt,allowed,interact,update,enter,activate,unload,catalogue,room:ROOM,groups:GROUPS,own:OWN,cards:CARDS,pictures:PICTURES,arrival:ARRIVAL,seatBooks:seatIds,
+    return {contains,floorAt,allowed,interact,update,enter,activate,unload,catalogue,room:ROOM,groups:GROUPS,own:OWN,ownNotes:OWN_NOTES,cards:CARDS,pictures:PICTURES,arrival:ARRIVAL,seatBooks:seatIds,
       get built(){return !!root},get books(){return books.slice()},get found(){return !!bell?.found||wasFound()},zoneAt:(x,z)=>contains(x,z)?'waterford-room':null};
   };
 })();

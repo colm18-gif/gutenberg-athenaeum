@@ -2331,7 +2331,7 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
       const preWaterfordAllowed=allowed;allowed=function(x,z,y=floorHeight(x,z)){return waterfordRoom.contains(x,z)?waterfordRoom.allowed(x,z):preWaterfordAllowed(x,z,y)};
       const preWaterfordInteract=interact;interact=function(){if(focus&&!selected&&waterfordRoom.interact(focus)){focus=null;ui.prompt.style.opacity=0;return}return preWaterfordInteract()};
       // Taking a book down in the Waterford room shows the librarian's note.
-      const preWaterfordSelect=selectBook;selectBook=function(bm){const result=preWaterfordSelect(bm);const d=bm?.userData;if(d?.waterford){const note=librarianNotes[d.book.id]||window.ATHENAEUM_EXTRA_NOTES?.[d.book.id];if(note)showNotice(`The librarian’s note: “${note}”`,11)}return result};
+      const preWaterfordSelect=selectBook;selectBook=function(bm){const result=preWaterfordSelect(bm);const d=bm?.userData;if(d?.waterford){const note=waterfordRoom.ownNotes?.[d.book.id]||librarianNotes[d.book.id]||window.ATHENAEUM_EXTRA_NOTES?.[d.book.id];if(note)showNotice(`The librarian’s note: “${note}”`,11)}return result};
     }
     // Lilliput and Brobdingnag (gulliver-room.js), through a narrow door at the east end of the Irish Room's north wall:
     // Swift and his friends and very small folk in Lilliput, at a twelfth of the reader's size; then, through its north

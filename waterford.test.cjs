@@ -56,6 +56,9 @@ test('its four shelves are filled from the catalogue, every book with a libraria
   const {r}=room();assert.ok(r.groups.find(g=>g.key==='lismore').ids.includes(2272));
   r.activate();const shelved=r.books.map(b=>b.userData.shelf);for(const key of ['deise','lismore','people','history'])assert.ok(shelved.includes(key),key);
   assert.ok(!shelved.includes('tower'),'the Round Towers wait for the bell');
+  // Raleigh's Guiana is here for Lismore, not for its subject, and its copy says so.
+  const guiana=r.ownNotes[2272];assert.ok(guiana&&/Lismore/.test(guiana)&&/1602/.test(guiana)&&!/[“”]/.test(guiana));
+  assert.ok(game.includes('waterfordRoom.ownNotes?.[d.book.id]'),'the room’s note is shown when the book is taken down');
 });
 
 test('its pictures are on disk, and open large',()=>{
