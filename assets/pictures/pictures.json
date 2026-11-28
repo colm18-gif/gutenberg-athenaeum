@@ -631,16 +631,6 @@
   "licence": "Public domain",
   "description": "Darwin's finches or Galapagos finches. Darwin, 1845. Journal of researches into the natural history and geology of the countries visited during the voyage of H.M.S. Beagle round the world, under the Command of Capt. Fitz Roy, R.N. 2d edition. 1. ( category ) Geospiza magnirostris 2. ( category ) Geospiza fortis 3. Geospiza parvula , now ( category ) Camarhynchus parvulus 4. ( category ) Certhidea "
  },
- "galapagos-cactornis": {
-  "file": "Cactornis scandens1.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Cactornis_scandens1.jpg",
-  "width": 1360,
-  "height": 2048,
-  "artist": "BY JOHN GOULD (14.Sep.1804 - 3.Feb.1881) (Übersicht über die Bilder: https://darwin-online.org.uk/graphics/Zoology_Illustrations.html )",
-  "date": "1832",
-  "licence": "Public domain",
-  "description": "Kaktusfink (Cactospiza scandens oder Geospiza scandens ) (laut Bild: Cactornis scandens - Laut diesem Text ist es ein Darwinfink, deshalb kommt nur der Kaktusfink infrage)"
- },
  "galapagos-tortoise": {
   "file": "Cassel's Natural History - Gigantic Land Tortoises from the Galapagos Islands.jpg",
   "page": "https://commons.wikimedia.org/wiki/File:Cassel%27s_Natural_History_-_Gigantic_Land_Tortoises_from_the_Galapagos_Islands.jpg",

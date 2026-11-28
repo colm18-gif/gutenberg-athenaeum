@@ -60,14 +60,14 @@
     shelf_taught:['What the islands taught',`What Darwin made of it twenty years on, and Wallace’s book on why islands have the animals they have. ${q('mystery')}.`],
     chart:['The chart','The Admiralty’s chart of the Galápagos, published in 1841 from the survey that FitzRoy and the Beagle’s officers made in 1835.'],
     map1794:['The Enchanted Isles','A map of 1794 with their old name. The Spanish called them las Islas Encantadas, the enchanted isles, for the currents and mists that made them hard to find.'],
-    finches_picture:['Gould’s finches','Four of the Galápagos finches, from John Gould’s plates for the Zoology of the Voyage of H.M.S. Beagle, 1841.'],
+    finches_picture:['Gould’s finches','The heads of four of the Galápagos finches, after John Gould, as Darwin printed them in the second edition of his Journal of Researches, in 1845.'],
     tortoise_picture:['The tortoises','Giant tortoises of the Galápagos, from Cassell’s Natural History, 1878.'],
     bench:['A bench','Driftwood on two blocks of lava, looking out over the bay.'],
     secret:['A letter with no address','You look into the barrel. Letters for Boston and Bristol, Valparaíso and New Bedford, waiting for someone going their way; and at the bottom, with no address at all, a book. Melville’s Piazza Tales, with his ten sketches of these islands, now on the barrel’s lid.']
   };
   const PICTURES={
     chart:{file:'galapagos-chart',title:'Galapagos Islands, surveyed by Captn. Robt. Fitz Roy R.N. and the officers of H.M.S. Beagle, 1836',credit:'Admiralty Chart No. 1375, published 1841. Royal Museums Greenwich. Public domain, from Wikimedia Commons.',ratio:1.35,card:'chart'},
-    finches:{file:'galapagos-finches',title:'Darwin’s finches',credit:'John Gould, from the Zoology of the Voyage of H.M.S. Beagle, 1841. Public domain, from Wikimedia Commons.',ratio:.75,card:'finches_picture'},
+    finches:{file:'galapagos-finches',title:'Darwin’s finches',credit:'After John Gould, from Darwin’s Journal of Researches, 1845. Public domain, from Wikimedia Commons.',ratio:.75,card:'finches_picture'},
     tortoise:{file:'galapagos-tortoise',title:'Gigantic land tortoises from the Galapagos Islands',credit:'Cassell’s Natural History, 1878. Public domain, from Wikimedia Commons.',ratio:.77,card:'tortoise_picture'},
     map1794:{file:'galapagos-1794',title:'Galapagos or Inchanted Islands',credit:'1794. Public domain, from Wikimedia Commons.',ratio:.82,card:'map1794'}
   };
@@ -143,7 +143,7 @@
       const sun=new THREE.DirectionalLight(0xffc89a,1.2);sun.position.set(cx-30,7,cz+12);sun.target.position.set(cx,0,cz+4);root.add(sun);root.add(sun.target);
       lantern=new THREE.PointLight(0xffd090,.9,10,2);lantern.position.set(cx-1.6,1.4,cz+.6);root.add(lantern);
       if(wasFound())leaveBook();
-      placeVisitorsBook?.({parent:root,x:cx+2.6,z:cz+1.2,mark,own});
+      placeVisitorsBook?.({parent:root,x:cx+.4,z:cz-1.1,mark,own});
       scene.add(root);
     }
     function placeBook(book,spot,geometry,shelf,parent=root){
@@ -209,17 +209,17 @@
         for(const [ox,oy,oz,ry,rz] of [[0,1.85,0,0,0],[.35,2.15,.1,.6,.5],[-.35,2.1,-.1,-.5,-.5],[.15,2.5,0,.2,.2],[-.1,2.55,.15,1.2,-.2]]){const p=add(own(new THREE.SphereGeometry(.28,10,8)),pad,ox,oy,oz,c);p.scale.set(1,1.3,.25);p.rotation.set(0,ry,rz);mark(p,cdata)}
         block(px,pz,.7*s,.7*s)}
       // A sea lion asleep on the sand.
-      const sl=new THREE.Group();sl.position.set(cx+1.8,0,z1+7.4);sl.rotation.y=-.4;root.add(sl);const slMat=std({color:0x6a5a48,roughness:.5});
+      const sl=new THREE.Group();sl.position.set(cx+1.8,0,z1+7.4);sl.rotation.y=-.4;root.add(sl);const slMat=std({color:0x3e3630,roughness:.45});
       const body=add(own(new THREE.SphereGeometry(.4,16,10)),slMat,0,.22,0,sl);body.scale.set(.75,.55,2.0);mark(body,card('sealion'));
-      const slHead=add(own(new THREE.SphereGeometry(.16,10,8)),slMat,0,.22,.86,sl);slHead.scale.set(1,.9,1.3);mark(slHead,card('sealion'));
+      const slHead=add(own(new THREE.SphereGeometry(.16,10,8)),slMat,0,.22,.86,sl);slHead.scale.set(1,.9,1.3);mark(slHead,card('sealion'));for(const side of [-1,1]){const fl=box(.32,.03,.16,slMat,side*.34,.06,.45,sl);fl.rotation.y=side*.5}const tail=box(.4,.03,.18,slMat,0,.05,-.9,sl);tail.rotation.y=.2;
       block(cx+1.8,z1+7.4,1.0,1.8);
       // The lava along the water, with marine iguanas basking on it: two InstancedMeshes.
       const rocks=new THREE.InstancedMesh(own(new THREE.DodecahedronGeometry(.5,0)),lava,26),m=new THREE.Matrix4(),q4=new THREE.Quaternion(),e=new THREE.Euler(),s3=new THREE.Vector3(),p3=new THREE.Vector3();
       let n=0;for(let i=0;i<26;i++){const rx=cx-8+i*.62+(i%3)*.15,rz=z1+BEACH+.4+((i*37)%7)/7*1.2,sc=.5+((i*53)%10)/10*.7;e.set(i,i*1.7,i*.3);q4.setFromEuler(e);p3.set(rx,.1*sc,rz);s3.set(sc,sc*.6,sc);m.compose(p3,q4,s3);rocks.setMatrixAt(n++,m)}
       rocks.instanceMatrix.needsUpdate=true;root.add(rocks);ours.push(rocks);
-      const iguanaMat=std({color:0x2e2a28,roughness:.9}),iguanas=new THREE.InstancedMesh(own(new THREE.BoxGeometry(.18,.12,.7)),iguanaMat,6);
+      const iguanaMat=std({color:0x1e1c1c,roughness:.9}),iguanas=new THREE.InstancedMesh(own(new THREE.SphereGeometry(.5,10,6)),iguanaMat,6);
       const spots=[[-5.2,.2],[-3.1,.6],[-1.2,.25],[1.1,.7],[3.6,.35],[5.4,.6]];
-      spots.forEach(([dx,dz],i)=>{e.set(0,i*1.3,0);q4.setFromEuler(e);p3.set(cx+dx,.38,z1+BEACH+.5+dz);s3.set(1,1,1);m.compose(p3,q4,s3);iguanas.setMatrixAt(i,m)});
+      spots.forEach(([dx,dz],i)=>{e.set(0,i*1.3,0);q4.setFromEuler(e);p3.set(cx+dx,.36,z1+BEACH+.5+dz);s3.set(.2,.12,.85);m.compose(p3,q4,s3);iguanas.setMatrixAt(i,m)});
       iguanas.instanceMatrix.needsUpdate=true;iguanas.position.set(0,0,0);root.add(iguanas);
       // The iguanas are picked by a clear box over the middle of the rocks (an InstancedMesh answers for its own place).
       const pick=add(own(new THREE.BoxGeometry(12,.8,1.6)),own(new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false})),cx,.4,z1+BEACH+.8,root);mark(pick,card('iguanas'));
