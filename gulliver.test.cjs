@@ -56,7 +56,7 @@ test('Lilliput and Brobdingnag load before the game and are wired in like the ot
   assert.match(game,/\['lilliput','Lilliput'\],\['brobdingnag','Brobdingnag'\]/);assert.match(game,/gulliver:'lilliput'/);assert.match(game,/bigend:'lilliput'/);
   assert.match(game,/lilliput:gulliverRoom&&\(\(\)=>gulliverRoom\.enter\('lilliput'\)\)/);assert.match(game,/brobdingnag:gulliverRoom&&\(\(\)=>gulliverRoom\.enter\('brobdingnag'\)\)/);
   assert.match(game,/gulliverRoom\?\.update\(t\)/);assert.match(game,/if\(gulliverRoom\?\.contains\(x,z\)\)return gulliverRoom\.zoneAt\(x,z\)/);
-  assert.match(game,/'canada-room','lilliput'\]\.map/,'the Wandering Door may open on Lilliput, a room behind an ordinary door');
+  assert.match(game,/'canada-room','lilliput'(,'[a-z-]+')*\]\.map/,'the Wandering Door may open on Lilliput, a room behind an ordinary door');
   const ambience=fs.readFileSync('room-ambience.js','utf8');assert.match(ambience,/lilliput:\{beds:/);assert.match(ambience,/brobdingnag:\{beds:/);
   const resolver=fs.readFileSync('scripts/new-books.mjs','utf8'),pages=fs.readFileSync('scripts/book-pages.mjs','utf8');
   for(const key of ['lilliput-swift','lilliput-small','lilliput-bigend','brob-giants','brob-seeing','brob-swift']){assert.match(resolver,new RegExp(`'${key}'`));assert.match(pages,new RegExp(`'${key}':'(Lilliput|Brobdingnag)'`))}

@@ -210,6 +210,8 @@
       'forest-song':{beds:[['wind',.04],['air',.03]],events:[['frog',1.1,.035],['bird',.9,.03],['rustle',1,.035],['drip',.5,.02],['owl',.25,.025]]},
       // The polonyna under Chornohora: wind over the high pasture, the shepherds' fire, a cowbell under the forest, crickets.
       carpathians:{beds:[['wind',.07],['fire',.025],['air',.02]],events:[['cowbell',.6,.035],['crackle',5,.03],['cricket',2,.02],['owl',.12,.02]]},
+      // The Waterford room: a coal fire in a Georgian room on the Mall, a clock on the landing, and now and then the river.
+      'waterford-room':{beds:[['fire',.07],['air',.025]],ticks:[[1.2,'tock',.015]],events:[['crackle',.9,.035],['creak',.4,.03]]},
       'burns-room':{beds:[['fire',.09],['air',.025]],ticks:[[1.1,'tock',.018]],events:[['crackle',36,.11],['snap',7,.09],['creak',.5,.03]]},
       // The Canadian Room: a log room on a winter night, the box stove roaring, wind round the eaves, and now and then
       // a loon out on the lake (in winter they have gone south, but the room keeps one).

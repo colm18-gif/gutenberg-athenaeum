@@ -108,12 +108,14 @@
     // Burns Room's walls are shelved, the Austen Room's are its novels and windows), so the way back from them is through
     // the Irish Room's quarter door and the Grand Hall.
     {key:'quarter-britain',name:'Britain and Ireland',label:'BRITAIN & IRELAND',kind:'quarter',length:18,width:3.6,walls:0x6a5a44,
-      blurb:'The quarter of Britain and Ireland: a hall with doors to the Irish Room, the Burns Room, the Austen Room and Scrooge’s chambers.',
-      ends:[{room:'corridor',label:'THE LONG CORRIDOR',spot:'britainDoor',reading:['BRITAIN &\nIRELAND','The Irish, Burns, Austen and Scrooge rooms']},
+      blurb:'The quarter of Britain and Ireland: a hall with doors to the Irish Room, the Burns Room, the Austen Room and Scrooge’s chambers, and at its end the Waterford room.',
+      ends:[{room:'corridor',label:'THE LONG CORRIDOR',spot:'britainDoor',reading:['BRITAIN &\nIRELAND','Irish, Burns, Austen, Scrooge, Waterford']},
         {room:'irish',label:'THE IRISH ROOM',wall:'west',at:5.6,side:-1,along:5},
         {room:'burns',label:'THE BURNS ROOM',enter:true,side:1,along:5},
         {room:'austen',label:'THE AUSTEN ROOM',enter:true,side:-1,along:13},
-        {room:'scrooge',label:'SCROOGE’S CHAMBERS',enter:true,side:1,along:13}],
+        {room:'scrooge',label:'SCROOGE’S CHAMBERS',enter:true,side:1,along:13},
+        // At the end of the hall, the Waterford room (waterford-room.js, 28 November 2026): its only door, in its south wall.
+        {room:'waterford',label:'THE WATERFORD ROOM',wall:'south',at:-4}],
       look:{style:'walnut',glazed:true,fanColor:0xffd59a},
       prints:[{motif:'harp',side:-1,at:9,title:'A harp',text:'The harp, Ireland’s emblem. The Irish Room is through the nearer door on this side.'},
         {motif:'thistle',side:1,at:9,title:'A thistle',text:'A Scottish thistle, between the Burns Room’s door and Scrooge’s.'}],
@@ -136,7 +138,7 @@
   const TITLES={poe:'The Poe Room',irish:'The Irish Room',learners:'The English Reading Room',medicine:'The Medicine Room',austen:'The Austen Room',burns:'The Burns Room',
     within:'The Room of Books Within Books',evening:'The Evening Room',setTexts:'The Set Texts Room',periodicals:'The Periodicals Room',chance:'The Room of Chance',lostProperty:'The Lost Property Office',
     walden:'Walden Pond',canada:'The Canadian Room',dickinson:'Emily Dickinson’s room',latin:'The Latin Reading Room',celsus:'The Library of Celsus',
-    scrooge:'Scrooge’s chambers',corridor:'The Long Corridor',arctic:'The Arctic Room'};
+    scrooge:'Scrooge’s chambers',corridor:'The Long Corridor',arctic:'The Arctic Room',waterford:'The Waterford room'};
 
   window.createPassages=function(options){
     const {THREE,scene,MAT,player,interactables,canvasTexture,showNotice,playSample,move,analytics,doorKit=null,rooms={},storage=window.localStorage}=options;
@@ -391,11 +393,14 @@
       if(p.candle){const y=floorY(p,p.candle.at)+1.2,x=p.candle.side*(W/2-.12);box(.24,.06,.4,MAT.stone||wall,x,y,p.candle.at);box(.05,.16,.05,own(new THREE.MeshStandardMaterial({color:0xeee4cc,roughness:.8})),x,y+.11,p.candle.at);add(flameGeo,flame,x,y+.24,p.candle.at)}
       // A quarter's plan, framed on its far wall: the quarter's name and its rooms, with the side each door is on (a reader
       // walking in faces along the hall, so the side-1 wall is on their left).
-      if(p.plan){const rooms=p.ends.slice(1),tex=own(canvasTexture((c,w,h)=>{c.fillStyle='#efe4cc';c.fillRect(0,0,w,h);c.strokeStyle='#6b4d22';c.lineWidth=6;c.strokeRect(8,8,w-16,h-16);
+      if(p.plan){const rooms=p.ends.slice(1).filter(e=>e.side),ahead=p.ends.slice(1).find(e=>!e.side&&!e.middle),tex=own(canvasTexture((c,w,h)=>{c.fillStyle='#efe4cc';c.fillRect(0,0,w,h);c.strokeStyle='#6b4d22';c.lineWidth=6;c.strokeRect(8,8,w-16,h-16);
           c.fillStyle='#2b1d0e';c.textAlign='center';c.font='bold 34px Georgia';c.fillText(p.plan,w/2,58);c.font='italic 20px Georgia';c.fillText('a quarter of the library',w/2,88);
           c.font='22px Georgia';[...rooms].sort((a,b)=>a.along-b.along||b.side-a.side).forEach((e,k)=>{const left=e.side>0;c.textAlign=left?'left':'right';c.fillText(`${left?'← ':''}${TITLES[e.room]}${left?'':' →'}`,left?34:w-34,140+Math.floor(k/2)*40)});
-          c.textAlign='center';c.font='italic 18px Georgia';c.fillText('Behind you, the Long Corridor and the Grand Hall',w/2,h-30)},512,300));
-        const y=1.75;box(1.32,.8,.05,MAT.darkWood,0,y,L-.03);const plan=add(own(new THREE.PlaneGeometry(1.2,.7)),own(new THREE.MeshStandardMaterial({map:tex,roughness:.85})),0,y,L-.06);plan.rotation.y=Math.PI;
+          c.textAlign='center';if(ahead){c.font='bold 22px Georgia';c.fillText(`Ahead, at the end of the hall: ${TITLES[ahead.room]}`,w/2,h-62)}c.font='italic 18px Georgia';c.fillText('Behind you, the Long Corridor and the Grand Hall',w/2,h-30)},512,300));
+        // On the far wall; or, where a door stands there, on the wall to the left just inside the hall (the side-1 wall).
+        const y=1.75,planMat=own(new THREE.MeshStandardMaterial({map:tex,roughness:.85}));let plan;
+        if(ahead){box(.05,.8,1.32,MAT.darkWood,W/2-.03,y,2.6);plan=add(own(new THREE.PlaneGeometry(1.2,.7)),planMat,W/2-.06,y,2.6);plan.rotation.y=-Math.PI/2}
+        else{box(1.32,.8,.05,MAT.darkWood,0,y,L-.03);plan=add(own(new THREE.PlaneGeometry(1.2,.7)),planMat,0,y,L-.06);plan.rotation.y=Math.PI}
         mark(plan,{type:'passage-card',title:p.name,author:p.blurb,action:'READ'})}
       // The name, by each door.
       const signMat=own(new THREE.MeshStandardMaterial({map:own(signTexture(p.name.toUpperCase(),'')),roughness:.6,emissive:0x2a1a0c,emissiveIntensity:.4})),signGeo=own(new THREE.PlaneGeometry(1.5,.3));

@@ -128,7 +128,15 @@ export const PICTURES = [
   { key: 'faroe-milkmaids', file: 'Malkepiger (neytakonur) ved Haraldsund i Færøerne, 1898 (DNT-25802).jpg' },
   { key: 'faroe-fishermen', file: 'Færøske fiskere. 1898.jpg' },
   { key: 'faroe-dance', file: 'Kædedans på Færøerne (ES-164677).jpg' },
-  { key: 'faroe-map', file: 'Faroe map 1673 by lucas debes.png' }
+  { key: 'faroe-map', file: 'Faroe map 1673 by lucas debes.png' },
+  // For the Waterford room (waterford-room.js, 28 November 2026): Maclise's Marriage of Strongbow and Aoife (1854), the
+  // lithograph of Meagher of 1848, the Shannon portrait of Robert Boyle (1689), Tyrone Power (1832), and a page of Boyle's
+  // New Experiments (1660), in case it is the plate of his air pump. Public domain on Commons; each looked at before use.
+  { key: 'waterford-strongbow', file: 'Marriage of strongbow and aoife.jpg', search: 'Marriage of Strongbow and Aoife Maclise', minSize: 1200 },
+  { key: 'waterford-meagher', file: 'Thomas F. Meagher LCCN90712292.jpg', search: 'Thomas Francis Meagher 1848 lithograph', minSize: 900 },
+  { key: 'waterford-boyle', file: 'The Shannon Portrait of the Hon Robert Boyle.jpg', search: 'Shannon portrait Robert Boyle', minSize: 900 },
+  { key: 'waterford-power', file: 'Tyrone Power 1832.jpg', search: 'Tyrone Power actor 1832', minSize: 700 },
+  { key: 'waterford-airpump', file: 'New Experiments Physico-Mechanicall, Touching the Spring of the Air, and its Effects (Made, for the Most Part, in a New Pneumatical Engine) - DPLA - ddc00871edee1017033532e70a06d130 (page 2).jpg', search: 'Boyle air pump New Experiments 1660 plate', minSize: 900 }
 ];
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');

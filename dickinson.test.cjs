@@ -36,7 +36,7 @@ function room({stored=[],search='',date=new Date(2026,6,1)}={}){
 
 test('it loads before game.js and is wired into the library',()=>{
   const order=[...index.matchAll(/startupScript\('([^']+)'\)/g)].map(m=>m[1]);assert.ok(order.indexOf('dickinson-room.js')>order.indexOf('long-corridor.js')&&order.indexOf('dickinson-room.js')<order.indexOf('game.js'));
-  for(const term of ['dickinsonRoom.floorAt','dickinsonRoom.allowed','dickinsonRoom.interact','dickinsonRoom.update',"if(dickinsonRoom?.contains(x,z))return 'dickinson-room'","'dickinson-room':dickinsonRoom&&(()=>dickinsonRoom.enter())","dickinson:'dickinson-room'","['dickinson-room','Emily Dickinson’s room']","'dickinson-room','india-room','canada-room','lilliput']"])
+  for(const term of ['dickinsonRoom.floorAt','dickinsonRoom.allowed','dickinsonRoom.interact','dickinsonRoom.update',"if(dickinsonRoom?.contains(x,z))return 'dickinson-room'","'dickinson-room':dickinsonRoom&&(()=>dickinsonRoom.enter())","dickinson:'dickinson-room'","['dickinson-room','Emily Dickinson’s room']","'dickinson-room','india-room','canada-room','lilliput','waterford-room']"])
     assert.ok(game.includes(term),term);
   for(const key of ['poems','read','circle','garden','drawer'])assert.ok(game.includes(`arrivalIds('dickinson-${key}')`),key);
   assert.ok(ambience.includes("'dickinson-room':{beds:"),'it has an ambience');
