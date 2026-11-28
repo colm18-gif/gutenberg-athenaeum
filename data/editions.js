@@ -16,7 +16,6 @@ window.ATHENAEUM_EDITIONS={
   12238:'an edition of 1893, whose pages Michigan State University Libraries keep as images',
   65061:'the revised edition, Boston: Little, Brown, and Company, 1910',
   71395:'the new and revised edition of the English translation, London: William Heinemann (first published in English in 1907)',
-  13493:'the twelfth edition, Boston: Carter, Hendee, and Co., 1832',
   // The Preservation Vault
   52551:'the second edition, London: printed for Black, Parry, and Kingsbury, 1812',
   19031:'the Philadelphia edition, printed and published by Ab’m Small, 1820 (the London edition is of the same year)',
