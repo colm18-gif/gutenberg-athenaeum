@@ -8,7 +8,7 @@
 (function(){
   'use strict';
   window.createLongCorridor=function(options){
-    const {THREE,scene,MAT,player,interactables,canvasTexture,showNotice,playSample,move,analytics,doorKit=null}=options;
+    const {THREE,scene,MAT,player,interactables,canvasTexture,showNotice,playSample,move,analytics,doorKit=null,plan=null,openPlan=null}=options;
     const DOOR={x:18.72,z:-24.25,yaw:-Math.PI/2};
     const ROOM={cx:1700,cz:0,w:5,d:24,h:5.2};
     // Six bays a side, four metres each, between pilasters; bay 0 is by the door from the hall, bay 5 at the far (north) end.
@@ -42,6 +42,15 @@
       {side:'east',bay:4,name:'OLD LIBRARIES',text:'The quarter of old libraries: the Library of Celsus at Ephesus, and two bays back, Boullée’s library that was never built. The Restricted Catalogue, in the east wing, is the third.'},
       {side:'east',bay:3,name:'ISLANDS & SEAS',text:'The quarter of islands and seas: each bottle on this shelf sails for a small island. The library’s other islands and seas keep their own ways in: Crusoe’s island by the boat from the Boathouse, Captain Nemo’s salon through the model Nautilus in the Extraordinary Voyages, the Antipodes through the great globe in the Grand Hall, and the polar hut by ship from the New Zealand Room.'}
     ];
+    // The plan of the library, lit, on the west wall's first bay, ahead and to the left of a reader coming in: every room
+    // the reader has found named, and a blank for each one still to find (game.js hands over the journal's register as
+    // `plan`; looking at it opens the journal's map, `openPlan`). Drawn on paper, lit by a brass picture light; no lamp.
+    const PLAN_BAY={side:'west',bay:0};
+    // The north branch (28 November 2026): at the far end an arch opens on a cross corridor running east and west, with
+    // ten more bays for rooms still to come (plain panelling until a room is ready for one), a painted window at each end
+    // and a lamp of its own. The corridor's own far window moved to the branch's west end.
+    const BRANCH={cx:ROOM.cx,cz:ROOM.cz-ROOM.d/2-2.5,w:24,d:5,h:ROOM.h},ARCH={w:3,h:3.8};
+    const branchBays=side=>side==='north'?[0,1,2,3,4,5].map(k=>BRANCH.cx-BRANCH.w/2+2+k*4):[-10,-6,6,10].map(dx=>BRANCH.cx+dx);
     const PRELOAD=7,KEEP=25;
     const LOOK={style:'walnut',width:1.9,height:3.1};
     const through=(data,go)=>doorKit&&data.kit?doorKit.pass(data.kit,data,go):go();
@@ -70,9 +79,9 @@
       const ceiling=own(new THREE.MeshStandardMaterial({color:0x4a3a2c,roughness:1})),brass=MAT.brass;
       // Floor, ceiling and the four walls, with a walnut wainscot to the dado rail.
       box(w,.2,d,MAT.wood,cx,-.1,cz,root);box(w,.2,d,ceiling,cx,h+.1,cz,root);
-      box(WALL,h,d,plaster,x0,h/2,cz,root);box(WALL,h,d,plaster,x1,h/2,cz,root);box(w,h,WALL,plaster,cx,h/2,z0,root);box(w,h,WALL,plaster,cx,h/2,z1,root);
+      box(WALL,h,d,plaster,x0,h/2,cz,root);box(WALL,h,d,plaster,x1,h/2,cz,root);box(w,h,WALL,plaster,cx,h/2,z1,root);
       for(const [x,s] of [[x0,1],[x1,-1]]){box(.06,1.1,d,panel,x+s*.17,.55,cz,root);box(.1,.08,d,panel,x+s*.19,1.12,cz,root);box(.08,.18,d,panel,x+s*.19,.09,cz,root)}
-      box(w,1.1,.06,panel,cx,.55,z0+.17,root);box(w,1.1,.06,panel,cx,.55,z1-.17,root);
+      box(w,1.1,.06,panel,cx,.55,z1-.17,root);
       // A cornice, pilasters between the bays and beams across the ceiling over them.
       for(const [x,s] of [[x0,1],[x1,-1]])box(.22,.24,d,panel,x+s*.22,h-.12,cz,root);
       for(let k=0;k<=BAYS;k++){const z=z1-k*BAY;for(const [x,s] of [[x0,1],[x1,-1]]){box(.14,h,.42,panel,x+s*.22,h/2,z,root);box(.24,.3,.52,panel,x+s*.26,.15,z,root)}
@@ -88,6 +97,7 @@
         if(side===SCROOGE_DOOR.side&&k===SCROOGE_DOOR.bay)continue;
         if(side===BOTTLE_BAY.side&&k===BOTTLE_BAY.bay)continue;// the ships in bottles' shelf is there
         if(side===BRITAIN_DOOR.side&&k===BRITAIN_DOOR.bay||side===AMERICAS_DOOR.side&&k===AMERICAS_DOOR.bay)continue;// the quarters' doors (passages.js)
+        if(side===PLAN_BAY.side&&k===PLAN_BAY.bay)continue;// the plan of the library
         const z=bayZ(k);box(.05,2.2,2.6,panel,x+s*.18,2.5,z,root);box(.03,2,2.4,plaster,x+s*.2,2.5,z,root)}
       for(let k=1;k<BAYS;k++){const z=z1-k*BAY;for(const [x,s] of [[x0,1],[x1,-1]]){box(.08,.08,.22,brass,x+s*.33,2.75,z,root);add(own(new THREE.SphereGeometry(.09,10,8)),glow,x+s*.46,2.85,z,root)}}
       // The quarters' boards, gilt on walnut, above the bays that belong to them.
@@ -102,14 +112,8 @@
       const runner=own(canvasTexture((c,W,H)=>{c.fillStyle='#5a1a16';c.fillRect(0,0,W,H);c.strokeStyle='#c9a24a';c.lineWidth=6;c.strokeRect(14,14,W-28,H-28);c.lineWidth=2;c.strokeRect(26,26,W-52,H-52);
         c.fillStyle='#7a2a20';for(let y=80;y<H-60;y+=120){c.beginPath();c.moveTo(W/2,y);c.lineTo(W/2+40,y+40);c.lineTo(W/2,y+80);c.lineTo(W/2-40,y+40);c.closePath();c.fill()}},160,1280));
       add(own(new THREE.PlaneGeometry(1.8,d-1.6)),own(new THREE.MeshStandardMaterial({map:runner,roughness:.95})),cx,.005,cz,root).rotation.x=-Math.PI/2;
-      // At the far end a tall window on the night: the library's roofs and a garden under the moon (painted; no light).
-      const view=own(canvasTexture((c,W,H)=>{const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#0b1428');g.addColorStop(.7,'#22304c');g.addColorStop(1,'#1a2030');c.fillStyle=g;c.fillRect(0,0,W,H);
-        let k=11;const rnd=()=>(k=(k*9301+49297)%233280)/233280;c.fillStyle='#fff';for(let i=0;i<90;i++){c.globalAlpha=.3+rnd()*.6;c.fillRect(rnd()*W,rnd()*H*.6,1.5,1.5)}c.globalAlpha=1;
-        c.fillStyle='#f2ecd2';c.beginPath();c.arc(W*.7,H*.18,22,0,7);c.fill();
-        c.fillStyle='#0d1018';c.beginPath();c.moveTo(0,H*.72);for(let x=0;x<=W;x+=16)c.lineTo(x,H*.66-Math.abs(Math.sin(x*.05))*28-(x>W*.3&&x<W*.5?40:0));c.lineTo(W,H);c.lineTo(0,H);c.fill();
-        c.fillStyle='#121a14';for(let i=0;i<7;i++){const x=rnd()*W;c.beginPath();c.ellipse(x,H*.8,30+rnd()*30,50+rnd()*30,0,0,7);c.fill()}},256,512));
-      add(own(new THREE.PlaneGeometry(2,3.6)),own(new THREE.MeshStandardMaterial({map:view,emissive:0xffffff,emissiveMap:view,emissiveIntensity:.55,roughness:.3})),cx,2.6,z0+.17,root);
-      for(const x of [-1,0,1])box(.08,3.7,.08,panel,cx+x,2.6,z0+.2,root);for(const y of [.8,2.6,4.4])box(2.1,.1,.1,panel,cx,y,z0+.2,root);
+      buildBranch(plaster,panel,ceiling,brass,glow);
+      buildPlan(x0,panel,brass);
       // The card by the door, on the east wall's first bay.
       const card=own(canvasTexture((c,W,H)=>{c.fillStyle='#efe4cc';c.fillRect(0,0,W,H);c.strokeStyle='#6b4d22';c.lineWidth=6;c.strokeRect(8,8,W-16,H-16);c.fillStyle='#2b1d0e';c.textAlign='center';
         c.font='bold 34px Georgia';c.fillText('THE LONG CORRIDOR',W/2,62);c.font='italic 22px Georgia';
@@ -126,17 +130,102 @@
       scene.add(root);
     }
 
+
+    // ---------- the north branch ----------
+    // A painted night through a window: the library's roofs and a garden under the moon (no light).
+    function nightView(seed){return own(canvasTexture((c,W,H)=>{const g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#0b1428');g.addColorStop(.7,'#22304c');g.addColorStop(1,'#1a2030');c.fillStyle=g;c.fillRect(0,0,W,H);
+        let k=seed;const rnd=()=>(k=(k*9301+49297)%233280)/233280;c.fillStyle='#fff';for(let i=0;i<90;i++){c.globalAlpha=.3+rnd()*.6;c.fillRect(rnd()*W,rnd()*H*.6,1.5,1.5)}c.globalAlpha=1;
+        c.fillStyle='#f2ecd2';c.beginPath();c.arc(W*(.3+rnd()*.4),H*.18,22,0,7);c.fill();
+        c.fillStyle='#0d1018';c.beginPath();c.moveTo(0,H*.72);for(let x=0;x<=W;x+=16)c.lineTo(x,H*.66-Math.abs(Math.sin(x*.05+seed))*28-(x>W*.3&&x<W*.5?40:0));c.lineTo(W,H);c.lineTo(0,H);c.fill();
+        c.fillStyle='#121a14';for(let i=0;i<7;i++){const x=rnd()*W;c.beginPath();c.ellipse(x,H*.8,30+rnd()*30,50+rnd()*30,0,0,7);c.fill()}},256,512))}
+    function buildBranch(plaster,panel,ceiling,brass,glow){
+      const {cx,cz,w,d,h}=BRANCH,x0=cx-w/2,x1=cx+w/2,z0=cz-d/2,z1=cz+d/2,side=(x1-x0-ARCH.w)/2;
+      // Floor, ceiling, the north and end walls, and the south wall either side of the arch with a lintel over it.
+      box(w,.2,d,MAT.wood,cx,-.1,cz,root);box(w,.2,d,ceiling,cx,h+.1,cz,root);
+      box(w,h,WALL,plaster,cx,h/2,z0,root);box(WALL,h,d,plaster,x0,h/2,cz,root);box(WALL,h,d,plaster,x1,h/2,cz,root);
+      for(const s of [-1,1])box(side,h,WALL,plaster,cx+s*(ARCH.w/2+side/2),h/2,z1,root);box(ARCH.w,h-ARCH.h,WALL,plaster,cx,(h+ARCH.h)/2,z1,root);
+      // The arch: walnut jambs and a head on both faces, so it reads from the corridor and from the branch.
+      for(const s of [-1,1])box(.22,ARCH.h,.5,panel,cx+s*(ARCH.w/2+.06),ARCH.h/2,z1,root);box(ARCH.w+.56,.26,.5,panel,cx,ARCH.h+.1,z1,root);
+      // Wainscot, dado rail and skirting round the walls, and a cornice.
+      for(const [bx,bz,bw,bd] of [[cx,z0+.17,w,.06],[x0+.17,cz,.06,d],[x1-.17,cz,.06,d]])box(bw,1.1,bd,panel,bx,.55,bz,root);
+      for(const s of [-1,1])box(side,1.1,.06,panel,cx+s*(ARCH.w/2+side/2),.55,z1-.17,root);
+      box(w,.24,.22,panel,cx,h-.12,z0+.22,root);for(const s of [-1,1])box(side,.24,.22,panel,cx+s*(ARCH.w/2+side/2),h-.12,z1-.22,root);
+      // Pilasters between the bays, a beam over each, and the bays themselves: a raised panel each, waiting for a door.
+      for(let k=0;k<=6;k++){const x=x0+k*4;box(.42,h,.14,panel,x,h/2,z0+.22,root);box(.3,.24,d,panel,x,h-.12,cz,root);if(k>0&&k<6)add(own(new THREE.SphereGeometry(.09,10,8)),glow,x,2.85,z0+.46,root)}
+      for(const dx of [-12,-8,-4,4,8,12]){const x=cx+dx;box(.42,h,.14,panel,x,h/2,z1-.22,root)}
+      for(const x of branchBays('north')){box(2.6,2.2,.05,panel,x,2.5,z0+.18,root);box(2.4,2,.03,plaster,x,2.5,z0+.2,root)}
+      for(const x of branchBays('south')){box(2.6,2.2,.05,panel,x,2.5,z1-.18,root);box(2.4,2,.03,plaster,x,2.5,z1-.2,root)}
+      // A painted window at each end: the corridor's own night view moved to the west end, and another to the east.
+      [[x0+.17,Math.PI/2,11],[x1-.17,-Math.PI/2,29]].forEach(([x,yaw,seed])=>{const view=nightView(seed);
+        add(own(new THREE.PlaneGeometry(2,3.6)),own(new THREE.MeshStandardMaterial({map:view,emissive:0xffffff,emissiveMap:view,emissiveIntensity:.55,roughness:.3})),x,2.6,cz,root).rotation.y=yaw;
+        const s=Math.sign(cx-x);for(const dz of [-1,0,1])box(.08,3.7,.08,panel,x+s*.03,2.6,cz+dz,root);for(const y of [.8,2.6,4.4])box(.1,.1,2.1,panel,x+s*.03,y,cz,root)});
+      // A runner along the branch, and over the bay facing the arch, the branch's name.
+      const runner=own(canvasTexture((c,W,H)=>{c.fillStyle='#5a1a16';c.fillRect(0,0,W,H);c.strokeStyle='#c9a24a';c.lineWidth=6;c.strokeRect(14,14,W-28,H-28)},160,1280));
+      const rm=add(own(new THREE.PlaneGeometry(1.8,w-1.6)),own(new THREE.MeshStandardMaterial({map:runner,roughness:.95})),cx,.005,cz,root);rm.rotation.x=-Math.PI/2;rm.rotation.z=Math.PI/2;
+      const name=own(canvasTexture((c,W,H)=>{c.fillStyle='#24170d';c.fillRect(0,0,W,H);c.strokeStyle='#c9a24a';c.lineWidth=5;c.strokeRect(6,6,W-12,H-12);c.fillStyle='#e6c675';c.textAlign='center';c.textBaseline='middle';
+        c.font='bold 38px Georgia';c.fillText('THE NORTH BRANCH',W/2,H/2-12);c.font='italic 22px Georgia';c.fillText('for the rooms still to come',W/2,H/2+24)},512,110));
+      const data={type:'corridor-card',title:'The north branch',author:'The corridor turns here, east and west, for the rooms still to come. Its bays are plain panelling until a room is ready to open from one of them: no door in the library opens on nothing.',action:'READ'};
+      box(2.5,.56,.06,panel,cx,3.95,z0+.33,root);mark(add(own(new THREE.PlaneGeometry(2.3,.5)),own(new THREE.MeshStandardMaterial({map:name,roughness:.5,emissive:0x2a1a0c,emissiveIntensity:.5})),cx,3.95,z0+.37,root),data);
+      // One lamp of its own, in the middle of the branch.
+      const l=new THREE.PointLight(0xffc98a,5,15,2);l.position.set(cx,h-.7,cz);root.add(l);lights.push(l);
+      add(own(new THREE.CylinderGeometry(.02,.02,.5,6)),brass,cx,h-.25,cz,root);add(own(new THREE.SphereGeometry(.16,12,10)),glow,cx,h-.6,cz,root);
+    }
+
+    // ---------- the plan of the library ----------
+    // Each group of the journal's register, its rooms found named in ink, the rest left as blank lines to fill; a secret
+    // group appears only once one of its places has been found, and shows only what has been.
+    const PLAN={w:2.9,h:1.8,W:2048,H:1272};
+    let planTex=null,planDrawn=-1e9;
+    function drawPlan(c,W,H){
+      c.fillStyle='#ddcca4';c.fillRect(0,0,W,H);c.strokeStyle='#5a3a12';c.lineWidth=10;c.strokeRect(14,14,W-28,H-28);c.lineWidth=2;c.strokeRect(30,30,W-60,H-60);
+      let groups=null;try{groups=plan?.()}catch(e){groups=null}
+      c.fillStyle='#1a1006';c.textAlign='center';c.font='bold 54px Georgia';c.fillText('A PLAN OF THE LIBRARY',W/2,98);
+      if(!groups){c.font='italic 30px Georgia';c.fillText('The rooms you find will be written in here.',W/2,160);return}
+      const all=groups.flatMap(g=>g.places),found=all.filter(p=>p[1]).length;
+      c.font='italic 30px Georgia';c.fillText(`${found} of ${all.length} rooms found · the blank lines are rooms still to find`,W/2,146);
+      const cols=5,colW=(W-120)/cols,top=200,line=28,bottom=H-56;let col=0,y=top;
+      const fit=(text,max)=>{if(c.measureText(text).width<=max)return text;while(text.length>3&&c.measureText(text+'…').width>max)text=text.slice(0,-1);return text+'…'};
+      const next=need=>{if(y+need>bottom){col++;y=top}};
+      c.textAlign='left';
+      for(const g of groups){
+        const shown=g.secret?g.places.filter(p=>p[1]):g.places;if(!shown.length)continue;
+        next(line*2);if(col>=cols)break;const x=60+col*colW;
+        c.fillStyle='#4a2c0a';c.font='bold 25px Georgia';c.fillText(fit(g.title.toUpperCase(),colW-20),x,y);y+=line+2;
+        for(const [label,known] of shown){next(line);if(col>=cols)break;const px=60+col*colW;
+          if(known){c.fillStyle='#1a1006';c.font='bold 23px Georgia';c.fillText(fit(label,colW-40),px+18,y);c.fillStyle='#b8842a';c.beginPath();c.arc(px+6,y-7,5,0,7);c.fill()}
+          else{c.strokeStyle='rgba(90,62,24,.7)';c.lineWidth=2;c.setLineDash([4,7]);c.beginPath();c.moveTo(px+18,y-4);c.lineTo(px+colW-60,y-4);c.stroke();c.setLineDash([]);c.beginPath();c.arc(px+6,y-7,5,0,7);c.stroke()}
+          y+=line}
+        y+=line*.6}
+      c.fillStyle='#6b4d22';c.textAlign='right';c.font='italic 22px Georgia';c.fillText('Look closer: the journal’s map',W-60,H-44);
+    }
+    function redrawPlan(){if(!planTex)return;const ctx=planTex.image?.getContext?.('2d');if(!ctx)return;drawPlan(ctx,PLAN.W,PLAN.H);planTex.needsUpdate=true;planDrawn=time}
+    function buildPlan(x0,panel,brass){
+      const z=bayZ(PLAN_BAY.bay),x=x0+WALL/2;
+      planTex=own(canvasTexture(drawPlan,PLAN.W,PLAN.H));planDrawn=time;
+      box(.08,PLAN.h+.16,PLAN.w+.16,panel,x+.06,2.35,z,root);
+      const face=add(own(new THREE.PlaneGeometry(PLAN.w,PLAN.h)),own(new THREE.MeshStandardMaterial({map:planTex,emissive:0xffffff,emissiveMap:planTex,emissiveIntensity:.04,roughness:.9})),x+.11,2.35,z,root);face.rotation.y=Math.PI/2;
+      // The picture light over it: a brass hood and a warm glowing strip (no lamp; the board is lit from within).
+      box(.24,.06,1.9,brass,x+.2,3.36,z,root);add(own(new THREE.BoxGeometry(.04,.03,1.8)),own(new THREE.MeshStandardMaterial({color:0xffe2b0,emissive:0xffc070,emissiveIntensity:1.6})),x+.3,3.32,z,root);
+      for(const dz of [-.7,.7])box(.2,.04,.04,brass,x+.1,3.36,z+dz,root);
+      mark(face,{type:'corridor-plan',title:'A plan of the library',author:'Every room you have found is written in, and every one you have not is a blank line. Look closer, and the journal opens at its map.',action:'LOOK'});
+    }
+
     // ---------- walking ----------
-    function contains(x,z){return x>ROOM.cx-ROOM.w/2&&x<ROOM.cx+ROOM.w/2&&z>ROOM.cz-ROOM.d/2&&z<ROOM.cz+ROOM.d/2}
+    const inMain=(x,z)=>x>ROOM.cx-ROOM.w/2&&x<ROOM.cx+ROOM.w/2&&z>ROOM.cz-ROOM.d/2&&z<ROOM.cz+ROOM.d/2;
+    const inBranch=(x,z)=>x>BRANCH.cx-BRANCH.w/2&&x<BRANCH.cx+BRANCH.w/2&&z>BRANCH.cz-BRANCH.d/2&&z<=BRANCH.cz+BRANCH.d/2;
+    function contains(x,z){return inMain(x,z)||inBranch(x,z)}
     function floorAt(x,z){return contains(x,z)?0:null}
     function allowed(x,z){
-      if(!contains(x,z))return false;const r=player.radius||.42,m=.45;
-      return !(x-r<ROOM.cx-ROOM.w/2+m||x+r>ROOM.cx+ROOM.w/2-m||z-r<ROOM.cz-ROOM.d/2+m||z+r>ROOM.cz+ROOM.d/2-m);
+      const r=player.radius||.42,m=.45,arch=Math.abs(x-ROOM.cx)+r<ARCH.w/2;
+      // Between the corridor and its north branch, only through the arch.
+      if(inMain(x,z))return !(x-r<ROOM.cx-ROOM.w/2+m||x+r>ROOM.cx+ROOM.w/2-m||z+r>ROOM.cz+ROOM.d/2-m||z-r<ROOM.cz-ROOM.d/2+m&&!arch);
+      if(inBranch(x,z))return !(Math.abs(x-BRANCH.cx)+r>BRANCH.w/2-m||z-r<BRANCH.cz-BRANCH.d/2+m||z+r>BRANCH.cz+BRANCH.d/2-m&&!arch);
+      return false;
     }
 
     // ---------- doing things ----------
     function enter(){
-      activate();move(ROOM.cx,ROOM.cz+ROOM.d/2-1.6,0);playSample?.('doorOpen',.8,.95);
+      activate();redrawPlan();move(ROOM.cx,ROOM.cz+ROOM.d/2-1.6,0);playSample?.('doorOpen',.8,.95);
       showNotice('The Long Corridor. The boards over the bays name the library’s quarters: the Americas on the left, Britain and Ireland at the far end on the right, old libraries and islands between.',8);
       analytics?.track('Room Explored',{room:'long-corridor'});
     }
@@ -147,23 +236,25 @@
       if(data.type==='corridor-door'){through(data,enter);return true}
       if(data.type==='corridor-exit'){through(data,()=>{move(DOOR.x+Math.sin(DOOR.yaw)*1.9,DOOR.z+Math.cos(DOOR.yaw)*1.9,DOOR.yaw+Math.PI);playSample?.('doorOpen',.8,1);showNotice('The Grand Hall again.',3)});return true}
       if(data.type==='corridor-card'){showNotice(`${data.title}: ${data.author}`,9);return true}
+      if(data.type==='corridor-plan'){redrawPlan();if(openPlan)openPlan();else showNotice(`${data.title}: ${data.author}`,8);return true}
       return false;
     }
 
     // ---------- lifecycle ----------
     function activate(){if(!root)buildRoom();lastNeeded=time}
     function unload(){
-      if(!root)return;for(const l of lights)l.userData.freed=true;lights.length=0;root.removeFromParent();root=null;
+      if(!root)return;planTex=null;for(const l of lights)l.userData.freed=true;lights.length=0;root.removeFromParent();root=null;
       for(let i=interactables.length-1;i>=0;i--)if(ours.includes(interactables[i]))interactables.splice(i,1);
       ours.length=0;for(const o of owned.splice(0))o.dispose?.();
     }
     function update(t){
       time=t;const inside=contains(player.pos.x,player.pos.z),near=Math.hypot(player.pos.x-DOOR.x,player.pos.z-DOOR.z)<PRELOAD;
       if(inside||near&&(root||window.libraryMayBuild?.()!==false))activate();
+      if(inside&&root&&t-planDrawn>20)redrawPlan();
       else if(root&&t-lastNeeded>KEEP)unload();
     }
     buildDoor();
-    return {contains,floorAt,allowed,interact,update,enter,activate,unload,standBefore,door:DOOR,room:ROOM,foodDoor:FOOD_DOOR,pictureBay:PICTURE_BAY,dickinsonDoor:DICKINSON_DOOR,indiaDoor:INDIA_DOOR,celsusDoor:CELSUS_DOOR,scroogeDoor:SCROOGE_DOOR,bottleBay:BOTTLE_BAY,britainDoor:BRITAIN_DOOR,americasDoor:AMERICAS_DOOR,quarterSigns:QUARTER_SIGNS,bayZ,bays:BAYS,
+    return {contains,floorAt,allowed,interact,update,enter,activate,unload,standBefore,door:DOOR,room:ROOM,foodDoor:FOOD_DOOR,pictureBay:PICTURE_BAY,dickinsonDoor:DICKINSON_DOOR,indiaDoor:INDIA_DOOR,celsusDoor:CELSUS_DOOR,scroogeDoor:SCROOGE_DOOR,bottleBay:BOTTLE_BAY,planBay:PLAN_BAY,branch:BRANCH,arch:ARCH,branchBays,britainDoor:BRITAIN_DOOR,americasDoor:AMERICAS_DOOR,quarterSigns:QUARTER_SIGNS,bayZ,bays:BAYS,
       get built(){return !!root},zoneAt:(x,z)=>contains(x,z)?'long-corridor':null};
   };
 })();

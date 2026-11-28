@@ -21,11 +21,11 @@ function thing(){
   return self=new Proxy(t,{get:(o,k)=>k in o?o[k]:typeof k==='symbol'?undefined:any});
 }
 const THREE=new Proxy({},{get:()=>function(){return thing()}});
-function corridor(){
+function corridor(extra={}){
   const context={window:{},Math,Object,Array,Number,String};vm.runInNewContext(source,context);
   const player={pos:new V(),radius:.42},interactables=[],notices=[],moves=[],scene=thing();
   const c=context.window.createLongCorridor({THREE,scene,MAT:new Proxy({},{get:()=>thing()}),player,interactables,canvasTexture:()=>thing(),
-    showNotice:t=>notices.push(t),playSample(){},move:(x,z,yaw)=>{moves.push({x,z,yaw});player.pos.set(x,0,z)}});
+    showNotice:t=>notices.push(t),playSample(){},move:(x,z,yaw)=>{moves.push({x,z,yaw});player.pos.set(x,0,z)},...extra});
   return {c,player,interactables,notices,moves,scene};
 }
 
@@ -90,4 +90,31 @@ test('it stands far from every other room',()=>{
   // Rooms out at these distances: the Uncatalogued (x 1400), the falls cave (x 1500, z 1000), the explorers' anteroom (x 1320).
   for(const [x,z] of [[1400,-250],[1500,1000],[1320,320],[1260,-620],[1200,-600]])assert.ok(Math.hypot(R.cx-x,R.cz-z)>200,`clear of ${x},${z}`);
   assert.ok(food.includes('const THRESHOLD=corridor?.foodDoor||'));
+});
+
+test('the north branch: an arch at the far end opens on a cross corridor with ten bays for rooms to come',()=>{
+  const {c}=corridor(),R=c.room,B=c.branch,A=c.arch;
+  assert.equal(B.cz+B.d/2,R.cz-R.d/2,'the branch begins where the corridor ends');assert.equal(B.cx,R.cx);
+  // Up the corridor, through the arch and into the branch, every step allowed; and out along it to both ends.
+  for(let z=R.cz;z>B.cz;z-=.25)assert.ok(c.allowed(R.cx,z),`through the arch at z ${z}`);
+  for(let x=B.cx-B.w/2+1;x<B.cx+B.w/2-1;x+=.5)assert.ok(c.allowed(x,B.cz),`along the branch at x ${x}`);
+  // The wall between them is solid beside the arch, and the branch's own walls hold.
+  for(const dx of [-2.2,2.2,-6,6])assert.ok(!c.allowed(R.cx+dx,R.cz-R.d/2)&&!c.allowed(R.cx+dx,R.cz-R.d/2+.3),`no way through the wall at ${dx}`);
+  assert.ok(!c.allowed(B.cx,B.cz-B.d/2+.2)&&!c.allowed(B.cx+B.w/2-.2,B.cz));assert.ok(c.contains(B.cx+8,B.cz));
+  // Its bays stand on its walls, clear of the arch, ready to be hung with doors.
+  const north=c.branchBays('north'),south=c.branchBays('south');assert.equal(north.length+south.length,10);
+  for(const x of [...north,...south])assert.ok(Math.abs(x-B.cx)<B.w/2-1.5,'within the branch');for(const x of south)assert.ok(Math.abs(x-B.cx)>A.w/2+2,'clear of the arch');
+  assert.ok(Math.hypot(B.cx-1320,B.cz-320)>200,'still far from the explorers’ anteroom');
+});
+
+test('the plan of the library hangs lit by the door, and looking closer opens the journal’s map',()=>{
+  let opened=0;const {c,player,interactables}=corridor({plan:()=>[{title:'Somewhere',places:[['A room',true],['Another',false]]}],openPlan:()=>opened++});
+  assert.equal(c.planBay.side,'west');assert.equal(c.planBay.bay,0);
+  for(const d of [c.foodDoor,c.dickinsonDoor,c.indiaDoor,c.americasDoor])assert.ok(!(d.side===c.planBay.side&&d.bay===c.planBay.bay),'a bay of its own');
+  player.pos.set(c.room.cx,0,c.room.cz);c.update(1);const plan=interactables.find(o=>o.userData?.type==='corridor-plan');assert.ok(plan,'it is hung');
+  assert.ok(c.interact(plan));assert.equal(opened,1);
+  // game.js hands it the journal's register: every place, and whether it has been found.
+  assert.match(game,/plan:\(\)=>typeof PLACE_GROUPS==='undefined'\?null:PLACE_GROUPS\.map\(group=>\(\{title:group\.title,secret:!!group\.secret,places:group\.places\.map\(\(\[id,label\]\)=>\[label,placeKnown\(id\)\]\)\}\)\)/);
+  assert.match(game,/openPlan:\(\)=>\{openJournal\(\);selectJournalTab\('map'\)\}/);
+  assert.match(source,/const shown=g\.secret\?g\.places\.filter\(p=>p\[1\]\):g\.places/,'a secret place is shown only once found');
 });

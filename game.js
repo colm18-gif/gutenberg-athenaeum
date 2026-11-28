@@ -2176,6 +2176,10 @@ function verneRoomDetails(room){const seaGlass=new THREE.MeshStandardMaterial({c
     // The Long Corridor (long-corridor.js), behind a walnut door in the Grand Hall's east wall under Havisham's clock: the
     // hall's walls are full, so new rooms open off it. Its first door is the Gastronomic Athenaeum's.
     const longCorridor=window.createLongCorridor?.({doorKit:getDoorKit(),THREE,scene,MAT,player,interactables,canvasTexture,showNotice,playSample,analytics:window.libraryAnalytics,
+      // The plan by the door: the journal's register (made further on, so read when the plan is drawn), each place found
+      // or not; and looking closer opens the journal at its map.
+      plan:()=>typeof PLACE_GROUPS==='undefined'?null:PLACE_GROUPS.map(group=>({title:group.title,secret:!!group.secret,places:group.places.map(([id,label])=>[label,placeKnown(id)])})),
+      openPlan:()=>{openJournal();selectJournalTab('map')},
       move:(x,z,yaw)=>{finishTrainPass();for(const k in keys)keys[k]=false;touchMoveX=touchMoveY=0;touchSprint=false;player.pos.set(x,0,z);player.vel.set(0,0,0);player.yaw=yaw;player.pitch=0;lastSafePosition.copy(player.pos);camera.position.set(x,1.72,z);camera.rotation.set(0,yaw,0,'YXZ');camera.updateMatrixWorld();focus=null}
     });
     if(longCorridor){
