@@ -560,5 +560,55 @@
   "date": "",
   "licence": "Public domain",
   "description": ""
+ },
+ "waterford-strongbow": {
+  "file": "Marriage of strongbow and aoife.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Marriage_of_strongbow_and_aoife.jpg",
+  "width": 2048,
+  "height": 1249,
+  "artist": "User:Am1ki",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
+ "waterford-meagher": {
+  "file": "Thomas F. Meagher LCCN90712292.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Thomas_F._Meagher_LCCN90712292.jpg",
+  "width": 1683,
+  "height": 2048,
+  "artist": "N. Currier (Firm)",
+  "date": "1848",
+  "licence": "Public domain",
+  "description": "Title: Thomas F. Meagher Abstract/medium: 1 print : lithograph, hand-colored."
+ },
+ "waterford-boyle": {
+  "file": "The Shannon Portrait of the Hon Robert Boyle.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:The_Shannon_Portrait_of_the_Hon_Robert_Boyle.jpg",
+  "width": 1622,
+  "height": 2048,
+  "artist": "Johann Kerseboom",
+  "date": "1689",
+  "licence": "Public domain",
+  "description": "Robert Boyle (1627–1691), an Irish-born English scientist, was an early supporter of the scientific method and founder of modern chemistry. Boyle is known for his pioneering experiments on the physical properties of gases, his authorship of the Sceptical Chymist , his role in creating the Royal Society of London , and his philanthropy in the American colonies. In the painting, Boyle is shown in lo"
+ },
+ "waterford-power": {
+  "file": "Tyrone Power 1832.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Tyrone_Power_1832.jpg",
+  "width": 1100,
+  "height": 1504,
+  "artist": "",
+  "date": "",
+  "licence": "Public domain",
+  "description": ""
+ },
+ "waterford-airpump": {
+  "file": "New Experiments Physico-Mechanicall, Touching the Spring of the Air, and its Effects (Made, for the Most Part, in a New Pneumatical Engine) - DPLA - ddc00871edee1017033532e70a06d130 (page 2).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:New_Experiments_Physico-Mechanicall,_Touching_the_Spring_of_the_Air,_and_its_Effects_(Made,_for_the_Most_Part,_in_a_New_Pneumatical_Engine)_-_DPLA_-_ddc00871edee1017033532e70a06d130_(page_2).jpg",
+  "width": 1283,
+  "height": 2048,
+  "artist": "Boyle, Robert, 1627-1691",
+  "date": "1660 date QS:P571,+1660-00-00T00:00:00Z/9",
+  "licence": "Public domain",
+  "description": "Forty-three experiments are detailed within this work, including the physical and chemical properties of air proving it has weight along with determining that a vacuum restricts the transmission of sound as well as the discovery on the permanent elasticity of air, which is necessary for supporting life and combustion. The experiments outlined in this work eventually led to the discovery of Boyle's"
  }
 }
