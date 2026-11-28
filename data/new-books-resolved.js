@@ -5096,6 +5096,8 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Benito Cereno",
   "History of the Expedition under the Command of Captains Lewis and Clark, Vol. 1.",
   "The Necessity of Atheism",
+  "The American Frugal Housewife",
+  "Miss Parloa’s New Cook Book",
   "The Mahabharata of Krishna-Dwaipayana Vyasa",
   "Maha-bharata: The Epic of India",
   "Shakuntala, and Other Writings",
@@ -5105,7 +5107,6 @@ window.ATHENAEUM_NEW_BOOKS_RESOLVED={
   "Annals and Antiquities of Rajast’han",
   "Alberuni’s India",
   "Bagh O Bahar",
-  "The Cruise of the Cachalot",
   "María [es]",
   "Poesías [es]"
  ]
